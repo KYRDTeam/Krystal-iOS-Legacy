@@ -94,6 +94,7 @@ struct Strings {
   static let showAll = "SHOW ALL".toBeLocalised()
   static let Search = "Search".toBeLocalised()
   static let searchByTokenWalletEND = "Search token, wallet address ...".toBeLocalised()
+  static let findTokenByNameSymbolAddress = "Find a token by name, symbol or address".toBeLocalised()
   static let FunctionCall = "Function call".toBeLocalised()
   static let transactions = "transactions".toBeLocalised()
   

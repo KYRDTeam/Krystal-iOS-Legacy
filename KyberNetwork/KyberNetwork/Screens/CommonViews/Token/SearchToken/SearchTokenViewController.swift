@@ -1,0 +1,213 @@
+//
+//  SearchTokenViewController.swift
+//  KyberNetwork
+//
+//  Created by Com1 on 02/08/2022.
+//
+
+import UIKit
+
+class SearchTokenViewController: KNBaseViewController {
+
+  @IBOutlet weak var tableView: UITableView!
+  @IBOutlet weak var searchField: UITextField!
+  @IBOutlet weak var searchFieldActionButton: UIButton!
+  @IBOutlet weak var collectionView: UICollectionView!
+  @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
+  @IBOutlet weak var searchViewRightConstraint: NSLayoutConstraint!
+  @IBOutlet weak var topView: UIView!
+  @IBOutlet weak var topViewHeight: NSLayoutConstraint!
+  @IBOutlet weak var cancelButton: UIButton!
+  
+  var onSelectTokenCompletion: ((SwapToken) -> Void)?
+  let collectionViewLeftPadding = 21.0
+  let collectionViewCellPadding = 12.0
+  let collectionViewCellWidth = 86.0
+  var defaultCommonTokensInOneRow: CGFloat {
+    return UIScreen.main.bounds.size.width - collectionViewLeftPadding * 2 >= collectionViewCellWidth * 4 + collectionViewCellPadding * 3 ? 4 : 3
+  }
+  var viewModel: SearchTokenViewModel
+  var timer: Timer?
+  var isSourceToken: Bool = true
+  var orderBy: String {
+    return self.isSourceToken ? "usdValue" : "tag"
+  }
+  
+  init(viewModel: SearchTokenViewModel) {
+    self.viewModel = viewModel
+    super.init(nibName: SearchTokenViewController.className, bundle: nil)
+    self.modalPresentationStyle = .custom
+    self.viewModel.controller = self
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    self.setupUI()
+    self.viewModel.getCommonBaseToken {
+      self.collectionView.reloadData()
+    }
+    
+    self.viewModel.fetchDataFromAPI(querry: "", orderBy: self.orderBy) {
+      self.tableView.reloadData()
+    }
+  }
+  
+  func setupUI() {
+    self.searchField.setPlaceholder(text: Strings.findTokenByNameSymbolAddress, color: UIColor(named: "normalTextColor")!)
+    self.tableView.registerCellNib(SearchTokenViewCell.self)
+    self.collectionView.registerCellNib(CommonBaseTokenCell.self)
+    self.collectionViewHeight.constant = 40 * 2 + 16
+  }
+  
+  func updateUIStartSearchingMode() {
+    self.view.layoutIfNeeded()
+    UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+      self.searchViewRightConstraint.constant = 77
+      self.topViewHeight.constant = 0
+      self.topView.isHidden = true
+      self.cancelButton.isHidden = false
+      self.searchFieldActionButton.setImage(UIImage(named: "close-search-icon"), for: .normal)
+      self.view.layoutIfNeeded()
+    }
+  }
+  
+  func updateUIEndSearchingMode() {
+    self.view.layoutIfNeeded()
+    UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+      self.searchViewRightConstraint.constant = 21
+      self.topViewHeight.constant = 90
+      self.topView.isHidden = false
+      self.cancelButton.isHidden = true
+      self.searchFieldActionButton.setImage(UIImage(named: "search_blue_icon"), for: .normal)
+      self.view.endEditing(true)
+      self.view.layoutIfNeeded()
+    }
+  }
+
+  @IBAction func closeButtonTapped(_ sender: Any) {
+    self.dismiss(animated: true)
+  }
+  
+  @IBAction func onSearchButtonTapped(_ sender: Any) {
+    if self.topView.isHidden {
+      searchField.text = ""
+      self.viewModel.fetchDataFromAPI(querry: "", orderBy: self.orderBy) {
+        self.tableView.reloadData()
+      }
+    } else {
+      self.updateUIStartSearchingMode()
+    }
+  }
+  
+  @IBAction func cancelButtonTapped(_ sender: Any) {
+    self.updateUIEndSearchingMode()
+  }
+  
+  func disableSearch() {
+    searchField.text = ""
+    updateUIEndSearchingMode()
+    self.viewModel.fetchDataFromAPI(querry: "", orderBy: self.orderBy) {
+      self.tableView.reloadData()
+    }
+  }
+}
+
+extension SearchTokenViewController: UITextFieldDelegate {
+  
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    self.updateUIStartSearchingMode()
+    return true
+  }
+  
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    self.updateUIEndSearchingMode()
+  }
+  
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    timer?.invalidate()
+    timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(doSearch), userInfo: nil, repeats: false)
+    return true
+  }
+  
+  @objc func doSearch() {
+    if let text = self.searchField.text {
+      self.viewModel.fetchDataFromAPI(querry: text, orderBy: self.orderBy) {
+        self.tableView.reloadData()
+      }
+    }
+  }
+}
+
+extension SearchTokenViewController: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.viewModel.numberOfSearchTokens()
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(SearchTokenViewCell.self, indexPath: indexPath)!
+    let swapToken = self.viewModel.searchTokens[indexPath.row]
+    cell.updateUI(token: swapToken)
+    return cell
+  }
+}
+
+extension SearchTokenViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if let onSelectTokenCompletion = self.onSelectTokenCompletion {
+      let swapToken = self.viewModel.searchTokens[indexPath.row]
+      onSelectTokenCompletion(swapToken)
+      self.dismiss(animated: true)
+    }
+  }
+}
+
+extension SearchTokenViewController: UICollectionViewDataSource {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return self.viewModel.numberOfCommonBaseTokens()
+  }
+
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCell(CommonBaseTokenCell.self, indexPath: indexPath)!
+    let token = self.viewModel.commonBaseTokens[indexPath.row]
+    cell.updateUI(token: token)
+    return cell
+  }
+}
+
+extension SearchTokenViewController: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    if let onSelectTokenCompletion = self.onSelectTokenCompletion {
+      let token = self.viewModel.commonBaseTokens[indexPath.row]
+      let swapToken = SwapToken(token: token)
+      onSelectTokenCompletion(swapToken)
+      self.dismiss(animated: true)
+    }
+  }
+}
+
+extension SearchTokenViewController: UICollectionViewDelegateFlowLayout {
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      sizeForItemAt indexPath: IndexPath) -> CGSize {
+    let token = self.viewModel.commonBaseTokens[indexPath.row]
+    let symbolWidth = token.symbol.width(withConstrainedHeight: 18, font: UIFont.Kyber.regular(with: 14))
+    
+    return CGSize(width: symbolWidth + 50, height: 36)
+  }
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    return collectionViewCellPadding
+  }
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    let rightPadding = UIScreen.main.bounds.size.width - (collectionViewLeftPadding + defaultCommonTokensInOneRow * collectionViewCellWidth + (defaultCommonTokensInOneRow - 1) * collectionViewCellPadding)
+    return UIEdgeInsets(top: 8, left: collectionViewLeftPadding, bottom: 8, right: rightPadding)
+  }
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+      return collectionViewCellPadding
+  }
+}

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Medium.ttf">
+            <string>Karla-Medium</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="73" id="KGk-i7-Jjw" customClass="SearchTokenViewCell" customModule="Krystal" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="315" height="73"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="315" height="73"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="wyc-LC-FJE">
+                        <rect key="frame" x="24" y="12" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="GLE-vd-bGO"/>
+                            <constraint firstAttribute="width" constant="40" id="sGK-aa-K8a"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V7E-Yw-QdE">
+                        <rect key="frame" x="76" y="12" width="28" height="19"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                        <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CzO-5S-wtP">
+                        <rect key="frame" x="76" y="35" width="209" height="17"/>
+                        <fontDescription key="fontDescription" name="Karla-Medium" family="Karla" pointSize="14"/>
+                        <color key="textColor" name="normalTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="$3,123.31" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L1U-N7-VX2">
+                        <rect key="frame" x="227.5" y="12" width="64.5" height="19"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                        <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueTick_icon" translatesAutoresizingMaskIntoConstraints="NO" id="U59-J6-RFQ">
+                        <rect key="frame" x="106" y="12" width="17" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="17" id="QAF-ui-tqc"/>
+                            <constraint firstAttribute="height" constant="17" id="usD-wV-3hc"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <color key="backgroundColor" name="mainViewBgColor"/>
+                <constraints>
+                    <constraint firstItem="V7E-Yw-QdE" firstAttribute="leading" secondItem="wyc-LC-FJE" secondAttribute="trailing" constant="12" id="0Xy-Nn-Jex"/>
+                    <constraint firstItem="CzO-5S-wtP" firstAttribute="leading" secondItem="V7E-Yw-QdE" secondAttribute="leading" id="17F-VZ-Z41"/>
+                    <constraint firstItem="L1U-N7-VX2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="U59-J6-RFQ" secondAttribute="trailing" constant="5" id="98T-gj-8Pz"/>
+                    <constraint firstItem="CzO-5S-wtP" firstAttribute="top" secondItem="V7E-Yw-QdE" secondAttribute="bottom" constant="4" id="Sxz-24-3ZI"/>
+                    <constraint firstItem="U59-J6-RFQ" firstAttribute="leading" secondItem="V7E-Yw-QdE" secondAttribute="trailing" constant="2" id="UNg-Ej-JGp"/>
+                    <constraint firstItem="wyc-LC-FJE" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="24" id="XJE-qY-anC"/>
+                    <constraint firstAttribute="bottom" secondItem="wyc-LC-FJE" secondAttribute="bottom" constant="12" id="YDR-c2-Z6x"/>
+                    <constraint firstItem="U59-J6-RFQ" firstAttribute="top" secondItem="V7E-Yw-QdE" secondAttribute="top" id="Zwp-Ct-EFp"/>
+                    <constraint firstItem="V7E-Yw-QdE" firstAttribute="top" secondItem="wyc-LC-FJE" secondAttribute="top" id="b0Y-nK-3C3"/>
+                    <constraint firstItem="wyc-LC-FJE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="dHd-ZD-uBA"/>
+                    <constraint firstItem="L1U-N7-VX2" firstAttribute="centerY" secondItem="V7E-Yw-QdE" secondAttribute="centerY" id="faX-mh-pRI"/>
+                    <constraint firstAttribute="trailing" secondItem="L1U-N7-VX2" secondAttribute="trailing" constant="23" id="hdD-Ke-vtm"/>
+                    <constraint firstAttribute="trailing" secondItem="CzO-5S-wtP" secondAttribute="trailing" constant="30" id="yc0-qy-lVa"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="balanceLabel" destination="CzO-5S-wtP" id="Grm-cc-Vng"/>
+                <outlet property="iconImageView" destination="wyc-LC-FJE" id="ie0-97-Ud2"/>
+                <outlet property="symbolLabel" destination="V7E-Yw-QdE" id="RmM-px-oUq"/>
+                <outlet property="tagImageView" destination="U59-J6-RFQ" id="uY5-Nw-JTV"/>
+                <outlet property="valueLabel" destination="L1U-N7-VX2" id="QvN-4f-m8u"/>
+            </connections>
+            <point key="canvasLocation" x="128.2608695652174" y="118.19196428571428"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="blueTick_icon" width="24" height="24"/>
+        <image name="eth" width="32" height="32"/>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
