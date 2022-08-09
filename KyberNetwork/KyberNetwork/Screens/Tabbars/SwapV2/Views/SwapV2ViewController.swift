@@ -36,6 +36,8 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var infoExpandButton: UIButton!
   @IBOutlet weak var infoSeparatorView: UIView!
   
+  @IBOutlet weak var sourceTokenView: UIView!
+  @IBOutlet weak var destTokenView: UIView!
   var viewModel: SwapV2ViewModel = SwapV2ViewModel()
   
   let platformRateItemHeight: CGFloat = 96
@@ -93,6 +95,7 @@ class SwapV2ViewController: KNBaseViewController {
     setupTableView()
     setupRateLoadingView()
     setupDropdownView()
+    setupSourceDestTokensView()
   }
   
   func resetViews() {
@@ -127,6 +130,11 @@ class SwapV2ViewController: KNBaseViewController {
   func setupDropdownView() {
     expandIcon.isUserInteractionEnabled = true
     expandIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onToggleExpand)))
+  }
+  
+  func setupSourceDestTokensView() {
+    sourceTokenView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openSourceTokenSearch)))
+    destTokenView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openDestTokenSearch)))
   }
   
   func setupInfoViews() {
@@ -332,6 +340,23 @@ class SwapV2ViewController: KNBaseViewController {
     }
   }
   
+  @objc func openSourceTokenSearch() {
+    let controller = SearchTokenViewController(viewModel: SearchTokenViewModel())
+    controller.isSourceToken = true
+    controller.onSelectTokenCompletion = { selectedToken in
+      print("THANGGG")
+    }
+    self.present(controller, animated: true, completion: nil)
+  }
+  
+  @objc func openDestTokenSearch() {
+    let controller = SearchTokenViewController(viewModel: SearchTokenViewModel())
+    controller.isSourceToken = false
+    controller.onSelectTokenCompletion = { selectedToken in
+      print("THANGGG")
+    }
+    self.present(controller, animated: true, completion: nil)
+  }
 }
 
 // MARK: Data
