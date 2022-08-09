@@ -287,7 +287,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
       case .insufficientBalance:
         self.continueButton.isEnabled = false
-        self.continueButton.setTitle("Insufficient \(self.viewModel.destToken.value?.symbol ?? "") Balance", for: .normal)
+        self.continueButton.setTitle("Insufficient \(self.viewModel.sourceToken.value?.symbol ?? "") Balance", for: .normal)
         self.rateLoadingView.isHidden = true
         self.notFoundView.isHidden = true
         self.platformTableView.isHidden = true
@@ -302,7 +302,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.loadingView.isHidden = true
       case .notApproved:
         self.continueButton.isEnabled = true
-        self.continueButton.setTitle("Approve \(self.viewModel.destToken.value?.symbol ?? "")", for: .normal)
+        self.continueButton.setTitle("Approve \(self.viewModel.sourceToken.value?.symbol ?? "")", for: .normal)
         self.rateLoadingView.isHidden = false
         self.notFoundView.isHidden = true
         self.platformTableView.isHidden = false

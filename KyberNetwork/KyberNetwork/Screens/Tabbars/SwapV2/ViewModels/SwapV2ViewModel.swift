@@ -233,11 +233,15 @@ class SwapV2ViewModel {
   func swapPair() {
     (sourceToken.value, destToken.value) = (destToken.value, sourceToken.value)
     self.sourceAmountValue = nil
+    self.selectedPlatformName = nil
     self.reloadSourceBalance()
     self.reloadDestBalance()
   }
   
   func reloadRates() {
+    guard state.value.isActiveState else {
+      return
+    }
     guard let amount = self.sourceAmount.value, !amount.isZero else {
       return
     }

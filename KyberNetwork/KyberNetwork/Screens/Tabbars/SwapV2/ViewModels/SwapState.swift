@@ -16,4 +16,13 @@ enum SwapState {
   case checkingAllowance
   case notApproved
   case ready
+  
+  var isActiveState: Bool {
+    switch self {
+    case .emptyAmount, .insufficientBalance:
+      return false
+    default:
+      return true
+    }
+  }
 }
