@@ -32,7 +32,7 @@ class SwapInfoView: BaseXibView {
     
     if underlined {
       let attrs: [NSAttributedString.Key: Any] = [
-        .underlineStyle: NSUnderlineStyle.patternDashDot.rawValue | NSUnderlineStyle.single.rawValue,
+        .underlineStyle: NSUnderlineStyle.patternDash.rawValue | NSUnderlineStyle.thick.rawValue,
         .underlineColor: UIColor.white.withAlphaComponent(0.5)
       ]
       attributedString.addAttributes(attrs, range: NSRange(location: 0, length: attributedString.length))

@@ -21,7 +21,10 @@ class SwapRepository {
       case .success(let response):
         do {
           let data = try JSONDecoder().decode(RateResponse.self, from: response.data)
-          completion(data.rates)
+          let sortedRates = data.rates.sorted { lhs, rhs in
+            return BigInt.bigIntFromString(value: lhs.rate) > BigInt.bigIntFromString(value: rhs.rate)
+          }
+          completion(sortedRates)
         } catch {
           completion([])
         }
@@ -48,6 +51,18 @@ class SwapRepository {
         completion(change)
       } else {
         completion(nil)
+      }
+    }
+  }
+  
+  func getAllowance(tokenAddress: String, address: String, completion: @escaping (BigInt, String) -> ()) {
+    let networkAddress = KNGeneralProvider.shared.proxyAddress
+    KNGeneralProvider.shared.getAllowance(for: address, networkAddress: networkAddress, tokenAddress: tokenAddress) { result in
+      switch result {
+      case .success(let allowance):
+        completion(allowance, tokenAddress)
+      case .failure:
+        completion(0, tokenAddress)
       }
     }
   }

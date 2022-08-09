@@ -31,6 +31,8 @@
                 <outlet property="expandIcon" destination="O2G-q7-6ar" id="jRQ-Gp-GOf"/>
                 <outlet property="fetchingAnimationView" destination="nzk-yc-rhc" id="ynk-5D-zpe"/>
                 <outlet property="gasFeeInfoView" destination="2FU-38-AjM" id="Gdp-rq-0xw"/>
+                <outlet property="infoExpandButton" destination="hdk-Zz-e7m" id="FHD-7H-DTI"/>
+                <outlet property="infoSeparatorView" destination="C3W-qG-5HY" id="4kp-Oi-FZO"/>
                 <outlet property="loadingView" destination="acI-9i-ctB" id="0CN-WJ-k5r"/>
                 <outlet property="maxGasFeeInfoView" destination="yq6-eX-uWR" id="ZAq-Zf-VgV"/>
                 <outlet property="minReceiveInfoView" destination="nnl-CE-rqV" id="V0e-NQ-qW1"/>
@@ -531,11 +533,44 @@
                                                         <constraint firstAttribute="height" constant="20" id="3su-hr-MRA"/>
                                                     </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aTl-kC-ce3" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="144" width="372" height="20"/>
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aTl-kC-ce3" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="142" width="372" height="20"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="x4n-UW-gkU"/>
+                                                    </constraints>
+                                                </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C3W-qG-5HY" userLabel="Info Separator">
+                                                    <rect key="frame" x="0.0" y="144" width="372" height="20"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="feu-mG-GIn">
+                                                            <rect key="frame" x="0.0" y="9.5" width="372" height="1"/>
+                                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="1" id="ZPF-rV-pn9"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hdk-Zz-e7m">
+                                                            <rect key="frame" x="170" y="0.0" width="32" height="20"/>
+                                                            <color key="backgroundColor" name="mainViewBgColor"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="20" id="4te-9s-oMp"/>
+                                                            </constraints>
+                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                            <state key="normal" image="swap_dropdown_grey"/>
+                                                            <connections>
+                                                                <action selector="infoExpandWasTapped:" destination="-1" eventType="touchUpInside" id="H0c-kk-HMl"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="7u2-bf-ZvV"/>
+                                                        <constraint firstItem="hdk-Zz-e7m" firstAttribute="centerX" secondItem="C3W-qG-5HY" secondAttribute="centerX" id="AqN-Q5-Q5q"/>
+                                                        <constraint firstItem="feu-mG-GIn" firstAttribute="leading" secondItem="C3W-qG-5HY" secondAttribute="leading" id="i5A-3Q-LA2"/>
+                                                        <constraint firstItem="hdk-Zz-e7m" firstAttribute="centerY" secondItem="C3W-qG-5HY" secondAttribute="centerY" id="jXT-bo-L2P"/>
+                                                        <constraint firstAttribute="trailing" secondItem="feu-mG-GIn" secondAttribute="trailing" id="osJ-ff-xo4"/>
+                                                        <constraint firstItem="feu-mG-GIn" firstAttribute="centerY" secondItem="C3W-qG-5HY" secondAttribute="centerY" id="z3Z-hb-OSW"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
@@ -564,6 +599,7 @@
                                     <color key="backgroundColor" name="mainViewBgColor"/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="iJd-LF-kkd" secondAttribute="trailing" constant="28" id="0mZ-75-dzG"/>
+                                        <constraint firstItem="SOT-hf-WqE" firstAttribute="top" secondItem="iJd-LF-kkd" secondAttribute="bottom" constant="24" id="2s4-R3-yLW"/>
                                         <constraint firstItem="aHo-uv-839" firstAttribute="leading" secondItem="S6A-NR-SWi" secondAttribute="leading" constant="28" id="3I9-tn-4PF"/>
                                         <constraint firstAttribute="trailing" secondItem="Bw6-Um-U7Z" secondAttribute="trailing" constant="28" id="FDR-ZY-pti"/>
                                         <constraint firstItem="SOT-hf-WqE" firstAttribute="leading" secondItem="S6A-NR-SWi" secondAttribute="leading" constant="28" id="Fkd-M5-lJN"/>
@@ -579,7 +615,6 @@
                                         <constraint firstAttribute="trailing" secondItem="aHo-uv-839" secondAttribute="trailing" constant="28" id="j7H-gj-gxa"/>
                                         <constraint firstAttribute="bottom" secondItem="SOT-hf-WqE" secondAttribute="bottom" constant="24" id="o08-d3-tf6"/>
                                         <constraint firstItem="dZN-TU-lXf" firstAttribute="top" secondItem="S6A-NR-SWi" secondAttribute="top" constant="16" id="rCy-wv-SFV"/>
-                                        <constraint firstItem="SOT-hf-WqE" firstAttribute="top" secondItem="iJd-LF-kkd" secondAttribute="bottom" constant="24" id="tN1-02-CDH"/>
                                     </constraints>
                                 </view>
                             </subviews>

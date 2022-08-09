@@ -33,6 +33,8 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var sourceTextField: UITextField!
   @IBOutlet weak var fetchingAnimationView: AnimationView!
   @IBOutlet weak var notFoundView: UIView!
+  @IBOutlet weak var infoExpandButton: UIButton!
+  @IBOutlet weak var infoSeparatorView: UIView!
   
   var viewModel: SwapV2ViewModel = SwapV2ViewModel()
   
@@ -48,6 +50,16 @@ class SwapV2ViewController: KNBaseViewController {
     }
   }
   
+  var isInfoExpanded: Bool = false {
+    didSet {
+      UIView.animate(withDuration: 0.2) {
+        self.infoExpandButton.setImage(self.isInfoExpanded ? Images.swapPullup : Images.swapDropdown, for: .normal)
+        self.maxGasFeeInfoView.isHidden = !self.isInfoExpanded
+        self.priceImpactInfoView.isHidden = !self.isInfoExpanded
+      }
+    }
+  }
+  
   var canExpand: Bool = false {
     didSet {
       self.expandIcon.isHidden = !canExpand
@@ -60,7 +72,6 @@ class SwapV2ViewController: KNBaseViewController {
     configureViews()
     resetViews()
     bindViewModel()
-    reloadRatesIfNeeded()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -69,18 +80,13 @@ class SwapV2ViewController: KNBaseViewController {
     navigationController?.setNavigationBarHidden(true, animated: true)
   }
   
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    
-    rateLoadingView.startAnimation(duration: rateReloadingInterval)
-  }
-  
   deinit {
     timer?.invalidate()
     timer = nil
   }
   
   func configureViews() {
+    setupButtons()
     setupAnimation()
     setupSourceView()
     setupInfoViews()
@@ -106,6 +112,13 @@ class SwapV2ViewController: KNBaseViewController {
     fetchingAnimationView.play()
   }
   
+  func setupButtons() {
+    continueButton.setBackgroundColor(.Kyber.primaryGreenColor, forState: .normal)
+    continueButton.setBackgroundColor(.Kyber.evenBg, forState: .disabled)
+    continueButton.setTitleColor(.black, for: .normal)
+    continueButton.setTitleColor(.white.withAlphaComponent(0.3), for: .disabled)
+  }
+  
   func setupSourceView() {
     sourceTextField.setPlaceholder(text: "0.00", color: .white.withAlphaComponent(0.5))
     sourceTextField.delegate = self
@@ -125,10 +138,10 @@ class SwapV2ViewController: KNBaseViewController {
     minReceiveInfoView.setTitle(title: "Min. Received", underlined: true)
     minReceiveInfoView.iconImageView.isHidden = true
     
-    gasFeeInfoView.setTitle(title: "Gas Fee (est)", underlined: true)
+    gasFeeInfoView.setTitle(title: "Network Fee (est)", underlined: true)
     gasFeeInfoView.iconImageView.isHidden = true
     
-    maxGasFeeInfoView.setTitle(title: "Max Gas Fee", underlined: true)
+    maxGasFeeInfoView.setTitle(title: "Max Network Fee", underlined: true)
     maxGasFeeInfoView.iconImageView.isHidden = true
     
     priceImpactInfoView.setTitle(title: "Price Impact", underlined: true)
@@ -153,6 +166,7 @@ class SwapV2ViewController: KNBaseViewController {
     viewModel.sourceToken.observeAndFire(on: self) { [weak self] token in
       DispatchQueue.main.async {
         self?.sourceTokenLabel.text = token?.symbol
+        self?.sourceTextField.text = nil
         if let token = token {
           self?.sourceTokenIcon.isHidden = false
           self?.sourceTokenIcon.setSymbolImage(symbol: token.symbol)
@@ -210,8 +224,8 @@ class SwapV2ViewController: KNBaseViewController {
       self?.minReceiveInfoView.setValue(value: string, highlighted: false)
     }
     
-    viewModel.maxGasFeeString.observeAndFire(on: self) { [weak self] string in
-      self?.maxGasFeeInfoView.setValue(value: string, highlighted: true)
+    viewModel.estimatedGasFeeString.observeAndFire(on: self) { [weak self] string in
+      self?.gasFeeInfoView.setValue(value: string, highlighted: true)
     }
     
     viewModel.priceImpactString.observeAndFire(on: self) { [weak self] string in
@@ -219,24 +233,93 @@ class SwapV2ViewController: KNBaseViewController {
     }
     
     viewModel.selectedPlatformRate.observeAndFire(on: self) { [weak self] rate in
-      self?.rateInfoView.isHidden = rate == nil
-      self?.slippageInfoView.isHidden = rate == nil
-      self?.minReceiveInfoView.isHidden = rate == nil
-      self?.gasFeeInfoView.isHidden = rate == nil
-      self?.maxGasFeeInfoView.isHidden = rate == nil
-      self?.priceImpactInfoView.isHidden = rate == nil
-      self?.routeInfoView.isHidden = rate == nil
+      guard let self = self else { return }
+      self.infoSeparatorView.isHidden = rate == nil
+      self.rateInfoView.isHidden = rate == nil
+      self.slippageInfoView.isHidden = rate == nil
+      self.minReceiveInfoView.isHidden = rate == nil
+      self.gasFeeInfoView.isHidden = rate == nil
+      self.maxGasFeeInfoView.isHidden = rate == nil || !self.isInfoExpanded
+      self.priceImpactInfoView.isHidden = rate == nil || !self.isInfoExpanded
+    }
+    
+    viewModel.state.observeAndFire(on: self) { [weak self] state in
+      guard let self = self else { return }
+      switch state {
+      case .emptyAmount:
+        self.continueButton.isEnabled = false
+        self.continueButton.setTitle("Enter an amount", for: .normal)
+        self.rateLoadingView.isHidden = true
+        self.platformTableView.isHidden = true
+        self.notFoundView.isHidden = true
+        self.loadingView.isHidden = true
+        self.destViewHeight.constant = CGFloat(112)
+        self.expandIcon.isHidden = true
+      case .fetchingRates:
+        self.continueButton.isEnabled = false
+        self.continueButton.setTitle("Fetching the best rates", for: .normal)
+        self.platformTableView.isHidden = true
+        self.notFoundView.isHidden = true
+        self.loadingView.isHidden = false
+        self.expandIcon.isHidden = true
+        self.resetCountdownView()
+        self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
+      case .notConnected:
+        self.continueButton.isEnabled = true
+        self.continueButton.setTitle("Connect Wallet", for: .normal)
+        self.notFoundView.isHidden = true
+        self.loadingView.isHidden = true
+      case .rateNotFound:
+        self.continueButton.isEnabled = false
+        self.continueButton.setTitle("Review Swap", for: .normal)
+        self.rateLoadingView.isHidden = true
+        self.platformTableView.isHidden = true
+        self.notFoundView.isHidden = false
+        self.loadingView.isHidden = true
+        self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
+      case .insufficientBalance:
+        self.continueButton.isEnabled = false
+        self.continueButton.setTitle("Insufficient \(self.viewModel.destToken.value?.symbol ?? "") Balance", for: .normal)
+        self.rateLoadingView.isHidden = true
+        self.notFoundView.isHidden = true
+        self.platformTableView.isHidden = true
+        self.loadingView.isHidden = true
+        self.destViewHeight.constant = CGFloat(112)
+      case .checkingAllowance:
+        self.continueButton.isEnabled = false
+        self.continueButton.setTitle("Checking Allowance...", for: .normal)
+        self.rateLoadingView.isHidden = false
+        self.notFoundView.isHidden = true
+        self.platformTableView.isHidden = false
+        self.loadingView.isHidden = true
+      case .notApproved:
+        self.continueButton.isEnabled = true
+        self.continueButton.setTitle("Approve \(self.viewModel.destToken.value?.symbol ?? "")", for: .normal)
+        self.rateLoadingView.isHidden = false
+        self.notFoundView.isHidden = true
+        self.platformTableView.isHidden = false
+        self.loadingView.isHidden = true
+      case .ready:
+        self.continueButton.isEnabled = true
+        self.continueButton.setTitle("Review Swap", for: .normal)
+        self.rateLoadingView.isHidden = false
+        self.notFoundView.isHidden = true
+        self.platformTableView.isHidden = false
+        self.loadingView.isHidden = true
+      }
     }
   }
   
   @IBAction func swapPairWasTapped(_ sender: Any) {
     viewModel.swapPair()
-    reloadRatesIfNeeded()
   }
   
   @IBAction func continueWasTapped(_ sender: Any) {
-    priceImpactInfoView.isHidden.toggle()
-    routeInfoView.isHidden.toggle()
+    
+  }
+  
+  @IBAction func infoExpandWasTapped(_ sender: Any) {
+    self.isInfoExpanded.toggle()
   }
   
   @objc func onToggleExpand() {
@@ -276,8 +359,13 @@ extension SwapV2ViewController {
       UIView.animate(withDuration: 0.5) {
         self.platformTableView.isHidden = true
         self.loadingView.isHidden = true
-        self.notFoundView.isHidden = false
-        self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
+        if self.viewModel.isInputValid {
+          self.notFoundView.isHidden = false
+          self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
+        } else {
+          self.notFoundView.isHidden = true
+          self.destViewHeight.constant = CGFloat(112)
+        }
         self.view.layoutIfNeeded()
       }
     }
@@ -304,23 +392,21 @@ extension SwapV2ViewController {
   }
   
   @objc func onTapReloadRate() {
-    reloadRatesIfNeeded()
+    resetCountdownView()
+    viewModel.reloadRates()
   }
   
   func onTimerTick() {
     remainingTime -= 1
     if remainingTime == 0 {
-      reloadRatesIfNeeded()
+      resetCountdownView()
+      viewModel.reloadRates()
     } else {
       rateLoadingView.setRemainingTime(seconds: remainingTime)
     }
   }
   
-  func reloadRatesIfNeeded() {
-    if !viewModel.isInputValid {
-      return
-    }
-    requestRates()
+  func resetCountdownView() {
     remainingTime = rateReloadingInterval
     rateLoadingView.setRemainingTime(seconds: remainingTime)
     rateLoadingView.startAnimation(duration: rateReloadingInterval)
@@ -341,11 +427,6 @@ extension SwapV2ViewController {
   func onSourceAmountChange(value: String) {
     let doubleValue = Double(value) ?? 0
     viewModel.sourceAmountValue = doubleValue
-    if doubleValue <= 0 {
-      self.rateLoadingView.isHidden = true
-    } else {
-      self.reloadRatesIfNeeded()
-    }
   }
   
   func onSelectPlatformRateAt(index: Int) {
