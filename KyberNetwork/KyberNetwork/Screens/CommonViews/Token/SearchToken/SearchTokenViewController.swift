@@ -18,7 +18,8 @@ class SearchTokenViewController: KNBaseViewController {
   @IBOutlet weak var topView: UIView!
   @IBOutlet weak var topViewHeight: NSLayoutConstraint!
   @IBOutlet weak var cancelButton: UIButton!
-  
+  @IBOutlet weak var emptyView: UIView!
+
   var onSelectTokenCompletion: ((SwapToken) -> Void)?
   let collectionViewLeftPadding = 21.0
   let collectionViewCellPadding = 12.0
@@ -52,7 +53,7 @@ class SearchTokenViewController: KNBaseViewController {
     }
     
     self.viewModel.fetchDataFromAPI(querry: "", orderBy: self.orderBy) {
-      self.tableView.reloadData()
+      self.reloadUI()
     }
   }
   
@@ -61,6 +62,11 @@ class SearchTokenViewController: KNBaseViewController {
     self.tableView.registerCellNib(SearchTokenViewCell.self)
     self.collectionView.registerCellNib(CommonBaseTokenCell.self)
     self.collectionViewHeight.constant = 40 * 2 + 16
+  }
+  
+  func reloadUI() {
+    self.emptyView.isHidden = !self.viewModel.searchTokens.isEmpty
+    self.tableView.reloadData()
   }
   
   func updateUIStartSearchingMode() {
@@ -96,7 +102,7 @@ class SearchTokenViewController: KNBaseViewController {
     if self.topView.isHidden {
       searchField.text = ""
       self.viewModel.fetchDataFromAPI(querry: "", orderBy: self.orderBy) {
-        self.tableView.reloadData()
+        self.reloadUI()
       }
     } else {
       self.updateUIStartSearchingMode()
@@ -111,7 +117,7 @@ class SearchTokenViewController: KNBaseViewController {
     searchField.text = ""
     updateUIEndSearchingMode()
     self.viewModel.fetchDataFromAPI(querry: "", orderBy: self.orderBy) {
-      self.tableView.reloadData()
+      self.reloadUI()
     }
   }
 }
@@ -136,7 +142,7 @@ extension SearchTokenViewController: UITextFieldDelegate {
   @objc func doSearch() {
     if let text = self.searchField.text {
       self.viewModel.fetchDataFromAPI(querry: text, orderBy: self.orderBy) {
-        self.tableView.reloadData()
+        self.reloadUI()
       }
     }
   }
