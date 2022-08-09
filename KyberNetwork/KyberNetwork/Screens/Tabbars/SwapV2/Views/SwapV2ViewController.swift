@@ -119,8 +119,11 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   @IBAction func continueWasTapped(_ sender: Any) {
-    priceImpactInfoView.isHidden.toggle()
-    routeInfoView.isHidden.toggle()
+//    priceImpactInfoView.isHidden.toggle()
+//    routeInfoView.isHidden.toggle()
+    
+    let summaryVC = SwapSummaryViewController(something: "")
+    self.present(summaryVC, animated: true)
   }
   
   @objc func onToggleExpand() {

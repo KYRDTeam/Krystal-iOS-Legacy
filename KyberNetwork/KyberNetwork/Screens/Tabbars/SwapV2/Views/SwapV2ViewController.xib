@@ -575,6 +575,9 @@
             <point key="canvasLocation" x="136" y="108.84557721139431"/>
         </view>
     </objects>
+    <designables>
+        <designable name="nzk-yc-rhc"/>
+    </designables>
     <resources>
         <image name="arrow_down_icon_white" width="10" height="6"/>
         <image name="arrow_down_template" width="24" height="24"/>
