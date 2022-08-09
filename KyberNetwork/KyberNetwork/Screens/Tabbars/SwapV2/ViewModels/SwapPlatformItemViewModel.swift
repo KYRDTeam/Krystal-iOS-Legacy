@@ -19,7 +19,7 @@ class SwapPlatformItemViewModel {
   var savedAmountString: String
   var rate: Rate
   
-  init(platformRate: Rate, isSelected: Bool, quoteToken: TokenObject, destToken: TokenObject, gasFeeUsd: BigInt, showSaveTag: Bool, savedAmount: BigInt) {
+  init(platformRate: Rate, isSelected: Bool, quoteToken: TokenObject, destToken: Token, gasFeeUsd: BigInt, showSaveTag: Bool, savedAmount: BigInt) {
     self.rate = platformRate
     self.icon = platformRate.platformIcon
     self.name = platformRate.platformShort

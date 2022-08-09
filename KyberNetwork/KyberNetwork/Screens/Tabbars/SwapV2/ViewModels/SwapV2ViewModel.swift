@@ -22,10 +22,7 @@ class SwapV2ViewModel {
       guard let destToken = destToken.value, let sourceToken = sourceToken.value else {
         return
       }
-      self.rateString.value = self.selectedPlatformRate.value.map {
-        let rateString = NumberFormatUtils.rate(value: BigInt($0.rate) ?? .zero, decimals: destToken.decimals)
-        return "1 \(sourceToken.symbol) = \(rateString) \(destToken.symbol)"
-      }
+      self.rateString.value = self.getRateString()
       self.minReceiveString.value = self.selectedPlatformRate.value.map {
         let amount = BigInt($0.amount) ?? BigInt(0)
         let minReceivingAmount = amount * BigInt(10000.0 - minRatePercent * 100.0) / BigInt(10000.0)
@@ -57,9 +54,6 @@ class SwapV2ViewModel {
     }
   }
   
-  static let mockSourceToken = ChainType.bsc.quoteTokenObject()
-  static let mockDestToken = TokenObject(name: "BUSD", symbol: "BUSD", address: "0xe9e7cea3dedca5984780bafc599bd69add087d56", decimals: 18, logo: "")
-  
   var sourceAmountValue: Double? {
     didSet {
       guard let srcToken = sourceToken.value else {
@@ -67,6 +61,12 @@ class SwapV2ViewModel {
         return
       }
       self.sourceAmount.value = BigInt((sourceAmountValue ?? 0) * pow(10.0, Double(srcToken.decimals)))
+    }
+  }
+  
+  var showRevertedRate: Bool = false {
+    didSet {
+      self.rateString.value = self.getRateString()
     }
   }
   
@@ -82,7 +82,10 @@ class SwapV2ViewModel {
     return platformRatesViewModels.value.count
   }
   
-  var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
+  var gasPrice: BigInt {
+    return KNGasCoordinator.shared.defaultKNGas
+  }
+  
   var refPrice: Double = 0
   
   var selectedGasPriceType: KNSelectedGasPriceType = .medium {
@@ -97,8 +100,8 @@ class SwapV2ViewModel {
     }
   }
   
-  var sourceToken: Observable<TokenObject?> = .init(SwapV2ViewModel.mockSourceToken)
-  var destToken: Observable<TokenObject?> = .init(SwapV2ViewModel.mockDestToken)
+  var sourceToken: Observable<Token?> = .init(KNGeneralProvider.shared.quoteTokenObject.toData())
+  var destToken: Observable<Token?> = .init(nil)
   var platformRatesViewModels: Observable<[SwapPlatformItemViewModel]> = .init([])
   var sourceBalance: Observable<BigInt?> = .init(nil)
   var destBalance: Observable<BigInt?> = .init(nil)
@@ -125,16 +128,26 @@ class SwapV2ViewModel {
     slippageString.value = "\(String(format: "%.1f", self.minRatePercent))%"
     
     self.selfObserve()
+    self.loadBaseToken()
     self.reloadSourceBalance()
     self.reloadDestBalance()
+  }
+  
+  func loadBaseToken() {
+    swapRepository.getCommonBaseTokens { [weak self] tokens in
+      self?.destToken.value = tokens.first
+      self?.reloadDestBalance()
+    }
   }
   
   func selfObserve() {
     sourceAmount.observeAndFire(on: self) { [weak self] amount in
       guard let self = self else { return }
       if amount == nil || amount!.isZero {
+        self.selectedPlatformName = nil
         self.state.value = .emptyAmount
       } else if amount! > (self.sourceBalance.value ?? .zero) {
+        self.selectedPlatformName = nil
         self.state.value = .insufficientBalance
       } else {
         self.reloadRates(amount: amount!, withFetchingRefPrice: true)
@@ -233,7 +246,23 @@ class SwapV2ViewModel {
     self.sortedRates = self.sortedRates(rates: platformRates.value)
   }
   
+  func updateSourceToken(token: Token) {
+    self.sourceToken.value = token
+    self.sourceAmountValue = nil
+    self.selectedPlatformName = nil
+    self.reloadSourceBalance()
+  }
+  
+  func updateDestToken(token: Token) {
+    self.destToken.value = token
+    self.sourceAmount.value = self.sourceAmount.value // Trigger reload
+    self.selectedPlatformName = nil
+    self.reloadSourceBalance()
+    self.reloadDestBalance()
+  }
+  
   func swapPair() {
+    (sourceBalance.value, destBalance.value) = (destBalance.value, sourceBalance.value)
     (sourceToken.value, destToken.value) = (destToken.value, sourceToken.value)
     self.sourceAmountValue = nil
     self.selectedPlatformName = nil
@@ -267,11 +296,9 @@ class SwapV2ViewModel {
   }
   
   private func getGasFeeUSD(estGas: BigInt, gasPrice: BigInt) -> BigInt {
-    let quoteTokenPrice = KNGeneralProvider.shared.quoteTokenPrice
-    let rateUSDDouble = quoteTokenPrice?.usd ?? 0
-    let fee = estGas * gasPrice
+    let rateUSDDouble = KNGeneralProvider.shared.quoteTokenPrice?.usd ?? 0
     let rateBigInt = BigInt(rateUSDDouble * pow(10.0, 18.0))
-    let feeUSD = fee * rateBigInt / BigInt(10).power(18)
+    let feeUSD = (estGas * gasPrice * rateBigInt) / BigInt(10).power(18)
     return feeUSD
   }
   
@@ -295,7 +322,7 @@ class SwapV2ViewModel {
     return "$\(gasFeeUSDString) • \(typeString)"
   }
   
-  private func createPlatformRatesViewModels(destToken: TokenObject, sortedRates: [Rate]) -> [SwapPlatformItemViewModel] {
+  private func createPlatformRatesViewModels(destToken: Token, sortedRates: [Rate]) -> [SwapPlatformItemViewModel] {
     var savedAmount: BigInt = 0
     if sortedRates.count >= 2 {
       let diffAmount = (BigInt(sortedRates[0].amount) ?? BigInt(0)) - (BigInt(sortedRates[1].amount) ?? BigInt(0))
@@ -317,13 +344,32 @@ class SwapV2ViewModel {
   }
   
   private func getPriceImpactState(change: Double) -> PriceImpactState {
-    if 0 <= change && change < 5 {
+    let absChange = abs(change)
+    if 0 <= absChange && absChange < 5 {
       return .normal
     }
-    if 5 <= change && change < 15 {
+    if 5 <= absChange && absChange < 15 {
       return .high
     }
     return .veryHigh
+  }
+  
+  private func getRateString() -> String? {
+    guard let destToken = destToken.value, let sourceToken = sourceToken.value else {
+      return nil
+    }
+    guard let selectedPlatform = selectedPlatformRate.value else {
+      return nil
+    }
+    if showRevertedRate {
+      let rateString = NumberFormatUtils.rate(value: BigInt(selectedPlatform.rate) ?? .zero, decimals: destToken.decimals)
+      return "1 \(sourceToken.symbol) = \(rateString) \(destToken.symbol)"
+    } else {
+      let rate = BigInt(selectedPlatform.rate) ?? .zero
+      let revertedRate = rate.isZero ? 0 : (BigInt(10).power(36) / rate)
+      let rateString = NumberFormatUtils.rate(value: revertedRate, decimals: sourceToken.decimals)
+      return "1 \(destToken.symbol) = \(rateString) \(sourceToken.symbol)"
+    }
   }
   
 }

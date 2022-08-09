@@ -133,6 +133,8 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   func setupSourceView() {
+    sourceBalanceLabel.isUserInteractionEnabled = true
+    sourceBalanceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sourceBalanceTapped)))
     sourceTextField.setPlaceholder(text: "0.00", color: .white.withAlphaComponent(0.5))
     sourceTextField.delegate = self
   }
@@ -149,6 +151,9 @@ class SwapV2ViewController: KNBaseViewController {
   
   func setupInfoViews() {
     rateInfoView.setTitle(title: "Rate", underlined: false)
+    rateInfoView.onTapRightIcon = { [weak self] in
+      self?.viewModel.showRevertedRate.toggle()
+    }
     
     slippageInfoView.setTitle(title: "Max Slippage", underlined: true)
     slippageInfoView.iconImageView.isHidden = true
@@ -326,7 +331,6 @@ class SwapV2ViewController: KNBaseViewController {
         self.loadingView.isHidden = true
         self.approveGuideLabel.attributedText = String(format: Strings.swapApproveWarn, sourceSymbol).withLineSpacing()
         self.approveGuideView.isHidden = false
-        
       case .ready:
         self.continueButton.isEnabled = true
         self.continueButton.setTitle("Review Swap", for: .normal)
@@ -343,12 +347,14 @@ class SwapV2ViewController: KNBaseViewController {
       switch state {
       case .normal:
         self.piWarningView.isHidden = true
+        self.priceImpactInfoView.valueLabel.textColor = .white.withAlphaComponent(0.5)
       case .high:
         self.piWarningView.backgroundColor = .Kyber.textWarningYellow.withAlphaComponent(0.1)
         self.piWarningIcon.image = Images.swapInfoYellow
         self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact1.withLineSpacing()
         self.piWarningLabel.textColor = .Kyber.textWarningYellow
         self.piWarningView.isHidden = false
+        self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningYellow
       case .veryHigh:
         self.piWarningView.backgroundColor = .Kyber.textWarningRed.withAlphaComponent(0.1)
         self.piWarningIcon.image = Images.swapWarningRed
@@ -361,6 +367,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact3.withLineSpacing()
         self.piWarningLabel.textColor = .Kyber.textWarningRed
         self.piWarningView.isHidden = false
+        self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
       }
     }
   }
@@ -389,20 +396,26 @@ class SwapV2ViewController: KNBaseViewController {
   
   @objc func openSourceTokenSearch() {
     let controller = SearchTokenViewController(viewModel: SearchTokenViewModel())
-    controller.isSourceToken = true
-    controller.onSelectTokenCompletion = { selectedToken in
-      print("THANGGG")
+    controller.onSelectTokenCompletion = { [weak self] selectedToken in
+      self?.viewModel.updateSourceToken(token: selectedToken.token)
     }
     self.present(controller, animated: true, completion: nil)
   }
   
   @objc func openDestTokenSearch() {
     let controller = SearchTokenViewController(viewModel: SearchTokenViewModel())
-    controller.isSourceToken = false
-    controller.onSelectTokenCompletion = { selectedToken in
-      print("THANGGG")
+    controller.onSelectTokenCompletion = { [weak self] selectedToken in
+      self?.viewModel.updateDestToken(token: selectedToken.token)
     }
     self.present(controller, animated: true, completion: nil)
+  }
+  
+  @objc func sourceBalanceTapped() {
+    let sourceBalance = viewModel.sourceBalance.value ?? .zero
+    guard let decimals = viewModel.sourceToken.value?.decimals else { return }
+    let allBalanceText = "\(NumberFormatUtils.receivingAmount(value: sourceBalance, decimals: decimals))"
+    sourceTextField.text = allBalanceText
+    onSourceAmountChange(value: allBalanceText)
   }
 }
 

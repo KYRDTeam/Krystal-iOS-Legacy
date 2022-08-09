@@ -67,4 +67,20 @@ class SwapRepository {
     }
   }
   
+  func getCommonBaseTokens(completion: @escaping ([Token]) -> ()) {
+    provider.request(.getCommonBaseToken) { result in
+      switch result {
+      case .success(let response):
+        if let json = try? response.mapJSON() as? JSONDictionary ?? [:], let tokenJsons = json["tokens"] as? [JSONDictionary] {
+          let tokens = tokenJsons.map { Token(dictionary: $0) }
+          completion(tokens)
+        } else {
+          completion([])
+        }
+      case .failure:
+        completion([])
+      }
+    }
+  }
+  
 }

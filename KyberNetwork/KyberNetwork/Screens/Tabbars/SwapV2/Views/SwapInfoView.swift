@@ -20,10 +20,31 @@ class SwapInfoView: BaseXibView {
   
   var onTapRightIcon: (() -> ())?
   var onTapTitle: (() -> ())?
+  var onTapValue: (() -> ())?
   
   override func commonInit() {
     super.commonInit()
     
+    iconImageView.isUserInteractionEnabled = true
+    iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(rightIconWasTapped)))
+    
+    titleLabel.isUserInteractionEnabled = true
+    titleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(titleWasTapped)))
+    
+    valueLabel.isUserInteractionEnabled = true
+    valueLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(valueWasTapped)))
+  }
+  
+  @objc func rightIconWasTapped() {
+    onTapRightIcon?()
+  }
+  
+  @objc func titleWasTapped() {
+    onTapTitle?()
+  }
+  
+  @objc func valueWasTapped() {
+    onTapValue?()
   }
   
   func setTitle(title: String, underlined: Bool) {
