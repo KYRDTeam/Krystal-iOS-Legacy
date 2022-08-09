@@ -14,13 +14,18 @@ class SwapPlatformItemViewModel {
   var amountString: String
   var amountUsdString: String
   var isSelected: Bool = false
-  var gasPrice: BigInt
-  var gasFeeString: String = ""
+  var gasFeeString: String
+  var showSavedTag: Bool
+  var savedAmountString: String
+  var rate: Rate
   
-  init(platformRate: Rate, isSelected: Bool, quoteToken: TokenObject, destToken: TokenObject, gasPrice: BigInt) {
+  init(platformRate: Rate, isSelected: Bool, quoteToken: TokenObject, destToken: TokenObject, gasFeeUsd: BigInt, showSaveTag: Bool, savedAmount: BigInt) {
+    self.rate = platformRate
     self.icon = platformRate.platformIcon
     self.name = platformRate.platformShort
+    self.showSavedTag = showSaveTag
     
+    self.savedAmountString = String(format: Strings.swapSavedAmount, NumberFormatUtils.receivingAmount(value: savedAmount, decimals: 18))
     let receivingAmount = BigInt(platformRate.amount) ?? BigInt(0)
     self.amountString = NumberFormatUtils.receivingAmount(value: receivingAmount, decimals: destToken.decimals)
     
@@ -30,18 +35,7 @@ class SwapPlatformItemViewModel {
     self.amountUsdString = "~$\(formattedAmountUSD)"
     
     self.isSelected = isSelected
-    self.gasPrice = gasPrice
-    self.gasFeeString = self.getMaxGasFee(rate: platformRate, gasPrice: gasPrice)
-  }
-  
-  private func getMaxGasFee(rate: Rate, gasPrice: BigInt) -> String {
-    let quoteTokenPrice = KNGeneralProvider.shared.quoteTokenPrice
-    let estGas = BigInt(rate.estimatedGas)
-    let rateUSDDouble = quoteTokenPrice?.usd ?? 0
-    let fee = estGas * gasPrice
-    let rateBigInt = BigInt(rateUSDDouble * pow(10.0, 18.0))
-    let feeUSD = fee * rateBigInt / BigInt(10).power(18)
-    return String(format: Strings.swapNetworkFee, NumberFormatUtils.gasFee(value: feeUSD))
+    self.gasFeeString = String(format: Strings.swapNetworkFee, NumberFormatUtils.gasFee(value: gasFeeUsd))
   }
 
 }

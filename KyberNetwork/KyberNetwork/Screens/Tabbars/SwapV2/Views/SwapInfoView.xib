@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -29,13 +29,13 @@
                     <rect key="frame" x="0.0" y="44" width="379" height="139"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zZ5-mM-0mh">
-                            <rect key="frame" x="28" y="61.5" width="28" height="16.5"/>
+                            <rect key="frame" x="0.0" y="61.5" width="28" height="16.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zlE-6Z-ES9">
-                            <rect key="frame" x="276" y="61.5" width="75" height="16"/>
+                            <rect key="frame" x="304" y="61.5" width="75" height="16"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Content" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="STU-UO-Bs8">
                                     <rect key="frame" x="0.0" y="0.0" width="51" height="16"/>
@@ -55,8 +55,8 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="zlE-6Z-ES9" secondAttribute="trailing" constant="28" id="Q9V-zP-99H"/>
-                        <constraint firstItem="zZ5-mM-0mh" firstAttribute="leading" secondItem="DqI-Xs-4I6" secondAttribute="leading" constant="28" id="W4W-Is-QUC"/>
+                        <constraint firstAttribute="trailing" secondItem="zlE-6Z-ES9" secondAttribute="trailing" id="Q9V-zP-99H"/>
+                        <constraint firstItem="zZ5-mM-0mh" firstAttribute="leading" secondItem="DqI-Xs-4I6" secondAttribute="leading" id="W4W-Is-QUC"/>
                         <constraint firstItem="zlE-6Z-ES9" firstAttribute="centerY" secondItem="zZ5-mM-0mh" secondAttribute="centerY" id="eBB-fq-ePI"/>
                         <constraint firstItem="zZ5-mM-0mh" firstAttribute="centerY" secondItem="DqI-Xs-4I6" secondAttribute="centerY" id="sm7-d9-kkl"/>
                     </constraints>

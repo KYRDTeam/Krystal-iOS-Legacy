@@ -883,3 +883,4 @@
 
 // Swap
 "swap.network.fee" = "Network Fee ~$%@";
+"swap.saved.amount" = "Save $%@";

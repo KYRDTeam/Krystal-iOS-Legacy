@@ -32,12 +32,18 @@ class SwapInfoView: BaseXibView {
     
     if underlined {
       let attrs: [NSAttributedString.Key: Any] = [
-        .underlineStyle: NSUnderlineStyle.patternDashDot.rawValue | NSUnderlineStyle.single.rawValue,
+        .underlineStyle: NSUnderlineStyle.patternDash.rawValue | NSUnderlineStyle.thick.rawValue,
         .underlineColor: UIColor.white.withAlphaComponent(0.5)
       ]
       attributedString.addAttributes(attrs, range: NSRange(location: 0, length: attributedString.length))
     }
     titleLabel.attributedText = attributedString
+  }
+  
+  func setValue(value: String?, highlighted: Bool = false) {
+    valueLabel.text = value
+    valueLabel.textColor = highlighted ? .Kyber.primaryGreenColor : .white.withAlphaComponent(0.5)
+    valueLabel.font = highlighted ? UIFont(name: "Karla-Medium", size: 14) : UIFont(name: "Karla-Regular", size: 14)
   }
   
 }

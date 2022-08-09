@@ -9,6 +9,8 @@ import UIKit
 
 class PolygonView: UIView {
   
+  let fillLayer = CAShapeLayer()
+  
   override func layoutSubviews() {
     drawView()
   }
@@ -30,7 +32,7 @@ class PolygonView: UIView {
     path.addLine(to: .init(x: 0, y: h/2))
     path.close()
     
-    let fillLayer = CAShapeLayer()
+    fillLayer.removeFromSuperlayer()
     fillLayer.path = path.cgPath
     fillLayer.fillColor = UIColor.Kyber.primaryGreenColor.cgColor
     layer.addSublayer(fillLayer)
