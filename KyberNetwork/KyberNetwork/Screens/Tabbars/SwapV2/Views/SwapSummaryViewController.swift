@@ -96,11 +96,14 @@ class SwapSummaryViewController: KNBaseViewController {
   }
   
   @IBAction func acceptRateChangedButtonTapped(_ sender: Any) {
-    updateSuccessUI(isTxDone: true)
+    
   }
 
   @IBAction func confirmSwapButtonTapped(_ sender: Any) {
-    updateSuccessUI(isTxDone: false)
+    
   }
   
+  @IBAction func onCloseButtonTapped(_ sender: Any) {
+    self.dismiss(animated: true)
+  }
 }
