@@ -193,7 +193,10 @@ extension SearchTokenViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView,
                       layout collectionViewLayout: UICollectionViewLayout,
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: 86, height: 36)
+    let token = self.viewModel.commonBaseTokens[indexPath.row]
+    let symbolWidth = token.symbol.width(withConstrainedHeight: 18, font: UIFont.Kyber.regular(with: 14))
+    
+    return CGSize(width: symbolWidth + 50, height: 36)
   }
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
     return collectionViewCellPadding
