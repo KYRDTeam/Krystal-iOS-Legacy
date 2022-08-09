@@ -19,13 +19,6 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var destBalanceLabel: UILabel!
   @IBOutlet weak var destTokenIcon: UIImageView!
   @IBOutlet weak var destViewHeight: NSLayoutConstraint!
-  @IBOutlet weak var rateInfoView: SwapInfoView!
-  @IBOutlet weak var slippageInfoView: SwapInfoView!
-  @IBOutlet weak var minReceiveInfoView: SwapInfoView!
-  @IBOutlet weak var gasFeeInfoView: SwapInfoView!
-  @IBOutlet weak var maxGasFeeInfoView: SwapInfoView!
-  @IBOutlet weak var priceImpactInfoView: SwapInfoView!
-  @IBOutlet weak var routeInfoView: SwapInfoView!
   @IBOutlet weak var sourceView: UIView!
   @IBOutlet weak var rateLoadingView: CircularArrowProgressView!
   @IBOutlet weak var loadingView: UIView!
@@ -35,9 +28,26 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var notFoundView: UIView!
   @IBOutlet weak var infoExpandButton: UIButton!
   @IBOutlet weak var infoSeparatorView: UIView!
-  
   @IBOutlet weak var sourceTokenView: UIView!
   @IBOutlet weak var destTokenView: UIView!
+  
+  // Info Views
+  @IBOutlet weak var rateInfoView: SwapInfoView!
+  @IBOutlet weak var slippageInfoView: SwapInfoView!
+  @IBOutlet weak var minReceiveInfoView: SwapInfoView!
+  @IBOutlet weak var gasFeeInfoView: SwapInfoView!
+  @IBOutlet weak var maxGasFeeInfoView: SwapInfoView!
+  @IBOutlet weak var priceImpactInfoView: SwapInfoView!
+  @IBOutlet weak var routeInfoView: SwapInfoView!
+  
+  // Warning Views
+  @IBOutlet weak var approveGuideView: UIView!
+  @IBOutlet weak var approveGuideIcon: UIImageView!
+  @IBOutlet weak var approveGuideLabel: UILabel!
+  @IBOutlet weak var piWarningView: UIView!
+  @IBOutlet weak var piWarningIcon: UIImageView!
+  @IBOutlet weak var piWarningLabel: UILabel!
+  
   var viewModel: SwapV2ViewModel = SwapV2ViewModel()
   
   let platformRateItemHeight: CGFloat = 96
@@ -263,6 +273,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.loadingView.isHidden = true
         self.destViewHeight.constant = CGFloat(112)
         self.expandIcon.isHidden = true
+        self.approveGuideView.isHidden = true
       case .fetchingRates:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Fetching the best rates", for: .normal)
@@ -270,6 +281,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.notFoundView.isHidden = true
         self.loadingView.isHidden = false
         self.expandIcon.isHidden = true
+        self.approveGuideView.isHidden = true
         self.resetCountdownView()
         self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
       case .notConnected:
@@ -277,6 +289,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.continueButton.setTitle("Connect Wallet", for: .normal)
         self.notFoundView.isHidden = true
         self.loadingView.isHidden = true
+        self.approveGuideView.isHidden = true
       case .rateNotFound:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Review Swap", for: .normal)
@@ -284,6 +297,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.platformTableView.isHidden = true
         self.notFoundView.isHidden = false
         self.loadingView.isHidden = true
+        self.approveGuideView.isHidden = true
         self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
       case .insufficientBalance:
         self.continueButton.isEnabled = false
@@ -292,6 +306,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.notFoundView.isHidden = true
         self.platformTableView.isHidden = true
         self.loadingView.isHidden = true
+        self.approveGuideView.isHidden = true
         self.destViewHeight.constant = CGFloat(112)
       case .checkingAllowance:
         self.continueButton.isEnabled = false
@@ -300,13 +315,18 @@ class SwapV2ViewController: KNBaseViewController {
         self.notFoundView.isHidden = true
         self.platformTableView.isHidden = false
         self.loadingView.isHidden = true
+        self.approveGuideView.isHidden = true
       case .notApproved:
+        let sourceSymbol = self.viewModel.sourceToken.value?.symbol ?? ""
         self.continueButton.isEnabled = true
-        self.continueButton.setTitle("Approve \(self.viewModel.sourceToken.value?.symbol ?? "")", for: .normal)
+        self.continueButton.setTitle("Approve \(sourceSymbol)", for: .normal)
         self.rateLoadingView.isHidden = false
         self.notFoundView.isHidden = true
         self.platformTableView.isHidden = false
         self.loadingView.isHidden = true
+        self.approveGuideLabel.attributedText = String(format: Strings.swapApproveWarn, sourceSymbol).withLineSpacing()
+        self.approveGuideView.isHidden = false
+        
       case .ready:
         self.continueButton.isEnabled = true
         self.continueButton.setTitle("Review Swap", for: .normal)
@@ -314,6 +334,33 @@ class SwapV2ViewController: KNBaseViewController {
         self.notFoundView.isHidden = true
         self.platformTableView.isHidden = false
         self.loadingView.isHidden = true
+        self.approveGuideView.isHidden = true
+      }
+    }
+    
+    viewModel.priceImpactState.observeAndFire(on: self) { [weak self] state in
+      guard let self = self else { return }
+      switch state {
+      case .normal:
+        self.piWarningView.isHidden = true
+      case .high:
+        self.piWarningView.backgroundColor = .Kyber.textWarningYellow.withAlphaComponent(0.1)
+        self.piWarningIcon.image = Images.swapInfoYellow
+        self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact1.withLineSpacing()
+        self.piWarningLabel.textColor = .Kyber.textWarningYellow
+        self.piWarningView.isHidden = false
+      case .veryHigh:
+        self.piWarningView.backgroundColor = .Kyber.textWarningRed.withAlphaComponent(0.1)
+        self.piWarningIcon.image = Images.swapWarningRed
+        self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact2.withLineSpacing()
+        self.piWarningLabel.textColor = .Kyber.textWarningRed
+        self.piWarningView.isHidden = false
+      case .veryHighWithoutExpertMode:
+        self.piWarningView.backgroundColor = .Kyber.textWarningRed.withAlphaComponent(0.1)
+        self.piWarningIcon.image = Images.swapWarningRed
+        self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact3.withLineSpacing()
+        self.piWarningLabel.textColor = .Kyber.textWarningRed
+        self.piWarningView.isHidden = false
       }
     }
   }

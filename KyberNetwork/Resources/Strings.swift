@@ -195,4 +195,8 @@ struct Strings {
   // Swap
   static let swapNetworkFee = "swap.network.fee".toBeLocalised()
   static let swapSavedAmount = "swap.saved.amount".toBeLocalised()
+  static let swapWarnPriceImpact1 = "swap.warn_price_impact_1".toBeLocalised()
+  static let swapWarnPriceImpact2 = "swap.warn_price_impact_2".toBeLocalised()
+  static let swapWarnPriceImpact3 = "swap.warn_price_impact_3".toBeLocalised()
+  static let swapApproveWarn = "swap.warn_approve".toBeLocalised()
 }

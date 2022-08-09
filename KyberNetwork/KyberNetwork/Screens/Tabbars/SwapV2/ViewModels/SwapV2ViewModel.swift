@@ -36,10 +36,12 @@ class SwapV2ViewModel {
       }
       self.priceImpactString.value = self.selectedPlatformRate.value.map {
         if refPrice == 0 {
+          self.priceImpactState.value = .normal
           return "0%"
         }
         let rateDouble = Double(BigInt($0.rate) ?? .zero) / pow(10.0, 18)
         let change = (rateDouble - refPrice) / refPrice * 100
+        self.priceImpactState.value = self.getPriceImpactState(change: change)
         return "\(String(format: "%.2f", change))%"
       }
     }
@@ -111,6 +113,7 @@ class SwapV2ViewModel {
   var maxGasFeeString: Observable<String?> = .init(nil)
   var priceImpactString: Observable<String?> = .init(nil)
   var routeString: Observable<String?> = .init(nil)
+  var priceImpactState: Observable<PriceImpactState> = .init(.normal)
   
   var state: Observable<SwapState> = .init(.emptyAmount)
   
@@ -163,7 +166,7 @@ class SwapV2ViewModel {
   
   func reloadRefPrice() {
     guard let sourceToken = sourceToken.value, let destToken = destToken.value else {
-      self.priceImpactString.value = nil
+      self.refPrice = 0
       return
     }
     swapRepository.getRefPrice(sourceToken: sourceToken.address, destToken: destToken.address) { change in
@@ -311,6 +314,16 @@ class SwapV2ViewModel {
                                        showSaveTag: sortedRates.count > 1 && index == 0 && savedAmount > BigInt(0.1 * pow(10.0, 18.0)),
                                        savedAmount: savedAmount)
     }
+  }
+  
+  private func getPriceImpactState(change: Double) -> PriceImpactState {
+    if 0 <= change && change < 5 {
+      return .normal
+    }
+    if 5 <= change && change < 15 {
+      return .high
+    }
+    return .veryHigh
   }
   
 }

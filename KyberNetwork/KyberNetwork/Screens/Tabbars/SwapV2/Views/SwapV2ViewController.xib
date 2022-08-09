@@ -23,6 +23,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SwapV2ViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
+                <outlet property="approveGuideIcon" destination="d7C-Mu-HGg" id="T8g-gL-ek9"/>
+                <outlet property="approveGuideLabel" destination="We5-Rm-vov" id="kLl-zd-Bud"/>
+                <outlet property="approveGuideView" destination="Zpb-73-OnM" id="7aP-gY-uSH"/>
                 <outlet property="continueButton" destination="SOT-hf-WqE" id="62Y-4M-DdU"/>
                 <outlet property="destBalanceLabel" destination="d4r-Na-urB" id="Ew2-8M-sDz"/>
                 <outlet property="destTokenIcon" destination="JRM-vW-woZ" id="cAx-kp-WbI"/>
@@ -38,6 +41,9 @@
                 <outlet property="maxGasFeeInfoView" destination="yq6-eX-uWR" id="ZAq-Zf-VgV"/>
                 <outlet property="minReceiveInfoView" destination="nnl-CE-rqV" id="V0e-NQ-qW1"/>
                 <outlet property="notFoundView" destination="WqM-n4-842" id="94q-Ej-fmV"/>
+                <outlet property="piWarningIcon" destination="pCp-K5-zJP" id="fvZ-Ci-pzz"/>
+                <outlet property="piWarningLabel" destination="KJo-ku-vWQ" id="MJQ-B1-h4H"/>
+                <outlet property="piWarningView" destination="7gu-Od-QzF" id="bsH-Y1-pgk"/>
                 <outlet property="platformTableView" destination="j8z-tt-vDQ" id="6We-BK-mCU"/>
                 <outlet property="priceImpactInfoView" destination="1LR-C5-k87" id="YC3-4J-xtJ"/>
                 <outlet property="rateInfoView" destination="c25-Oe-hgy" id="4Oj-28-b7f"/>
@@ -184,7 +190,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="428" height="767"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S6A-NR-SWi">
-                                    <rect key="frame" x="0.0" y="0.0" width="428" height="684"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="428" height="846"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZN-TU-lXf">
                                             <rect key="frame" x="352" y="16" width="32" height="32"/>
@@ -491,7 +497,7 @@
                                             </connections>
                                         </button>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="iJd-LF-kkd">
-                                            <rect key="frame" x="28" y="430" width="372" height="164"/>
+                                            <rect key="frame" x="28" y="430" width="372" height="326"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c25-Oe-hgy" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="372" height="20"/>
@@ -575,10 +581,74 @@
                                                         <constraint firstItem="feu-mG-GIn" firstAttribute="centerY" secondItem="C3W-qG-5HY" secondAttribute="centerY" id="z3Z-hb-OSW"/>
                                                     </constraints>
                                                 </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zpb-73-OnM" userLabel="Guide View">
+                                                    <rect key="frame" x="0.0" y="168" width="372" height="77"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="info_blue" translatesAutoresizingMaskIntoConstraints="NO" id="d7C-Mu-HGg">
+                                                            <rect key="frame" x="26" y="16" width="24" height="24"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="24" id="STo-56-VY3"/>
+                                                                <constraint firstAttribute="width" constant="24" id="nnh-br-3m7"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="We5-Rm-vov">
+                                                            <rect key="frame" x="63" y="13" width="283" height="48"/>
+                                                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                                            <color key="textColor" red="0.047058823529411764" green="0.78431372549019607" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.047058823529411764" green="0.78431372549019607" blue="0.94509803921568625" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstItem="d7C-Mu-HGg" firstAttribute="leading" secondItem="Zpb-73-OnM" secondAttribute="leading" constant="26" id="D6m-vX-g8F"/>
+                                                        <constraint firstItem="We5-Rm-vov" firstAttribute="leading" secondItem="d7C-Mu-HGg" secondAttribute="trailing" constant="13" id="L3X-Lb-mM1"/>
+                                                        <constraint firstItem="We5-Rm-vov" firstAttribute="top" secondItem="Zpb-73-OnM" secondAttribute="top" constant="13" id="MDO-1x-qX7"/>
+                                                        <constraint firstItem="d7C-Mu-HGg" firstAttribute="top" secondItem="Zpb-73-OnM" secondAttribute="top" constant="16" id="MGz-yA-Yn3"/>
+                                                        <constraint firstAttribute="trailing" secondItem="We5-Rm-vov" secondAttribute="trailing" constant="26" id="UdE-YC-whV"/>
+                                                        <constraint firstAttribute="bottom" secondItem="We5-Rm-vov" secondAttribute="bottom" constant="16" id="vKy-GS-8Oe"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                                            <real key="value" value="16"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7gu-Od-QzF" userLabel="PI Warning View">
+                                                    <rect key="frame" x="0.0" y="249" width="372" height="77"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="info_blue" translatesAutoresizingMaskIntoConstraints="NO" id="pCp-K5-zJP">
+                                                            <rect key="frame" x="26" y="16" width="24" height="24"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="24" id="6AB-y0-JOP"/>
+                                                                <constraint firstAttribute="width" constant="24" id="Yvt-Ib-fQc"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KJo-ku-vWQ">
+                                                            <rect key="frame" x="63" y="13" width="283" height="48"/>
+                                                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                                            <color key="textColor" red="0.047058823530000002" green="0.7843137255" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.047058823530000002" green="0.7843137255" blue="0.94509803920000002" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstItem="pCp-K5-zJP" firstAttribute="top" secondItem="7gu-Od-QzF" secondAttribute="top" constant="16" id="FOr-Hn-bdb"/>
+                                                        <constraint firstAttribute="bottom" secondItem="KJo-ku-vWQ" secondAttribute="bottom" constant="16" id="R5i-Ba-Oe5"/>
+                                                        <constraint firstAttribute="trailing" secondItem="KJo-ku-vWQ" secondAttribute="trailing" constant="26" id="Tv4-ih-X5O"/>
+                                                        <constraint firstItem="KJo-ku-vWQ" firstAttribute="leading" secondItem="pCp-K5-zJP" secondAttribute="trailing" constant="13" id="ZHR-0i-hav"/>
+                                                        <constraint firstItem="KJo-ku-vWQ" firstAttribute="top" secondItem="7gu-Od-QzF" secondAttribute="top" constant="13" id="trS-FN-WKu"/>
+                                                        <constraint firstItem="pCp-K5-zJP" firstAttribute="leading" secondItem="7gu-Od-QzF" secondAttribute="leading" constant="26" id="vGl-hK-iKN"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                                            <real key="value" value="16"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                             </subviews>
                                         </stackView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SOT-hf-WqE">
-                                            <rect key="frame" x="28" y="618" width="372" height="42"/>
+                                            <rect key="frame" x="28" y="780" width="372" height="42"/>
                                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="42" id="8IK-IY-u58"/>
@@ -655,9 +725,6 @@
             <point key="canvasLocation" x="136" y="108.84557721139431"/>
         </view>
     </objects>
-    <designables>
-        <designable name="nzk-yc-rhc"/>
-    </designables>
     <resources>
         <image name="arrow_down_icon_white" width="10" height="6"/>
         <image name="arrow_down_template" width="24" height="24"/>
@@ -665,6 +732,7 @@
         <image name="chain_eth_icon" width="24" height="24"/>
         <image name="chain_switch_icon" width="20" height="20"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
+        <image name="info_blue" width="24" height="24"/>
         <image name="swap_dropdown_grey" width="32" height="32"/>
         <image name="swap_not_found" width="102" height="91"/>
         <image name="swap_settings" width="32" height="32"/>

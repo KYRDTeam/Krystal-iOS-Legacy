@@ -4,6 +4,15 @@ import Foundation
 import BigInt
 
 extension String {
+  
+  func withLineSpacing(lineSpacing: CGFloat = 4) -> NSAttributedString {
+    let attributedString = NSMutableAttributedString(string: self)
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineSpacing = lineSpacing
+    attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range: NSMakeRange(0, attributedString.length))
+    return attributedString
+  }
+  
   var hex: String {
     let data = self.data(using: .utf8)!
     return data.map { String(format: "%02x", $0) }.joined()

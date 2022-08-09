@@ -884,3 +884,7 @@
 // Swap
 "swap.network.fee" = "Network Fee ~$%@";
 "swap.saved.amount" = "Save $%@";
+"swap.warn_price_impact_1" = "Price Impact is High";
+"swap.warn_price_impact_2" = "Price Impact is Very High. Please turn on Expert Mode for high slippage trades";
+"swap.warn_price_impact_3" = "Price Impact is Very High";
+"swap.warn_approve" = "Allow Krystal smart contracts permission to use your %@";
