@@ -13,16 +13,18 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
-        </array>
-        <array key="Karla-VariableFont_wght.ttf">
-            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SwapSummaryViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
+                <outlet property="chainIcon" destination="wYE-Is-FV9" id="tww-jM-NW5"/>
+                <outlet property="chainNameLabel" destination="DyH-52-X9n" id="Wb8-mh-53c"/>
                 <outlet property="confirmSwapButton" destination="oIk-vk-At8" id="e7D-ca-wDi"/>
                 <outlet property="confirmSwapButtonTopConstraint" destination="f43-WW-sDd" id="ttp-oQ-iBT"/>
                 <outlet property="destTokenBalanceLabel" destination="a8J-md-c5k" id="7bd-ZT-PPK"/>
@@ -62,13 +64,13 @@
                                     <rect key="frame" x="28" y="10" width="358" height="86"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You Pay" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Afy-LW-opD">
-                                            <rect key="frame" x="24" y="18" width="51" height="16.5"/>
+                                            <rect key="frame" x="24" y="18" width="48.5" height="16.5"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~ $30.88" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MLr-7R-qHE">
-                                            <rect key="frame" x="278.5" y="18" width="55.5" height="16.5"/>
+                                            <rect key="frame" x="278" y="18" width="56" height="16.5"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="normalTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -100,8 +102,8 @@
                                                 <constraint firstAttribute="height" constant="24" id="xI3-D1-THD"/>
                                             </constraints>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UKE-N9-q1M">
-                                            <rect key="frame" x="275" y="43.5" width="59" height="28"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UKE-N9-q1M">
+                                            <rect key="frame" x="293" y="43.5" width="41" height="28"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="rb2-Xt-7uL"/>
                                             </constraints>
@@ -136,13 +138,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="358" height="86"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You Receive" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EiN-QN-Yeg">
-                                                    <rect key="frame" x="24" y="18" width="77" height="16.5"/>
+                                                    <rect key="frame" x="24" y="18" width="75" height="16.5"/>
                                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12.34 BNB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qkl-MB-aN1">
-                                                    <rect key="frame" x="265.5" y="18" width="68.5" height="16.5"/>
+                                                    <rect key="frame" x="272" y="18" width="62" height="16.5"/>
                                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -174,8 +176,8 @@
                                                         <constraint firstItem="E3e-ek-Edn" firstAttribute="centerY" secondItem="Vph-r5-1b4" secondAttribute="centerY" id="lJz-wE-QTR"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a8J-md-c5k">
-                                                    <rect key="frame" x="275" y="43.5" width="59" height="28"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2,418.930406" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a8J-md-c5k">
+                                                    <rect key="frame" x="190.5" y="43.5" width="143.5" height="28"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="28" id="iwS-Bz-o6D"/>
                                                     </constraints>
@@ -286,7 +288,7 @@
                                     </constraints>
                                     <fontDescription key="fontDescription" name="Karla-SemiBold" family="Karla" pointSize="14"/>
                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" title="Review Swap">
+                                    <state key="normal" title="Confirm Swap">
                                         <color key="titleColor" name="buttonTextColor"/>
                                     </state>
                                     <userDefinedRuntimeAttributes>
@@ -299,10 +301,10 @@
                                     </connections>
                                 </button>
                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3te-AR-yck">
-                                    <rect key="frame" x="32" y="506" width="350" height="180"/>
+                                    <rect key="frame" x="32" y="498" width="350" height="180"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign transaction in your wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sgh-wG-geg">
-                                            <rect key="frame" x="67.5" y="127" width="215" height="28"/>
+                                            <rect key="frame" x="63.5" y="127" width="223" height="28"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="Ud5-JL-MYY"/>
                                             </constraints>
@@ -336,11 +338,11 @@
                                     <rect key="frame" x="28" y="214" width="358" height="42"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate has been changed!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vtG-wC-PiS">
-                                            <rect key="frame" x="27" y="7" width="174" height="28"/>
+                                            <rect key="frame" x="27" y="7" width="152.5" height="28"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="JgE-DY-jTc"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="buttonBackgroundColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -391,13 +393,13 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Txn Failed." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dgo-ab-JEx">
-                                            <rect key="frame" x="60" y="13" width="68.5" height="22"/>
+                                            <rect key="frame" x="60" y="13" width="66" height="22"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="error_red_color"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User defined the transaction" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fOX-9a-j1A">
-                                            <rect key="frame" x="60" y="35" width="177.5" height="22"/>
+                                            <rect key="frame" x="60" y="35" width="182.5" height="22"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="error_red_color"/>
                                             <nil key="highlightedColor"/>
@@ -439,7 +441,7 @@
                                 <constraint firstItem="l9f-cf-b6B" firstAttribute="top" secondItem="JaS-zc-vSL" secondAttribute="bottom" constant="6" id="X3O-hf-MXl"/>
                                 <constraint firstItem="oIk-vk-At8" firstAttribute="leading" secondItem="Tf7-kK-D4U" secondAttribute="leading" constant="28" id="ZSg-q9-8Yc"/>
                                 <constraint firstItem="F4L-50-be1" firstAttribute="top" secondItem="fop-hd-2l1" secondAttribute="bottom" constant="70" id="bWb-AL-oAD"/>
-                                <constraint firstItem="3te-AR-yck" firstAttribute="top" secondItem="fop-hd-2l1" secondAttribute="bottom" constant="68" id="dZc-ae-kGI"/>
+                                <constraint firstItem="3te-AR-yck" firstAttribute="top" secondItem="fop-hd-2l1" secondAttribute="bottom" constant="60" id="dZc-ae-kGI"/>
                                 <constraint firstItem="gV0-RB-lv9" firstAttribute="leading" secondItem="l9f-cf-b6B" secondAttribute="leading" id="e8l-ca-OhH"/>
                                 <constraint firstItem="gV0-RB-lv9" firstAttribute="trailing" secondItem="l9f-cf-b6B" secondAttribute="trailing" id="eRi-3t-eFf"/>
                                 <constraint firstItem="oIk-vk-At8" firstAttribute="top" secondItem="fop-hd-2l1" secondAttribute="bottom" constant="165" id="f43-WW-sDd"/>
@@ -464,7 +466,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="414" height="120"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swap Summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IK3-ym-7JP">
-                            <rect key="frame" x="136" y="60.5" width="142" height="23.5"/>
+                            <rect key="frame" x="132" y="60.5" width="150" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
@@ -481,14 +483,14 @@
                             </state>
                         </button>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="wYE-Is-FV9">
-                            <rect key="frame" x="172.5" y="92" width="12" height="12"/>
+                            <rect key="frame" x="171" y="92" width="12" height="12"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="12" id="1Ck-ny-FU5"/>
                                 <constraint firstAttribute="height" constant="12" id="s0C-tu-MHb"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DyH-52-X9n">
-                            <rect key="frame" x="189.5" y="91" width="51.5" height="14"/>
+                            <rect key="frame" x="188" y="90.5" width="54" height="14.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>

@@ -255,7 +255,7 @@ class SwapV2ViewController: KNBaseViewController {
       guard let self = self else { return }
       switch state {
       case .emptyAmount:
-        self.continueButton.isEnabled = false
+        self.continueButton.isEnabled = true
         self.continueButton.setTitle("Enter an amount", for: .normal)
         self.rateLoadingView.isHidden = true
         self.platformTableView.isHidden = true

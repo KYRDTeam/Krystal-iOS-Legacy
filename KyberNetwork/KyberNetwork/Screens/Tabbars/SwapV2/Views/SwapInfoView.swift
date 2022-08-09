@@ -26,7 +26,7 @@ class SwapInfoView: BaseXibView {
     
   }
   
-  func setTitle(title: String, underlined: Bool) {
+  func setTitle(title: String, underlined: Bool, shouldShowIcon: Bool = false) {
     titleLabel.text = title
     let attributedString = NSMutableAttributedString(string: title)
     
@@ -38,6 +38,7 @@ class SwapInfoView: BaseXibView {
       attributedString.addAttributes(attrs, range: NSRange(location: 0, length: attributedString.length))
     }
     titleLabel.attributedText = attributedString
+    iconImageView.isHidden = !shouldShowIcon
   }
   
   func setValue(value: String?, highlighted: Bool = false) {
