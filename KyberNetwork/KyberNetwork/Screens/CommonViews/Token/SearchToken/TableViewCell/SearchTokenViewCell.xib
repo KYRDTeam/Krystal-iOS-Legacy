@@ -12,7 +12,7 @@
         <array key="Karla-Medium.ttf">
             <string>Karla-Medium</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -82,6 +82,7 @@
                 <outlet property="balanceLabel" destination="CzO-5S-wtP" id="Grm-cc-Vng"/>
                 <outlet property="iconImageView" destination="wyc-LC-FJE" id="ie0-97-Ud2"/>
                 <outlet property="symbolLabel" destination="V7E-Yw-QdE" id="RmM-px-oUq"/>
+                <outlet property="tagImageView" destination="U59-J6-RFQ" id="uY5-Nw-JTV"/>
                 <outlet property="valueLabel" destination="L1U-N7-VX2" id="QvN-4f-m8u"/>
             </connections>
             <point key="canvasLocation" x="128.2608695652174" y="118.19196428571428"/>

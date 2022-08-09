@@ -12,7 +12,7 @@ class SearchTokenViewCell: UITableViewCell {
   @IBOutlet weak var symbolLabel: UILabel!
   @IBOutlet weak var balanceLabel: UILabel!
   @IBOutlet weak var valueLabel: UILabel!
-
+  @IBOutlet weak var tagImageView: UIImageView!
   override func awakeFromNib() {
     super.awakeFromNib()
     // Initialization code
@@ -40,6 +40,13 @@ class SearchTokenViewCell: UITableViewCell {
     } else {
       self.valueLabel.text = "$0"
     }
+    if let tag = token.token.tag {
+      self.tagImageView.image = UIImage.imageWithTag(tag: tag)
+      self.tagImageView.isHidden = false
+    } else {
+      self.tagImageView.isHidden = true
+    }
+    
   }
     
 }
