@@ -232,7 +232,7 @@ class SwapV2ViewController: KNBaseViewController {
       let soureSymbol = sourceToken.symbol
       let decimals = sourceToken.decimals
       DispatchQueue.main.async {
-        self.sourceBalanceLabel.text = "\(NumberFormatUtils.receivingAmount(value: amount, decimals: decimals)) \(soureSymbol)"
+        self.sourceBalanceLabel.text = "\(NumberFormatUtils.amount(value: amount, decimals: decimals)) \(soureSymbol)"
       }
     }
     
@@ -243,7 +243,7 @@ class SwapV2ViewController: KNBaseViewController {
       let decimals = destToken.decimals
       let amount = balance ?? .zero
       DispatchQueue.main.async {
-        self.destBalanceLabel.text = "\(NumberFormatUtils.receivingAmount(value: amount, decimals: decimals)) \(destSymbol)"
+        self.destBalanceLabel.text = "\(NumberFormatUtils.amount(value: amount, decimals: decimals)) \(destSymbol)"
       }
     }
     
@@ -437,7 +437,7 @@ class SwapV2ViewController: KNBaseViewController {
   @objc func sourceBalanceTapped() {
     let sourceBalance = viewModel.sourceBalance.value ?? .zero
     guard let decimals = viewModel.sourceToken.value?.decimals else { return }
-    let allBalanceText = "\(NumberFormatUtils.receivingAmount(value: sourceBalance, decimals: decimals))"
+    let allBalanceText = "\(NumberFormatUtils.amount(value: sourceBalance, decimals: decimals))"
     sourceTextField.text = allBalanceText
     onSourceAmountChange(value: allBalanceText)
   }

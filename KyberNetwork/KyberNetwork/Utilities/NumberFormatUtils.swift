@@ -29,7 +29,7 @@ class NumberFormatUtils {
     }
   }
   
-  static func receivingAmount(value: BigInt, decimals: Int) -> String {
+  static func amount(value: BigInt, decimals: Int) -> String {
     return format(value: value, decimals: decimals, maxDecimalMeaningDigits: 6, maxDecimalDigits: 6)
   }
   

@@ -25,13 +25,13 @@ class SwapPlatformItemViewModel {
     self.name = platformRate.platformShort
     self.showSavedTag = showSaveTag
     
-    self.savedAmountString = String(format: Strings.swapSavedAmount, NumberFormatUtils.receivingAmount(value: savedAmount, decimals: 18))
+    self.savedAmountString = String(format: Strings.swapSavedAmount, NumberFormatUtils.amount(value: savedAmount, decimals: 18))
     let receivingAmount = BigInt(platformRate.amount) ?? BigInt(0)
-    self.amountString = NumberFormatUtils.receivingAmount(value: receivingAmount, decimals: destToken.decimals)
+    self.amountString = NumberFormatUtils.amount(value: receivingAmount, decimals: destToken.decimals)
     
     let price = KNTrackerRateStorage.shared.getPriceWithAddress(destToken.address)?.usd ?? 0
     let amountUSD = receivingAmount * BigInt(price * pow(10.0, 18.0)) / BigInt(10).power(destToken.decimals)
-    let formattedAmountUSD = NumberFormatUtils.receivingAmount(value: amountUSD, decimals: 18)
+    let formattedAmountUSD = NumberFormatUtils.amount(value: amountUSD, decimals: 18)
     self.amountUsdString = "~$\(formattedAmountUSD)"
     
     self.isSelected = isSelected

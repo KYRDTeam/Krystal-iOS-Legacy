@@ -31,7 +31,7 @@ class SwapV2ViewModel {
       self.minReceiveString.value = self.selectedPlatformRate.value.map {
         let amount = BigInt($0.amount) ?? BigInt(0)
         let minReceivingAmount = amount * BigInt(10000.0 - minRatePercent * 100.0) / BigInt(10000.0)
-        return "\(NumberFormatUtils.receivingAmount(value: minReceivingAmount, decimals: destToken.decimals)) \(destToken.symbol)"
+        return "\(NumberFormatUtils.amount(value: minReceivingAmount, decimals: destToken.decimals)) \(destToken.symbol)"
       }
       self.estimatedGasFeeString.value = self.selectedPlatformRate.value.map {
         return self.calculateEstimatedGasFeeString(rate: $0)
@@ -256,6 +256,7 @@ class SwapV2ViewModel {
   }
   
   func updateSourceToken(token: Token) {
+    self.sourceBalance.value = nil
     self.sourceToken.value = token
     self.sourceAmountValue = nil
     self.selectedPlatformName = nil
@@ -263,6 +264,7 @@ class SwapV2ViewModel {
   }
   
   func updateDestToken(token: Token) {
+    self.destBalance.value = nil
     self.destToken.value = token
     self.sourceAmount.value = self.sourceAmount.value // Trigger reload
     self.selectedPlatformName = nil
@@ -305,9 +307,10 @@ class SwapV2ViewModel {
   }
   
   private func getGasFeeUSD(estGas: BigInt, gasPrice: BigInt) -> BigInt {
+    let decimals = KNGeneralProvider.shared.quoteTokenObject.decimals
     let rateUSDDouble = KNGeneralProvider.shared.quoteTokenPrice?.usd ?? 0
-    let rateBigInt = BigInt(rateUSDDouble * pow(10.0, 18.0))
-    let feeUSD = (estGas * gasPrice * rateBigInt) / BigInt(10).power(18)
+    let rateBigInt = BigInt(rateUSDDouble * pow(10.0, Double(decimals)))
+    let feeUSD = (estGas * gasPrice * rateBigInt) / BigInt(10).power(decimals)
     return feeUSD
   }
   
@@ -371,13 +374,13 @@ class SwapV2ViewModel {
       return nil
     }
     if showRevertedRate {
-      let rateString = NumberFormatUtils.rate(value: BigInt(selectedPlatform.rate) ?? .zero, decimals: destToken.decimals)
-      return "1 \(sourceToken.symbol) = \(rateString) \(destToken.symbol)"
-    } else {
       let rate = BigInt(selectedPlatform.rate) ?? .zero
       let revertedRate = rate.isZero ? 0 : (BigInt(10).power(36) / rate)
-      let rateString = NumberFormatUtils.rate(value: revertedRate, decimals: sourceToken.decimals)
+      let rateString = NumberFormatUtils.rate(value: revertedRate, decimals: 18)
       return "1 \(destToken.symbol) = \(rateString) \(sourceToken.symbol)"
+    } else {
+      let rateString = NumberFormatUtils.rate(value: BigInt(selectedPlatform.rate) ?? .zero, decimals: 18)
+      return "1 \(sourceToken.symbol) = \(rateString) \(destToken.symbol)"
     }
   }
   
@@ -400,6 +403,8 @@ class SwapV2ViewModel {
     if KNGeneralProvider.shared.currentChain != currentChain.value {
       currentChain.value = KNGeneralProvider.shared.currentChain
       sourceToken.value = KNGeneralProvider.shared.quoteTokenObject.toData()
+      sourceBalance.value = nil
+      destBalance.value = nil
       destToken.value = nil
       sourceAmountValue = nil
       loadBaseToken()
@@ -409,6 +414,8 @@ class SwapV2ViewModel {
   
   @objc func appDidSwitchAddress() {
     currentAddress.value = AppDelegate.session.address
+    sourceBalance.value = nil
+    destBalance.value = nil
     reloadSourceBalance()
     reloadDestBalance()
   }

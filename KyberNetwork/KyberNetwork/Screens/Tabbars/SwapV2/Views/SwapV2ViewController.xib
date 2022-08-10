@@ -391,18 +391,18 @@
                                                     <rect key="frame" x="24" y="96" width="324" height="142"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="bZv-tE-15u">
-                                                            <rect key="frame" x="60" y="17.5" width="204" height="107"/>
+                                                            <rect key="frame" x="75.5" y="17.5" width="173" height="107"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nzk-yc-rhc" customClass="AnimationView" customModule="Lottie">
-                                                                    <rect key="frame" x="62" y="0.0" width="80" height="80"/>
+                                                                    <rect key="frame" x="46.5" y="0.0" width="80" height="80"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="80" id="IJN-h7-unZ"/>
                                                                         <constraint firstAttribute="width" constant="80" id="J6c-Nu-rbA"/>
                                                                     </constraints>
                                                                 </view>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fetching you the best rates" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UkL-rY-yyY">
-                                                                    <rect key="frame" x="0.0" y="88" width="204" height="19"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fetching the best rates" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UkL-rY-yyY">
+                                                                    <rect key="frame" x="0.0" y="88" width="173" height="19"/>
                                                                     <fontDescription key="fontDescription" name="Karla-SemiBold" family="Karla" pointSize="16"/>
                                                                     <color key="textColor" name="buttonBackgroundColor"/>
                                                                     <nil key="highlightedColor"/>
