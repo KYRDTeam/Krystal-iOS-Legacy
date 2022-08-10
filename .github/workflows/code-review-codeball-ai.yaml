@@ -1,0 +1,22 @@
+name: Code Review Codeball AI
+
+on:
+  push:
+    branches:
+      - 'release-*'
+      - feat/tf-workflow-1
+
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  LANG: en_US.UTF-8
+
+jobs:
+  code-review-codeball-ai-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Codeball AI Code Review
+        uses: sturdy-dev/codeball-action@v2.3.0
