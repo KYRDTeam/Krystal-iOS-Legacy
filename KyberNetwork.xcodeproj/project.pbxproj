@@ -494,6 +494,7 @@
 		7E72917A27F193FC00ADF721 /* SwitchChainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E72917827F193FC00ADF721 /* SwitchChainCell.xib */; };
 		7E72917C27F1B36100ADF721 /* ChainType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E72917B27F1B36100ADF721 /* ChainType.swift */; };
 		7E7ACD1128373E3100E78499 /* BridgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7ACD1028373E3100E78499 /* BridgeViewModel.swift */; };
+		7E7C074928A36887002E8068 /* SwapSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7C074828A36887002E8068 /* SwapSummaryViewModel.swift */; };
 		7E8C62D8271D319200A6C9DB /* ClaimRewardsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C62D6271D319200A6C9DB /* ClaimRewardsController.swift */; };
 		7E8C62D9271D319200A6C9DB /* ClaimRewardsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E8C62D7271D319200A6C9DB /* ClaimRewardsController.xib */; };
 		7E8F02E927F2DD4200234E22 /* AllChains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8F02E827F2DD4200234E22 /* AllChains.swift */; };
@@ -1646,6 +1647,7 @@
 		7E72917827F193FC00ADF721 /* SwitchChainCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchChainCell.xib; sourceTree = "<group>"; };
 		7E72917B27F1B36100ADF721 /* ChainType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainType.swift; sourceTree = "<group>"; };
 		7E7ACD1028373E3100E78499 /* BridgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeViewModel.swift; sourceTree = "<group>"; };
+		7E7C074828A36887002E8068 /* SwapSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapSummaryViewModel.swift; sourceTree = "<group>"; };
 		7E8C62D6271D319200A6C9DB /* ClaimRewardsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimRewardsController.swift; sourceTree = "<group>"; };
 		7E8C62D7271D319200A6C9DB /* ClaimRewardsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClaimRewardsController.xib; sourceTree = "<group>"; };
 		7E8F02E827F2DD4200234E22 /* AllChains.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllChains.swift; sourceTree = "<group>"; };
@@ -5007,7 +5009,6 @@
 		A6977DEF289BD07D00B2B6BD /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				A6977DF0289BD08A00B2B6BD /* SwapRateService.swift */,
 				A6977DF0289BD08A00B2B6BD /* SwapRepository.swift */,
 			);
 			path = Services;
@@ -5251,6 +5252,7 @@
 				A6D38BF7289915F8003579F2 /* SwapPlatformItemViewModel.swift */,
 				A6D38BFC289916F7003579F2 /* SwapV2ViewModel.swift */,
 				A6BA4CA128A213AD002E2B30 /* SwapState.swift */,
+				7E7C074828A36887002E8068 /* SwapSummaryViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -7517,6 +7519,7 @@
 				7E72917927F193FC00ADF721 /* SwitchChainCell.swift in Sources */,
 				C3554D89280E5E3F0043BC1B /* SolanaUtil.swift in Sources */,
 				7EFE71492817DC2E00476184 /* SolFeeCoordinator.swift in Sources */,
+				7E7C074928A36887002E8068 /* SwapSummaryViewModel.swift in Sources */,
 				291F52A51F6B762300B369AB /* EtherServiceRequest.swift in Sources */,
 				C6FE41812383A0C10096AAD8 /* KNWalletConnectViewController.swift in Sources */,
 				CCA4FE361FD4282400749AE4 /* DeviceChecker.swift in Sources */,

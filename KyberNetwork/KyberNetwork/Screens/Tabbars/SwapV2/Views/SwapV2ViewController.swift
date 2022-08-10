@@ -323,8 +323,11 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   @IBAction func continueWasTapped(_ sender: Any) {
-    let summaryVC = SwapSummaryViewController(something: "")
-    self.present(summaryVC, animated: true)
+//    if let rate = self.viewModel.selectedPlatformRate.value {
+//      let viewModel = SwapSummaryViewModel(currentRate: rate, srcToken: <#T##Token#>, srcAmount: <#T##BigInt#>, destToken: <#T##Token#>, destAmout: <#T##BigInt#>)
+//      let summaryVC = SwapSummaryViewController(something: "")
+//      self.present(summaryVC, animated: true)
+//    }
   }
   
   @IBAction func infoExpandWasTapped(_ sender: Any) {

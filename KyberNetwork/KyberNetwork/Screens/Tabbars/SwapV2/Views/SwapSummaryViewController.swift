@@ -31,8 +31,10 @@ class SwapSummaryViewController: KNBaseViewController {
   @IBOutlet weak var stackViewTopConstraint: NSLayoutConstraint!
   @IBOutlet weak var confirmSwapButton: UIButton!
   @IBOutlet weak var confirmSwapButtonTopConstraint: NSLayoutConstraint!
+  var viewModel: SwapSummaryViewModel
 
-  init(something: String) {
+  init(viewModel: SwapSummaryViewModel) {
+    self.viewModel = viewModel
     super.init(nibName: SwapSummaryViewController.className, bundle: nil)
     self.modalPresentationStyle = .fullScreen
   }
@@ -44,6 +46,7 @@ class SwapSummaryViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
+    self.viewModel.startUpdateRate()
   }
   
   func setupUI() {
@@ -93,6 +96,10 @@ class SwapSummaryViewController: KNBaseViewController {
       self.confirmSwapButtonTopConstraint.constant = isTxDone ? 165 : 85
       self.view.layoutIfNeeded()
     }
+  }
+  
+  func rateUpdated(newRate: String) {
+    print(newRate)
   }
   
   @IBAction func acceptRateChangedButtonTapped(_ sender: Any) {
