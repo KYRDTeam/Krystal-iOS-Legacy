@@ -109,14 +109,30 @@ class SwapSummaryViewController: KNBaseViewController {
     }
     
     slippageInfoView.setTitle(title: "Max Slippage", underlined: true)
+    slippageInfoView.onTapTitle = { [weak self] in
+      self?.showBottomBannerView(message: Strings.swapSlippageInfo, icon: Images.swapInfo)
+    }
 
     minReceiveInfoView.setTitle(title: "Min. Received", underlined: true)
+    minReceiveInfoView.onTapTitle = { [weak self] in
+      self?.showBottomBannerView(message: Strings.swapMinReceiveInfo, icon: Images.swapInfo)
+    }
 
     gasFeeInfoView.setTitle(title: "Network Fee (est)", underlined: true)
+    gasFeeInfoView.onTapTitle = { [weak self] in
+      self?.showBottomBannerView(message: Strings.swapTxnFeeInfo, icon: Images.swapInfo)
+    }
 
     maxGasFeeInfoView.setTitle(title: "Max Network Fee", underlined: true)
+    maxGasFeeInfoView.onTapTitle = { [weak self] in
+      self?.showBottomBannerView(message: Strings.swapTxnMaxFeeInfo, icon: Images.swapInfo)
+    }
 
     priceImpactInfoView.setTitle(title: "Price Impact", underlined: true)
+    priceImpactInfoView.onTapTitle = { [weak self] in
+      self?.showBottomBannerView(message: Strings.swapPriceImpactInfo, icon: Images.swapInfo)
+    }
+
     routeInfoView.setTitle(title: "Route", underlined: true)
   }
   
@@ -164,6 +180,8 @@ class SwapSummaryViewController: KNBaseViewController {
   @IBAction func acceptRateChangedButtonTapped(_ sender: Any) {
     updateRateChangedViewUI(rateChanged: false)
     viewModel.updateRate()
+//    let receivingAmount = BigInt(platformRate.amount) ?? BigInt(0)
+//    self.destTokenBalanceLabel.text = NumberFormatUtils.amount(value: receivingAmount, decimals: destToken.decimals)
   }
 
   @IBAction func confirmSwapButtonTapped(_ sender: Any) {
