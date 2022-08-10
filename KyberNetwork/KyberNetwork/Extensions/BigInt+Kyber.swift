@@ -56,4 +56,30 @@ extension BigInt {
     }
     return 0.0
   }
+  
+  func displayGWEI() -> String {
+    return self.string(units: .gwei, minFractionDigits: 2, maxFractionDigits: 2) + " Gwei"
+  }
+  
+  func formatFeeString(gasLimit: BigInt, type: Int) -> String {
+    if let usdRate = KNGeneralProvider.shared.quoteTokenPrice?.usd {
+      let fee = self * gasLimit
+      let usdAmt = fee * BigInt(usdRate * pow(10.0, 18.0)) / BigInt(10).power(18)
+      let value = usdAmt.displayRate(decimals: 18)
+      var typeString = ""
+      switch type {
+      case 3:
+        typeString = "30s"
+      case 2:
+        typeString = "45s"
+      case 1:
+        typeString = "10m"
+      default:
+        break
+      }
+      return "~$\(value) • \(typeString)"
+    } else {
+      return ""
+    }
+  }
 }

@@ -541,7 +541,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         }
       }
     case .openGasPriceSelect(let gasLimit, let baseGasLimit, let type, let percent, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
-      let popup = TransactionSettingsViewController()
+      let vm = TransactionSettingsViewModel(gasLimit: gasLimit)
+      let popup = TransactionSettingsViewController(viewModel: vm)
       self.navigationController.pushViewController(popup, animated: true, completion: nil)
       
 //      let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: type, currentRatePercentage: percent, isUseGasToken: self.isAccountUseGasToken())
@@ -1177,6 +1178,7 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       self.rootViewController.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
     case .updateAdvancedNonce(nonce: let nonce):
       self.rootViewController.coordinatorDidUpdateAdvancedNonce(nonce)
+      ///
     case .speedupTransactionSuccessfully(let speedupTransaction):
       self.openTransactionStatusPopUp(transaction: speedupTransaction)
     case .cancelTransactionSuccessfully(let cancelTransaction):

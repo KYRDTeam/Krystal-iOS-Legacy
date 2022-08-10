@@ -6,19 +6,27 @@
 //
 
 import UIKit
+import BigInt
 
 class TransactionSettingsViewModel {
   var isAdvancedMode = false
   var isExpertMode = false
   
+  var gasLimit: BigInt
+  var selectedType: KNSelectedGasPriceType
+  
   let slippageCellModel = SlippageRateCellModel(currentRatePercentage: 0.5)
   let segmentedCellModel = SettingSegmentedCellModel()
   let switchExpertMode = SettingExpertModeSwitchCellModel()
+  let basicModeCellModel = SettingBasicModeCellModel()
   
   var switchExpertModeEventHandler: (Bool) -> Void = { _ in }
   var switchAdvancedModeEventHandle: (Bool) -> Void = { _ in }
   
-  init() {
+  init(gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium) {
+    self.gasLimit = gasLimit
+    self.selectedType = selectType
+    self.basicModeCellModel.gasLimit = gasLimit
     self.slippageCellModel.slippageChangedEvent = { value in
       print("[Setting][SlippageChanged] \(value)")
     }
@@ -30,13 +38,35 @@ class TransactionSettingsViewModel {
       self.isExpertMode = value
       self.switchExpertModeEventHandler(value)
     }
+
+    self.basicModeCellModel.actionHandler = { value in
+      switch value {
+      case 3:
+        self.selectedType = .fast
+      case 2:
+        self.selectedType = .medium
+      case 1:
+        self.selectedType = .slow
+      default:
+        break
+      }
+    }
   }
 }
 
 class TransactionSettingsViewController: KNBaseViewController {
   @IBOutlet weak var settingsTableView: UITableView!
   
-  let viewModel = TransactionSettingsViewModel()
+  let viewModel: TransactionSettingsViewModel
+  
+  init(viewModel: TransactionSettingsViewModel) {
+    self.viewModel = viewModel
+    super.init(nibName: TransactionSettingsViewController.className, bundle: nil)
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -106,7 +136,8 @@ extension TransactionSettingsViewController: UITableViewDataSource {
             withIdentifier: SettingBasicModeCell.cellID,
             for: indexPath
           ) as! SettingBasicModeCell
-
+          cell.cellModel = viewModel.basicModeCellModel
+          cell.updateUI()
           return cell
         }
       }
