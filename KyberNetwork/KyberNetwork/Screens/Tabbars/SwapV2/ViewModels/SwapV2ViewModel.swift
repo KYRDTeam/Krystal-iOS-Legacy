@@ -14,6 +14,7 @@ struct SwapV2ViewModelActions {
   var onSelectSwitchWallet: () -> ()
   var onSelectOpenHistory: () -> ()
   var openSwapConfirm: (SwapObject) -> ()
+  var openApprove: (_ token: TokenObject, _ amount: BigInt) -> ()
 }
 
 class SwapV2ViewModel {
@@ -176,15 +177,18 @@ class SwapV2ViewModel {
     }
   }
   
-  func approve() {
-    
+  func approve(_ amount: BigInt) {
+    guard let sourceTokenObject = sourceToken.value?.toObject() else {
+      return
+    }
+    actions.openApprove(sourceTokenObject, amount)
   }
   
   func checkAllowance() {
     swapRepository.getAllowance(tokenAddress: sourceToken.value?.address ?? "", address: addressString) { [weak self] allowance, _ in
       guard let self = self else { return }
       if allowance < self.sourceAmount.value ?? .zero {
-        self.state.value = .notApproved
+        self.state.value = .notApproved(remainingAmount: self.sourceAmount.value ?? .zero - allowance)
       } else {
         self.state.value = .ready
       }
@@ -207,6 +211,7 @@ class SwapV2ViewModel {
   
   func reloadRates(amount: BigInt, withFetchingRefPrice: Bool) {
     self.selectedPlatformName = nil
+    self.priceImpactState.value = .normal
     guard let sourceToken = sourceToken.value, let destToken = destToken.value else {
       return
     }
@@ -389,6 +394,15 @@ class SwapV2ViewModel {
     }
   }
   
+  deinit {
+    NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidChangeAddress, object: nil)
+    NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidSwitchChain, object: nil)
+  }
+  
+}
+
+extension SwapV2ViewModel {
+  
   private func observeNotifications() {
     NotificationCenter.default.addObserver(
       self,
@@ -425,10 +439,19 @@ class SwapV2ViewModel {
     reloadDestBalance()
   }
   
-  deinit {
-    NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidChangeAddress, object: nil)
+  func approve(tokenAddress: String, amount: BigInt, gasLimit: BigInt) {
+    state.value = .approving
+    swapRepository.approve(address: currentAddress.value, tokenAddress: tokenAddress, value: amount, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
+      switch result {
+      case .success:
+        if tokenAddress == self?.sourceToken.value?.address {
+          self?.state.value = .ready
+        }
+      case .failure:
+        self?.state.value = .notApproved(remainingAmount: amount)
+      }
+    }
   }
-  
 }
 
 extension SwapV2ViewModel {
@@ -447,8 +470,8 @@ extension SwapV2ViewModel {
   
   func didTapContinue() {
     switch state.value {
-    case .notApproved:
-      approve()
+    case .notApproved(let remainingAmount):
+      approve(remainingAmount)
     case .ready:
       guard let sourceToken = sourceToken.value, let destToken = destToken.value else { return }
       guard let selectedRate = selectedPlatformRate.value else { return }

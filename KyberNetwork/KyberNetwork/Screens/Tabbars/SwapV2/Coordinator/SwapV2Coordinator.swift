@@ -10,6 +10,7 @@ import UIKit
 import QRCodeReaderViewController
 import WalletConnectSwift
 import KrystalWallets
+import BigInt
 
 protocol SwapV2CoordinatorDelegate: AnyObject {
   func didSelectManageWallets()
@@ -40,6 +41,9 @@ class SwapV2Coordinator: NSObject, Coordinator {
         },
         openSwapConfirm: { swapObject in
           self.openSwapConfirm(object: swapObject)
+        },
+        openApprove: { tokenObject, amount in
+          self.openApprove(token: tokenObject, amount: amount)
         }
       )
     )
@@ -50,6 +54,12 @@ class SwapV2Coordinator: NSObject, Coordinator {
   
   func openSwapConfirm(object: SwapObject) {
     
+  }
+  
+  func openApprove(token: TokenObject, amount: BigInt) {
+    let vc = ApproveTokenViewController(viewModel: ApproveTokenViewModelForTokenObject(token: token, res: amount))
+    vc.delegate = self
+    navigationController.present(vc, animated: true, completion: nil)
   }
 
   func openTransactionHistory() {
@@ -170,6 +180,26 @@ extension SwapV2Coordinator: KNHistoryCoordinatorDelegate {
   func historyCoordinatorDidClose() {
     removeCoordinator(historyCoordinator!)
     historyCoordinator = nil
+  }
+  
+}
+
+extension SwapV2Coordinator: ApproveTokenViewControllerDelegate {
+  
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt) {
+    rootViewController.viewModel.approve(tokenAddress: token.address, amount: remain, gasLimit: gasLimit)
+  }
+  
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt) {
+    rootViewController.viewModel.approve(tokenAddress: address, amount: remain, gasLimit: gasLimit)
+  }
+  
+  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: String, value: BigInt) {
+    
+  }
+  
+  func approveTokenViewControllerDidSelectGasSetting(_ controller: ApproveTokenViewController, gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?) {
+    
   }
   
 }

@@ -25,7 +25,6 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var expandIcon: UIImageView!
   @IBOutlet weak var sourceTextField: UITextField!
   @IBOutlet weak var fetchingAnimationView: AnimationView!
-  @IBOutlet weak var notFoundView: UIView!
   @IBOutlet weak var infoExpandButton: UIButton!
   @IBOutlet weak var infoSeparatorView: UIView!
   @IBOutlet weak var sourceTokenView: UIView!
@@ -47,6 +46,9 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var piWarningView: UIView!
   @IBOutlet weak var piWarningIcon: UIImageView!
   @IBOutlet weak var piWarningLabel: UILabel!
+  @IBOutlet weak var errorView: UIView!
+  @IBOutlet weak var errorIcon: UIImageView!
+  @IBOutlet weak var errorLabel: UILabel!
   
    // Header
   @IBOutlet weak var chainIcon: UIImageView!
@@ -286,7 +288,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.continueButton.setTitle("Enter an amount", for: .normal)
         self.rateLoadingView.isHidden = true
         self.platformTableView.isHidden = true
-        self.notFoundView.isHidden = true
+        self.errorView.isHidden = true
         self.loadingView.isHidden = true
         self.destViewHeight.constant = CGFloat(112)
         self.expandIcon.isHidden = true
@@ -295,16 +297,16 @@ class SwapV2ViewController: KNBaseViewController {
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Fetching the best rates", for: .normal)
         self.platformTableView.isHidden = true
-        self.notFoundView.isHidden = true
         self.loadingView.isHidden = false
         self.expandIcon.isHidden = true
         self.approveGuideView.isHidden = true
         self.resetCountdownView()
         self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
+        self.errorView.isHidden = true
       case .notConnected:
         self.continueButton.isEnabled = true
         self.continueButton.setTitle("Connect Wallet", for: .normal)
-        self.notFoundView.isHidden = true
+        self.errorView.isHidden = true
         self.loadingView.isHidden = true
         self.approveGuideView.isHidden = true
       case .rateNotFound:
@@ -312,24 +314,25 @@ class SwapV2ViewController: KNBaseViewController {
         self.continueButton.setTitle("Review Swap", for: .normal)
         self.rateLoadingView.isHidden = false
         self.platformTableView.isHidden = true
-        self.notFoundView.isHidden = false
         self.loadingView.isHidden = true
         self.approveGuideView.isHidden = true
-        self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
+        self.destViewHeight.constant = CGFloat(112)
+        self.errorView.isHidden = false
+        self.errorLabel.text = Strings.swapRateNotFound
       case .insufficientBalance:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Insufficient \(self.viewModel.sourceToken.value?.symbol ?? "") Balance", for: .normal)
         self.rateLoadingView.isHidden = true
-        self.notFoundView.isHidden = true
+        self.errorView.isHidden = true
         self.platformTableView.isHidden = true
         self.loadingView.isHidden = true
         self.approveGuideView.isHidden = true
         self.destViewHeight.constant = CGFloat(112)
       case .checkingAllowance:
         self.continueButton.isEnabled = false
-        self.continueButton.setTitle("Checking Allowance...", for: .normal)
+        self.continueButton.setTitle("Checking Allowance", for: .normal)
         self.rateLoadingView.isHidden = false
-        self.notFoundView.isHidden = true
+        self.errorView.isHidden = true
         self.platformTableView.isHidden = false
         self.loadingView.isHidden = true
         self.approveGuideView.isHidden = true
@@ -338,16 +341,21 @@ class SwapV2ViewController: KNBaseViewController {
         self.continueButton.isEnabled = true
         self.continueButton.setTitle("Approve \(sourceSymbol)", for: .normal)
         self.rateLoadingView.isHidden = false
-        self.notFoundView.isHidden = true
+        self.errorView.isHidden = true
         self.platformTableView.isHidden = false
         self.loadingView.isHidden = true
         self.approveGuideLabel.attributedText = String(format: Strings.swapApproveWarn, sourceSymbol).withLineSpacing()
         self.approveGuideView.isHidden = false
+      case .approving:
+        let sourceSymbol = self.viewModel.sourceToken.value?.symbol ?? ""
+        self.continueButton.isEnabled = false
+        self.continueButton.setTitle("Approving \(sourceSymbol)", for: .normal)
+        self.approveGuideLabel.attributedText = String(format: Strings.swapApproveWarn, sourceSymbol).withLineSpacing()
       case .ready:
         self.continueButton.isEnabled = true
         self.continueButton.setTitle("Review Swap", for: .normal)
         self.rateLoadingView.isHidden = false
-        self.notFoundView.isHidden = true
+        self.errorView.isHidden = true
         self.platformTableView.isHidden = false
         self.loadingView.isHidden = true
         self.approveGuideView.isHidden = true
@@ -460,7 +468,7 @@ extension SwapV2ViewController {
       UIView.animate(withDuration: 0.5) {
         self.platformTableView.isHidden = false
         self.loadingView.isHidden = true
-        self.notFoundView.isHidden = true
+        self.errorView.isHidden = true
         self.destViewHeight.constant = CGFloat(112) + CGFloat(rowsToShow) * self.platformRateItemHeight + 24
         self.view.layoutIfNeeded()
       }
@@ -469,10 +477,11 @@ extension SwapV2ViewController {
         self.platformTableView.isHidden = true
         self.loadingView.isHidden = true
         if self.viewModel.isInputValid {
-          self.notFoundView.isHidden = false
+          self.errorView.isHidden = true
           self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
         } else {
-          self.notFoundView.isHidden = true
+          self.errorView.isHidden = false
+          self.errorLabel.text = Strings.swapRateNotFound
           self.destViewHeight.constant = CGFloat(112)
         }
         self.view.layoutIfNeeded()
@@ -527,7 +536,7 @@ extension SwapV2ViewController {
       self.expandIcon.isHidden = true
       self.loadingView.isHidden = false
       self.platformTableView.isHidden = true
-      self.notFoundView.isHidden = true
+      self.errorView.isHidden = true
       self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
     }
     viewModel.reloadRates()
