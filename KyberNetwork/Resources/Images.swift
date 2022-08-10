@@ -60,4 +60,5 @@ struct Images {
   static let swapInfoBlue = UIImage(named: "info_blue")!
   static let swapInfoYellow = UIImage(named: "info_yellow")!
   static let swapWarningRed = UIImage(named: "swap_warning_red")!
+  static let swapInfo = UIImage(named: "info_white")!
 }

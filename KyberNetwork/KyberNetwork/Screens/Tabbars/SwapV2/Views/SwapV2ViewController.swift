@@ -162,14 +162,34 @@ class SwapV2ViewController: KNBaseViewController {
     }
     
     slippageInfoView.setTitle(title: "Max Slippage", underlined: true)
+    slippageInfoView.iconImageView.isHidden = true
+    slippageInfoView.onTapTitle = { [weak self] in
+      self?.showBottomBannerView(message: Strings.swapSlippageInfo, icon: Images.swapInfo)
+    }
     
     minReceiveInfoView.setTitle(title: "Min. Received", underlined: true)
+    minReceiveInfoView.iconImageView.isHidden = true
+    minReceiveInfoView.onTapTitle = { [weak self] in
+      self?.showBottomBannerView(message: Strings.swapMinReceiveInfo, icon: Images.swapInfo)
+    }
     
     gasFeeInfoView.setTitle(title: "Network Fee (est)", underlined: true)
+    gasFeeInfoView.iconImageView.isHidden = true
+    gasFeeInfoView.onTapTitle = { [weak self] in
+      self?.showBottomBannerView(message: Strings.swapTxnFeeInfo, icon: Images.swapInfo)
+    }
     
     maxGasFeeInfoView.setTitle(title: "Max Network Fee", underlined: true)
+    maxGasFeeInfoView.iconImageView.isHidden = true
+    maxGasFeeInfoView.onTapTitle = { [weak self] in
+      self?.showBottomBannerView(message: Strings.swapTxnMaxFeeInfo, icon: Images.swapInfo)
+    }
     
     priceImpactInfoView.setTitle(title: "Price Impact", underlined: true)
+    priceImpactInfoView.iconImageView.isHidden = true
+    priceImpactInfoView.onTapTitle = { [weak self] in
+      self?.showBottomBannerView(message: Strings.swapPriceImpactInfo, icon: Images.swapInfo)
+    }
     
     routeInfoView.setTitle(title: "Route", underlined: true)
   }
