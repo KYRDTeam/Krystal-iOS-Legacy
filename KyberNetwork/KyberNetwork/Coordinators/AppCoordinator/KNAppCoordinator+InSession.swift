@@ -70,13 +70,13 @@ extension KNAppCoordinator {
     self.addCoordinator(self.settingsCoordinator!)
     self.settingsCoordinator?.start()
     
-    let swapV2 = SwapV2ViewController.instantiateFromNib()
-    let swapV2Nav = UINavigationController(rootViewController: swapV2)
+    let swapV2Coordinator = SwapV2Coordinator()
+    swapV2Coordinator.start()
 
     self.tabbarController.viewControllers = [
       self.overviewTabCoordinator!.navigationController,
       self.exchangeCoordinator!.navigationController,
-      swapV2Nav,
+      swapV2Coordinator.navigationController,
       self.investCoordinator!.navigationController,
       self.earnCoordinator!.navigationController,
       self.settingsCoordinator!.navigationController,

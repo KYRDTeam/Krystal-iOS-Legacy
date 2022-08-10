@@ -7,19 +7,24 @@
 
 import Foundation
 import BigInt
+import KrystalWallets
+
+struct SwapV2ViewModelActions {
+  var onSelectSwitchChain: () -> ()
+  var onSelectSwitchWallet: () -> ()
+  var onSelectOpenHistory: () -> ()
+}
 
 class SwapV2ViewModel {
   
-  var currentChain: ChainType {
-    return KNGeneralProvider.shared.currentChain
-  }
+  var actions: SwapV2ViewModelActions
   
   private(set) var selectedPlatformName: String? {
     didSet {
       self.selectedPlatformRate.value = platformRates.value.first(where: { rate in
         rate.platform == selectedPlatformName
       })
-      guard let destToken = destToken.value, let sourceToken = sourceToken.value else {
+      guard let destToken = destToken.value else {
         return
       }
       self.rateString.value = self.getRateString()
@@ -73,9 +78,9 @@ class SwapV2ViewModel {
   var isInputValid: Bool {
     return sourceToken.value != nil && destToken.value != nil && (sourceAmountValue ?? 0) > 0
   }
-  
-  var address: String {
-    return AppDelegate.session.address.addressString
+
+  var addressString: String {
+    return currentAddress.value.addressString
   }
   
   var numberOfRateRows: Int {
@@ -100,6 +105,8 @@ class SwapV2ViewModel {
     }
   }
   
+  var currentAddress: Observable<KAddress> = .init(AppDelegate.session.address)
+  var currentChain: Observable<ChainType> = .init(KNGeneralProvider.shared.currentChain)
   var sourceToken: Observable<Token?> = .init(KNGeneralProvider.shared.quoteTokenObject.toData())
   var destToken: Observable<Token?> = .init(nil)
   var platformRatesViewModels: Observable<[SwapPlatformItemViewModel]> = .init([])
@@ -122,11 +129,13 @@ class SwapV2ViewModel {
   
   private let swapRepository = SwapRepository()
 
-  init() {
+  init(actions: SwapV2ViewModelActions) {
     // Initialize values
     minRatePercent = 0.5
     slippageString.value = "\(String(format: "%.1f", self.minRatePercent))%"
     
+    self.actions = actions
+    self.observeNotifications()
     self.selfObserve()
     self.loadBaseToken()
     self.reloadSourceBalance()
@@ -167,7 +176,7 @@ class SwapV2ViewModel {
   }
   
   func checkAllowance() {
-    swapRepository.getAllowance(tokenAddress: sourceToken.value?.address ?? "", address: address) { [weak self] allowance, _ in
+    swapRepository.getAllowance(tokenAddress: sourceToken.value?.address ?? "", address: addressString) { [weak self] allowance, _ in
       guard let self = self else { return }
       if allowance < self.sourceAmount.value ?? .zero {
         self.state.value = .notApproved
@@ -206,12 +215,12 @@ class SwapV2ViewModel {
           return
         }
         self.refPrice = Double(change) ?? 0
-        self.swapRepository.getAllRates(address: self.address, srcTokenContract: sourceToken.address, destTokenContract: destToken.address, amount: amount, focusSrc: true) { rates in
+        self.swapRepository.getAllRates(address: self.addressString, srcTokenContract: sourceToken.address, destTokenContract: destToken.address, amount: amount, focusSrc: true) { rates in
           self.platformRates.value = rates
         }
       }
     } else {
-      self.swapRepository.getAllRates(address: address, srcTokenContract: sourceToken.address, destTokenContract: destToken.address, amount: amount, focusSrc: true) { [weak self] rates in
+      self.swapRepository.getAllRates(address: addressString, srcTokenContract: sourceToken.address, destTokenContract: destToken.address, amount: amount, focusSrc: true) { [weak self] rates in
         self?.platformRates.value = rates
       }
     }
@@ -222,7 +231,7 @@ class SwapV2ViewModel {
       sourceBalance.value = nil
       return
     }
-    swapRepository.getBalance(tokenAddress: sourceToken.address, address: address) { [weak self] (amount, tokenAddress) in
+    swapRepository.getBalance(tokenAddress: sourceToken.address, address: addressString) { [weak self] (amount, tokenAddress) in
       if tokenAddress == sourceToken.address { // Needed to handle case swap pair
         self?.sourceBalance.value = amount
       }
@@ -234,7 +243,7 @@ class SwapV2ViewModel {
       destBalance.value = nil
       return
     }
-    swapRepository.getBalance(tokenAddress: destToken.address, address: address) { [weak self] (amount, tokenAddress) in
+    swapRepository.getBalance(tokenAddress: destToken.address, address: addressString) { [weak self] (amount, tokenAddress) in
       if tokenAddress == destToken.address { // Needed to handle case swap pair
         self?.destBalance.value = amount
       }
@@ -335,7 +344,7 @@ class SwapV2ViewModel {
     return sortedRates.enumerated().map { index, rate in
       return SwapPlatformItemViewModel(platformRate: rate,
                                        isSelected: rate.platform == selectedPlatformName,
-                                       quoteToken: currentChain.quoteTokenObject(),
+                                       quoteToken: currentChain.value.quoteTokenObject(),
                                        destToken: destToken,
                                        gasFeeUsd: self.getGasFeeUSD(estGas: BigInt(rate.estimatedGas), gasPrice: self.gasPrice),
                                        showSaveTag: sortedRates.count > 1 && index == 0 && savedAmount > BigInt(0.1 * pow(10.0, 18.0)),
@@ -370,6 +379,58 @@ class SwapV2ViewModel {
       let rateString = NumberFormatUtils.rate(value: revertedRate, decimals: sourceToken.decimals)
       return "1 \(destToken.symbol) = \(rateString) \(sourceToken.symbol)"
     }
+  }
+  
+  private func observeNotifications() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(appDidSwitchChain),
+      name: AppEventCenter.shared.kAppDidSwitchChain,
+      object: nil
+    )
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(appDidSwitchAddress),
+      name: AppEventCenter.shared.kAppDidChangeAddress,
+      object: nil
+    )
+  }
+  
+  @objc func appDidSwitchChain() {
+    if KNGeneralProvider.shared.currentChain != currentChain.value {
+      currentChain.value = KNGeneralProvider.shared.currentChain
+      sourceToken.value = KNGeneralProvider.shared.quoteTokenObject.toData()
+      destToken.value = nil
+      sourceAmountValue = nil
+      loadBaseToken()
+      reloadSourceBalance()
+    }
+  }
+  
+  @objc func appDidSwitchAddress() {
+    currentAddress.value = AppDelegate.session.address
+    reloadSourceBalance()
+    reloadDestBalance()
+  }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidChangeAddress, object: nil)
+  }
+  
+}
+
+extension SwapV2ViewModel {
+  
+  func didTapChainButton() {
+    actions.onSelectSwitchChain()
+  }
+  
+  func didTapWalletButton() {
+    actions.onSelectSwitchWallet()
+  }
+  
+  func didTapHistoryButton() {
+    actions.onSelectOpenHistory()
   }
   
 }

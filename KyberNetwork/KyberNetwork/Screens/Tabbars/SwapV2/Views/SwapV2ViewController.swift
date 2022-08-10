@@ -48,7 +48,11 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var piWarningIcon: UIImageView!
   @IBOutlet weak var piWarningLabel: UILabel!
   
-  var viewModel: SwapV2ViewModel = SwapV2ViewModel()
+   // Header
+  @IBOutlet weak var chainIcon: UIImageView!
+  @IBOutlet weak var walletButton: UIButton!
+  
+  var viewModel: SwapV2ViewModel!
   
   let platformRateItemHeight: CGFloat = 96
   let loadingViewHeight: CGFloat = 142
@@ -182,6 +186,14 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   func bindViewModel() {
+    viewModel.currentChain.observeAndFire(on: self) { [weak self] chain in
+      self?.chainIcon.image = KNGeneralProvider.shared.chainIconImage
+    }
+    
+    viewModel.currentAddress.observeAndFire(on: self) { [weak self] address in
+      self?.walletButton.setTitle(address.name, for: .normal)
+    }
+    
     viewModel.platformRatesViewModels.observe(on: self) { [weak self] _ in
       self?.reloadRates()
     }
@@ -298,7 +310,7 @@ class SwapV2ViewController: KNBaseViewController {
       case .rateNotFound:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Review Swap", for: .normal)
-        self.rateLoadingView.isHidden = true
+        self.rateLoadingView.isHidden = false
         self.platformTableView.isHidden = true
         self.notFoundView.isHidden = false
         self.loadingView.isHidden = true
@@ -382,6 +394,18 @@ class SwapV2ViewController: KNBaseViewController {
   
   @IBAction func infoExpandWasTapped(_ sender: Any) {
     self.isInfoExpanded.toggle()
+  }
+  
+  @IBAction func chainButtonWasTapped(_ sender: Any) {
+    viewModel.didTapChainButton()
+  }
+  
+  @IBAction func walletButtonWasTapped(_ sender: Any) {
+    viewModel.didTapWalletButton()
+  }
+  
+  @IBAction func historyButtonWasTapped(_ sender: Any) {
+    viewModel.didTapHistoryButton()
   }
   
   @objc func onToggleExpand() {
