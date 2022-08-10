@@ -9,6 +9,7 @@ import Foundation
 import BigInt
 import Moya
 import KrystalWallets
+import Result
 
 class SwapRepository {
   
@@ -36,12 +37,23 @@ class SwapRepository {
   }
   
   func getBalance(tokenAddress: String, address: String, completion: @escaping (BigInt?, String) -> ()) {
-    KNGeneralProvider.shared.getTokenBalance(for: address, contract: tokenAddress) { result in
-      switch result {
-      case .success(let amount):
-        completion(amount, tokenAddress)
-      case .failure:
-        completion(nil, tokenAddress)
+    if tokenAddress == KNGeneralProvider.shared.quoteTokenObject.address { // is native token
+      KNGeneralProvider.shared.getETHBalanace(for: address) { result in
+        switch result {
+        case .success(let balance):
+          completion(balance.value, tokenAddress)
+        case .failure:
+          completion(nil, tokenAddress)
+        }
+      }
+    } else {
+      KNGeneralProvider.shared.getTokenBalance(for: address, contract: tokenAddress) { result in
+        switch result {
+        case .success(let amount):
+          completion(amount, tokenAddress)
+        case .failure:
+          completion(nil, tokenAddress)
+        }
       }
     }
   }
@@ -64,6 +76,21 @@ class SwapRepository {
         completion(allowance, tokenAddress)
       case .failure:
         completion(0, tokenAddress)
+      }
+    }
+  }
+  
+  func approve(address: KAddress, tokenAddress: String, value: BigInt, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Bool, AnyError>) -> ()) {
+    let networkAddress = KNGeneralProvider.shared.networkAddress
+    let currentChain = KNGeneralProvider.shared.currentChain
+    let nonce = NonceCache.shared.getCachingNonce(address: address.addressString, chain: currentChain)
+    KNGeneralProvider.shared.approve(address: address, tokenAddress: tokenAddress, value: value, currentNonce: nonce, networkAddress: networkAddress, gasPrice: gasPrice, gasLimit: gasLimit) { result in
+      switch result {
+      case .success(let nonce):
+        NonceCache.shared.updateNonce(address: address.addressString, chain: currentChain, nonce: nonce)
+        completion(.success(true))
+      case .failure(let error):
+        completion(.failure(error))
       }
     }
   }

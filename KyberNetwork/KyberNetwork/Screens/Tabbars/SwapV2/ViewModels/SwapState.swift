@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import BigInt
 
 enum SwapState {
   case emptyAmount
@@ -14,7 +15,7 @@ enum SwapState {
   case notConnected
   case insufficientBalance
   case checkingAllowance
-  case notApproved
+  case notApproved(remainingAmount: BigInt)
   case approving
   case ready
   

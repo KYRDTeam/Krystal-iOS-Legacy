@@ -888,3 +888,5 @@
 "swap.warn_price_impact_2" = "Price Impact is Very High. Please turn on Expert Mode for high slippage trades";
 "swap.warn_price_impact_3" = "Price Impact is Very High";
 "swap.warn_approve" = "Allow Krystal smart contracts permission to use your %@";
+"swap.rate_not_found" = "Sorry, we couldn’t find any rate for this pair";
+"swap.small_amount_of_quote_token_will_be_used" = "A small amount of %@ will be used for transaction fee";

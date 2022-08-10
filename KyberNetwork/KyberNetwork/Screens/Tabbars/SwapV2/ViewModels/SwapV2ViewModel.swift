@@ -14,6 +14,7 @@ struct SwapV2ViewModelActions {
   var onSelectSwitchWallet: () -> ()
   var onSelectOpenHistory: () -> ()
   var openSwapConfirm: (SwapObject) -> ()
+  var openApprove: (_ token: TokenObject, _ amount: BigInt) -> ()
 }
 
 class SwapV2ViewModel {
@@ -25,27 +26,18 @@ class SwapV2ViewModel {
       self.selectedPlatformRate.value = platformRates.value.first(where: { rate in
         rate.platform == selectedPlatformName
       })
-      guard let destToken = destToken.value else {
-        return
-      }
       self.rateString.value = self.getRateString()
       self.minReceiveString.value = self.selectedPlatformRate.value.map {
-        let amount = BigInt($0.amount) ?? BigInt(0)
-        let minReceivingAmount = amount * BigInt(10000.0 - minRatePercent * 100.0) / BigInt(10000.0)
-        return "\(NumberFormatUtils.amount(value: minReceivingAmount, decimals: destToken.decimals)) \(destToken.symbol)"
+        return self.getMinReceiveString(rate: $0)
       }
       self.estimatedGasFeeString.value = self.selectedPlatformRate.value.map {
-        return self.calculateEstimatedGasFeeString(rate: $0)
+        return self.getEstimatedNetworkFeeString(rate: $0)
+      }
+      self.maxGasFeeString.value = self.selectedPlatformRate.value.map {
+        return self.getMaxNetworkFeeString(rate: $0)
       }
       self.priceImpactString.value = self.selectedPlatformRate.value.map {
-        if refPrice == 0 {
-          self.priceImpactState.value = .normal
-          return "0%"
-        }
-        let rateDouble = Double(BigInt($0.rate) ?? .zero) / pow(10.0, 18)
-        let change = (rateDouble - refPrice) / refPrice * 100
-        self.priceImpactState.value = self.getPriceImpactState(change: change)
-        return "\(String(format: "%.2f", change))%"
+        return self.getPriceImpactString(rate: $0)
       }
     }
   }
@@ -60,16 +52,6 @@ class SwapV2ViewModel {
     }
   }
   
-  var sourceAmountValue: Double? {
-    didSet {
-      guard let srcToken = sourceToken.value else {
-        self.sourceAmount.value = nil
-        return
-      }
-      self.sourceAmount.value = BigInt((sourceAmountValue ?? 0) * pow(10.0, Double(srcToken.decimals)))
-    }
-  }
-  
   var showRevertedRate: Bool = false {
     didSet {
       self.rateString.value = self.getRateString()
@@ -77,7 +59,7 @@ class SwapV2ViewModel {
   }
   
   var isInputValid: Bool {
-    return sourceToken.value != nil && destToken.value != nil && (sourceAmountValue ?? 0) > 0
+    return sourceToken.value != nil && destToken.value != nil && !(sourceAmount.value ?? .zero).isZero
   }
 
   var addressString: String {
@@ -92,11 +74,18 @@ class SwapV2ViewModel {
     return KNGasCoordinator.shared.defaultKNGas
   }
   
-  var refPrice: Double = 0
-  
   var selectedGasPriceType: KNSelectedGasPriceType = .medium {
     didSet {
       
+    }
+  }
+  
+  var maxAvailableSourceTokenAmount: BigInt {
+    if sourceToken.value?.isQuoteToken ?? false {
+      let balance = sourceBalance.value ?? .zero
+      return balance - gasPrice * estimatedGas
+    } else {
+      return sourceBalance.value ?? .zero
     }
   }
   
@@ -105,6 +94,11 @@ class SwapV2ViewModel {
       slippageString.value = "\(String(format: "%.1f", self.minRatePercent))%"
     }
   }
+  
+  var estimatedGas: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
+  
+  let fetchingBalanceInterval: Double = 10.0
+  var timer: Timer?
   
   var currentAddress: Observable<KAddress> = .init(AppDelegate.session.address)
   var currentChain: Observable<ChainType> = .init(KNGeneralProvider.shared.currentChain)
@@ -136,6 +130,7 @@ class SwapV2ViewModel {
     slippageString.value = "\(String(format: "%.1f", self.minRatePercent))%"
     
     self.actions = actions
+    self.scheduleFetchingBalance()
     self.observeNotifications()
     self.selfObserve()
     self.loadBaseToken()
@@ -160,7 +155,7 @@ class SwapV2ViewModel {
         self.selectedPlatformName = nil
         self.state.value = .insufficientBalance
       } else {
-        self.reloadRates(amount: amount!, withFetchingRefPrice: true)
+        self.reloadRates(amount: amount!)
       }
     }
     platformRates.observe(on: self) { [weak self] rates in
@@ -174,60 +169,42 @@ class SwapV2ViewModel {
         self.checkAllowance()
       }
     }
+    selectedPlatformRate.observe(on: self) { [weak self] rate in
+      if let rate = rate {
+        self?.estimatedGas = BigInt(rate.estimatedGas)
+      } else {
+        self?.estimatedGas = KNGasConfiguration.exchangeTokensGasLimitDefault
+      }
+    }
   }
   
-  func approve() {
-    
+  func approve(_ amount: BigInt) {
+    guard let sourceTokenObject = sourceToken.value?.toObject() else {
+      return
+    }
+    actions.openApprove(sourceTokenObject, amount)
   }
   
   func checkAllowance() {
     swapRepository.getAllowance(tokenAddress: sourceToken.value?.address ?? "", address: addressString) { [weak self] allowance, _ in
       guard let self = self else { return }
       if allowance < self.sourceAmount.value ?? .zero {
-        self.state.value = .notApproved
+        self.state.value = .notApproved(remainingAmount: self.sourceAmount.value ?? .zero - allowance)
       } else {
         self.state.value = .ready
       }
     }
   }
   
-  func reloadRefPrice() {
-    guard let sourceToken = sourceToken.value, let destToken = destToken.value else {
-      self.refPrice = 0
-      return
-    }
-    swapRepository.getRefPrice(sourceToken: sourceToken.address, destToken: destToken.address) { change in
-      guard let change = change else {
-        self.refPrice = 0
-        return
-      }
-      self.refPrice = Double(change) ?? 0
-    }
-  }
-  
-  func reloadRates(amount: BigInt, withFetchingRefPrice: Bool) {
+  func reloadRates(amount: BigInt) {
     self.selectedPlatformName = nil
+    self.priceImpactState.value = .normal
     guard let sourceToken = sourceToken.value, let destToken = destToken.value else {
       return
     }
     self.state.value = .fetchingRates
-    
-    if withFetchingRefPrice {
-      swapRepository.getRefPrice(sourceToken: sourceToken.address, destToken: destToken.address) { [weak self] change in
-        guard let self = self else { return }
-        guard let change = change else {
-          self.refPrice = 0
-          return
-        }
-        self.refPrice = Double(change) ?? 0
-        self.swapRepository.getAllRates(address: self.addressString, srcTokenContract: sourceToken.address, destTokenContract: destToken.address, amount: amount, focusSrc: true) { rates in
-          self.platformRates.value = rates
-        }
-      }
-    } else {
-      self.swapRepository.getAllRates(address: addressString, srcTokenContract: sourceToken.address, destTokenContract: destToken.address, amount: amount, focusSrc: true) { [weak self] rates in
-        self?.platformRates.value = rates
-      }
+    self.swapRepository.getAllRates(address: addressString, srcTokenContract: sourceToken.address, destTokenContract: destToken.address, amount: amount, focusSrc: true) { [weak self] rates in
+      self?.platformRates.value = rates
     }
   }
   
@@ -255,6 +232,20 @@ class SwapV2ViewModel {
     }
   }
   
+  func approve(tokenAddress: String, amount: BigInt, gasLimit: BigInt) {
+    state.value = .approving
+    swapRepository.approve(address: currentAddress.value, tokenAddress: tokenAddress, value: amount, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
+      switch result {
+      case .success:
+        if tokenAddress == self?.sourceToken.value?.address {
+          self?.state.value = .ready
+        }
+      case .failure:
+        self?.state.value = .notApproved(remainingAmount: amount)
+      }
+    }
+  }
+  
   func selectPlatform(platform: String) {
     self.selectedPlatformName = platform
     self.sortedRates = self.sortedRates(rates: platformRates.value)
@@ -263,7 +254,7 @@ class SwapV2ViewModel {
   func updateSourceToken(token: Token) {
     self.sourceBalance.value = nil
     self.sourceToken.value = token
-    self.sourceAmountValue = nil
+    self.sourceAmount.value = nil
     self.selectedPlatformName = nil
     self.reloadSourceBalance()
   }
@@ -280,7 +271,7 @@ class SwapV2ViewModel {
   func swapPair() {
     (sourceBalance.value, destBalance.value) = (destBalance.value, sourceBalance.value)
     (sourceToken.value, destToken.value) = (destToken.value, sourceToken.value)
-    self.sourceAmountValue = nil
+    self.sourceAmount.value = nil
     self.selectedPlatformName = nil
     self.reloadSourceBalance()
     self.reloadDestBalance()
@@ -293,7 +284,7 @@ class SwapV2ViewModel {
     guard let amount = self.sourceAmount.value, !amount.isZero else {
       return
     }
-    reloadRates(amount: amount, withFetchingRefPrice: false)
+    reloadRates(amount: amount)
   }
   
   private func sortedRates(rates: [Rate]) -> [Rate] {
@@ -317,26 +308,6 @@ class SwapV2ViewModel {
     let rateBigInt = BigInt(rateUSDDouble * pow(10.0, Double(decimals)))
     let feeUSD = (estGas * gasPrice * rateBigInt) / BigInt(10).power(decimals)
     return feeUSD
-  }
-  
-  private func calculateEstimatedGasFeeString(rate: Rate) -> String {
-    let gasFeeUSD = self.getGasFeeUSD(estGas: BigInt(rate.estimatedGas), gasPrice: gasPrice)
-    let gasFeeUSDString = NumberFormatUtils.gasFee(value: gasFeeUSD)
-    let typeString: String = {
-      switch self.selectedGasPriceType {
-      case .superFast:
-        return "super.fast".toBeLocalised()
-      case .fast:
-        return "fast".toBeLocalised()
-      case .medium:
-        return "regular".toBeLocalised()
-      case .slow:
-        return "slow".toBeLocalised()
-      case .custom:
-        return "advanced".toBeLocalised()
-      }
-    }()
-    return "$\(gasFeeUSDString) • \(typeString)"
   }
   
   private func createPlatformRatesViewModels(destToken: Token, sortedRates: [Rate]) -> [SwapPlatformItemViewModel] {
@@ -389,6 +360,54 @@ class SwapV2ViewModel {
     }
   }
   
+  private func getPriceImpactString(rate: Rate) -> String {
+    let change = Double(rate.priceImpact) / 100
+    self.priceImpactState.value = self.getPriceImpactState(change: change)
+    return "\(String(format: "%.2f", change))%"
+  }
+  
+  private func getMinReceiveString(rate: Rate) -> String {
+    guard let destToken = destToken.value else { return "" }
+    let amount = BigInt(rate.amount) ?? BigInt(0)
+    let minReceivingAmount = amount * BigInt(10000.0 - minRatePercent * 100.0) / BigInt(10000.0)
+    return "\(NumberFormatUtils.amount(value: minReceivingAmount, decimals: destToken.decimals)) \(destToken.symbol)"
+  }
+  
+  private func getEstimatedNetworkFeeString(rate: Rate) -> String {
+    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed), gasPrice: gasPrice)
+    let typeString: String = {
+      switch self.selectedGasPriceType {
+      case .superFast:
+        return "super.fast".toBeLocalised()
+      case .fast:
+        return "fast".toBeLocalised()
+      case .medium:
+        return "regular".toBeLocalised()
+      case .slow:
+        return "slow".toBeLocalised()
+      case .custom:
+        return "advanced".toBeLocalised()
+      }
+    }()
+    return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
+  }
+  
+  private func getMaxNetworkFeeString(rate: Rate) -> String {
+    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estimatedGas), gasPrice: gasPrice)
+    return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
+  }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidChangeAddress, object: nil)
+    NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidSwitchChain, object: nil)
+    timer?.invalidate()
+    timer = nil
+  }
+  
+}
+
+extension SwapV2ViewModel {
+  
   private func observeNotifications() {
     NotificationCenter.default.addObserver(
       self,
@@ -411,7 +430,7 @@ class SwapV2ViewModel {
       sourceBalance.value = nil
       destBalance.value = nil
       destToken.value = nil
-      sourceAmountValue = nil
+      sourceAmount.value = nil
       loadBaseToken()
       reloadSourceBalance()
     }
@@ -425,10 +444,13 @@ class SwapV2ViewModel {
     reloadDestBalance()
   }
   
-  deinit {
-    NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidChangeAddress, object: nil)
-  }
   
+  func scheduleFetchingBalance() {
+    timer = Timer.scheduledTimer(withTimeInterval: fetchingBalanceInterval, repeats: true, block: { [weak self] _ in
+      self?.reloadSourceBalance()
+      self?.reloadDestBalance()
+    })
+  }
 }
 
 extension SwapV2ViewModel {
@@ -447,8 +469,8 @@ extension SwapV2ViewModel {
   
   func didTapContinue() {
     switch state.value {
-    case .notApproved:
-      approve()
+    case .notApproved(let remainingAmount):
+      approve(remainingAmount)
     case .ready:
       guard let sourceToken = sourceToken.value, let destToken = destToken.value else { return }
       guard let selectedRate = selectedPlatformRate.value else { return }

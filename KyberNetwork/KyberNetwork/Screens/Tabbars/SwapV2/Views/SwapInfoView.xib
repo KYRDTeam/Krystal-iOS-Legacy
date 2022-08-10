@@ -17,6 +17,7 @@
             <connections>
                 <outlet property="iconImageView" destination="j1n-fn-l6g" id="Lvj-Ad-HkX"/>
                 <outlet property="titleLabel" destination="zZ5-mM-0mh" id="R30-6L-UCJ"/>
+                <outlet property="underlineView" destination="NTv-cN-Lag" id="VtK-Pn-yB1"/>
                 <outlet property="valueLabel" destination="STU-UO-Bs8" id="h6a-8u-PB8"/>
             </connections>
         </placeholder>
@@ -34,6 +35,13 @@
                             <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NTv-cN-Lag" customClass="DashedLineView" customModule="Krystal" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="80" width="28" height="1"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="InG-ym-7uK"/>
+                            </constraints>
+                        </view>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zlE-6Z-ES9">
                             <rect key="frame" x="304" y="61.5" width="75" height="16"/>
                             <subviews>
@@ -55,9 +63,12 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="NTv-cN-Lag" firstAttribute="leading" secondItem="zZ5-mM-0mh" secondAttribute="leading" id="G5W-P3-N7v"/>
                         <constraint firstAttribute="trailing" secondItem="zlE-6Z-ES9" secondAttribute="trailing" id="Q9V-zP-99H"/>
                         <constraint firstItem="zZ5-mM-0mh" firstAttribute="leading" secondItem="DqI-Xs-4I6" secondAttribute="leading" id="W4W-Is-QUC"/>
                         <constraint firstItem="zlE-6Z-ES9" firstAttribute="centerY" secondItem="zZ5-mM-0mh" secondAttribute="centerY" id="eBB-fq-ePI"/>
+                        <constraint firstItem="NTv-cN-Lag" firstAttribute="trailing" secondItem="zZ5-mM-0mh" secondAttribute="trailing" id="mkK-FE-lbq"/>
+                        <constraint firstItem="NTv-cN-Lag" firstAttribute="top" secondItem="zZ5-mM-0mh" secondAttribute="bottom" constant="2" id="rCQ-DN-3at"/>
                         <constraint firstItem="zZ5-mM-0mh" firstAttribute="centerY" secondItem="DqI-Xs-4I6" secondAttribute="centerY" id="sm7-d9-kkl"/>
                     </constraints>
                 </view>
