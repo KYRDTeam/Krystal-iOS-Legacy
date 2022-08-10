@@ -28,3 +28,5 @@ class WalletObject: Object {
     return .init(id: id, importType: KImportType(rawValue: importType) ?? .mnemonic, name: name)
   }
 }
+
+
