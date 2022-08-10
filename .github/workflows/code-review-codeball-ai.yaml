@@ -20,3 +20,8 @@ jobs:
     steps:
       - name: Codeball AI Code Review
         uses: sturdy-dev/codeball-action@v2.3.0
+        with:
+          approvePullRequests: "true"
+          labelPullRequestsWhenApproved: "true"
+          labelPullRequestsWhenReviewNeeded: "true"
+          failJobsWhenReviewNeeded: "true"
