@@ -37,12 +37,23 @@ class SwapRepository {
   }
   
   func getBalance(tokenAddress: String, address: String, completion: @escaping (BigInt?, String) -> ()) {
-    KNGeneralProvider.shared.getTokenBalance(for: address, contract: tokenAddress) { result in
-      switch result {
-      case .success(let amount):
-        completion(amount, tokenAddress)
-      case .failure:
-        completion(nil, tokenAddress)
+    if tokenAddress == KNGeneralProvider.shared.quoteTokenObject.address { // is native token
+      KNGeneralProvider.shared.getETHBalanace(for: address) { result in
+        switch result {
+        case .success(let balance):
+          completion(balance.value, tokenAddress)
+        case .failure:
+          completion(nil, tokenAddress)
+        }
+      }
+    } else {
+      KNGeneralProvider.shared.getTokenBalance(for: address, contract: tokenAddress) { result in
+        switch result {
+        case .success(let amount):
+          completion(amount, tokenAddress)
+        case .failure:
+          completion(nil, tokenAddress)
+        }
       }
     }
   }

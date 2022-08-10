@@ -443,9 +443,9 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   @objc func sourceBalanceTapped() {
-    let sourceBalance = viewModel.sourceBalance.value ?? .zero
     guard let decimals = viewModel.sourceToken.value?.decimals else { return }
-    let allBalanceText = "\(NumberFormatUtils.amount(value: sourceBalance, decimals: decimals))"
+    let maxAvailableAmount = viewModel.maxAvailableSourceTokenAmount
+    let allBalanceText = NumberFormatUtils.amount(value: maxAvailableAmount, decimals: decimals)
     sourceTextField.text = allBalanceText
     onSourceAmountChange(value: allBalanceText)
   }
@@ -544,7 +544,18 @@ extension SwapV2ViewController {
   
   func onSourceAmountChange(value: String) {
     let doubleValue = Double(value) ?? 0
-    viewModel.sourceAmountValue = doubleValue
+    guard let sourceToken = viewModel.sourceToken.value, let sourceBalance = viewModel.sourceBalance.value else { return }
+    let amountToChange = BigInt(doubleValue * pow(10.0, Double(sourceToken.decimals)))
+  
+    if amountToChange > viewModel.maxAvailableSourceTokenAmount && amountToChange <= sourceBalance {
+      showSuccessTopBannerMessage(
+        message: String(format: Strings.swapSmallAmountOfQuoteTokenUsedForFee, KNGeneralProvider.shared.quoteToken)
+      )
+      sourceTextField.text = NumberFormatUtils.amount(value: viewModel.maxAvailableSourceTokenAmount, decimals: sourceToken.decimals)
+      viewModel.sourceAmount.value = viewModel.maxAvailableSourceTokenAmount
+    } else {
+      viewModel.sourceAmount.value = amountToChange
+    }
   }
   
   func onSelectPlatformRateAt(index: Int) {
