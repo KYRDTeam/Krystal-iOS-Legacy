@@ -64,7 +64,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="600"/>
                             <subviews>
                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OBt-LS-t3j">
-                                    <rect key="frame" x="38" y="556.5" width="299" height="60"/>
+                                    <rect key="frame" x="38" y="556.5" width="315" height="60"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9RH-QG-9xu">
                                             <rect key="frame" x="12" y="18" width="24" height="24"/>
@@ -88,7 +88,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reserve routing is used in this transaction to reduce gas costs" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hwk-JP-91t">
-                                            <rect key="frame" x="44" y="9" width="243" height="42"/>
+                                            <rect key="frame" x="44" y="9" width="259" height="42"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                             <color key="textColor" name="buttonBackgroundColor"/>
                                             <nil key="highlightedColor"/>
@@ -112,14 +112,14 @@
                                     </userDefinedRuntimeAttributes>
                                 </view>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" image="arrow_right_blue" translatesAutoresizingMaskIntoConstraints="NO" id="lVc-Wr-R8E">
-                                    <rect key="frame" x="175.5" y="112" width="24" height="24"/>
+                                    <rect key="frame" x="183.5" y="112" width="24" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="24" id="Vph-nR-k21"/>
                                         <constraint firstAttribute="height" constant="24" id="ZU8-jd-snZ"/>
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hRN-g8-70x">
-                                    <rect key="frame" x="50" y="203" width="32" height="17"/>
+                                    <rect key="frame" x="58" y="203" width="32" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="32" id="mye-pS-zY7"/>
                                     </constraints>
@@ -128,7 +128,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123.765.8 EOS" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ptv-4N-PR6">
-                                    <rect key="frame" x="20" y="113.5" width="142.5" height="21"/>
+                                    <rect key="frame" x="20" y="113.5" width="150.5" height="21"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="21" id="POn-nN-31o"/>
                                     </constraints>
@@ -137,14 +137,14 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zHU-yy-HMd" userLabel="Seperator Line View">
-                                    <rect key="frame" x="48" y="178.5" width="279" height="1"/>
+                                    <rect key="frame" x="48" y="178.5" width="295" height="1"/>
                                     <color key="backgroundColor" name="navButtonBgColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="WTc-ig-gzU"/>
                                     </constraints>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="After this swap you will not have enough ETH for further transactions." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f9G-Wm-HE7">
-                                    <rect key="frame" x="62" y="478.5" width="275" height="28.5"/>
+                                    <rect key="frame" x="62" y="478.5" width="291" height="28.5"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="28.5" id="aJ0-bJ-HSD"/>
                                     </constraints>
@@ -153,7 +153,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oE1-zv-9df">
-                                    <rect key="frame" x="38" y="250.5" width="299" height="220"/>
+                                    <rect key="frame" x="38" y="250.5" width="315" height="220"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Minimum recieved" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oao-ep-AZ6">
                                             <rect key="frame" x="25" y="74" width="103" height="20"/>
@@ -165,7 +165,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c2k-AU-AQn">
-                                            <rect key="frame" x="216" y="69.5" width="57" height="29"/>
+                                            <rect key="frame" x="232" y="69.5" width="57" height="29"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <state key="normal" title="9999999">
                                                 <color key="titleColor" name="textWhiteColor"/>
@@ -193,13 +193,13 @@
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~ 0.213 USD" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yOL-vO-tt5">
-                                            <rect key="frame" x="210.5" y="158.5" width="62.5" height="14"/>
+                                            <rect key="frame" x="226.5" y="158.5" width="62.5" height="14"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                             <color key="textColor" name="normalTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 (Gas price) * 449,605 (Gas limit)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="84l-JF-Cy8">
-                                            <rect key="frame" x="84" y="176.5" width="189" height="14"/>
+                                            <rect key="frame" x="100" y="176.5" width="189" height="14"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                             <color key="textColor" name="normalTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -214,7 +214,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-21.5%" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YWV-Xe-gv3">
-                                            <rect key="frame" x="234.5" y="103.5" width="38.5" height="17"/>
+                                            <rect key="frame" x="250.5" y="103.5" width="38.5" height="17"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="textRedColor"/>
                                             <nil key="highlightedColor"/>
@@ -231,13 +231,13 @@
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00123 ETH" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Hs-Gk-9ve">
-                                            <rect key="frame" x="197" y="133.5" width="76" height="17"/>
+                                            <rect key="frame" x="213" y="133.5" width="76" height="17"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="transaction_setting_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Qok-Ej-4AP">
-                                            <rect key="frame" x="227" y="23.5" width="12" height="12"/>
+                                            <rect key="frame" x="243" y="23.5" width="12" height="12"/>
                                             <color key="tintColor" name="buttonBackgroundColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="12" id="yKV-YF-64V"/>
@@ -245,7 +245,7 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EDIT" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A9F-nw-9SH">
-                                            <rect key="frame" x="241" y="21" width="29" height="17"/>
+                                            <rect key="frame" x="257" y="21" width="29" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="29" id="9l4-Cn-cp2"/>
                                             </constraints>
@@ -254,7 +254,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cAD-cD-YNp">
-                                            <rect key="frame" x="227" y="21" width="43" height="20"/>
+                                            <rect key="frame" x="243" y="21" width="43" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="UTV-KJ-L11"/>
                                             </constraints>
@@ -285,7 +285,7 @@
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.5%" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C8L-Ic-lwS">
-                                            <rect key="frame" x="244" y="47.5" width="29" height="17"/>
+                                            <rect key="frame" x="260" y="47.5" width="29" height="17"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
@@ -338,7 +338,7 @@
                                     </userDefinedRuntimeAttributes>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4hI-jM-AkG">
-                                    <rect key="frame" x="195" y="666.5" width="142" height="38"/>
+                                    <rect key="frame" x="203" y="666.5" width="150" height="38"/>
                                     <color key="backgroundColor" name="buttonBackgroundColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="38" id="a8y-Q5-b8N"/>
@@ -359,7 +359,7 @@
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999999999 ETH" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JeZ-f9-d1J">
-                                    <rect key="frame" x="212.5" y="113.5" width="114.5" height="21"/>
+                                    <rect key="frame" x="220.5" y="113.5" width="114.5" height="21"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="21" id="1hQ-vX-HY8"/>
                                     </constraints>
@@ -368,7 +368,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 EOS = 0.025367 ETH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gkk-HI-Saw">
-                                    <rect key="frame" x="174.5" y="199.5" width="151.5" height="24"/>
+                                    <rect key="frame" x="190.5" y="199.5" width="151.5" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="24" id="FVg-pa-Wac"/>
                                     </constraints>
@@ -386,7 +386,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dDY-qI-vwz">
-                                    <rect key="frame" x="38" y="666.5" width="142" height="38"/>
+                                    <rect key="frame" x="38" y="666.5" width="150" height="38"/>
                                     <color key="backgroundColor" name="navButtonBgColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="38" id="cMi-Hu-39O"/>
@@ -400,7 +400,7 @@
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price impact is high. You may want to reduce your swap amount for a better rate." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NUm-Ao-hb7">
-                                    <rect key="frame" x="48" y="514.5" width="279" height="33"/>
+                                    <rect key="frame" x="48" y="514.5" width="295" height="33"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="33" id="iIP-nb-5Ht"/>
                                     </constraints>
@@ -442,13 +442,13 @@
                                     </constraints>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~ $3,4324 USD" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gkf-4M-ngk">
-                                    <rect key="frame" x="234" y="138.5" width="93" height="17"/>
+                                    <rect key="frame" x="250" y="138.5" width="93" height="17"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="normalTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~ $3,4324 USD" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="clK-Te-2PF">
-                                    <rect key="frame" x="69.5" y="138.5" width="93" height="17"/>
+                                    <rect key="frame" x="77.5" y="138.5" width="93" height="17"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="normalTextColor"/>
                                     <nil key="highlightedColor"/>

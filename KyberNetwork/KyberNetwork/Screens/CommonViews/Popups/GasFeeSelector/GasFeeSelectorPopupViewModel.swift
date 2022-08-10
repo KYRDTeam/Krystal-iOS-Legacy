@@ -38,14 +38,6 @@ extension KNSelectedGasPriceType {
   }
 }
 
-enum KAdvancedSettingsMinRateType {
-  case zeroPointOne
-  case zeroPointFive
-  case onePercent
-  case anyRate
-  case custom(value: Double)
-}
-
 enum GasFeeSelectorPopupViewEvent {
   case infoPressed
   case gasPriceChanged(type: KNSelectedGasPriceType, value: BigInt)

@@ -848,6 +848,12 @@
 		C3308F5C27B66D510045C569 /* MultiSendApproveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3308F5A27B66D510045C569 /* MultiSendApproveViewController.swift */; };
 		C3308F5D27B66D510045C569 /* MultiSendApproveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3308F5B27B66D510045C569 /* MultiSendApproveViewController.xib */; };
 		C331133E2629753200E6F7E1 /* GetSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C331133D2629753200E6F7E1 /* GetSymbol.swift */; };
+		C3319B0728A35B8700E5620A /* SettingExpertModeSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3319B0528A35B8700E5620A /* SettingExpertModeSwitchCell.swift */; };
+		C3319B0828A35B8700E5620A /* SettingExpertModeSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3319B0628A35B8700E5620A /* SettingExpertModeSwitchCell.xib */; };
+		C3319B0B28A36C6D00E5620A /* SettingAdvancedModeFormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3319B0928A36C6D00E5620A /* SettingAdvancedModeFormCell.swift */; };
+		C3319B0C28A36C6D00E5620A /* SettingAdvancedModeFormCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3319B0A28A36C6D00E5620A /* SettingAdvancedModeFormCell.xib */; };
+		C3319B0F28A3973300E5620A /* SettingBasicAdvancedFormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3319B0D28A3973300E5620A /* SettingBasicAdvancedFormCell.swift */; };
+		C3319B1028A3973300E5620A /* SettingBasicAdvancedFormCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3319B0E28A3973300E5620A /* SettingBasicAdvancedFormCell.xib */; };
 		C333A6C927BA5123003A6C6B /* ApproveTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C333A6C727BA5123003A6C6B /* ApproveTokenCell.swift */; };
 		C333A6CA27BA5123003A6C6B /* ApproveTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C333A6C827BA5123003A6C6B /* ApproveTokenCell.xib */; };
 		C334A865283354C3006B3D55 /* KeyboardTypingUltil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C334A864283354C3006B3D55 /* KeyboardTypingUltil.swift */; };
@@ -883,6 +889,12 @@
 		C33F749025E8E8AF0065F333 /* GrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33F748F25E8E8AE0065F333 /* GrowingTextView.swift */; };
 		C3409E1A25AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3409E1825AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift */; };
 		C3409E1B25AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3409E1925AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib */; };
+		C344975B28A20C4900028AFB /* SlippageRateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C344975928A20C4800028AFB /* SlippageRateCell.swift */; };
+		C344975C28A20C4900028AFB /* SlippageRateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C344975A28A20C4800028AFB /* SlippageRateCell.xib */; };
+		C344975F28A24E5B00028AFB /* SettingSegmentedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C344975D28A24E5B00028AFB /* SettingSegmentedCell.swift */; };
+		C344976028A24E5B00028AFB /* SettingSegmentedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C344975E28A24E5B00028AFB /* SettingSegmentedCell.xib */; };
+		C344976328A258CE00028AFB /* SettingBasicModeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C344976128A258CE00028AFB /* SettingBasicModeCell.swift */; };
+		C344976428A258CE00028AFB /* SettingBasicModeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C344976228A258CE00028AFB /* SettingBasicModeCell.xib */; };
 		C347DA3125C02A2B000D6E81 /* EarnCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C347DA3025C02A2B000D6E81 /* EarnCoordinator.swift */; };
 		C347DA3825C02BE3000D6E81 /* EarnMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C347DA3625C02BE3000D6E81 /* EarnMenuViewController.swift */; };
 		C347DA3925C02BE3000D6E81 /* EarnMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C347DA3725C02BE3000D6E81 /* EarnMenuViewController.xib */; };
@@ -1986,6 +1998,12 @@
 		C3308F5A27B66D510045C569 /* MultiSendApproveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendApproveViewController.swift; sourceTree = "<group>"; };
 		C3308F5B27B66D510045C569 /* MultiSendApproveViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSendApproveViewController.xib; sourceTree = "<group>"; };
 		C331133D2629753200E6F7E1 /* GetSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSymbol.swift; sourceTree = "<group>"; };
+		C3319B0528A35B8700E5620A /* SettingExpertModeSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingExpertModeSwitchCell.swift; sourceTree = "<group>"; };
+		C3319B0628A35B8700E5620A /* SettingExpertModeSwitchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingExpertModeSwitchCell.xib; sourceTree = "<group>"; };
+		C3319B0928A36C6D00E5620A /* SettingAdvancedModeFormCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingAdvancedModeFormCell.swift; sourceTree = "<group>"; };
+		C3319B0A28A36C6D00E5620A /* SettingAdvancedModeFormCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingAdvancedModeFormCell.xib; sourceTree = "<group>"; };
+		C3319B0D28A3973300E5620A /* SettingBasicAdvancedFormCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingBasicAdvancedFormCell.swift; sourceTree = "<group>"; };
+		C3319B0E28A3973300E5620A /* SettingBasicAdvancedFormCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingBasicAdvancedFormCell.xib; sourceTree = "<group>"; };
 		C333A6C727BA5123003A6C6B /* ApproveTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApproveTokenCell.swift; sourceTree = "<group>"; };
 		C333A6C827BA5123003A6C6B /* ApproveTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApproveTokenCell.xib; sourceTree = "<group>"; };
 		C334A864283354C3006B3D55 /* KeyboardTypingUltil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardTypingUltil.swift; sourceTree = "<group>"; };
@@ -2021,6 +2039,12 @@
 		C33F748F25E8E8AE0065F333 /* GrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		C3409E1825AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletListSectionTableViewCell.swift; sourceTree = "<group>"; };
 		C3409E1925AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletListSectionTableViewCell.xib; sourceTree = "<group>"; };
+		C344975928A20C4800028AFB /* SlippageRateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlippageRateCell.swift; sourceTree = "<group>"; };
+		C344975A28A20C4800028AFB /* SlippageRateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlippageRateCell.xib; sourceTree = "<group>"; };
+		C344975D28A24E5B00028AFB /* SettingSegmentedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSegmentedCell.swift; sourceTree = "<group>"; };
+		C344975E28A24E5B00028AFB /* SettingSegmentedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingSegmentedCell.xib; sourceTree = "<group>"; };
+		C344976128A258CE00028AFB /* SettingBasicModeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingBasicModeCell.swift; sourceTree = "<group>"; };
+		C344976228A258CE00028AFB /* SettingBasicModeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingBasicModeCell.xib; sourceTree = "<group>"; };
 		C344E91A2621715C00524B8D /* KyberSwap - Crypto ExchangeDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "KyberSwap - Crypto ExchangeDebug.entitlements"; sourceTree = "<group>"; };
 		C347DA3025C02A2B000D6E81 /* EarnCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnCoordinator.swift; sourceTree = "<group>"; };
 		C347DA3625C02BE3000D6E81 /* EarnMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnMenuViewController.swift; sourceTree = "<group>"; };
@@ -5629,6 +5653,25 @@
 			path = ConfirmCancelTransaction;
 			sourceTree = "<group>";
 		};
+		C344975828A20BE200028AFB /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				C344975928A20C4800028AFB /* SlippageRateCell.swift */,
+				C344975A28A20C4800028AFB /* SlippageRateCell.xib */,
+				C344975D28A24E5B00028AFB /* SettingSegmentedCell.swift */,
+				C344975E28A24E5B00028AFB /* SettingSegmentedCell.xib */,
+				C344976128A258CE00028AFB /* SettingBasicModeCell.swift */,
+				C344976228A258CE00028AFB /* SettingBasicModeCell.xib */,
+				C3319B0528A35B8700E5620A /* SettingExpertModeSwitchCell.swift */,
+				C3319B0628A35B8700E5620A /* SettingExpertModeSwitchCell.xib */,
+				C3319B0928A36C6D00E5620A /* SettingAdvancedModeFormCell.swift */,
+				C3319B0A28A36C6D00E5620A /* SettingAdvancedModeFormCell.xib */,
+				C3319B0D28A3973300E5620A /* SettingBasicAdvancedFormCell.swift */,
+				C3319B0E28A3973300E5620A /* SettingBasicAdvancedFormCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		C347DA2D25C0298F000D6E81 /* Earn */ = {
 			isa = PBXGroup;
 			children = (
@@ -5779,6 +5822,7 @@
 		C3A6E01E28A101C40079926E /* TransactionSettings */ = {
 			isa = PBXGroup;
 			children = (
+				C344975828A20BE200028AFB /* Cells */,
 				C3A6E01F28A103730079926E /* TransactionSettingsViewController.swift */,
 				C3A6E02028A103730079926E /* TransactionSettingsViewController.xib */,
 			);
@@ -6270,6 +6314,7 @@
 				25073D2B211AF20D00833C92 /* Montserrat-ExtraBold.ttf in Resources */,
 				C3EE06C7267A15E50090B432 /* Karla-ExtraLight.ttf in Resources */,
 				25929C8E20DA5CC10045CFA3 /* SFCompactText-RegularItalic.otf in Resources */,
+				C3319B1028A3973300E5620A /* SettingBasicAdvancedFormCell.xib in Resources */,
 				255C98902122E22A0087B3E2 /* KSendTokenViewController.xib in Resources */,
 				C35136E726CCE53D006A55F4 /* OverviewNFTTableViewCell.xib in Resources */,
 				C3FA3D982591AB3E00E17B47 /* ChooseRateViewController.xib in Resources */,
@@ -6322,6 +6367,7 @@
 				25929C6E20DA5C760045CFA3 /* SF-Pro-Display-Thin.otf in Resources */,
 				7E4793CA2859BC8400F15D3B /* AdvanceSearchPortfolioCell.xib in Resources */,
 				C37AC1E424A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib in Resources */,
+				C3319B0C28A36C6D00E5620A /* SettingAdvancedModeFormCell.xib in Resources */,
 				C333A6CA27BA5123003A6C6B /* ApproveTokenCell.xib in Resources */,
 				7EFE440127144533006CF502 /* RewardsViewController.xib in Resources */,
 				25929C9520DA5CC10045CFA3 /* SFCompactText-Heavy.otf in Resources */,
@@ -6404,6 +6450,7 @@
 				C31F74AA25DCEDA0008B21F7 /* OverviewDepositViewController.xib in Resources */,
 				C37CC09B245803CA0081FB32 /* Roboto-BlackItalic.ttf in Resources */,
 				7E6F510527326122002DA0B2 /* OverviewTotalInfoCell.xib in Resources */,
+				C3319B0828A35B8700E5620A /* SettingExpertModeSwitchCell.xib in Resources */,
 				257B84AF2074D7B9003DD40E /* Assets.xcassets in Resources */,
 				C3A6911325638DE700F57756 /* Lato-LightItalic.ttf in Resources */,
 				25073D26211AF20D00833C92 /* Montserrat-Light.ttf in Resources */,
@@ -6465,6 +6512,7 @@
 				25485B052272F938004B7454 /* KNTransactionFilterTableViewCell.xib in Resources */,
 				A6DA40FE27F7007A0078C58E /* ExploreSectionHeaderView.xib in Resources */,
 				25073D1A211AF20D00833C92 /* Montserrat-ExtraLightItalic.ttf in Resources */,
+				C344976428A258CE00028AFB /* SettingBasicModeCell.xib in Resources */,
 				2567B3F1216B10060006D963 /* index.html in Resources */,
 				C37CC097245803CA0081FB32 /* Roboto-BoldItalic.ttf in Resources */,
 				25929C6D20DA5C760045CFA3 /* SF-Pro-Display-Heavy.otf in Resources */,
@@ -6478,6 +6526,7 @@
 				7EC892DC27DD10A9000C5980 /* FiatCryptoHistoryCell.xib in Resources */,
 				C3A2419C2567AD610073703C /* WalletsListViewController.xib in Resources */,
 				C3F71C852618A47200285935 /* KrytalHistoryViewController.xib in Resources */,
+				C344976028A24E5B00028AFB /* SettingSegmentedCell.xib in Resources */,
 				251ABCB120578F6E0069687F /* config_env_mainnet_test.json in Resources */,
 				25929C6020DA5C760045CFA3 /* SF-Pro-Display-ThinItalic.otf in Resources */,
 				7E6F51092733895D002DA0B2 /* OverviewSummaryCell.xib in Resources */,
@@ -6499,6 +6548,7 @@
 				7EFE440A2715855D006CF502 /* ClaimButtonTableViewCell.xib in Resources */,
 				7EFE440627156622006CF502 /* RewardTableViewCell.xib in Resources */,
 				C37CC09C245803CA0081FB32 /* Roboto-Bold.ttf in Resources */,
+				C344975C28A20C4900028AFB /* SlippageRateCell.xib in Resources */,
 				251ABCB520578F6E0069687F /* config_env_staging.json in Resources */,
 				C37CC096245803CA0081FB32 /* Roboto-ThinItalic.ttf in Resources */,
 				C3A6911725638DE700F57756 /* Lato-Regular.ttf in Resources */,
@@ -7058,6 +7108,7 @@
 				7E01EFEB2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.swift in Sources */,
 				A6B3CD592811C07C005D0D66 /* PendingInternalHistoryTransactonViewModel.swift in Sources */,
 				7ECCB1FA286170F700499FA0 /* Portfolio.swift in Sources */,
+				C344976328A258CE00028AFB /* SettingBasicModeCell.swift in Sources */,
 				C31371FF260490A1003D432B /* ShareReferralLinkViewController.swift in Sources */,
 				C32656B0266F546100C69561 /* ActionControllerSettings.swift in Sources */,
 				C33BB80827955C9A00851BC6 /* ABIType.swift in Sources */,
@@ -7240,6 +7291,7 @@
 				A64CC665289405B8006BA1C6 /* Web3Factory.swift in Sources */,
 				C33BB80027955BC800851BC6 /* ABIEncoder.swift in Sources */,
 				C39D3FE126FB33610021DF8A /* History.swift in Sources */,
+				C3319B0B28A36C6D00E5620A /* SettingAdvancedModeFormCell.swift in Sources */,
 				7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */,
 				A651944F28362E54008F4AEB /* TxInfoCell.swift in Sources */,
 				A65CC8F328698C11008620E2 /* ChartType.swift in Sources */,
@@ -7378,6 +7430,7 @@
 				7EFE71492817DC2E00476184 /* SolFeeCoordinator.swift in Sources */,
 				291F52A51F6B762300B369AB /* EtherServiceRequest.swift in Sources */,
 				C6FE41812383A0C10096AAD8 /* KNWalletConnectViewController.swift in Sources */,
+				C3319B0728A35B8700E5620A /* SettingExpertModeSwitchCell.swift in Sources */,
 				CCA4FE361FD4282400749AE4 /* DeviceChecker.swift in Sources */,
 				C3F71C90261AB0FF00285935 /* ClaimRewardViewController.swift in Sources */,
 				A65C7A742818E3C6000FA9CE /* NavigationBar.swift in Sources */,
@@ -7448,6 +7501,7 @@
 				25696F6320BE8973002CC53F /* KNSetSlippageRateViewController.swift in Sources */,
 				25CE6F912073E0BC00A3A2F9 /* KNHistoryViewController.swift in Sources */,
 				2912CCF91F6A830700C6CBE3 /* AppDelegate.swift in Sources */,
+				C3319B0F28A3973300E5620A /* SettingBasicAdvancedFormCell.swift in Sources */,
 				C334A865283354C3006B3D55 /* KeyboardTypingUltil.swift in Sources */,
 				A6B3CD462811BC9B005D0D66 /* KNTransactionHistoryViewModel.swift in Sources */,
 				29A0E1851F706B8C00BAAAED /* String.swift in Sources */,
@@ -7477,6 +7531,7 @@
 				A6B3CD3F28117806005D0D66 /* KNTransactionHistoryViewController.swift in Sources */,
 				C314F1692785525B00E3599B /* DappBrowerTransactionConfirmPopup.swift in Sources */,
 				25C45ACD20AC475700CDA1FF /* KNImportWalletViewController.swift in Sources */,
+				C344975B28A20C4900028AFB /* SlippageRateCell.swift in Sources */,
 				C68AA276237A6BE900B9EC35 /* KNTransactionStatusPopUp.swift in Sources */,
 				73ED85A72034BFEF00593BF3 /* UITextFieldAdditions.swift in Sources */,
 				C3A58E2426D49BCF00EE3801 /* OverviewAddNFTViewController.swift in Sources */,
@@ -7498,6 +7553,7 @@
 				C337E15A27743118001C8B03 /* DappCommand.swift in Sources */,
 				29BB94951F6FC54C009B09CC /* EthereumUnit.swift in Sources */,
 				29C70C712016C7780072E454 /* SentTransaction.swift in Sources */,
+				C344975F28A24E5B00028AFB /* SettingSegmentedCell.swift in Sources */,
 				A6BAD3D4287446F30016E127 /* TradingViewController.swift in Sources */,
 				C325984626D345A100F87D25 /* OverviewShareNFTViewController.swift in Sources */,
 				C37AF0C725CCFB29006FB880 /* EarnSwapViewController.swift in Sources */,
