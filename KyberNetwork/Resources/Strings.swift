@@ -201,4 +201,9 @@ struct Strings {
   static let swapApproveWarn = "swap.warn_approve".toBeLocalised()
   static let swapRateNotFound = "swap.rate_not_found".toBeLocalised()
   static let swapSmallAmountOfQuoteTokenUsedForFee = "swap.small_amount_of_quote_token_will_be_used".toBeLocalised()
+  static let swapSlippageInfo = "swap.slippage_i".toBeLocalised()
+  static let swapMinReceiveInfo = "swap.min_received_i".toBeLocalised()
+  static let swapTxnFeeInfo = "swap.txn_fee_i".toBeLocalised()
+  static let swapTxnMaxFeeInfo = "swap.txn_fee_max_i".toBeLocalised()
+  static let swapPriceImpactInfo = "swap.price_impact_i".toBeLocalised()
 }
