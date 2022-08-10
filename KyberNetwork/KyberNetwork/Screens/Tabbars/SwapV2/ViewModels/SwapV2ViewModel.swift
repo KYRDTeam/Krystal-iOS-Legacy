@@ -26,22 +26,18 @@ class SwapV2ViewModel {
       self.selectedPlatformRate.value = platformRates.value.first(where: { rate in
         rate.platform == selectedPlatformName
       })
-      guard let destToken = destToken.value else {
-        return
-      }
       self.rateString.value = self.getRateString()
       self.minReceiveString.value = self.selectedPlatformRate.value.map {
-        let amount = BigInt($0.amount) ?? BigInt(0)
-        let minReceivingAmount = amount * BigInt(10000.0 - minRatePercent * 100.0) / BigInt(10000.0)
-        return "\(NumberFormatUtils.amount(value: minReceivingAmount, decimals: destToken.decimals)) \(destToken.symbol)"
+        return self.getMinReceiveString(rate: $0)
       }
       self.estimatedGasFeeString.value = self.selectedPlatformRate.value.map {
-        return self.calculateEstimatedGasFeeString(rate: $0)
+        return self.getEstimatedNetworkFeeString(rate: $0)
+      }
+      self.maxGasFeeString.value = self.selectedPlatformRate.value.map {
+        return self.getMaxNetworkFeeString(rate: $0)
       }
       self.priceImpactString.value = self.selectedPlatformRate.value.map {
-        let change = Double($0.priceImpact) / 100
-        self.priceImpactState.value = self.getPriceImpactState(change: change)
-        return "\(String(format: "%.2f", change))%"
+        return self.getPriceImpactString(rate: $0)
       }
     }
   }
@@ -314,26 +310,6 @@ class SwapV2ViewModel {
     return feeUSD
   }
   
-  private func calculateEstimatedGasFeeString(rate: Rate) -> String {
-    let gasFeeUSD = self.getGasFeeUSD(estGas: BigInt(rate.estimatedGas), gasPrice: gasPrice)
-    let gasFeeUSDString = NumberFormatUtils.gasFee(value: gasFeeUSD)
-    let typeString: String = {
-      switch self.selectedGasPriceType {
-      case .superFast:
-        return "super.fast".toBeLocalised()
-      case .fast:
-        return "fast".toBeLocalised()
-      case .medium:
-        return "regular".toBeLocalised()
-      case .slow:
-        return "slow".toBeLocalised()
-      case .custom:
-        return "advanced".toBeLocalised()
-      }
-    }()
-    return "$\(gasFeeUSDString) • \(typeString)"
-  }
-  
   private func createPlatformRatesViewModels(destToken: Token, sortedRates: [Rate]) -> [SwapPlatformItemViewModel] {
     var savedAmount: BigInt = 0
     if sortedRates.count >= 2 {
@@ -382,6 +358,43 @@ class SwapV2ViewModel {
       let rateString = NumberFormatUtils.rate(value: BigInt(selectedPlatform.rate) ?? .zero, decimals: 18)
       return "1 \(sourceToken.symbol) = \(rateString) \(destToken.symbol)"
     }
+  }
+  
+  private func getPriceImpactString(rate: Rate) -> String {
+    let change = Double(rate.priceImpact) / 100
+    self.priceImpactState.value = self.getPriceImpactState(change: change)
+    return "\(String(format: "%.2f", change))%"
+  }
+  
+  private func getMinReceiveString(rate: Rate) -> String {
+    guard let destToken = destToken.value else { return "" }
+    let amount = BigInt(rate.amount) ?? BigInt(0)
+    let minReceivingAmount = amount * BigInt(10000.0 - minRatePercent * 100.0) / BigInt(10000.0)
+    return "\(NumberFormatUtils.amount(value: minReceivingAmount, decimals: destToken.decimals)) \(destToken.symbol)"
+  }
+  
+  private func getEstimatedNetworkFeeString(rate: Rate) -> String {
+    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed), gasPrice: gasPrice)
+    let typeString: String = {
+      switch self.selectedGasPriceType {
+      case .superFast:
+        return "super.fast".toBeLocalised()
+      case .fast:
+        return "fast".toBeLocalised()
+      case .medium:
+        return "regular".toBeLocalised()
+      case .slow:
+        return "slow".toBeLocalised()
+      case .custom:
+        return "advanced".toBeLocalised()
+      }
+    }()
+    return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
+  }
+  
+  private func getMaxNetworkFeeString(rate: Rate) -> String {
+    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estimatedGas), gasPrice: gasPrice)
+    return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
   }
   
   deinit {

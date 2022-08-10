@@ -265,6 +265,10 @@ class SwapV2ViewController: KNBaseViewController {
       self?.gasFeeInfoView.setValue(value: string, highlighted: true)
     }
     
+    viewModel.maxGasFeeString.observeAndFire(on: self) { [weak self] string in
+      self?.maxGasFeeInfoView.setValue(value: string, highlighted: false)
+    }
+    
     viewModel.priceImpactString.observeAndFire(on: self) { [weak self] string in
       self?.priceImpactInfoView.setValue(value: string, highlighted: false)
     }

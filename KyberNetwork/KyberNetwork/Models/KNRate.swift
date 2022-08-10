@@ -95,5 +95,6 @@ class Rate: Codable {
     let amount: String
     let tradePath: [String]
     var estimatedGas: Int
+    let estGasConsumed: Int
     let priceImpact: Int
 }
