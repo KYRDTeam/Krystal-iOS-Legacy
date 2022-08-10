@@ -19,7 +19,7 @@ class SwapPlatformItemViewModel {
   var savedAmountString: String
   var rate: Rate
   
-  init(platformRate: Rate, isSelected: Bool, quoteToken: TokenObject, destToken: Token, gasFeeUsd: BigInt, showSaveTag: Bool, savedAmount: BigInt) {
+  init(platformRate: Rate, isSelected: Bool, quoteToken: TokenObject, destToken: Token, destTokenPrice: Double, gasFeeUsd: BigInt, showSaveTag: Bool, savedAmount: BigInt) {
     self.rate = platformRate
     self.icon = platformRate.platformIcon
     self.name = platformRate.platformShort
@@ -29,8 +29,7 @@ class SwapPlatformItemViewModel {
     let receivingAmount = BigInt(platformRate.amount) ?? BigInt(0)
     self.amountString = NumberFormatUtils.amount(value: receivingAmount, decimals: destToken.decimals)
     
-    let price = KNTrackerRateStorage.shared.getPriceWithAddress(destToken.address)?.usd ?? 0
-    let amountUSD = receivingAmount * BigInt(price * pow(10.0, 18.0)) / BigInt(10).power(destToken.decimals)
+    let amountUSD = receivingAmount * BigInt(destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(destToken.decimals)
     let formattedAmountUSD = NumberFormatUtils.amount(value: amountUSD, decimals: 18)
     self.amountUsdString = "~$\(formattedAmountUSD)"
     

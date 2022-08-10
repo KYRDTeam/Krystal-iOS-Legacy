@@ -107,9 +107,12 @@ class SwapV2ViewModel {
   var platformRatesViewModels: Observable<[SwapPlatformItemViewModel]> = .init([])
   var sourceBalance: Observable<BigInt?> = .init(nil)
   var destBalance: Observable<BigInt?> = .init(nil)
+  var sourceTokenPrice: Observable<Double?> = .init(nil)
+  var destTokenPrice: Observable<Double?> = .init(nil)
   var selectedPlatformRate: Observable<Rate?> = .init(nil)
   var sourceAmount: Observable<BigInt?> = .init(nil)
   var platformRates: Observable<[Rate]> = .init([])
+  var souceAmountUsdString: Observable<String?> = .init(nil)
   
   var rateString: Observable<String?> = .init(nil)
   var slippageString: Observable<String?> = .init(nil)
@@ -133,14 +136,33 @@ class SwapV2ViewModel {
     self.scheduleFetchingBalance()
     self.observeNotifications()
     self.selfObserve()
+    self.loadSourceTokenPrice()
     self.loadBaseToken()
     self.reloadSourceBalance()
-    self.reloadDestBalance()
+  }
+  
+  func loadSourceTokenPrice() {
+    guard let sourceToken = sourceToken.value else { return }
+    swapRepository.getTokenDetail(tokenAddress: sourceToken.address) { [weak self] token in
+      if token?.address == sourceToken.address { // Needed to handle case swap pair
+        self?.sourceTokenPrice.value = token?.markets["usd"]?.price
+      }
+    }
+  }
+  
+  func loadDestTokenPrice() {
+    guard let destToken = destToken.value else { return }
+    swapRepository.getTokenDetail(tokenAddress: destToken.address) { [weak self] token in
+      if token?.address == destToken.address { // Needed to handle case swap pair
+        self?.destTokenPrice.value = token?.markets["usd"]?.price
+      }
+    }
   }
   
   func loadBaseToken() {
     swapRepository.getCommonBaseTokens { [weak self] tokens in
       self?.destToken.value = tokens.first
+      self?.loadDestTokenPrice()
       self?.reloadDestBalance()
     }
   }
@@ -148,6 +170,7 @@ class SwapV2ViewModel {
   func selfObserve() {
     sourceAmount.observeAndFire(on: self) { [weak self] amount in
       guard let self = self else { return }
+      self.souceAmountUsdString.value = self.getSourceAmountUsdString(amount: amount)
       if amount == nil || amount!.isZero {
         self.selectedPlatformName = nil
         self.state.value = .emptyAmount
@@ -160,6 +183,10 @@ class SwapV2ViewModel {
     }
     platformRates.observe(on: self) { [weak self] rates in
       guard let self = self else { return }
+      if self.destTokenPrice.value == nil { // In case can not get dest token price
+        self.state.value = .rateNotFound
+        return
+      }
       self.selectedPlatformName = rates.first?.platform
       self.sortedRates = self.sortedRates(rates: rates)
       if rates.isEmpty {
@@ -256,6 +283,7 @@ class SwapV2ViewModel {
     self.sourceToken.value = token
     self.sourceAmount.value = nil
     self.selectedPlatformName = nil
+    self.loadSourceTokenPrice()
     self.reloadSourceBalance()
   }
   
@@ -265,6 +293,7 @@ class SwapV2ViewModel {
     self.sourceAmount.value = self.sourceAmount.value // Trigger reload
     self.selectedPlatformName = nil
     self.reloadSourceBalance()
+    self.loadDestTokenPrice()
     self.reloadDestBalance()
   }
   
@@ -273,6 +302,8 @@ class SwapV2ViewModel {
     (sourceToken.value, destToken.value) = (destToken.value, sourceToken.value)
     self.sourceAmount.value = nil
     self.selectedPlatformName = nil
+    self.loadSourceTokenPrice()
+    self.loadDestTokenPrice()
     self.reloadSourceBalance()
     self.reloadDestBalance()
   }
@@ -311,11 +342,13 @@ class SwapV2ViewModel {
   }
   
   private func createPlatformRatesViewModels(destToken: Token, sortedRates: [Rate]) -> [SwapPlatformItemViewModel] {
+    guard let destTokenPrice = destTokenPrice.value else {
+      return []
+    }
     var savedAmount: BigInt = 0
     if sortedRates.count >= 2 {
       let diffAmount = (BigInt(sortedRates[0].amount) ?? BigInt(0)) - (BigInt(sortedRates[1].amount) ?? BigInt(0))
       let diffFee = BigInt(sortedRates[0].estimatedGas) - BigInt(sortedRates[1].estimatedGas)
-      let destTokenPrice = KNTrackerRateStorage.shared.getPriceWithAddress(destToken.address)?.usd ?? 0
       let diffAmountUSD = diffAmount * BigInt(destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(destToken.decimals)
       let diffFeeUSD = diffFee * self.getGasFeeUSD(estGas: diffFee, gasPrice: self.gasPrice)
       savedAmount = diffAmountUSD - diffFeeUSD
@@ -325,6 +358,7 @@ class SwapV2ViewModel {
                                        isSelected: rate.platform == selectedPlatformName,
                                        quoteToken: currentChain.value.quoteTokenObject(),
                                        destToken: destToken,
+                                       destTokenPrice: destTokenPrice,
                                        gasFeeUsd: self.getGasFeeUSD(estGas: BigInt(rate.estimatedGas), gasPrice: self.gasPrice),
                                        showSaveTag: sortedRates.count > 1 && index == 0 && savedAmount > BigInt(0.1 * pow(10.0, 18.0)),
                                        savedAmount: savedAmount)
@@ -397,6 +431,15 @@ class SwapV2ViewModel {
     return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
   }
   
+  private func getSourceAmountUsdString(amount: BigInt?) -> String? {
+    guard let sourceToken = sourceToken.value, let sourceTokenPrice = sourceTokenPrice.value, let amount = amount else {
+      return nil
+    }
+    let amountUSD = amount * BigInt(sourceTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(sourceToken.decimals)
+    let formattedAmountUSD = NumberFormatUtils.amount(value: amountUSD, decimals: 18)
+    return "~$\(formattedAmountUSD)"
+  }
+  
   deinit {
     NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidChangeAddress, object: nil)
     NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidSwitchChain, object: nil)
@@ -440,6 +483,8 @@ extension SwapV2ViewModel {
     currentAddress.value = AppDelegate.session.address
     sourceBalance.value = nil
     destBalance.value = nil
+    loadSourceTokenPrice()
+    loadDestTokenPrice()
     reloadSourceBalance()
     reloadDestBalance()
   }
@@ -447,6 +492,8 @@ extension SwapV2ViewModel {
   
   func scheduleFetchingBalance() {
     timer = Timer.scheduledTimer(withTimeInterval: fetchingBalanceInterval, repeats: true, block: { [weak self] _ in
+      self?.loadSourceTokenPrice()
+      self?.loadDestTokenPrice()
       self?.reloadSourceBalance()
       self?.reloadDestBalance()
     })
