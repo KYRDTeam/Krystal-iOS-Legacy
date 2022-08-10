@@ -6,9 +6,6 @@ on:
       - opened
       - edited
       - synchronize
-  push:
-    branches:
-      - main
 
 concurrency: 
   group: ${{ github.ref }}
