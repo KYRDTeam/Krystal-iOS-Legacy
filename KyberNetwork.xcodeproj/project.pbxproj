@@ -686,6 +686,9 @@
 		A6BA4C9D28A0CEC6002E2B30 /* NumberFormatUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BA4C9C28A0CEC6002E2B30 /* NumberFormatUtils.swift */; };
 		A6BA4CA028A0F0BF002E2B30 /* NumberFormatUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BA4C9F28A0F0BF002E2B30 /* NumberFormatUtilsTests.swift */; };
 		A6BA4CA228A213AD002E2B30 /* SwapState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BA4CA128A213AD002E2B30 /* SwapState.swift */; };
+		A6BA4CA428A24F5D002E2B30 /* PriceImpactState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BA4CA328A24F5D002E2B30 /* PriceImpactState.swift */; };
+		A6BA4CAB28A35870002E2B30 /* SwapV2Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BA4CAA28A35870002E2B30 /* SwapV2Coordinator.swift */; };
+		A6BA4CAD28A37204002E2B30 /* SwapObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BA4CAC28A37204002E2B30 /* SwapObject.swift */; };
 		A6BAD3D2287445B80016E127 /* TradingView+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAD3D1287445B80016E127 /* TradingView+Action.swift */; };
 		A6BAD3D4287446F30016E127 /* TradingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAD3D3287446F30016E127 /* TradingViewController.swift */; };
 		A6BB3C1F28605CDA0097EB75 /* EthereumNodeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB3C1E28605CDA0097EB75 /* EthereumNodeRequest.swift */; };
@@ -714,7 +717,6 @@
 		A6D38BF32899118F003579F2 /* SwapV2PlatformCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D38BF12899118F003579F2 /* SwapV2PlatformCell.swift */; };
 		A6D38BF42899118F003579F2 /* SwapV2PlatformCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6D38BF22899118F003579F2 /* SwapV2PlatformCell.xib */; };
 		A6D38BF8289915F8003579F2 /* SwapPlatformItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D38BF7289915F8003579F2 /* SwapPlatformItemViewModel.swift */; };
-		A6D38BFB28991683003579F2 /* PlatformRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D38BFA28991683003579F2 /* PlatformRate.swift */; };
 		A6D38BFD289916F7003579F2 /* SwapV2ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D38BFC289916F7003579F2 /* SwapV2ViewModel.swift */; };
 		A6D38BFF289A3A18003579F2 /* CircularArrowProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D38BFE289A3A18003579F2 /* CircularArrowProgressView.swift */; };
 		A6D38C01289A8ED0003579F2 /* CircularArrowProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6D38C00289A8ED0003579F2 /* CircularArrowProgressView.xib */; };
@@ -1841,6 +1843,9 @@
 		A6BA4C9C28A0CEC6002E2B30 /* NumberFormatUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatUtils.swift; sourceTree = "<group>"; };
 		A6BA4C9F28A0F0BF002E2B30 /* NumberFormatUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatUtilsTests.swift; sourceTree = "<group>"; };
 		A6BA4CA128A213AD002E2B30 /* SwapState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapState.swift; sourceTree = "<group>"; };
+		A6BA4CA328A24F5D002E2B30 /* PriceImpactState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceImpactState.swift; sourceTree = "<group>"; };
+		A6BA4CAA28A35870002E2B30 /* SwapV2Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapV2Coordinator.swift; sourceTree = "<group>"; };
+		A6BA4CAC28A37204002E2B30 /* SwapObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapObject.swift; sourceTree = "<group>"; };
 		A6BAD3D1287445B80016E127 /* TradingView+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TradingView+Action.swift"; sourceTree = "<group>"; };
 		A6BAD3D3287446F30016E127 /* TradingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingViewController.swift; sourceTree = "<group>"; };
 		A6BB3C1E28605CDA0097EB75 /* EthereumNodeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumNodeRequest.swift; sourceTree = "<group>"; };
@@ -1869,7 +1874,6 @@
 		A6D38BF12899118F003579F2 /* SwapV2PlatformCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapV2PlatformCell.swift; sourceTree = "<group>"; };
 		A6D38BF22899118F003579F2 /* SwapV2PlatformCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwapV2PlatformCell.xib; sourceTree = "<group>"; };
 		A6D38BF7289915F8003579F2 /* SwapPlatformItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapPlatformItemViewModel.swift; sourceTree = "<group>"; };
-		A6D38BFA28991683003579F2 /* PlatformRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformRate.swift; sourceTree = "<group>"; };
 		A6D38BFC289916F7003579F2 /* SwapV2ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapV2ViewModel.swift; sourceTree = "<group>"; };
 		A6D38BFE289A3A18003579F2 /* CircularArrowProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularArrowProgressView.swift; sourceTree = "<group>"; };
 		A6D38C00289A8ED0003579F2 /* CircularArrowProgressView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CircularArrowProgressView.xib; sourceTree = "<group>"; };
@@ -5006,12 +5010,12 @@
 			path = Scanner;
 			sourceTree = "<group>";
 		};
-		A6977DEF289BD07D00B2B6BD /* Services */ = {
+		A6977DEF289BD07D00B2B6BD /* Repository */ = {
 			isa = PBXGroup;
 			children = (
 				A6977DF0289BD08A00B2B6BD /* SwapRepository.swift */,
 			);
-			path = Services;
+			path = Repository;
 			sourceTree = "<group>";
 		};
 		A6A8A1EE28168B9600F7AB88 /* LoadingCell */ = {
@@ -5121,6 +5125,15 @@
 			path = Format;
 			sourceTree = "<group>";
 		};
+		A6BA4CA928A3584C002E2B30 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				A6BA4CAA28A35870002E2B30 /* SwapV2Coordinator.swift */,
+				A6BA4CAC28A37204002E2B30 /* SwapObject.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		A6BB3C2028605E260097EB75 /* Signers */ = {
 			isa = PBXGroup;
 			children = (
@@ -5219,8 +5232,8 @@
 		A6D38BE82898E418003579F2 /* SwapV2 */ = {
 			isa = PBXGroup;
 			children = (
-				A6977DEF289BD07D00B2B6BD /* Services */,
-				A6D38BF92899167B003579F2 /* Models */,
+				A6BA4CA928A3584C002E2B30 /* Coordinator */,
+				A6977DEF289BD07D00B2B6BD /* Repository */,
 				A6D38BF6289915DD003579F2 /* ViewModels */,
 				A6D38BF5289915D2003579F2 /* Views */,
 			);
@@ -5252,6 +5265,7 @@
 				A6D38BF7289915F8003579F2 /* SwapPlatformItemViewModel.swift */,
 				A6D38BFC289916F7003579F2 /* SwapV2ViewModel.swift */,
 				A6BA4CA128A213AD002E2B30 /* SwapState.swift */,
+				A6BA4CA328A24F5D002E2B30 /* PriceImpactState.swift */,
 				7E7C074828A36887002E8068 /* SwapSummaryViewModel.swift */,
 			);
 			path = ViewModels;
@@ -7203,7 +7217,6 @@
 				C315AD5E240F845200620096 /* CustomAxisValueFormatter.swift in Sources */,
 				253F50E221E5B40E0068813D /* KNPromoCodeCoordinator.swift in Sources */,
 				29C80D511FB67A110037B1E0 /* ArrayResponse.swift in Sources */,
-				A6D38BFB28991683003579F2 /* PlatformRate.swift in Sources */,
 				257A377E205B7BFA00E86794 /* UINavigationController+Kyber.swift in Sources */,
 				7E6F510427326122002DA0B2 /* OverviewTotalInfoCell.swift in Sources */,
 				C32BD4A3268DDC7E00ABAA59 /* UISegmentedControl+Kyber.swift in Sources */,
@@ -7295,6 +7308,7 @@
 				29BDF1A11FEE51A80023A45F /* GasLimitConfiguration.swift in Sources */,
 				25696F4E20BD162F002CC53F /* XibViewLoader.swift in Sources */,
 				255C988F2122E22A0087B3E2 /* KSendTokenViewController.swift in Sources */,
+				A6BA4CAD28A37204002E2B30 /* SwapObject.swift in Sources */,
 				7E0AE5C427D86A2A0078D135 /* RateTransactionPopupViewController.swift in Sources */,
 				C3F71C8A2618A57B00285935 /* ClaimHistoryTableViewCell.swift in Sources */,
 				29F1C85120032688003780D8 /* Address.swift in Sources */,
@@ -7496,6 +7510,7 @@
 				259925B920EF2D4900CCF2D6 /* KNContactTableViewCell.swift in Sources */,
 				C331133E2629753200E6F7E1 /* GetSymbol.swift in Sources */,
 				2561455B20C795AF00FB00CF /* KNChartObject.swift in Sources */,
+				A6BA4CAB28A35870002E2B30 /* SwapV2Coordinator.swift in Sources */,
 				C3308F5C27B66D510045C569 /* MultiSendApproveViewController.swift in Sources */,
 				C32656AF266F546100C69561 /* ActionCell.swift in Sources */,
 				C37AF0CD25CCFB47006FB880 /* EarnSwapConfirmViewController.swift in Sources */,
@@ -7671,6 +7686,7 @@
 				A6E6C9D32817208C00EEB2E6 /* KrystalNetworkError.swift in Sources */,
 				7EB47FFB27D077DF00FB28D9 /* SearchFiatCryptoViewController.swift in Sources */,
 				257B84A62074C2B9003DD40E /* KNDebugMenuViewController.swift in Sources */,
+				A6BA4CA428A24F5D002E2B30 /* PriceImpactState.swift in Sources */,
 				C3F71CA0261C084C00285935 /* EarnTutorialViewController.swift in Sources */,
 				A6E6C9CD28170D4B00EEB2E6 /* DefaultTransactionRepository.swift in Sources */,
 				291794FB1F95DC2200539A30 /* Web3Swift.swift in Sources */,

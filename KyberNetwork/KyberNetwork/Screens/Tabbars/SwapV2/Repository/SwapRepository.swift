@@ -8,6 +8,7 @@
 import Foundation
 import BigInt
 import Moya
+import KrystalWallets
 
 class SwapRepository {
   
@@ -63,6 +64,22 @@ class SwapRepository {
         completion(allowance, tokenAddress)
       case .failure:
         completion(0, tokenAddress)
+      }
+    }
+  }
+  
+  func getCommonBaseTokens(completion: @escaping ([Token]) -> ()) {
+    provider.request(.getCommonBaseToken) { result in
+      switch result {
+      case .success(let response):
+        if let json = try? response.mapJSON() as? JSONDictionary ?? [:], let tokenJsons = json["tokens"] as? [JSONDictionary] {
+          let tokens = tokenJsons.map { Token(dictionary: $0) }
+          completion(tokens)
+        } else {
+          completion([])
+        }
+      case .failure:
+        completion([])
       }
     }
   }

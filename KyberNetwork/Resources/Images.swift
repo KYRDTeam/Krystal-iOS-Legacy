@@ -57,4 +57,7 @@ struct Images {
   static let excludeCircleArrow = UIImage(named: "progress_exclude")!
   static let swapDropdown = UIImage(named: "swap_dropdown_grey")!
   static let swapPullup = UIImage(named: "swap_dropup_grey")!
+  static let swapInfoBlue = UIImage(named: "info_blue")!
+  static let swapInfoYellow = UIImage(named: "info_yellow")!
+  static let swapWarningRed = UIImage(named: "swap_warning_red")!
 }

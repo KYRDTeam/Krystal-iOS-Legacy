@@ -40,6 +40,10 @@ class NumberFormatUtilsTests: XCTestCase {
     // 12.000123
     let value7 = BigInt("12000123000000000000")
     XCTAssertEqual(NumberFormatUtils.gasFee(value: value7), "12")
+    
+    // 1234.34502001
+    let value8 = BigInt("1234345020010000000000")
+    XCTAssertEqual(NumberFormatUtils.gasFee(value: value8), "1,234.34")
   }
   
 }

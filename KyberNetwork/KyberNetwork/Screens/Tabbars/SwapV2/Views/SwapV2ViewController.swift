@@ -19,13 +19,6 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var destBalanceLabel: UILabel!
   @IBOutlet weak var destTokenIcon: UIImageView!
   @IBOutlet weak var destViewHeight: NSLayoutConstraint!
-  @IBOutlet weak var rateInfoView: SwapInfoView!
-  @IBOutlet weak var slippageInfoView: SwapInfoView!
-  @IBOutlet weak var minReceiveInfoView: SwapInfoView!
-  @IBOutlet weak var gasFeeInfoView: SwapInfoView!
-  @IBOutlet weak var maxGasFeeInfoView: SwapInfoView!
-  @IBOutlet weak var priceImpactInfoView: SwapInfoView!
-  @IBOutlet weak var routeInfoView: SwapInfoView!
   @IBOutlet weak var sourceView: UIView!
   @IBOutlet weak var rateLoadingView: CircularArrowProgressView!
   @IBOutlet weak var loadingView: UIView!
@@ -35,10 +28,31 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var notFoundView: UIView!
   @IBOutlet weak var infoExpandButton: UIButton!
   @IBOutlet weak var infoSeparatorView: UIView!
-  
   @IBOutlet weak var sourceTokenView: UIView!
   @IBOutlet weak var destTokenView: UIView!
-  var viewModel: SwapV2ViewModel = SwapV2ViewModel()
+  
+  // Info Views
+  @IBOutlet weak var rateInfoView: SwapInfoView!
+  @IBOutlet weak var slippageInfoView: SwapInfoView!
+  @IBOutlet weak var minReceiveInfoView: SwapInfoView!
+  @IBOutlet weak var gasFeeInfoView: SwapInfoView!
+  @IBOutlet weak var maxGasFeeInfoView: SwapInfoView!
+  @IBOutlet weak var priceImpactInfoView: SwapInfoView!
+  @IBOutlet weak var routeInfoView: SwapInfoView!
+  
+  // Warning Views
+  @IBOutlet weak var approveGuideView: UIView!
+  @IBOutlet weak var approveGuideIcon: UIImageView!
+  @IBOutlet weak var approveGuideLabel: UILabel!
+  @IBOutlet weak var piWarningView: UIView!
+  @IBOutlet weak var piWarningIcon: UIImageView!
+  @IBOutlet weak var piWarningLabel: UILabel!
+  
+   // Header
+  @IBOutlet weak var chainIcon: UIImageView!
+  @IBOutlet weak var walletButton: UIButton!
+  
+  var viewModel: SwapV2ViewModel!
   
   let platformRateItemHeight: CGFloat = 96
   let loadingViewHeight: CGFloat = 142
@@ -123,6 +137,8 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   func setupSourceView() {
+    sourceBalanceLabel.isUserInteractionEnabled = true
+    sourceBalanceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sourceBalanceTapped)))
     sourceTextField.setPlaceholder(text: "0.00", color: .white.withAlphaComponent(0.5))
     sourceTextField.delegate = self
   }
@@ -139,6 +155,9 @@ class SwapV2ViewController: KNBaseViewController {
   
   func setupInfoViews() {
     rateInfoView.setTitle(title: "Rate", underlined: false)
+    rateInfoView.onTapRightIcon = { [weak self] in
+      self?.viewModel.showRevertedRate.toggle()
+    }
     
     slippageInfoView.setTitle(title: "Max Slippage", underlined: true)
     slippageInfoView.iconImageView.isHidden = true
@@ -167,6 +186,14 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   func bindViewModel() {
+    viewModel.currentChain.observeAndFire(on: self) { [weak self] chain in
+      self?.chainIcon.image = KNGeneralProvider.shared.chainIconImage
+    }
+    
+    viewModel.currentAddress.observeAndFire(on: self) { [weak self] address in
+      self?.walletButton.setTitle(address.name, for: .normal)
+    }
+    
     viewModel.platformRatesViewModels.observe(on: self) { [weak self] _ in
       self?.reloadRates()
     }
@@ -205,7 +232,7 @@ class SwapV2ViewController: KNBaseViewController {
       let soureSymbol = sourceToken.symbol
       let decimals = sourceToken.decimals
       DispatchQueue.main.async {
-        self.sourceBalanceLabel.text = "\(NumberFormatUtils.receivingAmount(value: amount, decimals: decimals)) \(soureSymbol)"
+        self.sourceBalanceLabel.text = "\(NumberFormatUtils.amount(value: amount, decimals: decimals)) \(soureSymbol)"
       }
     }
     
@@ -216,7 +243,7 @@ class SwapV2ViewController: KNBaseViewController {
       let decimals = destToken.decimals
       let amount = balance ?? .zero
       DispatchQueue.main.async {
-        self.destBalanceLabel.text = "\(NumberFormatUtils.receivingAmount(value: amount, decimals: decimals)) \(destSymbol)"
+        self.destBalanceLabel.text = "\(NumberFormatUtils.amount(value: amount, decimals: decimals)) \(destSymbol)"
       }
     }
     
@@ -255,7 +282,7 @@ class SwapV2ViewController: KNBaseViewController {
       guard let self = self else { return }
       switch state {
       case .emptyAmount:
-        self.continueButton.isEnabled = true
+        self.continueButton.isEnabled = false
         self.continueButton.setTitle("Enter an amount", for: .normal)
         self.rateLoadingView.isHidden = true
         self.platformTableView.isHidden = true
@@ -263,6 +290,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.loadingView.isHidden = true
         self.destViewHeight.constant = CGFloat(112)
         self.expandIcon.isHidden = true
+        self.approveGuideView.isHidden = true
       case .fetchingRates:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Fetching the best rates", for: .normal)
@@ -270,6 +298,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.notFoundView.isHidden = true
         self.loadingView.isHidden = false
         self.expandIcon.isHidden = true
+        self.approveGuideView.isHidden = true
         self.resetCountdownView()
         self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
       case .notConnected:
@@ -277,13 +306,15 @@ class SwapV2ViewController: KNBaseViewController {
         self.continueButton.setTitle("Connect Wallet", for: .normal)
         self.notFoundView.isHidden = true
         self.loadingView.isHidden = true
+        self.approveGuideView.isHidden = true
       case .rateNotFound:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Review Swap", for: .normal)
-        self.rateLoadingView.isHidden = true
+        self.rateLoadingView.isHidden = false
         self.platformTableView.isHidden = true
         self.notFoundView.isHidden = false
         self.loadingView.isHidden = true
+        self.approveGuideView.isHidden = true
         self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
       case .insufficientBalance:
         self.continueButton.isEnabled = false
@@ -292,6 +323,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.notFoundView.isHidden = true
         self.platformTableView.isHidden = true
         self.loadingView.isHidden = true
+        self.approveGuideView.isHidden = true
         self.destViewHeight.constant = CGFloat(112)
       case .checkingAllowance:
         self.continueButton.isEnabled = false
@@ -300,13 +332,17 @@ class SwapV2ViewController: KNBaseViewController {
         self.notFoundView.isHidden = true
         self.platformTableView.isHidden = false
         self.loadingView.isHidden = true
+        self.approveGuideView.isHidden = true
       case .notApproved:
+        let sourceSymbol = self.viewModel.sourceToken.value?.symbol ?? ""
         self.continueButton.isEnabled = true
-        self.continueButton.setTitle("Approve \(self.viewModel.sourceToken.value?.symbol ?? "")", for: .normal)
+        self.continueButton.setTitle("Approve \(sourceSymbol)", for: .normal)
         self.rateLoadingView.isHidden = false
         self.notFoundView.isHidden = true
         self.platformTableView.isHidden = false
         self.loadingView.isHidden = true
+        self.approveGuideLabel.attributedText = String(format: Strings.swapApproveWarn, sourceSymbol).withLineSpacing()
+        self.approveGuideView.isHidden = false
       case .ready:
         self.continueButton.isEnabled = true
         self.continueButton.setTitle("Review Swap", for: .normal)
@@ -314,6 +350,36 @@ class SwapV2ViewController: KNBaseViewController {
         self.notFoundView.isHidden = true
         self.platformTableView.isHidden = false
         self.loadingView.isHidden = true
+        self.approveGuideView.isHidden = true
+      }
+    }
+    
+    viewModel.priceImpactState.observeAndFire(on: self) { [weak self] state in
+      guard let self = self else { return }
+      switch state {
+      case .normal:
+        self.piWarningView.isHidden = true
+        self.priceImpactInfoView.valueLabel.textColor = .white.withAlphaComponent(0.5)
+      case .high:
+        self.piWarningView.backgroundColor = .Kyber.textWarningYellow.withAlphaComponent(0.1)
+        self.piWarningIcon.image = Images.swapInfoYellow
+        self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact1.withLineSpacing()
+        self.piWarningLabel.textColor = .Kyber.textWarningYellow
+        self.piWarningView.isHidden = false
+        self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningYellow
+      case .veryHigh:
+        self.piWarningView.backgroundColor = .Kyber.textWarningRed.withAlphaComponent(0.1)
+        self.piWarningIcon.image = Images.swapWarningRed
+        self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact2.withLineSpacing()
+        self.piWarningLabel.textColor = .Kyber.textWarningRed
+        self.piWarningView.isHidden = false
+      case .veryHighWithoutExpertMode:
+        self.piWarningView.backgroundColor = .Kyber.textWarningRed.withAlphaComponent(0.1)
+        self.piWarningIcon.image = Images.swapWarningRed
+        self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact3.withLineSpacing()
+        self.piWarningLabel.textColor = .Kyber.textWarningRed
+        self.piWarningView.isHidden = false
+        self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
       }
     }
   }
@@ -323,15 +389,23 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   @IBAction func continueWasTapped(_ sender: Any) {
-//    if let rate = self.viewModel.selectedPlatformRate.value {
-//      let viewModel = SwapSummaryViewModel(currentRate: rate, srcToken: <#T##Token#>, srcAmount: <#T##BigInt#>, destToken: <#T##Token#>, destAmout: <#T##BigInt#>)
-//      let summaryVC = SwapSummaryViewController(something: "")
-//      self.present(summaryVC, animated: true)
-//    }
+    viewModel.didTapContinue()
   }
   
   @IBAction func infoExpandWasTapped(_ sender: Any) {
     self.isInfoExpanded.toggle()
+  }
+  
+  @IBAction func chainButtonWasTapped(_ sender: Any) {
+    viewModel.didTapChainButton()
+  }
+  
+  @IBAction func walletButtonWasTapped(_ sender: Any) {
+    viewModel.didTapWalletButton()
+  }
+  
+  @IBAction func historyButtonWasTapped(_ sender: Any) {
+    viewModel.didTapHistoryButton()
   }
   
   @objc func onToggleExpand() {
@@ -346,20 +420,26 @@ class SwapV2ViewController: KNBaseViewController {
   
   @objc func openSourceTokenSearch() {
     let controller = SearchTokenViewController(viewModel: SearchTokenViewModel())
-    controller.isSourceToken = true
-    controller.onSelectTokenCompletion = { selectedToken in
-      print("THANGGG")
+    controller.onSelectTokenCompletion = { [weak self] selectedToken in
+      self?.viewModel.updateSourceToken(token: selectedToken.token)
     }
     self.present(controller, animated: true, completion: nil)
   }
   
   @objc func openDestTokenSearch() {
     let controller = SearchTokenViewController(viewModel: SearchTokenViewModel())
-    controller.isSourceToken = false
-    controller.onSelectTokenCompletion = { selectedToken in
-      print("THANGGG")
+    controller.onSelectTokenCompletion = { [weak self] selectedToken in
+      self?.viewModel.updateDestToken(token: selectedToken.token)
     }
     self.present(controller, animated: true, completion: nil)
+  }
+  
+  @objc func sourceBalanceTapped() {
+    let sourceBalance = viewModel.sourceBalance.value ?? .zero
+    guard let decimals = viewModel.sourceToken.value?.decimals else { return }
+    let allBalanceText = "\(NumberFormatUtils.amount(value: sourceBalance, decimals: decimals))"
+    sourceTextField.text = allBalanceText
+    onSourceAmountChange(value: allBalanceText)
   }
 }
 
