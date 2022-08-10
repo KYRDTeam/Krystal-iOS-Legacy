@@ -96,6 +96,10 @@ class SwapSummaryViewController: KNBaseViewController {
     viewModel.priceImpactString.observeAndFire(on: self) { [weak self] string in
       self?.priceImpactInfoView.setValue(value: string, highlighted: false)
     }
+    
+    viewModel.maxGasFeeString.observeAndFire(on: self) { [weak self] string in
+      self?.maxGasFeeInfoView.setValue(value: string, highlighted: false)
+    }
   }
   
   func setupInfoViews() {
@@ -104,7 +108,7 @@ class SwapSummaryViewController: KNBaseViewController {
       self?.viewModel.showRevertedRate.toggle()
     }
     
-    slippageInfoView.setTitle(title: "Price Slippage", underlined: true)
+    slippageInfoView.setTitle(title: "Max Slippage", underlined: true)
 
     minReceiveInfoView.setTitle(title: "Min. Received", underlined: true)
 

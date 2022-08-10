@@ -17,6 +17,5 @@ struct SwapObject {
   var gasPrice: BigInt
   var showRevertedRate: Bool
   var minRatePercent: Double
-  var refPrice: Double
   var priceImpactState: PriceImpactState
 }

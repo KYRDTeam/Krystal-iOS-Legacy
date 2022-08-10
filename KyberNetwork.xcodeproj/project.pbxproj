@@ -5282,14 +5282,6 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		A6D38BF92899167B003579F2 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				A6D38BFA28991683003579F2 /* PlatformRate.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		A6D88647285C93DE00BB565B /* Key */ = {
 			isa = PBXGroup;
 			children = (

@@ -357,8 +357,6 @@ class SwapV2ViewController: KNBaseViewController {
         self.platformTableView.isHidden = false
         self.loadingView.isHidden = true
         self.approveGuideView.isHidden = true
-      case .approving:
-        print("")
       }
     }
     

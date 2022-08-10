@@ -46,8 +46,9 @@ class SwapSummaryViewModel {
     self.rootViewController = controller
     rateString.value = getRateString()
     minReceiveString.value = calculateMinReceiveString(rate: swapObject.rate)
-    estimatedGasFeeString.value = calculateEstimatedGasFeeString(rate: swapObject.rate)
-    priceImpactString.value = calculatePriceImpactString(rate: swapObject.rate)
+    estimatedGasFeeString.value = getEstimatedNetworkFeeString(rate: swapObject.rate)
+    priceImpactString.value = getPriceImpactString(rate: swapObject.rate)
+    maxGasFeeString.value = getMaxNetworkFeeString(rate: swapObject.rate)
     slippageString.value = "\(String(format: "%.1f", self.minRatePercent))%"
   }
   
@@ -55,8 +56,13 @@ class SwapSummaryViewModel {
     if let newRate = newRate {
       swapObject.rate = newRate
       rateString.value = getRateString()
-      priceImpactString.value = calculatePriceImpactString(rate: swapObject.rate)
+      priceImpactString.value = getPriceImpactString(rate: swapObject.rate)
     }
+  }
+  
+  private func getMaxNetworkFeeString(rate: Rate) -> String {
+    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estimatedGas), gasPrice: self.swapObject.gasPrice)
+    return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
   }
   
   private func getPriceImpactState(change: Double) -> PriceImpactState {
@@ -70,13 +76,8 @@ class SwapSummaryViewModel {
     return .veryHigh
   }
   
-  private func calculatePriceImpactString(rate: Rate) -> String {
-    if self.swapObject.refPrice == 0 {
-      self.swapObject.priceImpactState = .normal
-      return "0%"
-    }
-    let rateDouble = Double(BigInt(rate.rate) ?? .zero) / pow(10.0, 18)
-    let change = (rateDouble - self.swapObject.refPrice) / self.swapObject.refPrice * 100
+  private func getPriceImpactString(rate: Rate) -> String {
+    let change = Double(rate.priceImpact) / 100
     self.swapObject.priceImpactState = self.getPriceImpactState(change: change)
     return "\(String(format: "%.2f", change))%"
   }
@@ -87,9 +88,8 @@ class SwapSummaryViewModel {
     return "\(NumberFormatUtils.amount(value: minReceivingAmount, decimals: self.swapObject.destToken.decimals)) \(self.swapObject.destToken.symbol)"
   }
   
-  private func calculateEstimatedGasFeeString(rate: Rate) -> String {
-    let gasFeeUSD = self.getGasFeeUSD(estGas: BigInt(rate.estimatedGas), gasPrice: self.swapObject.gasPrice)
-    let gasFeeUSDString = NumberFormatUtils.gasFee(value: gasFeeUSD)
+  private func getEstimatedNetworkFeeString(rate: Rate) -> String {
+    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed), gasPrice: self.swapObject.gasPrice)
     let typeString: String = {
       switch self.swapObject.selectedGasPriceType {
       case .superFast:
@@ -104,7 +104,7 @@ class SwapSummaryViewModel {
         return "advanced".toBeLocalised()
       }
     }()
-    return "$\(gasFeeUSDString) • \(typeString)"
+    return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
   }
   
   private func getGasFeeUSD(estGas: BigInt, gasPrice: BigInt) -> BigInt {
