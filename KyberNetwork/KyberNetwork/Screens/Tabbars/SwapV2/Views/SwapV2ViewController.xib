@@ -53,6 +53,7 @@
                 <outlet property="rateLoadingView" destination="13u-tV-7BB" id="P8t-jH-grh"/>
                 <outlet property="routeInfoView" destination="aTl-kC-ce3" id="XsK-79-8FI"/>
                 <outlet property="slippageInfoView" destination="GRw-Yi-h5h" id="Bzk-W2-VM6"/>
+                <outlet property="sourceAmountUsdLabel" destination="agw-Vs-X9w" id="u1J-TH-xcZ"/>
                 <outlet property="sourceBalanceLabel" destination="zEe-a6-qHl" id="Lpl-kZ-JvG"/>
                 <outlet property="sourceTextField" destination="B1w-Ik-ZYI" id="JyF-ds-JIL"/>
                 <outlet property="sourceTokenIcon" destination="b6J-Kg-J3o" id="XTO-EG-WLd"/>
@@ -279,12 +280,20 @@
                                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="24"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="decimalPad" returnKeyType="done"/>
                                                 </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~$0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agw-Vs-X9w">
+                                                    <rect key="frame" x="323.5" y="81.5" width="24.5" height="16.5"/>
+                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                                    <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstItem="mjA-kj-Mna" firstAttribute="top" secondItem="aHo-uv-839" secondAttribute="top" constant="18" id="4Wl-uO-3hu"/>
+                                                <constraint firstItem="agw-Vs-X9w" firstAttribute="top" secondItem="B1w-Ik-ZYI" secondAttribute="bottom" constant="3" id="AOZ-Y4-xcx"/>
                                                 <constraint firstItem="e9r-Vv-OQ9" firstAttribute="centerY" secondItem="zEe-a6-qHl" secondAttribute="centerY" id="Dcm-CM-AGl"/>
                                                 <constraint firstAttribute="height" constant="112" id="KU7-bz-SeW"/>
+                                                <constraint firstItem="agw-Vs-X9w" firstAttribute="trailing" secondItem="B1w-Ik-ZYI" secondAttribute="trailing" id="MOa-rI-zoI"/>
                                                 <constraint firstItem="r61-Ec-gfY" firstAttribute="top" secondItem="mjA-kj-Mna" secondAttribute="bottom" constant="16" id="V5G-M1-xaZ"/>
                                                 <constraint firstItem="B1w-Ik-ZYI" firstAttribute="centerY" secondItem="r61-Ec-gfY" secondAttribute="centerY" id="bMF-Wd-hww"/>
                                                 <constraint firstItem="mjA-kj-Mna" firstAttribute="leading" secondItem="aHo-uv-839" secondAttribute="leading" constant="24" id="gxT-eh-JFh"/>

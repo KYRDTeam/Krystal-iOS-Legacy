@@ -111,4 +111,22 @@ class SwapRepository {
     }
   }
   
+  func getTokenDetail(tokenAddress: String, completion: @escaping (TokenDetailInfo?) -> ()) {
+    let chainPath = KNGeneralProvider.shared.chainPath
+    provider.request(.getTokenDetail(chainPath: chainPath, address: tokenAddress)) { result in
+      switch result {
+      case .success(let response):
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(TokenDetailResponse.self, from: response.data)
+          completion(data.result)
+        } catch {
+          completion(nil)
+        }
+      case .failure:
+        completion(nil)
+      }
+    }
+  }
+  
 }

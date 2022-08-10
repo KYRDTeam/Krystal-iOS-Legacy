@@ -29,6 +29,7 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var infoSeparatorView: UIView!
   @IBOutlet weak var sourceTokenView: UIView!
   @IBOutlet weak var destTokenView: UIView!
+  @IBOutlet weak var sourceAmountUsdLabel: UILabel!
   
   // Info Views
   @IBOutlet weak var rateInfoView: SwapInfoView!
@@ -283,10 +284,6 @@ class SwapV2ViewController: KNBaseViewController {
       self?.maxGasFeeInfoView.setValue(value: string, highlighted: false)
     }
     
-    viewModel.priceImpactString.observeAndFire(on: self) { [weak self] string in
-      self?.priceImpactInfoView.setValue(value: string, highlighted: false)
-    }
-    
     viewModel.selectedPlatformRate.observeAndFire(on: self) { [weak self] rate in
       guard let self = self else { return }
       self.infoSeparatorView.isHidden = rate == nil
@@ -385,6 +382,7 @@ class SwapV2ViewController: KNBaseViewController {
       switch state {
       case .normal:
         self.piWarningView.isHidden = true
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
         self.priceImpactInfoView.valueLabel.textColor = .white.withAlphaComponent(0.5)
       case .high:
         self.piWarningView.backgroundColor = .Kyber.textWarningYellow.withAlphaComponent(0.1)
@@ -392,6 +390,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact1.withLineSpacing()
         self.piWarningLabel.textColor = .Kyber.textWarningYellow
         self.piWarningView.isHidden = false
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
         self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningYellow
       case .veryHigh:
         self.piWarningView.backgroundColor = .Kyber.textWarningRed.withAlphaComponent(0.1)
@@ -399,14 +398,21 @@ class SwapV2ViewController: KNBaseViewController {
         self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact2.withLineSpacing()
         self.piWarningLabel.textColor = .Kyber.textWarningRed
         self.piWarningView.isHidden = false
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
+        self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
       case .veryHighWithoutExpertMode:
         self.piWarningView.backgroundColor = .Kyber.textWarningRed.withAlphaComponent(0.1)
         self.piWarningIcon.image = Images.swapWarningRed
         self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact3.withLineSpacing()
         self.piWarningLabel.textColor = .Kyber.textWarningRed
         self.piWarningView.isHidden = false
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
         self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
       }
+    }
+    
+    viewModel.souceAmountUsdString.observeAndFire(on: self) { [weak self] string in
+      self?.sourceAmountUsdLabel.text = string
     }
   }
   
