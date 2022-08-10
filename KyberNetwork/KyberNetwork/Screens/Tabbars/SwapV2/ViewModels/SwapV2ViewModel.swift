@@ -531,7 +531,9 @@ extension SwapV2ViewModel {
                                   gasPrice: self.gasPrice,
                                   showRevertedRate: self.showRevertedRate,
                                   minRatePercent: self.minRatePercent,
-                                  priceImpactState: self.priceImpactState.value)
+                                  priceImpactState: self.priceImpactState.value,
+                                  sourceTokenPrice: self.sourceTokenPrice.value ?? 0,
+                                  destTokenPrice: self.destTokenPrice.value ?? 0)
       actions.openSwapConfirm(swapObject)
     default:
       return

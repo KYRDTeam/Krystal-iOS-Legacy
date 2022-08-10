@@ -19,7 +19,6 @@ class SwapSummaryViewController: KNBaseViewController {
   @IBOutlet weak var gasFeeInfoView: SwapInfoView!
   @IBOutlet weak var maxGasFeeInfoView: SwapInfoView!
   @IBOutlet weak var priceImpactInfoView: SwapInfoView!
-  @IBOutlet weak var routeInfoView: SwapInfoView!
   @IBOutlet weak var sourceTokenLogo: UIImageView!
   @IBOutlet weak var sourceTokenSymbolLabel: UILabel!
   @IBOutlet weak var sourceTokenBalanceLabel: UILabel!
@@ -64,6 +63,7 @@ class SwapSummaryViewController: KNBaseViewController {
     } else {
       sourceTokenLogo.image = UIImage(named: "default_token")!
     }
+    sourceTokenValueLabel.text = viewModel.getSourceAmountUsdString()
     sourceTokenSymbolLabel.text = viewModel.swapObject.sourceToken.symbol
     sourceTokenBalanceLabel.text = viewModel.swapObject.sourceAmount.shortString(decimals: viewModel.swapObject.sourceToken.decimals)
     
@@ -72,8 +72,9 @@ class SwapSummaryViewController: KNBaseViewController {
     } else {
       destTokenLogo.image = UIImage(named: "default_token")!
     }
+    destTokenValueLabel.text = viewModel.getDestAmountUsdString()
+    destTokenBalanceLabel.text = viewModel.getDestAmountString()
     destTokenSymbolLabel.text = viewModel.swapObject.destToken.symbol
-    destTokenBalanceLabel.text = viewModel.swapObject.sourceAmount.shortString(decimals: viewModel.swapObject.sourceToken.decimals)
   }
   
   func bindViewModel() {
@@ -132,8 +133,6 @@ class SwapSummaryViewController: KNBaseViewController {
     priceImpactInfoView.onTapTitle = { [weak self] in
       self?.showBottomBannerView(message: Strings.swapPriceImpactInfo, icon: Images.swapInfo)
     }
-
-    routeInfoView.setTitle(title: "Route", underlined: true)
   }
   
   func updateErrorUI(isTxFailed: Bool) {
@@ -180,8 +179,8 @@ class SwapSummaryViewController: KNBaseViewController {
   @IBAction func acceptRateChangedButtonTapped(_ sender: Any) {
     updateRateChangedViewUI(rateChanged: false)
     viewModel.updateRate()
-//    let receivingAmount = BigInt(platformRate.amount) ?? BigInt(0)
-//    self.destTokenBalanceLabel.text = NumberFormatUtils.amount(value: receivingAmount, decimals: destToken.decimals)
+    destTokenBalanceLabel.text = viewModel.getDestAmountString()
+    destTokenValueLabel.text = viewModel.getDestAmountUsdString()
   }
 
   @IBAction func confirmSwapButtonTapped(_ sender: Any) {

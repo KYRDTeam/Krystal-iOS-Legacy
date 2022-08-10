@@ -18,4 +18,6 @@ struct SwapObject {
   var showRevertedRate: Bool
   var minRatePercent: Double
   var priceImpactState: PriceImpactState
+  var sourceTokenPrice: Double
+  var destTokenPrice: Double
 }

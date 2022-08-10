@@ -135,7 +135,7 @@ extension SearchTokenViewController: UITextFieldDelegate {
   
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     timer?.invalidate()
-    timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(doSearch), userInfo: nil, repeats: false)
+    timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(doSearch), userInfo: nil, repeats: false)
     return true
   }
   
