@@ -154,28 +154,22 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   func setupInfoViews() {
-    rateInfoView.setTitle(title: "Rate", underlined: false)
+    rateInfoView.setTitle(title: "Rate", underlined: false, shouldShowIcon: true)
     rateInfoView.onTapRightIcon = { [weak self] in
       self?.viewModel.showRevertedRate.toggle()
     }
     
     slippageInfoView.setTitle(title: "Max Slippage", underlined: true)
-    slippageInfoView.iconImageView.isHidden = true
     
     minReceiveInfoView.setTitle(title: "Min. Received", underlined: true)
-    minReceiveInfoView.iconImageView.isHidden = true
     
     gasFeeInfoView.setTitle(title: "Network Fee (est)", underlined: true)
-    gasFeeInfoView.iconImageView.isHidden = true
     
     maxGasFeeInfoView.setTitle(title: "Max Network Fee", underlined: true)
-    maxGasFeeInfoView.iconImageView.isHidden = true
     
     priceImpactInfoView.setTitle(title: "Price Impact", underlined: true)
-    priceImpactInfoView.iconImageView.isHidden = true
     
     routeInfoView.setTitle(title: "Route", underlined: true)
-    routeInfoView.iconImageView.isHidden = true
   }
   
   func setupTableView() {
@@ -351,6 +345,8 @@ class SwapV2ViewController: KNBaseViewController {
         self.platformTableView.isHidden = false
         self.loadingView.isHidden = true
         self.approveGuideView.isHidden = true
+      case .approving:
+        print("")
       }
     }
     

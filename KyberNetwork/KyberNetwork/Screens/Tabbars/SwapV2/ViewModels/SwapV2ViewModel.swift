@@ -453,10 +453,17 @@ extension SwapV2ViewModel {
       guard let sourceToken = sourceToken.value, let destToken = destToken.value else { return }
       guard let selectedRate = selectedPlatformRate.value else { return }
       guard let sourceAmount = sourceAmount.value else { return }
+
       let swapObject = SwapObject(sourceToken: sourceToken,
                                   destToken: destToken,
                                   sourceAmount: sourceAmount,
-                                  rate: selectedRate)
+                                  rate: selectedRate,
+                                  selectedGasPriceType: self.selectedGasPriceType,
+                                  gasPrice: self.gasPrice,
+                                  showRevertedRate: self.showRevertedRate,
+                                  minRatePercent: self.minRatePercent,
+                                  refPrice: self.refPrice,
+                                  priceImpactState: self.priceImpactState.value)
       actions.openSwapConfirm(swapObject)
     default:
       return

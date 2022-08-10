@@ -20,7 +20,7 @@ class SwapSummaryViewController: KNBaseViewController {
   @IBOutlet weak var maxGasFeeInfoView: SwapInfoView!
   @IBOutlet weak var priceImpactInfoView: SwapInfoView!
   @IBOutlet weak var routeInfoView: SwapInfoView!
-  @IBOutlet weak var sourcTokenLogo: UIImageView!
+  @IBOutlet weak var sourceTokenLogo: UIImageView!
   @IBOutlet weak var sourceTokenSymbolLabel: UILabel!
   @IBOutlet weak var sourceTokenBalanceLabel: UILabel!
   @IBOutlet weak var sourceTokenValueLabel: UILabel!
@@ -46,6 +46,7 @@ class SwapSummaryViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
+    self.viewModel.updateData(controller: self)
     self.viewModel.startUpdateRate()
   }
   
@@ -54,30 +55,64 @@ class SwapSummaryViewController: KNBaseViewController {
     self.chainNameLabel.text = KNGeneralProvider.shared.currentChain.chainName()
     setupTokensUI()
     setupInfoViews()
+    bindViewModel()
   }
   
   func setupTokensUI() {
+    if let url = URL(string: viewModel.swapObject.sourceToken.logo) {
+      sourceTokenLogo.setImage(with: url, placeholder: UIImage(named: "default_token")!)
+    } else {
+      sourceTokenLogo.image = UIImage(named: "default_token")!
+    }
+    sourceTokenSymbolLabel.text = viewModel.swapObject.sourceToken.symbol
+    sourceTokenBalanceLabel.text = viewModel.swapObject.sourceAmount.shortString(decimals: viewModel.swapObject.sourceToken.decimals)
     
+    if let url = URL(string: viewModel.swapObject.destToken.logo) {
+      destTokenLogo.setImage(with: url, placeholder: UIImage(named: "default_token")!)
+    } else {
+      destTokenLogo.image = UIImage(named: "default_token")!
+    }
+    destTokenSymbolLabel.text = viewModel.swapObject.destToken.symbol
+    destTokenBalanceLabel.text = viewModel.swapObject.sourceAmount.shortString(decimals: viewModel.swapObject.sourceToken.decimals)
+  }
+  
+  func bindViewModel() {
+    viewModel.rateString.observeAndFire(on: self) { [weak self] rate in
+      self?.rateInfoView.setValue(value: rate, highlighted: false)
+    }
+    
+    viewModel.slippageString.observeAndFire(on: self) { [weak self] string in
+      self?.slippageInfoView.setValue(value: string, highlighted: true)
+    }
+    
+    viewModel.minReceiveString.observeAndFire(on: self) { [weak self] string in
+      self?.minReceiveInfoView.setValue(value: string, highlighted: false)
+    }
+    
+    viewModel.estimatedGasFeeString.observeAndFire(on: self) { [weak self] string in
+      self?.gasFeeInfoView.setValue(value: string, highlighted: true)
+    }
+    
+    viewModel.priceImpactString.observeAndFire(on: self) { [weak self] string in
+      self?.priceImpactInfoView.setValue(value: string, highlighted: false)
+    }
   }
   
   func setupInfoViews() {
     rateInfoView.setTitle(title: "Rate", underlined: false, shouldShowIcon: true)
-    rateInfoView.setValue(value: "1 BNB = 2,419.2847632 NBT")
+    rateInfoView.onTapRightIcon = { [weak self] in
+      self?.viewModel.showRevertedRate.toggle()
+    }
     
     slippageInfoView.setTitle(title: "Price Slippage", underlined: true)
-    slippageInfoView.setValue(value: "0.5%", highlighted: true)
 
     minReceiveInfoView.setTitle(title: "Min. Received", underlined: true)
-    minReceiveInfoView.setValue(value: "2,418.68393 NBT")
 
     gasFeeInfoView.setTitle(title: "Network Fee (est)", underlined: true)
-    gasFeeInfoView.setValue(value: "$0.44 • Standard", highlighted: true)
 
     maxGasFeeInfoView.setTitle(title: "Max Network Fee", underlined: true)
-    maxGasFeeInfoView.setValue(value: "$0.60")
 
     priceImpactInfoView.setTitle(title: "Price Impact", underlined: true)
-    priceImpactInfoView.setValue(value: "0.012%")
     routeInfoView.setTitle(title: "Route", underlined: true)
   }
   
@@ -98,12 +133,33 @@ class SwapSummaryViewController: KNBaseViewController {
     }
   }
   
-  func rateUpdated(newRate: String) {
-    print(newRate)
+  func updateRateChangedViewUI(rateChanged: Bool) {
+    if rateChanged {
+      self.confirmSwapButton.isEnabled = false
+      self.confirmSwapButton.setBackgroundColor(UIColor(named: "navButtonBgColor")!, forState: .disabled)
+    } else {
+      self.confirmSwapButton.isEnabled = true
+      self.confirmSwapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
+    }
+    
+    UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+      self.rateChangedView.isHidden = !rateChanged
+      self.stackViewTopConstraint.constant = rateChanged ? 86 : 26
+      self.view.layoutIfNeeded()
+    }
+  }
+  
+  func rateUpdated(newRate: String, priceImpact: Int) {
+    updateRateChangedViewUI(rateChanged: true)
+    var currentRate = viewModel.swapObject.rate
+    currentRate.rate = newRate
+    currentRate.priceImpact = priceImpact
+    viewModel.newRate = currentRate
   }
   
   @IBAction func acceptRateChangedButtonTapped(_ sender: Any) {
-    
+    updateRateChangedViewUI(rateChanged: false)
+    viewModel.updateRate()
   }
 
   @IBAction func confirmSwapButtonTapped(_ sender: Any) {
