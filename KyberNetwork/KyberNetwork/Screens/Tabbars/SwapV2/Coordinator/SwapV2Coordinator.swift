@@ -37,12 +37,19 @@ class SwapV2Coordinator: NSObject, Coordinator {
         },
         onSelectOpenHistory: {
           self.openTransactionHistory()
+        },
+        openSwapConfirm: { swapObject in
+          self.openSwapConfirm(object: swapObject)
         }
       )
     )
     vc.viewModel = viewModel
     self.rootViewController = vc
     self.navigationController = UINavigationController(rootViewController: vc)
+  }
+  
+  func openSwapConfirm(object: SwapObject) {
+    
   }
 
   func openTransactionHistory() {

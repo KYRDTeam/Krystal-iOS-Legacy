@@ -13,6 +13,7 @@ struct SwapV2ViewModelActions {
   var onSelectSwitchChain: () -> ()
   var onSelectSwitchWallet: () -> ()
   var onSelectOpenHistory: () -> ()
+  var openSwapConfirm: (SwapObject) -> ()
 }
 
 class SwapV2ViewModel {
@@ -173,6 +174,10 @@ class SwapV2ViewModel {
         self.checkAllowance()
       }
     }
+  }
+  
+  func approve() {
+    
   }
   
   func checkAllowance() {
@@ -438,6 +443,24 @@ extension SwapV2ViewModel {
   
   func didTapHistoryButton() {
     actions.onSelectOpenHistory()
+  }
+  
+  func didTapContinue() {
+    switch state.value {
+    case .notApproved:
+      approve()
+    case .ready:
+      guard let sourceToken = sourceToken.value, let destToken = destToken.value else { return }
+      guard let selectedRate = selectedPlatformRate.value else { return }
+      guard let sourceAmount = sourceAmount.value else { return }
+      let swapObject = SwapObject(sourceToken: sourceToken,
+                                  destToken: destToken,
+                                  sourceAmount: sourceAmount,
+                                  rate: selectedRate)
+      actions.openSwapConfirm(swapObject)
+    default:
+      return
+    }
   }
   
 }

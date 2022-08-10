@@ -389,7 +389,7 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   @IBAction func continueWasTapped(_ sender: Any) {
-    
+    viewModel.didTapContinue()
   }
   
   @IBAction func infoExpandWasTapped(_ sender: Any) {

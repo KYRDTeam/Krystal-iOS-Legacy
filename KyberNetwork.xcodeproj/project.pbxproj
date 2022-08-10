@@ -685,6 +685,7 @@
 		A6BA4CA228A213AD002E2B30 /* SwapState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BA4CA128A213AD002E2B30 /* SwapState.swift */; };
 		A6BA4CA428A24F5D002E2B30 /* PriceImpactState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BA4CA328A24F5D002E2B30 /* PriceImpactState.swift */; };
 		A6BA4CAB28A35870002E2B30 /* SwapV2Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BA4CAA28A35870002E2B30 /* SwapV2Coordinator.swift */; };
+		A6BA4CAD28A37204002E2B30 /* SwapObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BA4CAC28A37204002E2B30 /* SwapObject.swift */; };
 		A6BAD3D2287445B80016E127 /* TradingView+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAD3D1287445B80016E127 /* TradingView+Action.swift */; };
 		A6BAD3D4287446F30016E127 /* TradingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAD3D3287446F30016E127 /* TradingViewController.swift */; };
 		A6BB3C1F28605CDA0097EB75 /* EthereumNodeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB3C1E28605CDA0097EB75 /* EthereumNodeRequest.swift */; };
@@ -1838,6 +1839,7 @@
 		A6BA4CA128A213AD002E2B30 /* SwapState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapState.swift; sourceTree = "<group>"; };
 		A6BA4CA328A24F5D002E2B30 /* PriceImpactState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceImpactState.swift; sourceTree = "<group>"; };
 		A6BA4CAA28A35870002E2B30 /* SwapV2Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapV2Coordinator.swift; sourceTree = "<group>"; };
+		A6BA4CAC28A37204002E2B30 /* SwapObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapObject.swift; sourceTree = "<group>"; };
 		A6BAD3D1287445B80016E127 /* TradingView+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TradingView+Action.swift"; sourceTree = "<group>"; };
 		A6BAD3D3287446F30016E127 /* TradingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingViewController.swift; sourceTree = "<group>"; };
 		A6BB3C1E28605CDA0097EB75 /* EthereumNodeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumNodeRequest.swift; sourceTree = "<group>"; };
@@ -5121,6 +5123,7 @@
 			isa = PBXGroup;
 			children = (
 				A6BA4CAA28A35870002E2B30 /* SwapV2Coordinator.swift */,
+				A6BA4CAC28A37204002E2B30 /* SwapObject.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -7287,6 +7290,7 @@
 				29BDF1A11FEE51A80023A45F /* GasLimitConfiguration.swift in Sources */,
 				25696F4E20BD162F002CC53F /* XibViewLoader.swift in Sources */,
 				255C988F2122E22A0087B3E2 /* KSendTokenViewController.swift in Sources */,
+				A6BA4CAD28A37204002E2B30 /* SwapObject.swift in Sources */,
 				7E0AE5C427D86A2A0078D135 /* RateTransactionPopupViewController.swift in Sources */,
 				C3F71C8A2618A57B00285935 /* ClaimHistoryTableViewCell.swift in Sources */,
 				29F1C85120032688003780D8 /* Address.swift in Sources */,

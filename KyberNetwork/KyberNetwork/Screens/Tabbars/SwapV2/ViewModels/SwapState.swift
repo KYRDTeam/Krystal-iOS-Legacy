@@ -15,6 +15,7 @@ enum SwapState {
   case insufficientBalance
   case checkingAllowance
   case notApproved
+  case approving
   case ready
   
   var isActiveState: Bool {

@@ -8,6 +8,7 @@
 import Foundation
 import BigInt
 import Moya
+import KrystalWallets
 
 class SwapRepository {
   
