@@ -349,3 +349,20 @@ extension KNAppCoordinator: KNPasscodeCoordinatorDelegate {
 //    self.exchangeCoordinator?.appCoordinatorPushNotificationOpenSwap(from: from, to: to)
 //  }
 //}
+
+extension KNAppCoordinator: SwapV2CoordinatorDelegate {
+  
+  func swapV2CoordinatorDidSelectManageWallets() {
+    self.tabbarController.selectedIndex = 4
+    self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
+  }
+  
+  func swapV2CoordinatorDidSelectAddWallet() {
+    self.addNewWallet(type: .full)
+  }
+  
+  func swapV2CoordinatorDidSelectAddWalletForChain(chain: ChainType) {
+    self.addNewWallet(type: .chain(chainType: chain))
+  }
+
+}

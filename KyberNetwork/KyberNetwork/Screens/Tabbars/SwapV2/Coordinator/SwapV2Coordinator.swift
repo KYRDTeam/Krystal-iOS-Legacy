@@ -13,9 +13,9 @@ import KrystalWallets
 import BigInt
 
 protocol SwapV2CoordinatorDelegate: AnyObject {
-  func didSelectManageWallets()
-  func didSelectAddWallet()
-  func didSelectAddWalletForChain(chain: ChainType)
+  func swapV2CoordinatorDidSelectManageWallets()
+  func swapV2CoordinatorDidSelectAddWallet()
+  func swapV2CoordinatorDidSelectAddWalletForChain(chain: ChainType)
 }
 
 class SwapV2Coordinator: NSObject, Coordinator {
@@ -114,7 +114,7 @@ class SwapV2Coordinator: NSObject, Coordinator {
     popup.completionHandler = { [weak self] selectedChain in
       let addresses = WalletManager.shared.getAllAddresses(addressType: selectedChain.addressType)
       if addresses.isEmpty {
-        self?.delegate?.didSelectAddWalletForChain(chain: selectedChain)
+        self?.delegate?.swapV2CoordinatorDidSelectAddWalletForChain(chain: selectedChain)
         return
       } else {
         let viewModel = SwitchChainWalletsListViewModel(selected: selectedChain)
@@ -146,11 +146,11 @@ extension SwapV2Coordinator: WalletsListViewControllerDelegate {
     case .connectWallet:
       self.openWalletConnect()
     case .manageWallet:
-      self.delegate?.didSelectManageWallets()
+      self.delegate?.swapV2CoordinatorDidSelectManageWallets()
     case .didSelect:
       return
     case .addWallet:
-      self.delegate?.didSelectAddWallet()
+      self.delegate?.swapV2CoordinatorDidSelectAddWallet()
     }
   }
 }
@@ -194,7 +194,7 @@ extension SwapV2Coordinator: QRCodeReaderDelegate {
 extension SwapV2Coordinator: KNHistoryCoordinatorDelegate {
   
   func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.didSelectAddWalletForChain(chain: chainType)
+    self.delegate?.swapV2CoordinatorDidSelectAddWalletForChain(chain: chainType)
   }
   
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
@@ -202,11 +202,11 @@ extension SwapV2Coordinator: KNHistoryCoordinatorDelegate {
   }
   
   func historyCoordinatorDidSelectAddWallet() {
-    self.delegate?.didSelectAddWallet()
+    self.delegate?.swapV2CoordinatorDidSelectAddWallet()
   }
 
   func historyCoordinatorDidSelectManageWallet() {
-    self.delegate?.didSelectManageWallets()
+    self.delegate?.swapV2CoordinatorDidSelectManageWallets()
   }
 
   func historyCoordinatorDidClose() {

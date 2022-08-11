@@ -71,6 +71,7 @@ extension KNAppCoordinator {
     self.settingsCoordinator?.start()
     
     let swapV2Coordinator = SwapV2Coordinator()
+    swapV2Coordinator.delegate = self
     swapV2Coordinator.start()
 
     self.tabbarController.viewControllers = [
