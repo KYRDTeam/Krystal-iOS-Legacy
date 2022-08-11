@@ -15,6 +15,7 @@ struct SwapV2ViewModelActions {
   var onSelectOpenHistory: () -> ()
   var openSwapConfirm: (SwapObject) -> ()
   var openApprove: (_ token: TokenObject, _ amount: BigInt) -> ()
+  var openSettings: (_ gasLimit: BigInt, _ settings: SwapTransactionSettings) -> ()
 }
 
 class SwapV2ViewModel {
@@ -335,6 +336,10 @@ class SwapV2ViewModel {
     reloadRates(amount: amount)
   }
   
+  func updateSettings(settings: SwapTransactionSettings) {
+    self.settings = settings
+  }
+  
   private func sortedRates(rates: [Rate]) -> [Rate] {
     let sortedRates = rates.sorted { lhs, rhs in
       return BigInt.bigIntFromString(value: lhs.rate) > BigInt.bigIntFromString(value: rhs.rate)
@@ -587,6 +592,55 @@ extension SwapV2ViewModel {
     default:
       return
     }
+  }
+  
+  func openSettings() {
+    actions.openSettings(estimatedGas, settings)
+  }
+  
+}
+
+
+// MARK: Update from settings
+extension SwapV2ViewModel {
+  
+  func updateSlippage(slippage: Double) {
+    settings.slippage = slippage
+  }
+  
+  func updateGasPriceType(type: KNSelectedGasPriceType) {
+    settings.basic = .init(gasPriceType: type)
+    settings.advanced = nil
+  }
+  
+  func updateAdvancedNonce(nonce: Int) {
+    if let advanced = settings.advanced {
+      settings.advanced = .init(gasLimit: advanced.gasLimit,
+                                maxFee: advanced.maxFee,
+                                maxPriorityFee: advanced.maxPriorityFee,
+                                nonce: nonce)
+    } else if let basic = settings.basic {
+      settings.advanced = .init(gasLimit: estimatedGas,
+                                maxFee: gasPrice,
+                                maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
+                                nonce: nonce)
+    }
+    updateSettings(settings: settings)
+  }
+  
+  func updateAdvancedFee(maxFee: BigInt, maxPriorityFee: BigInt, gasLimit: BigInt) {
+    if let advanced = settings.advanced {
+      settings.advanced = .init(gasLimit: gasLimit,
+                                maxFee: maxFee,
+                                maxPriorityFee: maxPriorityFee,
+                                nonce: advanced.nonce)
+    } else {
+      settings.advanced = .init(gasLimit: gasLimit,
+                                maxFee: maxFee,
+                                maxPriorityFee: maxPriorityFee,
+                                nonce: NonceCache.shared.getCachingNonce(address: addressString, chain: currentChain.value))
+    }
+    updateSettings(settings: settings)
   }
   
 }

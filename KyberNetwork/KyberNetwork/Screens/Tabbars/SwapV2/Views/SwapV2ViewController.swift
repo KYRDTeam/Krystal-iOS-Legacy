@@ -167,6 +167,9 @@ class SwapV2ViewController: KNBaseViewController {
     slippageInfoView.onTapTitle = { [weak self] in
       self?.showBottomBannerView(message: Strings.swapSlippageInfo, icon: Images.swapInfo)
     }
+    slippageInfoView.onTapValue = { [weak self] in
+      self?.viewModel.openSettings()
+    }
     
     minReceiveInfoView.setTitle(title: "Min. Received", underlined: true)
     minReceiveInfoView.iconImageView.isHidden = true
@@ -178,6 +181,9 @@ class SwapV2ViewController: KNBaseViewController {
     gasFeeInfoView.iconImageView.isHidden = true
     gasFeeInfoView.onTapTitle = { [weak self] in
       self?.showBottomBannerView(message: Strings.swapTxnFeeInfo, icon: Images.swapInfo)
+    }
+    gasFeeInfoView.onTapValue = { [weak self] in
+      self?.viewModel.openSettings()
     }
     
     maxGasFeeInfoView.setTitle(title: "Max Network Fee", underlined: true)
@@ -415,6 +421,10 @@ class SwapV2ViewController: KNBaseViewController {
     viewModel.souceAmountUsdString.observeAndFire(on: self) { [weak self] string in
       self?.sourceAmountUsdLabel.text = string
     }
+  }
+  
+  @IBAction func settingsWasTapped(_ sender: Any) {
+    viewModel.openSettings()
   }
   
   @IBAction func swapPairWasTapped(_ sender: Any) {
