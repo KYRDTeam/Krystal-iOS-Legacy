@@ -52,13 +52,6 @@ class SwapInfoView: BaseXibView {
     titleLabel.text = title
     underlineView.isHidden = !underlined
     iconImageView.isHidden = !shouldShowIcon
-
-
-
-
-
-
-
   }
   
   func setValue(value: String?, highlighted: Bool = false) {

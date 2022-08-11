@@ -11,8 +11,6 @@ import BigInt
 
 class SwapSummaryViewModel {
   var swapObject: SwapObject
-  var rootViewController: SwapSummaryViewController?
-  
   var rateString: Observable<String?> = .init(nil)
   var slippageString: Observable<String?> = .init(nil)
   var minReceiveString: Observable<String?> = .init(nil)
@@ -20,7 +18,7 @@ class SwapSummaryViewModel {
   var maxGasFeeString: Observable<String?> = .init(nil)
   var priceImpactString: Observable<String?> = .init(nil)
   
-  var newRate: Rate?
+  var newRate: Observable<Rate?> = .init(nil)
   
   var showRevertedRate: Bool {
     didSet {
@@ -42,8 +40,7 @@ class SwapSummaryViewModel {
     self.minRatePercent = swapObject.minRatePercent
   }
   
-  func updateData(controller: SwapSummaryViewController) {
-    self.rootViewController = controller
+  func updateData() {
     rateString.value = getRateString()
     minReceiveString.value = calculateMinReceiveString(rate: swapObject.rate)
     estimatedGasFeeString.value = getEstimatedNetworkFeeString(rate: swapObject.rate)
@@ -53,10 +50,11 @@ class SwapSummaryViewModel {
   }
   
   func updateRate() {
-    if let newRate = newRate {
+    if let newRate = newRate.value {
       swapObject.rate = newRate
       rateString.value = getRateString()
       priceImpactString.value = getPriceImpactString(rate: swapObject.rate)
+      self.newRate.value = nil
     }
   }
   
@@ -167,9 +165,12 @@ class SwapSummaryViewModel {
     provider.requestWithFilter(.getExpectedRate(src: self.swapObject.sourceToken.address.lowercased(), dst: self.swapObject.destToken.address.lowercased(), srcAmount: self.swapObject.sourceAmount.description, hint: self.swapObject.rate.hint, isCaching: true)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let rate = json["rate"] as? String, let priceImpact = json["priceImpact"] as? Int {
-//        if self.swapObject.rate.rate != rate {
-        self.rootViewController?.rateUpdated(newRate: rate, priceImpact: priceImpact)
-//        }
+        if self.swapObject.rate.rate != rate {
+          let currentRate = self.swapObject.rate
+          currentRate.rate = rate
+          currentRate.priceImpact = priceImpact
+          self.newRate.value = currentRate
+        }
       } else {
         // do nothing in background
       }

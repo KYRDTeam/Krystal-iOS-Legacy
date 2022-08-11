@@ -45,7 +45,7 @@ class SwapSummaryViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
-    self.viewModel.updateData(controller: self)
+    self.viewModel.updateData()
     self.viewModel.startUpdateRate()
   }
   
@@ -100,6 +100,10 @@ class SwapSummaryViewController: KNBaseViewController {
     
     viewModel.maxGasFeeString.observeAndFire(on: self) { [weak self] string in
       self?.maxGasFeeInfoView.setValue(value: string, highlighted: false)
+    }
+    
+    viewModel.newRate.observeAndFire(on: self) { [weak self] string in
+      self?.updateRateChangedViewUI(rateChanged: self?.viewModel.newRate.value != nil)
     }
   }
   
@@ -168,16 +172,7 @@ class SwapSummaryViewController: KNBaseViewController {
     }
   }
   
-  func rateUpdated(newRate: String, priceImpact: Int) {
-    updateRateChangedViewUI(rateChanged: true)
-    var currentRate = viewModel.swapObject.rate
-    currentRate.rate = newRate
-    currentRate.priceImpact = priceImpact
-    viewModel.newRate = currentRate
-  }
-  
   @IBAction func acceptRateChangedButtonTapped(_ sender: Any) {
-    updateRateChangedViewUI(rateChanged: false)
     viewModel.updateRate()
     destTokenBalanceLabel.text = viewModel.getDestAmountString()
     destTokenValueLabel.text = viewModel.getDestAmountUsdString()
