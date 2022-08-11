@@ -269,7 +269,7 @@ enum ChainType: Codable, CaseIterable {
 
   func quoteTokenObject() -> TokenObject {
     let token = KNSupportedTokenStorage.shared.supportedToken.first { (token) -> Bool in
-      return token.symbol == self.customRPC().quoteToken
+      return token.symbol == self.customRPC().quoteToken && token.address == self.customRPC().quoteTokenAddress
     } ?? Token(name: self.customRPC().quoteToken, symbol: self.customRPC().quoteToken, address: self.customRPC().quoteTokenAddress, decimals: 18, logo: self.customRPC().quoteToken.lowercased())
     return token.toObject()
   }
@@ -337,7 +337,12 @@ enum ChainType: Codable, CaseIterable {
   }
   
   func isSupportSwap() -> Bool {
-    return KNGeneralProvider.shared.currentChain != .solana || KNGeneralProvider.shared.currentChain != .klaytn
+    switch self {
+    case .solana, .klaytn:
+      return false
+    default:
+      return true
+    }
   }
 
   func isSupportedHistoryAPI() -> Bool {

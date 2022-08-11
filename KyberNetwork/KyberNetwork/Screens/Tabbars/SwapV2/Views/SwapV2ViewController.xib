@@ -27,6 +27,7 @@
                 <outlet property="approveGuideLabel" destination="We5-Rm-vov" id="kLl-zd-Bud"/>
                 <outlet property="approveGuideView" destination="Zpb-73-OnM" id="7aP-gY-uSH"/>
                 <outlet property="chainIcon" destination="xnY-nK-1v0" id="jbj-W0-wMR"/>
+                <outlet property="containerView" destination="Xbn-SH-kmh" id="awN-NZ-fWO"/>
                 <outlet property="continueButton" destination="SOT-hf-WqE" id="62Y-4M-DdU"/>
                 <outlet property="destBalanceLabel" destination="d4r-Na-urB" id="Ew2-8M-sDz"/>
                 <outlet property="destTokenIcon" destination="JRM-vW-woZ" id="cAx-kp-WbI"/>
@@ -196,6 +197,19 @@
                             <integer key="value" value="20"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
+                </view>
+                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Ge-uB-0EW" userLabel="ComingSoon">
+                    <rect key="frame" x="0.0" y="113" width="428" height="767"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="comming_soon" translatesAutoresizingMaskIntoConstraints="NO" id="9Ej-ef-LPN">
+                            <rect key="frame" x="77" y="263.5" width="274" height="240"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstItem="9Ej-ef-LPN" firstAttribute="centerX" secondItem="3Ge-uB-0EW" secondAttribute="centerX" id="Hz0-tL-ex6"/>
+                        <constraint firstItem="9Ej-ef-LPN" firstAttribute="centerY" secondItem="3Ge-uB-0EW" secondAttribute="centerY" id="dWZ-AC-ioN"/>
+                    </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xbn-SH-kmh">
                     <rect key="frame" x="0.0" y="113" width="428" height="767"/>
@@ -738,10 +752,14 @@
                 <constraint firstItem="9mP-go-K6W" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="0fF-W8-Z7A"/>
                 <constraint firstItem="Xbn-SH-kmh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Ank-QT-Tf0"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="9mP-go-K6W" secondAttribute="trailing" id="HE4-Ag-8DK"/>
+                <constraint firstItem="3Ge-uB-0EW" firstAttribute="top" secondItem="Xbn-SH-kmh" secondAttribute="top" id="I7x-NT-zpd"/>
+                <constraint firstItem="3Ge-uB-0EW" firstAttribute="trailing" secondItem="Xbn-SH-kmh" secondAttribute="trailing" id="ILd-x0-Etg"/>
+                <constraint firstItem="3Ge-uB-0EW" firstAttribute="bottom" secondItem="Xbn-SH-kmh" secondAttribute="bottom" id="Iis-X7-TzC"/>
                 <constraint firstItem="Xbn-SH-kmh" firstAttribute="top" secondItem="9mP-go-K6W" secondAttribute="bottom" id="Nvo-GV-dUu"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Xbn-SH-kmh" secondAttribute="bottom" id="e1J-qF-lr0"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Xbn-SH-kmh" secondAttribute="trailing" id="m89-V2-FxS"/>
                 <constraint firstItem="9mP-go-K6W" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="nNC-a5-gBJ"/>
+                <constraint firstItem="3Ge-uB-0EW" firstAttribute="leading" secondItem="Xbn-SH-kmh" secondAttribute="leading" id="zym-2m-Ee3"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="136" y="108.84557721139431"/>
@@ -753,6 +771,7 @@
         <image name="chain_bsc_icon" width="24" height="24"/>
         <image name="chain_eth_icon" width="24" height="24"/>
         <image name="chain_switch_icon" width="20" height="20"/>
+        <image name="comming_soon" width="274" height="240"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
         <image name="info_blue" width="24" height="24"/>
         <image name="swap_dropdown_grey" width="32" height="32"/>

@@ -55,6 +55,8 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var chainIcon: UIImageView!
   @IBOutlet weak var walletButton: UIButton!
   
+  @IBOutlet weak var containerView: UIView!
+  
   var viewModel: SwapV2ViewModel!
   
   let platformRateItemHeight: CGFloat = 96
@@ -212,6 +214,7 @@ class SwapV2ViewController: KNBaseViewController {
   func bindViewModel() {
     viewModel.currentChain.observeAndFire(on: self) { [weak self] chain in
       self?.chainIcon.image = KNGeneralProvider.shared.chainIconImage
+      self?.containerView.isHidden = !KNGeneralProvider.shared.currentChain.isSupportSwap()
     }
     
     viewModel.currentAddress.observeAndFire(on: self) { [weak self] address in

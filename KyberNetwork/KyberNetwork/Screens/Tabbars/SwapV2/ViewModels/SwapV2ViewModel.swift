@@ -114,12 +114,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
   }
   
-  var minRatePercent: Double {
-    didSet {
-      slippageString.value = "\(String(format: "%.1f", self.minRatePercent))%"
-    }
-  }
-  
   var estimatedGas: BigInt {
     if let advanced = settings.advanced {
       return advanced.gasLimit
@@ -165,9 +159,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   private let swapRepository = SwapRepository()
 
   init(actions: SwapV2ViewModelActions) {
-    // Initialize values
-    minRatePercent = 0.5
-    slippageString.value = "\(String(format: "%.1f", self.minRatePercent))%"
+    slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
     
     self.actions = actions
     self.scheduleFetchingBalance()
@@ -271,7 +263,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       return
     }
     swapRepository.getBalance(tokenAddress: sourceToken.address, address: addressString) { [weak self] (amount, tokenAddress) in
-      if tokenAddress == sourceToken.address { // Needed to handle case swap pair
+      if tokenAddress == self?.sourceToken.value?.address, let amount = amount { // Needed to handle case swap pair
         self?.sourceBalance.value = amount
       }
     }
@@ -283,7 +275,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       return
     }
     swapRepository.getBalance(tokenAddress: destToken.address, address: addressString) { [weak self] (amount, tokenAddress) in
-      if tokenAddress == destToken.address { // Needed to handle case swap pair
+      if tokenAddress == destToken.address, let amount = amount { // Needed to handle case swap pair
         self?.destBalance.value = amount
       }
     }
@@ -350,6 +342,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   
   func updateSettings(settings: SwapTransactionSettings) {
     self.settings = settings
+    updateInfo()
   }
   
   private func sortedRates(rates: [Rate]) -> [Rate] {
@@ -434,6 +427,9 @@ extension SwapV2ViewModel {
       destBalance.value = nil
       destToken.value = nil
       sourceAmount.value = nil
+      timer?.invalidate()
+      timer = nil
+      scheduleFetchingBalance()
       loadBaseToken()
       reloadSourceBalance()
     }
@@ -502,13 +498,29 @@ extension SwapV2ViewModel {
 // MARK: Update from settings
 extension SwapV2ViewModel {
   
+  func updateInfo() {
+    guard let destToken = destToken.value else { return }
+    self.minReceiveString.value = self.selectedPlatformRate.value.map {
+      return self.getMinReceiveString(destToken: destToken, rate: $0)
+    }
+    self.estimatedGasFeeString.value = self.selectedPlatformRate.value.map {
+      return self.getEstimatedNetworkFeeString(rate: $0)
+    }
+    self.maxGasFeeString.value = self.selectedPlatformRate.value.map {
+      return self.getMaxNetworkFeeString(rate: $0)
+    }
+  }
+  
   func updateSlippage(slippage: Double) {
     settings.slippage = slippage
+    slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
+    updateInfo()
   }
   
   func updateGasPriceType(type: KNSelectedGasPriceType) {
     settings.basic = .init(gasPriceType: type)
     settings.advanced = nil
+    updateInfo()
   }
   
   func updateAdvancedNonce(nonce: Int) {

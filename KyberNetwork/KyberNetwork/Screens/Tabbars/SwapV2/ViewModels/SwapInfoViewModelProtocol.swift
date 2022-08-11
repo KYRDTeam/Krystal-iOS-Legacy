@@ -11,7 +11,6 @@ import BigInt
 protocol SwapInfoViewModelProtocol {
   var settings: SwapTransactionSettings { get }
   var selectedRate: Rate? { get }
-  var minRatePercent: Double { get }
   var showRevertedRate: Bool { get }
 }
 
@@ -87,7 +86,7 @@ extension SwapInfoViewModelProtocol {
   
   func getMinReceiveString(destToken: Token, rate: Rate) -> String {
     let amount = BigInt(rate.amount) ?? BigInt(0)
-    let minReceivingAmount = amount * BigInt(10000.0 - minRatePercent * 100.0) / BigInt(10000.0)
+    let minReceivingAmount = amount * BigInt(10000.0 - settings.slippage * 100.0) / BigInt(10000.0)
     return "\(NumberFormatUtils.amount(value: minReceivingAmount, decimals: destToken.decimals)) \(destToken.symbol)"
   }
   
