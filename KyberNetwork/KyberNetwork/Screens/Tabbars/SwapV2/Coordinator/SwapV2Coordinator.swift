@@ -56,6 +56,10 @@ class SwapV2Coordinator: NSObject, Coordinator {
     
   }
   
+  func openTransactionSettings() {
+    
+  }
+  
   func openApprove(token: TokenObject, amount: BigInt) {
     let vc = ApproveTokenViewController(viewModel: ApproveTokenViewModelForTokenObject(token: token, res: amount))
     vc.delegate = self
@@ -203,3 +207,4 @@ extension SwapV2Coordinator: ApproveTokenViewControllerDelegate {
   }
   
 }
+

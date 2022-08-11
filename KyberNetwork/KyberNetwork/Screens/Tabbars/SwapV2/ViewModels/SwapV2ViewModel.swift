@@ -83,7 +83,7 @@ class SwapV2ViewModel {
   var maxAvailableSourceTokenAmount: BigInt {
     if sourceToken.value?.isQuoteToken ?? false {
       let balance = sourceBalance.value ?? .zero
-      return balance - gasPrice * estimatedGas
+      return balance - gasPrice * estimatedGas // TODO: EIP1559
     } else {
       return sourceBalance.value ?? .zero
     }
@@ -261,6 +261,7 @@ class SwapV2ViewModel {
   
   func approve(tokenAddress: String, amount: BigInt, gasLimit: BigInt) {
     state.value = .approving
+    // TODO: EIP1559
     swapRepository.approve(address: currentAddress.value, tokenAddress: tokenAddress, value: amount, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
       switch result {
       case .success:
@@ -333,6 +334,7 @@ class SwapV2ViewModel {
     }
   }
   
+  // TODO: EIP1559
   private func getGasFeeUSD(estGas: BigInt, gasPrice: BigInt) -> BigInt {
     let decimals = KNGeneralProvider.shared.quoteTokenObject.decimals
     let rateUSDDouble = KNGeneralProvider.shared.quoteTokenPrice?.usd ?? 0
@@ -350,7 +352,7 @@ class SwapV2ViewModel {
       let diffAmount = (BigInt(sortedRates[0].amount) ?? BigInt(0)) - (BigInt(sortedRates[1].amount) ?? BigInt(0))
       let diffFee = BigInt(sortedRates[0].estimatedGas) - BigInt(sortedRates[1].estimatedGas)
       let diffAmountUSD = diffAmount * BigInt(destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(destToken.decimals)
-      let diffFeeUSD = diffFee * self.getGasFeeUSD(estGas: diffFee, gasPrice: self.gasPrice)
+      let diffFeeUSD = diffFee * self.getGasFeeUSD(estGas: diffFee, gasPrice: self.gasPrice) // TODO: EIP1559
       savedAmount = diffAmountUSD - diffFeeUSD
     }
     return sortedRates.enumerated().map { index, rate in
@@ -359,7 +361,7 @@ class SwapV2ViewModel {
                                        quoteToken: currentChain.value.quoteTokenObject(),
                                        destToken: destToken,
                                        destTokenPrice: destTokenPrice,
-                                       gasFeeUsd: self.getGasFeeUSD(estGas: BigInt(rate.estimatedGas), gasPrice: self.gasPrice),
+                                       gasFeeUsd: self.getGasFeeUSD(estGas: BigInt(rate.estimatedGas), gasPrice: self.gasPrice), // TODO: EIP1559
                                        showSaveTag: sortedRates.count > 1 && index == 0 && savedAmount > BigInt(0.1 * pow(10.0, 18.0)),
                                        savedAmount: savedAmount)
     }
@@ -438,6 +440,21 @@ class SwapV2ViewModel {
     let amountUSD = amount * BigInt(sourceTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(sourceToken.decimals)
     let formattedAmountUSD = NumberFormatUtils.amount(value: amountUSD, decimals: 18)
     return "~$\(formattedAmountUSD)"
+  }
+  
+  private func getGasPrice(forType type: KNSelectedGasPriceType) -> BigInt {
+    switch type {
+    case .fast:
+      return KNGasCoordinator.shared.fastKNGas
+    case .medium:
+      return KNGasCoordinator.shared.standardKNGas
+    case .slow:
+      return KNGasCoordinator.shared.lowKNGas
+    case .superFast:
+      return KNGasCoordinator.shared.superFastKNGas
+    default: // No need to handle case .custom
+      return KNGasCoordinator.shared.standardKNGas
+    }
   }
   
   deinit {
