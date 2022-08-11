@@ -470,7 +470,7 @@
                                 <constraint firstAttribute="width" constant="46" id="jOK-Za-Tz3"/>
                             </constraints>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <state key="normal" image="back_blue_icon">
+                            <state key="normal" image="close-search-icon">
                                 <color key="titleShadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                             <connections>
@@ -520,8 +520,8 @@
         </view>
     </objects>
     <resources>
-        <image name="back_blue_icon" width="22" height="18"/>
         <image name="chain_bsc_icon" width="24" height="24"/>
+        <image name="close-search-icon" width="24" height="24"/>
         <image name="eth" width="32" height="32"/>
         <image name="icon_sign_success" width="196" height="110"/>
         <image name="icon_swap_to" width="32" height="32"/>

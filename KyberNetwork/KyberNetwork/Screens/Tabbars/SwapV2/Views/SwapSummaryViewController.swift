@@ -102,8 +102,16 @@ class SwapSummaryViewController: KNBaseViewController {
       self?.maxGasFeeInfoView.setValue(value: string, highlighted: false)
     }
     
-    viewModel.newRate.observeAndFire(on: self) { [weak self] string in
+    viewModel.newRate.observeAndFire(on: self) { [weak self] _ in
       self?.updateRateChangedViewUI(rateChanged: self?.viewModel.newRate.value != nil)
+    }
+    
+    viewModel.internalHistoryTransaction.observeAndFire(on: self) { [weak self] pendingTransaction in
+      if let pendingTransaction = pendingTransaction {
+        let controller = SwapProcessPopup(transaction: pendingTransaction)
+        controller.delegate = self
+        self?.present(controller, animated: true, completion: nil)
+      }
     }
   }
   
@@ -184,5 +192,22 @@ class SwapSummaryViewController: KNBaseViewController {
   
   @IBAction func onCloseButtonTapped(_ sender: Any) {
     self.dismiss(animated: true)
+  }
+}
+
+extension SwapSummaryViewController: SwapProcessPopupDelegate {
+  func swapProcessPopup(_ controller: SwapProcessPopup, action: SwapProcessPopupEvent) {
+    controller.dismiss(animated: true) {
+      switch action {
+      case .openLink(let url):
+        self.navigationController?.openSafari(with: url)
+      case .goToSupport:
+        self.navigationController?.openSafari(with: "https://t.me/KrystalDefi")
+      case .viewToken(let sym):
+        if let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: sym) {
+//          self.delegate?.exchangeTokenCoordinatorDidSelectTokens(token: token)
+        }
+      }
+    }
   }
 }

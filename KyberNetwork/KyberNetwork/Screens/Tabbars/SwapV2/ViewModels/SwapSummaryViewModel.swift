@@ -17,11 +17,9 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   var settings: SwapTransactionSettings {
     return swapObject.swapSetting
   }
-  
   var selectedRate: Rate? {
     return swapObject.rate
   }
-  
   var swapObject: SwapObject
 
   var rateString: Observable<String?> = .init(nil)
@@ -30,7 +28,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   var estimatedGasFeeString: Observable<String?> = .init(nil)
   var maxGasFeeString: Observable<String?> = .init(nil)
   var priceImpactString: Observable<String?> = .init(nil)
-  
+  var internalHistoryTransaction: Observable<InternalHistoryTransaction?> = .init(nil)
   var newRate: Observable<Rate?> = .init(nil)
   
   var showRevertedRate: Bool {
@@ -227,6 +225,10 @@ extension SwapSummaryViewModel {
     )
   }
   
+  fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
+    self.internalHistoryTransaction.value = transaction
+  }
+  
   func sendSignedTransactionDataToNode(data: Data, eip1559Tx: EIP1559Transaction, internalHistoryTransaction: InternalHistoryTransaction) {
     guard let provider = self.session.externalProvider else {
       return
@@ -243,11 +245,7 @@ extension SwapSummaryViewModel {
         internalHistoryTransaction.time = Date()
 
         EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalHistoryTransaction)
-//        controller.dismiss(animated: true) {
-//          self.confirmSwapVC = nil
-//          self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)
-//        }
-//        self.rootViewController.coordinatorSuccessSendTransaction()
+        self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)
       case .failure(let error):
         var errorMessage = error.description
         if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
