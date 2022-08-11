@@ -13,7 +13,15 @@ import BigInt
 import Result
 import KrystalWallets
 
-class SwapSummaryViewModel {
+class SwapSummaryViewModel: SwapInfoViewModelProtocol {
+  var settings: SwapTransactionSettings {
+    return swapObject.swapSetting
+  }
+  
+  var selectedRate: Rate? {
+    return swapObject.rate
+  }
+  
   var swapObject: SwapObject
 
   var rateString: Observable<String?> = .init(nil)
@@ -27,7 +35,7 @@ class SwapSummaryViewModel {
   
   var showRevertedRate: Bool {
     didSet {
-      self.rateString.value = self.getRateString()
+      self.rateString.value = self.getRateString(sourceToken: swapObject.sourceToken, destToken: swapObject.destToken)
     }
   }
   
@@ -52,32 +60,9 @@ class SwapSummaryViewModel {
   var minDestQty: BigInt {
     return self.toAmount * BigInt(10000.0 - self.minRatePercent * 100.0) / BigInt(10000.0)
   }
-  
-  var gasPrice: BigInt {
-    if let basic = swapObject.swapSetting.basic {
-      if KNGeneralProvider.shared.isUseEIP1559 {
-        let baseFee = KNGasCoordinator.shared.baseFee ?? .zero
-        let priorityFee = self.getPriorityFee(forType: basic.gasPriceType) ?? .zero
-        return baseFee + priorityFee
-      } else {
-        return self.getGasPrice(forType: basic.gasPriceType)
-      }
-    } else if let advanced = swapObject.swapSetting.advanced {
-      if KNGeneralProvider.shared.isUseEIP1559 {
-        return advanced.maxFee + advanced.maxPriorityFee
-      } else {
-        return advanced.maxFee
-      }
-    }
-    return KNGasCoordinator.shared.defaultKNGas
-  }
-  
+
   var gasLimit: BigInt {
-    if let advanced = swapObject.swapSetting.advanced {
-      return advanced.gasLimit
-    } else {
-      return BigInt(swapObject.rate.estimatedGas)
-    }
+    return estimatedGas
   }
   
   var leftAmountString: String {
@@ -104,7 +89,7 @@ class SwapSummaryViewModel {
   }
   
   func updateData() {
-    rateString.value = getRateString()
+    rateString.value = getRateString(sourceToken: swapObject.sourceToken, destToken: swapObject.destToken)
     minReceiveString.value = calculateMinReceiveString(rate: swapObject.rate)
     estimatedGasFeeString.value = getEstimatedNetworkFeeString(rate: swapObject.rate)
     priceImpactString.value = getPriceImpactString(rate: swapObject.rate)
@@ -115,86 +100,18 @@ class SwapSummaryViewModel {
   func updateRate() {
     if let newRate = newRate.value {
       swapObject.rate = newRate
-      rateString.value = getRateString()
+      rateString.value = getRateString(sourceToken: swapObject.sourceToken, destToken: swapObject.destToken)
       priceImpactString.value = getPriceImpactString(rate: swapObject.rate)
       self.newRate.value = nil
     }
   }
-  
-  private func getMaxNetworkFeeString(rate: Rate) -> String {
-    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estimatedGas), gasPrice: self.gasPrice)
-    return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
-  }
-  
-  private func getPriceImpactState(change: Double) -> PriceImpactState {
-    let absChange = abs(change)
-    if 0 <= absChange && absChange < 5 {
-      return .normal
-    }
-    if 5 <= absChange && absChange < 15 {
-      return .high
-    }
-    return .veryHigh
-  }
-  
-  private func getPriceImpactString(rate: Rate) -> String {
-    let change = Double(rate.priceImpact) / 100
-    self.swapObject.priceImpactState = self.getPriceImpactState(change: change)
-    return "\(String(format: "%.2f", change))%"
-  }
-  
+
   private func calculateMinReceiveString(rate: Rate) -> String {
     let amount = BigInt(rate.amount) ?? BigInt(0)
     let minReceivingAmount = amount * BigInt(10000.0 - minRatePercent * 100.0) / BigInt(10000.0)
     return "\(NumberFormatUtils.amount(value: minReceivingAmount, decimals: self.swapObject.destToken.decimals)) \(self.swapObject.destToken.symbol)"
   }
 
-  private func getEstimatedNetworkFeeString(rate: Rate) -> String {
-    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed), gasPrice: self.gasPrice)
-    if let basic = swapObject.swapSetting.basic {
-      let typeString: String = {
-        switch basic.gasPriceType {
-        case .superFast:
-          return "super.fast".toBeLocalised()
-        case .fast:
-          return "fast".toBeLocalised()
-        case .medium:
-          return "regular".toBeLocalised()
-        case .slow:
-          return "slow".toBeLocalised()
-        case .custom:
-          return "advanced".toBeLocalised()
-        }
-      }()
-      return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
-    }
-    let typeString = "advanced".toBeLocalised()
-    return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
-  }
-
-  private func getGasPrice(forType type: KNSelectedGasPriceType) -> BigInt {
-    switch type {
-    case .fast:
-      return KNGasCoordinator.shared.fastKNGas
-    case .medium:
-      return KNGasCoordinator.shared.standardKNGas
-    case .slow:
-      return KNGasCoordinator.shared.lowKNGas
-    case .superFast:
-      return KNGasCoordinator.shared.superFastKNGas
-    default: // No need to handle case .custom
-      return KNGasCoordinator.shared.standardKNGas
-    }
-  }
-  
-  private func getGasFeeUSD(estGas: BigInt, gasPrice: BigInt) -> BigInt {
-    let decimals = KNGeneralProvider.shared.quoteTokenObject.decimals
-    let rateUSDDouble = KNGeneralProvider.shared.quoteTokenPrice?.usd ?? 0
-    let rateBigInt = BigInt(rateUSDDouble * pow(10.0, Double(decimals)))
-    let feeUSD = (estGas * gasPrice * rateBigInt) / BigInt(10).power(decimals)
-    return feeUSD
-  }
-  
   func getSourceAmountUsdString() -> String {
     let amountUSD = swapObject.sourceAmount * BigInt(swapObject.sourceTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(swapObject.sourceToken.decimals)
     let formattedAmountUSD = NumberFormatUtils.amount(value: amountUSD, decimals: 18)
@@ -225,22 +142,7 @@ class SwapSummaryViewModel {
       }
     )
   }
-  
-  private func getRateString() -> String? {
-    let destToken = swapObject.destToken
-    let sourceToken = swapObject.sourceToken
-    let selectedPlatform = swapObject.rate
-    if showRevertedRate {
-      let rate = BigInt(selectedPlatform.rate) ?? .zero
-      let revertedRate = rate.isZero ? 0 : (BigInt(10).power(36) / rate)
-      let rateString = NumberFormatUtils.rate(value: revertedRate, decimals: 18)
-      return "1 \(destToken.symbol) = \(rateString) \(sourceToken.symbol)"
-    } else {
-      let rateString = NumberFormatUtils.rate(value: BigInt(selectedPlatform.rate) ?? .zero, decimals: 18)
-      return "1 \(sourceToken.symbol) = \(rateString) \(destToken.symbol)"
-    }
-  }
-  
+
   func fetchRate() {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.requestWithFilter(.getExpectedRate(src: self.swapObject.sourceToken.address.lowercased(), dst: self.swapObject.destToken.address.lowercased(), srcAmount: self.swapObject.sourceAmount.description, hint: self.swapObject.rate.hint, isCaching: true)) { [weak self] result in
