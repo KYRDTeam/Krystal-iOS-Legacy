@@ -71,13 +71,28 @@ class SwapV2ViewModel {
   }
   
   var gasPrice: BigInt {
+    if let basic = settings.basic {
+      if isEIP1559 {
+        let baseFee = KNGasCoordinator.shared.baseFee ?? .zero
+        let priorityFee = self.getPriorityFee(forType: basic.gasPriceType) ?? .zero
+        return baseFee + priorityFee
+      } else {
+        return self.getGasPrice(forType: basic.gasPriceType)
+      }
+    } else if let advanced = settings.advanced {
+      if isEIP1559 {
+        return advanced.maxFee + advanced.maxPriorityFee
+      } else {
+        return advanced.maxFee
+      }
+    }
     return KNGasCoordinator.shared.defaultKNGas
   }
   
-  var selectedGasPriceType: KNSelectedGasPriceType = .medium {
-    didSet {
-      
-    }
+  var settings: SwapTransactionSettings = .default
+  
+  var isEIP1559: Bool {
+    return currentChain.value.isSupportedEIP1559()
   }
   
   var maxAvailableSourceTokenAmount: BigInt {
@@ -95,7 +110,15 @@ class SwapV2ViewModel {
     }
   }
   
-  var estimatedGas: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
+  var estimatedGas: BigInt {
+    if let advanced = settings.advanced {
+      return advanced.gasLimit
+    } else if let rate = selectedPlatformRate.value {
+      return BigInt(rate.estimatedGas)
+    } else {
+      return KNGasConfiguration.exchangeTokensGasLimitDefault
+    }
+  }
   
   let fetchingBalanceInterval: Double = 10.0
   var timer: Timer?
@@ -194,13 +217,6 @@ class SwapV2ViewModel {
       } else {
         self.state.value = .checkingAllowance
         self.checkAllowance()
-      }
-    }
-    selectedPlatformRate.observe(on: self) { [weak self] rate in
-      if let rate = rate {
-        self?.estimatedGas = BigInt(rate.estimatedGas)
-      } else {
-        self?.estimatedGas = KNGasConfiguration.exchangeTokensGasLimitDefault
       }
     }
   }
@@ -334,7 +350,6 @@ class SwapV2ViewModel {
     }
   }
   
-  // TODO: EIP1559
   private func getGasFeeUSD(estGas: BigInt, gasPrice: BigInt) -> BigInt {
     let decimals = KNGeneralProvider.shared.quoteTokenObject.decimals
     let rateUSDDouble = KNGeneralProvider.shared.quoteTokenPrice?.usd ?? 0
@@ -410,27 +425,37 @@ class SwapV2ViewModel {
   }
   
   private func getEstimatedNetworkFeeString(rate: Rate) -> String {
-    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed), gasPrice: gasPrice)
-    let typeString: String = {
-      switch self.selectedGasPriceType {
-      case .superFast:
-        return "super.fast".toBeLocalised()
-      case .fast:
-        return "fast".toBeLocalised()
-      case .medium:
-        return "regular".toBeLocalised()
-      case .slow:
-        return "slow".toBeLocalised()
-      case .custom:
-        return "advanced".toBeLocalised()
-      }
-    }()
+    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed), gasPrice: self.gasPrice)
+    if let basic = settings.basic {
+      let typeString: String = {
+        switch basic.gasPriceType {
+        case .superFast:
+          return "super.fast".toBeLocalised()
+        case .fast:
+          return "fast".toBeLocalised()
+        case .medium:
+          return "regular".toBeLocalised()
+        case .slow:
+          return "slow".toBeLocalised()
+        case .custom:
+          return "advanced".toBeLocalised()
+        }
+      }()
+      return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
+    }
+    let typeString = "advanced".toBeLocalised()
     return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
   }
   
   private func getMaxNetworkFeeString(rate: Rate) -> String {
-    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estimatedGas), gasPrice: gasPrice)
-    return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
+    if settings.basic != nil {
+      let feeInUSD = self.getGasFeeUSD(estGas: estimatedGas, gasPrice: gasPrice)
+      return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
+    } else if let advanced = settings.advanced {
+      let feeInUSD = self.getGasFeeUSD(estGas: estimatedGas, gasPrice: advanced.maxFee)
+      return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
+    }
+    return ""
   }
   
   private func getSourceAmountUsdString(amount: BigInt?) -> String? {
@@ -454,6 +479,21 @@ class SwapV2ViewModel {
       return KNGasCoordinator.shared.superFastKNGas
     default: // No need to handle case .custom
       return KNGasCoordinator.shared.standardKNGas
+    }
+  }
+  
+  private func getPriorityFee(forType type: KNSelectedGasPriceType) -> BigInt? {
+    switch type {
+    case .fast:
+      return KNGasCoordinator.shared.fastPriorityFee
+    case .medium:
+      return KNGasCoordinator.shared.standardPriorityFee
+    case .slow:
+      return KNGasCoordinator.shared.lowPriorityFee
+    case .superFast:
+      return KNGasCoordinator.shared.superFastPriorityFee
+    default: // No need to handle case .custom
+      return KNGasCoordinator.shared.standardPriorityFee
     }
   }
   
