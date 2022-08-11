@@ -18,8 +18,8 @@ struct SwapV2ViewModelActions {
   var openSettings: (_ gasLimit: BigInt, _ settings: SwapTransactionSettings) -> ()
 }
 
-class SwapV2ViewModel {
-  
+class SwapV2ViewModel: SwapInfoViewModelProtocol {
+
   var actions: SwapV2ViewModelActions
   
   private(set) var selectedPlatformName: String? {
@@ -27,9 +27,12 @@ class SwapV2ViewModel {
       self.selectedPlatformRate.value = platformRates.value.first(where: { rate in
         rate.platform == selectedPlatformName
       })
-      self.rateString.value = self.getRateString()
+      guard let destToken = destToken.value, let sourceToken = sourceToken.value else {
+        return
+      }
+      self.rateString.value = self.getRateString(sourceToken: sourceToken, destToken: destToken)
       self.minReceiveString.value = self.selectedPlatformRate.value.map {
-        return self.getMinReceiveString(rate: $0)
+        return self.getMinReceiveString(destToken: destToken, rate: $0)
       }
       self.estimatedGasFeeString.value = self.selectedPlatformRate.value.map {
         return self.getEstimatedNetworkFeeString(rate: $0)
@@ -40,6 +43,9 @@ class SwapV2ViewModel {
       self.priceImpactString.value = self.selectedPlatformRate.value.map {
         return self.getPriceImpactString(rate: $0)
       }
+      self.priceImpactState.value = self.selectedPlatformRate.value.map {
+        return self.getPriceImpactState(change: Double($0.priceImpact) / 100)
+      } ?? .normal
     }
   }
   
@@ -55,7 +61,10 @@ class SwapV2ViewModel {
   
   var showRevertedRate: Bool = false {
     didSet {
-      self.rateString.value = self.getRateString()
+      guard let sourceToken = sourceToken.value, let destToken = destToken.value else {
+        return
+      }
+      self.rateString.value = self.getRateString(sourceToken: sourceToken, destToken: destToken)
     }
   }
   
@@ -105,12 +114,6 @@ class SwapV2ViewModel {
     }
   }
   
-  var minRatePercent: Double {
-    didSet {
-      slippageString.value = "\(String(format: "%.1f", self.minRatePercent))%"
-    }
-  }
-  
   var estimatedGas: BigInt {
     if let advanced = settings.advanced {
       return advanced.gasLimit
@@ -119,6 +122,10 @@ class SwapV2ViewModel {
     } else {
       return KNGasConfiguration.exchangeTokensGasLimitDefault
     }
+  }
+  
+  var selectedRate: Rate? {
+    return selectedPlatformRate.value
   }
   
   let fetchingBalanceInterval: Double = 10.0
@@ -152,9 +159,7 @@ class SwapV2ViewModel {
   private let swapRepository = SwapRepository()
 
   init(actions: SwapV2ViewModelActions) {
-    // Initialize values
-    minRatePercent = 0.5
-    slippageString.value = "\(String(format: "%.1f", self.minRatePercent))%"
+    slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
     
     self.actions = actions
     self.scheduleFetchingBalance()
@@ -258,7 +263,7 @@ class SwapV2ViewModel {
       return
     }
     swapRepository.getBalance(tokenAddress: sourceToken.address, address: addressString) { [weak self] (amount, tokenAddress) in
-      if tokenAddress == sourceToken.address { // Needed to handle case swap pair
+      if tokenAddress == self?.sourceToken.value?.address, let amount = amount { // Needed to handle case swap pair
         self?.sourceBalance.value = amount
       }
     }
@@ -270,7 +275,7 @@ class SwapV2ViewModel {
       return
     }
     swapRepository.getBalance(tokenAddress: destToken.address, address: addressString) { [weak self] (amount, tokenAddress) in
-      if tokenAddress == destToken.address { // Needed to handle case swap pair
+      if tokenAddress == destToken.address, let amount = amount { // Needed to handle case swap pair
         self?.destBalance.value = amount
       }
     }
@@ -278,7 +283,6 @@ class SwapV2ViewModel {
   
   func approve(tokenAddress: String, amount: BigInt, gasLimit: BigInt) {
     state.value = .approving
-    // TODO: EIP1559
     swapRepository.approve(address: currentAddress.value, tokenAddress: tokenAddress, value: amount, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
       switch result {
       case .success:
@@ -338,6 +342,7 @@ class SwapV2ViewModel {
   
   func updateSettings(settings: SwapTransactionSettings) {
     self.settings = settings
+    updateInfo()
   }
   
   private func sortedRates(rates: [Rate]) -> [Rate] {
@@ -353,14 +358,6 @@ class SwapV2ViewModel {
       }
       return BigInt.bigIntFromString(value: lhs.rate) > BigInt.bigIntFromString(value: rhs.rate)
     }
-  }
-  
-  private func getGasFeeUSD(estGas: BigInt, gasPrice: BigInt) -> BigInt {
-    let decimals = KNGeneralProvider.shared.quoteTokenObject.decimals
-    let rateUSDDouble = KNGeneralProvider.shared.quoteTokenPrice?.usd ?? 0
-    let rateBigInt = BigInt(rateUSDDouble * pow(10.0, Double(decimals)))
-    let feeUSD = (estGas * gasPrice * rateBigInt) / BigInt(10).power(decimals)
-    return feeUSD
   }
   
   private func createPlatformRatesViewModels(destToken: Token, sortedRates: [Rate]) -> [SwapPlatformItemViewModel] {
@@ -387,82 +384,6 @@ class SwapV2ViewModel {
     }
   }
   
-  private func getPriceImpactState(change: Double) -> PriceImpactState {
-    let absChange = abs(change)
-    if 0 <= absChange && absChange < 5 {
-      return .normal
-    }
-    if 5 <= absChange && absChange < 15 {
-      return .high
-    }
-    return .veryHigh
-  }
-  
-  private func getRateString() -> String? {
-    guard let destToken = destToken.value, let sourceToken = sourceToken.value else {
-      return nil
-    }
-    guard let selectedPlatform = selectedPlatformRate.value else {
-      return nil
-    }
-    if showRevertedRate {
-      let rate = BigInt(selectedPlatform.rate) ?? .zero
-      let revertedRate = rate.isZero ? 0 : (BigInt(10).power(36) / rate)
-      let rateString = NumberFormatUtils.rate(value: revertedRate, decimals: 18)
-      return "1 \(destToken.symbol) = \(rateString) \(sourceToken.symbol)"
-    } else {
-      let rateString = NumberFormatUtils.rate(value: BigInt(selectedPlatform.rate) ?? .zero, decimals: 18)
-      return "1 \(sourceToken.symbol) = \(rateString) \(destToken.symbol)"
-    }
-  }
-  
-  private func getPriceImpactString(rate: Rate) -> String {
-    let change = Double(rate.priceImpact) / 100
-    self.priceImpactState.value = self.getPriceImpactState(change: change)
-    return "\(String(format: "%.2f", change))%"
-  }
-  
-  private func getMinReceiveString(rate: Rate) -> String {
-    guard let destToken = destToken.value else { return "" }
-    let amount = BigInt(rate.amount) ?? BigInt(0)
-    let minReceivingAmount = amount * BigInt(10000.0 - minRatePercent * 100.0) / BigInt(10000.0)
-    return "\(NumberFormatUtils.amount(value: minReceivingAmount, decimals: destToken.decimals)) \(destToken.symbol)"
-  }
-  
-  private func getEstimatedNetworkFeeString(rate: Rate) -> String {
-    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed), gasPrice: self.gasPrice)
-    if let basic = settings.basic {
-      let typeString: String = {
-        switch basic.gasPriceType {
-        case .superFast:
-          return "super.fast".toBeLocalised()
-        case .fast:
-          return "fast".toBeLocalised()
-        case .medium:
-          return "regular".toBeLocalised()
-        case .slow:
-          return "slow".toBeLocalised()
-        case .custom:
-          return "advanced".toBeLocalised()
-        }
-      }()
-      return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
-    }
-    let typeString = "advanced".toBeLocalised()
-    return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
-  }
-  
-  private func getMaxNetworkFeeString(rate: Rate) -> String {
-    if settings.basic != nil {
-      let feeInUSD = self.getGasFeeUSD(estGas: estimatedGas, gasPrice: gasPrice)
-      return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
-    } else if let advanced = settings.advanced {
-      let feeInUSD = self.getGasFeeUSD(estGas: estimatedGas, gasPrice: advanced.maxFee)
-      return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
-    }
-    return ""
-  }
-  
   private func getSourceAmountUsdString(amount: BigInt?) -> String? {
     guard let sourceToken = sourceToken.value, let sourceTokenPrice = sourceTokenPrice.value, let amount = amount else {
       return nil
@@ -470,36 +391,6 @@ class SwapV2ViewModel {
     let amountUSD = amount * BigInt(sourceTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(sourceToken.decimals)
     let formattedAmountUSD = NumberFormatUtils.amount(value: amountUSD, decimals: 18)
     return "~$\(formattedAmountUSD)"
-  }
-  
-  private func getGasPrice(forType type: KNSelectedGasPriceType) -> BigInt {
-    switch type {
-    case .fast:
-      return KNGasCoordinator.shared.fastKNGas
-    case .medium:
-      return KNGasCoordinator.shared.standardKNGas
-    case .slow:
-      return KNGasCoordinator.shared.lowKNGas
-    case .superFast:
-      return KNGasCoordinator.shared.superFastKNGas
-    default: // No need to handle case .custom
-      return KNGasCoordinator.shared.standardKNGas
-    }
-  }
-  
-  private func getPriorityFee(forType type: KNSelectedGasPriceType) -> BigInt? {
-    switch type {
-    case .fast:
-      return KNGasCoordinator.shared.fastPriorityFee
-    case .medium:
-      return KNGasCoordinator.shared.standardPriorityFee
-    case .slow:
-      return KNGasCoordinator.shared.lowPriorityFee
-    case .superFast:
-      return KNGasCoordinator.shared.superFastPriorityFee
-    default: // No need to handle case .custom
-      return KNGasCoordinator.shared.standardPriorityFee
-    }
   }
   
   deinit {
@@ -536,6 +427,9 @@ extension SwapV2ViewModel {
       destBalance.value = nil
       destToken.value = nil
       sourceAmount.value = nil
+      timer?.invalidate()
+      timer = nil
+      scheduleFetchingBalance()
       loadBaseToken()
       reloadSourceBalance()
     }
@@ -610,13 +504,29 @@ extension SwapV2ViewModel {
 // MARK: Update from settings
 extension SwapV2ViewModel {
   
+  func updateInfo() {
+    guard let destToken = destToken.value else { return }
+    self.minReceiveString.value = self.selectedPlatformRate.value.map {
+      return self.getMinReceiveString(destToken: destToken, rate: $0)
+    }
+    self.estimatedGasFeeString.value = self.selectedPlatformRate.value.map {
+      return self.getEstimatedNetworkFeeString(rate: $0)
+    }
+    self.maxGasFeeString.value = self.selectedPlatformRate.value.map {
+      return self.getMaxNetworkFeeString(rate: $0)
+    }
+  }
+  
   func updateSlippage(slippage: Double) {
     settings.slippage = slippage
+    slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
+    updateInfo()
   }
   
   func updateGasPriceType(type: KNSelectedGasPriceType) {
     settings.basic = .init(gasPriceType: type)
     settings.advanced = nil
+    updateInfo()
   }
   
   func updateAdvancedNonce(nonce: Int) {
