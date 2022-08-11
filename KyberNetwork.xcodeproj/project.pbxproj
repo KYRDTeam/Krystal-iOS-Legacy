@@ -573,6 +573,7 @@
 		A6394B562840D5360084C923 /* MockTransactionDetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6394B552840D5360084C923 /* MockTransactionDetailRouter.swift */; };
 		A6394B582840D5680084C923 /* MockTransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6394B572840D5680084C923 /* MockTransactionDetailView.swift */; };
 		A6394B5A2840D57D0084C923 /* TransactionDetailPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6394B592840D57D0084C923 /* TransactionDetailPresenterTests.swift */; };
+		A639B66428A4FC6400AF8517 /* SwapInfoViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A639B66328A4FC6400AF8517 /* SwapInfoViewModelProtocol.swift */; };
 		A63A88AA282D128400C6C373 /* AddWatchWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63A88A9282D128300C6C373 /* AddWatchWalletViewModel.swift */; };
 		A64CC665289405B8006BA1C6 /* Web3Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64CC664289405B8006BA1C6 /* Web3Factory.swift */; };
 		A64E17B5281932C400ED6E6D /* PendingTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B3281932C400ED6E6D /* PendingTransactionListViewController.swift */; };
@@ -1731,6 +1732,7 @@
 		A6394B552840D5360084C923 /* MockTransactionDetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionDetailRouter.swift; sourceTree = "<group>"; };
 		A6394B572840D5680084C923 /* MockTransactionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionDetailView.swift; sourceTree = "<group>"; };
 		A6394B592840D57D0084C923 /* TransactionDetailPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailPresenterTests.swift; sourceTree = "<group>"; };
+		A639B66328A4FC6400AF8517 /* SwapInfoViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapInfoViewModelProtocol.swift; sourceTree = "<group>"; };
 		A63A88A9282D128300C6C373 /* AddWatchWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWatchWalletViewModel.swift; sourceTree = "<group>"; };
 		A64CC664289405B8006BA1C6 /* Web3Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3Factory.swift; sourceTree = "<group>"; };
 		A64E17B3281932C400ED6E6D /* PendingTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactionListViewController.swift; sourceTree = "<group>"; };
@@ -5280,6 +5282,7 @@
 				A6D38BFC289916F7003579F2 /* SwapV2ViewModel.swift */,
 				A6BA4CA128A213AD002E2B30 /* SwapState.swift */,
 				A6BA4CA328A24F5D002E2B30 /* PriceImpactState.swift */,
+				A639B66328A4FC6400AF8517 /* SwapInfoViewModelProtocol.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -7541,6 +7544,7 @@
 				C3554D89280E5E3F0043BC1B /* SolanaUtil.swift in Sources */,
 				7EFE71492817DC2E00476184 /* SolFeeCoordinator.swift in Sources */,
 				291F52A51F6B762300B369AB /* EtherServiceRequest.swift in Sources */,
+				A639B66428A4FC6400AF8517 /* SwapInfoViewModelProtocol.swift in Sources */,
 				C6FE41812383A0C10096AAD8 /* KNWalletConnectViewController.swift in Sources */,
 				CCA4FE361FD4282400749AE4 /* DeviceChecker.swift in Sources */,
 				C3F71C90261AB0FF00285935 /* ClaimRewardViewController.swift in Sources */,
