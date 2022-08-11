@@ -13,11 +13,11 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
-            <string>Karla-Regular</string>
-        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -214,6 +214,9 @@
                                             </constraints>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                             <state key="normal" image="swap_settings"/>
+                                            <connections>
+                                                <action selector="settingsWasTapped:" destination="-1" eventType="touchUpInside" id="shz-91-sxj"/>
+                                            </connections>
                                         </button>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aHo-uv-839" userLabel="Source">
                                             <rect key="frame" x="28" y="56" width="372" height="112"/>

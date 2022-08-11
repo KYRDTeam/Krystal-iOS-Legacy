@@ -15,6 +15,7 @@ struct SwapV2ViewModelActions {
   var onSelectOpenHistory: () -> ()
   var openSwapConfirm: (SwapObject) -> ()
   var openApprove: (_ token: TokenObject, _ amount: BigInt) -> ()
+  var openSettings: (_ gasLimit: BigInt, _ settings: SwapTransactionSettings) -> ()
 }
 
 class SwapV2ViewModel {
@@ -71,13 +72,28 @@ class SwapV2ViewModel {
   }
   
   var gasPrice: BigInt {
+    if let basic = settings.basic {
+      if isEIP1559 {
+        let baseFee = KNGasCoordinator.shared.baseFee ?? .zero
+        let priorityFee = self.getPriorityFee(forType: basic.gasPriceType) ?? .zero
+        return baseFee + priorityFee
+      } else {
+        return self.getGasPrice(forType: basic.gasPriceType)
+      }
+    } else if let advanced = settings.advanced {
+      if isEIP1559 {
+        return advanced.maxFee + advanced.maxPriorityFee
+      } else {
+        return advanced.maxFee
+      }
+    }
     return KNGasCoordinator.shared.defaultKNGas
   }
   
-  var selectedGasPriceType: KNSelectedGasPriceType = .medium {
-    didSet {
-      
-    }
+  var settings: SwapTransactionSettings = .default
+  
+  var isEIP1559: Bool {
+    return currentChain.value.isSupportedEIP1559()
   }
   
   var maxAvailableSourceTokenAmount: BigInt {
@@ -95,7 +111,15 @@ class SwapV2ViewModel {
     }
   }
   
-  var estimatedGas: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
+  var estimatedGas: BigInt {
+    if let advanced = settings.advanced {
+      return advanced.gasLimit
+    } else if let rate = selectedPlatformRate.value {
+      return BigInt(rate.estimatedGas)
+    } else {
+      return KNGasConfiguration.exchangeTokensGasLimitDefault
+    }
+  }
   
   let fetchingBalanceInterval: Double = 10.0
   var timer: Timer?
@@ -194,13 +218,6 @@ class SwapV2ViewModel {
       } else {
         self.state.value = .checkingAllowance
         self.checkAllowance()
-      }
-    }
-    selectedPlatformRate.observe(on: self) { [weak self] rate in
-      if let rate = rate {
-        self?.estimatedGas = BigInt(rate.estimatedGas)
-      } else {
-        self?.estimatedGas = KNGasConfiguration.exchangeTokensGasLimitDefault
       }
     }
   }
@@ -319,6 +336,10 @@ class SwapV2ViewModel {
     reloadRates(amount: amount)
   }
   
+  func updateSettings(settings: SwapTransactionSettings) {
+    self.settings = settings
+  }
+  
   private func sortedRates(rates: [Rate]) -> [Rate] {
     let sortedRates = rates.sorted { lhs, rhs in
       return BigInt.bigIntFromString(value: lhs.rate) > BigInt.bigIntFromString(value: rhs.rate)
@@ -334,7 +355,6 @@ class SwapV2ViewModel {
     }
   }
   
-  // TODO: EIP1559
   private func getGasFeeUSD(estGas: BigInt, gasPrice: BigInt) -> BigInt {
     let decimals = KNGeneralProvider.shared.quoteTokenObject.decimals
     let rateUSDDouble = KNGeneralProvider.shared.quoteTokenPrice?.usd ?? 0
@@ -410,27 +430,37 @@ class SwapV2ViewModel {
   }
   
   private func getEstimatedNetworkFeeString(rate: Rate) -> String {
-    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed), gasPrice: gasPrice)
-    let typeString: String = {
-      switch self.selectedGasPriceType {
-      case .superFast:
-        return "super.fast".toBeLocalised()
-      case .fast:
-        return "fast".toBeLocalised()
-      case .medium:
-        return "regular".toBeLocalised()
-      case .slow:
-        return "slow".toBeLocalised()
-      case .custom:
-        return "advanced".toBeLocalised()
-      }
-    }()
+    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed), gasPrice: self.gasPrice)
+    if let basic = settings.basic {
+      let typeString: String = {
+        switch basic.gasPriceType {
+        case .superFast:
+          return "super.fast".toBeLocalised()
+        case .fast:
+          return "fast".toBeLocalised()
+        case .medium:
+          return "regular".toBeLocalised()
+        case .slow:
+          return "slow".toBeLocalised()
+        case .custom:
+          return "advanced".toBeLocalised()
+        }
+      }()
+      return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
+    }
+    let typeString = "advanced".toBeLocalised()
     return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
   }
   
   private func getMaxNetworkFeeString(rate: Rate) -> String {
-    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estimatedGas), gasPrice: gasPrice)
-    return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
+    if settings.basic != nil {
+      let feeInUSD = self.getGasFeeUSD(estGas: estimatedGas, gasPrice: gasPrice)
+      return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
+    } else if let advanced = settings.advanced {
+      let feeInUSD = self.getGasFeeUSD(estGas: estimatedGas, gasPrice: advanced.maxFee)
+      return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
+    }
+    return ""
   }
   
   private func getSourceAmountUsdString(amount: BigInt?) -> String? {
@@ -454,6 +484,21 @@ class SwapV2ViewModel {
       return KNGasCoordinator.shared.superFastKNGas
     default: // No need to handle case .custom
       return KNGasCoordinator.shared.standardKNGas
+    }
+  }
+  
+  private func getPriorityFee(forType type: KNSelectedGasPriceType) -> BigInt? {
+    switch type {
+    case .fast:
+      return KNGasCoordinator.shared.fastPriorityFee
+    case .medium:
+      return KNGasCoordinator.shared.standardPriorityFee
+    case .slow:
+      return KNGasCoordinator.shared.lowPriorityFee
+    case .superFast:
+      return KNGasCoordinator.shared.superFastPriorityFee
+    default: // No need to handle case .custom
+      return KNGasCoordinator.shared.standardPriorityFee
     }
   }
   
@@ -555,6 +600,55 @@ extension SwapV2ViewModel {
     default:
       return
     }
+  }
+  
+  func openSettings() {
+    actions.openSettings(estimatedGas, settings)
+  }
+  
+}
+
+
+// MARK: Update from settings
+extension SwapV2ViewModel {
+  
+  func updateSlippage(slippage: Double) {
+    settings.slippage = slippage
+  }
+  
+  func updateGasPriceType(type: KNSelectedGasPriceType) {
+    settings.basic = .init(gasPriceType: type)
+    settings.advanced = nil
+  }
+  
+  func updateAdvancedNonce(nonce: Int) {
+    if let advanced = settings.advanced {
+      settings.advanced = .init(gasLimit: advanced.gasLimit,
+                                maxFee: advanced.maxFee,
+                                maxPriorityFee: advanced.maxPriorityFee,
+                                nonce: nonce)
+    } else if let basic = settings.basic {
+      settings.advanced = .init(gasLimit: estimatedGas,
+                                maxFee: gasPrice,
+                                maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
+                                nonce: nonce)
+    }
+    updateSettings(settings: settings)
+  }
+  
+  func updateAdvancedFee(maxFee: BigInt, maxPriorityFee: BigInt, gasLimit: BigInt) {
+    if let advanced = settings.advanced {
+      settings.advanced = .init(gasLimit: gasLimit,
+                                maxFee: maxFee,
+                                maxPriorityFee: maxPriorityFee,
+                                nonce: advanced.nonce)
+    } else {
+      settings.advanced = .init(gasLimit: gasLimit,
+                                maxFee: maxFee,
+                                maxPriorityFee: maxPriorityFee,
+                                nonce: NonceCache.shared.getCachingNonce(address: addressString, chain: currentChain.value))
+    }
+    updateSettings(settings: settings)
   }
   
 }

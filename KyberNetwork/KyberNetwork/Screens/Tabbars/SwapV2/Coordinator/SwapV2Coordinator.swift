@@ -44,6 +44,9 @@ class SwapV2Coordinator: NSObject, Coordinator {
         },
         openApprove: { tokenObject, amount in
           self.openApprove(token: tokenObject, amount: amount)
+        },
+        openSettings: { gasLimit, settings in
+          self.openTransactionSettings(gasLimit: gasLimit, settings: settings)
         }
       )
     )
@@ -58,8 +61,33 @@ class SwapV2Coordinator: NSObject, Coordinator {
     self.rootViewController.present(swapSummaryVC, animated: true)
   }
   
-  func openTransactionSettings() {
+  func openTransactionSettings(gasLimit: BigInt, settings: SwapTransactionSettings) {
+    let selectedGasPriceType: KNSelectedGasPriceType = {
+      if let basic = settings.basic {
+        return basic.gasPriceType
+      }
+      return .custom
+    }()
     
+    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: selectedGasPriceType, currentRatePercentage: settings.slippage, isUseGasToken: false)
+    viewModel.updateGasPrices(
+      fast: KNGasCoordinator.shared.fastKNGas,
+      medium: KNGasCoordinator.shared.standardKNGas,
+      slow: KNGasCoordinator.shared.lowKNGas,
+      superFast: KNGasCoordinator.shared.superFastKNGas
+    )
+    viewModel.advancedGasLimit = (settings.advanced?.gasLimit).map(String.init)
+    viewModel.advancedMaxPriorityFee = (settings.advanced?.maxPriorityFee).map {
+      return NumberFormatUtils.format(value: $0, decimals: 9, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)
+    }
+    viewModel.advancedMaxFee = (settings.advanced?.maxFee).map {
+      return NumberFormatUtils.format(value: $0, decimals: 9, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)
+    }
+    viewModel.advancedNonce = (settings.advanced?.nonce).map { "\($0)" }
+
+    let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
+    vc.delegate = self
+    self.navigationController.present(vc, animated: true, completion: nil)
   }
   
   func openApprove(token: TokenObject, amount: BigInt) {
@@ -210,3 +238,29 @@ extension SwapV2Coordinator: ApproveTokenViewControllerDelegate {
   
 }
 
+extension SwapV2Coordinator: GasFeeSelectorPopupViewControllerDelegate {
+  
+  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+    switch event {
+    case .gasPriceChanged(let type, _):
+      rootViewController.viewModel.updateGasPriceType(type: type)
+      
+    case .minRatePercentageChanged(let percent):
+      rootViewController.viewModel.updateSlippage(slippage: percent)
+      
+    case .updateAdvancedSetting(let gasLimit, let maxPriorityFee, let maxFee):
+      guard let gasLimit = BigInt(gasLimit), let maxFee = maxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit), let maxPriorityFee = maxPriorityFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) else {
+        return
+      }
+      rootViewController.viewModel.updateAdvancedFee(maxFee: maxFee, maxPriorityFee: maxPriorityFee, gasLimit: gasLimit)
+      
+    case .updateAdvancedNonce(let nonce):
+      guard let nonce = Int(nonce) else { return }
+      rootViewController.viewModel.updateAdvancedNonce(nonce: nonce)
+      
+    default:
+      return
+    }
+  }
+  
+}
