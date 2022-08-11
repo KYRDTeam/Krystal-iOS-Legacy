@@ -883,6 +883,8 @@
 		C3308F5C27B66D510045C569 /* MultiSendApproveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3308F5A27B66D510045C569 /* MultiSendApproveViewController.swift */; };
 		C3308F5D27B66D510045C569 /* MultiSendApproveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3308F5B27B66D510045C569 /* MultiSendApproveViewController.xib */; };
 		C331133E2629753200E6F7E1 /* GetSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C331133D2629753200E6F7E1 /* GetSymbol.swift */; };
+		C331F373289BBF1D00A71B81 /* SwapProcessPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C331F371289BBF1D00A71B81 /* SwapProcessPopup.swift */; };
+		C331F374289BBF1D00A71B81 /* SwapProcessPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = C331F372289BBF1D00A71B81 /* SwapProcessPopup.xib */; };
 		C333A6C927BA5123003A6C6B /* ApproveTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C333A6C727BA5123003A6C6B /* ApproveTokenCell.swift */; };
 		C333A6CA27BA5123003A6C6B /* ApproveTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C333A6C827BA5123003A6C6B /* ApproveTokenCell.xib */; };
 		C334A865283354C3006B3D55 /* KeyboardTypingUltil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C334A864283354C3006B3D55 /* KeyboardTypingUltil.swift */; };
@@ -2054,6 +2056,8 @@
 		C3308F5A27B66D510045C569 /* MultiSendApproveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendApproveViewController.swift; sourceTree = "<group>"; };
 		C3308F5B27B66D510045C569 /* MultiSendApproveViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSendApproveViewController.xib; sourceTree = "<group>"; };
 		C331133D2629753200E6F7E1 /* GetSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSymbol.swift; sourceTree = "<group>"; };
+		C331F371289BBF1D00A71B81 /* SwapProcessPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapProcessPopup.swift; sourceTree = "<group>"; };
+		C331F372289BBF1D00A71B81 /* SwapProcessPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwapProcessPopup.xib; sourceTree = "<group>"; };
 		C333A6C727BA5123003A6C6B /* ApproveTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApproveTokenCell.swift; sourceTree = "<group>"; };
 		C333A6C827BA5123003A6C6B /* ApproveTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApproveTokenCell.xib; sourceTree = "<group>"; };
 		C334A864283354C3006B3D55 /* KeyboardTypingUltil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardTypingUltil.swift; sourceTree = "<group>"; };
@@ -2649,6 +2653,7 @@
 		2542604B21218EBC0015ECC7 /* Popups */ = {
 			isa = PBXGroup;
 			children = (
+				C331F370289BBE7000A71B81 /* SwapProcessPopup */,
 				7E0AE5C127D869180078D135 /* RateTransactionPopup */,
 				C326703C2579E40E0063AA1F /* GasFeeSelector */,
 				C33CCB2A23F40F8000F54B81 /* ConfirmCancelTransaction */,
@@ -5784,6 +5789,15 @@
 			path = PrettyAlertController;
 			sourceTree = "<group>";
 		};
+		C331F370289BBE7000A71B81 /* SwapProcessPopup */ = {
+			isa = PBXGroup;
+			children = (
+				C331F371289BBF1D00A71B81 /* SwapProcessPopup.swift */,
+				C331F372289BBF1D00A71B81 /* SwapProcessPopup.xib */,
+			);
+			path = SwapProcessPopup;
+			sourceTree = "<group>";
+		};
 		C33CCB2A23F40F8000F54B81 /* ConfirmCancelTransaction */ = {
 			isa = PBXGroup;
 			children = (
@@ -6575,6 +6589,7 @@
 				7EA5849D26F8A5900060250F /* KNActionSheetAlertViewController.xib in Resources */,
 				25073D1F211AF20D00833C92 /* Montserrat-Black.ttf in Resources */,
 				25929C6920DA5C760045CFA3 /* SF-Pro-Display-HeavyItalic.otf in Resources */,
+				C331F374289BBF1D00A71B81 /* SwapProcessPopup.xib in Resources */,
 				251E22672271CBF40038679C /* KNTransactionFilterViewController.xib in Resources */,
 				C3EE06C0267A15E50090B432 /* Karla-ExtraLightItalic.ttf in Resources */,
 				25929C5A20DA5C760045CFA3 /* SF-Pro-Display-Ultralight.otf in Resources */,
@@ -7401,6 +7416,7 @@
 				A64E17B8281934A700ED6E6D /* BasePendingTransactionListViewModel.swift in Sources */,
 				A6156B5528856E6800276120 /* BaseXibView.swift in Sources */,
 				A6BB3C2628605F760097EB75 /* EthereumTransactionSigner.swift in Sources */,
+				C331F373289BBF1D00A71B81 /* SwapProcessPopup.swift in Sources */,
 				25F9C7672213D0D20001064D /* UIColor.swift in Sources */,
 				A6B3CD582811C07C005D0D66 /* PendingHistoryTransactonViewModel.swift in Sources */,
 				25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */,

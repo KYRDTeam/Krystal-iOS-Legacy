@@ -25,6 +25,7 @@ protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoodinatorDidSendRefCode(_ code: String)
   func exchangeTokenCoordinatorDidSelectAddToken(_ token: TokenObject)
   func exchangeTokenCoordinatorDidAddTokens(srcToken: TokenObject?, destToken: TokenObject?)
+  func exchangeTokenCoordinatorDidSelectTokens(token: Token)
 }
 
 //swiftlint:disable file_length
@@ -42,7 +43,7 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
 
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
   fileprivate var confirmSwapVC: KConfirmSwapViewController?
-  fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
+  fileprivate weak var transactionStatusVC: SwapProcessPopup?
   fileprivate var gasFeeSelectorVC: GasFeeSelectorPopupViewController?
 
   lazy var rootViewController: KSwapViewController = {
@@ -354,7 +355,7 @@ extension KNExchangeTokenCoordinator {
 // MARK: Network requests
 extension KNExchangeTokenCoordinator {
   fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
-    let controller = KNTransactionStatusPopUp(transaction: transaction)
+    let controller = SwapProcessPopup(transaction: transaction)
     controller.delegate = self
     self.navigationController.present(controller, animated: true, completion: nil)
     self.transactionStatusVC = controller
@@ -996,6 +997,24 @@ extension KNExchangeTokenCoordinator: KNHistoryCoordinatorDelegate {
 
   func historyCoordinatorDidClose() {
     self.historyCoordinator = nil
+  }
+}
+
+extension KNExchangeTokenCoordinator: SwapProcessPopupDelegate {
+  func swapProcessPopup(_ controller: SwapProcessPopup, action: SwapProcessPopupEvent) {
+    controller.dismiss(animated: true) {
+      self.transactionStatusVC = nil
+      switch action {
+      case .openLink(let url):
+        self.navigationController.openSafari(with: url)
+      case .goToSupport:
+        self.navigationController.openSafari(with: "https://t.me/KrystalDefi")
+      case .viewToken(let sym):
+        if let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: sym) {
+          self.delegate?.exchangeTokenCoordinatorDidSelectTokens(token: token)
+        }
+      }
+    }
   }
 }
 
