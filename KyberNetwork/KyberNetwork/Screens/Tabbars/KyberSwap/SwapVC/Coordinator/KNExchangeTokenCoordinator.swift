@@ -543,6 +543,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     case .openGasPriceSelect(let gasLimit, let baseGasLimit, let type, let percent, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
       let vm = TransactionSettingsViewModel(gasLimit: gasLimit)
       let popup = TransactionSettingsViewController(viewModel: vm)
+      popup.delegate = self
       self.navigationController.pushViewController(popup, animated: true, completion: nil)
       
 //      let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: type, currentRatePercentage: percent, isUseGasToken: self.isAccountUseGasToken())
@@ -1109,7 +1110,7 @@ extension KNExchangeTokenCoordinator: QRCodeReaderDelegate {
 }
 
 extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate {
-  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+  func gasFeeSelectorPopupViewController(_ controller: KNBaseViewController, run event: GasFeeSelectorPopupViewEvent) {
     switch event {
     case .gasPriceChanged(let type, let value):
       self.rootViewController.coordinatorDidUpdateGasPriceType(type, value: value)

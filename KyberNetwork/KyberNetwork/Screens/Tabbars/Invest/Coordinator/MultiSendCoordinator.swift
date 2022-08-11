@@ -659,7 +659,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
 }
 
 extension MultiSendCoordinator: GasFeeSelectorPopupViewControllerDelegate {
-  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+  func gasFeeSelectorPopupViewController(_ controller: KNBaseViewController, run event: GasFeeSelectorPopupViewEvent) {
     switch event {
     case .infoPressed:
       break

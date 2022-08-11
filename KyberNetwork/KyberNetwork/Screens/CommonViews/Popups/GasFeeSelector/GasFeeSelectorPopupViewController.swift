@@ -11,7 +11,7 @@ import APIKit
 import JSONRPCKit
 
 protocol GasFeeSelectorPopupViewControllerDelegate: class {
-  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent)
+  func gasFeeSelectorPopupViewController(_ controller: KNBaseViewController, run event: GasFeeSelectorPopupViewEvent)
 }
 
 class GasFeeSelectorPopupViewController: KNBaseViewController {

@@ -29,10 +29,25 @@ class SettingAdvancedModeFormCellModel {
   
   var gasLimit: BigInt
   var nonce: Int
-  
-  init(gasLimit: BigInt, nonce: Int) {
+  var selectedType: KNSelectedGasPriceType {
+    didSet {
+      guard selectedType != .custom else { return }
+      self.maxPriorityFeeString = selectedType.getPriorityFeeValueString()
+      self.maxFeeString = selectedType.getGasValueString()
+      self.gasLimitString = gasLimit.description
+    }
+  }
+  init(gasLimit: BigInt, nonce: Int, selectedType: KNSelectedGasPriceType) {
     self.gasLimit = gasLimit
     self.nonce = nonce
+    self.selectedType = selectedType
+    self.maxPriorityFeeString = selectedType.getPriorityFeeValueString()
+    self.maxFeeString = selectedType.getGasValueString()
+    self.gasLimitString = gasLimit.description
+  }
+  
+  func getAdvancedSettingInfo() -> AdvancedSettingsInfo {
+    return (self.maxPriorityFeeString, self.maxFeeString, self.gasLimitString)
   }
   
 }
@@ -66,12 +81,12 @@ class SettingAdvancedModeFormCell: UITableViewCell {
     self.maxFeeRefLabel.text = "Standard " + KNGasCoordinator.shared.standardKNGas.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) + " GWEI ~ 45s"
   }
   
-  func fillFormUI(type: KNSelectedGasPriceType) {
-    self.maxPriorityFeeTextField.text = cellModel.maxPriorityFeeString.isEmpty ? type.getPriorityFeeValueString() : cellModel.maxPriorityFeeString
+  func fillFormUI() {
+    self.maxPriorityFeeTextField.text = cellModel.maxPriorityFeeString
     
-    self.maxFeeTextField.text = cellModel.maxFeeString.isEmpty ? type.getGasValueString() : cellModel.maxFeeString
+    self.maxFeeTextField.text = cellModel.maxFeeString
     
-    self.gasLimitTextField.text = cellModel.gasLimit.description
+    self.gasLimitTextField.text = cellModel.gasLimitString
     self.customNonceTextField.text = "\(cellModel.nonce)"
   }
 }

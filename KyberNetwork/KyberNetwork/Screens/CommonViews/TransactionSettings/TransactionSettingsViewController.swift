@@ -8,15 +8,21 @@
 import UIKit
 import BigInt
 
+typealias BasicSettingsInfo = (type: KNSelectedGasPriceType, value: BigInt)
+typealias AdvancedSettingsInfo = (maxPriority: String, maxFee: String, gasLimit: String)
+
 class TransactionSettingsViewModel {
   var isAdvancedMode = false
   var isExpertMode = false
   
   var gasLimit: BigInt
   var gasPrice: BigInt
+  
+  
   var selectedType: KNSelectedGasPriceType {
     didSet {
       self.basicAdvancedCellModel.selectedType = self.selectedType
+      self.advancedModeCellModel.selectedType = self.selectedType
     }
   }
   var nonce: Int = -1 {
@@ -47,7 +53,7 @@ class TransactionSettingsViewModel {
       print("[Setting][SlippageChanged] \(value)")
     }
     self.basicAdvancedCellModel = SettingBasicAdvancedFormCellModel(gasPrice: gasPrice, gasLimit: gasLimit, nonce: -1, selectedType: selectType)
-    self.advancedModeCellModel = SettingAdvancedModeFormCellModel(gasLimit: gasLimit, nonce: -1)
+    self.advancedModeCellModel = SettingAdvancedModeFormCellModel(gasLimit: gasLimit, nonce: -1, selectedType: selectType)
     
     self.segmentedCellModel.valueChangeHandler = { value in
       self.isAdvancedMode = value == 1
@@ -79,38 +85,54 @@ class TransactionSettingsViewModel {
     self.basicAdvancedCellModel.gasPriceChangedHandler = { value in
       print("[Setting][BasicAdvanced] \(value)")
       self.advancedModeCellModel.maxFeeString = value
-      
+      self.selectedType = .custom
     }
     
     self.basicAdvancedCellModel.gasLimitChangedHandler = { value in
       print("[Setting][BasicAdvanced] \(value)")
+      self.advancedModeCellModel.gasLimitString = value
+      self.selectedType = .custom
     }
     
     self.basicAdvancedCellModel.nonceChangedHandler = { value in
       print("[Setting][BasicAdvanced] \(value)")
       let nonceValue = Int(value) ?? 0
       self.nonce = nonceValue
+      self.selectedType = .custom
     }
     
     self.advancedModeCellModel.maxPriorityFeeChangedHandler = { value in
       print("[Setting][Advanced] \(value)")
+      self.selectedType = .custom
     }
     
     self.advancedModeCellModel.maxFeeChangedHandler = { value in
       print("[Setting][Advanced] \(value)")
       self.basicAdvancedCellModel.gasPriceString = value
+      self.selectedType = .custom
     }
     
     self.advancedModeCellModel.gasLimitChangedHandler = { value in
       print("[Setting][Advanced] \(value)")
+      self.basicAdvancedCellModel.gasLimitString = value
+      self.selectedType = .custom
     }
     
     self.advancedModeCellModel.customNonceChangedHander = { value in
       print("[Setting][Advanced] \(value)")
       let nonceValue = Int(value) ?? 0
       self.nonce = nonceValue
+      self.selectedType = .custom
     }
     
+  }
+  
+  func getBasicSettingInfo() -> BasicSettingsInfo {
+    return (type: self.selectedType, value: self.selectedType.getGasValue())
+  }
+  
+  func getAdvancedSettingInfo() -> AdvancedSettingsInfo {
+    return self.advancedModeCellModel.getAdvancedSettingInfo()
   }
 }
 
@@ -118,6 +140,7 @@ class TransactionSettingsViewController: KNBaseViewController {
   @IBOutlet weak var settingsTableView: UITableView!
   
   let viewModel: TransactionSettingsViewModel
+  weak var delegate: GasFeeSelectorPopupViewControllerDelegate?
   
   init(viewModel: TransactionSettingsViewModel) {
     self.viewModel = viewModel
@@ -150,6 +173,32 @@ class TransactionSettingsViewController: KNBaseViewController {
   @IBAction func backBtnTapped(_ sender: UIButton) {
     self.navigationController?.popViewController(animated: true)
   }
+  
+  @IBAction func resetButtonTapped(_ sender: UIButton) {
+  }
+  
+  @IBAction func saveButtonTapped(_ sender: UIButton) {
+    let basicInfo = viewModel.getBasicSettingInfo()
+    let advancedInfo = viewModel.getAdvancedSettingInfo()
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      if viewModel.selectedType == .custom {
+        self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: advancedInfo.gasLimit, maxPriorityFee: advancedInfo.maxPriority, maxFee: advancedInfo.maxFee))
+      } else {
+        self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: basicInfo.type, value: basicInfo.value))
+      }
+    } else {
+      if viewModel.selectedType == .custom {
+        self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: advancedInfo.gasLimit, maxPriorityFee: "", maxFee: advancedInfo.maxFee))
+      } else {
+        self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: basicInfo.type, value: basicInfo.value))
+      }
+    }
+  }
+  
+  func coordinatorDidUpdateCurrentNonce(_ nonce: Int) {
+    viewModel.nonce = nonce
+    
+  }
 }
 
 extension TransactionSettingsViewController: UITableViewDataSource {
@@ -181,7 +230,7 @@ extension TransactionSettingsViewController: UITableViewDataSource {
           for: indexPath
         ) as! SettingAdvancedModeFormCell
         cell.cellModel = viewModel.advancedModeCellModel
-        cell.fillFormUI(type: viewModel.selectedType)
+        cell.fillFormUI()
         cell.updateUI()
         return cell
       } else {
