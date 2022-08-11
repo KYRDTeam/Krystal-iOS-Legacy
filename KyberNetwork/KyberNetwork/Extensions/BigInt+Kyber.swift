@@ -82,4 +82,15 @@ extension BigInt {
       return ""
     }
   }
+  
+  func formatFeeStringForType(gasLimit: BigInt, type: KNSelectedGasPriceType) -> String {
+    let fee = self * gasLimit
+    let value = fee.string(units: UnitConfiguration.gasFeeUnit, minFractionDigits: 0, maxFractionDigits: 2)
+    var timeDisplay = ""
+    let typeTimeDisplay = type.displayTime()
+    if !typeTimeDisplay.isEmpty {
+      timeDisplay = " ~ \(typeTimeDisplay)"
+    }
+    return "\(type.displayString().capitalized): \(value) GWEI" + timeDisplay
+  }
 }

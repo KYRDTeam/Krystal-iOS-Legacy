@@ -36,6 +36,62 @@ extension KNSelectedGasPriceType {
       return "custom"
     }
   }
+  
+  func displayTime() -> String {
+    switch self {
+    case .fast:
+      return "30s"
+    case .medium:
+      return "45s"
+    case .slow:
+      return "10m"
+    case .superFast:
+      return ""
+    case .custom:
+      return ""
+    }
+  }
+  
+  func getGasValue() -> BigInt {
+    switch self {
+    case .fast:
+      return KNGasCoordinator.shared.fastKNGas
+    case .medium:
+      return KNGasCoordinator.shared.standardKNGas
+    case .slow:
+      return KNGasCoordinator.shared.lowKNGas
+    case .superFast:
+      return KNGasCoordinator.shared.superFastKNGas
+    case .custom:
+      return .zero
+    }
+  }
+  
+  func getPriorityFeeValue() -> BigInt? {
+    switch self {
+    case .fast:
+      return KNGasCoordinator.shared.fastPriorityFee
+    case .medium:
+      return KNGasCoordinator.shared.standardPriorityFee
+    case .slow:
+      return KNGasCoordinator.shared.lowPriorityFee
+    case .superFast:
+      return KNGasCoordinator.shared.superFastPriorityFee
+    case .custom:
+      return nil
+    }
+  }
+  
+  func getPriorityFeeValueString() -> String {
+    guard let value = self.getPriorityFeeValue() else {
+      return ""
+    }
+    return value.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2)
+  }
+  
+  func getGasValueString() -> String {
+    return self.getGasValue().string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2)
+  }
 }
 
 enum GasFeeSelectorPopupViewEvent {

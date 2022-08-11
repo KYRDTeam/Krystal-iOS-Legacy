@@ -13,23 +13,42 @@ class TransactionSettingsViewModel {
   var isExpertMode = false
   
   var gasLimit: BigInt
-  var selectedType: KNSelectedGasPriceType
+  var gasPrice: BigInt
+  var selectedType: KNSelectedGasPriceType {
+    didSet {
+      self.basicAdvancedCellModel.selectedType = self.selectedType
+    }
+  }
+  var nonce: Int = -1 {
+    didSet {
+      self.basicAdvancedCellModel.nonce = self.nonce
+      self.advancedModeCellModel.nonce = self.nonce
+      self.customNonceChangedHandler(self.nonce)
+    }
+  }
   
   let slippageCellModel = SlippageRateCellModel(currentRatePercentage: 0.5)
   let segmentedCellModel = SettingSegmentedCellModel()
   let switchExpertMode = SettingExpertModeSwitchCellModel()
   let basicModeCellModel = SettingBasicModeCellModel()
+  let basicAdvancedCellModel: SettingBasicAdvancedFormCellModel
+  let advancedModeCellModel: SettingAdvancedModeFormCellModel
   
   var switchExpertModeEventHandler: (Bool) -> Void = { _ in }
   var switchAdvancedModeEventHandle: (Bool) -> Void = { _ in }
+  var customNonceChangedHandler: (Int) -> Void = { _ in }
   
   init(gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium) {
+    self.gasPrice = selectType.getGasValue()
     self.gasLimit = gasLimit
     self.selectedType = selectType
     self.basicModeCellModel.gasLimit = gasLimit
     self.slippageCellModel.slippageChangedEvent = { value in
       print("[Setting][SlippageChanged] \(value)")
     }
+    self.basicAdvancedCellModel = SettingBasicAdvancedFormCellModel(gasPrice: gasPrice, gasLimit: gasLimit, nonce: -1, selectedType: selectType)
+    self.advancedModeCellModel = SettingAdvancedModeFormCellModel(gasLimit: gasLimit, nonce: -1)
+    
     self.segmentedCellModel.valueChangeHandler = { value in
       self.isAdvancedMode = value == 1
       self.switchAdvancedModeEventHandle(self.isAdvancedMode)
@@ -50,7 +69,48 @@ class TransactionSettingsViewModel {
       default:
         break
       }
+      self.gasPrice = self.selectedType.getGasValue()
+     
+      let valueString = self.selectedType.getGasValueString()
+      self.basicAdvancedCellModel.gasPriceString = valueString
+      self.advancedModeCellModel.maxFeeString = valueString
     }
+    
+    self.basicAdvancedCellModel.gasPriceChangedHandler = { value in
+      print("[Setting][BasicAdvanced] \(value)")
+      self.advancedModeCellModel.maxFeeString = value
+      
+    }
+    
+    self.basicAdvancedCellModel.gasLimitChangedHandler = { value in
+      print("[Setting][BasicAdvanced] \(value)")
+    }
+    
+    self.basicAdvancedCellModel.nonceChangedHandler = { value in
+      print("[Setting][BasicAdvanced] \(value)")
+      let nonceValue = Int(value) ?? 0
+      self.nonce = nonceValue
+    }
+    
+    self.advancedModeCellModel.maxPriorityFeeChangedHandler = { value in
+      print("[Setting][Advanced] \(value)")
+    }
+    
+    self.advancedModeCellModel.maxFeeChangedHandler = { value in
+      print("[Setting][Advanced] \(value)")
+      self.basicAdvancedCellModel.gasPriceString = value
+    }
+    
+    self.advancedModeCellModel.gasLimitChangedHandler = { value in
+      print("[Setting][Advanced] \(value)")
+    }
+    
+    self.advancedModeCellModel.customNonceChangedHander = { value in
+      print("[Setting][Advanced] \(value)")
+      let nonceValue = Int(value) ?? 0
+      self.nonce = nonceValue
+    }
+    
   }
 }
 
@@ -90,7 +150,6 @@ class TransactionSettingsViewController: KNBaseViewController {
   @IBAction func backBtnTapped(_ sender: UIButton) {
     self.navigationController?.popViewController(animated: true)
   }
-  
 }
 
 extension TransactionSettingsViewController: UITableViewDataSource {
@@ -121,7 +180,9 @@ extension TransactionSettingsViewController: UITableViewDataSource {
           withIdentifier: SettingAdvancedModeFormCell.cellID,
           for: indexPath
         ) as! SettingAdvancedModeFormCell
-       
+        cell.cellModel = viewModel.advancedModeCellModel
+        cell.fillFormUI(type: viewModel.selectedType)
+        cell.updateUI()
         return cell
       } else {
         if self.viewModel.isAdvancedMode {
@@ -129,7 +190,9 @@ extension TransactionSettingsViewController: UITableViewDataSource {
             withIdentifier: SettingBasicAdvancedFormCell.cellID,
             for: indexPath
           ) as! SettingBasicAdvancedFormCell
-         
+          cell.cellModel = viewModel.basicAdvancedCellModel
+          cell.fillFormValues()
+          cell.updateUI()
           return cell
         } else {
           let cell = tableView.dequeueReusableCell(
@@ -141,7 +204,6 @@ extension TransactionSettingsViewController: UITableViewDataSource {
           return cell
         }
       }
-
     case 3:
       let cell = tableView.dequeueReusableCell(
         withIdentifier: SettingExpertModeSwitchCell.cellID,

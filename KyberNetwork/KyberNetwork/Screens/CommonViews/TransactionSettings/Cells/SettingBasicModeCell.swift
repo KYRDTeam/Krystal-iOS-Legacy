@@ -15,8 +15,6 @@ class SettingBasicModeCellModel {
   var gasLimit: BigInt = .zero
   var selectedIndex = 2
   var actionHandler: (Int) -> Void = { _ in }
-  
-  
 }
 
 
@@ -47,6 +45,7 @@ class SettingBasicModeCell: UITableViewCell {
     let tag = sender.tag
     self.cellModel.selectedIndex = tag
     self.updateUI()
+    cellModel.actionHandler(tag)
   }
   
   func updateOptionViewsUI(aView: UIView, selected: Bool) {

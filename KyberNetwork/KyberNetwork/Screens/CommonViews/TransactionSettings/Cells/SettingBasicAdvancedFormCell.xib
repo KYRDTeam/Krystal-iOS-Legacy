@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -165,6 +165,12 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="customNonceTextField" destination="B1l-r9-9gD" id="UCz-va-cbd"/>
+                <outlet property="gasLimitTextField" destination="Px0-Em-3Fm" id="vVP-68-hpG"/>
+                <outlet property="gasPriceTextField" destination="DT9-Er-FOr" id="jxJ-dc-qhT"/>
+                <outlet property="gasPriceValueLabel" destination="BMK-cq-Pys" id="qVv-97-rXJ"/>
+            </connections>
             <point key="canvasLocation" x="137.68115942028987" y="98.772321428571431"/>
         </tableViewCell>
     </objects>

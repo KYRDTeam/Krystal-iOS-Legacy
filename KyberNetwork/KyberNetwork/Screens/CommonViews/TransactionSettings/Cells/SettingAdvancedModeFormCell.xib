@@ -247,6 +247,15 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="baseFeeLabel" destination="hCT-j5-cx7" id="f4R-OD-bBU"/>
+                <outlet property="customNonceTextField" destination="buJ-9E-KPr" id="6iW-Ud-lgo"/>
+                <outlet property="gasLimitTextField" destination="pxZ-lG-CDd" id="Vxf-2e-oye"/>
+                <outlet property="maxFeeRefLabel" destination="bZ6-Fe-6Cg" id="JW7-gL-yI2"/>
+                <outlet property="maxFeeTextField" destination="zh3-4u-uK3" id="5CV-V1-sED"/>
+                <outlet property="maxPriorityFeeRefLabel" destination="EwI-aK-hh4" id="L4D-7e-i7y"/>
+                <outlet property="maxPriorityFeeTextField" destination="hhY-vf-ZQN" id="AHU-Ka-nT5"/>
+            </connections>
             <point key="canvasLocation" x="137.68115942028987" y="116.51785714285714"/>
         </tableViewCell>
     </objects>
