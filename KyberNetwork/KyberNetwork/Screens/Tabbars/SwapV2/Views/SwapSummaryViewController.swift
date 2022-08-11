@@ -179,7 +179,7 @@ class SwapSummaryViewController: KNBaseViewController {
   }
 
   @IBAction func confirmSwapButtonTapped(_ sender: Any) {
-    
+    viewModel.didConfirmSwap()
   }
   
   @IBAction func onCloseButtonTapped(_ sender: Any) {

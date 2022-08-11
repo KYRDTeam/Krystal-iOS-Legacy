@@ -13,11 +13,9 @@ struct SwapObject {
   var destToken: Token
   var sourceAmount: BigInt
   var rate: Rate
-  var selectedGasPriceType: KNSelectedGasPriceType
-  var gasPrice: BigInt
   var showRevertedRate: Bool
-  var minRatePercent: Double
   var priceImpactState: PriceImpactState
   var sourceTokenPrice: Double
   var destTokenPrice: Double
+  var swapSetting: SwapTransactionSettings
 }
