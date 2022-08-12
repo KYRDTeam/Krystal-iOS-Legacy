@@ -347,12 +347,11 @@ class SwapV2ViewController: KNBaseViewController {
       case .insufficientBalance:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Insufficient \(self.viewModel.sourceToken.value?.symbol ?? "") Balance", for: .normal)
-        self.rateLoadingView.isHidden = true
+        self.rateLoadingView.isHidden = false
         self.errorView.isHidden = true
-        self.platformTableView.isHidden = true
+        self.platformTableView.isHidden = false
         self.loadingView.isHidden = true
         self.approveGuideView.isHidden = true
-        self.destViewHeight.constant = CGFloat(112)
       case .checkingAllowance:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Checking Allowance", for: .normal)

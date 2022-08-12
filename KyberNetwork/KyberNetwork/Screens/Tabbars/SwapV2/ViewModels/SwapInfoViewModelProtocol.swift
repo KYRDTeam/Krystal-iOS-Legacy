@@ -96,20 +96,20 @@ extension SwapInfoViewModelProtocol {
       let typeString: String = {
         switch basic.gasPriceType {
         case .superFast:
-          return "super.fast".toBeLocalised()
+          return Strings.superFast
         case .fast:
-          return "fast".toBeLocalised()
+          return Strings.fast
         case .medium:
-          return "regular".toBeLocalised()
+          return Strings.regular
         case .slow:
-          return "slow".toBeLocalised()
+          return Strings.slow
         case .custom:
-          return "advanced".toBeLocalised()
+          return Strings.advanced
         }
       }()
       return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
     }
-    let typeString = "advanced".toBeLocalised()
+    let typeString = Strings.advanced
     return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
   }
   

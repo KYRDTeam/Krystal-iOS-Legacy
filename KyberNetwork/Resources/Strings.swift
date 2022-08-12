@@ -206,4 +206,11 @@ struct Strings {
   static let swapTxnFeeInfo = "swap.txn_fee_i".toBeLocalised()
   static let swapTxnMaxFeeInfo = "swap.txn_fee_max_i".toBeLocalised()
   static let swapPriceImpactInfo = "swap.price_impact_i".toBeLocalised()
+  
+  // Swap settings
+  static let superFast = "super.fast".toBeLocalised()
+  static let fast = "fast".toBeLocalised()
+  static let regular = "regular".toBeLocalised()
+  static let slow = "regular".toBeLocalised()
+  static let advanced = "regular".toBeLocalised()
 }
