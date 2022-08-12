@@ -43,6 +43,7 @@ class TransactionSettingsViewModel {
   var switchExpertModeEventHandler: (Bool) -> Void = { _ in }
   var switchAdvancedModeEventHandle: (Bool) -> Void = { _ in }
   var customNonceChangedHandler: (Int) -> Void = { _ in }
+  var slippageChangedEventHandler: (Double) -> Void = { _ in }
   
   init(gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium) {
     self.gasPrice = selectType.getGasValue()
@@ -125,6 +126,10 @@ class TransactionSettingsViewModel {
       self.selectedType = .custom
     }
     
+    self.slippageCellModel.slippageChangedEvent = { value in
+      self.slippageChangedEventHandler(value)
+    }
+    
   }
   
   func getBasicSettingInfo() -> BasicSettingsInfo {
@@ -168,6 +173,10 @@ class TransactionSettingsViewController: KNBaseViewController {
     self.viewModel.switchAdvancedModeEventHandle = { value in
       self.settingsTableView.reloadData()
     }
+    
+    self.viewModel.slippageChangedEventHandler = { value in
+      self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: CGFloat(value)))
+    }
   }
   
   @IBAction func backBtnTapped(_ sender: UIButton) {
@@ -175,24 +184,27 @@ class TransactionSettingsViewController: KNBaseViewController {
   }
   
   @IBAction func resetButtonTapped(_ sender: UIButton) {
+    
   }
   
   @IBAction func saveButtonTapped(_ sender: UIButton) {
-    let basicInfo = viewModel.getBasicSettingInfo()
-    let advancedInfo = viewModel.getAdvancedSettingInfo()
-    if KNGeneralProvider.shared.isUseEIP1559 {
-      if viewModel.selectedType == .custom {
-        self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: advancedInfo.gasLimit, maxPriorityFee: advancedInfo.maxPriority, maxFee: advancedInfo.maxFee))
+    self.navigationController?.popViewController(animated: true, completion: {
+      let basicInfo = self.viewModel.getBasicSettingInfo()
+      let advancedInfo = self.viewModel.getAdvancedSettingInfo()
+      if KNGeneralProvider.shared.isUseEIP1559 {
+        if self.viewModel.selectedType == .custom {
+          self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: advancedInfo.gasLimit, maxPriorityFee: advancedInfo.maxPriority, maxFee: advancedInfo.maxFee))
+        } else {
+          self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: basicInfo.type, value: basicInfo.value))
+        }
       } else {
-        self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: basicInfo.type, value: basicInfo.value))
+        if self.viewModel.selectedType == .custom {
+          self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: advancedInfo.gasLimit, maxPriorityFee: "", maxFee: advancedInfo.maxFee))
+        } else {
+          self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: basicInfo.type, value: basicInfo.value))
+        }
       }
-    } else {
-      if viewModel.selectedType == .custom {
-        self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: advancedInfo.gasLimit, maxPriorityFee: "", maxFee: advancedInfo.maxFee))
-      } else {
-        self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: basicInfo.type, value: basicInfo.value))
-      }
-    }
+    })
   }
   
   func coordinatorDidUpdateCurrentNonce(_ nonce: Int) {

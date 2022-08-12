@@ -563,14 +563,14 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
 //      vc.delegate = self
 //      self.gasFeeSelectorVC = vc
 //      self.navigationController.present(vc, animated: true, completion: nil)
-//      self.getLatestNonce { result in
-//        switch result {
-//        case .success(let nonce):
-//          vc.coordinatorDidUpdateCurrentNonce(nonce)
-//        case .failure(let error):
-//          self.navigationController.showErrorTopBannerMessage(message: error.description)
-//        }
-//      }
+      self.getLatestNonce { result in
+        switch result {
+        case .success(let nonce):
+          popup.coordinatorDidUpdateCurrentNonce(nonce)
+        case .failure(let error):
+          self.navigationController.showErrorTopBannerMessage(message: error.description)
+        }
+      }
     case .updateRate(let rate):
       self.gasFeeSelectorVC?.coordinatorDidUpdateMinRate(rate)
     case .openHistory:

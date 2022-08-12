@@ -37,6 +37,7 @@ class SettingAdvancedModeFormCellModel {
       self.gasLimitString = gasLimit.description
     }
   }
+
   init(gasLimit: BigInt, nonce: Int, selectedType: KNSelectedGasPriceType) {
     self.gasLimit = gasLimit
     self.nonce = nonce
