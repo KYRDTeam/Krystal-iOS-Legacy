@@ -48,9 +48,10 @@ class SwapInfoView: BaseXibView {
     onTapValue?()
   }
   
-  func setTitle(title: String, underlined: Bool) {
+  func setTitle(title: String, underlined: Bool, shouldShowIcon: Bool = false) {
     titleLabel.text = title
     underlineView.isHidden = !underlined
+    iconImageView.isHidden = !shouldShowIcon
   }
   
   func setValue(value: String?, highlighted: Bool = false) {

@@ -56,7 +56,9 @@ class SwapV2Coordinator: NSObject, Coordinator {
   }
   
   func openSwapConfirm(object: SwapObject) {
-    
+    let viewModel = SwapSummaryViewModel(swapObject: object)
+    let swapSummaryVC = SwapSummaryViewController(viewModel: viewModel)
+    self.rootViewController.present(swapSummaryVC, animated: true)
   }
   
   func openTransactionSettings(gasLimit: BigInt, settings: SwapTransactionSettings) {

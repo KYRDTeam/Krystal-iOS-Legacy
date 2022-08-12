@@ -494,6 +494,7 @@
 		7E72917A27F193FC00ADF721 /* SwitchChainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E72917827F193FC00ADF721 /* SwitchChainCell.xib */; };
 		7E72917C27F1B36100ADF721 /* ChainType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E72917B27F1B36100ADF721 /* ChainType.swift */; };
 		7E7ACD1128373E3100E78499 /* BridgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7ACD1028373E3100E78499 /* BridgeViewModel.swift */; };
+		7E7C074928A36887002E8068 /* SwapSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7C074828A36887002E8068 /* SwapSummaryViewModel.swift */; };
 		7E8C62D8271D319200A6C9DB /* ClaimRewardsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C62D6271D319200A6C9DB /* ClaimRewardsController.swift */; };
 		7E8C62D9271D319200A6C9DB /* ClaimRewardsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E8C62D7271D319200A6C9DB /* ClaimRewardsController.xib */; };
 		7E8F02E927F2DD4200234E22 /* AllChains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8F02E827F2DD4200234E22 /* AllChains.swift */; };
@@ -551,6 +552,8 @@
 		7EE92A0F286307E10050DC8D /* ShowAllCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE92A0D286307E10050DC8D /* ShowAllCell.swift */; };
 		7EE92A10286307E10050DC8D /* ShowAllCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE92A0E286307E10050DC8D /* ShowAllCell.xib */; };
 		7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEB9270278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift */; };
+		7EF2E51428A21BF200D9947E /* SwapSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2E51228A21BF200D9947E /* SwapSummaryViewController.swift */; };
+		7EF2E51528A21BF200D9947E /* SwapSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EF2E51328A21BF200D9947E /* SwapSummaryViewController.xib */; };
 		7EFE440027144533006CF502 /* RewardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE43FE27144533006CF502 /* RewardsViewController.swift */; };
 		7EFE440127144533006CF502 /* RewardsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EFE43FF27144533006CF502 /* RewardsViewController.xib */; };
 		7EFE440527156622006CF502 /* RewardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE440327156622006CF502 /* RewardTableViewCell.swift */; };
@@ -1651,6 +1654,7 @@
 		7E72917827F193FC00ADF721 /* SwitchChainCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchChainCell.xib; sourceTree = "<group>"; };
 		7E72917B27F1B36100ADF721 /* ChainType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainType.swift; sourceTree = "<group>"; };
 		7E7ACD1028373E3100E78499 /* BridgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeViewModel.swift; sourceTree = "<group>"; };
+		7E7C074828A36887002E8068 /* SwapSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapSummaryViewModel.swift; sourceTree = "<group>"; };
 		7E8C62D6271D319200A6C9DB /* ClaimRewardsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimRewardsController.swift; sourceTree = "<group>"; };
 		7E8C62D7271D319200A6C9DB /* ClaimRewardsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClaimRewardsController.xib; sourceTree = "<group>"; };
 		7E8F02E827F2DD4200234E22 /* AllChains.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllChains.swift; sourceTree = "<group>"; };
@@ -1708,6 +1712,8 @@
 		7EE92A0D286307E10050DC8D /* ShowAllCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAllCell.swift; sourceTree = "<group>"; };
 		7EE92A0E286307E10050DC8D /* ShowAllCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowAllCell.xib; sourceTree = "<group>"; };
 		7EEB9270278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasFeeSelectorPopupViewModel.swift; sourceTree = "<group>"; };
+		7EF2E51228A21BF200D9947E /* SwapSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapSummaryViewController.swift; sourceTree = "<group>"; };
+		7EF2E51328A21BF200D9947E /* SwapSummaryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwapSummaryViewController.xib; sourceTree = "<group>"; };
 		7EFE43FE27144533006CF502 /* RewardsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsViewController.swift; sourceTree = "<group>"; };
 		7EFE43FF27144533006CF502 /* RewardsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RewardsViewController.xib; sourceTree = "<group>"; };
 		7EFE440327156622006CF502 /* RewardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTableViewCell.swift; sourceTree = "<group>"; };
@@ -2747,6 +2753,7 @@
 		255C40EC2092DB6200475871 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
+				A685D4AB2849FC780066E177 /* EventManager */,
 				255C40EA2092D64F00475871 /* KNTokenStorage.swift */,
 				255C40EF209306B800475871 /* KNTokenTransactionStorage.swift */,
 				2502AC1C20947840007F23CD /* KNWalletStorage.swift */,
@@ -3918,7 +3925,6 @@
 			isa = PBXGroup;
 			children = (
 				C344E91A2621715C00524B8D /* KyberSwap - Crypto ExchangeDebug.entitlements */,
-				A685D4AB2849FC780066E177 /* EventManager */,
 				251ABC9F20578D980069687F /* KyberNetwork */,
 				29E6E0681FE897BB0079265A /* Browser */,
 				29AD8A0A1F93FBB7008E10E7 /* Foundation */,
@@ -5276,6 +5282,8 @@
 				A6D38C00289A8ED0003579F2 /* CircularArrowProgressView.xib */,
 				A6D38C02289A92B3003579F2 /* CircleProgressView.swift */,
 				A6595C7F289C0EA300CE7E42 /* PolygonView.swift */,
+				7EF2E51228A21BF200D9947E /* SwapSummaryViewController.swift */,
+				7EF2E51328A21BF200D9947E /* SwapSummaryViewController.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -5288,6 +5296,7 @@
 				A6BA4CA128A213AD002E2B30 /* SwapState.swift */,
 				A6BA4CA328A24F5D002E2B30 /* PriceImpactState.swift */,
 				A639B66328A4FC6400AF8517 /* SwapInfoViewModelProtocol.swift */,
+				7E7C074828A36887002E8068 /* SwapSummaryViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -6755,6 +6764,7 @@
 				C33BC64725E353F70075259B /* tokens_price.json in Resources */,
 				25073D29211AF20D00833C92 /* Montserrat-Medium.ttf in Resources */,
 				7EB47FFC27D077DF00FB28D9 /* SearchFiatCryptoViewController.xib in Resources */,
+				7EF2E51528A21BF200D9947E /* SwapSummaryViewController.xib in Resources */,
 				C347DA3925C02BE3000D6E81 /* EarnMenuViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7559,6 +7569,7 @@
 				7E72917927F193FC00ADF721 /* SwitchChainCell.swift in Sources */,
 				C3554D89280E5E3F0043BC1B /* SolanaUtil.swift in Sources */,
 				7EFE71492817DC2E00476184 /* SolFeeCoordinator.swift in Sources */,
+				7E7C074928A36887002E8068 /* SwapSummaryViewModel.swift in Sources */,
 				291F52A51F6B762300B369AB /* EtherServiceRequest.swift in Sources */,
 				A639B66428A4FC6400AF8517 /* SwapInfoViewModelProtocol.swift in Sources */,
 				C6FE41812383A0C10096AAD8 /* KNWalletConnectViewController.swift in Sources */,
@@ -7633,6 +7644,7 @@
 				C32F1F632431ABCD00990706 /* KNMarket.swift in Sources */,
 				25696F6320BE8973002CC53F /* KNSetSlippageRateViewController.swift in Sources */,
 				A6595C88289D2C4300CE7E42 /* Animation+.swift in Sources */,
+				7EF2E51428A21BF200D9947E /* SwapSummaryViewController.swift in Sources */,
 				25CE6F912073E0BC00A3A2F9 /* KNHistoryViewController.swift in Sources */,
 				2912CCF91F6A830700C6CBE3 /* AppDelegate.swift in Sources */,
 				C334A865283354C3006B3D55 /* KeyboardTypingUltil.swift in Sources */,

@@ -159,7 +159,7 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   func setupInfoViews() {
-    rateInfoView.setTitle(title: "Rate", underlined: false)
+    rateInfoView.setTitle(title: "Rate", underlined: false, shouldShowIcon: true)
     rateInfoView.onTapRightIcon = { [weak self] in
       self?.viewModel.showRevertedRate.toggle()
     }
@@ -201,7 +201,6 @@ class SwapV2ViewController: KNBaseViewController {
     }
     
     routeInfoView.setTitle(title: "Route", underlined: true)
-    routeInfoView.iconImageView.isHidden = true
   }
   
   func setupTableView() {

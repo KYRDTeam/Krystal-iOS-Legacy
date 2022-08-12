@@ -10,11 +10,11 @@ import UIKit
 class SearchTokenViewModel: NSObject {
   var commonBaseTokens: [Token] = []
   var searchTokens: [SwapToken] = []
-  let searchSerview = SearchSwapTokenService()
+  let searchService = SearchSwapTokenService()
   var controller: SearchTokenViewController?
-  func fetchDataFromAPI(querry: String, orderBy: String, completion: @escaping () -> Void) {
+  func fetchDataFromAPI(query: String, orderBy: String, completion: @escaping () -> Void) {
     self.controller?.showLoadingHUD()
-    self.searchSerview.getSearchTokens(address: AppDelegate.session.address.addressString, querry: querry, orderBy: orderBy) { swapTokens in
+    self.searchService.getSearchTokens(address: AppDelegate.session.address.addressString, query: query, orderBy: orderBy) { swapTokens in
       self.controller?.hideLoading()
       if let swapTokens = swapTokens {
         self.searchTokens = swapTokens
@@ -24,7 +24,7 @@ class SearchTokenViewModel: NSObject {
   }
   
   func getCommonBaseToken(completion: @escaping () -> Void) {
-    self.searchSerview.getCommonBaseTokens { tokens in
+    self.searchService.getCommonBaseTokens { tokens in
       if let tokens = tokens {
         self.commonBaseTokens = tokens
         completion()
