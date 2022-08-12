@@ -12,6 +12,10 @@ class SettingExpertModeSwitchCellModel {
   var moreInforSelectHandle: () -> Void = {}
   var switchValueChangedHandle: (Bool) -> Void = { _ in }
   
+  func resetData() {
+    isOn = false
+  }
+  
 }
 
 class SettingExpertModeSwitchCell: UITableViewCell {

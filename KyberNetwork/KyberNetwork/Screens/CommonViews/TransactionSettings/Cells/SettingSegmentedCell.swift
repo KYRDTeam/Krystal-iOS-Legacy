@@ -8,8 +8,13 @@
 import UIKit
 
 class SettingSegmentedCellModel {
+  var selectedIndex = 0
   var valueChangeHandler: (Int) -> Void = { _ in
     
+  }
+  
+  func resetData() {
+    selectedIndex = 0
   }
 }
 
@@ -27,7 +32,12 @@ class SettingSegmentedCell: UITableViewCell {
     segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor")!, NSAttributedString.Key.font: UIFont.Kyber.regular(with: 12)], for: .selected)
   }
   
+  func updateUI() {
+    segmentedControl.selectedSegmentIndex = cellModel.selectedIndex
+  }
+  
   @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+    cellModel.selectedIndex = sender.selectedSegmentIndex
     cellModel.valueChangeHandler(sender.selectedSegmentIndex)
   }
   

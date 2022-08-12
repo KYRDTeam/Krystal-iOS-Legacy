@@ -14,6 +14,8 @@ class SettingBasicAdvancedFormCellModel {
   var selectedType: KNSelectedGasPriceType
   var nonce: Int
   
+  let gasLimitInit: BigInt
+  
   var gasPriceChangedHandler: (String) -> Void = { _ in }
   var gasLimitChangedHandler: (String) -> Void = { _ in }
   var nonceChangedHandler: (String) -> Void = { _ in }
@@ -44,10 +46,17 @@ class SettingBasicAdvancedFormCellModel {
     self.gasLimit = gasLimit
     self.selectedType = selectedType
     self.nonce = nonce
+    self.gasLimitInit = gasLimit
   }
   
   var displayGasFee: String {
     return "Standard " + KNGasCoordinator.shared.standardKNGas.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) + " GWEI ~ 45s"
+  }
+  
+  func resetData() {
+    selectedType = .medium
+    gasPrice = selectedType.getGasValue()
+    gasLimit = gasLimitInit
   }
 }
 

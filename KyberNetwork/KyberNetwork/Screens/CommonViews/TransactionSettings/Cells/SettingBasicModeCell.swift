@@ -15,6 +15,13 @@ class SettingBasicModeCellModel {
   var gasLimit: BigInt = .zero
   var selectedIndex = 2
   var actionHandler: (Int) -> Void = { _ in }
+  
+  func resetData() {
+    fast = KNGasCoordinator.shared.fastKNGas
+    medium = KNGasCoordinator.shared.standardKNGas
+    slow = KNGasCoordinator.shared.lowKNGas
+    selectedIndex = 2
+  }
 }
 
 

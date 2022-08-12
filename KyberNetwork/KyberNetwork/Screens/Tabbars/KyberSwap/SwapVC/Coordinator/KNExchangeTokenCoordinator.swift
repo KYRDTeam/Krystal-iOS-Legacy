@@ -545,7 +545,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       let popup = TransactionSettingsViewController(viewModel: vm)
       popup.delegate = self
       self.navigationController.pushViewController(popup, animated: true, completion: nil)
-      
 //      let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: type, currentRatePercentage: percent, isUseGasToken: self.isAccountUseGasToken())
 //      viewModel.baseGasLimit = baseGasLimit
 //      viewModel.updateGasPrices(
@@ -571,6 +570,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           self.navigationController.showErrorTopBannerMessage(message: error.description)
         }
       }
+      
     case .updateRate(let rate):
       self.gasFeeSelectorVC?.coordinatorDidUpdateMinRate(rate)
     case .openHistory:

@@ -28,6 +28,7 @@ class SettingAdvancedModeFormCellModel {
   var customNonceChangedHander: (String) -> Void = { _ in }
   
   var gasLimit: BigInt
+  var gasLimitInit: BigInt
   var nonce: Int
   var selectedType: KNSelectedGasPriceType {
     didSet {
@@ -40,6 +41,7 @@ class SettingAdvancedModeFormCellModel {
 
   init(gasLimit: BigInt, nonce: Int, selectedType: KNSelectedGasPriceType) {
     self.gasLimit = gasLimit
+    self.gasLimitInit = gasLimit
     self.nonce = nonce
     self.selectedType = selectedType
     self.maxPriorityFeeString = selectedType.getPriorityFeeValueString()
@@ -51,6 +53,10 @@ class SettingAdvancedModeFormCellModel {
     return (self.maxPriorityFeeString, self.maxFeeString, self.gasLimitString)
   }
   
+  func resetData() {
+    gasLimit = gasLimitInit
+    selectedType = .medium
+  }
 }
 
 class SettingAdvancedModeFormCell: UITableViewCell {

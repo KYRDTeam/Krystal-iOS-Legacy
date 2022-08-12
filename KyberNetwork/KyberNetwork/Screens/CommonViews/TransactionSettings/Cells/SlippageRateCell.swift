@@ -20,9 +20,8 @@ class SlippageRateCellModel {
   let defaultSlippageInputValue = 0.5
   fileprivate(set) var currentRate: Double
   fileprivate(set) var minRateType: KAdvancedSettingsMinRateType = .zeroPointFive
-  var slippageChangedEvent: (Double) -> Void = { _ in
-    
-  }
+  var slippageChangedEvent: (Double) -> Void = { _ in }
+  
   
   init(currentRatePercentage: Double = 0.0) {
     self.currentRate = currentRatePercentage
@@ -54,6 +53,11 @@ class SlippageRateCellModel {
     case .anyRate: return 100.0
     case .custom(let value): return value
     }
+  }
+  
+  func resetData() {
+    minRateType = .zeroPointFive
+    currentRate = 0.5
   }
 }
 

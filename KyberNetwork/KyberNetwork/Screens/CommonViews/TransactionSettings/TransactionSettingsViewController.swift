@@ -87,6 +87,7 @@ class TransactionSettingsViewModel {
       print("[Setting][BasicAdvanced] \(value)")
       self.advancedModeCellModel.maxFeeString = value
       self.selectedType = .custom
+      self.basicModeCellModel.selectedIndex = -1
     }
     
     self.basicAdvancedCellModel.gasLimitChangedHandler = { value in
@@ -111,6 +112,7 @@ class TransactionSettingsViewModel {
       print("[Setting][Advanced] \(value)")
       self.basicAdvancedCellModel.gasPriceString = value
       self.selectedType = .custom
+      self.basicModeCellModel.selectedIndex = -1
     }
     
     self.advancedModeCellModel.gasLimitChangedHandler = { value in
@@ -138,6 +140,15 @@ class TransactionSettingsViewModel {
   
   func getAdvancedSettingInfo() -> AdvancedSettingsInfo {
     return self.advancedModeCellModel.getAdvancedSettingInfo()
+  }
+  
+  func resetData() {
+    slippageCellModel.resetData()
+    basicModeCellModel.resetData()
+    basicAdvancedCellModel.resetData()
+    advancedModeCellModel.resetData()
+    segmentedCellModel.resetData()
+    switchExpertMode.resetData()
   }
 }
 
@@ -184,7 +195,10 @@ class TransactionSettingsViewController: KNBaseViewController {
   }
   
   @IBAction func resetButtonTapped(_ sender: UIButton) {
-    
+    viewModel.resetData()
+    viewModel.isAdvancedMode = false
+    viewModel.isExpertMode = false
+    settingsTableView.reloadData()
   }
   
   @IBAction func saveButtonTapped(_ sender: UIButton) {
@@ -234,6 +248,7 @@ extension TransactionSettingsViewController: UITableViewDataSource {
         for: indexPath
       ) as! SettingSegmentedCell
       cell.cellModel = viewModel.segmentedCellModel
+      cell.updateUI()
       return cell
     case 2:
       if self.viewModel.isExpertMode {
