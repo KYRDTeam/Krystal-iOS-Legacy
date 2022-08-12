@@ -74,12 +74,12 @@ class SearchSwapTokenService: NSObject {
     }
   }
   
-  func getSearchTokens(address: String, querry: String, orderBy: String, completion: @escaping ([SwapToken]?) -> ()) {
+  func getSearchTokens(address: String, query: String, orderBy: String, completion: @escaping ([SwapToken]?) -> ()) {
     if let searchTokensProcess = self.searchTokensProcess {
       searchTokensProcess.cancel()
     }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    self.searchTokensProcess = provider.request(.getSearchToken(address: address, querry: querry, orderBy: orderBy)) { result in
+    self.searchTokensProcess = provider.request(.getSearchToken(address: address, query: query, orderBy: orderBy)) { result in
       switch result {
       case .success(let response):
         if let json = try? response.mapJSON() as? JSONDictionary ?? [:], let balancesJsons = json["balances"] as? [JSONDictionary] {

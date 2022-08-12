@@ -264,9 +264,8 @@ extension SwapSummaryViewModel {
 //        self.navigationController.hideLoading()
         switch result {
         case .success:
-          let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.swapObject.sourceToken.symbol, toSymbol: self.swapObject.destToken.symbol, transactionDescription: "\(self.leftAmountString) -> \(self.rightAmountString)", transactionDetailDescription: self.displayEstimatedRate, transactionObj: nil, eip1559Tx: txEIP1559)
-            
-          internalHistory.transactionSuccessDescription = "\(self.leftAmountString) -> \(self.rightAmountString)"
+          let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.swapObject.sourceToken.symbol, toSymbol: self.swapObject.destToken.symbol, transactionDescription: "\(self.leftAmountString) → \(self.rightAmountString)", transactionDetailDescription: self.displayEstimatedRate, transactionObj: nil, eip1559Tx: txEIP1559)
+          internalHistory.transactionSuccessDescription = "\(self.leftAmountString) → \(self.rightAmountString)"
           if let data = EIP1559TransactionSigner().signTransaction(address: self.currentAddress, eip1559Tx: txEIP1559) {
             self.sendSignedTransactionDataToNode(data: data, eip1559Tx: txEIP1559, internalHistoryTransaction: internalHistory)
           }

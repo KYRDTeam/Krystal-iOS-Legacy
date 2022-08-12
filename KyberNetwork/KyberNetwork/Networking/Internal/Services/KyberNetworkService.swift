@@ -905,7 +905,7 @@ enum KrytalService {
   case getAllLendingBalance(address: String, chains: [String], quotes: [String])
   case getAllLendingDistributionBalance(lendingPlatforms: [String], address: String, chains: [String], quotes: [String])
   case getCommonBaseToken
-  case getSearchToken(address: String, querry: String, orderBy: String)
+  case getSearchToken(address: String, query: String, orderBy: String)
 }
 
 extension KrytalService: TargetType {
@@ -1488,10 +1488,10 @@ extension KrytalService: TargetType {
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getCommonBaseToken:
       return .requestPlain
-    case .getSearchToken(let address, let querry, let orderBy):
+    case .getSearchToken(let address, let query, let orderBy):
       let json: JSONDictionary = [
         "address": address,
-        "query": querry,
+        "query": query,
         "orderBy": orderBy,
         "limit": 50,
         "tags": "PROMOTION,VERIFIED,UNVERIFIED"
