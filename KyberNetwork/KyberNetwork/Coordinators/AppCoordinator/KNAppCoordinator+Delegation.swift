@@ -38,6 +38,13 @@ extension KNAppCoordinator: KNSessionDelegate {
 
 // MARK: Exchange Token Coordinator Delegate
 extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
+  func exchangeTokenCoordinatorDidSelectTokens(token: Token) {
+    self.tabbarController.selectedIndex = 0
+    self.overviewTabCoordinator?.navigationController.popToRootViewController(animated: true, completion: {
+      self.overviewTabCoordinator?.openChartView(token: token, chainId: nil)
+    })
+  }
+  
   func exchangeTokenCoordinatorRemoveWallet(_ wallet: KWallet) {
     onRemoveWallet(wallet: wallet)
   }
@@ -349,3 +356,20 @@ extension KNAppCoordinator: KNPasscodeCoordinatorDelegate {
 //    self.exchangeCoordinator?.appCoordinatorPushNotificationOpenSwap(from: from, to: to)
 //  }
 //}
+
+extension KNAppCoordinator: SwapV2CoordinatorDelegate {
+  
+  func swapV2CoordinatorDidSelectManageWallets() {
+    self.tabbarController.selectedIndex = 4
+    self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
+  }
+  
+  func swapV2CoordinatorDidSelectAddWallet() {
+    self.addNewWallet(type: .full)
+  }
+  
+  func swapV2CoordinatorDidSelectAddWalletForChain(chain: ChainType) {
+    self.addNewWallet(type: .chain(chainType: chain))
+  }
+
+}

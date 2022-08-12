@@ -83,6 +83,7 @@ public struct Constants {
   static let maxFractionDigits: Int = 5
   public static let bridgeWarningAcceptedKey = "bridge-warning-accept-key"
   public static let didSelectAllChainOption = "did-select-all-chain-key"
+  public static let supportURL = "https://t.me/KrystalDefi"
 }
 
 public struct UnitConfiguration {

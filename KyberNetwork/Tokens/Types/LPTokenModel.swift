@@ -12,6 +12,7 @@ class UnitValueModel: Codable {
   var symbol: String
   var value: Double
   var rate: Double
+  var price: Double = 0
   
   init(symbol: String, value: Double, rate: Double) {
     self.symbol = symbol
@@ -23,6 +24,7 @@ class UnitValueModel: Codable {
     self.symbol = json["symbol"] as? String ?? ""
     self.value = json["value"] as? Double ?? 0.0
     self.rate = json["rate"] as? Double ?? 0.0
+    self.price = json["price"] as? Double ?? 0.0
   }
 }
 

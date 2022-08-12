@@ -89,7 +89,8 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   let transitor = TransitionDelegate()
 
   weak var delegate: GasFeeSelectorPopupViewControllerDelegate?
-
+  let web3Client = EthereumWeb3Service(chain: KNGeneralProvider.shared.currentChain)
+  
   init(viewModel: GasFeeSelectorPopupViewModel) {
     self.viewModel = viewModel
     super.init(nibName: GasFeeSelectorPopupViewController.className, bundle: nil)
@@ -104,6 +105,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configUI()
+    self.getLatestNonce()
   }
 
   func updateFocusForView(view: UIView, isFocus: Bool) {
@@ -832,4 +834,22 @@ extension GasFeeSelectorPopupViewController: UITextFieldDelegate {
       return true
     }
   }
+}
+
+extension GasFeeSelectorPopupViewController {
+  
+  func getLatestNonce() {
+    let address = viewModel.currentAddress.addressString
+    let currentChain = KNGeneralProvider.shared.currentChain
+    web3Client.getTransactionCount(for: address) { [weak self] result in
+      switch result {
+      case .success(let nonce):
+        NonceCache.shared.updateNonce(address: address, chain: currentChain, nonce: nonce)
+        self?.coordinatorDidUpdateCurrentNonce(nonce)
+      default:
+        return
+      }
+    }
+  }
+  
 }

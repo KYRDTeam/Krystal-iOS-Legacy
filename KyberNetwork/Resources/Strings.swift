@@ -94,6 +94,7 @@ struct Strings {
   static let showAll = "SHOW ALL".toBeLocalised()
   static let Search = "Search".toBeLocalised()
   static let searchByTokenWalletEND = "Search token, wallet address ...".toBeLocalised()
+  static let findTokenByNameSymbolAddress = "Find a token by name, symbol or address".toBeLocalised()
   static let FunctionCall = "Function call".toBeLocalised()
   static let transactions = "transactions".toBeLocalised()
   
@@ -190,4 +191,27 @@ struct Strings {
   static let scanQRCode = "scan.qr.code".toBeLocalised()
   static let scanText = "scan.text".toBeLocalised()
   static let scanner = "scanner".toBeLocalised()
+  
+  // Swap
+  static let swapNetworkFee = "swap.network.fee".toBeLocalised()
+  static let swapSavedAmount = "swap.saved.amount".toBeLocalised()
+  static let swapWarnPriceImpact1 = "swap.warn_price_impact_1".toBeLocalised()
+  static let swapWarnPriceImpact2 = "swap.warn_price_impact_2".toBeLocalised()
+  static let swapWarnPriceImpact3 = "swap.warn_price_impact_3".toBeLocalised()
+  static let swapApproveWarn = "swap.warn_approve".toBeLocalised()
+  static let swapRateNotFound = "swap.rate_not_found".toBeLocalised()
+  static let swapSmallAmountOfQuoteTokenUsedForFee = "swap.small_amount_of_quote_token_will_be_used".toBeLocalised()
+  static let swapSlippageInfo = "swap.slippage_i".toBeLocalised()
+  static let swapMinReceiveInfo = "swap.min_received_i".toBeLocalised()
+  static let swapTxnFeeInfo = "swap.txn_fee_i".toBeLocalised()
+  static let swapTxnMaxFeeInfo = "swap.txn_fee_max_i".toBeLocalised()
+  static let swapPriceImpactInfo = "swap.price_impact_i".toBeLocalised()
+  
+  // Swap settings
+  static let superFast = "super.fast".toBeLocalised()
+  static let fast = "fast".toBeLocalised()
+  static let regular = "regular".toBeLocalised()
+  static let slow = "regular".toBeLocalised()
+  static let advanced = "advanced".toBeLocalised()
+  static let custom = "custom".toBeLocalised()
 }
