@@ -127,11 +127,13 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   
   func updateAdvancedNonce(nonce: Int) {
     if let advanced = settings.advanced {
+      swapObject.swapSetting.basic = nil
       swapObject.swapSetting.advanced = .init(gasLimit: advanced.gasLimit,
                                               maxFee: advanced.maxFee,
                                               maxPriorityFee: advanced.maxPriorityFee,
                                               nonce: nonce)
     } else if let basic = settings.basic {
+      swapObject.swapSetting.basic = nil
       swapObject.swapSetting.advanced = .init(gasLimit: estimatedGas,
                                               maxFee: gasPrice,
                                               maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
@@ -142,11 +144,13 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   
   func updateAdvancedFee(maxFee: BigInt, maxPriorityFee: BigInt, gasLimit: BigInt) {
     if let advanced = settings.advanced {
+      swapObject.swapSetting.basic = nil
       swapObject.swapSetting.advanced = .init(gasLimit: gasLimit,
                                               maxFee: maxFee,
                                               maxPriorityFee: maxPriorityFee,
                                               nonce: advanced.nonce)
     } else {
+      swapObject.swapSetting.basic = nil
       swapObject.swapSetting.advanced = .init(gasLimit: gasLimit,
                                               maxFee: maxFee,
                                               maxPriorityFee: maxPriorityFee,
