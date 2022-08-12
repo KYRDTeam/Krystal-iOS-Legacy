@@ -569,11 +569,13 @@ extension SwapV2ViewModel {
   
   func updateAdvancedFee(maxFee: BigInt, maxPriorityFee: BigInt, gasLimit: BigInt) {
     if let advanced = settings.advanced {
+      settings.basic = nil
       settings.advanced = .init(gasLimit: gasLimit,
                                 maxFee: maxFee,
                                 maxPriorityFee: maxPriorityFee,
                                 nonce: advanced.nonce)
     } else {
+      settings.basic = nil
       settings.advanced = .init(gasLimit: gasLimit,
                                 maxFee: maxFee,
                                 maxPriorityFee: maxPriorityFee,

@@ -267,6 +267,8 @@
 "slow" = "Slow";
 "super.fast" = "Super Fast";
 "standard" = "Standard";
+"custom" = "Custom";
+"advanced" = "Advanced";
 "transaction.to.text" = "To";
 "search" = "Search";
 "no.tokens.found" = "No tokens found";
