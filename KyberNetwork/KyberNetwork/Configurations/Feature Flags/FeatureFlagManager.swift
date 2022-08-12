@@ -20,6 +20,7 @@ struct FeatureFlagKeys {
   static let tradingView = "trading-view"
   static let scanner = "scanner"
   static let multichainPortfolio = "multichain-portfolio"
+  static let swapV2 = "swap-v2"
 }
 
 class FeatureFlagManager {
