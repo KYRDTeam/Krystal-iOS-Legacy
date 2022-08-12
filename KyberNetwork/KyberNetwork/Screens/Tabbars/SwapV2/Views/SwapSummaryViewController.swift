@@ -212,9 +212,9 @@ extension SwapSummaryViewController: SwapProcessPopupDelegate {
     controller.dismiss(animated: true) {
       switch action {
       case .openLink(let url):
-        self.navigationController?.openSafari(with: url)
+        self.openSafari(with: url)
       case .goToSupport:
-        self.navigationController?.openSafari(with: Constants.supportURL)
+        self.openSafari(with: Constants.supportURL)
       case .viewToken(let sym):
         if let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: sym) {
 //          self.delegate?.exchangeTokenCoordinatorDidSelectTokens(token: token)
