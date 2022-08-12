@@ -894,5 +894,4 @@
 "swap.min_received_i" = "Minimum amount you will receive or the transaction will revert.";
 "swap.txn_fee_i" = "The estimated fee paid to miners who process your transaction.";
 "swap.txn_fee_max_i" = "Maximum fee you will pay for your transaction.";
-"swap.price_impact_i" = "Estimated change in price due to the size of your transcation.";
-
+"swap.price_impact_i" = "Estimated change in price due to the size of your transaction.";

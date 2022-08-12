@@ -203,9 +203,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       if amount == nil || amount!.isZero {
         self.selectedPlatformName = nil
         self.state.value = .emptyAmount
-      } else if amount! > (self.sourceBalance.value ?? .zero) {
-        self.selectedPlatformName = nil
-        self.state.value = .insufficientBalance
       } else {
         self.reloadRates(amount: amount!)
       }
@@ -221,8 +218,12 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       if rates.isEmpty {
         self.state.value = .rateNotFound
       } else {
-        self.state.value = .checkingAllowance
-        self.checkAllowance()
+        if self.sourceAmount.value ?? .zero <= self.maxAvailableSourceTokenAmount {
+          self.state.value = .checkingAllowance
+          self.checkAllowance()
+        } else {
+          self.state.value = .insufficientBalance
+        }
       }
     }
   }
