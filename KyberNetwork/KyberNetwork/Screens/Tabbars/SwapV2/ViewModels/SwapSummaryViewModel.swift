@@ -128,14 +128,14 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   func updateAdvancedNonce(nonce: Int) {
     if let advanced = settings.advanced {
       swapObject.swapSetting.advanced = .init(gasLimit: advanced.gasLimit,
-                                maxFee: advanced.maxFee,
-                                maxPriorityFee: advanced.maxPriorityFee,
-                                nonce: nonce)
+                                              maxFee: advanced.maxFee,
+                                              maxPriorityFee: advanced.maxPriorityFee,
+                                              nonce: nonce)
     } else if let basic = settings.basic {
       swapObject.swapSetting.advanced = .init(gasLimit: estimatedGas,
-                                maxFee: gasPrice,
-                                maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
-                                nonce: nonce)
+                                              maxFee: gasPrice,
+                                              maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
+                                              nonce: nonce)
     }
     updateInfo()
   }
@@ -143,13 +143,13 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   func updateAdvancedFee(maxFee: BigInt, maxPriorityFee: BigInt, gasLimit: BigInt) {
     if let advanced = settings.advanced {
       swapObject.swapSetting.advanced = .init(gasLimit: gasLimit,
-                                maxFee: maxFee,
-                                maxPriorityFee: maxPriorityFee,
-                                nonce: advanced.nonce)
+                                              maxFee: maxFee,
+                                              maxPriorityFee: maxPriorityFee,
+                                              nonce: advanced.nonce)
     } else {
       swapObject.swapSetting.advanced = .init(gasLimit: gasLimit,
-                                maxFee: maxFee,
-                                maxPriorityFee: maxPriorityFee,
+                                              maxFee: maxFee,
+                                              maxPriorityFee: maxPriorityFee,
                                               nonce: NonceCache.shared.getCachingNonce(address: AppDelegate.session.address.addressString, chain: KNGeneralProvider.shared.currentChain))
     }
     updateInfo()
@@ -214,17 +214,13 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
       
     }
   }
-  
-  
+
   func showError(errorMsg: String) {
     UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.showErrorTopBannerMessage(message: errorMsg)
   }
   
   func showLoading() {
-//    guard self.shouldDiplayLoading.value == true else {
-//      self.shouldDiplayLoading.value = true
-//      return
-//    }
+    self.shouldDiplayLoading.value = true
   }
 }
 
@@ -254,8 +250,10 @@ extension SwapSummaryViewModel {
     
     self.showLoading()
     provider.requestWithFilter(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint, useGasToken: tx.useGasToken)) { [weak self] result in
+      DispatchQueue.main.async {
+        self?.shouldDiplayLoading.value = false
+      }
       guard let `self` = self else { return }
-      self.shouldDiplayLoading.value = false
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -295,7 +293,9 @@ extension SwapSummaryViewModel {
     }
     self.showLoading()
     KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-      self.shouldDiplayLoading.value = false
+      DispatchQueue.main.async {
+        self.shouldDiplayLoading.value = false
+      }
       switch sendResult {
       case .success(let hash):
         provider.minTxCount += 1
@@ -322,7 +322,9 @@ extension SwapSummaryViewModel {
     if let txEIP1559 = txEIP1559 {
       self.showLoading()
       KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: txEIP1559) { (result) in
-        self.shouldDiplayLoading.value = false
+        DispatchQueue.main.async {
+          self.shouldDiplayLoading.value = false
+        }
         switch result {
         case .success:
           let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.swapObject.sourceToken.symbol, toSymbol: self.swapObject.destToken.symbol, transactionDescription: "\(self.leftAmountString) → \(self.rightAmountString)", transactionDetailDescription: self.displayEstimatedRate, transactionObj: nil, eip1559Tx: txEIP1559)

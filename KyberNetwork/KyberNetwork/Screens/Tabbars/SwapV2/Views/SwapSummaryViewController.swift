@@ -120,9 +120,7 @@ class SwapSummaryViewController: KNBaseViewController {
         if shouldDisplay {
           self?.showLoadingHUD()
         } else {
-          DispatchQueue.main.async {
-            self?.hideLoading()
-          }
+          self?.hideLoading(animated: false)
         }
       }
     }
@@ -284,22 +282,13 @@ extension SwapSummaryViewController: SwapProcessPopupDelegate {
         self.openSafari(with: Constants.supportURL)
       case .viewToken(let sym):
         if let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: sym) {
-          self.openChartView(token: token)
+          self.dismiss(animated: false) {
+            AppDelegate.shared.coordinator.exchangeTokenCoordinatorDidSelectTokens(token: token)
+          }
         }
       case .close:
         self.dismiss(animated: true)
       }
     }
-  }
-  
-  func openChartView(token: Token, chainId: Int? = nil) {
-    Tracker.track(event: .marketOpenDetail)
-    let viewModel = ChartViewModel(token: token, currencyMode: .usd)
-    if let chainId = chainId {
-      viewModel.chainId = chainId
-    }
-    let controller = ChartViewController(viewModel: viewModel)
-//    controller.delegate = self
-    self.showDetailViewController(controller, sender: nil)
   }
 }
