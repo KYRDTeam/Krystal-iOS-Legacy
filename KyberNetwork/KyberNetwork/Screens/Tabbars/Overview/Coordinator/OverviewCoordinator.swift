@@ -135,7 +135,7 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.navigationController.pushViewController(controller, animated: true)
   }
 
-  func openChartView(token: Token, chainId: Int? = nil) {
+  func openChartView(token: Token, chainId: Int? = nil, animated: Bool = true) {
     Tracker.track(event: .marketOpenDetail)
     let viewModel = ChartViewModel(token: token, currencyMode: self.currentCurrencyType)
     if let chainId = chainId {
@@ -143,7 +143,7 @@ class OverviewCoordinator: NSObject, Coordinator {
     }
     let controller = ChartViewController(viewModel: viewModel)
     controller.delegate = self
-    self.navigationController.pushViewController(controller, animated: true)
+    self.navigationController.pushViewController(controller, animated: animated)
   }
   
   fileprivate func openKrytalView() {

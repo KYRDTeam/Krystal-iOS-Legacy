@@ -1013,6 +1013,8 @@ extension KNExchangeTokenCoordinator: SwapProcessPopupDelegate {
         if let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: sym) {
           self.delegate?.exchangeTokenCoordinatorDidSelectTokens(token: token)
         }
+      case .close:
+        print("close popup")
       }
     }
   }
