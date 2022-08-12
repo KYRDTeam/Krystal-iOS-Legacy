@@ -106,6 +106,54 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
       self.newRate.value = nil
     }
   }
+  
+  func updateInfo() {
+    self.minReceiveString.value = self.getMinReceiveString(destToken: swapObject.destToken, rate: swapObject.rate)
+    self.estimatedGasFeeString.value = self.getEstimatedNetworkFeeString(rate: swapObject.rate)
+    self.maxGasFeeString.value = self.getMaxNetworkFeeString(rate: swapObject.rate)
+  }
+  
+  func updateSlippage(slippage: Double) {
+    swapObject.swapSetting.slippage = slippage
+    slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
+    updateInfo()
+  }
+  
+  func updateGasPriceType(type: KNSelectedGasPriceType) {
+    swapObject.swapSetting.basic = .init(gasPriceType: type)
+    swapObject.swapSetting.advanced = nil
+    updateInfo()
+  }
+  
+  func updateAdvancedNonce(nonce: Int) {
+    if let advanced = settings.advanced {
+      swapObject.swapSetting.advanced = .init(gasLimit: advanced.gasLimit,
+                                maxFee: advanced.maxFee,
+                                maxPriorityFee: advanced.maxPriorityFee,
+                                nonce: nonce)
+    } else if let basic = settings.basic {
+      swapObject.swapSetting.advanced = .init(gasLimit: estimatedGas,
+                                maxFee: gasPrice,
+                                maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
+                                nonce: nonce)
+    }
+    updateInfo()
+  }
+  
+  func updateAdvancedFee(maxFee: BigInt, maxPriorityFee: BigInt, gasLimit: BigInt) {
+    if let advanced = settings.advanced {
+      swapObject.swapSetting.advanced = .init(gasLimit: gasLimit,
+                                maxFee: maxFee,
+                                maxPriorityFee: maxPriorityFee,
+                                nonce: advanced.nonce)
+    } else {
+      swapObject.swapSetting.advanced = .init(gasLimit: gasLimit,
+                                maxFee: maxFee,
+                                maxPriorityFee: maxPriorityFee,
+                                              nonce: NonceCache.shared.getCachingNonce(address: AppDelegate.session.address.addressString, chain: KNGeneralProvider.shared.currentChain))
+    }
+    updateInfo()
+  }
 
   private func calculateMinReceiveString(rate: Rate) -> String {
     let amount = BigInt(rate.amount) ?? BigInt(0)
@@ -126,7 +174,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   
   func getDestAmountUsdString() -> String {
     let receivingAmount = BigInt(swapObject.rate.amount) ?? BigInt(0)
-    let amountUSD = receivingAmount * BigInt(swapObject.destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(swapObject.sourceToken.decimals)
+    let amountUSD = receivingAmount * BigInt(swapObject.destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(swapObject.destToken.decimals)
     let formattedAmountUSD = NumberFormatUtils.amount(value: amountUSD, decimals: 18)
     return "~$\(formattedAmountUSD)"
   }
@@ -166,6 +214,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
       
     }
   }
+  
   
   func showError(errorMsg: String) {
     UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.showErrorTopBannerMessage(message: errorMsg)

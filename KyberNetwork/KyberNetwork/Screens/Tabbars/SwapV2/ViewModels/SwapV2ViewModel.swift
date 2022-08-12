@@ -542,7 +542,7 @@ extension SwapV2ViewModel {
                                 maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
                                 nonce: nonce)
     }
-    updateSettings(settings: settings)
+    updateInfo()
   }
   
   func updateAdvancedFee(maxFee: BigInt, maxPriorityFee: BigInt, gasLimit: BigInt) {
@@ -557,7 +557,7 @@ extension SwapV2ViewModel {
                                 maxPriorityFee: maxPriorityFee,
                                 nonce: NonceCache.shared.getCachingNonce(address: addressString, chain: currentChain.value))
     }
-    updateSettings(settings: settings)
+    updateInfo()
   }
   
 }
