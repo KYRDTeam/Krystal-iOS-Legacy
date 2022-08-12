@@ -54,7 +54,7 @@ class SwapV2ViewController: KNBaseViewController {
    // Header
   @IBOutlet weak var chainIcon: UIImageView!
   @IBOutlet weak var walletButton: UIButton!
-  
+  @IBOutlet weak var dotView: UIView!
   @IBOutlet weak var containerView: UIView!
   
   var viewModel: SwapV2ViewModel!
@@ -219,6 +219,7 @@ class SwapV2ViewController: KNBaseViewController {
     
     viewModel.currentAddress.observeAndFire(on: self) { [weak self] address in
       self?.walletButton.setTitle(address.name, for: .normal)
+      self?.sourceTextField.text = nil
     }
     
     viewModel.platformRatesViewModels.observe(on: self) { [weak self] _ in
@@ -329,10 +330,9 @@ class SwapV2ViewController: KNBaseViewController {
         self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
         self.errorView.isHidden = true
       case .notConnected:
-        self.continueButton.isEnabled = true
+        self.continueButton.isEnabled = false
         self.continueButton.setTitle("Connect Wallet", for: .normal)
         self.errorView.isHidden = true
-        self.loadingView.isHidden = true
         self.approveGuideView.isHidden = true
       case .rateNotFound:
         self.continueButton.isEnabled = false
@@ -422,6 +422,10 @@ class SwapV2ViewController: KNBaseViewController {
     
     viewModel.souceAmountUsdString.observeAndFire(on: self) { [weak self] string in
       self?.sourceAmountUsdLabel.text = string
+    }
+    
+    viewModel.hasPendingTransaction.observeAndFire(on: self) { [weak self] hasPendingTx in
+      self?.dotView.isHidden = !hasPendingTx
     }
   }
   

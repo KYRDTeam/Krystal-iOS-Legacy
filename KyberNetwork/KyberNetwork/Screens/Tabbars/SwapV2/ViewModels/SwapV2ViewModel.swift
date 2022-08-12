@@ -153,6 +153,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   var priceImpactString: Observable<String?> = .init(nil)
   var routeString: Observable<String?> = .init(nil)
   var priceImpactState: Observable<PriceImpactState> = .init(.normal)
+  var hasPendingTransaction: Observable<Bool> = .init(false)
   
   var state: Observable<SwapState> = .init(.emptyAmount)
   
@@ -218,7 +219,9 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       if rates.isEmpty {
         self.state.value = .rateNotFound
       } else {
-        if self.sourceAmount.value ?? .zero <= self.maxAvailableSourceTokenAmount {
+        if self.currentAddress.value.isWatchWallet {
+          self.state.value = .notConnected
+        } else if self.sourceAmount.value ?? .zero <= self.maxAvailableSourceTokenAmount {
           self.state.value = .checkingAllowance
           self.checkAllowance()
         } else {
@@ -418,10 +421,17 @@ extension SwapV2ViewModel {
       name: AppEventCenter.shared.kAppDidChangeAddress,
       object: nil
     )
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.transactionStateDidUpdate),
+      name: Notification.Name(kTransactionDidUpdateNotificationKey),
+      object: nil
+    )
   }
   
   @objc func appDidSwitchChain() {
     if KNGeneralProvider.shared.currentChain != currentChain.value {
+      checkPendingTx()
       currentChain.value = KNGeneralProvider.shared.currentChain
       sourceToken.value = KNGeneralProvider.shared.quoteTokenObject.toData()
       sourceBalance.value = nil
@@ -437,7 +447,9 @@ extension SwapV2ViewModel {
   }
   
   @objc func appDidSwitchAddress() {
+    checkPendingTx()
     currentAddress.value = AppDelegate.session.address
+    sourceAmount.value = nil
     sourceBalance.value = nil
     destBalance.value = nil
     loadSourceTokenPrice()
@@ -446,6 +458,16 @@ extension SwapV2ViewModel {
     reloadDestBalance()
   }
   
+  @objc func transactionStateDidUpdate() {
+    checkPendingTx()
+  }
+  
+  func checkPendingTx() {
+    let pendingTransaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().first { transaction in
+      transaction.state == .pending
+    }
+    hasPendingTransaction.value = pendingTransaction != nil
+  }
   
   func scheduleFetchingBalance() {
     timer = Timer.scheduledTimer(withTimeInterval: fetchingBalanceInterval, repeats: true, block: { [weak self] _ in
