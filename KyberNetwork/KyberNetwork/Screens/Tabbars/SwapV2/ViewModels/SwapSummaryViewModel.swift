@@ -106,6 +106,54 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
       self.newRate.value = nil
     }
   }
+  
+  func updateInfo() {
+    self.minReceiveString.value = self.getMinReceiveString(destToken: swapObject.destToken, rate: swapObject.rate)
+    self.estimatedGasFeeString.value = self.getEstimatedNetworkFeeString(rate: swapObject.rate)
+    self.maxGasFeeString.value = self.getMaxNetworkFeeString(rate: swapObject.rate)
+  }
+  
+  func updateSlippage(slippage: Double) {
+    swapObject.swapSetting.slippage = slippage
+    slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
+    updateInfo()
+  }
+  
+  func updateGasPriceType(type: KNSelectedGasPriceType) {
+    swapObject.swapSetting.basic = .init(gasPriceType: type)
+    swapObject.swapSetting.advanced = nil
+    updateInfo()
+  }
+  
+  func updateAdvancedNonce(nonce: Int) {
+    if let advanced = settings.advanced {
+      swapObject.swapSetting.advanced = .init(gasLimit: advanced.gasLimit,
+                                              maxFee: advanced.maxFee,
+                                              maxPriorityFee: advanced.maxPriorityFee,
+                                              nonce: nonce)
+    } else if let basic = settings.basic {
+      swapObject.swapSetting.advanced = .init(gasLimit: estimatedGas,
+                                              maxFee: gasPrice,
+                                              maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
+                                              nonce: nonce)
+    }
+    updateInfo()
+  }
+  
+  func updateAdvancedFee(maxFee: BigInt, maxPriorityFee: BigInt, gasLimit: BigInt) {
+    if let advanced = settings.advanced {
+      swapObject.swapSetting.advanced = .init(gasLimit: gasLimit,
+                                              maxFee: maxFee,
+                                              maxPriorityFee: maxPriorityFee,
+                                              nonce: advanced.nonce)
+    } else {
+      swapObject.swapSetting.advanced = .init(gasLimit: gasLimit,
+                                              maxFee: maxFee,
+                                              maxPriorityFee: maxPriorityFee,
+                                              nonce: NonceCache.shared.getCachingNonce(address: AppDelegate.session.address.addressString, chain: KNGeneralProvider.shared.currentChain))
+    }
+    updateInfo()
+  }
 
   private func calculateMinReceiveString(rate: Rate) -> String {
     let amount = BigInt(rate.amount) ?? BigInt(0)
@@ -126,7 +174,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   
   func getDestAmountUsdString() -> String {
     let receivingAmount = BigInt(swapObject.rate.amount) ?? BigInt(0)
-    let amountUSD = receivingAmount * BigInt(swapObject.destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(swapObject.sourceToken.decimals)
+    let amountUSD = receivingAmount * BigInt(swapObject.destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(swapObject.destToken.decimals)
     let formattedAmountUSD = NumberFormatUtils.amount(value: amountUSD, decimals: 18)
     return "~$\(formattedAmountUSD)"
   }
@@ -166,16 +214,13 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
       
     }
   }
-  
+
   func showError(errorMsg: String) {
     UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.showErrorTopBannerMessage(message: errorMsg)
   }
   
   func showLoading() {
-//    guard self.shouldDiplayLoading.value == true else {
-//      self.shouldDiplayLoading.value = true
-//      return
-//    }
+    self.shouldDiplayLoading.value = true
   }
 }
 
@@ -205,8 +250,10 @@ extension SwapSummaryViewModel {
     
     self.showLoading()
     provider.requestWithFilter(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint, useGasToken: tx.useGasToken)) { [weak self] result in
+      DispatchQueue.main.async {
+        self?.shouldDiplayLoading.value = false
+      }
       guard let `self` = self else { return }
-      self.shouldDiplayLoading.value = false
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -240,19 +287,21 @@ extension SwapSummaryViewModel {
     self.internalHistoryTransaction.value = transaction
   }
   
-  func sendSignedTransactionDataToNode(data: Data, eip1559Tx: EIP1559Transaction, internalHistoryTransaction: InternalHistoryTransaction) {
+  func sendSignedTransactionDataToNode(data: Data, nonce: Int, internalHistoryTransaction: InternalHistoryTransaction) {
     guard let provider = self.session.externalProvider else {
       return
     }
     self.showLoading()
     KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-      self.shouldDiplayLoading.value = false
+      DispatchQueue.main.async {
+        self.shouldDiplayLoading.value = false
+      }
       switch sendResult {
       case .success(let hash):
         provider.minTxCount += 1
 
         internalHistoryTransaction.hash = hash
-        internalHistoryTransaction.nonce = Int(eip1559Tx.nonce, radix: 16) ?? 0
+        internalHistoryTransaction.nonce = nonce
         internalHistoryTransaction.time = Date()
 
         EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalHistoryTransaction)
@@ -273,13 +322,16 @@ extension SwapSummaryViewModel {
     if let txEIP1559 = txEIP1559 {
       self.showLoading()
       KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: txEIP1559) { (result) in
-        self.shouldDiplayLoading.value = false
+        DispatchQueue.main.async {
+          self.shouldDiplayLoading.value = false
+        }
         switch result {
         case .success:
           let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.swapObject.sourceToken.symbol, toSymbol: self.swapObject.destToken.symbol, transactionDescription: "\(self.leftAmountString) → \(self.rightAmountString)", transactionDetailDescription: self.displayEstimatedRate, transactionObj: nil, eip1559Tx: txEIP1559)
           internalHistory.transactionSuccessDescription = "\(self.leftAmountString) → \(self.rightAmountString)"
           if let data = EIP1559TransactionSigner().signTransaction(address: self.currentAddress, eip1559Tx: txEIP1559) {
-            self.sendSignedTransactionDataToNode(data: data, eip1559Tx: txEIP1559, internalHistoryTransaction: internalHistory)
+            let nonce = Int(txEIP1559.nonce, radix: 16) ?? 0
+            self.sendSignedTransactionDataToNode(data: data, nonce: nonce, internalHistoryTransaction: internalHistory)
           }
             
         case .failure(let error):
@@ -296,6 +348,40 @@ extension SwapSummaryViewModel {
             errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
           }
           self.showError(errorMsg: errorMessage)
+        }
+      }
+    } else if let tx = tx {
+      self.showLoading()
+      KNGeneralProvider.shared.getEstimateGasLimit(transaction: tx) { (result) in
+        DispatchQueue.main.async {
+          self.shouldDiplayLoading.value = false
+        }
+        switch result {
+        case .success:
+          let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.swapObject.sourceToken.symbol, toSymbol: self.swapObject.destToken.symbol, transactionDescription: "\(self.leftAmountString) → \(self.rightAmountString)", transactionDetailDescription: self.displayEstimatedRate, transactionObj: tx.toSignTransactionObject(), eip1559Tx: nil)
+          internalHistory.transactionSuccessDescription = "\(self.leftAmountString) → \(self.rightAmountString)"
+          let signResult = EthereumTransactionSigner().signTransaction(address: self.currentAddress, transaction: tx)
+          switch signResult {
+          case .success(let signedData):
+            let nonce = tx.nonce
+            self.sendSignedTransactionDataToNode(data: signedData, nonce: nonce, internalHistoryTransaction: internalHistory)
+          case .failure:
+            self.showError(errorMsg: "Something went wrong, please try again later".toBeLocalised())
+          }
+        case .failure(let error):
+          var errorMessage = "Can not estimate Gas Limit"
+          if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+            if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+              errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
+            }
+          }
+          if errorMessage.lowercased().contains("INSUFFICIENT_OUTPUT_AMOUNT".lowercased()) || errorMessage.lowercased().contains("Return amount is not enough".lowercased()) {
+            errorMessage = "Transaction will probably fail. There may be low liquidity, you can try a smaller amount or increase the slippage."
+          }
+          if errorMessage.lowercased().contains("Unknown(0x)".lowercased()) {
+            errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
+          }
+            self.showError(errorMsg: errorMessage)
         }
       }
     }

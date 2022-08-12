@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import BigInt
 
 class SwapSummaryViewController: KNBaseViewController {
   @IBOutlet weak var chainNameLabel: UILabel!
@@ -119,9 +120,7 @@ class SwapSummaryViewController: KNBaseViewController {
         if shouldDisplay {
           self?.showLoadingHUD()
         } else {
-          DispatchQueue.main.async {
-            self?.hideLoading()
-          }
+          self?.hideLoading(animated: false)
         }
       }
     }
@@ -137,6 +136,11 @@ class SwapSummaryViewController: KNBaseViewController {
     slippageInfoView.onTapTitle = { [weak self] in
       self?.showBottomBannerView(message: Strings.swapSlippageInfo, icon: Images.swapInfo)
     }
+    slippageInfoView.onTapValue = { [weak self] in
+      if let gasLimit = self?.viewModel.gasLimit, let settings = self?.viewModel.swapObject.swapSetting {
+        self?.openTransactionSettings(gasLimit: gasLimit, settings: settings)
+      }
+    }
 
     minReceiveInfoView.setTitle(title: "Min. Received", underlined: true)
     minReceiveInfoView.onTapTitle = { [weak self] in
@@ -146,6 +150,11 @@ class SwapSummaryViewController: KNBaseViewController {
     gasFeeInfoView.setTitle(title: "Network Fee (est)", underlined: true)
     gasFeeInfoView.onTapTitle = { [weak self] in
       self?.showBottomBannerView(message: Strings.swapTxnFeeInfo, icon: Images.swapInfo)
+    }
+    gasFeeInfoView.onTapValue = { [weak self] in
+      if let gasLimit = self?.viewModel.gasLimit, let settings = self?.viewModel.swapObject.swapSetting {
+        self?.openTransactionSettings(gasLimit: gasLimit, settings: settings)
+      }
     }
 
     maxGasFeeInfoView.setTitle(title: "Max Network Fee", underlined: true)
@@ -205,6 +214,62 @@ class SwapSummaryViewController: KNBaseViewController {
   @IBAction func onCloseButtonTapped(_ sender: Any) {
     self.dismiss(animated: true)
   }
+  
+  func openTransactionSettings(gasLimit: BigInt, settings: SwapTransactionSettings) {
+    let selectedGasPriceType: KNSelectedGasPriceType = {
+      if let basic = settings.basic {
+        return basic.gasPriceType
+      }
+      return .custom
+    }()
+    
+    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: selectedGasPriceType, currentRatePercentage: settings.slippage, isUseGasToken: false)
+    viewModel.updateGasPrices(
+      fast: KNGasCoordinator.shared.fastKNGas,
+      medium: KNGasCoordinator.shared.standardKNGas,
+      slow: KNGasCoordinator.shared.lowKNGas,
+      superFast: KNGasCoordinator.shared.superFastKNGas
+    )
+    viewModel.advancedGasLimit = (settings.advanced?.gasLimit).map(String.init)
+    viewModel.advancedMaxPriorityFee = (settings.advanced?.maxPriorityFee).map {
+      return NumberFormatUtils.format(value: $0, decimals: 9, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)
+    }
+    viewModel.advancedMaxFee = (settings.advanced?.maxFee).map {
+      return NumberFormatUtils.format(value: $0, decimals: 9, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)
+    }
+    viewModel.advancedNonce = (settings.advanced?.nonce).map { "\($0)" }
+
+    let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
+    vc.delegate = self
+    self.present(vc, animated: true, completion: nil)
+  }
+}
+
+extension SwapSummaryViewController: GasFeeSelectorPopupViewControllerDelegate {
+  
+  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+    switch event {
+    case .gasPriceChanged(let type, _):
+      self.viewModel.updateGasPriceType(type: type)
+      
+    case .minRatePercentageChanged(let percent):
+      self.viewModel.updateSlippage(slippage: percent)
+      
+    case .updateAdvancedSetting(let gasLimit, let maxPriorityFee, let maxFee):
+      guard let gasLimit = BigInt(gasLimit), let maxFee = maxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit), let maxPriorityFee = maxPriorityFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) else {
+        return
+      }
+      self.viewModel.updateAdvancedFee(maxFee: maxFee, maxPriorityFee: maxPriorityFee, gasLimit: gasLimit)
+      
+    case .updateAdvancedNonce(let nonce):
+      guard let nonce = Int(nonce) else { return }
+      self.viewModel.updateAdvancedNonce(nonce: nonce)
+      
+    default:
+      return
+    }
+  }
+  
 }
 
 extension SwapSummaryViewController: SwapProcessPopupDelegate {
@@ -217,7 +282,9 @@ extension SwapSummaryViewController: SwapProcessPopupDelegate {
         self.openSafari(with: Constants.supportURL)
       case .viewToken(let sym):
         if let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: sym) {
-//          self.delegate?.exchangeTokenCoordinatorDidSelectTokens(token: token)
+          self.dismiss(animated: false) {
+            AppDelegate.shared.coordinator.exchangeTokenCoordinatorDidSelectTokens(token: token)
+          }
         }
       case .close:
         self.dismiss(animated: true)
