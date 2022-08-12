@@ -287,7 +287,7 @@ extension SwapSummaryViewModel {
     self.internalHistoryTransaction.value = transaction
   }
   
-  func sendSignedTransactionDataToNode(data: Data, eip1559Tx: EIP1559Transaction, internalHistoryTransaction: InternalHistoryTransaction) {
+  func sendSignedTransactionDataToNode(data: Data, nonce: Int, internalHistoryTransaction: InternalHistoryTransaction) {
     guard let provider = self.session.externalProvider else {
       return
     }
@@ -301,7 +301,7 @@ extension SwapSummaryViewModel {
         provider.minTxCount += 1
 
         internalHistoryTransaction.hash = hash
-        internalHistoryTransaction.nonce = Int(eip1559Tx.nonce, radix: 16) ?? 0
+        internalHistoryTransaction.nonce = nonce
         internalHistoryTransaction.time = Date()
 
         EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalHistoryTransaction)
@@ -330,7 +330,8 @@ extension SwapSummaryViewModel {
           let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.swapObject.sourceToken.symbol, toSymbol: self.swapObject.destToken.symbol, transactionDescription: "\(self.leftAmountString) → \(self.rightAmountString)", transactionDetailDescription: self.displayEstimatedRate, transactionObj: nil, eip1559Tx: txEIP1559)
           internalHistory.transactionSuccessDescription = "\(self.leftAmountString) → \(self.rightAmountString)"
           if let data = EIP1559TransactionSigner().signTransaction(address: self.currentAddress, eip1559Tx: txEIP1559) {
-            self.sendSignedTransactionDataToNode(data: data, eip1559Tx: txEIP1559, internalHistoryTransaction: internalHistory)
+            let nonce = Int(txEIP1559.nonce, radix: 16) ?? 0
+            self.sendSignedTransactionDataToNode(data: data, nonce: nonce, internalHistoryTransaction: internalHistory)
           }
             
         case .failure(let error):
@@ -347,6 +348,40 @@ extension SwapSummaryViewModel {
             errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
           }
           self.showError(errorMsg: errorMessage)
+        }
+      }
+    } else if let tx = tx {
+      self.showLoading()
+      KNGeneralProvider.shared.getEstimateGasLimit(transaction: tx) { (result) in
+        DispatchQueue.main.async {
+          self.shouldDiplayLoading.value = false
+        }
+        switch result {
+        case .success:
+          let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.swapObject.sourceToken.symbol, toSymbol: self.swapObject.destToken.symbol, transactionDescription: "\(self.leftAmountString) → \(self.rightAmountString)", transactionDetailDescription: self.displayEstimatedRate, transactionObj: tx.toSignTransactionObject(), eip1559Tx: nil)
+          internalHistory.transactionSuccessDescription = "\(self.leftAmountString) → \(self.rightAmountString)"
+          let signResult = EthereumTransactionSigner().signTransaction(address: self.currentAddress, transaction: tx)
+          switch signResult {
+          case .success(let signedData):
+            let nonce = tx.nonce
+            self.sendSignedTransactionDataToNode(data: signedData, nonce: nonce, internalHistoryTransaction: internalHistory)
+          case .failure:
+            self.showError(errorMsg: "Something went wrong, please try again later".toBeLocalised())
+          }
+        case .failure(let error):
+          var errorMessage = "Can not estimate Gas Limit"
+          if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+            if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+              errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
+            }
+          }
+          if errorMessage.lowercased().contains("INSUFFICIENT_OUTPUT_AMOUNT".lowercased()) || errorMessage.lowercased().contains("Return amount is not enough".lowercased()) {
+            errorMessage = "Transaction will probably fail. There may be low liquidity, you can try a smaller amount or increase the slippage."
+          }
+          if errorMessage.lowercased().contains("Unknown(0x)".lowercased()) {
+            errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
+          }
+            self.showError(errorMsg: errorMessage)
         }
       }
     }
