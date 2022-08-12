@@ -219,6 +219,18 @@ class TransactionSettingsViewController: KNBaseViewController {
     
     self.viewModel.expertModeSwitchChangeStatusHandler = { value in
       self.delegate?.gasFeeSelectorPopupViewController(self, run: .expertModeEnable(status: value))
+      guard value == true else { return }
+      let warningPopup = ExpertModeWarningViewController()
+      warningPopup.confirmAction = { confirmed in
+        if confirmed {
+          warningPopup.dismiss(animated: true)
+        } else {
+          self.viewModel.isExpertMode = false
+          self.settingsTableView.reloadData()
+        }
+        
+      }
+      self.present(warningPopup, animated: true, completion: nil)
     }
   }
   
@@ -283,17 +295,18 @@ extension TransactionSettingsViewController: UITableViewDataSource {
       cell.updateUI()
       return cell
     case 2:
-      if self.viewModel.isExpertMode {
-        let cell = tableView.dequeueReusableCell(
-          withIdentifier: SettingAdvancedModeFormCell.cellID,
-          for: indexPath
-        ) as! SettingAdvancedModeFormCell
-        cell.cellModel = viewModel.advancedModeCellModel
-        cell.fillFormUI()
-        cell.updateUI()
-        return cell
-      } else {
-        if self.viewModel.isAdvancedMode {
+      
+      if self.viewModel.isAdvancedMode {
+        if KNGeneralProvider.shared.isUseEIP1559 {
+          let cell = tableView.dequeueReusableCell(
+            withIdentifier: SettingAdvancedModeFormCell.cellID,
+            for: indexPath
+          ) as! SettingAdvancedModeFormCell
+          cell.cellModel = viewModel.advancedModeCellModel
+          cell.fillFormUI()
+          cell.updateUI()
+          return cell
+        } else {
           let cell = tableView.dequeueReusableCell(
             withIdentifier: SettingBasicAdvancedFormCell.cellID,
             for: indexPath
@@ -302,15 +315,15 @@ extension TransactionSettingsViewController: UITableViewDataSource {
           cell.fillFormValues()
           cell.updateUI()
           return cell
-        } else {
-          let cell = tableView.dequeueReusableCell(
-            withIdentifier: SettingBasicModeCell.cellID,
-            for: indexPath
-          ) as! SettingBasicModeCell
-          cell.cellModel = viewModel.basicModeCellModel
-          cell.updateUI()
-          return cell
         }
+      } else {
+        let cell = tableView.dequeueReusableCell(
+          withIdentifier: SettingBasicModeCell.cellID,
+          for: indexPath
+        ) as! SettingBasicModeCell
+        cell.cellModel = viewModel.basicModeCellModel
+        cell.updateUI()
+        return cell
       }
     case 3:
       let cell = tableView.dequeueReusableCell(

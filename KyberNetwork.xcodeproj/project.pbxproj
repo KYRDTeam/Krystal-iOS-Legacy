@@ -961,6 +961,8 @@
 		C365811E25E1132400A6DA4B /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C365811D25E1132400A6DA4B /* Storage.swift */; };
 		C365812225E2503F00A6DA4B /* BalanceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C365812125E2503F00A6DA4B /* BalanceStorage.swift */; };
 		C36C5C7026AEC4BB00A3711C /* Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C36C5C6F26AEC4BB00A3711C /* Overview.swift */; };
+		C3714E6728A63C900027A89D /* ExpertModeWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3714E6528A63C8F0027A89D /* ExpertModeWarningViewController.swift */; };
+		C3714E6828A63C900027A89D /* ExpertModeWarningViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3714E6628A63C900027A89D /* ExpertModeWarningViewController.xib */; };
 		C3743295278EC076002C97A9 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3743294278EC076002C97A9 /* Int.swift */; };
 		C3743298278ED344002C97A9 /* SignMessageConfirmPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3743296278ED344002C97A9 /* SignMessageConfirmPopup.swift */; };
 		C3743299278ED345002C97A9 /* SignMessageConfirmPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3743297278ED344002C97A9 /* SignMessageConfirmPopup.xib */; };
@@ -2150,6 +2152,8 @@
 		C365811D25E1132400A6DA4B /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		C365812125E2503F00A6DA4B /* BalanceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceStorage.swift; sourceTree = "<group>"; };
 		C36C5C6F26AEC4BB00A3711C /* Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overview.swift; sourceTree = "<group>"; };
+		C3714E6528A63C8F0027A89D /* ExpertModeWarningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpertModeWarningViewController.swift; sourceTree = "<group>"; };
+		C3714E6628A63C900027A89D /* ExpertModeWarningViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExpertModeWarningViewController.xib; sourceTree = "<group>"; };
 		C3743294278EC076002C97A9 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		C3743296278ED344002C97A9 /* SignMessageConfirmPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignMessageConfirmPopup.swift; sourceTree = "<group>"; };
 		C3743297278ED344002C97A9 /* SignMessageConfirmPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignMessageConfirmPopup.xib; sourceTree = "<group>"; };
@@ -6008,6 +6012,8 @@
 				C344975828A20BE200028AFB /* Cells */,
 				C3A6E01F28A103730079926E /* TransactionSettingsViewController.swift */,
 				C3A6E02028A103730079926E /* TransactionSettingsViewController.xib */,
+				C3714E6528A63C8F0027A89D /* ExpertModeWarningViewController.swift */,
+				C3714E6628A63C900027A89D /* ExpertModeWarningViewController.xib */,
 			);
 			path = TransactionSettings;
 			sourceTree = "<group>";
@@ -6566,6 +6572,7 @@
 				C3EDDCC325C1829400A99CC8 /* EarnViewController.xib in Resources */,
 				C3285AAE277EC2A600D28BC6 /* RecentlyHistoryViewController.xib in Resources */,
 				25929C8D20DA5CC10045CFA3 /* SFCompactText-BoldItalic.otf in Resources */,
+				C3714E6828A63C900027A89D /* ExpertModeWarningViewController.xib in Resources */,
 				25BA01D020BFEBB500053863 /* KNTransactionStatusView.xib in Resources */,
 				25929C8A20DA5CC10045CFA3 /* SFCompactText-LightItalic.otf in Resources */,
 				C37CC094245803CA0081FB32 /* Roboto-Regular.ttf in Resources */,
@@ -7871,6 +7878,7 @@
 				2502AC18209475BE007F23CD /* KNListWalletsTableViewCell.swift in Sources */,
 				A651944B28361AE3008F4AEB /* TransactionTypeInfoCell.swift in Sources */,
 				C35A133326F1CEBA002B627C /* SRCountdownTimer.swift in Sources */,
+				C3714E6728A63C900027A89D /* ExpertModeWarningViewController.swift in Sources */,
 				C3299D5F27730B9D00D1065A /* BrowserViewController.swift in Sources */,
 				A685D496284877EA0066E177 /* EthGasCalculator.swift in Sources */,
 				C35136E626CCE53D006A55F4 /* OverviewNFTTableViewCell.swift in Sources */,
