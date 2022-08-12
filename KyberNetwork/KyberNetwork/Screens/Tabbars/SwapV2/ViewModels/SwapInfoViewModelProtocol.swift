@@ -104,12 +104,12 @@ extension SwapInfoViewModelProtocol {
         case .slow:
           return Strings.slow
         case .custom:
-          return Strings.advanced
+          return Strings.custom
         }
       }()
       return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
     }
-    let typeString = Strings.advanced
+    let typeString = Strings.custom
     return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
   }
   

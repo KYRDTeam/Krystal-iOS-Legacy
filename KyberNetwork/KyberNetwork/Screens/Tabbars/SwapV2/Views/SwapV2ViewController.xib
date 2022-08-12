@@ -13,11 +13,11 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
-        </array>
-        <array key="Karla-VariableFont_wght.ttf">
-            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -34,6 +34,7 @@
                 <outlet property="destTokenLabel" destination="zcv-Ge-Q6K" id="MQe-cp-NXk"/>
                 <outlet property="destTokenView" destination="z1d-0B-gOX" id="a8F-dv-U21"/>
                 <outlet property="destViewHeight" destination="eQD-AS-tzq" id="sSc-sr-lbW"/>
+                <outlet property="dotView" destination="PcT-7U-Xtt" id="dhj-Pl-bNm"/>
                 <outlet property="errorIcon" destination="iK7-82-5dh" id="SNJ-2r-riM"/>
                 <outlet property="errorLabel" destination="Oce-H6-ZmH" id="FIm-3j-dke"/>
                 <outlet property="errorView" destination="GIq-RE-RWE" id="aki-3z-Xhi"/>

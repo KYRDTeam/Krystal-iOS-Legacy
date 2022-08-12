@@ -212,5 +212,6 @@ struct Strings {
   static let fast = "fast".toBeLocalised()
   static let regular = "regular".toBeLocalised()
   static let slow = "regular".toBeLocalised()
-  static let advanced = "regular".toBeLocalised()
+  static let advanced = "advanced".toBeLocalised()
+  static let custom = "custom".toBeLocalised()
 }

@@ -70,18 +70,34 @@ extension KNAppCoordinator {
     self.addCoordinator(self.settingsCoordinator!)
     self.settingsCoordinator?.start()
     
-    let swapV2Coordinator = SwapV2Coordinator()
-    swapV2Coordinator.delegate = self
-    swapV2Coordinator.start()
+    if FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.swapV2) {
+      let swapV2Coordinator = SwapV2Coordinator()
+      swapV2Coordinator.delegate = self
+      swapV2Coordinator.start()
+      swapV2Coordinator.navigationController.tabBarItem = UITabBarItem(
+        title: nil,
+        image: UIImage(named: "tabbar_swap_icon"),
+        selectedImage: nil
+      )
+      swapV2Coordinator.navigationController.tabBarItem.tag = 1
 
-    self.tabbarController.viewControllers = [
-      self.overviewTabCoordinator!.navigationController,
-      self.exchangeCoordinator!.navigationController,
-      swapV2Coordinator.navigationController,
-      self.investCoordinator!.navigationController,
-      self.earnCoordinator!.navigationController,
-      self.settingsCoordinator!.navigationController,
-    ]
+      self.tabbarController.viewControllers = [
+        self.overviewTabCoordinator!.navigationController,
+        swapV2Coordinator.navigationController,
+        self.investCoordinator!.navigationController,
+        self.earnCoordinator!.navigationController,
+        self.settingsCoordinator!.navigationController,
+      ]
+    } else {
+      self.tabbarController.viewControllers = [
+        self.overviewTabCoordinator!.navigationController,
+        self.exchangeCoordinator!.navigationController,
+        self.investCoordinator!.navigationController,
+        self.earnCoordinator!.navigationController,
+        self.settingsCoordinator!.navigationController,
+      ]
+    }
+    
     self.tabbarController.tabBar.tintColor = UIColor(named: "buttonBackgroundColor")
     if #available(iOS 15.0, *) {
       let apperance = UITabBarAppearance()
