@@ -543,25 +543,12 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     case .openGasPriceSelect(let gasLimit, let baseGasLimit, let type, let percent, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
       let vm = TransactionSettingsViewModel(gasLimit: gasLimit)
       let popup = TransactionSettingsViewController(viewModel: vm)
+      vm.update(priorityFee: advancedPriorityFee, maxGas: advancedMaxFee, gasLimit: advancedGasLimit, nonceString: advancedNonce)
+      
       popup.delegate = self
       self.navigationController.pushViewController(popup, animated: true, completion: nil)
-//      let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: type, currentRatePercentage: percent, isUseGasToken: self.isAccountUseGasToken())
-//      viewModel.baseGasLimit = baseGasLimit
-//      viewModel.updateGasPrices(
-//        fast: KNGasCoordinator.shared.fastKNGas,
-//        medium: KNGasCoordinator.shared.standardKNGas,
-//        slow: KNGasCoordinator.shared.lowKNGas,
-//        superFast: KNGasCoordinator.shared.superFastKNGas
-//      )
-//      viewModel.advancedGasLimit = advancedGasLimit
-//      viewModel.advancedMaxPriorityFee = advancedPriorityFee
-//      viewModel.advancedMaxFee = advancedMaxFee
-//      viewModel.advancedNonce = advancedNonce
-//      
-//      let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
-//      vc.delegate = self
-//      self.gasFeeSelectorVC = vc
-//      self.navigationController.present(vc, animated: true, completion: nil)
+
+
       self.getLatestNonce { result in
         switch result {
         case .success(let nonce):

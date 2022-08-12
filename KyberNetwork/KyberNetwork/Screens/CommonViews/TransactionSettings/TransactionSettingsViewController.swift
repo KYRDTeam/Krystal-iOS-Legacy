@@ -13,7 +13,11 @@ typealias AdvancedSettingsInfo = (maxPriority: String, maxFee: String, gasLimit:
 
 class TransactionSettingsViewModel {
   var isAdvancedMode = false
-  var isExpertMode = false
+  var isExpertMode = false {
+    didSet {
+      self.expertModeSwitchChangeStatusHandler(self.isExpertMode)
+    }
+  }
   
   var gasLimit: BigInt
   var gasPrice: BigInt
@@ -44,6 +48,7 @@ class TransactionSettingsViewModel {
   var switchAdvancedModeEventHandle: (Bool) -> Void = { _ in }
   var customNonceChangedHandler: (Int) -> Void = { _ in }
   var slippageChangedEventHandler: (Double) -> Void = { _ in }
+  var expertModeSwitchChangeStatusHandler: (Bool) -> Void = { _ in }
   
   init(gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium) {
     self.gasPrice = selectType.getGasValue()
@@ -150,6 +155,29 @@ class TransactionSettingsViewModel {
     segmentedCellModel.resetData()
     switchExpertMode.resetData()
   }
+  
+  func update(priorityFee: String?, maxGas: String?, gasLimit: String?, nonceString: String?) {
+    if let notNil = priorityFee {
+      advancedModeCellModel.maxPriorityFeeString = notNil
+      self.basicModeCellModel.selectedIndex = -1
+    }
+    
+    if let notNil = maxGas {
+      basicAdvancedCellModel.gasPriceString = notNil
+      advancedModeCellModel.maxFeeString = notNil
+      self.basicModeCellModel.selectedIndex = -1
+    }
+    
+    if let notNil = gasLimit {
+      advancedModeCellModel.gasLimitString = notNil
+      basicAdvancedCellModel.gasLimitString = notNil
+      self.basicModeCellModel.selectedIndex = -1
+    }
+    
+    if let notNil = nonceString, let nonceInt = Int(notNil) {
+      nonce = nonceInt
+    }
+  }
 }
 
 class TransactionSettingsViewController: KNBaseViewController {
@@ -187,6 +215,10 @@ class TransactionSettingsViewController: KNBaseViewController {
     
     self.viewModel.slippageChangedEventHandler = { value in
       self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: CGFloat(value)))
+    }
+    
+    self.viewModel.expertModeSwitchChangeStatusHandler = { value in
+      self.delegate?.gasFeeSelectorPopupViewController(self, run: .expertModeEnable(status: value))
     }
   }
   

@@ -107,6 +107,7 @@ enum GasFeeSelectorPopupViewEvent {
   case cancelTransactionFailure(message: String)
   case speedupTransactionSuccessfully(speedupTransaction: InternalHistoryTransaction)
   case speedupTransactionFailure(message: String)
+  case expertModeEnable(status: Bool)
 }
 
 class GasFeeSelectorPopupViewModel {
