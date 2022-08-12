@@ -30,7 +30,9 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   var priceImpactString: Observable<String?> = .init(nil)
   var internalHistoryTransaction: Observable<InternalHistoryTransaction?> = .init(nil)
   var newRate: Observable<Rate?> = .init(nil)
-  
+  var error: Observable<String?> = .init(nil)
+  var shouldDiplayLoading: Observable<Bool?> = .init(nil)
+
   var showRevertedRate: Bool {
     didSet {
       self.rateString.value = self.getRateString(sourceToken: swapObject.sourceToken, destToken: swapObject.destToken)
@@ -69,8 +71,9 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   }
 
   var rightAmountString: String {
-    let receivedAmount = swapObject.rate.amount
-    return "\(receivedAmount.prefix(15)) \(swapObject.destToken.symbol)"
+    let receivedAmount = swapObject.rate.amount.bigInt ?? BigInt(0)
+    let amountString = receivedAmount.displayRate(decimals: swapObject.destToken.decimals)
+    return "\(amountString.prefix(15)) \(swapObject.destToken.symbol)"
   }
   
   var displayEstimatedRate: String {
@@ -165,7 +168,14 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   }
   
   func showError(errorMsg: String) {
-    
+    UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.showErrorTopBannerMessage(message: errorMsg)
+  }
+  
+  func showLoading() {
+//    guard self.shouldDiplayLoading.value == true else {
+//      self.shouldDiplayLoading.value = true
+//      return
+//    }
   }
 }
 
@@ -192,10 +202,11 @@ extension SwapSummaryViewModel {
     }
     
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-//    self.navigationController.displayLoading()
+    
+    self.showLoading()
     provider.requestWithFilter(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint, useGasToken: tx.useGasToken)) { [weak self] result in
       guard let `self` = self else { return }
-//      self.navigationController.hideLoading()
+      self.shouldDiplayLoading.value = false
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -233,9 +244,9 @@ extension SwapSummaryViewModel {
     guard let provider = self.session.externalProvider else {
       return
     }
-//    self.navigationController.displayLoading()
+    self.showLoading()
     KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-//      self.navigationController.hideLoading()
+      self.shouldDiplayLoading.value = false
       switch sendResult {
       case .success(let hash):
         provider.minTxCount += 1
@@ -260,8 +271,9 @@ extension SwapSummaryViewModel {
 
   func getEstimateGasLimit(txEIP1559: EIP1559Transaction?, tx: SignTransaction?) {
     if let txEIP1559 = txEIP1559 {
+      self.showLoading()
       KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: txEIP1559) { (result) in
-//        self.navigationController.hideLoading()
+        self.shouldDiplayLoading.value = false
         switch result {
         case .success:
           let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.swapObject.sourceToken.symbol, toSymbol: self.swapObject.destToken.symbol, transactionDescription: "\(self.leftAmountString) → \(self.rightAmountString)", transactionDetailDescription: self.displayEstimatedRate, transactionObj: nil, eip1559Tx: txEIP1559)

@@ -17,6 +17,7 @@ enum SwapProcessPopupEvent {
   case openLink(url: String)
   case goToSupport
   case viewToken(sym: String)
+  case close
 }
 
 protocol SwapProcessPopupDelegate: class {
@@ -76,10 +77,26 @@ class SwapProcessPopup: KNBaseViewController {
     self.setupUI()
     self.setupLoadingView()
     self.state = .processing
+    
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.transactionStateDidUpdate(_:)),
+      name: Notification.Name(kTransactionDidUpdateNotificationKey),
+      object: nil
+    )
+  }
+  
+  @objc func transactionStateDidUpdate(_ sender: Notification) {
+    guard let transaction = sender.object as? InternalHistoryTransaction else { return }
+    if self.transaction.hash == transaction.hash {
+      self.updateView(with: transaction)
+    }
   }
   
   @IBAction func firstButtonTapped(_ sender: UIButton) {
-    self.dismiss(animated: true)
+    self.dismiss(animated: true) {
+      self.delegate?.swapProcessPopup(self, action: .close)
+    }
   }
   
   @IBAction func secondButtonTapped(_ sender: UIButton) {
@@ -137,7 +154,7 @@ class SwapProcessPopup: KNBaseViewController {
     self.sourceTokenIcon.setSymbolImage(symbol: self.transaction.fromSymbol, size: sourceTokenIcon.frame.size)
     self.destTokenIcon.setSymbolImage(symbol: self.transaction.toSymbol, size: destTokenIcon.frame.size)
     self.txHashLabel.text = self.transaction.hash
-    let descriptions = self.transaction.transactionDescription.split(separator: "#").map { String($0) }
+    let descriptions = self.transaction.transactionDescription.split(separator: "→").map { String($0) }
     self.sourceTokenAmountLabel.text = descriptions.first ?? ""
     self.destTokenAmountLabel.text = descriptions.last ?? ""
     
@@ -181,7 +198,9 @@ class SwapProcessPopup: KNBaseViewController {
   }
   
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
-    self.dismiss(animated: true, completion: nil)
+    self.dismiss(animated: true) {
+      self.delegate?.swapProcessPopup(self, action: .close)
+    }
   }
   
 }

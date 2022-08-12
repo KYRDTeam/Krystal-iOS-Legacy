@@ -113,6 +113,18 @@ class SwapSummaryViewController: KNBaseViewController {
         self?.present(controller, animated: true, completion: nil)
       }
     }
+    
+    viewModel.shouldDiplayLoading.observeAndFire(on: self) { [weak self] shouldDisplay in
+      if let shouldDisplay = shouldDisplay {
+        if shouldDisplay {
+          self?.showLoadingHUD()
+        } else {
+          DispatchQueue.main.async {
+            self?.hideLoading()
+          }
+        }
+      }
+    }
   }
   
   func setupInfoViews() {
@@ -202,11 +214,13 @@ extension SwapSummaryViewController: SwapProcessPopupDelegate {
       case .openLink(let url):
         self.navigationController?.openSafari(with: url)
       case .goToSupport:
-        self.navigationController?.openSafari(with: "https://t.me/KrystalDefi")
+        self.navigationController?.openSafari(with: Constants.supportURL)
       case .viewToken(let sym):
         if let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: sym) {
 //          self.delegate?.exchangeTokenCoordinatorDidSelectTokens(token: token)
         }
+      case .close:
+        self.dismiss(animated: true)
       }
     }
   }
