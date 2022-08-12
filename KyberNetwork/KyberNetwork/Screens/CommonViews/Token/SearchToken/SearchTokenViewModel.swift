@@ -12,7 +12,7 @@ class SearchTokenViewModel: NSObject {
   var searchTokens: [SwapToken] = []
   let searchSerview = SearchSwapTokenService()
   var controller: SearchTokenViewController?
-  func fetchDataFromAPI(querry: String, orderBy: String, completion: @escaping () -> Void) {
+  func fetchDataFromAPI(query: String, orderBy: String, completion: @escaping () -> Void) {
     self.controller?.showLoadingHUD()
     self.searchSerview.getSearchTokens(address: AppDelegate.session.address.addressString, querry: querry, orderBy: orderBy) { swapTokens in
       self.controller?.hideLoading()

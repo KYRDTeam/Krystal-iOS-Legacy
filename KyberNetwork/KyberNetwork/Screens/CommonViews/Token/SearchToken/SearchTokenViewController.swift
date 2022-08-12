@@ -52,7 +52,7 @@ class SearchTokenViewController: KNBaseViewController {
       self.collectionView.reloadData()
     }
     
-    self.viewModel.fetchDataFromAPI(querry: "", orderBy: self.orderBy) {
+    self.viewModel.fetchDataFromAPI(query: "", orderBy: self.orderBy) {
       self.reloadUI()
     }
   }
@@ -101,7 +101,7 @@ class SearchTokenViewController: KNBaseViewController {
   @IBAction func onSearchButtonTapped(_ sender: Any) {
     if self.topView.isHidden {
       searchField.text = ""
-      self.viewModel.fetchDataFromAPI(querry: "", orderBy: self.orderBy) {
+      self.viewModel.fetchDataFromAPI(query: "", orderBy: self.orderBy) {
         self.reloadUI()
       }
     } else {
@@ -116,7 +116,7 @@ class SearchTokenViewController: KNBaseViewController {
   func disableSearch() {
     searchField.text = ""
     updateUIEndSearchingMode()
-    self.viewModel.fetchDataFromAPI(querry: "", orderBy: self.orderBy) {
+    self.viewModel.fetchDataFromAPI(query: "", orderBy: self.orderBy) {
       self.reloadUI()
     }
   }
@@ -135,13 +135,13 @@ extension SearchTokenViewController: UITextFieldDelegate {
   
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     timer?.invalidate()
-    timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(doSearch), userInfo: nil, repeats: false)
+    timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(doSearch), userInfo: nil, repeats: false)
     return true
   }
   
   @objc func doSearch() {
     if let text = self.searchField.text {
-      self.viewModel.fetchDataFromAPI(querry: text, orderBy: self.orderBy) {
+      self.viewModel.fetchDataFromAPI(query: text, orderBy: self.orderBy) {
         self.reloadUI()
       }
     }

@@ -376,20 +376,4 @@ extension SwapSummaryViewModel {
     }
     return nil
   }
-  
-  private func getPriorityFee(forType type: KNSelectedGasPriceType) -> BigInt? {
-    switch type {
-    case .fast:
-      return KNGasCoordinator.shared.fastPriorityFee
-    case .medium:
-      return KNGasCoordinator.shared.standardPriorityFee
-    case .slow:
-      return KNGasCoordinator.shared.lowPriorityFee
-    case .superFast:
-      return KNGasCoordinator.shared.superFastPriorityFee
-    default: // No need to handle case .custom
-      return KNGasCoordinator.shared.standardPriorityFee
-    }
-  }
-
 }
