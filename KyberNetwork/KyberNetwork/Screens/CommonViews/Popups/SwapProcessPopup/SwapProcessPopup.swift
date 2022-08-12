@@ -53,6 +53,7 @@ class SwapProcessPopup: KNBaseViewController {
   @IBOutlet weak var sourceTokenAmountLabel: UILabel!
   @IBOutlet weak var destTokenIcon: UIImageView!
   @IBOutlet weak var destTokenAmountLabel: UILabel!
+  @IBOutlet weak var processStatusLabel: UILabel!
   
   weak var delegate: SwapProcessPopupDelegate?
   var state: ProcessStatusState! {
@@ -128,6 +129,7 @@ class SwapProcessPopup: KNBaseViewController {
       self.secondButton.setTitle(buttonTitle, for: .normal)
       self.sourceTokenInfoContainerView.rounded(color: UIColor.Kyber.buttonBg, width: 1, radius: 16)
       self.destTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
+      self.processStatusLabel.text = "Processing Transaction"
     case .success:
       self.loadingIndicatorView.isHidden = true
       self.transactionStateIcon.isHidden = false
@@ -138,6 +140,7 @@ class SwapProcessPopup: KNBaseViewController {
       self.secondButton.setTitle(buttonTitle, for: .normal)
       self.destTokenInfoContainerView.rounded(color: UIColor.Kyber.buttonBg, width: 1, radius: 16)
       self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
+      self.processStatusLabel.text = "Swapped Succesfully"
     case .failure:
       self.loadingIndicatorView.isHidden = true
       self.transactionStateIcon.isHidden = false
@@ -147,6 +150,7 @@ class SwapProcessPopup: KNBaseViewController {
       self.secondButton.setTitle(buttonTitle, for: .normal)
       self.destTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
       self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
+      self.processStatusLabel.text = "Transaction Failed"
     }
   }
   

@@ -29,6 +29,7 @@
                 <outlet property="fourStarButton" destination="FmF-OZ-Hqb" id="7Ae-7R-Z91"/>
                 <outlet property="loadingIndicatorView" destination="uav-4z-cuu" id="9DI-ge-c1d"/>
                 <outlet property="oneStarButton" destination="06X-Gc-FJT" id="t0T-yN-yrH"/>
+                <outlet property="processStatusLabel" destination="25S-K4-RhF" id="3mz-99-O3o"/>
                 <outlet property="rateContainView" destination="eEI-Zt-39Q" id="Bs8-yD-sqN"/>
                 <outlet property="secondButton" destination="PDV-Rc-Rba" id="iXV-ui-hQm"/>
                 <outlet property="sourceTokenAmountLabel" destination="1T9-yY-YwM" id="3HJ-qR-9JG"/>
