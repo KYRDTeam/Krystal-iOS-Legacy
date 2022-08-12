@@ -523,7 +523,6 @@ extension SwapV2ViewModel {
   
 }
 
-
 // MARK: Update from settings
 extension SwapV2ViewModel {
   

@@ -611,6 +611,12 @@ extension SwapV2ViewController: UITextFieldDelegate {
     return true
   }
   
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    textField.text = text.replacingOccurrences(of: ",", with: ".")
+    return false
+  }
+  
 }
 
 extension SwapV2ViewController: UITableViewDelegate, UITableViewDataSource {
