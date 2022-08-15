@@ -11,11 +11,7 @@ import BigInt
 class SettingAdvancedModeFormCellModel {
   var maxPriorityFeeString: String = ""
   var maxFeeString: String = ""
-  var gasLimitString: String = "" {
-    didSet {
-      self.gasLimit = BigInt(self.gasLimitString) ?? .zero
-    }
-  }
+  var gasLimitString: String
   var customNonceString: String = "" {
     didSet {
       self.nonce = Int(self.customNonceString) ?? 0
@@ -28,24 +24,11 @@ class SettingAdvancedModeFormCellModel {
   var customNonceChangedHander: (String) -> Void = { _ in }
   
   var gasLimit: BigInt
-  var gasLimitInit: BigInt
   var nonce: Int
-  var selectedType: KNSelectedGasPriceType {
-    didSet {
-      guard selectedType != .custom else { return }
-      self.maxPriorityFeeString = selectedType.getPriorityFeeValueString()
-      self.maxFeeString = selectedType.getGasValueString()
-      self.gasLimitString = gasLimit.description
-    }
-  }
 
-  init(gasLimit: BigInt, nonce: Int, selectedType: KNSelectedGasPriceType) {
+  init(gasLimit: BigInt, nonce: Int) {
     self.gasLimit = gasLimit
-    self.gasLimitInit = gasLimit
     self.nonce = nonce
-    self.selectedType = selectedType
-    self.maxPriorityFeeString = selectedType.getPriorityFeeValueString()
-    self.maxFeeString = selectedType.getGasValueString()
     self.gasLimitString = gasLimit.description
   }
   
@@ -54,8 +37,9 @@ class SettingAdvancedModeFormCellModel {
   }
   
   func resetData() {
-    gasLimit = gasLimitInit
-    selectedType = .medium
+    gasLimitString = gasLimit.description
+    maxPriorityFeeString = ""
+    maxFeeString = ""
   }
 }
 

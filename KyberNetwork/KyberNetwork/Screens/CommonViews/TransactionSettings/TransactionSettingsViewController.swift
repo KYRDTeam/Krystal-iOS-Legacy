@@ -21,14 +21,9 @@ class TransactionSettingsViewModel {
   
   var gasLimit: BigInt
   var gasPrice: BigInt
-  
-  
-  var selectedType: KNSelectedGasPriceType {
-    didSet {
-      self.basicAdvancedCellModel.selectedType = self.selectedType
-      self.advancedModeCellModel.selectedType = self.selectedType
-    }
-  }
+
+  var basicSelectedType: KNSelectedGasPriceType
+
   var nonce: Int = -1 {
     didSet {
       self.basicAdvancedCellModel.nonce = self.nonce
@@ -53,13 +48,13 @@ class TransactionSettingsViewModel {
   init(gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium) {
     self.gasPrice = selectType.getGasValue()
     self.gasLimit = gasLimit
-    self.selectedType = selectType
+    self.basicSelectedType = selectType
     self.basicModeCellModel.gasLimit = gasLimit
     self.slippageCellModel.slippageChangedEvent = { value in
       print("[Setting][SlippageChanged] \(value)")
     }
-    self.basicAdvancedCellModel = SettingBasicAdvancedFormCellModel(gasPrice: gasPrice, gasLimit: gasLimit, nonce: -1, selectedType: selectType)
-    self.advancedModeCellModel = SettingAdvancedModeFormCellModel(gasLimit: gasLimit, nonce: -1, selectedType: selectType)
+    self.basicAdvancedCellModel = SettingBasicAdvancedFormCellModel(gasLimit: gasLimit, nonce: -1)
+    self.advancedModeCellModel = SettingAdvancedModeFormCellModel(gasLimit: gasLimit, nonce: -1)
     
     self.segmentedCellModel.valueChangeHandler = { value in
       self.isAdvancedMode = value == 1
@@ -73,64 +68,47 @@ class TransactionSettingsViewModel {
     self.basicModeCellModel.actionHandler = { value in
       switch value {
       case 3:
-        self.selectedType = .fast
+        self.basicSelectedType = .fast
       case 2:
-        self.selectedType = .medium
+        self.basicSelectedType = .medium
       case 1:
-        self.selectedType = .slow
+        self.basicSelectedType = .slow
       default:
         break
       }
-      self.gasPrice = self.selectedType.getGasValue()
-     
-      let valueString = self.selectedType.getGasValueString()
-      self.basicAdvancedCellModel.gasPriceString = valueString
-      self.advancedModeCellModel.maxFeeString = valueString
+      self.gasPrice = self.basicSelectedType.getGasValue()
     }
     
     self.basicAdvancedCellModel.gasPriceChangedHandler = { value in
       print("[Setting][BasicAdvanced] \(value)")
-      self.advancedModeCellModel.maxFeeString = value
-      self.selectedType = .custom
-      self.basicModeCellModel.selectedIndex = -1
     }
     
     self.basicAdvancedCellModel.gasLimitChangedHandler = { value in
       print("[Setting][BasicAdvanced] \(value)")
-      self.advancedModeCellModel.gasLimitString = value
-      self.selectedType = .custom
     }
     
     self.basicAdvancedCellModel.nonceChangedHandler = { value in
       print("[Setting][BasicAdvanced] \(value)")
       let nonceValue = Int(value) ?? 0
       self.nonce = nonceValue
-      self.selectedType = .custom
     }
     
     self.advancedModeCellModel.maxPriorityFeeChangedHandler = { value in
       print("[Setting][Advanced] \(value)")
-      self.selectedType = .custom
     }
     
     self.advancedModeCellModel.maxFeeChangedHandler = { value in
       print("[Setting][Advanced] \(value)")
-      self.basicAdvancedCellModel.gasPriceString = value
-      self.selectedType = .custom
-      self.basicModeCellModel.selectedIndex = -1
     }
     
     self.advancedModeCellModel.gasLimitChangedHandler = { value in
       print("[Setting][Advanced] \(value)")
-      self.basicAdvancedCellModel.gasLimitString = value
-      self.selectedType = .custom
     }
     
     self.advancedModeCellModel.customNonceChangedHander = { value in
       print("[Setting][Advanced] \(value)")
       let nonceValue = Int(value) ?? 0
       self.nonce = nonceValue
-      self.selectedType = .custom
     }
     
     self.slippageCellModel.slippageChangedEvent = { value in
@@ -140,11 +118,16 @@ class TransactionSettingsViewModel {
   }
   
   func getBasicSettingInfo() -> BasicSettingsInfo {
-    return (type: self.selectedType, value: self.selectedType.getGasValue())
+    return (type: self.basicSelectedType, value: self.basicSelectedType.getGasValue())
   }
   
   func getAdvancedSettingInfo() -> AdvancedSettingsInfo {
-    return self.advancedModeCellModel.getAdvancedSettingInfo()
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      return self.advancedModeCellModel.getAdvancedSettingInfo()
+    } else {
+      return basicAdvancedCellModel.getAdvancedSettingInfo()
+    }
+    
   }
   
   func resetData() {
@@ -159,25 +142,24 @@ class TransactionSettingsViewModel {
   func update(priorityFee: String?, maxGas: String?, gasLimit: String?, nonceString: String?) {
     if let notNil = priorityFee {
       advancedModeCellModel.maxPriorityFeeString = notNil
-      self.basicModeCellModel.selectedIndex = -1
     }
     
     if let notNil = maxGas {
       basicAdvancedCellModel.gasPriceString = notNil
       advancedModeCellModel.maxFeeString = notNil
-      self.basicModeCellModel.selectedIndex = -1
     }
     
     if let notNil = gasLimit {
       advancedModeCellModel.gasLimitString = notNil
       basicAdvancedCellModel.gasLimitString = notNil
-      self.basicModeCellModel.selectedIndex = -1
     }
     
     if let notNil = nonceString, let nonceInt = Int(notNil) {
       nonce = nonceInt
     }
   }
+  
+  
 }
 
 class TransactionSettingsViewController: KNBaseViewController {
@@ -261,13 +243,13 @@ class TransactionSettingsViewController: KNBaseViewController {
       let basicInfo = self.viewModel.getBasicSettingInfo()
       let advancedInfo = self.viewModel.getAdvancedSettingInfo()
       if KNGeneralProvider.shared.isUseEIP1559 {
-        if self.viewModel.selectedType == .custom {
+        if self.viewModel.isAdvancedMode {
           self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: advancedInfo.gasLimit, maxPriorityFee: advancedInfo.maxPriority, maxFee: advancedInfo.maxFee))
         } else {
           self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: basicInfo.type, value: basicInfo.value))
         }
       } else {
-        if self.viewModel.selectedType == .custom {
+        if self.viewModel.isAdvancedMode {
           self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: advancedInfo.gasLimit, maxPriorityFee: "", maxFee: advancedInfo.maxFee))
         } else {
           self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: basicInfo.type, value: basicInfo.value))
@@ -278,7 +260,6 @@ class TransactionSettingsViewController: KNBaseViewController {
   
   func coordinatorDidUpdateCurrentNonce(_ nonce: Int) {
     viewModel.nonce = nonce
-    
   }
 }
 

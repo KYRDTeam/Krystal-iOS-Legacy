@@ -9,31 +9,15 @@ import UIKit
 import BigInt
 
 class SettingBasicAdvancedFormCellModel {
-  var gasPrice: BigInt
   var gasLimit: BigInt
-  var selectedType: KNSelectedGasPriceType
   var nonce: Int
-  
-  let gasLimitInit: BigInt
   
   var gasPriceChangedHandler: (String) -> Void = { _ in }
   var gasLimitChangedHandler: (String) -> Void = { _ in }
   var nonceChangedHandler: (String) -> Void = { _ in }
   
-  var gasPriceString: String = "" {
-    didSet {
-      guard !gasPriceString.isEmpty else { return }
-      self.gasPrice = gasPriceString.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? .zero
-      self.selectedType = .custom
-    }
-  }
-  var gasLimitString: String = "" {
-    didSet {
-      guard !gasLimitString.isEmpty else { return }
-      self.gasLimit = BigInt(gasLimitString) ?? .zero
-      self.selectedType = .custom
-    }
-  }
+  var gasPriceString: String = ""
+  var gasLimitString: String = ""
   var nonceString: String = "" {
     didSet {
       guard !nonceString.isEmpty else { return }
@@ -41,12 +25,11 @@ class SettingBasicAdvancedFormCellModel {
     }
   }
   
-  init(gasPrice: BigInt, gasLimit: BigInt, nonce: Int, selectedType: KNSelectedGasPriceType) {
-    self.gasPrice = gasPrice
+  init(gasLimit: BigInt, nonce: Int) {
+    
     self.gasLimit = gasLimit
-    self.selectedType = selectedType
     self.nonce = nonce
-    self.gasLimitInit = gasLimit
+    self.gasLimitString = gasLimit.description
   }
   
   var displayGasFee: String {
@@ -54,9 +37,12 @@ class SettingBasicAdvancedFormCellModel {
   }
   
   func resetData() {
-    selectedType = .medium
-    gasPrice = selectedType.getGasValue()
-    gasLimit = gasLimitInit
+    gasPriceString = ""
+    gasLimitString = gasLimit.description
+  }
+  
+  func getAdvancedSettingInfo() -> AdvancedSettingsInfo {
+    return ("", gasPriceString, gasLimitString)
   }
 }
 
@@ -79,8 +65,8 @@ class SettingBasicAdvancedFormCell: UITableViewCell {
   }
   
   func fillFormValues() {
-    self.gasPriceTextField.text = cellModel.gasPrice.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2)
-    self.gasLimitTextField.text = cellModel.gasLimit.description
+    self.gasPriceTextField.text = cellModel.gasPriceString
+    self.gasLimitTextField.text = cellModel.gasLimitString
     self.customNonceTextField.text = "\(cellModel.nonce)"
   }
   
