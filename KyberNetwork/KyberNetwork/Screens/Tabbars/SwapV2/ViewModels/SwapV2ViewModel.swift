@@ -106,9 +106,14 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   }
   
   var maxAvailableSourceTokenAmount: BigInt {
+    guard let balance = sourceBalance.value, !balance.isZero else {
+      return .zero
+    }
     if sourceToken.value?.isQuoteToken ?? false {
-      let balance = sourceBalance.value ?? .zero
-      return balance - gasPrice * estimatedGas // TODO: EIP1559
+      if balance <= gasPrice * estimatedGas {
+        return .zero
+      }
+      return balance - gasPrice * estimatedGas
     } else {
       return sourceBalance.value ?? .zero
     }
@@ -393,7 +398,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       return nil
     }
     let amountUSD = amount * BigInt(sourceTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(sourceToken.decimals)
-    let formattedAmountUSD = NumberFormatUtils.amount(value: amountUSD, decimals: 18)
+    let formattedAmountUSD = NumberFormatUtils.usdAmount(value: amountUSD, decimals: 18)
     return "~$\(formattedAmountUSD)"
   }
   
@@ -523,7 +528,6 @@ extension SwapV2ViewModel {
   
 }
 
-
 // MARK: Update from settings
 extension SwapV2ViewModel {
   
@@ -554,17 +558,19 @@ extension SwapV2ViewModel {
   
   func updateAdvancedNonce(nonce: Int) {
     if let advanced = settings.advanced {
+      settings.basic = nil
       settings.advanced = .init(gasLimit: advanced.gasLimit,
                                 maxFee: advanced.maxFee,
                                 maxPriorityFee: advanced.maxPriorityFee,
                                 nonce: nonce)
     } else if let basic = settings.basic {
+      settings.basic = nil
       settings.advanced = .init(gasLimit: estimatedGas,
                                 maxFee: gasPrice,
                                 maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
                                 nonce: nonce)
     }
-    updateSettings(settings: settings)
+    updateInfo()
   }
   
   func updateAdvancedFee(maxFee: BigInt, maxPriorityFee: BigInt, gasLimit: BigInt) {
@@ -581,7 +587,7 @@ extension SwapV2ViewModel {
                                 maxPriorityFee: maxPriorityFee,
                                 nonce: NonceCache.shared.getCachingNonce(address: addressString, chain: currentChain.value))
     }
-    updateSettings(settings: settings)
+    updateInfo()
   }
   
 }

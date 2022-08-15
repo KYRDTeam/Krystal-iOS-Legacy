@@ -30,7 +30,7 @@ class SwapPlatformItemViewModel {
     self.amountString = NumberFormatUtils.amount(value: receivingAmount, decimals: destToken.decimals)
     
     let amountUSD = receivingAmount * BigInt(destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(destToken.decimals)
-    let formattedAmountUSD = NumberFormatUtils.amount(value: amountUSD, decimals: 18)
+    let formattedAmountUSD = NumberFormatUtils.usdAmount(value: amountUSD, decimals: 18)
     self.amountUsdString = "~$\(formattedAmountUSD)"
     
     self.isSelected = isSelected
