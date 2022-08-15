@@ -144,7 +144,7 @@ class SwapV2ViewController: KNBaseViewController {
   func setupSourceView() {
     sourceBalanceLabel.isUserInteractionEnabled = true
     sourceBalanceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sourceBalanceTapped)))
-    sourceTextField.setPlaceholder(text: "0.00", color: .white.withAlphaComponent(0.5))
+    sourceTextField.setPlaceholder(text: NumberFormatUtils.zeroPlaceHolder(), color: .white.withAlphaComponent(0.5))
     sourceTextField.delegate = self
   }
   
@@ -583,7 +583,7 @@ extension SwapV2ViewController {
   }
   
   func onSourceAmountChange(value: String) {
-    let doubleValue = Double(value) ?? 0
+    let doubleValue = value.toDouble()
     guard let sourceToken = viewModel.sourceToken.value, let sourceBalance = viewModel.sourceBalance.value else { return }
     let amountToChange = BigInt(doubleValue * pow(10.0, Double(sourceToken.decimals)))
   
@@ -609,12 +609,6 @@ extension SwapV2ViewController: UITextFieldDelegate {
   func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
     onSourceAmountChange(value: textField.text ?? "")
     return true
-  }
-  
-  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-    textField.text = text.replacingOccurrences(of: ",", with: ".")
-    return false
   }
   
 }

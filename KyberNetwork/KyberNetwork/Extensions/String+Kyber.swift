@@ -52,6 +52,14 @@ extension String {
     }
     return valueString
   }
+  
+  func toDouble() -> Double {
+    let formatter = NumberFormatter()
+    formatter.locale = Locale.current
+    formatter.numberStyle = .decimal
+    let number = formatter.number(from: self)
+    return number?.doubleValue ?? 0
+  }
 
   func shortBigInt(decimals: Int) -> BigInt? {
     if let double = Double(self) {

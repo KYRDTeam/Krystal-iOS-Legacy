@@ -33,7 +33,15 @@ class NumberFormatUtils {
     return format(value: value, decimals: decimals, maxDecimalMeaningDigits: 6, maxDecimalDigits: 6)
   }
   
+  static func zeroPlaceHolder(decimalDigits: Int = 2) -> String {
+    let separator = Locale.current.decimalSeparator ?? "."
+    let decimalPart = [String](repeating: "0", count: decimalDigits).joined()
+    return "0" + separator + decimalPart
+  }
+  
   static func format(value: BigInt, decimals: Int, maxDecimalMeaningDigits: Int, maxDecimalDigits: Int) -> String {
+    let separator = Locale.current.decimalSeparator ?? "."
+    
     if value.isZero {
       return "0"
     }
@@ -48,9 +56,9 @@ class NumberFormatUtils {
       stringValue = prefixZeros + stringValue
     }
     let suffix = stringValue.suffix(decimals)
-    stringValue = stringValue.dropLast(decimals) + "." + suffix
+    stringValue = stringValue.dropLast(decimals) + separator + suffix
     
-    let components = stringValue.components(separatedBy: ".")
+    let components = stringValue.components(separatedBy: separator)
     
     if components.count > 1 {
       let beforeDot = components.first!
@@ -67,14 +75,14 @@ class NumberFormatUtils {
       
       let decimalPart = afterDot.prefix(totalLeadingZeros + maxDecimalMeaningDigits).prefix(maxDecimalDigits)
       let integerPath = withSeparator.string(from: (Int(beforeDot) ?? 0) as NSNumber) ?? "0"
-      stringValue = integerPath + "." + decimalPart
+      stringValue = integerPath + separator + decimalPart
     }
     
     // Remove leading zeros
     while stringValue.first == "0" {
       stringValue.removeFirst()
     }
-    if stringValue.first == "." {
+    if stringValue.first == separator.first {
       stringValue = "0" + stringValue
     }
     
@@ -82,7 +90,7 @@ class NumberFormatUtils {
     while stringValue.last == "0" {
       stringValue.removeLast()
     }
-    if stringValue.last == "." {
+    if stringValue.last == separator.first {
       stringValue.removeLast()
     }
     
