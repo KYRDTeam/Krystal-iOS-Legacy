@@ -219,18 +219,29 @@ class TransactionSettingsViewController: KNBaseViewController {
     
     self.viewModel.expertModeSwitchChangeStatusHandler = { value in
       self.delegate?.gasFeeSelectorPopupViewController(self, run: .expertModeEnable(status: value))
-      guard value == true else { return }
+      guard value == true else {
+
+        self.reloadUI()
+        return
+      }
       let warningPopup = ExpertModeWarningViewController()
       warningPopup.confirmAction = { confirmed in
         if confirmed {
           warningPopup.dismiss(animated: true)
         } else {
           self.viewModel.isExpertMode = false
-          self.settingsTableView.reloadData()
+          self.viewModel.switchExpertMode.isOn = false
+          self.reloadUI()
         }
         
       }
       self.present(warningPopup, animated: true, completion: nil)
+    }
+  }
+  
+  private func reloadUI() {
+    DispatchQueue.main.async {
+      self.settingsTableView.reloadData()
     }
   }
   
@@ -295,7 +306,6 @@ extension TransactionSettingsViewController: UITableViewDataSource {
       cell.updateUI()
       return cell
     case 2:
-      
       if self.viewModel.isAdvancedMode {
         if KNGeneralProvider.shared.isUseEIP1559 {
           let cell = tableView.dequeueReusableCell(
