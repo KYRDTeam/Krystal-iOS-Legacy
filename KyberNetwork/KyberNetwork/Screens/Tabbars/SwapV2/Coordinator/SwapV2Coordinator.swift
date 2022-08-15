@@ -240,7 +240,7 @@ extension SwapV2Coordinator: ApproveTokenViewControllerDelegate {
 
 extension SwapV2Coordinator: GasFeeSelectorPopupViewControllerDelegate {
   
-  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+  func gasFeeSelectorPopupViewController(_ controller: KNBaseViewController, run event: GasFeeSelectorPopupViewEvent) {
     switch event {
     case .gasPriceChanged(let type, _):
       rootViewController.viewModel.updateGasPriceType(type: type)

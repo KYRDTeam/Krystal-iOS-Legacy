@@ -247,7 +247,7 @@ class SwapSummaryViewController: KNBaseViewController {
 
 extension SwapSummaryViewController: GasFeeSelectorPopupViewControllerDelegate {
   
-  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+  func gasFeeSelectorPopupViewController(_ controller: KNBaseViewController, run event: GasFeeSelectorPopupViewEvent) {
     switch event {
     case .gasPriceChanged(let type, _):
       self.viewModel.updateGasPriceType(type: type)
