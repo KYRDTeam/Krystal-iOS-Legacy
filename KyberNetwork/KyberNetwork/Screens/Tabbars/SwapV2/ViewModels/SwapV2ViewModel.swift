@@ -398,7 +398,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       return nil
     }
     let amountUSD = amount * BigInt(sourceTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(sourceToken.decimals)
-    let formattedAmountUSD = NumberFormatUtils.amount(value: amountUSD, decimals: 18)
+    let formattedAmountUSD = NumberFormatUtils.usdAmount(value: amountUSD, decimals: 18)
     return "~$\(formattedAmountUSD)"
   }
   

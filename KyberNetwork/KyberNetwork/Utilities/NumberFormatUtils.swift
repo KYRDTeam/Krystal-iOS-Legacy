@@ -19,12 +19,9 @@ class NumberFormatUtils {
   
   // Get grouping and decimal separator
   static let separator: (grouping: String, decimal: String) = {
-    let zeroString = withSeparator.string(from: NSNumber(1000.01))?
-      .replacingOccurrences(of: "0", with: "")
-      .replacingOccurrences(of: "1", with: "")
-    return ("\(zeroString?.first ?? ",")", "\(zeroString?.last ?? ".")")
+    return (withSeparator.groupingSeparator ?? ",", withSeparator.decimalSeparator ?? "")
   }()
-  
+
   static func rate(value: BigInt, decimals: Int) -> String {
     return format(value: value, decimals: decimals, maxDecimalMeaningDigits: 4, maxDecimalDigits: 4)
   }
@@ -41,14 +38,16 @@ class NumberFormatUtils {
     return format(value: value, decimals: decimals, maxDecimalMeaningDigits: 6, maxDecimalDigits: 6)
   }
   
+  static func usdAmount(value: BigInt, decimals: Int) -> String {
+    return format(value: value, decimals: decimals, maxDecimalMeaningDigits: 4, maxDecimalDigits: 4)
+  }
+  
   static func zeroPlaceHolder(decimalDigits: Int = 2) -> String {
     let decimalPart = [String](repeating: "0", count: decimalDigits).joined()
     return "0" + separator.decimal + decimalPart
   }
   
   static func format(value: BigInt, decimals: Int, maxDecimalMeaningDigits: Int, maxDecimalDigits: Int) -> String {
-    let separator = separator.decimal
-    
     if value.isZero {
       return "0"
     }
@@ -63,9 +62,9 @@ class NumberFormatUtils {
       stringValue = prefixZeros + stringValue
     }
     let suffix = stringValue.suffix(decimals)
-    stringValue = stringValue.dropLast(decimals) + separator + suffix
+    stringValue = stringValue.dropLast(decimals) + separator.decimal + suffix
     
-    let components = stringValue.components(separatedBy: separator)
+    let components = stringValue.components(separatedBy: separator.decimal)
     
     if components.count > 1 {
       let beforeDot = components.first!
@@ -82,14 +81,14 @@ class NumberFormatUtils {
       
       let decimalPart = afterDot.prefix(totalLeadingZeros + maxDecimalMeaningDigits).prefix(maxDecimalDigits)
       let integerPath = withSeparator.string(from: (Int(beforeDot) ?? 0) as NSNumber) ?? "0"
-      stringValue = integerPath + separator + decimalPart
+      stringValue = integerPath + separator.decimal + decimalPart
     }
     
     // Remove leading zeros
     while stringValue.first == "0" {
       stringValue.removeFirst()
     }
-    if stringValue.first == separator.first {
+    if stringValue.first == separator.decimal.first {
       stringValue = "0" + stringValue
     }
     
@@ -97,7 +96,7 @@ class NumberFormatUtils {
     while stringValue.last == "0" {
       stringValue.removeLast()
     }
-    if stringValue.last == separator.first {
+    if stringValue.last == separator.decimal.first {
       stringValue.removeLast()
     }
     
