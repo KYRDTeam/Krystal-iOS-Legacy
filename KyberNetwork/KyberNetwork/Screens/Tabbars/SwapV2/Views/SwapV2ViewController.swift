@@ -318,6 +318,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.destViewHeight.constant = CGFloat(112)
         self.expandIcon.isHidden = true
         self.approveGuideView.isHidden = true
+        self.piWarningView.isHidden = true
       case .fetchingRates:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Fetching the best rates", for: .normal)
@@ -328,6 +329,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.resetCountdownView()
         self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
         self.errorView.isHidden = true
+        self.piWarningView.isHidden = true
       case .notConnected:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Connect Wallet", for: .normal)

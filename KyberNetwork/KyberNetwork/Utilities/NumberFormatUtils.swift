@@ -13,8 +13,16 @@ class NumberFormatUtils {
   static let withSeparator: NumberFormatter = {
     let formatter = NumberFormatter()
     formatter.numberStyle = .decimal
-    formatter.locale = .init(identifier: "en_US")
+    formatter.locale = .current
     return formatter
+  }()
+  
+  // Get grouping and decimal separator
+  static let separator: (grouping: String, decimal: String) = {
+    let zeroString = withSeparator.string(from: NSNumber(1000.01))?
+      .replacingOccurrences(of: "0", with: "")
+      .replacingOccurrences(of: "1", with: "")
+    return ("\(zeroString?.first ?? ",")", "\(zeroString?.last ?? ".")")
   }()
   
   static func rate(value: BigInt, decimals: Int) -> String {
@@ -34,13 +42,12 @@ class NumberFormatUtils {
   }
   
   static func zeroPlaceHolder(decimalDigits: Int = 2) -> String {
-    let separator = Locale.current.decimalSeparator ?? "."
     let decimalPart = [String](repeating: "0", count: decimalDigits).joined()
-    return "0" + separator + decimalPart
+    return "0" + separator.decimal + decimalPart
   }
   
   static func format(value: BigInt, decimals: Int, maxDecimalMeaningDigits: Int, maxDecimalDigits: Int) -> String {
-    let separator = Locale.current.decimalSeparator ?? "."
+    let separator = separator.decimal
     
     if value.isZero {
       return "0"
