@@ -167,7 +167,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
 
   func getSourceAmountUsdString() -> String {
     let amountUSD = swapObject.sourceAmount * BigInt(swapObject.sourceTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(swapObject.sourceToken.decimals)
-    let formattedAmountUSD = NumberFormatUtils.amount(value: amountUSD, decimals: 18)
+    let formattedAmountUSD = NumberFormatUtils.usdAmount(value: amountUSD, decimals: 18)
     return "~$\(formattedAmountUSD)"
   }
   
@@ -179,7 +179,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   func getDestAmountUsdString() -> String {
     let receivingAmount = BigInt(swapObject.rate.amount) ?? BigInt(0)
     let amountUSD = receivingAmount * BigInt(swapObject.destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(swapObject.destToken.decimals)
-    let formattedAmountUSD = NumberFormatUtils.amount(value: amountUSD, decimals: 18)
+    let formattedAmountUSD = NumberFormatUtils.usdAmount(value: amountUSD, decimals: 18)
     return "~$\(formattedAmountUSD)"
   }
   

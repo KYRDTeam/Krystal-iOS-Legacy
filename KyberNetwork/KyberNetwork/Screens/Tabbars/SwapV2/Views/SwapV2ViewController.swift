@@ -144,7 +144,7 @@ class SwapV2ViewController: KNBaseViewController {
   func setupSourceView() {
     sourceBalanceLabel.isUserInteractionEnabled = true
     sourceBalanceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sourceBalanceTapped)))
-    sourceTextField.setPlaceholder(text: "0.00", color: .white.withAlphaComponent(0.5))
+    sourceTextField.setPlaceholder(text: NumberFormatUtils.zeroPlaceHolder(), color: .white.withAlphaComponent(0.5))
     sourceTextField.delegate = self
   }
   
@@ -318,6 +318,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.destViewHeight.constant = CGFloat(112)
         self.expandIcon.isHidden = true
         self.approveGuideView.isHidden = true
+        self.piWarningView.isHidden = true
       case .fetchingRates:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Fetching the best rates", for: .normal)
@@ -328,6 +329,7 @@ class SwapV2ViewController: KNBaseViewController {
         self.resetCountdownView()
         self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
         self.errorView.isHidden = true
+        self.piWarningView.isHidden = true
       case .notConnected:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Connect Wallet", for: .normal)
@@ -583,7 +585,7 @@ extension SwapV2ViewController {
   }
   
   func onSourceAmountChange(value: String) {
-    let doubleValue = Double(value) ?? 0
+    let doubleValue = value.doubleValue
     guard let sourceToken = viewModel.sourceToken.value, let sourceBalance = viewModel.sourceBalance.value else { return }
     let amountToChange = BigInt(doubleValue * pow(10.0, Double(sourceToken.decimals)))
   
