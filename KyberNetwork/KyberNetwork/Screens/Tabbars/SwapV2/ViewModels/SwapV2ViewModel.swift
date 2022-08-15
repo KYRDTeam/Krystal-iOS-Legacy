@@ -378,7 +378,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       let diffAmount = (BigInt(sortedRates[0].amount) ?? BigInt(0)) - (BigInt(sortedRates[1].amount) ?? BigInt(0))
       let diffFee = BigInt(sortedRates[0].estimatedGas) - BigInt(sortedRates[1].estimatedGas)
       let diffAmountUSD = diffAmount * BigInt(destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(destToken.decimals)
-      let diffFeeUSD = diffFee * self.getGasFeeUSD(estGas: diffFee, gasPrice: self.gasPrice) // TODO: EIP1559
+      let diffFeeUSD = diffFee * self.getGasFeeUSD(estGas: diffFee, gasPrice: self.gasPrice)
       savedAmount = diffAmountUSD - diffFeeUSD
     }
     return sortedRates.enumerated().map { index, rate in
@@ -387,7 +387,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
                                        quoteToken: currentChain.value.quoteTokenObject(),
                                        destToken: destToken,
                                        destTokenPrice: destTokenPrice,
-                                       gasFeeUsd: self.getGasFeeUSD(estGas: BigInt(rate.estimatedGas), gasPrice: self.gasPrice), // TODO: EIP1559
+                                       gasFeeUsd: self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed), gasPrice: self.gasPrice),
                                        showSaveTag: sortedRates.count > 1 && index == 0 && savedAmount > BigInt(0.1 * pow(10.0, 18.0)),
                                        savedAmount: savedAmount)
     }
