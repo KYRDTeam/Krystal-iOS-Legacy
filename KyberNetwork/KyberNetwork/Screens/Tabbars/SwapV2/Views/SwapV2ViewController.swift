@@ -489,6 +489,9 @@ class SwapV2ViewController: KNBaseViewController {
     let maxAvailableAmount = viewModel.maxAvailableSourceTokenAmount
     let allBalanceText = NumberFormatUtils.amount(value: maxAvailableAmount, decimals: decimals)
     sourceTextField.text = allBalanceText
+    showSuccessTopBannerMessage(
+      message: String(format: Strings.swapSmallAmountOfQuoteTokenUsedForFee, KNGeneralProvider.shared.quoteToken)
+    )
     onSourceAmountChange(value: allBalanceText)
   }
 }
