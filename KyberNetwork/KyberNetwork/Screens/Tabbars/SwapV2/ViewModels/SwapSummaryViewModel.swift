@@ -66,13 +66,13 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   }
   
   var leftAmountString: String {
-    let amountString = swapObject.sourceAmount.displayRate(decimals: swapObject.sourceToken.decimals)
+    let amountString = NumberFormatUtils.amount(value: swapObject.sourceAmount, decimals: swapObject.sourceToken.decimals)
     return "\(amountString.prefix(15)) \(swapObject.sourceToken.symbol)"
   }
 
   var rightAmountString: String {
     let receivedAmount = swapObject.rate.amount.bigInt ?? BigInt(0)
-    let amountString = receivedAmount.displayRate(decimals: swapObject.destToken.decimals)
+    let amountString = NumberFormatUtils.amount(value: receivedAmount, decimals: swapObject.destToken.decimals)
     return "\(amountString.prefix(15)) \(swapObject.destToken.symbol)"
   }
   
