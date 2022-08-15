@@ -215,10 +215,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
     platformRates.observe(on: self) { [weak self] rates in
       guard let self = self else { return }
-      if self.destTokenPrice.value == nil { // In case can not get dest token price
-        self.state.value = .rateNotFound
-        return
-      }
       self.selectedPlatformName = rates.first?.platform
       self.sortedRates = self.sortedRates(rates: rates)
       if rates.isEmpty {
@@ -370,9 +366,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   }
   
   private func createPlatformRatesViewModels(destToken: Token, sortedRates: [Rate]) -> [SwapPlatformItemViewModel] {
-    guard let destTokenPrice = destTokenPrice.value else {
-      return []
-    }
+    let destTokenPrice = destTokenPrice.value ?? 0
     var savedAmount: BigInt = 0
     if sortedRates.count >= 2 {
       let diffAmount = (BigInt(sortedRates[0].amount) ?? BigInt(0)) - (BigInt(sortedRates[1].amount) ?? BigInt(0))
