@@ -29,8 +29,10 @@ class ExpertModeWarningViewController: KNBaseViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    let customizedText = NSMutableAttributedString(string: Strings.advancedModeWarningText)
     
-    
+    customizedText.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.Kyber.textWarningRed, range: NSRange(location: 0, length: "Expert Mode".count))
+    messageLabel.attributedText = customizedText
   }
   
   @IBAction func confirmButtonTapped(_ sender: UIButton) {
