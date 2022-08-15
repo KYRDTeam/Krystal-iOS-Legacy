@@ -106,9 +106,14 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   }
   
   var maxAvailableSourceTokenAmount: BigInt {
+    guard let balance = sourceBalance.value, !balance.isZero else {
+      return .zero
+    }
     if sourceToken.value?.isQuoteToken ?? false {
-      let balance = sourceBalance.value ?? .zero
-      return balance - gasPrice * estimatedGas // TODO: EIP1559
+      if balance <= gasPrice * estimatedGas {
+        return .zero
+      }
+      return balance - gasPrice * estimatedGas
     } else {
       return sourceBalance.value ?? .zero
     }
