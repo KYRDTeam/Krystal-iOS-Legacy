@@ -585,7 +585,7 @@ extension SwapV2ViewController {
   }
   
   func onSourceAmountChange(value: String) {
-    let doubleValue = value.toDouble()
+    let doubleValue = value.doubleValue
     guard let sourceToken = viewModel.sourceToken.value, let sourceBalance = viewModel.sourceBalance.value else { return }
     let amountToChange = BigInt(doubleValue * pow(10.0, Double(sourceToken.decimals)))
   
