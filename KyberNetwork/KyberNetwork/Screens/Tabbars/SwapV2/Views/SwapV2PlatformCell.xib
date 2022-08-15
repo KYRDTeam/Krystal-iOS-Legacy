@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -57,13 +57,13 @@
                                         <color key="textColor" white="1" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~0.04BNB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qEk-BR-28I">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~0.04BNB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="qEk-BR-28I">
                                         <rect key="frame" x="20" y="51.5" width="61.5" height="16.5"/>
                                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                         <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~$30.33" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MSr-Ch-ddQ">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~$30.33" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="MSr-Ch-ddQ">
                                         <rect key="frame" x="305" y="51.5" width="52" height="16.5"/>
                                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                         <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -76,6 +76,7 @@
                                     <constraint firstItem="Y8y-eo-Ahs" firstAttribute="leading" secondItem="65a-eV-zir" secondAttribute="leading" constant="20" id="4Xl-ZM-0zg"/>
                                     <constraint firstItem="RK2-WY-16w" firstAttribute="leading" secondItem="Y8y-eo-Ahs" secondAttribute="trailing" constant="12" id="6OV-lm-4AD"/>
                                     <constraint firstAttribute="trailing" secondItem="m8V-VF-iTv" secondAttribute="trailing" id="87e-4m-Ilk"/>
+                                    <constraint firstItem="MSr-Ch-ddQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qEk-BR-28I" secondAttribute="trailing" constant="16" id="BWM-pD-ebD"/>
                                     <constraint firstItem="m8V-VF-iTv" firstAttribute="top" secondItem="65a-eV-zir" secondAttribute="top" id="BeV-zz-YKy"/>
                                     <constraint firstItem="Fiu-vS-jYB" firstAttribute="leading" secondItem="RK2-WY-16w" secondAttribute="trailing" constant="20" id="KhW-Ke-ikj"/>
                                     <constraint firstItem="MSr-Ch-ddQ" firstAttribute="centerY" secondItem="qEk-BR-28I" secondAttribute="centerY" id="LcM-dZ-33X"/>
