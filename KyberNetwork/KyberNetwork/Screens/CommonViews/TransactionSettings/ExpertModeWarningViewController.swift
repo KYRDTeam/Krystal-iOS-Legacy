@@ -36,7 +36,7 @@ class ExpertModeWarningViewController: KNBaseViewController {
   }
   
   @IBAction func confirmButtonTapped(_ sender: UIButton) {
-    if confirmTextField.text == "confirm" {
+    if confirmTextField.text?.lowercased() == "confirm".lowercased() {
       dismiss(animated: true) {
         self.confirmAction(true)
       }
