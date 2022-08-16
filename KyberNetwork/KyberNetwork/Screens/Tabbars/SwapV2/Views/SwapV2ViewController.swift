@@ -546,7 +546,7 @@ extension SwapV2ViewController {
 
 // MARK: Rate loading animation
 extension SwapV2ViewController {
-  
+
   func setupRateLoadingView() {
     rateLoadingView.isHidden = true
     remainingTime = rateReloadingInterval
@@ -642,6 +642,15 @@ extension SwapV2ViewController: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return 96
+  }
+  
+}
+
+extension SwapV2ViewController: SwapSummaryViewControllerDelegate {
+  
+  func onSwapSummaryViewClose() {
+    resetCountdownView()
+    viewModel.reloadRates()
   }
   
 }

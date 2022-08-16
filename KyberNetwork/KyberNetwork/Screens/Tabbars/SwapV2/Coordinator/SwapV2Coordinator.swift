@@ -58,6 +58,7 @@ class SwapV2Coordinator: NSObject, Coordinator {
   func openSwapConfirm(object: SwapObject) {
     let viewModel = SwapSummaryViewModel(swapObject: object)
     let swapSummaryVC = SwapSummaryViewController(viewModel: viewModel)
+    swapSummaryVC.delegate = rootViewController
     self.rootViewController.present(swapSummaryVC, animated: true)
   }
   
@@ -264,3 +265,4 @@ extension SwapV2Coordinator: GasFeeSelectorPopupViewControllerDelegate {
   }
   
 }
+
