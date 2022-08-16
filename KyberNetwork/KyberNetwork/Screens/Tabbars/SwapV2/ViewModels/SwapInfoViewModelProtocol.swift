@@ -20,7 +20,7 @@ extension SwapInfoViewModelProtocol {
     return KNGeneralProvider.shared.currentChain.isSupportedEIP1559()
   }
   
-  var estimatedGas: BigInt {
+  var gasLimit: BigInt {
     if let advanced = settings.advanced {
       return advanced.gasLimit
     } else if let rate = selectedRate {
@@ -91,7 +91,7 @@ extension SwapInfoViewModelProtocol {
   }
   
   func getEstimatedNetworkFeeString(rate: Rate) -> String {
-    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed), gasPrice: self.gasPrice)
+    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed ?? 0), gasPrice: self.gasPrice)
     if let basic = settings.basic {
       let typeString: String = {
         switch basic.gasPriceType {
@@ -114,11 +114,11 @@ extension SwapInfoViewModelProtocol {
   }
   
   func getMaxNetworkFeeString(rate: Rate) -> String {
-    if settings.basic != nil {
-      let feeInUSD = self.getGasFeeUSD(estGas: estimatedGas, gasPrice: gasPrice)
+    if let basic = settings.basic {
+      let feeInUSD = self.getGasFeeUSD(estGas: gasLimit, gasPrice: self.getGasPrice(forType: basic.gasPriceType))
       return "$\(NumberFormatUtils.usdAmount(value: feeInUSD, decimals: 18))"
     } else if let advanced = settings.advanced {
-      let feeInUSD = self.getGasFeeUSD(estGas: estimatedGas, gasPrice: advanced.maxFee)
+      let feeInUSD = self.getGasFeeUSD(estGas: gasLimit, gasPrice: advanced.maxFee)
       return "$\(NumberFormatUtils.usdAmount(value: feeInUSD, decimals: 18))"
     }
     return ""

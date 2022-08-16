@@ -38,7 +38,7 @@ struct Quote: Codable {
 // MARK: - TokenDetailResponse
 struct TokenDetailResponse: Codable {
     let timestamp: Int
-    let result: TokenDetailInfo
+    let result: TokenDetailInfo?
 }
 
 // MARK: - Result
