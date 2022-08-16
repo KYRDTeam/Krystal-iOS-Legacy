@@ -430,6 +430,11 @@ class SwapV2ViewController: KNBaseViewController {
     viewModel.hasPendingTransaction.observeAndFire(on: self) { [weak self] hasPendingTx in
       self?.dotView.isHidden = !hasPendingTx
     }
+    
+    viewModel.error.observe(on: self) { [weak self] error in
+      guard let error = error else { return }
+      self?.showErrorTopBannerMessage(with: error.title, message: error.message)
+    }
   }
   
   @IBAction func settingsWasTapped(_ sender: Any) {

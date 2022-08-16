@@ -8,6 +8,7 @@
 import Foundation
 import BigInt
 import KrystalWallets
+import Result
 
 struct SwapV2ViewModelActions {
   var onSelectSwitchChain: () -> ()
@@ -134,6 +135,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   var routeString: Observable<String?> = .init(nil)
   var priceImpactState: Observable<PriceImpactState> = .init(.normal)
   var hasPendingTransaction: Observable<Bool> = .init(false)
+  var error: Observable<SwapError?> = .init(nil)
   
   var state: Observable<SwapState> = .init(.emptyAmount)
   
@@ -205,6 +207,16 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
         }
       }
     }
+    sourceToken.observe(on: self) { [weak self] token in
+      if token?.address.lowercased() == self?.destToken.value?.address.lowercased() {
+        self?.error.value = .sameSourceDestToken
+      }
+    }
+    destToken.observe(on: self) { [weak self] token in
+      if token?.address.lowercased() == self?.sourceToken.value?.address.lowercased() {
+        self?.error.value = .sameSourceDestToken
+      }
+    }
   }
   
   func approve(_ amount: BigInt) {
@@ -266,10 +278,9 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     swapRepository.approve(address: currentAddress.value, tokenAddress: tokenAddress, value: amount, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
       switch result {
       case .success:
-        if tokenAddress == self?.sourceToken.value?.address {
-          self?.state.value = .ready
-        }
-      case .failure:
+        return
+      case .failure(let error):
+        self?.error.value = .approvalFailed(error: error)
         self?.state.value = .notApproved(remainingAmount: amount)
       }
     }
