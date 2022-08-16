@@ -335,7 +335,9 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   @IBAction func searchButtonTapped(_ sender: UIButton) {
-    self.delegate?.overviewMainViewController(self, run: .search)
+//    self.delegate?.overviewMainViewController(self, run: .search)
+    let pg = DinoChatCustomView(frame:CGRect(x:38, y:200, width:300, height:167))
+    self.view.addSubview(pg)
   }
   
   @IBAction func scanWasTapped(_ sender: Any) {

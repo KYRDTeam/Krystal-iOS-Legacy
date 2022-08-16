@@ -21,7 +21,7 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
   fileprivate var name: String?
   fileprivate var refCode: String = ""
   weak var delegate: KNCreateWalletCoordinatorDelegate?
-  var createWalletController: KNCreateWalletViewController?
+  var createWalletController: CreateWalletViewController?
   var targetChain: ChainType
   
   let walletManager = WalletManager.shared
@@ -46,11 +46,9 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
       self.openBackUpWallet(wallet, name: self.name)
     } else {
       self.isCreating = true
-      let createWalletVC = KNCreateWalletViewController()
+      let createWalletVC = CreateWalletViewController()
       createWalletVC.loadViewIfNeeded()
-      createWalletVC.delegate = self
-      createWalletVC.modalTransitionStyle = .crossDissolve
-      createWalletVC.modalPresentationStyle = .overCurrentContext
+//      createWalletVC.delegate = self
       self.navigationController.present(createWalletVC, animated: true, completion: nil)
       self.createWalletController = createWalletVC
     }
@@ -192,7 +190,7 @@ extension KNCreateWalletCoordinator: QRCodeReaderDelegate {
 
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
-      self.createWalletController?.containerViewDidUpdateRefCode(result)
+//      self.createWalletController?.containerViewDidUpdateRefCode(result)
     }
   }
 }

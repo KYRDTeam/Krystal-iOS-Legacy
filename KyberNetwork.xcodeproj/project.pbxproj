@@ -482,6 +482,10 @@
 		7E4EDD6328100A410000CB0B /* SolanaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EDD6228100A400000CB0B /* SolanaService.swift */; };
 		7E59E5812872E80C00DFD01C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7E59E5802872E80C00DFD01C /* Settings.bundle */; };
 		7E59E5832872F10900DFD01C /* SettingsBundleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E59E5822872F10900DFD01C /* SettingsBundleHelper.swift */; };
+		7E62A41628AB4FC100319436 /* CreateWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E62A41428AB4FC100319436 /* CreateWalletViewController.swift */; };
+		7E62A41728AB4FC100319436 /* CreateWalletViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E62A41528AB4FC100319436 /* CreateWalletViewController.xib */; };
+		7E62A41A28AB764C00319436 /* FinishCreateWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E62A41828AB764C00319436 /* FinishCreateWalletViewController.swift */; };
+		7E62A41B28AB764C00319436 /* FinishCreateWalletViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E62A41928AB764C00319436 /* FinishCreateWalletViewController.xib */; };
 		7E66A69C2865723C007DF078 /* ErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E66A69A2865723C007DF078 /* ErrorViewController.swift */; };
 		7E66A69D2865723C007DF078 /* ErrorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E66A69B2865723C007DF078 /* ErrorViewController.xib */; };
 		7E66D7A9284F2B98006B0B35 /* BridgeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E66D7A8284F2B98006B0B35 /* BridgeTest.swift */; };
@@ -551,6 +555,7 @@
 		7EE7A72B28446F7A00F4D8CF /* ConfirmBridgeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE7A72928446F7A00F4D8CF /* ConfirmBridgeViewController.xib */; };
 		7EE92A0F286307E10050DC8D /* ShowAllCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE92A0D286307E10050DC8D /* ShowAllCell.swift */; };
 		7EE92A10286307E10050DC8D /* ShowAllCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE92A0E286307E10050DC8D /* ShowAllCell.xib */; };
+		7EEA4D7728AA3A4500C56EE3 /* DinoChatCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEA4D7628AA3A4500C56EE3 /* DinoChatCustomView.swift */; };
 		7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEB9270278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift */; };
 		7EF2E51428A21BF200D9947E /* SwapSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2E51228A21BF200D9947E /* SwapSummaryViewController.swift */; };
 		7EF2E51528A21BF200D9947E /* SwapSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EF2E51328A21BF200D9947E /* SwapSummaryViewController.xib */; };
@@ -1642,6 +1647,10 @@
 		7E4EDD6228100A400000CB0B /* SolanaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaService.swift; sourceTree = "<group>"; };
 		7E59E5802872E80C00DFD01C /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		7E59E5822872F10900DFD01C /* SettingsBundleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBundleHelper.swift; sourceTree = "<group>"; };
+		7E62A41428AB4FC100319436 /* CreateWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletViewController.swift; sourceTree = "<group>"; };
+		7E62A41528AB4FC100319436 /* CreateWalletViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateWalletViewController.xib; sourceTree = "<group>"; };
+		7E62A41828AB764C00319436 /* FinishCreateWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishCreateWalletViewController.swift; sourceTree = "<group>"; };
+		7E62A41928AB764C00319436 /* FinishCreateWalletViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FinishCreateWalletViewController.xib; sourceTree = "<group>"; };
 		7E66A69A2865723C007DF078 /* ErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewController.swift; sourceTree = "<group>"; };
 		7E66A69B2865723C007DF078 /* ErrorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ErrorViewController.xib; sourceTree = "<group>"; };
 		7E66D7A8284F2B98006B0B35 /* BridgeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeTest.swift; sourceTree = "<group>"; };
@@ -1711,6 +1720,7 @@
 		7EE7A72928446F7A00F4D8CF /* ConfirmBridgeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmBridgeViewController.xib; sourceTree = "<group>"; };
 		7EE92A0D286307E10050DC8D /* ShowAllCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAllCell.swift; sourceTree = "<group>"; };
 		7EE92A0E286307E10050DC8D /* ShowAllCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowAllCell.xib; sourceTree = "<group>"; };
+		7EEA4D7628AA3A4500C56EE3 /* DinoChatCustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinoChatCustomView.swift; sourceTree = "<group>"; };
 		7EEB9270278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasFeeSelectorPopupViewModel.swift; sourceTree = "<group>"; };
 		7EF2E51228A21BF200D9947E /* SwapSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapSummaryViewController.swift; sourceTree = "<group>"; };
 		7EF2E51328A21BF200D9947E /* SwapSummaryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwapSummaryViewController.xib; sourceTree = "<group>"; };
@@ -3407,6 +3417,10 @@
 				25A4B4B221242DE000924351 /* KNCreateWalletViewController.xib */,
 				C360D220255E9AEE00B166E0 /* KNBottomPopupViewController.swift */,
 				C360D221255E9AEE00B166E0 /* KNBottomPopupViewController.xib */,
+				7E62A41428AB4FC100319436 /* CreateWalletViewController.swift */,
+				7E62A41528AB4FC100319436 /* CreateWalletViewController.xib */,
+				7E62A41828AB764C00319436 /* FinishCreateWalletViewController.swift */,
+				7E62A41928AB764C00319436 /* FinishCreateWalletViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -5685,6 +5699,7 @@
 				C3A58E2326D49BCF00EE3801 /* OverviewAddNFTViewController.xib */,
 				C351B6F02722A54B00811319 /* OverviewWarningBackupViewController.swift */,
 				C351B6F12722A54C00811319 /* OverviewWarningBackupViewController.xib */,
+				7EEA4D7628AA3A4500C56EE3 /* DinoChatCustomView.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -6603,6 +6618,7 @@
 				C31BE89925B045700070A832 /* AddWatchWalletViewController.xib in Resources */,
 				25696F5520BD2B72002CC53F /* KNDataDetailsView.xib in Resources */,
 				251ABCB320578F6E0069687F /* config_env_ropsten.json in Resources */,
+				7E62A41728AB4FC100319436 /* CreateWalletViewController.xib in Resources */,
 				7E59E5812872E80C00DFD01C /* Settings.bundle in Resources */,
 				C308BC1626D897290030022B /* ConfirmSendNFTViewController.xib in Resources */,
 				C3F367BF25C3F63E003207B7 /* EarnSelectTableViewCell.xib in Resources */,
@@ -6617,6 +6633,7 @@
 				251C29C1232A59F000E1FB6B /* KNPDPAUpdateInfoPopUp.xib in Resources */,
 				C3F71C8B2618A57B00285935 /* ClaimHistoryTableViewCell.xib in Resources */,
 				C3233EFB2807DAEC0086C2BC /* CopyAddressViewController.xib in Resources */,
+				7E62A41B28AB764C00319436 /* FinishCreateWalletViewController.xib in Resources */,
 				7E448D052808064E00C1617F /* SelectChainViewController.xib in Resources */,
 				A651944C28361AE3008F4AEB /* TransactionTypeInfoCell.xib in Resources */,
 				25929C8F20DA5CC10045CFA3 /* SFCompactDisplay-Regular.otf in Resources */,
@@ -7329,6 +7346,7 @@
 				25F96F7B215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.swift in Sources */,
 				257A37A5205D187100E86794 /* KNTransactionStatusViewController.swift in Sources */,
 				25CC0AB820591D720009D0D5 /* KNRecentTradeCoordinator.swift in Sources */,
+				7E62A41A28AB764C00319436 /* FinishCreateWalletViewController.swift in Sources */,
 				29C0FCE5200EBAF6004A13CB /* TokenType.swift in Sources */,
 				7E1EBE452834F82A00793B6D /* BridgeSendToCell.swift in Sources */,
 				257740CF20579CE0003323EB /* KNSplashScreenCoordinator.swift in Sources */,
@@ -7491,6 +7509,7 @@
 				C32017B627BE28EC0055130B /* MultisendAddressListViewController.swift in Sources */,
 				29BDF1981FEE4DB00023A45F /* GasPriceConfiguration.swift in Sources */,
 				7E3FCF0F28574DB9009DD914 /* AdvanceSearchTokenRouter.swift in Sources */,
+				7E62A41628AB4FC100319436 /* CreateWalletViewController.swift in Sources */,
 				A6D38BEE28990588003579F2 /* SwapInfoView.swift in Sources */,
 				C3299D632773254A00D1065A /* BrowserURLParser.swift in Sources */,
 				2546C6D92211871F0076E52B /* TrustDocumentPickerViewController.swift in Sources */,
@@ -7606,6 +7625,7 @@
 				A6D9BE682829238A0009EEB4 /* CreateChainWalletMenuViewController.swift in Sources */,
 				299B5E291FCA8F040051361C /* GetERC20Balance.swift in Sources */,
 				C313720626077A44003D432B /* CustomTokenListViewController.swift in Sources */,
+				7EEA4D7728AA3A4500C56EE3 /* DinoChatCustomView.swift in Sources */,
 				7EA34EB32886ACB7001D1DE6 /* OverviewAllChainTokenCell.swift in Sources */,
 				A693AFED2819057E00880503 /* RewardHuntingViewModel.swift in Sources */,
 				C34A2265277AE64300F240B8 /* BrowserOptionsViewController.swift in Sources */,
