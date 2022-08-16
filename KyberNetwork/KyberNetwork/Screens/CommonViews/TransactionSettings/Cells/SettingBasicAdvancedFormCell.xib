@@ -16,15 +16,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="227" id="KGk-i7-Jjw" customClass="SettingBasicAdvancedFormCell" customModule="Krystal" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="227"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="308" id="KGk-i7-Jjw" customClass="SettingBasicAdvancedFormCell" customModule="Krystal" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="308"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="227"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="308"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Custom Nonce" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3dX-aO-vS7">
-                        <rect key="frame" x="25" y="173" width="107.5" height="19"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Custom Nonce" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3dX-aO-vS7">
+                        <rect key="frame" x="25" y="219" width="107.5" height="19"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
@@ -71,7 +71,7 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hid-2O-nTX">
-                        <rect key="frame" x="25" y="226" width="270" height="1"/>
+                        <rect key="frame" x="25" y="307" width="270" height="1"/>
                         <viewLayoutGuide key="safeArea" id="AoE-ki-Rqh"/>
                         <color key="backgroundColor" red="0.29803921570000003" green="0.40000000000000002" blue="0.43921568630000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -85,10 +85,10 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nfB-NQ-RoQ">
-                        <rect key="frame" x="160" y="106.5" width="135" height="38"/>
+                        <rect key="frame" x="25" y="145" width="270" height="42"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Px0-Em-3Fm">
-                                <rect key="frame" x="20" y="0.0" width="95" height="38"/>
+                                <rect key="frame" x="20" y="0.0" width="230" height="42"/>
                                 <color key="textColor" name="textWhiteColor"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -100,7 +100,7 @@
                             <constraint firstAttribute="trailing" secondItem="Px0-Em-3Fm" secondAttribute="trailing" constant="20" id="GNP-zJ-mFO"/>
                             <constraint firstItem="Px0-Em-3Fm" firstAttribute="leading" secondItem="nfB-NQ-RoQ" secondAttribute="leading" constant="20" id="RmI-le-OmB"/>
                             <constraint firstAttribute="bottom" secondItem="Px0-Em-3Fm" secondAttribute="bottom" id="jO5-WP-Vwm"/>
-                            <constraint firstAttribute="height" constant="38" id="t9T-wY-Z1S"/>
+                            <constraint firstAttribute="height" constant="42" id="t9T-wY-Z1S"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
@@ -109,10 +109,10 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="scP-mn-iBc">
-                        <rect key="frame" x="160" y="163.5" width="135" height="38"/>
+                        <rect key="frame" x="182.5" y="209.5" width="112.5" height="38"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="B1l-r9-9gD">
-                                <rect key="frame" x="20" y="0.0" width="95" height="38"/>
+                                <rect key="frame" x="20" y="0.0" width="72.5" height="38"/>
                                 <color key="textColor" name="textWhiteColor"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -138,40 +138,110 @@
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolosit amet tabdauyb" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mxi-AP-rrC">
+                        <rect key="frame" x="25" y="91" width="199.5" height="14"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                        <color key="textColor" name="textRedColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DPy-og-pne" customClass="DashedLineView" customModule="Krystal" customModuleProvider="target">
+                        <rect key="frame" x="25" y="39" width="68" height="1"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="w3k-Oe-Tel"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N8I-nr-6Hk" customClass="DashedLineView" customModule="Krystal" customModuleProvider="target">
+                        <rect key="frame" x="25" y="135" width="69.5" height="1"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="Xbd-F5-ijc"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gWR-Va-XdE" customClass="DashedLineView" customModule="Krystal" customModuleProvider="target">
+                        <rect key="frame" x="25" y="238" width="107.5" height="1"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="EJv-9O-Owq"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Est.gas consumed: 2350" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mfe-9q-Eou">
+                        <rect key="frame" x="161" y="118.5" width="134" height="14.5"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                        <color key="textColor" name="normalTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolosit amet tabdauyb" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="20V-J6-VW7">
+                        <rect key="frame" x="25" y="187" width="199.5" height="14"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                        <color key="textColor" name="textRedColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolosit amet tabdauyb" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DMP-Cy-vei">
+                        <rect key="frame" x="182.5" y="247.5" width="112.5" height="42.5"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                        <color key="textColor" name="textRedColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" name="mainViewBgColor"/>
                 <constraints>
+                    <constraint firstItem="nfB-NQ-RoQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="1hy-cZ-yjG"/>
                     <constraint firstItem="niP-Ho-j0j" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="2E2-wu-5J4"/>
+                    <constraint firstItem="nfB-NQ-RoQ" firstAttribute="top" secondItem="4Aq-oN-s1c" secondAttribute="bottom" constant="10" id="441-fL-wj9"/>
+                    <constraint firstItem="mxi-AP-rrC" firstAttribute="top" secondItem="iSY-Xw-LP0" secondAttribute="bottom" id="66x-mF-VTY"/>
+                    <constraint firstItem="20V-J6-VW7" firstAttribute="top" secondItem="nfB-NQ-RoQ" secondAttribute="bottom" id="7Bw-oh-obS"/>
+                    <constraint firstItem="N8I-nr-6Hk" firstAttribute="trailing" secondItem="4Aq-oN-s1c" secondAttribute="trailing" id="80H-hK-P0B"/>
                     <constraint firstAttribute="trailing" secondItem="BMK-cq-Pys" secondAttribute="trailing" constant="25" id="9JM-rl-QE3"/>
+                    <constraint firstAttribute="trailing" secondItem="nfB-NQ-RoQ" secondAttribute="trailing" constant="25" id="BGs-fx-kn5"/>
                     <constraint firstItem="iSY-Xw-LP0" firstAttribute="leading" secondItem="niP-Ho-j0j" secondAttribute="leading" id="D34-2d-OUy"/>
                     <constraint firstItem="4Aq-oN-s1c" firstAttribute="top" secondItem="iSY-Xw-LP0" secondAttribute="bottom" constant="25" id="E0x-cS-nSC"/>
+                    <constraint firstItem="DPy-og-pne" firstAttribute="top" secondItem="niP-Ho-j0j" secondAttribute="bottom" id="GLU-C6-SUc"/>
+                    <constraint firstItem="DMP-Cy-vei" firstAttribute="trailing" secondItem="scP-mn-iBc" secondAttribute="trailing" id="GwM-8V-2hY"/>
                     <constraint firstAttribute="trailing" secondItem="hid-2O-nTX" secondAttribute="trailing" constant="25" id="HXb-QR-yIk"/>
                     <constraint firstItem="scP-mn-iBc" firstAttribute="trailing" secondItem="iSY-Xw-LP0" secondAttribute="trailing" id="Imo-UV-0mn"/>
-                    <constraint firstItem="nfB-NQ-RoQ" firstAttribute="centerY" secondItem="4Aq-oN-s1c" secondAttribute="centerY" id="JrB-qz-1tP"/>
+                    <constraint firstItem="scP-mn-iBc" firstAttribute="leading" secondItem="3dX-aO-vS7" secondAttribute="trailing" constant="50" id="MC2-4q-yYJ"/>
+                    <constraint firstItem="20V-J6-VW7" firstAttribute="leading" secondItem="nfB-NQ-RoQ" secondAttribute="leading" id="PF8-H6-9Tl"/>
                     <constraint firstItem="3dX-aO-vS7" firstAttribute="leading" secondItem="niP-Ho-j0j" secondAttribute="leading" id="Qiv-pf-Bt4"/>
+                    <constraint firstAttribute="trailing" secondItem="Mfe-9q-Eou" secondAttribute="trailing" constant="25" id="RAJ-Fb-GIQ"/>
                     <constraint firstItem="4Aq-oN-s1c" firstAttribute="leading" secondItem="niP-Ho-j0j" secondAttribute="leading" id="SDn-q1-BXo"/>
                     <constraint firstItem="BMK-cq-Pys" firstAttribute="trailing" secondItem="iSY-Xw-LP0" secondAttribute="trailing" id="ScR-1r-XJq"/>
-                    <constraint firstItem="nfB-NQ-RoQ" firstAttribute="trailing" secondItem="iSY-Xw-LP0" secondAttribute="trailing" id="UgB-fU-EJq"/>
                     <constraint firstItem="scP-mn-iBc" firstAttribute="centerY" secondItem="3dX-aO-vS7" secondAttribute="centerY" id="YsB-OX-Iak"/>
-                    <constraint firstItem="scP-mn-iBc" firstAttribute="width" secondItem="nfB-NQ-RoQ" secondAttribute="width" id="ZkM-md-ph6"/>
                     <constraint firstAttribute="bottom" secondItem="hid-2O-nTX" secondAttribute="bottom" id="Zyu-IT-fA2"/>
+                    <constraint firstAttribute="bottom" secondItem="scP-mn-iBc" secondAttribute="bottom" constant="60.5" id="aNa-Ab-c8h"/>
+                    <constraint firstItem="N8I-nr-6Hk" firstAttribute="leading" secondItem="4Aq-oN-s1c" secondAttribute="leading" id="afp-ny-IBW"/>
+                    <constraint firstItem="DMP-Cy-vei" firstAttribute="top" secondItem="scP-mn-iBc" secondAttribute="bottom" id="c4e-0X-pkF"/>
                     <constraint firstItem="hid-2O-nTX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="cze-lt-jWg"/>
+                    <constraint firstItem="Mfe-9q-Eou" firstAttribute="centerY" secondItem="4Aq-oN-s1c" secondAttribute="centerY" id="fJu-Og-GSn"/>
+                    <constraint firstItem="N8I-nr-6Hk" firstAttribute="top" secondItem="4Aq-oN-s1c" secondAttribute="bottom" id="j81-if-eR7"/>
+                    <constraint firstItem="gWR-Va-XdE" firstAttribute="top" secondItem="3dX-aO-vS7" secondAttribute="bottom" id="jSo-xO-hb1"/>
                     <constraint firstItem="BMK-cq-Pys" firstAttribute="centerY" secondItem="niP-Ho-j0j" secondAttribute="centerY" id="kTA-Qk-qYP"/>
-                    <constraint firstItem="nfB-NQ-RoQ" firstAttribute="width" secondItem="iSY-Xw-LP0" secondAttribute="height" multiplier="45:14" id="kwT-hk-AkS"/>
+                    <constraint firstItem="gWR-Va-XdE" firstAttribute="trailing" secondItem="3dX-aO-vS7" secondAttribute="trailing" id="ntN-mL-MjP"/>
+                    <constraint firstItem="DMP-Cy-vei" firstAttribute="leading" secondItem="scP-mn-iBc" secondAttribute="leading" id="ntV-Ce-eaZ"/>
                     <constraint firstItem="iSY-Xw-LP0" firstAttribute="top" secondItem="niP-Ho-j0j" secondAttribute="bottom" constant="10" id="nwc-ta-Lan"/>
-                    <constraint firstItem="hid-2O-nTX" firstAttribute="top" secondItem="scP-mn-iBc" secondAttribute="bottom" constant="24.5" id="oU1-8i-Du8"/>
-                    <constraint firstItem="3dX-aO-vS7" firstAttribute="top" secondItem="4Aq-oN-s1c" secondAttribute="bottom" constant="38" id="um9-X0-ulp"/>
+                    <constraint firstItem="DPy-og-pne" firstAttribute="trailing" secondItem="niP-Ho-j0j" secondAttribute="trailing" id="ot5-E8-qOE"/>
+                    <constraint firstItem="mxi-AP-rrC" firstAttribute="leading" secondItem="iSY-Xw-LP0" secondAttribute="leading" id="pNw-oO-VS2"/>
+                    <constraint firstItem="3dX-aO-vS7" firstAttribute="top" secondItem="4Aq-oN-s1c" secondAttribute="bottom" constant="84" id="um9-X0-ulp"/>
                     <constraint firstItem="niP-Ho-j0j" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="vIE-GC-Ryn"/>
+                    <constraint firstItem="gWR-Va-XdE" firstAttribute="leading" secondItem="3dX-aO-vS7" secondAttribute="leading" id="xL8-50-9sX"/>
+                    <constraint firstItem="DPy-og-pne" firstAttribute="leading" secondItem="niP-Ho-j0j" secondAttribute="leading" id="zI3-Lg-hTQ"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="customNonceTextField" destination="B1l-r9-9gD" id="UCz-va-cbd"/>
+                <outlet property="gasLimitContainerView" destination="nfB-NQ-RoQ" id="igk-Wn-jMf"/>
+                <outlet property="gasLimitErrorLabel" destination="20V-J6-VW7" id="pcJ-bE-eHS"/>
+                <outlet property="gasLimitRefLabel" destination="Mfe-9q-Eou" id="3mH-tm-BWq"/>
                 <outlet property="gasLimitTextField" destination="Px0-Em-3Fm" id="vVP-68-hpG"/>
+                <outlet property="gasPriceContainerView" destination="iSY-Xw-LP0" id="P8w-I8-dzM"/>
+                <outlet property="gasPriceErrorLabel" destination="mxi-AP-rrC" id="d04-2R-jzj"/>
                 <outlet property="gasPriceTextField" destination="DT9-Er-FOr" id="jxJ-dc-qhT"/>
                 <outlet property="gasPriceValueLabel" destination="BMK-cq-Pys" id="qVv-97-rXJ"/>
+                <outlet property="nonceContainerView" destination="scP-mn-iBc" id="5w0-Qb-O8Q"/>
+                <outlet property="nonceErrorLabel" destination="DMP-Cy-vei" id="mzD-w6-9EO"/>
             </connections>
-            <point key="canvasLocation" x="137.68115942028987" y="98.772321428571431"/>
+            <point key="canvasLocation" x="137.68115942028987" y="125.89285714285714"/>
         </tableViewCell>
     </objects>
     <resources>
@@ -180,6 +250,9 @@
         </namedColor>
         <namedColor name="normalTextColor">
             <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textRedColor">
+            <color red="0.95686274509803926" green="0.33333333333333331" blue="0.19607843137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>

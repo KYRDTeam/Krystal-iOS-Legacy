@@ -43,6 +43,48 @@ class SettingBasicAdvancedFormCellModel {
   func getAdvancedSettingInfo() -> AdvancedSettingsInfo {
     return ("", gasPriceString, gasLimitString)
   }
+  
+  var gasPriceErrorStatus: AdvancedInputError {
+    guard !gasPriceString.isEmpty else {
+      return .none
+    }
+    let lowerLimit = KNSelectedGasPriceType.slow.getGasValue().string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue
+    let upperLimit = KNSelectedGasPriceType.superFast.getGasValue().string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue
+    let maxFeeDouble = gasPriceString.doubleValue
+
+    if maxFeeDouble < lowerLimit {
+      return .low
+    } else if maxFeeDouble > upperLimit {
+      return .high
+    } else {
+      return .none
+    }
+  }
+  
+  var advancedGasLimitErrorStatus: AdvancedInputError {
+    guard !gasLimitString.isEmpty, let gasLimit = BigInt(gasLimitString) else {
+      return .none
+    }
+    
+    if gasLimit < BigInt(21000) {
+      return .low
+    } else {
+      return .none
+    }
+  }
+  
+  var advancedNonceErrorStatus: AdvancedInputError {
+    guard !nonceString.isEmpty else {
+      return .none
+    }
+
+    let nonceInt = Int(nonceString) ?? 0
+    if nonceInt < 0 {
+      return .low
+    } else {
+      return .none
+    }
+  }
 }
 
 class SettingBasicAdvancedFormCell: UITableViewCell {
@@ -52,6 +94,15 @@ class SettingBasicAdvancedFormCell: UITableViewCell {
   @IBOutlet weak var gasPriceTextField: UITextField!
   @IBOutlet weak var gasLimitTextField: UITextField!
   @IBOutlet weak var customNonceTextField: UITextField!
+  
+  @IBOutlet weak var gasPriceErrorLabel: UILabel!
+  @IBOutlet weak var gasLimitErrorLabel: UILabel!
+  @IBOutlet weak var nonceErrorLabel: UILabel!
+  @IBOutlet weak var gasLimitRefLabel: UILabel!
+  
+  @IBOutlet weak var gasPriceContainerView: UIView!
+  @IBOutlet weak var gasLimitContainerView: UIView!
+  @IBOutlet weak var nonceContainerView: UIView!
   
   var cellModel: SettingBasicAdvancedFormCellModel!
   
@@ -70,6 +121,40 @@ class SettingBasicAdvancedFormCell: UITableViewCell {
   
   func updateUI() {
     self.gasPriceValueLabel.text = cellModel.displayGasFee
+    self.gasLimitRefLabel.text = "Est.gas consumed: \(cellModel.gasLimit.description)"
+    updateValidationUI()
+  }
+  
+  func updateValidationUI() {
+    switch cellModel.gasPriceErrorStatus {
+    case .low:
+      gasPriceErrorLabel.text = "Max Fee is low for current network conditions"
+      gasPriceContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
+    case .high:
+      gasPriceErrorLabel.text = "Max Fee is higher than necessary"
+      gasPriceContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
+    case .none:
+      gasPriceErrorLabel.text = ""
+      gasPriceContainerView.rounded(color: .clear, width: 0, radius: 16)
+    }
+    
+    switch cellModel.advancedGasLimitErrorStatus {
+    case .low:
+      gasLimitErrorLabel.text = "Gas limit must be at least 21000"
+      gasLimitContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
+    default:
+      gasLimitErrorLabel.text = ""
+      gasLimitContainerView.rounded(color: .clear, width: 0, radius: 16)
+    }
+    
+    switch cellModel.advancedNonceErrorStatus {
+    case .low:
+      nonceErrorLabel.text = "Nonce is too low"
+      nonceContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
+    default:
+      nonceErrorLabel.text = ""
+      nonceContainerView.rounded(color: .clear, width: 0, radius: 16)
+    }
   }
   
 }
@@ -94,5 +179,9 @@ extension SettingBasicAdvancedFormCell: UITextFieldDelegate {
     }
     
     return true
+  }
+  
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    updateValidationUI()
   }
 }

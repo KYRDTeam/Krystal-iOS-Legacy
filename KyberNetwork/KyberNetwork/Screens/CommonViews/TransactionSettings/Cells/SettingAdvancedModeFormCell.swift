@@ -41,6 +41,66 @@ class SettingAdvancedModeFormCellModel {
     maxPriorityFeeString = ""
     maxFeeString = ""
   }
+  
+  var maxPriorityErrorStatus: AdvancedInputError {
+    guard !maxPriorityFeeString.isEmpty else {
+      return .none
+    }
+
+    let lowerLimit = KNGasCoordinator.shared.lowPriorityFee ?? BigInt(0)
+    let upperLimit = (KNGasCoordinator.shared.fastPriorityFee ?? BigInt(0)) * BigInt(2)
+    let maxPriorityBigInt = maxPriorityFeeString.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+
+    if maxPriorityBigInt < lowerLimit {
+      return .low
+    } else if maxPriorityBigInt > (BigInt(2) * upperLimit) {
+      return .high
+    } else {
+      return .none
+    }
+  }
+  
+  var maxFeeErrorStatus: AdvancedInputError {
+    guard !maxFeeString.isEmpty else {
+      return .none
+    }
+    let lowerLimit = KNSelectedGasPriceType.slow.getGasValue().string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue
+    let upperLimit = KNSelectedGasPriceType.superFast.getGasValue().string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue
+    let maxFeeDouble = maxFeeString.doubleValue
+
+    if maxFeeDouble < lowerLimit {
+      return .low
+    } else if maxFeeDouble > upperLimit {
+      return .high
+    } else {
+      return .none
+    }
+  }
+  
+  var advancedGasLimitErrorStatus: AdvancedInputError {
+    guard !gasLimitString.isEmpty, let gasLimit = BigInt(gasLimitString) else {
+      return .none
+    }
+    
+    if gasLimit < BigInt(21000) {
+      return .low
+    } else {
+      return .none
+    }
+  }
+  
+  var advancedNonceErrorStatus: AdvancedInputError {
+    guard !customNonceString.isEmpty else {
+      return .none
+    }
+
+    let nonceInt = Int(customNonceString) ?? 0
+    if nonceInt < 0 {
+      return .low
+    } else {
+      return .none
+    }
+  }
 }
 
 class SettingAdvancedModeFormCell: UITableViewCell {
@@ -55,6 +115,20 @@ class SettingAdvancedModeFormCell: UITableViewCell {
   
   @IBOutlet weak var maxPriorityFeeRefLabel: UILabel!
   @IBOutlet weak var maxFeeRefLabel: UILabel!
+  
+  @IBOutlet weak var maxPriorityFeeErrorLabel: UILabel!
+  @IBOutlet weak var maxFeeErrorLabel: UILabel!
+  
+  @IBOutlet weak var gasLimitErrorLabel: UILabel!
+  @IBOutlet weak var nonceErrorLabel: UILabel!
+  
+  @IBOutlet weak var gasLimitRefLabel: UILabel!
+  
+  @IBOutlet weak var maxPriorityFeeContainerView: UIView!
+  @IBOutlet weak var maxFeeContainerView: UIView!
+  @IBOutlet weak var gasLimitContainerView: UIView!
+  @IBOutlet weak var nonceContainerView: UIView!
+  
   var cellModel: SettingAdvancedModeFormCellModel!
   
   override func awakeFromNib() {
@@ -65,11 +139,12 @@ class SettingAdvancedModeFormCell: UITableViewCell {
     self.customNonceTextField.delegate = self
   }
   
-  
   func updateUI() {
     self.baseFeeLabel.text = (KNGasCoordinator.shared.baseFee?.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) ?? "") + " GWEI"
     self.maxPriorityFeeRefLabel.text = "Standard " + (KNGasCoordinator.shared.defaultPriorityFee?.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) ?? "") + " GWEI ~ 45s"
     self.maxFeeRefLabel.text = "Standard " + KNGasCoordinator.shared.standardKNGas.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) + " GWEI ~ 45s"
+    self.gasLimitRefLabel.text = "Est.gas consumed: \(cellModel.gasLimit.description)"
+    self.updateValidationUI()
   }
   
   func fillFormUI() {
@@ -79,6 +154,50 @@ class SettingAdvancedModeFormCell: UITableViewCell {
     
     self.gasLimitTextField.text = cellModel.gasLimitString
     self.customNonceTextField.text = cellModel.customNonceString
+  }
+  
+  func updateValidationUI() {
+    switch cellModel.maxPriorityErrorStatus {
+    case .low:
+      maxPriorityFeeErrorLabel.text = "Max Priority Fee is low for current network conditions"
+      maxPriorityFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
+    case .high:
+      maxPriorityFeeErrorLabel.text = "Max Priority Fee is higher than necessary"
+      maxPriorityFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
+    case .none:
+      maxPriorityFeeErrorLabel.text = ""
+      maxPriorityFeeContainerView.rounded(color: .clear, width: 0, radius: 16)
+    }
+    
+    switch cellModel.maxFeeErrorStatus {
+    case .low:
+      maxFeeErrorLabel.text = "Max Fee is low for current network conditions"
+      maxFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
+    case .high:
+      maxFeeErrorLabel.text = "Max Fee is higher than necessary"
+      maxFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
+    case .none:
+      maxFeeErrorLabel.text = ""
+      maxFeeContainerView.rounded(color: .clear, width: 0, radius: 16)
+    }
+    
+    switch cellModel.advancedGasLimitErrorStatus {
+    case .low:
+      gasLimitErrorLabel.text = "Gas limit must be at least 21000"
+      gasLimitContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
+    default:
+      gasLimitErrorLabel.text = ""
+      gasLimitContainerView.rounded(color: .clear, width: 0, radius: 16)
+    }
+    
+    switch cellModel.advancedNonceErrorStatus {
+    case .low:
+      nonceErrorLabel.text = "Nonce is too low"
+      nonceContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
+    default:
+      nonceErrorLabel.text = ""
+      nonceContainerView.rounded(color: .clear, width: 0, radius: 16)
+    }
   }
 }
 
@@ -106,5 +225,9 @@ extension SettingAdvancedModeFormCell: UITextFieldDelegate {
     }
     
     return true
+  }
+  
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    updateValidationUI()
   }
 }

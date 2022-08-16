@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import Result
 
 typealias BasicSettingsInfo = (type: KNSelectedGasPriceType, value: BigInt)
 typealias AdvancedSettingsInfo = (maxPriority: String, maxFee: String, gasLimit: String)
@@ -24,7 +25,12 @@ class TransactionSettingsViewModel {
 
   var basicSelectedType: KNSelectedGasPriceType
 
-  var nonce: Int = -1
+  var nonce: Int = -1 {
+    didSet {
+      self.basicAdvancedCellModel.nonce = self.nonce
+      self.advancedModeCellModel.nonce = self.nonce
+    }
+  }
   
   let slippageCellModel = SlippageRateCellModel(currentRatePercentage: 0.5)
   let segmentedCellModel = SettingSegmentedCellModel()
@@ -236,6 +242,12 @@ class TransactionSettingsViewController: KNBaseViewController {
       }
       self.present(warningPopup, animated: true, completion: nil)
     }
+    
+    getLatestNonce { result in
+      if case .success(let nonce) = result {
+        self.coordinatorDidUpdateCurrentNonce(nonce)
+      }
+    }
   }
   
   private func reloadUI() {
@@ -282,6 +294,18 @@ class TransactionSettingsViewController: KNBaseViewController {
   
   func coordinatorDidUpdateCurrentNonce(_ nonce: Int) {
     viewModel.nonce = nonce
+  }
+  
+  fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
+    let web3Service = EthereumWeb3Service(chain: KNGeneralProvider.shared.currentChain)
+    web3Service.getTransactionCount(for: AppDelegate.session.address.addressString) { result in
+      switch result {
+      case .success(let res):
+        completion(.success(res))
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
   }
 }
 
