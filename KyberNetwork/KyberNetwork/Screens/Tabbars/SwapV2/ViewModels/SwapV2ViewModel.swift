@@ -86,11 +86,15 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     return currentChain.value.isSupportedEIP1559()
   }
   
+  var isSourceTokenQuote: Bool {
+    return sourceToken.value?.address.lowercased() == currentChain.value.quoteTokenObject().address.lowercased()
+  }
+  
   var maxAvailableSourceTokenAmount: BigInt {
     guard let balance = sourceBalance.value, !balance.isZero else {
       return .zero
     }
-    if sourceToken.value?.isQuoteToken ?? false {
+    if isSourceTokenQuote {
       if balance <= gasPrice * gasLimit {
         return .zero
       }
