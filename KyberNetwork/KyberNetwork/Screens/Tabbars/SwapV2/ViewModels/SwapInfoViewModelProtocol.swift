@@ -91,7 +91,7 @@ extension SwapInfoViewModelProtocol {
   }
   
   func getEstimatedNetworkFeeString(rate: Rate) -> String {
-    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed), gasPrice: self.gasPrice)
+    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed ?? 0), gasPrice: self.gasPrice)
     if let basic = settings.basic {
       let typeString: String = {
         switch basic.gasPriceType {
