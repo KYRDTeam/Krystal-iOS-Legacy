@@ -49,7 +49,7 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
       let createWalletVC = CreateWalletViewController()
       createWalletVC.loadViewIfNeeded()
 //      createWalletVC.delegate = self
-      self.navigationController.present(createWalletVC, animated: true, completion: nil)
+      self.navigationController.pushViewController(createWalletVC, animated: true)
       self.createWalletController = createWalletVC
     }
   }

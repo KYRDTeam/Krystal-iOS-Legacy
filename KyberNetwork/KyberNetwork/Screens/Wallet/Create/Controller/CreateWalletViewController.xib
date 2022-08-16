@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -31,7 +31,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="feF-N7-F9Y">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="90"/>
+                    <rect key="frame" x="0.0" y="44" width="414" height="90"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E6f-F6-rec">
                             <rect key="frame" x="143.5" y="40.5" width="127" height="23.5"/>
@@ -46,6 +46,9 @@
                                 <constraint firstAttribute="height" constant="36" id="yah-zQ-BOF"/>
                             </constraints>
                             <state key="normal" image="back_blue_icon"/>
+                            <connections>
+                                <action selector="onBackButtonTapped:" destination="-1" eventType="touchUpInside" id="cUh-Vp-7W2"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
@@ -64,7 +67,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ooe-u9-vzK" customClass="DinoChatCustomView" customModule="Krystal" customModuleProvider="target">
-                    <rect key="frame" x="38" y="128" width="338" height="170"/>
+                    <rect key="frame" x="38" y="172" width="338" height="170"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-create-wallet-multichain" translatesAutoresizingMaskIntoConstraints="NO" id="zfZ-yg-SJ2">
                             <rect key="frame" x="22" y="28" width="24" height="24"/>
@@ -115,26 +118,26 @@
                     </constraints>
                 </view>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-dino-create-wallet" translatesAutoresizingMaskIntoConstraints="NO" id="8NX-X6-ME5">
-                    <rect key="frame" x="38" y="300" width="96" height="96"/>
+                    <rect key="frame" x="38" y="344" width="96" height="96"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="96" id="7FO-dX-MNB"/>
                         <constraint firstAttribute="width" constant="96" id="SCx-rz-KXW"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paste your Referral Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBR-TH-Htu">
-                    <rect key="frame" x="48" y="523" width="176.5" height="19"/>
+                    <rect key="frame" x="48" y="567" width="176.5" height="19"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                     <color key="textColor" name="textWhiteColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ldm-6x-4iL">
-                    <rect key="frame" x="48" y="416" width="93" height="19"/>
+                    <rect key="frame" x="48" y="460" width="93" height="19"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                     <color key="textColor" name="textWhiteColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YPG-mg-OyV">
-                    <rect key="frame" x="38" y="555" width="338" height="42"/>
+                    <rect key="frame" x="38" y="599" width="338" height="42"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Paste your referral link" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Od9-ha-kHP">
                             <rect key="frame" x="20" y="0.0" width="229" height="42"/>
@@ -187,7 +190,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CaH-2m-gdw">
-                    <rect key="frame" x="38" y="638" width="338" height="38"/>
+                    <rect key="frame" x="38" y="682" width="338" height="38"/>
                     <color key="backgroundColor" name="buttonBackgroundColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="38" id="zYr-i3-36X"/>
@@ -202,9 +205,12 @@
                             <integer key="value" value="16"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onCreateButtonTapped:" destination="-1" eventType="touchUpInside" id="tRe-Ve-C03"/>
+                    </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="otJ-h4-Kpx">
-                    <rect key="frame" x="38" y="447" width="338" height="42"/>
+                    <rect key="frame" x="38" y="491" width="338" height="42"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Paste your referral link" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="EeD-6k-3lT" userLabel="Wallet name">
                             <rect key="frame" x="20" y="0.0" width="298" height="42"/>
@@ -239,7 +245,7 @@
                 <constraint firstItem="Ldm-6x-4iL" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="48" id="Dyg-jE-5Q3"/>
                 <constraint firstItem="feF-N7-F9Y" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Nga-6H-uk2"/>
                 <constraint firstItem="CaH-2m-gdw" firstAttribute="top" secondItem="YPG-mg-OyV" secondAttribute="bottom" constant="41" id="Oi3-zo-HjW"/>
-                <constraint firstItem="feF-N7-F9Y" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Ozz-aN-H15"/>
+                <constraint firstItem="feF-N7-F9Y" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="Ozz-aN-H15"/>
                 <constraint firstItem="Ooe-u9-vzK" firstAttribute="top" secondItem="feF-N7-F9Y" secondAttribute="bottom" constant="38" id="TaL-sc-p2E"/>
                 <constraint firstItem="cBR-TH-Htu" firstAttribute="top" secondItem="otJ-h4-Kpx" secondAttribute="bottom" constant="34" id="aFV-JZ-xUu"/>
                 <constraint firstItem="YPG-mg-OyV" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="38" id="aG4-NV-fWa"/>
