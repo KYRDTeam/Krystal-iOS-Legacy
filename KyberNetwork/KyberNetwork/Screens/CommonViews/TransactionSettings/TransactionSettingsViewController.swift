@@ -24,13 +24,7 @@ class TransactionSettingsViewModel {
 
   var basicSelectedType: KNSelectedGasPriceType
 
-  var nonce: Int = -1 {
-    didSet {
-      self.basicAdvancedCellModel.nonce = self.nonce
-      self.advancedModeCellModel.nonce = self.nonce
-      self.customNonceChangedHandler(self.nonce)
-    }
-  }
+  var nonce: Int = -1
   
   let slippageCellModel = SlippageRateCellModel(currentRatePercentage: 0.5)
   let segmentedCellModel = SettingSegmentedCellModel()
@@ -127,7 +121,28 @@ class TransactionSettingsViewModel {
     } else {
       return basicAdvancedCellModel.getAdvancedSettingInfo()
     }
-    
+  }
+  
+  func getAdvancedNonce() -> Int {
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      return advancedModeCellModel.nonce
+    } else {
+      return basicAdvancedCellModel.nonce
+    }
+  }
+  
+  func getAdvancedNonceString() -> String {
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      return advancedModeCellModel.customNonceString
+    } else {
+      return basicAdvancedCellModel.nonceString
+    }
+  }
+  
+  func updateNonce(_ value: Int) {
+    self.basicAdvancedCellModel.nonce = value
+    self.advancedModeCellModel.nonce = value
+    self.nonce = value
   }
   
   func resetData() {
@@ -137,6 +152,8 @@ class TransactionSettingsViewModel {
     advancedModeCellModel.resetData()
     segmentedCellModel.resetData()
     switchExpertMode.resetData()
+    basicAdvancedCellModel.nonce = nonce
+    advancedModeCellModel.nonce = nonce
   }
   
   func update(priorityFee: String?, maxGas: String?, gasLimit: String?, nonceString: String?) {
@@ -156,10 +173,10 @@ class TransactionSettingsViewModel {
     
     if let notNil = nonceString, let nonceInt = Int(notNil) {
       nonce = nonceInt
+      basicAdvancedCellModel.nonce = nonceInt
+      advancedModeCellModel.nonce = nonceInt
     }
   }
-  
-  
 }
 
 class TransactionSettingsViewController: KNBaseViewController {
@@ -254,6 +271,11 @@ class TransactionSettingsViewController: KNBaseViewController {
         } else {
           self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: basicInfo.type, value: basicInfo.value))
         }
+      }
+      
+      let customNonce = self.viewModel.getAdvancedNonce()
+      if customNonce != -1 && customNonce != self.viewModel.nonce {
+        self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedNonce(nonce: self.viewModel.getAdvancedNonceString()))
       }
     })
   }

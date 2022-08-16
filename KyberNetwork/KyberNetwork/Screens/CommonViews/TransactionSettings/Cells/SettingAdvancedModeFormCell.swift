@@ -12,11 +12,7 @@ class SettingAdvancedModeFormCellModel {
   var maxPriorityFeeString: String = ""
   var maxFeeString: String = ""
   var gasLimitString: String
-  var customNonceString: String = "" {
-    didSet {
-      self.nonce = Int(self.customNonceString) ?? 0
-    }
-  }
+  var customNonceString: String = ""
   
   var maxPriorityFeeChangedHandler: (String) -> Void = { _ in }
   var maxFeeChangedHandler: (String) -> Void = { _ in }
@@ -24,7 +20,11 @@ class SettingAdvancedModeFormCellModel {
   var customNonceChangedHander: (String) -> Void = { _ in }
   
   var gasLimit: BigInt
-  var nonce: Int
+  var nonce: Int {
+    didSet {
+      self.customNonceString = "\(self.nonce)"
+    }
+  }
 
   init(gasLimit: BigInt, nonce: Int) {
     self.gasLimit = gasLimit
@@ -78,7 +78,7 @@ class SettingAdvancedModeFormCell: UITableViewCell {
     self.maxFeeTextField.text = cellModel.maxFeeString
     
     self.gasLimitTextField.text = cellModel.gasLimitString
-    self.customNonceTextField.text = "\(cellModel.nonce)"
+    self.customNonceTextField.text = cellModel.customNonceString
   }
 }
 

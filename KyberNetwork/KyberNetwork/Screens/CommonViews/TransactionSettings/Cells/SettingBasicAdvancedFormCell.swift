@@ -10,7 +10,11 @@ import BigInt
 
 class SettingBasicAdvancedFormCellModel {
   var gasLimit: BigInt
-  var nonce: Int
+  var nonce: Int {
+    didSet {
+      self.nonceString = "\(self.nonce)"
+    }
+  }
   
   var gasPriceChangedHandler: (String) -> Void = { _ in }
   var gasLimitChangedHandler: (String) -> Void = { _ in }
@@ -18,12 +22,7 @@ class SettingBasicAdvancedFormCellModel {
   
   var gasPriceString: String = ""
   var gasLimitString: String = ""
-  var nonceString: String = "" {
-    didSet {
-      guard !nonceString.isEmpty else { return }
-      self.nonce = Int(nonceString) ?? -1
-    }
-  }
+  var nonceString: String = ""
   
   init(gasLimit: BigInt, nonce: Int) {
     
@@ -63,11 +62,10 @@ class SettingBasicAdvancedFormCell: UITableViewCell {
     self.gasLimitTextField.delegate = self
     self.customNonceTextField.delegate = self
   }
-  
   func fillFormValues() {
     self.gasPriceTextField.text = cellModel.gasPriceString
     self.gasLimitTextField.text = cellModel.gasLimitString
-    self.customNonceTextField.text = "\(cellModel.nonce)"
+    self.customNonceTextField.text = cellModel.nonceString
   }
   
   func updateUI() {
