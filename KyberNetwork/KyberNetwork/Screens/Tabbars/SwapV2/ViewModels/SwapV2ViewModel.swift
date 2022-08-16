@@ -381,7 +381,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
                                        quoteToken: currentChain.value.quoteTokenObject(),
                                        destToken: destToken,
                                        destTokenPrice: destTokenPrice,
-                                       gasFeeUsd: self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed), gasPrice: self.gasPrice),
+                                       gasFeeUsd: self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed ?? 0), gasPrice: self.gasPrice),
                                        showSaveTag: sortedRates.count > 1 && index == 0 && savedAmount > BigInt(0.1 * pow(10.0, 18.0)),
                                        savedAmount: savedAmount)
     }
