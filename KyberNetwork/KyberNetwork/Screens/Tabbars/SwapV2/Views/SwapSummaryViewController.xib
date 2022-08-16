@@ -57,7 +57,7 @@
                     <rect key="frame" x="0.0" y="120" width="414" height="776"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tf7-kK-D4U">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="687"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="582"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JaS-zc-vSL" userLabel="Source">
                                     <rect key="frame" x="28" y="10" width="358" height="86"/>
@@ -273,7 +273,7 @@
                                     </subviews>
                                 </stackView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oIk-vk-At8">
-                                    <rect key="frame" x="28" y="567" width="358" height="42"/>
+                                    <rect key="frame" x="28" y="462" width="358" height="42"/>
                                     <color key="backgroundColor" name="buttonBackgroundColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="42" id="pbj-Dn-l6x"/>
@@ -436,7 +436,7 @@
                                 <constraint firstItem="3te-AR-yck" firstAttribute="top" secondItem="fop-hd-2l1" secondAttribute="bottom" constant="60" id="dZc-ae-kGI"/>
                                 <constraint firstItem="gV0-RB-lv9" firstAttribute="leading" secondItem="l9f-cf-b6B" secondAttribute="leading" id="e8l-ca-OhH"/>
                                 <constraint firstItem="gV0-RB-lv9" firstAttribute="trailing" secondItem="l9f-cf-b6B" secondAttribute="trailing" id="eRi-3t-eFf"/>
-                                <constraint firstItem="oIk-vk-At8" firstAttribute="top" secondItem="fop-hd-2l1" secondAttribute="bottom" constant="165" id="f43-WW-sDd"/>
+                                <constraint firstItem="oIk-vk-At8" firstAttribute="top" secondItem="fop-hd-2l1" secondAttribute="bottom" constant="60" id="f43-WW-sDd"/>
                                 <constraint firstAttribute="trailing" secondItem="F4L-50-be1" secondAttribute="trailing" constant="28" id="fhZ-hp-yXl"/>
                                 <constraint firstItem="fop-hd-2l1" firstAttribute="top" secondItem="l9f-cf-b6B" secondAttribute="bottom" constant="26" id="iBw-fC-XRj"/>
                                 <constraint firstItem="JaS-zc-vSL" firstAttribute="leading" secondItem="Tf7-kK-D4U" secondAttribute="leading" constant="28" id="rqu-cT-820"/>
