@@ -34,7 +34,7 @@ class SwapPlatformItemViewModel {
     self.amountUsdString = "~$\(formattedAmountUSD)"
     
     self.isSelected = isSelected
-    self.gasFeeString = String(format: Strings.swapNetworkFee, NumberFormatUtils.gasFee(value: gasFeeUsd))
+    self.gasFeeString = String(format: Strings.swapNetworkFee, NumberFormatUtils.usdAmount(value: gasFeeUsd, decimals: 18))
   }
 
 }
