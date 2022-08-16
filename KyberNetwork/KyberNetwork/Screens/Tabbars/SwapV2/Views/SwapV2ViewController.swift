@@ -128,10 +128,12 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   func setupAnimation() {
-    fetchingAnimationView.animation = Animation.rocket
-    fetchingAnimationView.contentMode = .scaleAspectFit
-    fetchingAnimationView.loopMode = .loop
-    fetchingAnimationView.play()
+    DispatchQueue.main.async {
+      self.fetchingAnimationView.animation = Animation.rocket
+      self.fetchingAnimationView.contentMode = .scaleAspectFit
+      self.fetchingAnimationView.loopMode = .loop
+      self.fetchingAnimationView.play()
+    }
   }
   
   func setupButtons() {

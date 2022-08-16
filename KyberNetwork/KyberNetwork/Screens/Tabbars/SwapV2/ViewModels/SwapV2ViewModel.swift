@@ -80,25 +80,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     return platformRatesViewModels.value.count
   }
   
-  var gasPrice: BigInt {
-    if let basic = settings.basic {
-      if isEIP1559 {
-        let baseFee = KNGasCoordinator.shared.baseFee ?? .zero
-        let priorityFee = self.getPriorityFee(forType: basic.gasPriceType) ?? .zero
-        return baseFee + priorityFee
-      } else {
-        return self.getGasPrice(forType: basic.gasPriceType)
-      }
-    } else if let advanced = settings.advanced {
-      if isEIP1559 {
-        return advanced.maxFee + advanced.maxPriorityFee
-      } else {
-        return advanced.maxFee
-      }
-    }
-    return KNGasCoordinator.shared.defaultKNGas
-  }
-  
   var settings: SwapTransactionSettings = .default
   
   var isEIP1559: Bool {
@@ -110,22 +91,12 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       return .zero
     }
     if sourceToken.value?.isQuoteToken ?? false {
-      if balance <= gasPrice * estimatedGas {
+      if balance <= gasPrice * gasLimit {
         return .zero
       }
-      return balance - gasPrice * estimatedGas
+      return balance - gasPrice * gasLimit
     } else {
       return sourceBalance.value ?? .zero
-    }
-  }
-  
-  var estimatedGas: BigInt {
-    if let advanced = settings.advanced {
-      return advanced.gasLimit
-    } else if let rate = selectedPlatformRate.value {
-      return BigInt(rate.estimatedGas)
-    } else {
-      return KNGasConfiguration.exchangeTokensGasLimitDefault
     }
   }
   
@@ -517,7 +488,7 @@ extension SwapV2ViewModel {
   }
   
   func openSettings() {
-    actions.openSettings(estimatedGas, settings)
+    actions.openSettings(gasLimit, settings)
   }
   
 }
@@ -559,7 +530,7 @@ extension SwapV2ViewModel {
                                 nonce: nonce)
     } else if let basic = settings.basic {
       settings.basic = nil
-      settings.advanced = .init(gasLimit: estimatedGas,
+      settings.advanced = .init(gasLimit: gasLimit,
                                 maxFee: gasPrice,
                                 maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
                                 nonce: nonce)
