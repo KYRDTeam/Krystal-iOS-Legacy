@@ -8,9 +8,14 @@
 import UIKit
 
 class FinishCreateWalletViewController: KNBaseViewController {
-
+  @IBOutlet weak var dashView: UIView!
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupUI()
+  }
+  
+  func setupUI() {
+    self.dashView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
   }
 
   @IBAction func onBackButtonTapped(_ sender: Any) {
