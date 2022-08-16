@@ -222,11 +222,11 @@ extension SwapV2Coordinator: KNHistoryCoordinatorDelegate {
 extension SwapV2Coordinator: ApproveTokenViewControllerDelegate {
   
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt) {
-    rootViewController.viewModel.approve(tokenAddress: token.address, amount: remain, gasLimit: gasLimit)
+    rootViewController.viewModel.approve(tokenAddress: token.address, currentAllowance: remain, gasLimit: gasLimit)
   }
   
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt) {
-    rootViewController.viewModel.approve(tokenAddress: address, amount: remain, gasLimit: gasLimit)
+    rootViewController.viewModel.approve(tokenAddress: address, currentAllowance: remain, gasLimit: gasLimit)
   }
   
   func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: String, value: BigInt) {

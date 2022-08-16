@@ -230,7 +230,11 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     swapRepository.getAllowance(tokenAddress: sourceToken.value?.address ?? "", address: addressString) { [weak self] allowance, _ in
       guard let self = self else { return }
       if allowance < self.sourceAmount.value ?? .zero {
-        self.state.value = .notApproved(remainingAmount: self.sourceAmount.value ?? .zero - allowance)
+        if self.isApproving() {
+          self.state.value = .approving
+        } else {
+          self.state.value = .notApproved(currentAllowance: allowance)
+        }
       } else {
         self.state.value = .ready
       }
@@ -273,15 +277,15 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
   }
   
-  func approve(tokenAddress: String, amount: BigInt, gasLimit: BigInt) {
+  func approve(tokenAddress: String, currentAllowance: BigInt, gasLimit: BigInt) {
     state.value = .approving
-    swapRepository.approve(address: currentAddress.value, tokenAddress: tokenAddress, value: amount, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
+    swapRepository.approve(address: currentAddress.value, tokenAddress: tokenAddress, currentAllowance: currentAllowance, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
       switch result {
       case .success:
         return
       case .failure(let error):
         self?.error.value = .approvalFailed(error: error)
-        self?.state.value = .notApproved(remainingAmount: amount)
+        self?.state.value = .notApproved(currentAllowance: currentAllowance)
       }
     }
   }
@@ -334,6 +338,14 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   func updateSettings(settings: SwapTransactionSettings) {
     self.settings = settings
     updateInfo()
+  }
+  
+  func isApproving() -> Bool {
+    let allTransactions = EtherscanTransactionStorage.shared.getInternalHistoryTransaction()
+    let pendingApproveTxs = allTransactions.filter { tx in
+      return tx.transactionDetailDescription.lowercased() == sourceToken.value?.address.lowercased() && tx.type == .allowance
+    }
+    return !pendingApproveTxs.isEmpty
   }
   
   private func sortedRates(rates: [Rate]) -> [Rate] {
@@ -480,8 +492,8 @@ extension SwapV2ViewModel {
   
   func didTapContinue() {
     switch state.value {
-    case .notApproved(let remainingAmount):
-      approve(remainingAmount)
+    case .notApproved(let currentAllowance):
+      approve(currentAllowance)
     case .ready:
       guard let sourceToken = sourceToken.value, let destToken = destToken.value else { return }
       guard let selectedRate = selectedPlatformRate.value else { return }
