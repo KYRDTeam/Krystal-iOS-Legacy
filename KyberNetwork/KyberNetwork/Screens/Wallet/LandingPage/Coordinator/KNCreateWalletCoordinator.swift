@@ -158,8 +158,10 @@ extension KNCreateWalletCoordinator: CreateWalletViewControllerDelegate {
   func createWalletViewController(_ controller: CreateWalletViewController, run event: CreateWalletViewControllerEvent) {
     switch event {
     case .back:
-      self.navigationController.dismiss(animated: true) {
-        self.delegate?.createWalletCoordinatorDidClose()
+      self.navigationController.popViewController(animated: true) {
+        self.navigationController.dismiss(animated: true) {
+          self.delegate?.createWalletCoordinatorDidClose()
+        }
       }
     case .next(let name):
       self.navigationController.displayLoading(text: Strings.creating, animated: true)

@@ -22,11 +22,22 @@ protocol CreateWalletViewControllerDelegate: class {
 class CreateWalletViewController: KNBaseViewController {
   @IBOutlet weak var refCodeTextField: UITextField!
   @IBOutlet weak var walletNameTextField: UITextField!
-
+  @IBOutlet weak var createButton: UIButton!
+  
   weak var delegate: CreateWalletViewControllerDelegate?
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.updateWalletName()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.updateWalletName()
+    self.createButton.isUserInteractionEnabled = true
+  }
+  
+  func updateWalletName() {
     let wallets = WalletManager.shared.getAllWallets()
     self.walletNameTextField.text = "Wallet \(wallets.count + 1)"
   }
@@ -40,6 +51,7 @@ class CreateWalletViewController: KNBaseViewController {
   }
   
   @IBAction func onCreateButtonTapped(_ sender: Any) {
+    self.createButton.isUserInteractionEnabled = false
     if let text = self.refCodeTextField.text, !text.isEmpty {
       self.delegate?.createWalletViewController(self, run: .sendRefCode(code: text.uppercased()))
     }

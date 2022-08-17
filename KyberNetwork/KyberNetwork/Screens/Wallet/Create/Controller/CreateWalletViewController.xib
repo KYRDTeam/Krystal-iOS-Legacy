@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -22,6 +22,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreateWalletViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
+                <outlet property="createButton" destination="CaH-2m-gdw" id="hK0-yO-gx7"/>
                 <outlet property="refCodeTextField" destination="Od9-ha-kHP" id="nhV-aL-Xdd"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletNameTextField" destination="EeD-6k-3lT" id="9td-rs-KdI"/>
