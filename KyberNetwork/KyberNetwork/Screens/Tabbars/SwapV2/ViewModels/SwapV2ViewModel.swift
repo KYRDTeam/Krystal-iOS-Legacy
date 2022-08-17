@@ -80,52 +80,27 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     return platformRatesViewModels.value.count
   }
   
-  var gasPrice: BigInt {
-    if let basic = settings.basic {
-      if isEIP1559 {
-        let baseFee = KNGasCoordinator.shared.baseFee ?? .zero
-        let priorityFee = self.getPriorityFee(forType: basic.gasPriceType) ?? .zero
-        return baseFee + priorityFee
-      } else {
-        return self.getGasPrice(forType: basic.gasPriceType)
-      }
-    } else if let advanced = settings.advanced {
-      if isEIP1559 {
-        return advanced.maxFee + advanced.maxPriorityFee
-      } else {
-        return advanced.maxFee
-      }
-    }
-    return KNGasCoordinator.shared.defaultKNGas
-  }
-  
   var settings: SwapTransactionSettings = .default
   
   var isEIP1559: Bool {
     return currentChain.value.isSupportedEIP1559()
   }
   
+  var isSourceTokenQuote: Bool {
+    return sourceToken.value?.address.lowercased() == currentChain.value.quoteTokenObject().address.lowercased()
+  }
+  
   var maxAvailableSourceTokenAmount: BigInt {
     guard let balance = sourceBalance.value, !balance.isZero else {
       return .zero
     }
-    if sourceToken.value?.isQuoteToken ?? false {
-      if balance <= gasPrice * estimatedGas {
+    if isSourceTokenQuote {
+      if balance <= gasPrice * gasLimit {
         return .zero
       }
-      return balance - gasPrice * estimatedGas
+      return balance - gasPrice * gasLimit
     } else {
       return sourceBalance.value ?? .zero
-    }
-  }
-  
-  var estimatedGas: BigInt {
-    if let advanced = settings.advanced {
-      return advanced.gasLimit
-    } else if let rate = selectedPlatformRate.value {
-      return BigInt(rate.estimatedGas)
-    } else {
-      return KNGasConfiguration.exchangeTokensGasLimitDefault
     }
   }
   
@@ -215,10 +190,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
     platformRates.observe(on: self) { [weak self] rates in
       guard let self = self else { return }
-      if self.destTokenPrice.value == nil { // In case can not get dest token price
-        self.state.value = .rateNotFound
-        return
-      }
       self.selectedPlatformName = rates.first?.platform
       self.sortedRates = self.sortedRates(rates: rates)
       if rates.isEmpty {
@@ -370,15 +341,13 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   }
   
   private func createPlatformRatesViewModels(destToken: Token, sortedRates: [Rate]) -> [SwapPlatformItemViewModel] {
-    guard let destTokenPrice = destTokenPrice.value else {
-      return []
-    }
+    let destTokenPrice = destTokenPrice.value ?? 0
     var savedAmount: BigInt = 0
     if sortedRates.count >= 2 {
       let diffAmount = (BigInt(sortedRates[0].amount) ?? BigInt(0)) - (BigInt(sortedRates[1].amount) ?? BigInt(0))
       let diffFee = BigInt(sortedRates[0].estimatedGas) - BigInt(sortedRates[1].estimatedGas)
       let diffAmountUSD = diffAmount * BigInt(destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(destToken.decimals)
-      let diffFeeUSD = diffFee * self.getGasFeeUSD(estGas: diffFee, gasPrice: self.gasPrice) // TODO: EIP1559
+      let diffFeeUSD = diffFee * self.getGasFeeUSD(estGas: diffFee, gasPrice: self.gasPrice)
       savedAmount = diffAmountUSD - diffFeeUSD
     }
     return sortedRates.enumerated().map { index, rate in
@@ -387,7 +356,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
                                        quoteToken: currentChain.value.quoteTokenObject(),
                                        destToken: destToken,
                                        destTokenPrice: destTokenPrice,
-                                       gasFeeUsd: self.getGasFeeUSD(estGas: BigInt(rate.estimatedGas), gasPrice: self.gasPrice), // TODO: EIP1559
+                                       gasFeeUsd: self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed ?? 0), gasPrice: self.gasPrice),
                                        showSaveTag: sortedRates.count > 1 && index == 0 && savedAmount > BigInt(0.1 * pow(10.0, 18.0)),
                                        savedAmount: savedAmount)
     }
@@ -523,7 +492,7 @@ extension SwapV2ViewModel {
   }
   
   func openSettings() {
-    actions.openSettings(estimatedGas, settings)
+    actions.openSettings(gasLimit, settings)
   }
   
 }
@@ -565,7 +534,7 @@ extension SwapV2ViewModel {
                                 nonce: nonce)
     } else if let basic = settings.basic {
       settings.basic = nil
-      settings.advanced = .init(gasLimit: estimatedGas,
+      settings.advanced = .init(gasLimit: gasLimit,
                                 maxFee: gasPrice,
                                 maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
                                 nonce: nonce)

@@ -140,7 +140,7 @@ class SwapProcessPopup: KNBaseViewController {
       self.secondButton.setTitle(buttonTitle, for: .normal)
       self.destTokenInfoContainerView.rounded(color: UIColor.Kyber.buttonBg, width: 1, radius: 16)
       self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
-      self.processStatusLabel.text = "Swapped Succesfully"
+      self.processStatusLabel.text = "Swapped Successfully"
     case .failure:
       self.loadingIndicatorView.isHidden = true
       self.transactionStateIcon.isHidden = false

@@ -61,18 +61,14 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
     return self.toAmount * BigInt(10000.0 - self.minRatePercent * 100.0) / BigInt(10000.0)
   }
 
-  var gasLimit: BigInt {
-    return estimatedGas
-  }
-  
   var leftAmountString: String {
-    let amountString = swapObject.sourceAmount.displayRate(decimals: swapObject.sourceToken.decimals)
+    let amountString = NumberFormatUtils.amount(value: swapObject.sourceAmount, decimals: swapObject.sourceToken.decimals)
     return "\(amountString.prefix(15)) \(swapObject.sourceToken.symbol)"
   }
 
   var rightAmountString: String {
     let receivedAmount = swapObject.rate.amount.bigInt ?? BigInt(0)
-    let amountString = receivedAmount.displayRate(decimals: swapObject.destToken.decimals)
+    let amountString = NumberFormatUtils.amount(value: receivedAmount, decimals: swapObject.destToken.decimals)
     return "\(amountString.prefix(15)) \(swapObject.destToken.symbol)"
   }
   
@@ -134,7 +130,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
                                               nonce: nonce)
     } else if let basic = settings.basic {
       swapObject.swapSetting.basic = nil
-      swapObject.swapSetting.advanced = .init(gasLimit: estimatedGas,
+      swapObject.swapSetting.advanced = .init(gasLimit: gasLimit,
                                               maxFee: gasPrice,
                                               maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
                                               nonce: nonce)
