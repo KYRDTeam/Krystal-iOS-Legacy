@@ -20,7 +20,7 @@ extension SwapInfoViewModelProtocol {
     return KNGeneralProvider.shared.currentChain.isSupportedEIP1559()
   }
   
-  var estimatedGas: BigInt {
+  var gasLimit: BigInt {
     if let advanced = settings.advanced {
       return advanced.gasLimit
     } else if let rate = selectedRate {
@@ -80,8 +80,8 @@ extension SwapInfoViewModelProtocol {
   }
   
   func getPriceImpactString(rate: Rate) -> String {
-    let change = Double(rate.priceImpact) / 100
-    return "\(String(format: "%.2f", change))%"
+    let change = Double(rate.priceImpact) / 10000
+    return StringFormatter.percentString(value: change)
   }
   
   func getMinReceiveString(destToken: Token, rate: Rate) -> String {
@@ -91,7 +91,7 @@ extension SwapInfoViewModelProtocol {
   }
   
   func getEstimatedNetworkFeeString(rate: Rate) -> String {
-    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed), gasPrice: self.gasPrice)
+    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed ?? 0), gasPrice: self.gasPrice)
     if let basic = settings.basic {
       let typeString: String = {
         switch basic.gasPriceType {
@@ -107,19 +107,19 @@ extension SwapInfoViewModelProtocol {
           return Strings.custom
         }
       }()
-      return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
+      return "$\(NumberFormatUtils.usdAmount(value: feeInUSD, decimals: 18)) • \(typeString)"
     }
     let typeString = Strings.custom
-    return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
+    return "$\(NumberFormatUtils.usdAmount(value: feeInUSD, decimals: 18)) • \(typeString)"
   }
   
   func getMaxNetworkFeeString(rate: Rate) -> String {
-    if settings.basic != nil {
-      let feeInUSD = self.getGasFeeUSD(estGas: estimatedGas, gasPrice: gasPrice)
-      return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
+    if let basic = settings.basic {
+      let feeInUSD = self.getGasFeeUSD(estGas: gasLimit, gasPrice: self.getGasPrice(forType: basic.gasPriceType))
+      return "$\(NumberFormatUtils.usdAmount(value: feeInUSD, decimals: 18))"
     } else if let advanced = settings.advanced {
-      let feeInUSD = self.getGasFeeUSD(estGas: estimatedGas, gasPrice: advanced.maxFee)
-      return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
+      let feeInUSD = self.getGasFeeUSD(estGas: gasLimit, gasPrice: advanced.maxFee)
+      return "$\(NumberFormatUtils.usdAmount(value: feeInUSD, decimals: 18))"
     }
     return ""
   }
@@ -133,11 +133,10 @@ extension SwapInfoViewModelProtocol {
   }
   
   func getPriceImpactState(change: Double) -> PriceImpactState {
-    let absChange = abs(change)
-    if 0 <= absChange && absChange < 5 {
+    if -5 < change && change <= 100 {
       return .normal
     }
-    if 5 <= absChange && absChange < 15 {
+    if -15 < change && change <= -5 {
       return .high
     }
     return .veryHigh
