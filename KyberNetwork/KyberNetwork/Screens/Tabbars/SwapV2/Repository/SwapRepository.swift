@@ -85,9 +85,8 @@ class SwapRepository {
     let currentChain = KNGeneralProvider.shared.currentChain
     let currentNonce = NonceCache.shared.getCachingNonce(address: address.addressString, chain: currentChain)
     
-    if currentAllowance.isZero {
-      // Approve max
-      KNGeneralProvider.shared.approve(address: address, tokenAddress: tokenAddress, value: Constants.maxValueBigInt, currentNonce: currentNonce, networkAddress: networkAddress, gasPrice: gasPrice, gasLimit: gasLimit) { result in
+    let approveMaxFunction: (Int, @escaping (Result<Bool, AnyError>) -> ()) -> () = { nonce, completion in
+      KNGeneralProvider.shared.approve(address: address, tokenAddress: tokenAddress, value: Constants.maxValueBigInt, currentNonce: nonce, networkAddress: networkAddress, gasPrice: gasPrice, gasLimit: gasLimit) { result in
         switch result {
         case .success(let newNonce):
           NonceCache.shared.updateNonce(address: address.addressString, chain: currentChain, nonce: newNonce)
@@ -96,23 +95,17 @@ class SwapRepository {
           completion(.failure(error))
         }
       }
+    }
+    
+    if currentAllowance.isZero {
+      approveMaxFunction(currentNonce, completion)
     } else {
-      // Reset
+      // Reset to 0
       KNGeneralProvider.shared.approve(address: address, tokenAddress: tokenAddress, value: .zero, currentNonce: currentNonce, networkAddress: networkAddress, gasPrice: gasPrice, gasLimit: gasLimit) { result in
         switch result {
         case .success(let nonce):
           NonceCache.shared.updateNonce(address: address.addressString, chain: currentChain, nonce: nonce)
-          
-          // Approve max
-          KNGeneralProvider.shared.approve(address: address, tokenAddress: tokenAddress, value: Constants.maxValueBigInt, currentNonce: nonce, networkAddress: networkAddress, gasPrice: gasPrice, gasLimit: gasLimit) { result in
-            switch result {
-            case .success(let newNonce):
-              NonceCache.shared.updateNonce(address: address.addressString, chain: currentChain, nonce: newNonce)
-              completion(.success(true))
-            case .failure(let error):
-              completion(.failure(error))
-            }
-          }
+          approveMaxFunction(nonce, completion)
         case .failure(let error):
           completion(.failure(error))
         }
