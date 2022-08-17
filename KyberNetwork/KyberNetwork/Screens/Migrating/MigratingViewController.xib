@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-SemiBold.ttf">
+            <string>Karla-SemiBold</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MigratingViewController" customModule="Krystal" customModuleProvider="target">
+            <connections>
+                <outlet property="continueButton" destination="jpt-OM-vpV" id="bf4-uT-vTk"/>
+                <outlet property="progressView" destination="AQd-Op-hYq" id="Gkl-ee-i8g"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AQd-Op-hYq">
+                    <rect key="frame" x="32" y="632" width="350" height="4"/>
+                    <color key="tintColor" name="buttonBackgroundColor"/>
+                </progressView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="updating" translatesAutoresizingMaskIntoConstraints="NO" id="pfB-3n-ZhW">
+                    <rect key="frame" x="69" y="220.5" width="276" height="276"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="pfB-3n-ZhW" secondAttribute="height" id="BmF-9o-GYx"/>
+                    </constraints>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jpt-OM-vpV">
+                    <rect key="frame" x="24" y="796" width="366" height="42"/>
+                    <color key="backgroundColor" name="buttonBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="42" id="OKj-iT-6gd"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Karla-SemiBold" family="Karla" pointSize="14"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Update">
+                        <color key="titleColor" name="buttonTextColor"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                            <real key="value" value="16"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="continueWasTapped:" destination="-1" eventType="touchUpInside" id="6Y6-oE-bCM"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A new version of the application is available and is required to continue, please click below to update to the latest version" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TMU-Kb-ynu">
+                    <rect key="frame" x="24" y="532.5" width="366" height="63.5"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
+                    <color key="textColor" white="1" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="mainViewBgColor"/>
+            <constraints>
+                <constraint firstItem="jpt-OM-vpV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="24" id="3yE-TH-WC6"/>
+                <constraint firstItem="TMU-Kb-ynu" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="48b-I8-67F"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="jpt-OM-vpV" secondAttribute="trailing" constant="24" id="9TI-XX-FMi"/>
+                <constraint firstItem="pfB-3n-ZhW" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="9Vh-qA-Bfx"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="TMU-Kb-ynu" secondAttribute="trailing" constant="24" id="IZR-Am-cpx"/>
+                <constraint firstItem="AQd-Op-hYq" firstAttribute="top" secondItem="TMU-Kb-ynu" secondAttribute="bottom" constant="36" id="Mw7-k1-jPE"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="jpt-OM-vpV" secondAttribute="bottom" constant="24" id="SUm-OL-w0x"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="AQd-Op-hYq" secondAttribute="trailing" constant="32" id="VrM-Dl-k6T"/>
+                <constraint firstItem="pfB-3n-ZhW" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" multiplier="4:5" id="ZBS-8B-X9D"/>
+                <constraint firstItem="AQd-Op-hYq" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="epZ-bC-HMA"/>
+                <constraint firstItem="pfB-3n-ZhW" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="2:3" id="mVy-Cs-Dp3"/>
+                <constraint firstItem="TMU-Kb-ynu" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="yRy-Bd-q5I"/>
+                <constraint firstItem="TMU-Kb-ynu" firstAttribute="top" secondItem="pfB-3n-ZhW" secondAttribute="bottom" constant="36" id="z9P-ob-Pba"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="84"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="updating" width="270" height="260"/>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="buttonTextColor">
+            <color red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
