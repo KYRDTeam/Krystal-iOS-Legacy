@@ -20,6 +20,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FinishCreateWalletViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="dashView" destination="mBk-VT-7Qp" id="qAN-Qe-ObG"/>
+                <outlet property="evmAddressLabel" destination="sV8-ol-Gxv" id="V6j-U1-gNw"/>
+                <outlet property="solanaAddressLabel" destination="of1-Ns-IGR" id="CMi-5s-ITQ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

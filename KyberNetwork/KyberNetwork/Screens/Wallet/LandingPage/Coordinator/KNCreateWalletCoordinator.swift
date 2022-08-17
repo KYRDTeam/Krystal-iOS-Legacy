@@ -48,7 +48,7 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
       self.isCreating = true
       let createWalletVC = CreateWalletViewController()
       createWalletVC.loadViewIfNeeded()
-//      createWalletVC.delegate = self
+      createWalletVC.delegate = self
       self.navigationController.pushViewController(createWalletVC, animated: true)
       self.createWalletController = createWalletVC
     }
@@ -57,6 +57,14 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
   func updateNewWallet(_ wallet: KWallet?, name: String?) {
     self.newWallet = wallet
     self.name = name
+  }
+  
+  fileprivate func showCreateWalletSuccess(_ wallet: KWallet) {
+    self.newWallet = wallet
+    let viewModel = FinishCreateWalletViewModel(wallet: wallet)
+    let finishVC = FinishCreateWalletViewController(viewModel: viewModel)
+    finishVC.delegate = self
+    self.navigationController.show(finishVC, sender: nil)
   }
 
   /**
@@ -146,39 +154,45 @@ extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
   }
 }
 
-extension KNCreateWalletCoordinator: KNCreateWalletViewControllerDelegate {
-  func createWalletViewController(_ controller: KNCreateWalletViewController, run event: KNCreateWalletViewEvent) {
+extension KNCreateWalletCoordinator: CreateWalletViewControllerDelegate {
+  func createWalletViewController(_ controller: CreateWalletViewController, run event: CreateWalletViewControllerEvent) {
     switch event {
     case .back:
       self.navigationController.dismiss(animated: true) {
         self.delegate?.createWalletCoordinatorDidClose()
       }
     case .next(let name):
-      self.navigationController.dismiss(animated: true) {
-        self.navigationController.displayLoading(text: Strings.creating, animated: true)
-        do {
-          let wallet = try self.walletManager.createWallet(name: name)
-          DispatchQueue.main.async {
-            self.navigationController.hideLoading()
-            self.navigationController.showSuccessTopBannerMessage(
-              with: Strings.walletCreated,
-              message: Strings.walletCreatedSuccess,
-              time: 1
-            )
-            self.name = name
-            self.openBackUpWallet(wallet, name: name)
-            if !self.refCode.isEmpty {
-              self.sendRefCode(self.refCode.uppercased(), wallet: wallet)
-            }
+      self.navigationController.displayLoading(text: Strings.creating, animated: true)
+      do {
+        let wallet = try self.walletManager.createWallet(name: name)
+        DispatchQueue.main.async {
+          self.navigationController.hideLoading()
+          self.name = name
+          self.showCreateWalletSuccess(wallet)
+          if !self.refCode.isEmpty {
+            self.sendRefCode(self.refCode.uppercased(), wallet: wallet)
           }
-        } catch {
-          return
         }
+      } catch {
+        return
       }
     case .openQR:
       self.openQRCode(controller)
     case .sendRefCode(code: let code):
       self.refCode = code
+    }
+  }
+}
+
+extension KNCreateWalletCoordinator: FinishCreateWalletViewControllerDelegate {
+  func finishCreateWalletViewController(_ controller: FinishCreateWalletViewController, run event: FinishCreateWalletViewControllerEvent) {
+    switch event {
+    case .continueUseApp:
+      guard let wallet = self.newWallet else { return }
+      self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, chain: targetChain)
+    case .backup:
+      guard let wallet = self.newWallet else { return }
+      self.openBackUpWallet(wallet, name: self.name)
     }
   }
 }
@@ -190,7 +204,7 @@ extension KNCreateWalletCoordinator: QRCodeReaderDelegate {
 
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
-//      self.createWalletController?.containerViewDidUpdateRefCode(result)
+      self.createWalletController?.containerViewDidUpdateRefCode(result)
     }
   }
 }

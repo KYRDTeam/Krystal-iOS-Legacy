@@ -22,7 +22,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreateWalletViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
+                <outlet property="refCodeTextField" destination="Od9-ha-kHP" id="nhV-aL-Xdd"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="walletNameTextField" destination="EeD-6k-3lT" id="9td-rs-KdI"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -162,6 +164,9 @@
                                         <constraint firstAttribute="height" constant="24" id="SEQ-kc-weM"/>
                                     </constraints>
                                     <state key="normal" image="scan"/>
+                                    <connections>
+                                        <action selector="scanButtonTapped:" destination="-1" eventType="touchUpInside" id="rbu-jT-PmD"/>
+                                    </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Hd-Wv-uHg">
                                     <rect key="frame" x="259" y="12" width="35" height="18"/>
@@ -177,6 +182,9 @@
                                             <integer key="value" value="3"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="pasteButtonTapped:" destination="-1" eventType="touchUpInside" id="B0f-m9-Y3h"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" name="innerContainerBgColor"/>
