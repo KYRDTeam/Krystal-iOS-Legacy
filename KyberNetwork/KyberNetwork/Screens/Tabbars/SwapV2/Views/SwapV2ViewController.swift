@@ -430,6 +430,11 @@ class SwapV2ViewController: KNBaseViewController {
     viewModel.hasPendingTransaction.observeAndFire(on: self) { [weak self] hasPendingTx in
       self?.dotView.isHidden = !hasPendingTx
     }
+    
+    viewModel.error.observe(on: self) { [weak self] error in
+      guard let error = error else { return }
+      self?.showErrorTopBannerMessage(with: error.title, message: error.message)
+    }
   }
   
   @IBAction func settingsWasTapped(_ sender: Any) {
@@ -546,7 +551,7 @@ extension SwapV2ViewController {
 
 // MARK: Rate loading animation
 extension SwapV2ViewController {
-  
+
   func setupRateLoadingView() {
     rateLoadingView.isHidden = true
     remainingTime = rateReloadingInterval
@@ -642,6 +647,15 @@ extension SwapV2ViewController: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return 96
+  }
+  
+}
+
+extension SwapV2ViewController: SwapSummaryViewControllerDelegate {
+  
+  func onSwapSummaryViewClose() {
+    resetCountdownView()
+    viewModel.reloadRates()
   }
   
 }
