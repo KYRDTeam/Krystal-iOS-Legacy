@@ -45,6 +45,7 @@ class TransactionSettingsViewModel {
   var slippageChangedEventHandler: (Double) -> Void = { _ in }
   var expertModeSwitchChangeStatusHandler: (Bool) -> Void = { _ in }
   var advancedSettingValueChangeHander: () -> Void = {}
+  var saveEventHandler: (SwapTransactionSettings) -> Void = { _ in }
   
   init(gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium) {
     self.gasPrice = selectType.getGasValue()
@@ -202,6 +203,28 @@ class TransactionSettingsViewModel {
       advancedModeCellModel.nonce = nonceInt
     }
   }
+  
+  func buildSwapSetting() -> SwapTransactionSettings {
+    let slippage = slippageCellModel.currentRate
+    var basicSettings: BasicTransactionSettings? = nil
+    var advancedSettings: AdvancedTransactionSettings? = nil
+    if isAdvancedMode {
+      let info = getAdvancedSettingInfo()
+      let gasLimit = BigInt(info.gasLimit) ?? .zero
+      let maxFee = info.maxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? .zero
+      let maxPriorityFee = info.maxPriority.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? .zero
+      let nonceInt = Int(getAdvancedNonce())
+      advancedSettings = AdvancedTransactionSettings(gasLimit: gasLimit, maxFee: maxFee, maxPriorityFee: maxPriorityFee, nonce: nonceInt)
+    } else {
+      basicSettings = BasicTransactionSettings(gasPriceType: basicSelectedType)
+    }
+    
+    return SwapTransactionSettings(slippage: slippage, basic: basicSettings, advanced: advancedSettings, expertModeOn: isExpertMode)
+  }
+  
+  func saveWithBlock() {
+    saveEventHandler(buildSwapSetting())
+  }
 }
 
 class TransactionSettingsViewController: KNBaseViewController {
@@ -324,6 +347,8 @@ class TransactionSettingsViewController: KNBaseViewController {
       if customNonce != -1 && customNonce != self.viewModel.nonce {
         self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedNonce(nonce: self.viewModel.getAdvancedNonceString()))
       }
+      
+      self.viewModel.saveWithBlock()
     })
   }
   

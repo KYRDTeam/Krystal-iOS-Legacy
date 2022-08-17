@@ -75,35 +75,11 @@ class SwapV2Coordinator: NSObject, Coordinator {
     let popup = TransactionSettingsViewController(viewModel: vm)
     vm.update(priorityFee: advancedMaxPriorityFee, maxGas: advancedMaxFee, gasLimit: advancedGasLimit, nonceString: advancedNonce)
     
-    popup.delegate = self
+//    popup.delegate = self
+    vm.saveEventHandler = { swapSettings in
+      print(swapSettings)
+    }
     self.navigationController.pushViewController(popup, animated: true, completion: nil)
-    
-//    let selectedGasPriceType: KNSelectedGasPriceType = {
-//      if let basic = settings.basic {
-//        return basic.gasPriceType
-//      }
-//      return .custom
-//    }()
-//
-//    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: selectedGasPriceType, currentRatePercentage: settings.slippage, isUseGasToken: false)
-//    viewModel.updateGasPrices(
-//      fast: KNGasCoordinator.shared.fastKNGas,
-//      medium: KNGasCoordinator.shared.standardKNGas,
-//      slow: KNGasCoordinator.shared.lowKNGas,
-//      superFast: KNGasCoordinator.shared.superFastKNGas
-//    )
-//    viewModel.advancedGasLimit = (settings.advanced?.gasLimit).map(String.init)
-//    viewModel.advancedMaxPriorityFee = (settings.advanced?.maxPriorityFee).map {
-//      return NumberFormatUtils.format(value: $0, decimals: 9, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)
-//    }
-//    viewModel.advancedMaxFee = (settings.advanced?.maxFee).map {
-//      return NumberFormatUtils.format(value: $0, decimals: 9, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)
-//    }
-//    viewModel.advancedNonce = (settings.advanced?.nonce).map { "\($0)" }
-//
-//    let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
-//    vc.delegate = self
-//    self.navigationController.present(vc, animated: true, completion: nil)
   }
   
   func openApprove(token: TokenObject, amount: BigInt) {
