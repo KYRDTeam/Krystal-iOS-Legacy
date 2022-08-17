@@ -19,6 +19,7 @@ enum AdvancedInputError {
   case none
   case high
   case low
+  case empty
 }
 
 extension KNSelectedGasPriceType {

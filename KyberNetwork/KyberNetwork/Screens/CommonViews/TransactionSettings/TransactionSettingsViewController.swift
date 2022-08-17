@@ -44,6 +44,7 @@ class TransactionSettingsViewModel {
   var customNonceChangedHandler: (Int) -> Void = { _ in }
   var slippageChangedEventHandler: (Double) -> Void = { _ in }
   var expertModeSwitchChangeStatusHandler: (Bool) -> Void = { _ in }
+  var advancedSettingValueChangeHander: () -> Void = {}
   
   init(gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium) {
     self.gasPrice = selectType.getGasValue()
@@ -81,34 +82,41 @@ class TransactionSettingsViewModel {
     
     self.basicAdvancedCellModel.gasPriceChangedHandler = { value in
       print("[Setting][BasicAdvanced] \(value)")
+      self.advancedSettingValueChangeHander()
     }
     
     self.basicAdvancedCellModel.gasLimitChangedHandler = { value in
       print("[Setting][BasicAdvanced] \(value)")
+      self.advancedSettingValueChangeHander()
     }
     
     self.basicAdvancedCellModel.nonceChangedHandler = { value in
       print("[Setting][BasicAdvanced] \(value)")
       let nonceValue = Int(value) ?? 0
       self.nonce = nonceValue
+      self.advancedSettingValueChangeHander()
     }
     
     self.advancedModeCellModel.maxPriorityFeeChangedHandler = { value in
       print("[Setting][Advanced] \(value)")
+      self.advancedSettingValueChangeHander()
     }
     
     self.advancedModeCellModel.maxFeeChangedHandler = { value in
       print("[Setting][Advanced] \(value)")
+      self.advancedSettingValueChangeHander()
     }
     
     self.advancedModeCellModel.gasLimitChangedHandler = { value in
       print("[Setting][Advanced] \(value)")
+      self.advancedSettingValueChangeHander()
     }
     
     self.advancedModeCellModel.customNonceChangedHander = { value in
       print("[Setting][Advanced] \(value)")
       let nonceValue = Int(value) ?? 0
       self.nonce = nonceValue
+      self.advancedSettingValueChangeHander()
     }
     
     self.slippageCellModel.slippageChangedEvent = { value in
@@ -134,6 +142,17 @@ class TransactionSettingsViewModel {
       return advancedModeCellModel.nonce
     } else {
       return basicAdvancedCellModel.nonce
+    }
+  }
+  
+  func hasNoError() -> Bool {
+    guard isAdvancedMode else {
+      return true
+    }
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      return advancedModeCellModel.hasNoError()
+    } else {
+      return basicAdvancedCellModel.hasNoError()
     }
   }
   
@@ -187,6 +206,7 @@ class TransactionSettingsViewModel {
 
 class TransactionSettingsViewController: KNBaseViewController {
   @IBOutlet weak var settingsTableView: UITableView!
+  @IBOutlet weak var saveButton: UIButton!
   
   let viewModel: TransactionSettingsViewModel
   weak var delegate: GasFeeSelectorPopupViewControllerDelegate?
@@ -215,7 +235,7 @@ class TransactionSettingsViewController: KNBaseViewController {
     }
     
     self.viewModel.switchAdvancedModeEventHandle = { value in
-      self.settingsTableView.reloadData()
+      self.reloadUI()
     }
     
     self.viewModel.slippageChangedEventHandler = { value in
@@ -243,6 +263,10 @@ class TransactionSettingsViewController: KNBaseViewController {
       self.present(warningPopup, animated: true, completion: nil)
     }
     
+    viewModel.advancedSettingValueChangeHander = {
+      self.updateUISaveButton()
+    }
+    
     getLatestNonce { result in
       if case .success(let nonce) = result {
         self.coordinatorDidUpdateCurrentNonce(nonce)
@@ -253,6 +277,17 @@ class TransactionSettingsViewController: KNBaseViewController {
   private func reloadUI() {
     DispatchQueue.main.async {
       self.settingsTableView.reloadData()
+      self.updateUISaveButton()
+    }
+  }
+  
+  private func updateUISaveButton() {
+    if viewModel.hasNoError() {
+      saveButton.isEnabled = true
+      saveButton.alpha = 1
+    } else {
+      saveButton.isEnabled = false
+      saveButton.alpha = 0.5
     }
   }
   

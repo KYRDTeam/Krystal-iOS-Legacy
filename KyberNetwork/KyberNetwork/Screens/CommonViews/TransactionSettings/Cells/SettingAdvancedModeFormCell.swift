@@ -44,7 +44,7 @@ class SettingAdvancedModeFormCellModel {
   
   var maxPriorityErrorStatus: AdvancedInputError {
     guard !maxPriorityFeeString.isEmpty else {
-      return .none
+      return .empty
     }
 
     let lowerLimit = KNGasCoordinator.shared.lowPriorityFee ?? BigInt(0)
@@ -62,7 +62,7 @@ class SettingAdvancedModeFormCellModel {
   
   var maxFeeErrorStatus: AdvancedInputError {
     guard !maxFeeString.isEmpty else {
-      return .none
+      return .empty
     }
     let lowerLimit = KNSelectedGasPriceType.slow.getGasValue().string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue
     let upperLimit = KNSelectedGasPriceType.superFast.getGasValue().string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue
@@ -79,7 +79,7 @@ class SettingAdvancedModeFormCellModel {
   
   var advancedGasLimitErrorStatus: AdvancedInputError {
     guard !gasLimitString.isEmpty, let gasLimit = BigInt(gasLimitString) else {
-      return .none
+      return .empty
     }
     
     if gasLimit < BigInt(21000) {
@@ -91,7 +91,7 @@ class SettingAdvancedModeFormCellModel {
   
   var advancedNonceErrorStatus: AdvancedInputError {
     guard !customNonceString.isEmpty else {
-      return .none
+      return .empty
     }
 
     let nonceInt = Int(customNonceString) ?? 0
@@ -101,6 +101,11 @@ class SettingAdvancedModeFormCellModel {
       return .none
     }
   }
+  
+  func hasNoError() -> Bool {
+    return maxPriorityErrorStatus == .none && maxFeeErrorStatus == .none && advancedGasLimitErrorStatus == .none && advancedNonceErrorStatus == .none
+  }
+
 }
 
 class SettingAdvancedModeFormCell: UITableViewCell {
@@ -164,7 +169,7 @@ class SettingAdvancedModeFormCell: UITableViewCell {
     case .high:
       maxPriorityFeeErrorLabel.text = "Max Priority Fee is higher than necessary"
       maxPriorityFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
-    case .none:
+    case .none, .empty:
       maxPriorityFeeErrorLabel.text = ""
       maxPriorityFeeContainerView.rounded(color: .clear, width: 0, radius: 16)
     }
@@ -176,7 +181,7 @@ class SettingAdvancedModeFormCell: UITableViewCell {
     case .high:
       maxFeeErrorLabel.text = "Max Fee is higher than necessary"
       maxFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
-    case .none:
+    case .none, .empty:
       maxFeeErrorLabel.text = ""
       maxFeeContainerView.rounded(color: .clear, width: 0, radius: 16)
     }
@@ -199,6 +204,8 @@ class SettingAdvancedModeFormCell: UITableViewCell {
       nonceContainerView.rounded(color: .clear, width: 0, radius: 16)
     }
   }
+  
+  
 }
 
 extension SettingAdvancedModeFormCell: UITextFieldDelegate {

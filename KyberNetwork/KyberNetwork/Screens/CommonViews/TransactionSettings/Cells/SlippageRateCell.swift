@@ -75,16 +75,6 @@ class SlippageRateCell: UITableViewCell {
   static let cellHeight: CGFloat = 60
   static let cellID: String = "SlippageRateCell"
   
-//  init(model: SlippageRateCellModel, valueChangedHandler: @escaping (Double) -> Void) {
-//    self.cellModel = model
-//    self.slippageChangedEvent = valueChangedHandler
-//
-//  }
-//
-//  required init?(coder: NSCoder) {
-//    fatalError("init(coder:) has not been implemented")
-//  }
-  
   override func awakeFromNib() {
     super.awakeFromNib()
     // Initialization code

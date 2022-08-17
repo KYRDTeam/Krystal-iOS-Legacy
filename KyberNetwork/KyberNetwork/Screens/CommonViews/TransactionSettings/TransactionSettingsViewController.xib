@@ -19,6 +19,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionSettingsViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
+                <outlet property="saveButton" destination="qg4-w9-IhH" id="GHL-kW-8rY"/>
                 <outlet property="settingsTableView" destination="0vm-eo-wM6" id="cJy-R2-e6v"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

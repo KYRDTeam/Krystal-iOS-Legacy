@@ -46,7 +46,7 @@ class SettingBasicAdvancedFormCellModel {
   
   var gasPriceErrorStatus: AdvancedInputError {
     guard !gasPriceString.isEmpty else {
-      return .none
+      return .empty
     }
     let lowerLimit = KNSelectedGasPriceType.slow.getGasValue().string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue
     let upperLimit = KNSelectedGasPriceType.superFast.getGasValue().string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue
@@ -63,7 +63,7 @@ class SettingBasicAdvancedFormCellModel {
   
   var advancedGasLimitErrorStatus: AdvancedInputError {
     guard !gasLimitString.isEmpty, let gasLimit = BigInt(gasLimitString) else {
-      return .none
+      return .empty
     }
     
     if gasLimit < BigInt(21000) {
@@ -75,7 +75,7 @@ class SettingBasicAdvancedFormCellModel {
   
   var advancedNonceErrorStatus: AdvancedInputError {
     guard !nonceString.isEmpty else {
-      return .none
+      return .empty
     }
 
     let nonceInt = Int(nonceString) ?? 0
@@ -84,6 +84,10 @@ class SettingBasicAdvancedFormCellModel {
     } else {
       return .none
     }
+  }
+  
+  func hasNoError() -> Bool {
+    return gasPriceErrorStatus == .none && advancedGasLimitErrorStatus == .none && advancedNonceErrorStatus == .none
   }
 }
 
@@ -133,7 +137,7 @@ class SettingBasicAdvancedFormCell: UITableViewCell {
     case .high:
       gasPriceErrorLabel.text = "Max Fee is higher than necessary"
       gasPriceContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
-    case .none:
+    case .none, .empty:
       gasPriceErrorLabel.text = ""
       gasPriceContainerView.rounded(color: .clear, width: 0, radius: 16)
     }
