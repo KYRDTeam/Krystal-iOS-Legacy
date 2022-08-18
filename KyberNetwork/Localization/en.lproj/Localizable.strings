@@ -912,3 +912,4 @@
 "max.fee.low.warning" = "Max Fee is low for current network conditions";
 "max.fee.high.warning" = "Max Fee is higher than necessary";
 "nonce.low.warning" = "Nonce is too low";
+"swap.best" = "Best";

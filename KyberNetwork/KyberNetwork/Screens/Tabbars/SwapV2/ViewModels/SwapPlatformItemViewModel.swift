@@ -25,7 +25,12 @@ class SwapPlatformItemViewModel {
     self.name = platformRate.platformShort
     self.showSavedTag = showSaveTag
     
-    self.savedAmountString = String(format: Strings.swapSavedAmount, NumberFormatUtils.amount(value: savedAmount, decimals: 18))
+    if savedAmount > BigInt(0.1 * pow(10.0, 18.0)) {
+      self.savedAmountString = String(format: Strings.swapSavedAmount, NumberFormatUtils.amount(value: savedAmount, decimals: 18))
+    } else {
+      self.savedAmountString = Strings.swapBest
+    }
+    
     let receivingAmount = BigInt(platformRate.amount) ?? BigInt(0)
     self.amountString = NumberFormatUtils.amount(value: receivingAmount, decimals: destToken.decimals)
     
