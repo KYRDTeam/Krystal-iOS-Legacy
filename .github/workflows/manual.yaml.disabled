@@ -68,9 +68,9 @@ jobs:
     strategy:
       matrix: 
         include:
-          - app_name: "Krystal: Manual (dev)"
-            env: dev
-            ota_key: MANUAL_OTA_URL 
+          # - app_name: "Krystal: Manual (dev)"
+          #   env: dev
+          #   ota_key: MANUAL_OTA_URL 
           - app_name: "Krystal: Manual (stg)"
             env: stg
             ota_key: MANUAL_OTA_URL 
