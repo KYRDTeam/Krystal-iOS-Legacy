@@ -78,12 +78,14 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
     do {
       let mnemonic = try walletManager.exportMnemonic(walletID: wallet.id)
       let seeds = mnemonic.split(separator: " ").map({ return String($0) })
-      let backUpVC: KNBackUpWalletViewController = {
-        let viewModel = KNBackUpWalletViewModel(seeds: seeds)
-        let controller = KNBackUpWalletViewController(viewModel: viewModel)
-        controller.delegate = self
-        return controller
-      }()
+      let viewModel = BackUpWalletViewModel(seeds: seeds)
+//      let backUpVC: KNBackUpWalletViewController = {
+//        let viewModel = KNBackUpWalletViewModel(seeds: seeds)
+//        let controller = KNBackUpWalletViewController(viewModel: viewModel)
+//        controller.delegate = self
+//        return controller
+//      }()
+      let backUpVC = BackUpWalletViewController(viewModel: viewModel)
       self.navigationController.pushViewController(backUpVC, animated: true)
     } catch {
       self.delegate?.createWalletCoordinatorDidCreateWallet(self.newWallet, name: name, chain: self.targetChain)

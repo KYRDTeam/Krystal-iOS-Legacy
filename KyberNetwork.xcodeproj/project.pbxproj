@@ -480,6 +480,8 @@
 		7E49B26127FC19890093A00E /* MixPanelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E49B26027FC19890093A00E /* MixPanelManager.swift */; };
 		7E4E613128115CD200640625 /* UnconfirmedSolTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */; };
 		7E4EDD6328100A410000CB0B /* SolanaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EDD6228100A400000CB0B /* SolanaService.swift */; };
+		7E52914628ADEA9F00E4BB1B /* BackUpWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52914428ADEA9F00E4BB1B /* BackUpWalletViewController.swift */; };
+		7E52914728ADEA9F00E4BB1B /* BackUpWalletViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E52914528ADEA9F00E4BB1B /* BackUpWalletViewController.xib */; };
 		7E59E5812872E80C00DFD01C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7E59E5802872E80C00DFD01C /* Settings.bundle */; };
 		7E59E5832872F10900DFD01C /* SettingsBundleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E59E5822872F10900DFD01C /* SettingsBundleHelper.swift */; };
 		7E62A41628AB4FC100319436 /* CreateWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E62A41428AB4FC100319436 /* CreateWalletViewController.swift */; };
@@ -1645,6 +1647,8 @@
 		7E49B26027FC19890093A00E /* MixPanelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixPanelManager.swift; sourceTree = "<group>"; };
 		7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfirmedSolTransaction.swift; sourceTree = "<group>"; };
 		7E4EDD6228100A400000CB0B /* SolanaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaService.swift; sourceTree = "<group>"; };
+		7E52914428ADEA9F00E4BB1B /* BackUpWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackUpWalletViewController.swift; sourceTree = "<group>"; };
+		7E52914528ADEA9F00E4BB1B /* BackUpWalletViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BackUpWalletViewController.xib; sourceTree = "<group>"; };
 		7E59E5802872E80C00DFD01C /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		7E59E5822872F10900DFD01C /* SettingsBundleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBundleHelper.swift; sourceTree = "<group>"; };
 		7E62A41428AB4FC100319436 /* CreateWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletViewController.swift; sourceTree = "<group>"; };
@@ -3346,6 +3350,8 @@
 				25EBE92E20B40C8B00A57579 /* TestBackUpIncorrectWord */,
 				25931F0D20AEE85200BAC774 /* KNBackUpWalletViewController.swift */,
 				25931F0E20AEE85200BAC774 /* KNBackUpWalletViewController.xib */,
+				7E52914428ADEA9F00E4BB1B /* BackUpWalletViewController.swift */,
+				7E52914528ADEA9F00E4BB1B /* BackUpWalletViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -6682,6 +6688,7 @@
 				C32017B727BE28EC0055130B /* MultisendAddressListViewController.xib in Resources */,
 				251ABCB420578F6E0069687F /* config_env_kovan.json in Resources */,
 				2549B286219EA3DA00B7564E /* config_env_rinkeby.json in Resources */,
+				7E52914728ADEA9F00E4BB1B /* BackUpWalletViewController.xib in Resources */,
 				C30292F1260317EA001929E1 /* MarketingPartnerCollectionViewCell.xib in Resources */,
 				25929C8920DA5CC10045CFA3 /* SFCompactDisplay-Light.otf in Resources */,
 				257A37A6205D187100E86794 /* KNTransactionStatusViewController.xib in Resources */,
@@ -7662,6 +7669,7 @@
 				C65D31EA21D4DCD1005D0B04 /* UITextField+Kyber.swift in Sources */,
 				7EC008A2288F957900FCED48 /* OverviewMainCellViewModel.swift in Sources */,
 				C32F1F632431ABCD00990706 /* KNMarket.swift in Sources */,
+				7E52914628ADEA9F00E4BB1B /* BackUpWalletViewController.swift in Sources */,
 				25696F6320BE8973002CC53F /* KNSetSlippageRateViewController.swift in Sources */,
 				A6595C88289D2C4300CE7E42 /* Animation+.swift in Sources */,
 				7EF2E51428A21BF200D9947E /* SwapSummaryViewController.swift in Sources */,
