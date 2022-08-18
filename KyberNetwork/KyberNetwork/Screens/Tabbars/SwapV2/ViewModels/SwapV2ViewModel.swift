@@ -23,10 +23,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
 
   var actions: SwapV2ViewModelActions
   
-  private(set) var selectedPlatformName: String? {
+  private(set) var selectedPlatformHint: String? {
     didSet {
-      self.selectedPlatformRate.value = platformRates.value.first(where: { rate in
-        rate.platform == selectedPlatformName
+      self.selectedPlatformRate.value = self.sortedRates.first(where: { rate in
+        rate.hint == selectedPlatformHint
       })
       guard let destToken = destToken.value, let sourceToken = sourceToken.value else {
         return
@@ -50,15 +50,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
   }
   
-  var sortedRates: [Rate] = [] {
-    didSet {
-      guard let destToken = self.destToken.value else {
-        self.platformRatesViewModels.value = []
-        return
-      }
-      self.platformRatesViewModels.value = createPlatformRatesViewModels(destToken: destToken, sortedRates: sortedRates)
-    }
-  }
+  var sortedRates: [Rate] = []
   
   var showRevertedRate: Bool = false {
     didSet {
@@ -184,23 +176,25 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       guard let self = self else { return }
       self.souceAmountUsdString.value = self.getSourceAmountUsdString(amount: amount)
       if amount == nil || amount!.isZero {
-        self.selectedPlatformName = nil
+        self.selectedPlatformHint = nil
         self.state.value = .emptyAmount
       } else {
-        self.reloadRates(amount: amount!)
+        self.reloadRates(amount: amount!, isRefresh: false)
       }
     }
     platformRates.observe(on: self) { [weak self] rates in
       guard let self = self else { return }
-      self.selectedPlatformName = rates.first?.platform
       self.sortedRates = self.sortedRates(rates: rates)
-      if rates.isEmpty {
+      if !rates.contains(where: { $0.hint == self.selectedPlatformHint }) {
+        self.selectedPlatformHint = self.sortedRates.first?.hint
+      }
+      self.platformRatesViewModels.value = self.createPlatformRatesViewModels(sortedRates: self.sortedRates)
+      if self.sortedRates.isEmpty {
         self.state.value = .rateNotFound
       } else {
         if self.currentAddress.value.isWatchWallet {
           self.state.value = .notConnected
         } else if self.sourceAmount.value ?? .zero <= self.maxAvailableSourceTokenAmount {
-          self.state.value = .checkingAllowance
           self.checkAllowance()
         } else {
           self.state.value = .insufficientBalance
@@ -217,27 +211,32 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   }
   
   func checkAllowance() {
-    swapRepository.getAllowance(tokenAddress: sourceToken.value?.address ?? "", address: addressString) { [weak self] allowance, _ in
-      guard let self = self else { return }
-      if allowance < self.sourceAmount.value ?? .zero {
-        if self.isApproving() {
-          self.state.value = .approving
+    self.state.value = .checkingAllowance
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+      self.swapRepository.getAllowance(tokenAddress: self.sourceToken.value?.address ?? "", address: self.addressString) { [weak self] allowance, _ in
+        guard let self = self else { return }
+        if allowance < self.sourceAmount.value ?? .zero {
+          if self.isApproving() {
+            self.state.value = .approving
+          } else {
+            self.state.value = .notApproved(currentAllowance: allowance)
+          }
         } else {
-          self.state.value = .notApproved(currentAllowance: allowance)
+          self.state.value = .ready
         }
-      } else {
-        self.state.value = .ready
       }
     }
   }
   
-  func reloadRates(amount: BigInt) {
-    self.selectedPlatformName = nil
-    self.priceImpactState.value = .normal
+  func reloadRates(amount: BigInt, isRefresh: Bool) {
     guard let sourceToken = sourceToken.value, let destToken = destToken.value else {
       return
     }
-    self.state.value = .fetchingRates
+    if !isRefresh {
+      self.selectedPlatformHint = nil
+      self.priceImpactState.value = .normal
+    }
+    self.state.value = isRefresh ? .refreshingRates : .fetchingRates
     self.swapRepository.getAllRates(address: addressString, srcTokenContract: sourceToken.address, destTokenContract: destToken.address, amount: amount, focusSrc: true) { [weak self] rates in
       self?.platformRates.value = rates
     }
@@ -280,9 +279,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
   }
   
-  func selectPlatform(platform: String) {
-    self.selectedPlatformName = platform
+  func selectPlatform(hint: String) {
+    self.selectedPlatformHint = hint
     self.sortedRates = self.sortedRates(rates: platformRates.value)
+    self.platformRatesViewModels.value = self.createPlatformRatesViewModels(sortedRates: self.sortedRates)
   }
   
   func updateSourceToken(token: Token) {
@@ -293,7 +293,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     self.sourceBalance.value = nil
     self.sourceToken.value = token
     self.sourceAmount.value = nil
-    self.selectedPlatformName = nil
+    self.selectedPlatformHint = nil
     self.loadSourceTokenPrice()
     self.reloadSourceBalance()
   }
@@ -306,7 +306,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     self.destBalance.value = nil
     self.destToken.value = token
     self.sourceAmount.value = self.sourceAmount.value // Trigger reload
-    self.selectedPlatformName = nil
+    self.selectedPlatformHint = nil
     self.reloadSourceBalance()
     self.loadDestTokenPrice()
     self.reloadDestBalance()
@@ -316,21 +316,21 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     (sourceBalance.value, destBalance.value) = (destBalance.value, sourceBalance.value)
     (sourceToken.value, destToken.value) = (destToken.value, sourceToken.value)
     self.sourceAmount.value = nil
-    self.selectedPlatformName = nil
+    self.selectedPlatformHint = nil
     self.loadSourceTokenPrice()
     self.loadDestTokenPrice()
     self.reloadSourceBalance()
     self.reloadDestBalance()
   }
   
-  func reloadRates() {
+  func reloadRates(isRefresh: Bool) {
     guard state.value.isActiveState else {
       return
     }
     guard let amount = self.sourceAmount.value, !amount.isZero else {
       return
     }
-    reloadRates(amount: amount)
+    reloadRates(amount: amount, isRefresh: isRefresh)
   }
   
   func updateSettings(settings: SwapTransactionSettings) {
@@ -347,33 +347,32 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   }
   
   private func sortedRates(rates: [Rate]) -> [Rate] {
+    guard let destToken = destToken.value else { return [] }
+    let price = destTokenPrice.value ?? 0
+    
+    if rates.isEmpty { return [] }
+    
     let sortedRates = rates.sorted { lhs, rhs in
-      return BigInt.bigIntFromString(value: lhs.rate) > BigInt.bigIntFromString(value: rhs.rate)
-    }
-    if sortedRates.isEmpty {
-      return []
+      return diffInUSD(lhs: lhs, rhs: rhs, destToken: destToken, destTokenPrice: price) > 0
     }
     return [sortedRates.first!] + sortedRates.dropFirst().sorted { lhs, rhs in
-      if lhs.platform == selectedPlatformName {
+      if lhs.hint == selectedPlatformHint {
         return true
       }
-      return BigInt.bigIntFromString(value: lhs.rate) > BigInt.bigIntFromString(value: rhs.rate)
+      return diffInUSD(lhs: lhs, rhs: rhs, destToken: destToken, destTokenPrice: price) > 0
     }
   }
   
-  private func createPlatformRatesViewModels(destToken: Token, sortedRates: [Rate]) -> [SwapPlatformItemViewModel] {
+  private func createPlatformRatesViewModels(sortedRates: [Rate]) -> [SwapPlatformItemViewModel] {
+    guard let destToken = destToken.value else { return [] }
     let destTokenPrice = destTokenPrice.value ?? 0
     var savedAmount: BigInt = 0
     if sortedRates.count >= 2 {
-      let diffAmount = (BigInt(sortedRates[0].amount) ?? BigInt(0)) - (BigInt(sortedRates[1].amount) ?? BigInt(0))
-      let diffFee = BigInt(sortedRates[0].estimatedGas) - BigInt(sortedRates[1].estimatedGas)
-      let diffAmountUSD = diffAmount * BigInt(destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(destToken.decimals)
-      let diffFeeUSD = diffFee * self.getGasFeeUSD(estGas: diffFee, gasPrice: self.gasPrice)
-      savedAmount = diffAmountUSD - diffFeeUSD
+      savedAmount = diffInUSD(lhs: sortedRates[0], rhs: sortedRates[1], destToken: destToken, destTokenPrice: destTokenPrice)
     }
     return sortedRates.enumerated().map { index, rate in
       return SwapPlatformItemViewModel(platformRate: rate,
-                                       isSelected: rate.platform == selectedPlatformName,
+                                       isSelected: rate.hint == selectedPlatformHint,
                                        quoteToken: currentChain.value.quoteTokenObject(),
                                        destToken: destToken,
                                        destTokenPrice: destTokenPrice,

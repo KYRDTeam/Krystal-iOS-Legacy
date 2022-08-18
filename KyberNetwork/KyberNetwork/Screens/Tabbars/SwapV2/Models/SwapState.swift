@@ -11,6 +11,7 @@ import BigInt
 enum SwapState {
   case emptyAmount
   case fetchingRates
+  case refreshingRates
   case rateNotFound
   case notConnected
   case insufficientBalance

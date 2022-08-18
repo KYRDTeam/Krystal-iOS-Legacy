@@ -157,4 +157,12 @@ extension SwapInfoViewModelProtocol {
     }
   }
   
+  func diffInUSD(lhs: Rate, rhs: Rate, destToken: Token, destTokenPrice: Double) -> BigInt {
+    let diffAmount = (BigInt(lhs.amount) ?? BigInt(0)) - (BigInt(rhs.amount) ?? BigInt(0))
+    let diffFee = BigInt(lhs.estimatedGas) - BigInt(rhs.estimatedGas)
+    let diffAmountUSD = diffAmount * BigInt(destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(destToken.decimals)
+    let diffFeeUSD = self.getGasFeeUSD(estGas: diffFee, gasPrice: self.gasPrice)
+    return diffAmountUSD - diffFeeUSD
+  }
+  
 }

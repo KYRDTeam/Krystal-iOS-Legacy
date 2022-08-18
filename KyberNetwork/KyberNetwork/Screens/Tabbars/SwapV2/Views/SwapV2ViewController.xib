@@ -13,11 +13,11 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
-            <string>Karla-Regular</string>
-        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -43,6 +43,7 @@
                 <outlet property="gasFeeInfoView" destination="2FU-38-AjM" id="Gdp-rq-0xw"/>
                 <outlet property="infoExpandButton" destination="hdk-Zz-e7m" id="FHD-7H-DTI"/>
                 <outlet property="infoSeparatorView" destination="C3W-qG-5HY" id="4kp-Oi-FZO"/>
+                <outlet property="loadingIndicator" destination="h5k-VM-pSC" id="5re-Kj-Oep"/>
                 <outlet property="loadingView" destination="acI-9i-ctB" id="0CN-WJ-k5r"/>
                 <outlet property="maxGasFeeInfoView" destination="yq6-eX-uWR" id="ZAq-Zf-VgV"/>
                 <outlet property="minReceiveInfoView" destination="nnl-CE-rqV" id="V0e-NQ-qW1"/>
@@ -395,6 +396,14 @@
                                                                 <constraint firstAttribute="height" constant="32" id="V4B-BV-Lo0"/>
                                                             </constraints>
                                                         </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h5k-VM-pSC" customClass="SRCountdownTimer" customModule="Krystal" customModuleProvider="target">
+                                                            <rect key="frame" x="320" y="50.5" width="24" height="24"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="24" id="Kt3-3Z-zNy"/>
+                                                                <constraint firstAttribute="height" constant="24" id="a5e-qE-VuT"/>
+                                                            </constraints>
+                                                        </view>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.1058823529" green="0.1137254902" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
@@ -404,7 +413,9 @@
                                                         <constraint firstItem="AHu-fm-10o" firstAttribute="leading" secondItem="c9B-FC-8cu" secondAttribute="leading" constant="24" id="D3U-Kd-5B8"/>
                                                         <constraint firstItem="z1d-0B-gOX" firstAttribute="top" secondItem="AHu-fm-10o" secondAttribute="bottom" constant="16" id="Dok-1v-3lF"/>
                                                         <constraint firstItem="z1d-0B-gOX" firstAttribute="leading" secondItem="c9B-FC-8cu" secondAttribute="leading" constant="24" id="FG6-rd-7bg"/>
+                                                        <constraint firstItem="h5k-VM-pSC" firstAttribute="centerX" secondItem="13u-tV-7BB" secondAttribute="centerX" id="OLG-86-Lx1"/>
                                                         <constraint firstItem="jCT-pd-J6A" firstAttribute="centerY" secondItem="d4r-Na-urB" secondAttribute="centerY" id="Qo4-93-Pfp"/>
+                                                        <constraint firstItem="h5k-VM-pSC" firstAttribute="centerY" secondItem="13u-tV-7BB" secondAttribute="centerY" id="aaa-8q-KFC"/>
                                                         <constraint firstAttribute="height" constant="96" id="dAV-e7-pUv"/>
                                                         <constraint firstItem="d4r-Na-urB" firstAttribute="leading" secondItem="jCT-pd-J6A" secondAttribute="trailing" constant="4" id="hEV-MZ-BsJ"/>
                                                         <constraint firstItem="z1d-0B-gOX" firstAttribute="centerY" secondItem="13u-tV-7BB" secondAttribute="centerY" id="lHm-bN-dCr"/>

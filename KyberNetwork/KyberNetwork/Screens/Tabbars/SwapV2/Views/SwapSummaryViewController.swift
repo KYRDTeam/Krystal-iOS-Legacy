@@ -9,7 +9,7 @@ import UIKit
 import BigInt
 
 protocol SwapSummaryViewControllerDelegate: AnyObject {
-  func onSwapSummaryViewClose()
+  func onSwapSummaryViewClose(selectedPlatformHint: String)
 }
 
 class SwapSummaryViewController: KNBaseViewController {
@@ -218,7 +218,7 @@ class SwapSummaryViewController: KNBaseViewController {
   }
   
   @IBAction func onCloseButtonTapped(_ sender: Any) {
-    delegate?.onSwapSummaryViewClose()
+    delegate?.onSwapSummaryViewClose(selectedPlatformHint: viewModel.swapObject.rate.hint)
     self.dismiss(animated: true)
   }
   

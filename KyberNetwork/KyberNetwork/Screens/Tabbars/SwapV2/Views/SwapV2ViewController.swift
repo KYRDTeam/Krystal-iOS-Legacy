@@ -57,6 +57,8 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var dotView: UIView!
   @IBOutlet weak var containerView: UIView!
   
+  @IBOutlet weak var loadingIndicator: SRCountdownTimer!
+  
   var viewModel: SwapV2ViewModel!
   
   let platformRateItemHeight: CGFloat = 96
@@ -112,6 +114,7 @@ class SwapV2ViewController: KNBaseViewController {
     setupSourceView()
     setupInfoViews()
     setupTableView()
+    setupLoadingIndicator()
     setupRateLoadingView()
     setupDropdownView()
     setupSourceDestTokensView()
@@ -125,6 +128,16 @@ class SwapV2ViewController: KNBaseViewController {
     maxGasFeeInfoView.isHidden = true
     priceImpactInfoView.isHidden = true
     routeInfoView.isHidden = true
+  }
+  
+  func setupLoadingIndicator() {
+    self.loadingIndicator.lineWidth = 2
+    self.loadingIndicator.lineColor = UIColor.Kyber.primaryGreenColor
+    self.loadingIndicator.labelTextColor = UIColor.Kyber.primaryGreenColor
+    self.loadingIndicator.trailLineColor = UIColor.Kyber.primaryGreenColor.withAlphaComponent(0.2)
+    self.loadingIndicator.isLoadingIndicator = true
+    self.loadingIndicator.isLabelHidden = true
+    self.loadingIndicator.isHidden = true
   }
   
   func setupAnimation() {
@@ -328,15 +341,23 @@ class SwapV2ViewController: KNBaseViewController {
         self.loadingView.isHidden = false
         self.expandIcon.isHidden = true
         self.approveGuideView.isHidden = true
-        self.resetCountdownView()
         self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
         self.errorView.isHidden = true
         self.piWarningView.isHidden = true
+        self.loadingIndicator.isHidden = true
+        self.rateLoadingView.isHidden = true
+      case .refreshingRates:
+        self.loadingIndicator.isHidden = false
+        self.rateLoadingView.isHidden = true
       case .notConnected:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Connect Wallet", for: .normal)
         self.errorView.isHidden = true
         self.approveGuideView.isHidden = true
+        self.loadingIndicator.end()
+        self.loadingIndicator.isHidden = true
+        self.rateLoadingView.isHidden = false
+        self.resetCountdownView()
       case .rateNotFound:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Review Swap", for: .normal)
@@ -347,22 +368,32 @@ class SwapV2ViewController: KNBaseViewController {
         self.destViewHeight.constant = CGFloat(112)
         self.errorView.isHidden = false
         self.errorLabel.text = Strings.swapRateNotFound
+        self.loadingIndicator.end()
+        self.loadingIndicator.isHidden = true
+        self.rateLoadingView.isHidden = false
+        self.resetCountdownView()
       case .insufficientBalance:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Insufficient \(self.viewModel.sourceToken.value?.symbol ?? "") Balance", for: .normal)
-        self.rateLoadingView.isHidden = false
         self.errorView.isHidden = true
         self.platformTableView.isHidden = false
-        self.loadingView.isHidden = true
         self.approveGuideView.isHidden = true
+        self.rateLoadingView.isHidden = false
+        self.loadingView.isHidden = true
+        self.loadingIndicator.end()
+        self.loadingIndicator.isHidden = true
+        self.resetCountdownView()
       case .checkingAllowance:
         self.continueButton.isEnabled = false
         self.continueButton.setTitle("Checking Allowance", for: .normal)
-        self.rateLoadingView.isHidden = false
         self.errorView.isHidden = true
         self.platformTableView.isHidden = false
-        self.loadingView.isHidden = true
         self.approveGuideView.isHidden = true
+        self.loadingView.isHidden = true
+        self.rateLoadingView.isHidden = false
+        self.loadingIndicator.end()
+        self.loadingIndicator.isHidden = true
+        self.resetCountdownView()
       case .notApproved:
         let sourceSymbol = self.viewModel.sourceToken.value?.symbol ?? ""
         self.continueButton.isEnabled = true
@@ -564,15 +595,19 @@ extension SwapV2ViewController {
   }
   
   @objc func onTapReloadRate() {
+    loadingIndicator.isHidden = false
+    loadingIndicator.start(beginingValue: 1)
     resetCountdownView()
-    viewModel.reloadRates()
+    viewModel.reloadRates(isRefresh: true)
   }
   
   func onTimerTick() {
     remainingTime -= 1
     if remainingTime == 0 {
+      loadingIndicator.isHidden = false
+      loadingIndicator.start(beginingValue: 1)
       resetCountdownView()
-      viewModel.reloadRates()
+      viewModel.reloadRates(isRefresh: true)
     } else {
       rateLoadingView.setRemainingTime(seconds: remainingTime)
     }
@@ -583,17 +618,6 @@ extension SwapV2ViewController {
     rateLoadingView.setRemainingTime(seconds: remainingTime)
     rateLoadingView.startAnimation(duration: rateReloadingInterval)
     rateLoadingView.isHidden = !viewModel.isInputValid
-  }
-  
-  func requestRates() {
-    UIView.animate(withDuration: 0.5) {
-      self.expandIcon.isHidden = true
-      self.loadingView.isHidden = false
-      self.platformTableView.isHidden = true
-      self.errorView.isHidden = true
-      self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
-    }
-    viewModel.reloadRates()
   }
   
   func onSourceAmountChange(value: String) {
@@ -613,7 +637,7 @@ extension SwapV2ViewController {
   }
   
   func onSelectPlatformRateAt(index: Int) {
-    viewModel.selectPlatform(platform: viewModel.platformRatesViewModels.value[index].rate.platform)
+    viewModel.selectPlatform(hint: viewModel.platformRatesViewModels.value[index].rate.hint)
   }
   
 }
@@ -653,9 +677,11 @@ extension SwapV2ViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension SwapV2ViewController: SwapSummaryViewControllerDelegate {
   
-  func onSwapSummaryViewClose() {
-    resetCountdownView()
-    viewModel.reloadRates()
+  func onSwapSummaryViewClose(selectedPlatformHint: String) {
+    loadingIndicator.isHidden = false
+    loadingIndicator.start(beginingValue: 1)
+    viewModel.selectPlatform(hint: selectedPlatformHint)
+    viewModel.reloadRates(isRefresh: true)
   }
   
 }
