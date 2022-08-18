@@ -13,6 +13,7 @@ import IQKeyboardManager
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
   var window: UIWindow?
   var coordinator: KNAppCoordinator!
+  var migrationManager: AppMigrationManager!
   
   static var shared: AppDelegate {
     return UIApplication.shared.delegate as! AppDelegate
@@ -26,19 +27,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     window = UIWindow(frame: UIScreen.main.bounds)
     setupImageProcessor()
     setupKeyboard()
+    KNReachability.shared.startNetworkReachabilityObserver()
+    setupFirebase()
+    setupOneSignal(launchOptions)
+    Tracker.track(event: .openApp)
     do {
       let keystore = try EtherKeystore()
-      coordinator = KNAppCoordinator(window: window!, keystore: keystore)
-      coordinator.start()
-      coordinator.appDidFinishLaunch()
+      migrationManager = AppMigrationManager(keystore: keystore)
+      if migrationManager.needMigrate {
+        self.startMigration(keystore: keystore)
+      } else {
+        self.coordinatorFinishLaunching(keystore: keystore)
+      }
     } catch {
       print("EtherKeystore init issue.")
     }
-    KNReachability.shared.startNetworkReachabilityObserver()
     
-    setupFirebase()
-    setupOneSignal(launchOptions)
-    
+    return true
+  }
+  
+  func startMigration(keystore: Keystore) {
+    let vc = MigratingViewController.instantiateFromNib()
+    vc.appMigrationManager = migrationManager
+    vc.migrationCompleted = {
+      self.coordinatorFinishLaunching(keystore: keystore)
+    }
+    window?.rootViewController = vc
+    window?.makeKeyAndVisible()
+  }
+  
+  func coordinatorFinishLaunching(keystore: Keystore) {
+    coordinator = KNAppCoordinator(window: window!, keystore: keystore)
+    coordinator.start()
+    coordinator.appDidFinishLaunch()
     // promptForPushNotifications will show the native iOS notification permission prompt.
     // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
     OneSignal.promptForPushNotifications(userResponse: { accepted in
@@ -47,8 +68,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         self.requestAcceptTrackingFirebaseIfNeeded()
       }
     })
-    Tracker.track(event: .openApp)
-    return true
   }
   
   func setupImageProcessor() {
@@ -138,21 +157,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   }
 
   func applicationDidBecomeActive(_ application: UIApplication) {
-    coordinator.appDidBecomeActive()
+    coordinator?.appDidBecomeActive()
     KNReachability.shared.startNetworkReachabilityObserver()
   }
 
   func applicationDidEnterBackground(_ application: UIApplication) {
-    coordinator.appDidEnterBackground()
+    coordinator?.appDidEnterBackground()
     KNReachability.shared.stopNetworkReachabilityObserver()
   }
 
   func applicationWillEnterForeground(_ application: UIApplication) {
-    self.coordinator.appWillEnterForeground()
+    self.coordinator?.appWillEnterForeground()
   }
 
   func applicationWillTerminate(_ application: UIApplication) {
-    self.coordinator.appWillTerminate()
+    self.coordinator?.appWillTerminate()
   }
 
   func application(_ application: UIApplication, shouldAllowExtensionPointIdentifier extensionPointIdentifier: UIApplication.ExtensionPointIdentifier) -> Bool {
