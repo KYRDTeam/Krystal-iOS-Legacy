@@ -5,7 +5,7 @@ import BigInt
 
 public struct KNGasConfiguration {
   static let digixGasLimitDefault = BigInt(1_140_000)
-  static let exchangeTokensGasLimitDefault = BigInt(1_140_000)
+  static let exchangeTokensGasLimitDefault = BigInt(650_000)
   static let earnGasLimitDefault = BigInt(1_140_000) //TODO: hard code the same swap value change later
   static let exchangeETHTokenGasLimitDefault = BigInt(884_000)
   static let approveTokenGasLimitDefault = BigInt(160_000)

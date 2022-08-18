@@ -15,7 +15,7 @@ enum SwapState {
   case notConnected
   case insufficientBalance
   case checkingAllowance
-  case notApproved(remainingAmount: BigInt)
+  case notApproved(currentAllowance: BigInt)
   case approving
   case ready
   

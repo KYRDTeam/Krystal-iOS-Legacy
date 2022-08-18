@@ -39,7 +39,7 @@ class NumberFormatUtils {
   }
   
   static func usdAmount(value: BigInt, decimals: Int) -> String {
-    return format(value: value, decimals: decimals, maxDecimalMeaningDigits: 4, maxDecimalDigits: 4)
+    return format(value: value, decimals: decimals, maxDecimalMeaningDigits: nil, maxDecimalDigits: 4)
   }
   
   static func zeroPlaceHolder(decimalDigits: Int = 2) -> String {
@@ -47,7 +47,7 @@ class NumberFormatUtils {
     return "0" + separator.decimal + decimalPart
   }
   
-  static func format(value: BigInt, decimals: Int, maxDecimalMeaningDigits: Int, maxDecimalDigits: Int) -> String {
+  static func format(value: BigInt, decimals: Int, maxDecimalMeaningDigits: Int?, maxDecimalDigits: Int) -> String {
     if value.isZero {
       return "0"
     }
@@ -79,7 +79,13 @@ class NumberFormatUtils {
         }
       }
       
-      let decimalPart = afterDot.prefix(totalLeadingZeros + maxDecimalMeaningDigits).prefix(maxDecimalDigits)
+      var decimalPart: String = ""
+      if let maxDecimalMeaningDigits = maxDecimalMeaningDigits {
+        decimalPart = String(afterDot.prefix(totalLeadingZeros + maxDecimalMeaningDigits).prefix(maxDecimalDigits))
+      } else {
+        decimalPart = String(afterDot.prefix(maxDecimalDigits))
+      }
+      
       let integerPath = withSeparator.string(from: (Int(beforeDot) ?? 0) as NSNumber) ?? "0"
       stringValue = integerPath + separator.decimal + decimalPart
     }
