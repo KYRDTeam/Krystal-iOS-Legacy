@@ -206,7 +206,7 @@ struct Strings {
   static let swapTxnFeeInfo = "swap.txn_fee_i".toBeLocalised()
   static let swapTxnMaxFeeInfo = "swap.txn_fee_max_i".toBeLocalised()
   static let swapPriceImpactInfo = "swap.price_impact_i".toBeLocalised()
-  static let advancedModeWarningText = "Expert Mode turns off the ‘Confirm’ transaction prompt and alows high slippage trades that can result in bad rates and lost funds.\n\nPlease type the word ‘confirm’ below to enable Expert Mode."
+  static let advancedModeWarningText = "advanced.mode.warning.text".toBeLocalised()
   
   // Swap settings
   static let superFast = "super.fast".toBeLocalised()

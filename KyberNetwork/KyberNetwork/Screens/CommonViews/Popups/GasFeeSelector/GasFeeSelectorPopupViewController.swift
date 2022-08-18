@@ -301,7 +301,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     switch self.viewModel.advancedGasLimitErrorStatus {
     case .low:
       self.advancedGasLimitField.textColor = UIColor(named: "textRedColor")
-      self.gasLimitErrorLabel.text = "Gas limit must be at least 21000"
+      self.gasLimitErrorLabel.text = "Gas limit must be at least \(Constants.lowLimitGas)"
     default:
       self.advancedGasLimitField.textColor = UIColor(named: "textWhiteColor")
       self.gasLimitErrorLabel.text = ""

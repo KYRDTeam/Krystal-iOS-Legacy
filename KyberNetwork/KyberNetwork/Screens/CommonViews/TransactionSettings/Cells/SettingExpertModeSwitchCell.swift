@@ -11,6 +11,7 @@ class SettingExpertModeSwitchCellModel {
   var isOn: Bool = false
   var moreInforSelectHandle: () -> Void = {}
   var switchValueChangedHandle: (Bool) -> Void = { _ in }
+  var tapTitleWithIndex: (Int) -> Void = { _ in }
   
   func resetData() {
     isOn = false
@@ -42,4 +43,9 @@ class SettingExpertModeSwitchCell: UITableViewCell {
     self.cellModel.isOn = selected
     self.cellModel.switchValueChangedHandle(selected)
   }
+  
+  @IBAction func titleLabelTapped(_ sender: UIButton) {
+    cellModel.tapTitleWithIndex(sender.tag)
+  }
+  
 }

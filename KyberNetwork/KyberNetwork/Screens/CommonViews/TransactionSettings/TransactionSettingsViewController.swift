@@ -8,6 +8,7 @@
 import UIKit
 import BigInt
 import Result
+import SwiftUI
 
 typealias BasicSettingsInfo = (type: KNSelectedGasPriceType, value: BigInt)
 typealias AdvancedSettingsInfo = (maxPriority: String, maxFee: String, gasLimit: String)
@@ -46,6 +47,7 @@ class TransactionSettingsViewModel {
   var expertModeSwitchChangeStatusHandler: (Bool) -> Void = { _ in }
   var advancedSettingValueChangeHander: () -> Void = {}
   var saveEventHandler: (SwapTransactionSettings) -> Void = { _ in }
+  var titleLabelTappedWithIndex: (Int) -> Void = { _ in }
   
   init(gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium) {
     self.gasPrice = selectType.getGasValue()
@@ -124,6 +126,17 @@ class TransactionSettingsViewModel {
       self.slippageChangedEventHandler(value)
     }
     
+    basicAdvancedCellModel.tapTitleWithIndex = { value in
+      self.titleLabelTappedWithIndex(value)
+    }
+    
+    advancedModeCellModel.tapTitleWithIndex = { value in
+      self.titleLabelTappedWithIndex(value)
+    }
+    
+    switchExpertMode.tapTitleWithIndex = { value in
+      self.titleLabelTappedWithIndex(value)
+    }
   }
   
   func getBasicSettingInfo() -> BasicSettingsInfo {
@@ -288,6 +301,59 @@ class TransactionSettingsViewController: KNBaseViewController {
     
     viewModel.advancedSettingValueChangeHander = {
       self.updateUISaveButton()
+    }
+    
+    viewModel.titleLabelTappedWithIndex = { index in
+      if index == 8 {
+        self.showBottomBannerView(
+          message: "expert_i".toBeLocalised(),
+          icon: UIImage(named: "help_icon_large") ?? UIImage(),
+          time: 10
+        )
+        return
+      }
+      if KNGeneralProvider.shared.isUseEIP1559 {
+        var message = ""
+        switch index {
+        case 0:
+          message = "priority_fee_i".toBeLocalised()
+        case 1:
+          message = "max_fee_i".toBeLocalised()
+        case 2:
+          message = "gas_limit_i".toBeLocalised()
+        case 3:
+          message = "nonce_i".toBeLocalised()
+        default:
+          break
+        }
+        if !message.isEmpty {
+          self.showBottomBannerView(
+            message: message,
+            icon: UIImage(named: "help_icon_large") ?? UIImage(),
+            time: 10
+          )
+        }
+      } else {
+        var message = ""
+        switch index {
+        case 0:
+          message = "gas_price_i".toBeLocalised()
+        case 1:
+          message = "gas_limit_i".toBeLocalised()
+        case 2:
+          message = "nonce_i".toBeLocalised()
+        default:
+          break
+        }
+        if !message.isEmpty {
+          self.showBottomBannerView(
+            message: message,
+            icon: UIImage(named: "help_icon_large") ?? UIImage(),
+            time: 10
+          )
+        }
+      }
+      
     }
     
     getLatestNonce { result in

@@ -20,6 +20,8 @@ class SettingBasicAdvancedFormCellModel {
   var gasLimitChangedHandler: (String) -> Void = { _ in }
   var nonceChangedHandler: (String) -> Void = { _ in }
   
+  var tapTitleWithIndex: (Int) -> Void = { _ in }
+  
   var gasPriceString: String = ""
   var gasLimitString: String = ""
   var nonceString: String = ""
@@ -144,7 +146,7 @@ class SettingBasicAdvancedFormCell: UITableViewCell {
     
     switch cellModel.advancedGasLimitErrorStatus {
     case .low:
-      gasLimitErrorLabel.text = "Gas limit must be at least 21000"
+      gasLimitErrorLabel.text = "Gas limit must be at least \(Constants.lowLimitGas)"
       gasLimitContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
     default:
       gasLimitErrorLabel.text = ""
@@ -161,6 +163,10 @@ class SettingBasicAdvancedFormCell: UITableViewCell {
     }
   }
   
+  
+  @IBAction func titleLabelTapped(_ sender: UIButton) {
+    cellModel.tapTitleWithIndex(sender.tag)
+  }
 }
 
 extension SettingBasicAdvancedFormCell: UITextFieldDelegate {
