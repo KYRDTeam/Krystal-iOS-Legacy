@@ -8,6 +8,10 @@
 import UIKit
 import BigInt
 
+protocol SwapSummaryViewControllerDelegate: AnyObject {
+  func onSwapSummaryViewClose()
+}
+
 class SwapSummaryViewController: KNBaseViewController {
   @IBOutlet weak var chainNameLabel: UILabel!
   @IBOutlet weak var chainIcon: UIImageView!
@@ -33,6 +37,8 @@ class SwapSummaryViewController: KNBaseViewController {
   @IBOutlet weak var confirmSwapButtonTopConstraint: NSLayoutConstraint!
   var viewModel: SwapSummaryViewModel
 
+  weak var delegate: SwapSummaryViewControllerDelegate?
+  
   init(viewModel: SwapSummaryViewModel) {
     self.viewModel = viewModel
     super.init(nibName: SwapSummaryViewController.className, bundle: nil)
@@ -212,6 +218,7 @@ class SwapSummaryViewController: KNBaseViewController {
   }
   
   @IBAction func onCloseButtonTapped(_ sender: Any) {
+    delegate?.onSwapSummaryViewClose()
     self.dismiss(animated: true)
   }
   

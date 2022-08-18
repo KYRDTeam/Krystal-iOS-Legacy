@@ -694,6 +694,7 @@
 		A6BA4CB328A3D171002E2B30 /* SwapTransactionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BA4CB228A3D171002E2B30 /* SwapTransactionSettings.swift */; };
 		A6BAD3D2287445B80016E127 /* TradingView+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAD3D1287445B80016E127 /* TradingView+Action.swift */; };
 		A6BAD3D4287446F30016E127 /* TradingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAD3D3287446F30016E127 /* TradingViewController.swift */; };
+		A6BB10B828AB8A2C00AA6FB2 /* SwapError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB10B728AB8A2C00AA6FB2 /* SwapError.swift */; };
 		A6BB3C1F28605CDA0097EB75 /* EthereumNodeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB3C1E28605CDA0097EB75 /* EthereumNodeRequest.swift */; };
 		A6BB3C2428605E470097EB75 /* EIP1559TransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB3C2328605E470097EB75 /* EIP1559TransactionSigner.swift */; };
 		A6BB3C2628605F760097EB75 /* EthereumTransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB3C2528605F760097EB75 /* EthereumTransactionSigner.swift */; };
@@ -1872,6 +1873,7 @@
 		A6BA4CB228A3D171002E2B30 /* SwapTransactionSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTransactionSettings.swift; sourceTree = "<group>"; };
 		A6BAD3D1287445B80016E127 /* TradingView+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TradingView+Action.swift"; sourceTree = "<group>"; };
 		A6BAD3D3287446F30016E127 /* TradingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingViewController.swift; sourceTree = "<group>"; };
+		A6BB10B728AB8A2C00AA6FB2 /* SwapError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapError.swift; sourceTree = "<group>"; };
 		A6BB3C1E28605CDA0097EB75 /* EthereumNodeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumNodeRequest.swift; sourceTree = "<group>"; };
 		A6BB3C2328605E470097EB75 /* EIP1559TransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EIP1559TransactionSigner.swift; sourceTree = "<group>"; };
 		A6BB3C2528605F760097EB75 /* EthereumTransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumTransactionSigner.swift; sourceTree = "<group>"; };
@@ -5191,6 +5193,7 @@
 			isa = PBXGroup;
 			children = (
 				A6BA4CB228A3D171002E2B30 /* SwapTransactionSettings.swift */,
+				A6BB10B728AB8A2C00AA6FB2 /* SwapError.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -7570,6 +7573,7 @@
 				C3299D632773254A00D1065A /* BrowserURLParser.swift in Sources */,
 				2546C6D92211871F0076E52B /* TrustDocumentPickerViewController.swift in Sources */,
 				A6E6C9CF2817195D00EEB2E6 /* BaseTransactionListViewModel.swift in Sources */,
+				A6BB10B828AB8A2C00AA6FB2 /* SwapError.swift in Sources */,
 				25CC0A8E2057D0410009D0D5 /* KNSession.swift in Sources */,
 				29FA00CC201CA63C002F7DC5 /* Method.swift in Sources */,
 				257A37A0205CFEF300E86794 /* KNTransactionReceipt.swift in Sources */,
