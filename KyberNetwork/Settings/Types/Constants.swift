@@ -84,6 +84,7 @@ public struct Constants {
   public static let bridgeWarningAcceptedKey = "bridge-warning-accept-key"
   public static let didSelectAllChainOption = "did-select-all-chain-key"
   public static let supportURL = "https://t.me/KrystalDefi"
+  public static let lowLimitGas = 21000
 }
 
 public struct UnitConfiguration {

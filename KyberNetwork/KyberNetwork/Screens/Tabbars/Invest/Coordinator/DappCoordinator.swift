@@ -619,7 +619,7 @@ extension DappCoordinator: QRCodeReaderDelegate {
 }
 
 extension DappCoordinator: GasFeeSelectorPopupViewControllerDelegate {
-  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+  func gasFeeSelectorPopupViewController(_ controller: KNBaseViewController, run event: GasFeeSelectorPopupViewEvent) {
     switch event {
     case .gasPriceChanged(let type, let value):
       self.transactionConfirm?.coordinatorDidUpdateGasPriceType(type, value: value)

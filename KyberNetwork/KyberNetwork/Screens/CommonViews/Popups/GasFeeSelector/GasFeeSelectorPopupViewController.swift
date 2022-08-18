@@ -11,7 +11,7 @@ import APIKit
 import JSONRPCKit
 
 protocol GasFeeSelectorPopupViewControllerDelegate: class {
-  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent)
+  func gasFeeSelectorPopupViewController(_ controller: KNBaseViewController, run event: GasFeeSelectorPopupViewEvent)
 }
 
 class GasFeeSelectorPopupViewController: KNBaseViewController {
@@ -271,7 +271,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.advancedPriorityFeeField.textColor = UIColor(named: "textRedColor")
       self.priorityAccessoryLabel.textColor = UIColor(named: "textRedColor")
       self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
-    case .none:
+    case .none, .empty:
       self.maxPriorityFeeErrorLabel.text = ""
       self.advancedPriorityFeeField.textColor = UIColor(named: "textWhiteColor")
       self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "normalTextColor")
@@ -291,7 +291,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.advancedMaxFeeField.textColor = UIColor(named: "textRedColor")
       self.maxFeeAccessoryLabel.textColor = UIColor(named: "textRedColor")
       self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
-    case .none:
+    case .none, .empty:
       self.maxFeeErrorLabel.text = ""
       self.advancedMaxFeeField.textColor = UIColor(named: "textWhiteColor")
       self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "normalTextColor")
@@ -301,7 +301,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     switch self.viewModel.advancedGasLimitErrorStatus {
     case .low:
       self.advancedGasLimitField.textColor = UIColor(named: "textRedColor")
-      self.gasLimitErrorLabel.text = "Gas limit must be at least 21000"
+      self.gasLimitErrorLabel.text = "Gas limit must be at least \(Constants.lowLimitGas)"
     default:
       self.advancedGasLimitField.textColor = UIColor(named: "textWhiteColor")
       self.gasLimitErrorLabel.text = ""

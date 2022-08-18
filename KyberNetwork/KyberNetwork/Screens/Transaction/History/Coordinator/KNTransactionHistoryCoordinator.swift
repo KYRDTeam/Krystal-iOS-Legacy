@@ -137,7 +137,7 @@ class KNTransactionHistoryCoordinator: NSObject, Coordinator {
 
 extension KNTransactionHistoryCoordinator: GasFeeSelectorPopupViewControllerDelegate {
   
-  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+  func gasFeeSelectorPopupViewController(_ controller: KNBaseViewController, run event: GasFeeSelectorPopupViewEvent) {
     handleGasFeePopupEvent(event: event)
   }
   

@@ -564,7 +564,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
 }
 
 extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
-  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+  func gasFeeSelectorPopupViewController(_ controller: KNBaseViewController, run event: GasFeeSelectorPopupViewEvent) {
     switch event {
     case .gasPriceChanged(let type, let value):
       guard let viewController = self.navigationController.viewControllers.last as? AbstractEarnViewControler else {
