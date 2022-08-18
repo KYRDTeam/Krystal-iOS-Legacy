@@ -561,6 +561,8 @@
 		A6156B5328856E4F00276120 /* CustomSegmentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6156B5228856E4F00276120 /* CustomSegmentView.xib */; };
 		A6156B5528856E6800276120 /* BaseXibView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6156B5428856E6800276120 /* BaseXibView.swift */; };
 		A6156B572885A43400276120 /* CGPoint+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6156B562885A43400276120 /* CGPoint+.swift */; };
+		A6390B1228ACADF40083EF4C /* MigratingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6390B1028ACADF40083EF4C /* MigratingViewController.swift */; };
+		A6390B1328ACADF40083EF4C /* MigratingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6390B1128ACADF40083EF4C /* MigratingViewController.xib */; };
 		A6394B542840D51E0084C923 /* MockTransactionDetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6394B532840D51E0084C923 /* MockTransactionDetailInteractor.swift */; };
 		A6394B562840D5360084C923 /* MockTransactionDetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6394B552840D5360084C923 /* MockTransactionDetailRouter.swift */; };
 		A6394B582840D5680084C923 /* MockTransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6394B572840D5680084C923 /* MockTransactionDetailView.swift */; };
@@ -605,6 +607,8 @@
 		A65CC8F128695D6A008620E2 /* ChartLoadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F028695D6A008620E2 /* ChartLoadRequest.swift */; };
 		A65CC8F328698C11008620E2 /* ChartType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F228698C11008620E2 /* ChartType.swift */; };
 		A65CC8F528698C1F008620E2 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F428698C1F008620E2 /* Period.swift */; };
+		A661070528ACE94900425D67 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661070428ACE94900425D67 /* AsyncOperation.swift */; };
+		A661070728ACE96800425D67 /* MigratingWalletOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661070628ACE96800425D67 /* MigratingWalletOperation.swift */; };
 		A6664D1F2858878800CCAB1F /* TransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D1E2858878800CCAB1F /* TransactionProcessor.swift */; };
 		A6664D212859839100CCAB1F /* SolanaTransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D202859839100CCAB1F /* SolanaTransactionProcessor.swift */; };
 		A6664D23285986A700CCAB1F /* SolanaSerumService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D22285986A700CCAB1F /* SolanaSerumService.swift */; };
@@ -1687,6 +1691,8 @@
 		A6156B5228856E4F00276120 /* CustomSegmentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomSegmentView.xib; sourceTree = "<group>"; };
 		A6156B5428856E6800276120 /* BaseXibView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseXibView.swift; sourceTree = "<group>"; };
 		A6156B562885A43400276120 /* CGPoint+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+.swift"; sourceTree = "<group>"; };
+		A6390B1028ACADF40083EF4C /* MigratingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratingViewController.swift; sourceTree = "<group>"; };
+		A6390B1128ACADF40083EF4C /* MigratingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MigratingViewController.xib; sourceTree = "<group>"; };
 		A6394B452840D4DA0084C923 /* KrystalUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KrystalUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6394B532840D51E0084C923 /* MockTransactionDetailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionDetailInteractor.swift; sourceTree = "<group>"; };
 		A6394B552840D5360084C923 /* MockTransactionDetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionDetailRouter.swift; sourceTree = "<group>"; };
@@ -1732,6 +1738,8 @@
 		A65CC8F028695D6A008620E2 /* ChartLoadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLoadRequest.swift; sourceTree = "<group>"; };
 		A65CC8F228698C11008620E2 /* ChartType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartType.swift; sourceTree = "<group>"; };
 		A65CC8F428698C1F008620E2 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
+		A661070428ACE94900425D67 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		A661070628ACE96800425D67 /* MigratingWalletOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratingWalletOperation.swift; sourceTree = "<group>"; };
 		A6664D1E2858878800CCAB1F /* TransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionProcessor.swift; sourceTree = "<group>"; };
 		A6664D202859839100CCAB1F /* SolanaTransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaTransactionProcessor.swift; sourceTree = "<group>"; };
 		A6664D22285986A700CCAB1F /* SolanaSerumService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaSerumService.swift; sourceTree = "<group>"; };
@@ -2949,6 +2957,7 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				A6390B0F28ACADC70083EF4C /* Migrating */,
 				A65C7A6D2818E146000FA9CE /* WebView */,
 				2559A02C22CF3D6F00D29735 /* Tooltip */,
 				25E9E1F3208F036F00A9090D /* Passcode */,
@@ -2991,7 +3000,6 @@
 				25EE4A6C20C54AD200E2282F /* KNAppCoordinator+InSession.swift */,
 				25EE4A6E20C54BEC00E2282F /* KNAppCoordinator+Notification.swift */,
 				25EE4A7120C54D1000E2282F /* KNAppCoordinator+Delegation.swift */,
-				A65CBF2128631A13008620E2 /* AppMigrationManager.swift */,
 			);
 			path = AppCoordinator;
 			sourceTree = "<group>";
@@ -4596,6 +4604,18 @@
 				A6156B5428856E6800276120 /* BaseXibView.swift */,
 			);
 			path = CustomSegmentView;
+			sourceTree = "<group>";
+		};
+		A6390B0F28ACADC70083EF4C /* Migrating */ = {
+			isa = PBXGroup;
+			children = (
+				A65CBF2128631A13008620E2 /* AppMigrationManager.swift */,
+				A6390B1028ACADF40083EF4C /* MigratingViewController.swift */,
+				A6390B1128ACADF40083EF4C /* MigratingViewController.xib */,
+				A661070428ACE94900425D67 /* AsyncOperation.swift */,
+				A661070628ACE96800425D67 /* MigratingWalletOperation.swift */,
+			);
+			path = Migrating;
 			sourceTree = "<group>";
 		};
 		A6394B462840D4DA0084C923 /* KrystalUnitTests */ = {
@@ -6287,6 +6307,7 @@
 				C32D6E0027843587002886F1 /* FirstTimeWarningDappBrowserPopup.xib in Resources */,
 				A6DA40F027F6E1450078C58E /* ExploreBannersCell.xib in Resources */,
 				25929C5420DA5C760045CFA3 /* SF-Pro-Display-LightItalic.otf in Resources */,
+				A6390B1328ACADF40083EF4C /* MigratingViewController.xib in Resources */,
 				25929C9020DA5CC10045CFA3 /* SFCompactDisplay-Medium.otf in Resources */,
 				25073D27211AF20D00833C92 /* Montserrat-ThinItalic.ttf in Resources */,
 				25F96F7C215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.xib in Resources */,
@@ -7004,6 +7025,7 @@
 				C30DB3EF2771D1EC00F3E545 /* DappCoordinator.swift in Sources */,
 				C33F749025E8E8AF0065F333 /* GrowingTextView.swift in Sources */,
 				C680C11D2382755900A621CB /* KNAppstoreRatingManager.swift in Sources */,
+				A661070728ACE96800425D67 /* MigratingWalletOperation.swift in Sources */,
 				7EC4C6F12716E23C00486C00 /* KNRewardModel.swift in Sources */,
 				C347DA3125C02A2B000D6E81 /* EarnCoordinator.swift in Sources */,
 				7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */,
@@ -7112,6 +7134,7 @@
 				A6CC317A2877E7FB00891200 /* BarCodeDetector.swift in Sources */,
 				C3BC3F7F24AC984000B1ADFE /* KNSecret.swift in Sources */,
 				291F52B91F6B880F00B369AB /* EtherKeystore.swift in Sources */,
+				A661070528ACE94900425D67 /* AsyncOperation.swift in Sources */,
 				2545577D20ABD9A200012692 /* KNSupportedTokenStorage.swift in Sources */,
 				C32D6DFF27843587002886F1 /* FirstTimeWarningDappBrowserPopup.swift in Sources */,
 				296106D01F778A8D0006164B /* TransferType.swift in Sources */,
@@ -7578,6 +7601,7 @@
 				25759623216D8E0D00AC490D /* Locale+Kyber.swift in Sources */,
 				C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */,
 				2502AC18209475BE007F23CD /* KNListWalletsTableViewCell.swift in Sources */,
+				A6390B1228ACADF40083EF4C /* MigratingViewController.swift in Sources */,
 				A651944B28361AE3008F4AEB /* TransactionTypeInfoCell.swift in Sources */,
 				C35A133326F1CEBA002B627C /* SRCountdownTimer.swift in Sources */,
 				C3299D5F27730B9D00D1065A /* BrowserViewController.swift in Sources */,
