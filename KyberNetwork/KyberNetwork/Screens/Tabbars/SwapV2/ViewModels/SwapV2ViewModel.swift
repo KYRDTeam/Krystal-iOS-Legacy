@@ -207,16 +207,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
         }
       }
     }
-    sourceToken.observe(on: self) { [weak self] token in
-      if token?.address.lowercased() == self?.destToken.value?.address.lowercased() {
-        self?.error.value = .sameSourceDestToken
-      }
-    }
-    destToken.observe(on: self) { [weak self] token in
-      if token?.address.lowercased() == self?.sourceToken.value?.address.lowercased() {
-        self?.error.value = .sameSourceDestToken
-      }
-    }
   }
   
   func approve(_ amount: BigInt) {
@@ -296,6 +286,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   }
   
   func updateSourceToken(token: Token) {
+    if token.address == destToken.value?.address {
+      error.value = .sameSourceDestToken
+      return
+    }
     self.sourceBalance.value = nil
     self.sourceToken.value = token
     self.sourceAmount.value = nil
@@ -305,6 +299,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   }
   
   func updateDestToken(token: Token) {
+    if token.address == sourceToken.value?.address {
+      error.value = .sameSourceDestToken
+      return
+    }
     self.destBalance.value = nil
     self.destToken.value = token
     self.sourceAmount.value = self.sourceAmount.value // Trigger reload
