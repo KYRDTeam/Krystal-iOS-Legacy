@@ -1,4 +1,4 @@
-name: K-iOS CI Build Debug Mode FDA
+name: CI Manual Build (FDA)
 
 on:
   workflow_dispatch:
