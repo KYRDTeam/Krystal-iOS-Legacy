@@ -924,6 +924,7 @@
 		C33C33BC25ECCDAD00F347E5 /* AddTokenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33C33BB25ECCDAD00F347E5 /* AddTokenCoordinator.swift */; };
 		C33CCB2D23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33CCB2B23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift */; };
 		C33CCB2E23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib in Resources */ = {isa = PBXBuildFile; fileRef = C33CCB2C23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib */; };
+		C33DDBB228AE4C3C00D3041A /* BigInt+SwapSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33DDBB128AE4C3B00D3041A /* BigInt+SwapSettings.swift */; };
 		C33F749025E8E8AF0065F333 /* GrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33F748F25E8E8AE0065F333 /* GrowingTextView.swift */; };
 		C3409E1A25AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3409E1825AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift */; };
 		C3409E1B25AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3409E1925AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib */; };
@@ -2114,6 +2115,7 @@
 		C33C33BB25ECCDAD00F347E5 /* AddTokenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTokenCoordinator.swift; sourceTree = "<group>"; };
 		C33CCB2B23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNConfirmCancelTransactionPopUp.swift; sourceTree = "<group>"; };
 		C33CCB2C23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNConfirmCancelTransactionPopUp.xib; sourceTree = "<group>"; };
+		C33DDBB128AE4C3B00D3041A /* BigInt+SwapSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BigInt+SwapSettings.swift"; sourceTree = "<group>"; };
 		C33F748F25E8E8AE0065F333 /* GrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		C3409E1825AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletListSectionTableViewCell.swift; sourceTree = "<group>"; };
 		C3409E1925AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletListSectionTableViewCell.xib; sourceTree = "<group>"; };
@@ -6017,6 +6019,7 @@
 				C3A6E02028A103730079926E /* TransactionSettingsViewController.xib */,
 				C3714E6528A63C8F0027A89D /* ExpertModeWarningViewController.swift */,
 				C3714E6628A63C900027A89D /* ExpertModeWarningViewController.xib */,
+				C33DDBB128AE4C3B00D3041A /* BigInt+SwapSettings.swift */,
 			);
 			path = TransactionSettings;
 			sourceTree = "<group>";
@@ -7740,6 +7743,7 @@
 				296AF9A91F737F6F0058AF78 /* SendRawTransactionRequest.swift in Sources */,
 				258C47EF2081F29D00BD4068 /* NSObject+Kyber.swift in Sources */,
 				25C45ADD20AD5EF900CDA1FF /* KNImportWalletCoordinator.swift in Sources */,
+				C33DDBB228AE4C3C00D3041A /* BigInt+SwapSettings.swift in Sources */,
 				7E44DBEA2849BA3100E4AD26 /* BridgeTransactionStatusPopup.swift in Sources */,
 				A6CC317C2877ED8700891200 /* OcrDetector.swift in Sources */,
 				257A37A9205DA06400E86794 /* KNTransactionStatusCoordinator.swift in Sources */,
