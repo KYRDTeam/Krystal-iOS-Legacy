@@ -68,6 +68,21 @@ extension KNSelectedGasPriceType {
     }
   }
   
+  func getEstTime() -> Int? {
+    switch self {
+    case .fast:
+      return KNGasCoordinator.shared.estTime?.fast
+    case .medium:
+      return KNGasCoordinator.shared.estTime?.standard
+    case .slow:
+      return KNGasCoordinator.shared.estTime?.slow
+    case .superFast:
+      return nil
+    case .custom:
+      return nil
+    }
+  }
+  
   func getPriorityFeeValue() -> BigInt? {
     switch self {
     case .fast:

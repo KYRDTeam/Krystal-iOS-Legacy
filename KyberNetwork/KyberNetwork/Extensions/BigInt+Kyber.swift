@@ -69,11 +69,17 @@ extension BigInt {
       var typeString = ""
       switch type {
       case 3:
-        typeString = "30s"
+        if let est = KNSelectedGasPriceType.fast.getEstTime() {
+          typeString = "\(est)s"
+        }
       case 2:
-        typeString = "45s"
+        if let est = KNSelectedGasPriceType.medium.getEstTime() {
+          typeString = "\(est)s"
+        }
       case 1:
-        typeString = "10m"
+        if let est = KNSelectedGasPriceType.slow.getEstTime() {
+          typeString = "\(est)s"
+        }
       default:
         break
       }

@@ -34,7 +34,11 @@ class SettingBasicAdvancedFormCellModel {
   }
   
   var displayGasFee: String {
-    return "Standard " + KNGasCoordinator.shared.standardKNGas.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) + " GWEI ~ 45s"
+    var estTimeString = ""
+    if let est = KNGasCoordinator.shared.estTime?.standard {
+      estTimeString = " ~ \(est)s"
+    }
+    return "Standard " + KNGasCoordinator.shared.standardKNGas.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) + " GWEI" + estTimeString
   }
   
   func resetData() {
