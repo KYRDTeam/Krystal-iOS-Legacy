@@ -169,10 +169,10 @@ class SettingAdvancedModeFormCell: UITableViewCell {
   func updateValidationUI() {
     switch cellModel.maxPriorityErrorStatus {
     case .low:
-      maxPriorityFeeErrorLabel.text = "Max Priority Fee is low for current network conditions"
+      maxPriorityFeeErrorLabel.text = "priority.fee.low.warning".toBeLocalised()
       maxPriorityFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
     case .high:
-      maxPriorityFeeErrorLabel.text = "Max Priority Fee is higher than necessary"
+      maxPriorityFeeErrorLabel.text = "priority.fee.high.warning".toBeLocalised()
       maxPriorityFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
     case .none, .empty:
       maxPriorityFeeErrorLabel.text = ""
@@ -181,10 +181,10 @@ class SettingAdvancedModeFormCell: UITableViewCell {
     
     switch cellModel.maxFeeErrorStatus {
     case .low:
-      maxFeeErrorLabel.text = "Max Fee is low for current network conditions"
+      maxFeeErrorLabel.text = "max.fee.low.warning".toBeLocalised()
       maxFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
     case .high:
-      maxFeeErrorLabel.text = "Max Fee is higher than necessary"
+      maxFeeErrorLabel.text = "max.fee.high.warning".toBeLocalised()
       maxFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
     case .none, .empty:
       maxFeeErrorLabel.text = ""
@@ -193,7 +193,7 @@ class SettingAdvancedModeFormCell: UITableViewCell {
     
     switch cellModel.advancedGasLimitErrorStatus {
     case .low:
-      gasLimitErrorLabel.text = "Gas limit must be at least \(Constants.lowLimitGas)"
+      gasLimitErrorLabel.text = "gas.limit.low.warning".toBeLocalised()
       gasLimitContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
     default:
       gasLimitErrorLabel.text = ""
@@ -202,7 +202,7 @@ class SettingAdvancedModeFormCell: UITableViewCell {
     
     switch cellModel.advancedNonceErrorStatus {
     case .low:
-      nonceErrorLabel.text = "Nonce is too low"
+      nonceErrorLabel.text = "nonce.low.warning".toBeLocalised()
       nonceContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
     default:
       nonceErrorLabel.text = ""
