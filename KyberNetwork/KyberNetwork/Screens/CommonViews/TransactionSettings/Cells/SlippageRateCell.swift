@@ -43,6 +43,16 @@ class SlippageRateCellModel {
   
   func updateMinRateType(_ type: KAdvancedSettingsMinRateType) {
     self.minRateType = type
+    switch type {
+    case .zeroPointOne:
+      self.currentRate = 0.1
+    case .zeroPointFive:
+      self.currentRate = 0.5
+    case .onePercent:
+      self.currentRate = 1
+    default:
+      break
+    }
   }
   
   var minRatePercent: Double {
