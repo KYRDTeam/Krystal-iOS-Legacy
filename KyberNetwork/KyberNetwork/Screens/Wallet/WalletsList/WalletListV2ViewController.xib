@@ -13,9 +13,6 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
-            <string>Karla-Regular</string>
-        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WalletListV2ViewController" customModule="Krystal" customModuleProvider="target">
@@ -68,52 +65,15 @@
                                 <color key="titleColor" red="0.92549019610000005" green="0.92941176469999998" blue="0.93725490199999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                         </button>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v3r-Yc-zOv">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="114"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G4X-Vh-KJO">
-                                    <rect key="frame" x="32" y="29" width="72.5" height="19"/>
-                                    <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="16"/>
-                                    <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="my_wallet_icon" translatesAutoresizingMaskIntoConstraints="NO" id="raV-Zz-vXB">
-                                    <rect key="frame" x="114.5" y="28.5" width="20" height="20"/>
-                                </imageView>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="my_wallet_placeholder_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="dHq-0z-WOp">
-                                    <rect key="frame" x="32" y="68" width="32" height="32"/>
-                                </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0x0000000000000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HaL-dY-bUf">
-                                    <rect key="frame" x="78" y="68" width="142" height="19"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                                    <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstItem="G4X-Vh-KJO" firstAttribute="top" secondItem="v3r-Yc-zOv" secondAttribute="top" constant="29" id="0eb-JL-9VQ"/>
-                                <constraint firstAttribute="height" constant="114" id="1zc-Sa-ATS"/>
-                                <constraint firstItem="dHq-0z-WOp" firstAttribute="leading" secondItem="G4X-Vh-KJO" secondAttribute="leading" id="DHe-iN-tYD"/>
-                                <constraint firstItem="raV-Zz-vXB" firstAttribute="leading" secondItem="G4X-Vh-KJO" secondAttribute="trailing" constant="10" id="OXT-9i-fUV"/>
-                                <constraint firstItem="G4X-Vh-KJO" firstAttribute="leading" secondItem="v3r-Yc-zOv" secondAttribute="leading" constant="32" id="drr-T2-JkW"/>
-                                <constraint firstItem="dHq-0z-WOp" firstAttribute="top" secondItem="G4X-Vh-KJO" secondAttribute="bottom" constant="20" id="n0A-q8-dx6"/>
-                                <constraint firstItem="raV-Zz-vXB" firstAttribute="centerY" secondItem="G4X-Vh-KJO" secondAttribute="centerY" id="wdh-yQ-0Fq"/>
-                            </constraints>
-                        </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="oCm-bx-EyP">
-                            <rect key="frame" x="0.0" y="114" width="375" height="388"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="502"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         </tableView>
                     </subviews>
                     <color key="backgroundColor" name="popupBackgroundColor"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="v3r-Yc-zOv" secondAttribute="trailing" id="AZz-Po-55G"/>
                         <constraint firstItem="OB2-sm-rae" firstAttribute="trailing" secondItem="u8X-qo-MXu" secondAttribute="trailing" id="Ais-7j-L3W"/>
                         <constraint firstItem="DYc-lr-n4K" firstAttribute="trailing" secondItem="u8X-qo-MXu" secondAttribute="trailing" id="E79-1X-87R"/>
-                        <constraint firstItem="oCm-bx-EyP" firstAttribute="top" secondItem="v3r-Yc-zOv" secondAttribute="bottom" id="Jfu-76-m9l"/>
-                        <constraint firstItem="v3r-Yc-zOv" firstAttribute="top" secondItem="UAc-kD-j7m" secondAttribute="top" id="MeB-YB-lOR"/>
                         <constraint firstItem="OB2-sm-rae" firstAttribute="leading" secondItem="u8X-qo-MXu" secondAttribute="leading" id="Mp7-te-Tdy"/>
                         <constraint firstItem="v7e-Aw-EKY" firstAttribute="leading" secondItem="u8X-qo-MXu" secondAttribute="leading" id="N1b-u7-KOc"/>
                         <constraint firstItem="rkB-Xp-bC8" firstAttribute="centerY" secondItem="OB2-sm-rae" secondAttribute="centerY" id="N86-8I-KwA"/>
@@ -121,9 +81,9 @@
                         <constraint firstItem="DYc-lr-n4K" firstAttribute="top" secondItem="v7e-Aw-EKY" secondAttribute="bottom" id="Xzf-il-UIy"/>
                         <constraint firstItem="v7e-Aw-EKY" firstAttribute="trailing" secondItem="u8X-qo-MXu" secondAttribute="trailing" id="cNQ-hg-ehY"/>
                         <constraint firstAttribute="trailing" secondItem="oCm-bx-EyP" secondAttribute="trailing" id="dJc-gN-C2S"/>
+                        <constraint firstItem="oCm-bx-EyP" firstAttribute="top" secondItem="UAc-kD-j7m" secondAttribute="top" id="dmr-S8-LQE"/>
                         <constraint firstAttribute="bottom" secondItem="DYc-lr-n4K" secondAttribute="bottom" id="eg3-PH-Fqu"/>
                         <constraint firstItem="DYc-lr-n4K" firstAttribute="leading" secondItem="UAc-kD-j7m" secondAttribute="leading" constant="32" id="f6h-Oi-KbU"/>
-                        <constraint firstItem="v3r-Yc-zOv" firstAttribute="leading" secondItem="UAc-kD-j7m" secondAttribute="leading" id="l20-rK-t1z"/>
                         <constraint firstItem="OB2-sm-rae" firstAttribute="top" secondItem="u8X-qo-MXu" secondAttribute="bottom" constant="2" id="lFA-u7-aiU"/>
                         <constraint firstItem="DYc-lr-n4K" firstAttribute="leading" secondItem="u8X-qo-MXu" secondAttribute="leading" id="lTo-cc-Gvp"/>
                         <constraint firstItem="OB2-sm-rae" firstAttribute="trailing" secondItem="rkB-Xp-bC8" secondAttribute="trailing" id="lXD-GW-3Sk"/>
@@ -150,8 +110,6 @@
         </view>
     </objects>
     <resources>
-        <image name="my_wallet_icon" width="20" height="20"/>
-        <image name="my_wallet_placeholder_avatar" width="32" height="32"/>
         <image name="qr_code_blue_icon" width="20" height="20"/>
         <namedColor name="popupBackgroundColor">
             <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
