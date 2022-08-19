@@ -92,6 +92,7 @@ class SlippageRateCell: UITableViewCell {
     super.awakeFromNib()
     // Initialization code
     self.advancedCustomRateTextField.delegate = self
+    self.advancedCustomRateTextField.setPlaceholder(text: "Custom", color: UIColor(named: "navButtonBgColor")!)
   }
   
   func updateFocusForView(view: UIView, isFocus: Bool) {
