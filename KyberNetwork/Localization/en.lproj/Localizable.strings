@@ -897,7 +897,7 @@
 "swap.txn_fee_i" = "The estimated fee paid to miners who process your transaction.";
 "swap.txn_fee_max_i" = "Maximum fee you will pay for your transaction.";
 "swap.price_impact_i" = "Estimated change in price due to the size of your transaction.";
-"advanced.mode.warning.text" = "Expert Mode turns off the ‘Confirm’ transaction prompt and alows high slippage trades that can result in bad rates and lost funds.\n\nPlease type the word ‘confirm’ below to enable Expert Mode.";
+"advanced.mode.warning.text" = "Expert Mode allows high slippage trades, which often result in bad rates and lost funds.\n\nPlease type `Confirm` below to enable Expert Mode.";
 "gas_price_i" = "Price per unit of gas as the fee to the miners.";
 "gas_limit_i" = "The maximum amount of gas to use for your transaction.";
 "nonce_i" = "A specific number that is tagged in your transcation.";
@@ -906,7 +906,7 @@
 "expert_i" = "Allow high slippage trades. Use at your own risk.";
 "gas.price.low.warning" = "Gas price is low for current network conditions";
 "gas.price.high.warning" = "Gas price is higher than necessary";
-"gas.limit.low.warning" = "Gas limit must be at least 21000";
+"gas.limit.low.warning" = "Gas limit can not be smaller than the estimated gas consumed";
 "priority.fee.low.warning" = "Max Priority Fee is low for current network conditions";
 "priority.fee.high.warning" = "Max Priority Fee is higher than necessary";
 "max.fee.low.warning" = "Max Fee is low for current network conditions";
