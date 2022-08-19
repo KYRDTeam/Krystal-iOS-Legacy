@@ -478,6 +478,8 @@
 		7E4793C92859BC8400F15D3B /* AdvanceSearchPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4793C72859BC8400F15D3B /* AdvanceSearchPortfolioCell.swift */; };
 		7E4793CA2859BC8400F15D3B /* AdvanceSearchPortfolioCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E4793C82859BC8400F15D3B /* AdvanceSearchPortfolioCell.xib */; };
 		7E49B26127FC19890093A00E /* MixPanelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E49B26027FC19890093A00E /* MixPanelManager.swift */; };
+		7E4D7FAB28AE2EC300375016 /* ConfirmBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4D7FA928AE2EC300375016 /* ConfirmBackupViewController.swift */; };
+		7E4D7FAC28AE2EC300375016 /* ConfirmBackupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E4D7FAA28AE2EC300375016 /* ConfirmBackupViewController.xib */; };
 		7E4E613128115CD200640625 /* UnconfirmedSolTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */; };
 		7E4EDD6328100A410000CB0B /* SolanaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EDD6228100A400000CB0B /* SolanaService.swift */; };
 		7E52914628ADEA9F00E4BB1B /* BackUpWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52914428ADEA9F00E4BB1B /* BackUpWalletViewController.swift */; };
@@ -572,6 +574,8 @@
 		7EFE441127167F2A006CF502 /* RewardDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE440F27167F2A006CF502 /* RewardDetailCell.swift */; };
 		7EFE441227167F2A006CF502 /* RewardDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EFE441027167F2A006CF502 /* RewardDetailCell.xib */; };
 		7EFE71492817DC2E00476184 /* SolFeeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE71482817DC2E00476184 /* SolFeeCoordinator.swift */; };
+		7EFFAB8428AE4F5B007CFE7D /* SeedStringCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFAB8228AE4F5B007CFE7D /* SeedStringCell.swift */; };
+		7EFFAB8528AE4F5B007CFE7D /* SeedStringCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EFFAB8328AE4F5B007CFE7D /* SeedStringCell.xib */; };
 		8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
 		938288E2ED2CF2CECDBAEA28 /* Pods_KyberNetworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */; };
 		A6156B4E2885188700276120 /* CameraHoleCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6156B4D2885188700276120 /* CameraHoleCover.swift */; };
@@ -1645,6 +1649,8 @@
 		7E4793C72859BC8400F15D3B /* AdvanceSearchPortfolioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchPortfolioCell.swift; sourceTree = "<group>"; };
 		7E4793C82859BC8400F15D3B /* AdvanceSearchPortfolioCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AdvanceSearchPortfolioCell.xib; sourceTree = "<group>"; };
 		7E49B26027FC19890093A00E /* MixPanelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixPanelManager.swift; sourceTree = "<group>"; };
+		7E4D7FA928AE2EC300375016 /* ConfirmBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBackupViewController.swift; sourceTree = "<group>"; };
+		7E4D7FAA28AE2EC300375016 /* ConfirmBackupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmBackupViewController.xib; sourceTree = "<group>"; };
 		7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfirmedSolTransaction.swift; sourceTree = "<group>"; };
 		7E4EDD6228100A400000CB0B /* SolanaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaService.swift; sourceTree = "<group>"; };
 		7E52914428ADEA9F00E4BB1B /* BackUpWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackUpWalletViewController.swift; sourceTree = "<group>"; };
@@ -1739,6 +1745,8 @@
 		7EFE440F27167F2A006CF502 /* RewardDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardDetailCell.swift; sourceTree = "<group>"; };
 		7EFE441027167F2A006CF502 /* RewardDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RewardDetailCell.xib; sourceTree = "<group>"; };
 		7EFE71482817DC2E00476184 /* SolFeeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolFeeCoordinator.swift; sourceTree = "<group>"; };
+		7EFFAB8228AE4F5B007CFE7D /* SeedStringCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedStringCell.swift; sourceTree = "<group>"; };
+		7EFFAB8328AE4F5B007CFE7D /* SeedStringCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SeedStringCell.xib; sourceTree = "<group>"; };
 		87FA1153388F27F599C430B8 /* Pods-TrustTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrustTests/Pods-TrustTests.debug.xcconfig"; sourceTree = "<group>"; };
 		88401C14158F6CE1B2A8A18D /* Pods-KyberNetworkTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KyberNetworkTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KyberNetworkTests/Pods-KyberNetworkTests.debug.xcconfig"; sourceTree = "<group>"; };
 		97C64E77FB15CCDC5F0BA6B5 /* Pods_KrystalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KrystalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3352,6 +3360,10 @@
 				25931F0E20AEE85200BAC774 /* KNBackUpWalletViewController.xib */,
 				7E52914428ADEA9F00E4BB1B /* BackUpWalletViewController.swift */,
 				7E52914528ADEA9F00E4BB1B /* BackUpWalletViewController.xib */,
+				7E4D7FA928AE2EC300375016 /* ConfirmBackupViewController.swift */,
+				7E4D7FAA28AE2EC300375016 /* ConfirmBackupViewController.xib */,
+				7EFFAB8228AE4F5B007CFE7D /* SeedStringCell.swift */,
+				7EFFAB8328AE4F5B007CFE7D /* SeedStringCell.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -6642,6 +6654,7 @@
 				7E62A41B28AB764C00319436 /* FinishCreateWalletViewController.xib in Resources */,
 				7E448D052808064E00C1617F /* SelectChainViewController.xib in Resources */,
 				A651944C28361AE3008F4AEB /* TransactionTypeInfoCell.xib in Resources */,
+				7E4D7FAC28AE2EC300375016 /* ConfirmBackupViewController.xib in Resources */,
 				25929C8F20DA5CC10045CFA3 /* SFCompactDisplay-Regular.otf in Resources */,
 				2561454D20C64B2200FB00CF /* KNContactTableView.xib in Resources */,
 				A6D38BF028990593003579F2 /* SwapInfoView.xib in Resources */,
@@ -6781,6 +6794,7 @@
 				7E44DBEB2849BA3100E4AD26 /* BridgeTransactionStatusPopup.xib in Resources */,
 				7EB4800027D095F200FB28D9 /* CryptoFiatCell.xib in Resources */,
 				C3743299278ED345002C97A9 /* SignMessageConfirmPopup.xib in Resources */,
+				7EFFAB8528AE4F5B007CFE7D /* SeedStringCell.xib in Resources */,
 				C3137200260490A1003D432B /* ShareReferralLinkViewController.xib in Resources */,
 				7EE3143D286036AF0012ADF9 /* TokenPoolCell.xib in Resources */,
 				7EE92A10286307E10050DC8D /* ShowAllCell.xib in Resources */,
@@ -7354,6 +7368,7 @@
 				257A37A5205D187100E86794 /* KNTransactionStatusViewController.swift in Sources */,
 				25CC0AB820591D720009D0D5 /* KNRecentTradeCoordinator.swift in Sources */,
 				7E62A41A28AB764C00319436 /* FinishCreateWalletViewController.swift in Sources */,
+				7E4D7FAB28AE2EC300375016 /* ConfirmBackupViewController.swift in Sources */,
 				29C0FCE5200EBAF6004A13CB /* TokenType.swift in Sources */,
 				7E1EBE452834F82A00793B6D /* BridgeSendToCell.swift in Sources */,
 				257740CF20579CE0003323EB /* KNSplashScreenCoordinator.swift in Sources */,
@@ -7728,6 +7743,7 @@
 				A6BAD3D4287446F30016E127 /* TradingViewController.swift in Sources */,
 				C325984626D345A100F87D25 /* OverviewShareNFTViewController.swift in Sources */,
 				C37AF0C725CCFB29006FB880 /* EarnSwapViewController.swift in Sources */,
+				7EFFAB8428AE4F5B007CFE7D /* SeedStringCell.swift in Sources */,
 				29E9CFD21FE737FE00017744 /* TrustRealmConfiguration.swift in Sources */,
 				C316809C25E785B700D0D887 /* TokenChartData.swift in Sources */,
 				25682ABE229FC3C7004AB452 /* KNApproveTokenViewController.swift in Sources */,

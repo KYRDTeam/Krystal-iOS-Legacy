@@ -81,7 +81,9 @@ class BackUpWalletViewController: KNBaseViewController {
   }
 
   @IBAction func continueButtonTapped(_ sender: Any) {
-    
+    let confirmVC = ConfirmBackupViewController()
+    confirmVC.seedStrings = viewModel.seeds
+    self.show(confirmVC, sender: nil)
   }
   
 }

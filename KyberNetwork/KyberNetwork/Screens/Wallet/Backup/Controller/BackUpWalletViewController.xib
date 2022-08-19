@@ -316,7 +316,6 @@
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                     <connections>
-                                        <action selector="continueButtonTapped:" destination="-1" eventType="touchUpInside" id="CbP-7b-m8a"/>
                                         <action selector="revealButtonTapped:" destination="-1" eventType="touchUpInside" id="OFN-J6-yUC"/>
                                     </connections>
                                 </button>
