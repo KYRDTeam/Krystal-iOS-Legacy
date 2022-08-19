@@ -233,6 +233,8 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
           } else {
             self.state.value = .notApproved(currentAllowance: allowance)
           }
+        } else if self.priceImpactState.value == .veryHighNeedExpertMode {
+          self.state.value = .requiredExpertMode
         } else {
           self.state.value = .ready
         }
@@ -346,11 +348,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       return
     }
     reloadRates(amount: amount, isRefresh: isRefresh)
-  }
-  
-  func updateSettings(settings: SwapTransactionSettings) {
-    self.settings = settings
-    updateInfo()
   }
   
   func isApproving() -> Bool {
@@ -537,6 +534,7 @@ extension SwapV2ViewModel {
   
   func updateInfo() {
     guard let destToken = destToken.value else { return }
+    self.slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
     self.minReceiveString.value = self.selectedPlatformRate.value.map {
       return self.getMinReceiveString(destToken: destToken, rate: $0)
     }
@@ -548,50 +546,15 @@ extension SwapV2ViewModel {
     }
   }
   
-  func updateSlippage(slippage: Double) {
-    settings.slippage = slippage
-    slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
-    updateInfo()
-  }
-  
-  func updateGasPriceType(type: KNSelectedGasPriceType) {
-    settings.basic = .init(gasPriceType: type)
-    settings.advanced = nil
-    updateInfo()
-  }
-  
-  func updateAdvancedNonce(nonce: Int) {
-    if let advanced = settings.advanced {
-      settings.basic = nil
-      settings.advanced = .init(gasLimit: advanced.gasLimit,
-                                maxFee: advanced.maxFee,
-                                maxPriorityFee: advanced.maxPriorityFee,
-                                nonce: nonce)
-    } else if let basic = settings.basic {
-      settings.basic = nil
-      settings.advanced = .init(gasLimit: gasLimit,
-                                maxFee: gasPrice,
-                                maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
-                                nonce: nonce)
+  func updateSettings(settings: SwapTransactionSettings) {
+    self.settings = settings
+    
+    if priceImpactState.value == .veryHighNeedExpertMode, settings.expertModeOn {
+      priceImpactState.value = .veryHigh
+      state.value = .ready
     }
-    updateInfo()
-  }
-  
-  func updateAdvancedFee(maxFee: BigInt, maxPriorityFee: BigInt, gasLimit: BigInt) {
-    if let advanced = settings.advanced {
-      settings.basic = nil
-      settings.advanced = .init(gasLimit: gasLimit,
-                                maxFee: maxFee,
-                                maxPriorityFee: maxPriorityFee,
-                                nonce: advanced.nonce)
-    } else {
-      settings.basic = nil
-      settings.advanced = .init(gasLimit: gasLimit,
-                                maxFee: maxFee,
-                                maxPriorityFee: maxPriorityFee,
-                                nonce: NonceCache.shared.getCachingNonce(address: addressString, chain: currentChain.value))
-    }
-    updateInfo()
+    
+    self.updateInfo()
   }
   
 }

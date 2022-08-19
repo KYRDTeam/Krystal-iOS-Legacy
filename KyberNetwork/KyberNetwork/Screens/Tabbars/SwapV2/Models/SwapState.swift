@@ -18,6 +18,7 @@ enum SwapState {
   case checkingAllowance
   case notApproved(currentAllowance: BigInt)
   case approving
+  case requiredExpertMode
   case ready
   
   var isActiveState: Bool {

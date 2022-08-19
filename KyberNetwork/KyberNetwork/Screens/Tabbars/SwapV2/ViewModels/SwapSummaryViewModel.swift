@@ -107,54 +107,14 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   }
   
   func updateInfo() {
+    self.slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
     self.minReceiveString.value = self.getMinReceiveString(destToken: swapObject.destToken, rate: swapObject.rate)
     self.estimatedGasFeeString.value = self.getEstimatedNetworkFeeString(rate: swapObject.rate)
     self.maxGasFeeString.value = self.getMaxNetworkFeeString(rate: swapObject.rate)
   }
   
-  func updateSlippage(slippage: Double) {
-    swapObject.swapSetting.slippage = slippage
-    slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
-    updateInfo()
-  }
-  
-  func updateGasPriceType(type: KNSelectedGasPriceType) {
-    swapObject.swapSetting.basic = .init(gasPriceType: type)
-    swapObject.swapSetting.advanced = nil
-    updateInfo()
-  }
-  
-  func updateAdvancedNonce(nonce: Int) {
-    if let advanced = settings.advanced {
-      swapObject.swapSetting.basic = nil
-      swapObject.swapSetting.advanced = .init(gasLimit: advanced.gasLimit,
-                                              maxFee: advanced.maxFee,
-                                              maxPriorityFee: advanced.maxPriorityFee,
-                                              nonce: nonce)
-    } else if let basic = settings.basic {
-      swapObject.swapSetting.basic = nil
-      swapObject.swapSetting.advanced = .init(gasLimit: gasLimit,
-                                              maxFee: gasPrice,
-                                              maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
-                                              nonce: nonce)
-    }
-    updateInfo()
-  }
-  
-  func updateAdvancedFee(maxFee: BigInt, maxPriorityFee: BigInt, gasLimit: BigInt) {
-    if let advanced = settings.advanced {
-      swapObject.swapSetting.basic = nil
-      swapObject.swapSetting.advanced = .init(gasLimit: gasLimit,
-                                              maxFee: maxFee,
-                                              maxPriorityFee: maxPriorityFee,
-                                              nonce: advanced.nonce)
-    } else {
-      swapObject.swapSetting.basic = nil
-      swapObject.swapSetting.advanced = .init(gasLimit: gasLimit,
-                                              maxFee: maxFee,
-                                              maxPriorityFee: maxPriorityFee,
-                                              nonce: NonceCache.shared.getCachingNonce(address: AppDelegate.session.address.addressString, chain: KNGeneralProvider.shared.currentChain))
-    }
+  func updateSettings(settings: SwapTransactionSettings) {
+    self.settings = settings
     updateInfo()
   }
 

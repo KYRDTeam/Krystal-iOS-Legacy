@@ -915,3 +915,17 @@
 "swap.best" = "Best";
 "swap.alert_platform_change_could_not_update" = "Couldn't update %@ rate, %@ will be used instead.";
 "swap.alert_platform_change" = "Rate has been changed!";
+"max.slippage" = "Max Slippage";
+"min.received" = "Min. Received";
+"est.network.fee" = "Network Fee (est)";
+"max.network.fee" = "Max Network Fee";
+"price.impact" = "Price Impact";
+"route" = "Route";
+"enter.an.amount" = "Enter an amount";
+"fetching.best.rates" = "Fetching the best rates";
+"connect.wallet" = "Connect Wallet";
+"review.swap" = "Review Swap";
+"insufficient.token.balance" = "Insufficient %@ Balance";
+"checking.allowance" = "Checking Allowance";
+"approve.token" = "Approve %@";
+"approving.token" = "Approving %@";

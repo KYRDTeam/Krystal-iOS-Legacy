@@ -248,51 +248,23 @@ class SwapSummaryViewController: KNBaseViewController {
       return .custom
     }()
     
-    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: selectedGasPriceType, currentRatePercentage: settings.slippage, isUseGasToken: false)
-    viewModel.updateGasPrices(
-      fast: KNGasCoordinator.shared.fastKNGas,
-      medium: KNGasCoordinator.shared.standardKNGas,
-      slow: KNGasCoordinator.shared.lowKNGas,
-      superFast: KNGasCoordinator.shared.superFastKNGas
-    )
-    viewModel.advancedGasLimit = (settings.advanced?.gasLimit).map(String.init)
-    viewModel.advancedMaxPriorityFee = (settings.advanced?.maxPriorityFee).map {
+    let advancedGasLimit = (settings.advanced?.gasLimit).map(String.init)
+    let advancedMaxPriorityFee = (settings.advanced?.maxPriorityFee).map {
       return NumberFormatUtils.format(value: $0, decimals: 9, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)
     }
-    viewModel.advancedMaxFee = (settings.advanced?.maxFee).map {
+    let advancedMaxFee = (settings.advanced?.maxFee).map {
       return NumberFormatUtils.format(value: $0, decimals: 9, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)
     }
-    viewModel.advancedNonce = (settings.advanced?.nonce).map { "\($0)" }
-
-    let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
-    vc.delegate = self
-    self.present(vc, animated: true, completion: nil)
-  }
-}
-
-extension SwapSummaryViewController: GasFeeSelectorPopupViewControllerDelegate {
-  
-  func gasFeeSelectorPopupViewController(_ controller: KNBaseViewController, run event: GasFeeSelectorPopupViewEvent) {
-    switch event {
-    case .gasPriceChanged(let type, _):
-      self.viewModel.updateGasPriceType(type: type)
-      
-    case .minRatePercentageChanged(let percent):
-      self.viewModel.updateSlippage(slippage: percent)
-      
-    case .updateAdvancedSetting(let gasLimit, let maxPriorityFee, let maxFee):
-      guard let gasLimit = BigInt(gasLimit), let maxFee = maxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit), let maxPriorityFee = maxPriorityFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) else {
-        return
-      }
-      self.viewModel.updateAdvancedFee(maxFee: maxFee, maxPriorityFee: maxPriorityFee, gasLimit: gasLimit)
-      
-    case .updateAdvancedNonce(let nonce):
-      guard let nonce = Int(nonce) else { return }
-      self.viewModel.updateAdvancedNonce(nonce: nonce)
-      
-    default:
-      return
+    let advancedNonce = (settings.advanced?.nonce).map { "\($0)" }
+    
+    let vm = TransactionSettingsViewModel(gasLimit: gasLimit)
+    let popup = TransactionSettingsViewController(viewModel: vm)
+    vm.update(priorityFee: advancedMaxPriorityFee, maxGas: advancedMaxFee, gasLimit: advancedGasLimit, nonceString: advancedNonce)
+    
+    vm.saveEventHandler = { [weak self] swapSettings in
+      self?.viewModel.updateSettings(settings: swapSettings)
     }
+    self.navigationController?.pushViewController(popup, animated: true, completion: nil)
   }
   
 }

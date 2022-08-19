@@ -139,7 +139,10 @@ extension SwapInfoViewModelProtocol {
     if -15 < change && change <= -5 {
       return .high
     }
-    return .veryHigh
+    // if UserDefaults.isExpertModeOn {
+    //  return .veryHigh
+    // }
+    return .veryHighNeedExpertMode
   }
   
   func getRateString(sourceToken: Token, destToken: Token) -> String? {
