@@ -906,7 +906,7 @@
 "expert_i" = "Allow high slippage trades. Use at your own risk.";
 "gas.price.low.warning" = "Gas price is low for current network conditions";
 "gas.price.high.warning" = "Gas price is higher than necessary";
-"gas.limit.low.warning" = "Gas limit must be at least 21000";
+"gas.limit.low.warning" = "Gas limit can not be smaller than the estimated gas consumed";
 "priority.fee.low.warning" = "Max Priority Fee is low for current network conditions";
 "priority.fee.high.warning" = "Max Priority Fee is higher than necessary";
 "max.fee.low.warning" = "Max Fee is low for current network conditions";
