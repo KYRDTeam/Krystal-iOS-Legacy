@@ -18,14 +18,17 @@ enum KAdvancedSettingsMinRateType {
 class SlippageRateCellModel {
   let defaultSlippageText = "0.5"
   let defaultSlippageInputValue = 0.5
-  fileprivate(set) var currentRate: Double
+  var currentRate: Double
   fileprivate(set) var minRateType: KAdvancedSettingsMinRateType = .zeroPointFive
   var slippageChangedEvent: (Double) -> Void = { _ in }
   
   
-  init(currentRatePercentage: Double = 0.0) {
-    self.currentRate = currentRatePercentage
-    switch currentRatePercentage {
+  init() {
+    self.currentRate = UserDefaults.standard.double(forKey: KNEnvironment.default.envPrefix + Constants.slippageRateSaveKey)
+    if currentRate == 0 {
+      currentRate = 0.5
+    }
+    switch currentRate {
     case 0.1:
       self.minRateType = .zeroPointOne
     case 0.5:
@@ -33,7 +36,7 @@ class SlippageRateCellModel {
     case 1.0:
       self.minRateType = .onePercent
     default:
-      self.minRateType = .custom(value: currentRatePercentage)
+      self.minRateType = .custom(value: currentRate)
     }
   }
   
@@ -43,6 +46,16 @@ class SlippageRateCellModel {
   
   func updateMinRateType(_ type: KAdvancedSettingsMinRateType) {
     self.minRateType = type
+    switch type {
+    case .zeroPointOne:
+      self.currentRate = 0.1
+    case .zeroPointFive:
+      self.currentRate = 0.5
+    case .onePercent:
+      self.currentRate = 1
+    default:
+      break
+    }
   }
   
   var minRatePercent: Double {
@@ -79,6 +92,7 @@ class SlippageRateCell: UITableViewCell {
     super.awakeFromNib()
     // Initialization code
     self.advancedCustomRateTextField.delegate = self
+    self.advancedCustomRateTextField.setPlaceholder(text: "Custom", color: UIColor(named: "navButtonBgColor")!)
   }
   
   func updateFocusForView(view: UIView, isFocus: Bool) {
@@ -163,7 +177,7 @@ class SlippageRateCell: UITableViewCell {
     self.cellModel.slippageChangedEvent(self.cellModel.minRatePercent)
     self.configSlippageUI()
     self.advancedCustomRateTextField.text = ""
-    self.advancedCustomRateTextField.setPlaceholder(text: "Input", color: UIColor(named: "navButtonBgColor")!)
+    self.advancedCustomRateTextField.setPlaceholder(text: "Custom", color: UIColor(named: "navButtonBgColor")!)
   }
 }
 
