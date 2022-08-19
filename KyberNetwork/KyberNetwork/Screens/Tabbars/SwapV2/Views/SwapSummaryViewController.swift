@@ -18,6 +18,7 @@ class SwapSummaryViewController: KNBaseViewController {
   @IBOutlet weak var rateChangedView: UIView!
   @IBOutlet weak var signSuccessView: UIView!
   @IBOutlet weak var errorView: UIView!
+  @IBOutlet weak var platformView: SwapInfoView!
   @IBOutlet weak var rateInfoView: SwapInfoView!
   @IBOutlet weak var slippageInfoView: SwapInfoView!
   @IBOutlet weak var minReceiveInfoView: SwapInfoView!
@@ -35,6 +36,8 @@ class SwapSummaryViewController: KNBaseViewController {
   @IBOutlet weak var stackViewTopConstraint: NSLayoutConstraint!
   @IBOutlet weak var confirmSwapButton: UIButton!
   @IBOutlet weak var confirmSwapButtonTopConstraint: NSLayoutConstraint!
+  @IBOutlet weak var rateChangedLabel: UILabel!
+  
   var viewModel: SwapSummaryViewModel
 
   weak var delegate: SwapSummaryViewControllerDelegate?
@@ -133,6 +136,10 @@ class SwapSummaryViewController: KNBaseViewController {
   }
   
   func setupInfoViews() {
+    platformView.setTitle(title: "Platform", underlined: false)
+    platformView.setLeftValueIcon(icon: viewModel.swapObject.rate.platformIcon, isHidden: false)
+    platformView.setValue(value: viewModel.swapObject.rate.platformShort, highlighted: false)
+    
     rateInfoView.setTitle(title: "Rate", underlined: false, shouldShowIcon: true)
     rateInfoView.onTapRightIcon = { [weak self] in
       self?.viewModel.showRevertedRate.toggle()
@@ -200,6 +207,14 @@ class SwapSummaryViewController: KNBaseViewController {
       self.confirmSwapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
     }
     
+    if viewModel.newRate.value?.hint != viewModel.swapObject.rate.hint {
+      rateChangedLabel.attributedText = String(format: Strings.swapAlertPlatformChanged,
+                                               viewModel.swapObject.rate.platformShort,
+                                               viewModel.newRate.value?.platformShort ?? "").withLineSpacing()
+    } else {
+      rateChangedLabel.text = Strings.swapAlertRateChanged
+    }
+    
     UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
       self.rateChangedView.isHidden = !rateChanged
       self.stackViewTopConstraint.constant = rateChanged ? 86 : 26
@@ -209,6 +224,9 @@ class SwapSummaryViewController: KNBaseViewController {
   
   @IBAction func acceptRateChangedButtonTapped(_ sender: Any) {
     viewModel.updateRate()
+    
+    platformView.setLeftValueIcon(icon: viewModel.swapObject.rate.platformIcon, isHidden: false)
+    platformView.setValue(value: viewModel.swapObject.rate.platformShort, highlighted: false)
     destTokenBalanceLabel.text = viewModel.getDestAmountString()
     destTokenValueLabel.text = viewModel.getDestAmountUsdString()
   }

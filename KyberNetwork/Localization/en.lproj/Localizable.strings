@@ -913,3 +913,5 @@
 "max.fee.high.warning" = "Max Fee is higher than necessary";
 "nonce.low.warning" = "Nonce is too low";
 "swap.best" = "Best";
+"swap.alert_platform_change_could_not_update" = "Couldn't update %@ rate, %@ will be used instead.";
+"swap.alert_platform_change" = "Rate has been changed!";

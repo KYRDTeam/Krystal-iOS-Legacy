@@ -22,7 +22,7 @@ enum SwapState {
   
   var isActiveState: Bool {
     switch self {
-    case .emptyAmount, .insufficientBalance:
+    case .emptyAmount:
       return false
     default:
       return true

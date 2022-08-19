@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -16,6 +16,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="iconImageView" destination="j1n-fn-l6g" id="Lvj-Ad-HkX"/>
+                <outlet property="leftValueIcon" destination="VtA-LG-L7G" id="Nlx-IP-6Am"/>
                 <outlet property="titleLabel" destination="zZ5-mM-0mh" id="R30-6L-UCJ"/>
                 <outlet property="underlineView" destination="NTv-cN-Lag" id="VtK-Pn-yB1"/>
                 <outlet property="valueLabel" destination="STU-UO-Bs8" id="h6a-8u-PB8"/>
@@ -43,16 +44,23 @@
                             </constraints>
                         </view>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zlE-6Z-ES9">
-                            <rect key="frame" x="304" y="61.5" width="75" height="16"/>
+                            <rect key="frame" x="280" y="61.5" width="99" height="16"/>
                             <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kyber_icon_medium" translatesAutoresizingMaskIntoConstraints="NO" id="VtA-LG-L7G" userLabel="value left">
+                                    <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="16" id="Bf1-Sp-fX1"/>
+                                        <constraint firstAttribute="height" constant="16" id="ifI-gI-D5G"/>
+                                    </constraints>
+                                </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Content" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="STU-UO-Bs8">
-                                    <rect key="frame" x="0.0" y="0.0" width="51" height="16"/>
+                                    <rect key="frame" x="24" y="0.0" width="51" height="16"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="revert_icon" translatesAutoresizingMaskIntoConstraints="NO" id="j1n-fn-l6g">
-                                    <rect key="frame" x="59" y="0.0" width="16" height="16"/>
+                                    <rect key="frame" x="83" y="0.0" width="16" height="16"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="16" id="RbO-W1-V8e"/>
                                         <constraint firstAttribute="height" constant="16" id="uYu-U9-dW2"/>
@@ -86,6 +94,7 @@
         </view>
     </objects>
     <resources>
+        <image name="kyber_icon_medium" width="24" height="24"/>
         <image name="revert_icon" width="15" height="12"/>
     </resources>
 </document>

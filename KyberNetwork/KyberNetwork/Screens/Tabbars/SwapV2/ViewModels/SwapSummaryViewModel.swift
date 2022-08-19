@@ -78,6 +78,8 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   }
   
   fileprivate var updateRateTimer: Timer?
+  let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+  let swapRepository = SwapRepository()
 
   init(swapObject: SwapObject) {
     self.swapObject = swapObject
@@ -99,6 +101,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
       swapObject.rate = newRate
       rateString.value = getRateString(sourceToken: swapObject.sourceToken, destToken: swapObject.destToken)
       priceImpactString.value = getPriceImpactString(rate: swapObject.rate)
+      updateInfo()
       self.newRate.value = nil
     }
   }
@@ -193,7 +196,6 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   }
 
   func fetchRate() {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.requestWithFilter(.getExpectedRate(src: self.swapObject.sourceToken.address.lowercased(), dst: self.swapObject.destToken.address.lowercased(), srcAmount: self.swapObject.sourceAmount.description, hint: self.swapObject.rate.hint, isCaching: true)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let rate = json["rate"] as? String, let priceImpact = json["priceImpact"] as? Int {
@@ -204,8 +206,21 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
           self.newRate.value = currentRate
         }
       } else {
-        // do nothing in background
+        self.fetchAllRates()
       }
+    }
+  }
+  
+  func fetchAllRates() {
+    swapRepository.getAllRates(address: currentAddress.addressString, srcTokenContract: self.swapObject.sourceToken.address.lowercased(), destTokenContract: self.swapObject.destToken.address.lowercased(), amount: self.swapObject.sourceAmount, focusSrc: false) { [weak self] rates in
+      guard let self = self else { return }
+      let sortedRates = rates.sorted { lhs, rhs in
+        return self.diffInUSD(lhs: lhs, rhs: rhs, destToken: self.swapObject.destToken, destTokenPrice: self.swapObject.destTokenPrice) > 0
+      }
+      if sortedRates.isEmpty {
+        return
+      }
+      self.newRate.value = sortedRates.first!
     }
   }
   

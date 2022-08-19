@@ -208,6 +208,8 @@ struct Strings {
   static let swapPriceImpactInfo = "swap.price_impact_i".toBeLocalised()
   static let advancedModeWarningText = "advanced.mode.warning.text".toBeLocalised()
   static let swapBest = "swap.best".toBeLocalised()
+  static let swapAlertRateChanged = "swap.alert_platform_change".toBeLocalised()
+  static let swapAlertPlatformChanged = "swap.alert_platform_change_could_not_update".toBeLocalised()
   
   // Swap settings
   static let superFast = "super.fast".toBeLocalised()

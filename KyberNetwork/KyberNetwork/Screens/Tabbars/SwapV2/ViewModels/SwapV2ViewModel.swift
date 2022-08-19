@@ -25,7 +25,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   
   private(set) var selectedPlatformHint: String? {
     didSet {
-      self.selectedPlatformRate.value = self.sortedRates.first(where: { rate in
+      self.selectedPlatformRate.value = self.platformRates.value.first(where: { rate in
         rate.hint == selectedPlatformHint
       })
       guard let destToken = destToken.value, let sourceToken = sourceToken.value else {
@@ -49,8 +49,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       } ?? .normal
     }
   }
-  
-  var sortedRates: [Rate] = []
   
   var showRevertedRate: Bool = false {
     didSet {
@@ -129,6 +127,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   var hasPendingTransaction: Observable<Bool> = .init(false)
   var error: Observable<SwapError?> = .init(nil)
   
+  var isExpanding: Observable<Bool> = .init(false)
   var state: Observable<SwapState> = .init(.emptyAmount)
   
   private let swapRepository = SwapRepository()
@@ -184,12 +183,12 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
     platformRates.observe(on: self) { [weak self] rates in
       guard let self = self else { return }
-      self.sortedRates = self.sortedRates(rates: rates)
+      let sortedRates = self.getSortedRates(rates: rates, sortBySelected: !self.isExpanding.value)
       if !rates.contains(where: { $0.hint == self.selectedPlatformHint }) {
-        self.selectedPlatformHint = self.sortedRates.first?.hint
+        self.selectedPlatformHint = sortedRates.first?.hint
       }
-      self.platformRatesViewModels.value = self.createPlatformRatesViewModels(sortedRates: self.sortedRates)
-      if self.sortedRates.isEmpty {
+      self.platformRatesViewModels.value = self.createPlatformRatesViewModels(sortedRates: sortedRates)
+      if sortedRates.isEmpty {
         self.state.value = .rateNotFound
       } else {
         if self.currentAddress.value.isWatchWallet {
@@ -200,6 +199,19 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
           self.state.value = .insufficientBalance
         }
       }
+    }
+    sourceToken.observe(on: self) { [weak self] token in
+      if token?.address.lowercased() == self?.destToken.value?.address.lowercased() {
+        self?.error.value = .sameSourceDestToken
+      }
+    }
+    destToken.observe(on: self) { [weak self] token in
+      if token?.address.lowercased() == self?.sourceToken.value?.address.lowercased() {
+        self?.error.value = .sameSourceDestToken
+      }
+    }
+    isExpanding.observe(on: self) { [weak self] isExpanding in
+      self?.reloadPlatformRatesViewModels()
     }
   }
   
@@ -281,8 +293,11 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   
   func selectPlatform(hint: String) {
     self.selectedPlatformHint = hint
-    self.sortedRates = self.sortedRates(rates: platformRates.value)
-    self.platformRatesViewModels.value = self.createPlatformRatesViewModels(sortedRates: self.sortedRates)
+  }
+  
+  func reloadPlatformRatesViewModels() {
+    let rates = self.getSortedRates(rates: self.platformRates.value, sortBySelected: !isExpanding.value)
+    self.platformRatesViewModels.value = self.createPlatformRatesViewModels(sortedRates: rates)
   }
   
   func updateSourceToken(token: Token) {
@@ -346,7 +361,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     return !pendingApproveTxs.isEmpty
   }
   
-  private func sortedRates(rates: [Rate]) -> [Rate] {
+  private func getSortedRates(rates: [Rate], sortBySelected: Bool) -> [Rate] {
     guard let destToken = destToken.value else { return [] }
     let price = destTokenPrice.value ?? 0
     
@@ -356,7 +371,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       return diffInUSD(lhs: lhs, rhs: rhs, destToken: destToken, destTokenPrice: price) > 0
     }
     return [sortedRates.first!] + sortedRates.dropFirst().sorted { lhs, rhs in
-      if lhs.hint == selectedPlatformHint {
+      if lhs.hint == selectedPlatformHint && sortBySelected {
         return true
       }
       return diffInUSD(lhs: lhs, rhs: rhs, destToken: destToken, destTokenPrice: price) > 0

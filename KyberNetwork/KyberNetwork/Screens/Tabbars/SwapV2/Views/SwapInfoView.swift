@@ -11,6 +11,7 @@ class SwapInfoView: BaseXibView {
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var valueLabel: UILabel!
   @IBOutlet weak var iconImageView: UIImageView!
+  @IBOutlet weak var leftValueIcon: UIImageView!
   @IBOutlet weak var underlineView: DashedLineView!
   
   var isTitleUnderlined: Bool = false {
@@ -25,6 +26,8 @@ class SwapInfoView: BaseXibView {
   
   override func commonInit() {
     super.commonInit()
+    
+    leftValueIcon.isHidden = true
     
     iconImageView.isUserInteractionEnabled = true
     iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(rightIconWasTapped)))
@@ -58,6 +61,11 @@ class SwapInfoView: BaseXibView {
     valueLabel.text = value
     valueLabel.textColor = highlighted ? .Kyber.primaryGreenColor : .white.withAlphaComponent(0.5)
     valueLabel.font = highlighted ? UIFont(name: "Karla-Medium", size: 14) : UIFont(name: "Karla-Regular", size: 14)
+  }
+  
+  func setLeftValueIcon(icon: String, isHidden: Bool) {
+    leftValueIcon.isHidden = isHidden
+    leftValueIcon.loadImage(icon)
   }
   
 }

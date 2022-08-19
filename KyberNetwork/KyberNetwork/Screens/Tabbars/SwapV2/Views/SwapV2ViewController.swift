@@ -67,12 +67,6 @@ class SwapV2ViewController: KNBaseViewController {
   var timer: Timer?
   var remainingTime: Int = 0
   
-  var isExpanded: Bool = false {
-    didSet {
-      self.expandIcon.image = isExpanded ? Images.swapPullup : Images.swapDropdown
-    }
-  }
-  
   var isInfoExpanded: Bool = false {
     didSet {
       UIView.animate(withDuration: 0.2) {
@@ -347,6 +341,8 @@ class SwapV2ViewController: KNBaseViewController {
         self.loadingIndicator.isHidden = true
         self.rateLoadingView.isHidden = true
       case .refreshingRates:
+        self.continueButton.isEnabled = false
+        self.continueButton.setTitle("Fetching the best rates", for: .normal)
         self.loadingIndicator.isHidden = false
         self.rateLoadingView.isHidden = true
       case .notConnected:
@@ -466,6 +462,10 @@ class SwapV2ViewController: KNBaseViewController {
       guard let error = error else { return }
       self?.showErrorTopBannerMessage(with: error.title, message: error.message)
     }
+    
+    viewModel.isExpanding.observeAndFire(on: self) { [weak self] isExpanding in
+      self?.expandIcon.image = isExpanding ? Images.swapPullup : Images.swapDropdown
+    }
   }
   
   @IBAction func settingsWasTapped(_ sender: Any) {
@@ -497,9 +497,9 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   @objc func onToggleExpand() {
-    isExpanded.toggle()
+    viewModel.isExpanding.value.toggle()
     let numberOfRows = viewModel.numberOfRateRows
-    let rowsToShow = isExpanded ? numberOfRows : min(2, numberOfRows)
+    let rowsToShow = viewModel.isExpanding.value ? numberOfRows : min(2, numberOfRows)
     UIView.animate(withDuration: 0.5) {
       self.destViewHeight.constant = CGFloat(112) + CGFloat(rowsToShow) * self.platformRateItemHeight + 24
       self.view.layoutIfNeeded()
@@ -527,6 +527,7 @@ class SwapV2ViewController: KNBaseViewController {
     let maxAvailableAmount = viewModel.maxAvailableSourceTokenAmount
     let allBalanceText = NumberFormatUtils.amount(value: maxAvailableAmount, decimals: decimals)
     sourceTextField.text = allBalanceText
+    sourceTextField.resignFirstResponder()
     if viewModel.isSourceTokenQuote {
       showSuccessTopBannerMessage(
         message: String(format: Strings.swapSmallAmountOfQuoteTokenUsedForFee, KNGeneralProvider.shared.quoteToken)
@@ -541,11 +542,11 @@ extension SwapV2ViewController {
   
   func reloadRates() {
     let numberOfRows = viewModel.numberOfRateRows
-    let rowsToShow = isExpanded ? numberOfRows : min(2, numberOfRows)
+    let rowsToShow =  viewModel.isExpanding.value ? numberOfRows : min(2, numberOfRows)
     
     canExpand = numberOfRows > 2
     if !canExpand {
-      isExpanded = false
+      viewModel.isExpanding.value = false
     }
     platformTableView.reloadData()
     
@@ -654,8 +655,8 @@ extension SwapV2ViewController: UITextFieldDelegate {
 extension SwapV2ViewController: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    isExpanded = false
     onSelectPlatformRateAt(index: indexPath.row)
+    viewModel.isExpanding.value = false
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -681,6 +682,7 @@ extension SwapV2ViewController: SwapSummaryViewControllerDelegate {
     loadingIndicator.isHidden = false
     loadingIndicator.start(beginingValue: 1)
     viewModel.selectPlatform(hint: selectedPlatformHint)
+    viewModel.reloadPlatformRatesViewModels()
     viewModel.reloadRates(isRefresh: true)
   }
   
