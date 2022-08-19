@@ -33,7 +33,7 @@ class TransactionSettingsViewModel {
     }
   }
   
-  let slippageCellModel = SlippageRateCellModel(currentRatePercentage: 0.5)
+  let slippageCellModel = SlippageRateCellModel()
   let segmentedCellModel = SettingSegmentedCellModel()
   let switchExpertMode = SettingExpertModeSwitchCellModel()
   let basicModeCellModel = SettingBasicModeCellModel()
@@ -236,6 +236,8 @@ class TransactionSettingsViewModel {
   }
   
   func saveWithBlock() {
+    UserDefaults.standard.set(switchExpertMode.isOn, forKey: KNEnvironment.default.envPrefix + Constants.expertModeSaveKey)
+    UserDefaults.standard.set(slippageCellModel.currentRate, forKey: KNEnvironment.default.envPrefix + Constants.slippageRateSaveKey)
     saveEventHandler(buildSwapSetting())
   }
 }

@@ -85,6 +85,9 @@ public struct Constants {
   public static let didSelectAllChainOption = "did-select-all-chain-key"
   public static let supportURL = "https://t.me/KrystalDefi"
   public static let lowLimitGas = 21000
+  public static let slippageRateSaveKey = "slippage-rate-saving-key"
+  public static let expertModeSaveKey = "expert-mode-saving-key"
+  
 }
 
 public struct UnitConfiguration {

@@ -8,7 +8,8 @@
 import UIKit
 
 class SettingExpertModeSwitchCellModel {
-  var isOn: Bool = false
+
+  var isOn: Bool = UserDefaults.standard.bool(forKey: KNEnvironment.default.envPrefix + Constants.expertModeSaveKey)
   var moreInforSelectHandle: () -> Void = {}
   var switchValueChangedHandle: (Bool) -> Void = { _ in }
   var tapTitleWithIndex: (Int) -> Void = { _ in }

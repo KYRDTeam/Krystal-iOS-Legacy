@@ -18,14 +18,17 @@ enum KAdvancedSettingsMinRateType {
 class SlippageRateCellModel {
   let defaultSlippageText = "0.5"
   let defaultSlippageInputValue = 0.5
-  fileprivate(set) var currentRate: Double
+  var currentRate: Double
   fileprivate(set) var minRateType: KAdvancedSettingsMinRateType = .zeroPointFive
   var slippageChangedEvent: (Double) -> Void = { _ in }
   
   
-  init(currentRatePercentage: Double = 0.0) {
-    self.currentRate = currentRatePercentage
-    switch currentRatePercentage {
+  init() {
+    self.currentRate = UserDefaults.standard.double(forKey: KNEnvironment.default.envPrefix + Constants.slippageRateSaveKey)
+    if currentRate == 0 {
+      currentRate = 0.5
+    }
+    switch currentRate {
     case 0.1:
       self.minRateType = .zeroPointOne
     case 0.5:
@@ -33,7 +36,7 @@ class SlippageRateCellModel {
     case 1.0:
       self.minRateType = .onePercent
     default:
-      self.minRateType = .custom(value: currentRatePercentage)
+      self.minRateType = .custom(value: currentRate)
     }
   }
   
