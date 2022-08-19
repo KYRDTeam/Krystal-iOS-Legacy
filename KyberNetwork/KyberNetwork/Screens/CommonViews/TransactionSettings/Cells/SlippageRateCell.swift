@@ -176,7 +176,7 @@ class SlippageRateCell: UITableViewCell {
     self.cellModel.slippageChangedEvent(self.cellModel.minRatePercent)
     self.configSlippageUI()
     self.advancedCustomRateTextField.text = ""
-    self.advancedCustomRateTextField.setPlaceholder(text: "Input", color: UIColor(named: "navButtonBgColor")!)
+    self.advancedCustomRateTextField.setPlaceholder(text: "Custom", color: UIColor(named: "navButtonBgColor")!)
   }
 }
 
