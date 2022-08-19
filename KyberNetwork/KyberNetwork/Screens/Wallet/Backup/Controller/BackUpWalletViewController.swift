@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol BackUpWalletViewControllerDelegate: class {
+  func didFinishBackup(_ controller: BackUpWalletViewController)
+}
+
 class BackUpWalletViewModel {
   let seeds: [String]
   init(seeds: [String]) {
@@ -23,6 +27,8 @@ class BackUpWalletViewController: KNBaseViewController {
   @IBOutlet weak var infoLabel2: UILabel!
   @IBOutlet weak var infoLabel3: UILabel!
   fileprivate var viewModel: BackUpWalletViewModel
+  
+  weak var delegate: BackUpWalletViewControllerDelegate?
 
   init(viewModel: BackUpWalletViewModel) {
     self.viewModel = viewModel
@@ -82,8 +88,14 @@ class BackUpWalletViewController: KNBaseViewController {
 
   @IBAction func continueButtonTapped(_ sender: Any) {
     let confirmVC = ConfirmBackupViewController()
+    confirmVC.delegate = self
     confirmVC.seedStrings = viewModel.seeds
     self.show(confirmVC, sender: nil)
   }
-  
+}
+
+extension BackUpWalletViewController: ConfirmBackupViewControllerDelegate {
+  func didFinishBackup(_ controller: ConfirmBackupViewController) {
+    self.delegate?.didFinishBackup(self)
+  }
 }

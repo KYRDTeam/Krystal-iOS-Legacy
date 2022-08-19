@@ -86,6 +86,7 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
 //        return controller
 //      }()
       let backUpVC = BackUpWalletViewController(viewModel: viewModel)
+      backUpVC.delegate = self
       self.navigationController.pushViewController(backUpVC, animated: true)
     } catch {
       self.delegate?.createWalletCoordinatorDidCreateWallet(self.newWallet, name: name, chain: self.targetChain)
@@ -117,6 +118,13 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
     } catch {
       print("[Send ref code] \(error.localizedDescription)")
     }
+  }
+}
+
+extension KNCreateWalletCoordinator: BackUpWalletViewControllerDelegate {
+  func didFinishBackup(_ controller: BackUpWalletViewController) {
+    guard let wallet = self.newWallet else { return }
+    self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, chain: targetChain)
   }
 }
 

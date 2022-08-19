@@ -7,10 +7,15 @@
 
 import UIKit
 
+protocol ConfirmBackupViewControllerDelegate: class {
+  func didFinishBackup(_ controller: ConfirmBackupViewController)
+}
+
 class ConfirmBackupViewController: KNBaseViewController {
   @IBOutlet var answerWordLabel: [UILabel]!
   @IBOutlet var answerWordViews: [UIView]!
   @IBOutlet weak var collectionView: UICollectionView!
+  weak var delegate: ConfirmBackupViewControllerDelegate?
   var seedStrings: [String] = []
   var shuffledSeedStrings: [String] = []
   var questionIndexs: [Int] = []
@@ -76,7 +81,9 @@ class ConfirmBackupViewController: KNBaseViewController {
   }
   
   func showSuccessBackup() {
-    
+    let successBackupVC = BackupSuccessViewController()
+    successBackupVC.delegate = self
+    self.show(successBackupVC, sender: nil)
   }
 
   @IBAction func onBackButtonTapped(_ sender: Any) {
@@ -108,7 +115,9 @@ extension ConfirmBackupViewController: UICollectionViewDelegateFlowLayout {
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-      return CGSize(width: 90, height: 32)
+    let text = shuffledSeedStrings[indexPath.row]
+    let width = text.width(withConstrainedHeight: 32, font: UIFont.Kyber.regular(with: 14)) + 30
+    return CGSize(width: width, height: 32)
   }
 }
 
@@ -127,7 +136,7 @@ extension ConfirmBackupViewController: UICollectionViewDelegate {
       updateAnswerLabel(answer: answer, isCorrect: true)
       currentIndex += 1
       updateAnswerView()
-      if currentIndex == 3 {
+      if currentIndex == 4 {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
           self.showSuccessBackup()
         }
@@ -139,5 +148,11 @@ extension ConfirmBackupViewController: UICollectionViewDelegate {
         self.reset()
       }
     }
+  }
+}
+
+extension ConfirmBackupViewController: BackupSuccessViewControllerDelegate {
+  func didFinishBackup(_ controller: BackupSuccessViewController) {
+    self.delegate?.didFinishBackup(self)
   }
 }

@@ -217,7 +217,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="1hz-SJ-z7S">
-                    <rect key="frame" x="38" y="375" width="299" height="188"/>
+                    <rect key="frame" x="26" y="375" width="323" height="188"/>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="188" id="3pb-Og-aTD"/>
@@ -237,10 +237,10 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
-                <constraint firstItem="1hz-SJ-z7S" firstAttribute="trailing" secondItem="dCh-Gj-7yA" secondAttribute="trailing" id="2xY-Ex-CYn"/>
+                <constraint firstItem="1hz-SJ-z7S" firstAttribute="trailing" secondItem="dCh-Gj-7yA" secondAttribute="trailing" constant="12" id="2xY-Ex-CYn"/>
                 <constraint firstItem="7Vh-ps-kbw" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="B1C-ml-Yao"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="5Zi-tN-xeY" secondAttribute="trailing" constant="38" id="DHN-iz-D32"/>
-                <constraint firstItem="1hz-SJ-z7S" firstAttribute="leading" secondItem="dCh-Gj-7yA" secondAttribute="leading" id="I1c-Ej-2vN"/>
+                <constraint firstItem="1hz-SJ-z7S" firstAttribute="leading" secondItem="dCh-Gj-7yA" secondAttribute="leading" constant="-12" id="I1c-Ej-2vN"/>
                 <constraint firstItem="1hz-SJ-z7S" firstAttribute="top" secondItem="dCh-Gj-7yA" secondAttribute="bottom" constant="18" id="TQn-sy-cSM"/>
                 <constraint firstItem="5Zi-tN-xeY" firstAttribute="top" secondItem="7Vh-ps-kbw" secondAttribute="bottom" constant="21" id="VXM-0c-o0i"/>
                 <constraint firstItem="5Zi-tN-xeY" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="38" id="ijK-aW-qa4"/>
