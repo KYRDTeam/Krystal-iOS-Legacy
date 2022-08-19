@@ -59,6 +59,12 @@ class SwapSummaryViewController: KNBaseViewController {
     self.viewModel.startUpdateRate()
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    navigationController?.setNavigationBarHidden(true, animated: true)
+  }
+  
   func setupUI() {
     self.chainIcon.image = KNGeneralProvider.shared.currentChain.chainIcon()
     self.chainNameLabel.text = KNGeneralProvider.shared.currentChain.chainName()

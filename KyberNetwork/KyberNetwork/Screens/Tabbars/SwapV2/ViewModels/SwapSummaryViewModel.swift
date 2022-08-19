@@ -114,7 +114,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   }
   
   func updateSettings(settings: SwapTransactionSettings) {
-    self.settings = settings
+    self.swapObject.swapSetting = settings
     updateInfo()
   }
 

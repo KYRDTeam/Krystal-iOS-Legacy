@@ -59,7 +59,8 @@ class SwapV2Coordinator: NSObject, Coordinator {
     let viewModel = SwapSummaryViewModel(swapObject: object)
     let swapSummaryVC = SwapSummaryViewController(viewModel: viewModel)
     swapSummaryVC.delegate = rootViewController
-    self.rootViewController.present(swapSummaryVC, animated: true)
+    let nav = UINavigationController(rootViewController: swapSummaryVC)
+    self.rootViewController.present(nav, animated: true)
   }
   
   func openTransactionSettings(gasLimit: BigInt, settings: SwapTransactionSettings) {
