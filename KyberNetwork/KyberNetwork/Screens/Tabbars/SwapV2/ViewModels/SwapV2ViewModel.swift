@@ -99,6 +99,16 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     return selectedPlatformRate.value
   }
   
+  var gasLimit: BigInt {
+    if let advanced = settings.advanced {
+      return advanced.gasLimit
+    } else if let rate = selectedRate {
+      return BigInt(rate.estimatedGas)
+    } else {
+      return KNGasConfiguration.exchangeTokensGasLimitDefault
+    }
+  }
+  
   let fetchingBalanceInterval: Double = 10.0
   var timer: Timer?
   

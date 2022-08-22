@@ -623,6 +623,9 @@
 		A6664D1F2858878800CCAB1F /* TransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D1E2858878800CCAB1F /* TransactionProcessor.swift */; };
 		A6664D212859839100CCAB1F /* SolanaTransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D202859839100CCAB1F /* SolanaTransactionProcessor.swift */; };
 		A6664D23285986A700CCAB1F /* SolanaSerumService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D22285986A700CCAB1F /* SolanaSerumService.swift */; };
+		A666E29628B359580078CEA7 /* SwapGasLimitLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A666E29528B359580078CEA7 /* SwapGasLimitLoader.swift */; };
+		A666E29928B36DCC0078CEA7 /* RateBasedSwapGasLimitLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A666E29828B36DCC0078CEA7 /* RateBasedSwapGasLimitLoader.swift */; };
+		A666E29B28B36DD50078CEA7 /* TxBasedSwapGasLimitLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A666E29A28B36DD50078CEA7 /* TxBasedSwapGasLimitLoader.swift */; };
 		A66B9C6C280818F6001B7A3D /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B9C6B280818F6001B7A3D /* ValidationResult.swift */; };
 		A66EC312287D176200D15FE0 /* MultiSendSubTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66EC310287D176200D15FE0 /* MultiSendSubTransactionCell.swift */; };
 		A66EC313287D176200D15FE0 /* MultiSendSubTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66EC311287D176200D15FE0 /* MultiSendSubTransactionCell.xib */; };
@@ -1805,6 +1808,9 @@
 		A6664D1E2858878800CCAB1F /* TransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionProcessor.swift; sourceTree = "<group>"; };
 		A6664D202859839100CCAB1F /* SolanaTransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaTransactionProcessor.swift; sourceTree = "<group>"; };
 		A6664D22285986A700CCAB1F /* SolanaSerumService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaSerumService.swift; sourceTree = "<group>"; };
+		A666E29528B359580078CEA7 /* SwapGasLimitLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapGasLimitLoader.swift; sourceTree = "<group>"; };
+		A666E29828B36DCC0078CEA7 /* RateBasedSwapGasLimitLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateBasedSwapGasLimitLoader.swift; sourceTree = "<group>"; };
+		A666E29A28B36DD50078CEA7 /* TxBasedSwapGasLimitLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxBasedSwapGasLimitLoader.swift; sourceTree = "<group>"; };
 		A66B9C6B280818F6001B7A3D /* ValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationResult.swift; sourceTree = "<group>"; };
 		A66EC310287D176200D15FE0 /* MultiSendSubTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendSubTransactionCell.swift; sourceTree = "<group>"; };
 		A66EC311287D176200D15FE0 /* MultiSendSubTransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSendSubTransactionCell.xib; sourceTree = "<group>"; };
@@ -4932,6 +4938,16 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		A666E29728B36DB80078CEA7 /* GasLimitLoader */ = {
+			isa = PBXGroup;
+			children = (
+				A666E29528B359580078CEA7 /* SwapGasLimitLoader.swift */,
+				A666E29828B36DCC0078CEA7 /* RateBasedSwapGasLimitLoader.swift */,
+				A666E29A28B36DD50078CEA7 /* TxBasedSwapGasLimitLoader.swift */,
+			);
+			path = GasLimitLoader;
+			sourceTree = "<group>";
+		};
 		A66B9C6A280818E3001B7A3D /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -5059,12 +5075,13 @@
 			path = Scanner;
 			sourceTree = "<group>";
 		};
-		A6977DEF289BD07D00B2B6BD /* Repository */ = {
+		A6977DEF289BD07D00B2B6BD /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				A666E29728B36DB80078CEA7 /* GasLimitLoader */,
 				A6977DF0289BD08A00B2B6BD /* SwapRepository.swift */,
 			);
-			path = Repository;
+			path = Services;
 			sourceTree = "<group>";
 		};
 		A6A8A1EE28168B9600F7AB88 /* LoadingCell */ = {
@@ -5302,7 +5319,7 @@
 			children = (
 				A6BA4CB128A3D15D002E2B30 /* Models */,
 				A6BA4CA928A3584C002E2B30 /* Coordinator */,
-				A6977DEF289BD07D00B2B6BD /* Repository */,
+				A6977DEF289BD07D00B2B6BD /* Services */,
 				A6D38BF6289915DD003579F2 /* ViewModels */,
 				A6D38BF5289915D2003579F2 /* Views */,
 			);
@@ -7348,6 +7365,7 @@
 				C31D05FF25F723E8000739D2 /* EtherscanTransactionStorage.swift in Sources */,
 				C32656B5266F55E200C69561 /* KrystalActionSheetCell.swift in Sources */,
 				C313720D26078051003D432B /* CustomTokenTableViewCell.swift in Sources */,
+				A666E29628B359580078CEA7 /* SwapGasLimitLoader.swift in Sources */,
 				A6E6C9B528168DA200EEB2E6 /* LoadingIndicatorCell.swift in Sources */,
 				A651944628361AA6008F4AEB /* TransactionHistoryItemType.swift in Sources */,
 				7E12788D289D005400A2AE34 /* SearchTokenViewModel.swift in Sources */,
@@ -7358,6 +7376,7 @@
 				C3A6E02128A103730079926E /* TransactionSettingsViewController.swift in Sources */,
 				299B5E2D1FCBC0660051361C /* BalanceProtocol.swift in Sources */,
 				25682B7420EE06CD009738C4 /* KNTransactionDetailsViewController.swift in Sources */,
+				A666E29928B36DCC0078CEA7 /* RateBasedSwapGasLimitLoader.swift in Sources */,
 				29358DA91F79FD1C00925D61 /* CALayer.swift in Sources */,
 				29C80D491FB51C380037B1E0 /* Dictionary.swift in Sources */,
 				A6E26FE228129C780054427E /* TxObject.swift in Sources */,
@@ -7761,6 +7780,7 @@
 				A6B3CD3F28117806005D0D66 /* KNTransactionHistoryViewController.swift in Sources */,
 				C314F1692785525B00E3599B /* DappBrowerTransactionConfirmPopup.swift in Sources */,
 				25C45ACD20AC475700CDA1FF /* KNImportWalletViewController.swift in Sources */,
+				A666E29B28B36DD50078CEA7 /* TxBasedSwapGasLimitLoader.swift in Sources */,
 				C344975B28A20C4900028AFB /* SlippageRateCell.swift in Sources */,
 				C68AA276237A6BE900B9EC35 /* KNTransactionStatusPopUp.swift in Sources */,
 				73ED85A72034BFEF00593BF3 /* UITextFieldAdditions.swift in Sources */,

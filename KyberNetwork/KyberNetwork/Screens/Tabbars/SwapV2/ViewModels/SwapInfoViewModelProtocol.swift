@@ -12,22 +12,13 @@ protocol SwapInfoViewModelProtocol {
   var settings: SwapTransactionSettings { get }
   var selectedRate: Rate? { get }
   var showRevertedRate: Bool { get }
+  var gasLimit: BigInt { get }
 }
 
 extension SwapInfoViewModelProtocol {
   
   var isEIP1559: Bool {
     return KNGeneralProvider.shared.currentChain.isSupportedEIP1559()
-  }
-  
-  var gasLimit: BigInt {
-    if let advanced = settings.advanced {
-      return advanced.gasLimit
-    } else if let rate = selectedRate {
-      return BigInt(rate.estimatedGas)
-    } else {
-      return KNGasConfiguration.exchangeTokensGasLimitDefault
-    }
   }
   
   var gasPrice: BigInt {

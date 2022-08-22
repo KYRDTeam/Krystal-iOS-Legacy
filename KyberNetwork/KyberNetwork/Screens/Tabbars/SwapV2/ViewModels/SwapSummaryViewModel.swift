@@ -34,6 +34,40 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   var shouldDiplayLoading: Observable<Bool?> = .init(nil)
   var priceImpactState: Observable<PriceImpactState> = .init(.normal)
 
+  var gasPriceLoader: SwapGasLimitLoader?
+  var gasLimitTimer: Timer?
+  let web3Client = EthereumWeb3Service(chain: KNGeneralProvider.shared.currentChain)
+  let gasLimitFetchingInterval: TimeInterval = 15
+  var txGasLimit: BigInt
+  
+  // Override from the protocol
+  var gasLimit: BigInt {
+    if let advanced = settings.advanced {
+      return advanced.gasLimit
+    } else {
+      return txGasLimit
+    }
+  }
+  
+  var gasPrice: BigInt {
+    if let basic = settings.basic {
+      if isEIP1559 {
+        let baseFee = KNGasCoordinator.shared.baseFee ?? .zero
+        let priorityFee = self.getPriorityFee(forType: basic.gasPriceType) ?? .zero
+        return baseFee + priorityFee
+      } else {
+        return self.getGasPrice(forType: basic.gasPriceType)
+      }
+    } else if let advanced = settings.advanced {
+      if isEIP1559 {
+        return advanced.maxFee + advanced.maxPriorityFee
+      } else {
+        return advanced.maxFee
+      }
+    }
+    return KNGasCoordinator.shared.defaultKNGas
+  }
+  
   var showRevertedRate: Bool {
     didSet {
       self.rateString.value = self.getRateString(sourceToken: swapObject.sourceToken, destToken: swapObject.destToken)
@@ -86,6 +120,14 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
     self.swapObject = swapObject
     self.showRevertedRate = swapObject.showRevertedRate
     self.minRatePercent = swapObject.swapSetting.slippage
+    self.txGasLimit = BigInt(swapObject.rate.estimatedGas)
+    self.resetGasLimitLoader()
+    self.scheduleFetchingGasLimit()
+  }
+  
+  deinit {
+    gasLimitTimer?.invalidate()
+    gasLimitTimer = nil
   }
   
   func updateData() {
@@ -105,6 +147,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
       priceImpactString.value = getPriceImpactString(rate: swapObject.rate)
       priceImpactState.value = getPriceImpactState(change: Double(swapObject.rate.priceImpact) / 100)
       updateInfo()
+      resetGasLimitLoader()
       self.newRate.value = nil
     }
   }
@@ -119,6 +162,29 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   func updateSettings(settings: SwapTransactionSettings) {
     self.swapObject.swapSetting = settings
     updateInfo()
+    resetGasLimitLoader()
+  }
+  
+  func resetGasLimitLoader() {
+    web3Client.getTransactionCount(for: currentAddress.addressString) { [weak self] result in
+      switch result {
+      case .success(let count):
+        guard let rawTx = self?.buildRawSwapTx(latestNonce: count) else {
+          return
+        }
+        self?.gasPriceLoader = TxBasedSwapGasLimitLoader(rawTx: rawTx)
+      case .failure:
+        return
+      }
+    }
+  }
+  
+  private func reloadGasLimit() {
+    gasPriceLoader?.getGasLimit(completion: { [weak self] gasLimit in
+      guard let gasLimit = gasLimit else { return }
+      self?.txGasLimit = gasLimit
+      self?.updateInfo()
+    })
   }
 
   private func calculateMinReceiveString(rate: Rate) -> String {
@@ -156,6 +222,12 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
         self.fetchRate()
       }
     )
+  }
+  
+  func scheduleFetchingGasLimit() {
+    gasLimitTimer = Timer.scheduledTimer(withTimeInterval: gasLimitFetchingInterval, repeats: true, block: { [weak self] _ in
+      self?.reloadGasLimit()
+    })
   }
 
   func fetchRate() {
