@@ -552,6 +552,9 @@ extension SwapV2ViewModel {
     if priceImpactState.value == .veryHighNeedExpertMode, settings.expertModeOn {
       priceImpactState.value = .veryHigh
       state.value = .ready
+    } else if priceImpactState.value == .veryHigh, !settings.expertModeOn {
+      priceImpactState.value = .veryHighNeedExpertMode
+      state.value = .requiredExpertMode
     }
     
     self.updateInfo()

@@ -139,9 +139,9 @@ extension SwapInfoViewModelProtocol {
     if -15 < change && change <= -5 {
       return .high
     }
-    // if UserDefaults.isExpertModeOn {
-    //  return .veryHigh
-    // }
+    if UserDefaults.standard.bool(forKey: KNEnvironment.default.envPrefix + Constants.expertModeSaveKey) {
+      return .veryHigh
+    }
     return .veryHighNeedExpertMode
   }
   
