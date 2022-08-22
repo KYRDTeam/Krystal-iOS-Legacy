@@ -59,7 +59,8 @@ class SwapV2Coordinator: NSObject, Coordinator {
     let viewModel = SwapSummaryViewModel(swapObject: object)
     let swapSummaryVC = SwapSummaryViewController(viewModel: viewModel)
     swapSummaryVC.delegate = rootViewController
-    self.rootViewController.present(swapSummaryVC, animated: true)
+    let nav = UINavigationController(rootViewController: swapSummaryVC)
+    self.rootViewController.present(nav, animated: true)
   }
   
   func openTransactionSettings(gasLimit: BigInt, settings: SwapTransactionSettings) {
@@ -76,9 +77,8 @@ class SwapV2Coordinator: NSObject, Coordinator {
     let popup = TransactionSettingsViewController(viewModel: vm)
     vm.update(priorityFee: advancedMaxPriorityFee, maxGas: advancedMaxFee, gasLimit: advancedGasLimit, nonceString: advancedNonce)
     
-//    popup.delegate = self
-    vm.saveEventHandler = { swapSettings in
-      print(swapSettings)
+    vm.saveEventHandler = { [weak self] swapSettings in
+      self?.rootViewController.viewModel.updateSettings(settings: swapSettings)
     }
     self.navigationController.pushViewController(popup, animated: true, completion: nil)
   }
@@ -230,31 +230,3 @@ extension SwapV2Coordinator: ApproveTokenViewControllerDelegate {
   }
   
 }
-
-extension SwapV2Coordinator: GasFeeSelectorPopupViewControllerDelegate {
-  
-  func gasFeeSelectorPopupViewController(_ controller: KNBaseViewController, run event: GasFeeSelectorPopupViewEvent) {
-    switch event {
-    case .gasPriceChanged(let type, _):
-      rootViewController.viewModel.updateGasPriceType(type: type)
-      
-    case .minRatePercentageChanged(let percent):
-      rootViewController.viewModel.updateSlippage(slippage: percent)
-      
-    case .updateAdvancedSetting(let gasLimit, let maxPriorityFee, let maxFee):
-      guard let gasLimit = BigInt(gasLimit), let maxFee = maxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit), let maxPriorityFee = maxPriorityFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) else {
-        return
-      }
-      rootViewController.viewModel.updateAdvancedFee(maxFee: maxFee, maxPriorityFee: maxPriorityFee, gasLimit: gasLimit)
-      
-    case .updateAdvancedNonce(let nonce):
-      guard let nonce = Int(nonce) else { return }
-      rootViewController.viewModel.updateAdvancedNonce(nonce: nonce)
-      
-    default:
-      return
-    }
-  }
-  
-}
-

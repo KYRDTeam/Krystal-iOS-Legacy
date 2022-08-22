@@ -57,6 +57,8 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var dotView: UIView!
   @IBOutlet weak var containerView: UIView!
   
+  @IBOutlet weak var loadingIndicator: SRCountdownTimer!
+  
   var viewModel: SwapV2ViewModel!
   
   let platformRateItemHeight: CGFloat = 96
@@ -64,12 +66,6 @@ class SwapV2ViewController: KNBaseViewController {
   let rateReloadingInterval: Int = 30
   var timer: Timer?
   var remainingTime: Int = 0
-  
-  var isExpanded: Bool = false {
-    didSet {
-      self.expandIcon.image = isExpanded ? Images.swapPullup : Images.swapDropdown
-    }
-  }
   
   var isInfoExpanded: Bool = false {
     didSet {
@@ -112,6 +108,7 @@ class SwapV2ViewController: KNBaseViewController {
     setupSourceView()
     setupInfoViews()
     setupTableView()
+    setupLoadingIndicator()
     setupRateLoadingView()
     setupDropdownView()
     setupSourceDestTokensView()
@@ -125,6 +122,16 @@ class SwapV2ViewController: KNBaseViewController {
     maxGasFeeInfoView.isHidden = true
     priceImpactInfoView.isHidden = true
     routeInfoView.isHidden = true
+  }
+  
+  func setupLoadingIndicator() {
+    self.loadingIndicator.lineWidth = 2
+    self.loadingIndicator.lineColor = UIColor.Kyber.primaryGreenColor
+    self.loadingIndicator.labelTextColor = UIColor.Kyber.primaryGreenColor
+    self.loadingIndicator.trailLineColor = UIColor.Kyber.primaryGreenColor.withAlphaComponent(0.2)
+    self.loadingIndicator.isLoadingIndicator = true
+    self.loadingIndicator.isLabelHidden = true
+    self.loadingIndicator.isHidden = true
   }
   
   func setupAnimation() {
@@ -161,12 +168,12 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   func setupInfoViews() {
-    rateInfoView.setTitle(title: "Rate", underlined: false, shouldShowIcon: true)
+    rateInfoView.setTitle(title: Strings.swapRate, underlined: false, shouldShowIcon: true)
     rateInfoView.onTapRightIcon = { [weak self] in
       self?.viewModel.showRevertedRate.toggle()
     }
     
-    slippageInfoView.setTitle(title: "Max Slippage", underlined: true)
+    slippageInfoView.setTitle(title: Strings.maxSlippage, underlined: true)
     slippageInfoView.iconImageView.isHidden = true
     slippageInfoView.onTapTitle = { [weak self] in
       self?.showBottomBannerView(message: Strings.swapSlippageInfo, icon: Images.swapInfo)
@@ -175,13 +182,13 @@ class SwapV2ViewController: KNBaseViewController {
       self?.viewModel.openSettings()
     }
     
-    minReceiveInfoView.setTitle(title: "Min. Received", underlined: true)
+    minReceiveInfoView.setTitle(title: Strings.minReceived, underlined: true)
     minReceiveInfoView.iconImageView.isHidden = true
     minReceiveInfoView.onTapTitle = { [weak self] in
       self?.showBottomBannerView(message: Strings.swapMinReceiveInfo, icon: Images.swapInfo)
     }
     
-    gasFeeInfoView.setTitle(title: "Network Fee (est)", underlined: true)
+    gasFeeInfoView.setTitle(title: Strings.estNetworkFee, underlined: true)
     gasFeeInfoView.iconImageView.isHidden = true
     gasFeeInfoView.onTapTitle = { [weak self] in
       self?.showBottomBannerView(message: Strings.swapTxnFeeInfo, icon: Images.swapInfo)
@@ -190,19 +197,19 @@ class SwapV2ViewController: KNBaseViewController {
       self?.viewModel.openSettings()
     }
     
-    maxGasFeeInfoView.setTitle(title: "Max Network Fee", underlined: true)
+    maxGasFeeInfoView.setTitle(title: Strings.maxNetworkFee, underlined: true)
     maxGasFeeInfoView.iconImageView.isHidden = true
     maxGasFeeInfoView.onTapTitle = { [weak self] in
       self?.showBottomBannerView(message: Strings.swapTxnMaxFeeInfo, icon: Images.swapInfo)
     }
     
-    priceImpactInfoView.setTitle(title: "Price Impact", underlined: true)
+    priceImpactInfoView.setTitle(title: Strings.priceImpact, underlined: true)
     priceImpactInfoView.iconImageView.isHidden = true
     priceImpactInfoView.onTapTitle = { [weak self] in
       self?.showBottomBannerView(message: Strings.swapPriceImpactInfo, icon: Images.swapInfo)
     }
     
-    routeInfoView.setTitle(title: "Route", underlined: true)
+    routeInfoView.setTitle(title: Strings.route, underlined: true)
   }
   
   func setupTableView() {
@@ -236,7 +243,7 @@ class SwapV2ViewController: KNBaseViewController {
           self?.sourceTokenIcon.setSymbolImage(symbol: token.symbol)
         } else {
           self?.sourceTokenIcon.isHidden = true
-          self?.sourceTokenLabel.text = "Select Token"
+          self?.sourceTokenLabel.text = Strings.selectToken
         }
       }
     }
@@ -249,7 +256,7 @@ class SwapV2ViewController: KNBaseViewController {
           self?.destTokenIcon.setSymbolImage(symbol: token.symbol)
         } else {
           self?.destTokenIcon.isHidden = true
-          self?.destTokenLabel.text = "Select Token"
+          self?.destTokenLabel.text = Strings.selectToken
         }
       }
     }
@@ -312,7 +319,7 @@ class SwapV2ViewController: KNBaseViewController {
       switch state {
       case .emptyAmount:
         self.continueButton.isEnabled = false
-        self.continueButton.setTitle("Enter an amount", for: .normal)
+        self.continueButton.setTitle(Strings.enterAnAmount, for: .normal)
         self.rateLoadingView.isHidden = true
         self.platformTableView.isHidden = true
         self.errorView.isHidden = true
@@ -323,23 +330,33 @@ class SwapV2ViewController: KNBaseViewController {
         self.piWarningView.isHidden = true
       case .fetchingRates:
         self.continueButton.isEnabled = false
-        self.continueButton.setTitle("Fetching the best rates", for: .normal)
+        self.continueButton.setTitle(Strings.fetchingBestRates, for: .normal)
         self.platformTableView.isHidden = true
         self.loadingView.isHidden = false
         self.expandIcon.isHidden = true
         self.approveGuideView.isHidden = true
-        self.resetCountdownView()
         self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
         self.errorView.isHidden = true
         self.piWarningView.isHidden = true
+        self.loadingIndicator.isHidden = true
+        self.rateLoadingView.isHidden = true
+      case .refreshingRates:
+        self.continueButton.isEnabled = false
+        self.continueButton.setTitle(Strings.fetchingBestRates, for: .normal)
+        self.loadingIndicator.isHidden = false
+        self.rateLoadingView.isHidden = true
       case .notConnected:
         self.continueButton.isEnabled = false
-        self.continueButton.setTitle("Connect Wallet", for: .normal)
+        self.continueButton.setTitle(Strings.connectWallet, for: .normal)
         self.errorView.isHidden = true
         self.approveGuideView.isHidden = true
+        self.loadingIndicator.end()
+        self.loadingIndicator.isHidden = true
+        self.rateLoadingView.isHidden = false
+        self.resetCountdownView()
       case .rateNotFound:
         self.continueButton.isEnabled = false
-        self.continueButton.setTitle("Review Swap", for: .normal)
+        self.continueButton.setTitle(Strings.reviewSwap, for: .normal)
         self.rateLoadingView.isHidden = false
         self.platformTableView.isHidden = true
         self.loadingView.isHidden = true
@@ -347,26 +364,36 @@ class SwapV2ViewController: KNBaseViewController {
         self.destViewHeight.constant = CGFloat(112)
         self.errorView.isHidden = false
         self.errorLabel.text = Strings.swapRateNotFound
+        self.loadingIndicator.end()
+        self.loadingIndicator.isHidden = true
+        self.rateLoadingView.isHidden = false
+        self.resetCountdownView()
       case .insufficientBalance:
         self.continueButton.isEnabled = false
-        self.continueButton.setTitle("Insufficient \(self.viewModel.sourceToken.value?.symbol ?? "") Balance", for: .normal)
-        self.rateLoadingView.isHidden = false
+        self.continueButton.setTitle(String(format: Strings.insufficientTokenBalance, self.viewModel.sourceToken.value?.symbol ?? ""), for: .normal)
         self.errorView.isHidden = true
         self.platformTableView.isHidden = false
-        self.loadingView.isHidden = true
         self.approveGuideView.isHidden = true
+        self.rateLoadingView.isHidden = false
+        self.loadingView.isHidden = true
+        self.loadingIndicator.end()
+        self.loadingIndicator.isHidden = true
+        self.resetCountdownView()
       case .checkingAllowance:
         self.continueButton.isEnabled = false
-        self.continueButton.setTitle("Checking Allowance", for: .normal)
-        self.rateLoadingView.isHidden = false
+        self.continueButton.setTitle(Strings.checkingAllowance, for: .normal)
         self.errorView.isHidden = true
         self.platformTableView.isHidden = false
-        self.loadingView.isHidden = true
         self.approveGuideView.isHidden = true
+        self.loadingView.isHidden = true
+        self.rateLoadingView.isHidden = false
+        self.loadingIndicator.end()
+        self.loadingIndicator.isHidden = true
+        self.resetCountdownView()
       case .notApproved:
         let sourceSymbol = self.viewModel.sourceToken.value?.symbol ?? ""
         self.continueButton.isEnabled = true
-        self.continueButton.setTitle("Approve \(sourceSymbol)", for: .normal)
+        self.continueButton.setTitle(String(format: Strings.approveToken, sourceSymbol), for: .normal)
         self.rateLoadingView.isHidden = false
         self.errorView.isHidden = true
         self.platformTableView.isHidden = false
@@ -376,11 +403,19 @@ class SwapV2ViewController: KNBaseViewController {
       case .approving:
         let sourceSymbol = self.viewModel.sourceToken.value?.symbol ?? ""
         self.continueButton.isEnabled = false
-        self.continueButton.setTitle("Approving \(sourceSymbol)", for: .normal)
+        self.continueButton.setTitle(String(format: Strings.approvingToken, sourceSymbol), for: .normal)
         self.approveGuideLabel.attributedText = String(format: Strings.swapApproveWarn, sourceSymbol).withLineSpacing()
+      case .requiredExpertMode:
+        self.continueButton.isEnabled = false
+        self.continueButton.setTitle(Strings.reviewSwap, for: .normal)
+        self.rateLoadingView.isHidden = false
+        self.errorView.isHidden = true
+        self.platformTableView.isHidden = false
+        self.loadingView.isHidden = true
+        self.approveGuideView.isHidden = true
       case .ready:
         self.continueButton.isEnabled = true
-        self.continueButton.setTitle("Review Swap", for: .normal)
+        self.continueButton.setTitle(Strings.reviewSwap, for: .normal)
         self.rateLoadingView.isHidden = false
         self.errorView.isHidden = true
         self.platformTableView.isHidden = false
@@ -407,15 +442,15 @@ class SwapV2ViewController: KNBaseViewController {
       case .veryHigh:
         self.piWarningView.backgroundColor = .Kyber.textWarningRed.withAlphaComponent(0.1)
         self.piWarningIcon.image = Images.swapWarningRed
-        self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact2.withLineSpacing()
+        self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact3.withLineSpacing()
         self.piWarningLabel.textColor = .Kyber.textWarningRed
         self.piWarningView.isHidden = false
         self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
         self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
-      case .veryHighWithoutExpertMode:
+      case .veryHighNeedExpertMode:
         self.piWarningView.backgroundColor = .Kyber.textWarningRed.withAlphaComponent(0.1)
         self.piWarningIcon.image = Images.swapWarningRed
-        self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact3.withLineSpacing()
+        self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact2.withLineSpacing()
         self.piWarningLabel.textColor = .Kyber.textWarningRed
         self.piWarningView.isHidden = false
         self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
@@ -434,6 +469,10 @@ class SwapV2ViewController: KNBaseViewController {
     viewModel.error.observe(on: self) { [weak self] error in
       guard let error = error else { return }
       self?.showErrorTopBannerMessage(with: error.title, message: error.message)
+    }
+    
+    viewModel.isExpanding.observeAndFire(on: self) { [weak self] isExpanding in
+      self?.expandIcon.image = isExpanding ? Images.swapPullup : Images.swapDropdown
     }
   }
   
@@ -466,9 +505,9 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   @objc func onToggleExpand() {
-    isExpanded.toggle()
+    viewModel.isExpanding.value.toggle()
     let numberOfRows = viewModel.numberOfRateRows
-    let rowsToShow = isExpanded ? numberOfRows : min(2, numberOfRows)
+    let rowsToShow = viewModel.isExpanding.value ? numberOfRows : min(2, numberOfRows)
     UIView.animate(withDuration: 0.5) {
       self.destViewHeight.constant = CGFloat(112) + CGFloat(rowsToShow) * self.platformRateItemHeight + 24
       self.view.layoutIfNeeded()
@@ -496,6 +535,7 @@ class SwapV2ViewController: KNBaseViewController {
     let maxAvailableAmount = viewModel.maxAvailableSourceTokenAmount
     let allBalanceText = NumberFormatUtils.amount(value: maxAvailableAmount, decimals: decimals)
     sourceTextField.text = allBalanceText
+    sourceTextField.resignFirstResponder()
     if viewModel.isSourceTokenQuote {
       showSuccessTopBannerMessage(
         message: String(format: Strings.swapSmallAmountOfQuoteTokenUsedForFee, KNGeneralProvider.shared.quoteToken)
@@ -510,11 +550,11 @@ extension SwapV2ViewController {
   
   func reloadRates() {
     let numberOfRows = viewModel.numberOfRateRows
-    let rowsToShow = isExpanded ? numberOfRows : min(2, numberOfRows)
+    let rowsToShow =  viewModel.isExpanding.value ? numberOfRows : min(2, numberOfRows)
     
     canExpand = numberOfRows > 2
     if !canExpand {
-      isExpanded = false
+      viewModel.isExpanding.value = false
     }
     platformTableView.reloadData()
     
@@ -564,15 +604,19 @@ extension SwapV2ViewController {
   }
   
   @objc func onTapReloadRate() {
+    loadingIndicator.isHidden = false
+    loadingIndicator.start(beginingValue: 1)
     resetCountdownView()
-    viewModel.reloadRates()
+    viewModel.reloadRates(isRefresh: true)
   }
   
   func onTimerTick() {
     remainingTime -= 1
     if remainingTime == 0 {
+      loadingIndicator.isHidden = false
+      loadingIndicator.start(beginingValue: 1)
       resetCountdownView()
-      viewModel.reloadRates()
+      viewModel.reloadRates(isRefresh: true)
     } else {
       rateLoadingView.setRemainingTime(seconds: remainingTime)
     }
@@ -583,17 +627,6 @@ extension SwapV2ViewController {
     rateLoadingView.setRemainingTime(seconds: remainingTime)
     rateLoadingView.startAnimation(duration: rateReloadingInterval)
     rateLoadingView.isHidden = !viewModel.isInputValid
-  }
-  
-  func requestRates() {
-    UIView.animate(withDuration: 0.5) {
-      self.expandIcon.isHidden = true
-      self.loadingView.isHidden = false
-      self.platformTableView.isHidden = true
-      self.errorView.isHidden = true
-      self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
-    }
-    viewModel.reloadRates()
   }
   
   func onSourceAmountChange(value: String) {
@@ -613,7 +646,7 @@ extension SwapV2ViewController {
   }
   
   func onSelectPlatformRateAt(index: Int) {
-    viewModel.selectPlatform(platform: viewModel.platformRatesViewModels.value[index].rate.platform)
+    viewModel.selectPlatform(hint: viewModel.platformRatesViewModels.value[index].rate.hint)
   }
   
 }
@@ -630,8 +663,8 @@ extension SwapV2ViewController: UITextFieldDelegate {
 extension SwapV2ViewController: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    isExpanded = false
     onSelectPlatformRateAt(index: indexPath.row)
+    viewModel.isExpanding.value = false
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -653,9 +686,12 @@ extension SwapV2ViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension SwapV2ViewController: SwapSummaryViewControllerDelegate {
   
-  func onSwapSummaryViewClose() {
-    resetCountdownView()
-    viewModel.reloadRates()
+  func onSwapSummaryViewClose(selectedPlatformHint: String) {
+    loadingIndicator.isHidden = false
+    loadingIndicator.start(beginingValue: 1)
+    viewModel.selectPlatform(hint: selectedPlatformHint)
+    viewModel.reloadPlatformRatesViewModels()
+    viewModel.reloadRates(isRefresh: true)
   }
   
 }

@@ -39,7 +39,7 @@ class NumberFormatUtils {
   }
   
   static func usdAmount(value: BigInt, decimals: Int) -> String {
-    return format(value: value, decimals: decimals, maxDecimalMeaningDigits: nil, maxDecimalDigits: 4)
+    return format(value: value, decimals: decimals, maxDecimalMeaningDigits: nil, maxDecimalDigits: 2)
   }
   
   static func zeroPlaceHolder(decimalDigits: Int = 2) -> String {
