@@ -54,6 +54,16 @@ class TransactionSettingsViewModel {
     self.gasLimit = gasLimit
     self.basicSelectedType = selectType
     self.basicModeCellModel.gasLimit = gasLimit
+    switch self.basicSelectedType {
+    case .fast:
+      basicModeCellModel.selectedIndex = 3
+    case .medium:
+      basicModeCellModel.selectedIndex = 2
+    case .slow:
+      basicModeCellModel.selectedIndex = 1
+    default:
+      basicModeCellModel.selectedIndex = -1
+    }
     self.slippageCellModel.slippageChangedEvent = { value in
       print("[Setting][SlippageChanged] \(value)")
     }
