@@ -183,6 +183,9 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
     platformRates.observe(on: self) { [weak self] rates in
       guard let self = self else { return }
+      guard self.state.value.isActiveState else {
+        return
+      }
       let sortedRates = self.getSortedRates(rates: rates, sortBySelected: !self.isExpanding.value)
       if !rates.contains(where: { $0.hint == self.selectedPlatformHint }) {
         self.selectedPlatformHint = sortedRates.first?.hint
@@ -209,9 +212,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       if token?.address.lowercased() == self?.sourceToken.value?.address.lowercased() {
         self?.error.value = .sameSourceDestToken
       }
-    }
-    isExpanding.observe(on: self) { [weak self] isExpanding in
-      self?.reloadPlatformRatesViewModels()
     }
   }
   
@@ -295,6 +295,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   
   func selectPlatform(hint: String) {
     self.selectedPlatformHint = hint
+    self.reloadPlatformRatesViewModels()
   }
   
   func reloadPlatformRatesViewModels() {
@@ -341,9 +342,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   }
   
   func reloadRates(isRefresh: Bool) {
-    guard state.value.isActiveState else {
-      return
-    }
     guard let amount = self.sourceAmount.value, !amount.isZero else {
       return
     }
@@ -440,6 +438,7 @@ extension SwapV2ViewModel {
       checkPendingTx()
       currentChain.value = KNGeneralProvider.shared.currentChain
       sourceToken.value = KNGeneralProvider.shared.quoteTokenObject.toData()
+      state.value = .emptyAmount
       sourceBalance.value = nil
       destBalance.value = nil
       destToken.value = nil
@@ -455,6 +454,7 @@ extension SwapV2ViewModel {
   @objc func appDidSwitchAddress() {
     checkPendingTx()
     currentAddress.value = AppDelegate.session.address
+    state.value = .emptyAmount
     sourceAmount.value = nil
     sourceBalance.value = nil
     destBalance.value = nil
