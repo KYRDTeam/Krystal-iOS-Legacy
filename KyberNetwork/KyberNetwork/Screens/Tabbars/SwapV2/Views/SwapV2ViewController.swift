@@ -506,6 +506,7 @@ class SwapV2ViewController: KNBaseViewController {
   
   @objc func onToggleExpand() {
     viewModel.isExpanding.value.toggle()
+    viewModel.reloadPlatformRatesViewModels()
     let numberOfRows = viewModel.numberOfRateRows
     let rowsToShow = viewModel.isExpanding.value ? numberOfRows : min(2, numberOfRows)
     UIView.animate(withDuration: 0.5) {
@@ -613,10 +614,12 @@ extension SwapV2ViewController {
   func onTimerTick() {
     remainingTime -= 1
     if remainingTime == 0 {
-      loadingIndicator.isHidden = false
-      loadingIndicator.start(beginingValue: 1)
-      resetCountdownView()
-      viewModel.reloadRates(isRefresh: true)
+      if viewModel.state.value.isActiveState {
+        loadingIndicator.isHidden = false
+        loadingIndicator.start(beginingValue: 1)
+        resetCountdownView()
+        viewModel.reloadRates(isRefresh: true)
+      }
     } else {
       rateLoadingView.setRemainingTime(seconds: remainingTime)
     }
@@ -630,8 +633,13 @@ extension SwapV2ViewController {
   }
   
   func onSourceAmountChange(value: String) {
-    let doubleValue = value.doubleValue
-    guard let sourceToken = viewModel.sourceToken.value, let sourceBalance = viewModel.sourceBalance.value else { return }
+    guard let doubleValue = value.toDouble() else {
+      viewModel.sourceAmount.value = nil
+      return
+    }
+    guard let sourceToken = viewModel.sourceToken.value, let sourceBalance = viewModel.sourceBalance.value else {
+      return
+    }
     let amountToChange = BigInt(doubleValue * pow(10.0, Double(sourceToken.decimals)))
   
     if amountToChange > viewModel.maxAvailableSourceTokenAmount && amountToChange <= sourceBalance {
@@ -663,8 +671,8 @@ extension SwapV2ViewController: UITextFieldDelegate {
 extension SwapV2ViewController: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    onSelectPlatformRateAt(index: indexPath.row)
     viewModel.isExpanding.value = false
+    onSelectPlatformRateAt(index: indexPath.row)
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
