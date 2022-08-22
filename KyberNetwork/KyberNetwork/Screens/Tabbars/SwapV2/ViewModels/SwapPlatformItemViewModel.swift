@@ -26,7 +26,7 @@ class SwapPlatformItemViewModel {
     self.showSavedTag = showSaveTag
     
     if savedAmount > BigInt(0.1 * pow(10.0, 18.0)) {
-      self.savedAmountString = String(format: Strings.swapSavedAmount, NumberFormatUtils.amount(value: savedAmount, decimals: 18))
+      self.savedAmountString = String(format: Strings.swapSavedAmount, NumberFormatUtils.usdAmount(value: savedAmount, decimals: 18))
     } else {
       self.savedAmountString = Strings.swapBest
     }
