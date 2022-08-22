@@ -84,7 +84,7 @@ class SettingAdvancedModeFormCellModel {
     guard !gasLimitString.isEmpty, let gasLimit = BigInt(gasLimitString) else {
       return .empty
     }
-    let estGasUsed = self.rate?.estGasConsumed ?? 21000
+    let estGasUsed = self.rate?.estGasConsumed ?? Constants.lowLimitGas
     if gasLimit < BigInt(estGasUsed) {
       return .low
     } else {
@@ -155,7 +155,7 @@ class SettingAdvancedModeFormCell: UITableViewCell {
     self.baseFeeLabel.text = (KNGasCoordinator.shared.baseFee?.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) ?? "") + " GWEI"
     self.maxPriorityFeeRefLabel.text = "Standard " + (KNGasCoordinator.shared.defaultPriorityFee?.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) ?? "") + " GWEI" + estTimeString
     self.maxFeeRefLabel.text = "Standard " + KNGasCoordinator.shared.standardKNGas.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) + " GWEI" + estTimeString
-    self.gasLimitRefLabel.text = "Est.gas consumed: \(cellModel.rate?.estGasConsumed ?? 21000)"
+    self.gasLimitRefLabel.text = "Est.gas consumed: \(cellModel.rate?.estGasConsumed ?? Constants.lowLimitGas)"
     self.updateValidationUI()
   }
   

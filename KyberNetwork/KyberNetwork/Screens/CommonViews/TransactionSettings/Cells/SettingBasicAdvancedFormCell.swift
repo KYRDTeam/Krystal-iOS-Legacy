@@ -72,7 +72,7 @@ class SettingBasicAdvancedFormCellModel {
     guard !gasLimitString.isEmpty, let gasLimit = BigInt(gasLimitString) else {
       return .empty
     }
-    let estGasUsed = self.rate?.estGasConsumed ?? 21000
+    let estGasUsed = self.rate?.estGasConsumed ?? Constants.lowLimitGas
     
     if gasLimit < BigInt(estGasUsed) {
       return .low
@@ -133,7 +133,7 @@ class SettingBasicAdvancedFormCell: UITableViewCell {
   
   func updateUI() {
     self.gasPriceValueLabel.text = cellModel.displayGasFee
-    self.gasLimitRefLabel.text = "Est.gas consumed: \(cellModel.rate?.estGasConsumed ?? 21000)"
+    self.gasLimitRefLabel.text = "Est.gas consumed: \(cellModel.rate?.estGasConsumed ?? Constants.lowLimitGas)"
     updateValidationUI()
   }
   
