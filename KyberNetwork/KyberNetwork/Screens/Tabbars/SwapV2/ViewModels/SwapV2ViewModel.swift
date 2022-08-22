@@ -181,6 +181,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
         self.reloadRates(amount: amount!, isRefresh: false)
       }
     }
+    sourceTokenPrice.observeAndFire(on: self) { [weak self] _ in
+      guard let self = self else { return }
+      self.souceAmountUsdString.value = self.getSourceAmountUsdString(amount: self.sourceAmount.value)
+    }
     platformRates.observe(on: self) { [weak self] rates in
       guard let self = self else { return }
       guard self.state.value.isActiveState else {
@@ -375,17 +379,16 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   
   private func createPlatformRatesViewModels(sortedRates: [Rate]) -> [SwapPlatformItemViewModel] {
     guard let destToken = destToken.value else { return [] }
-    let destTokenPrice = destTokenPrice.value ?? 0
     var savedAmount: BigInt = 0
     if sortedRates.count >= 2 {
-      savedAmount = diffInUSD(lhs: sortedRates[0], rhs: sortedRates[1], destToken: destToken, destTokenPrice: destTokenPrice)
+      savedAmount = diffInUSD(lhs: sortedRates[0], rhs: sortedRates[1], destToken: destToken, destTokenPrice: destTokenPrice.value ?? 0)
     }
     return sortedRates.enumerated().map { index, rate in
       return SwapPlatformItemViewModel(platformRate: rate,
                                        isSelected: rate.hint == selectedPlatformHint,
                                        quoteToken: currentChain.value.quoteTokenObject(),
                                        destToken: destToken,
-                                       destTokenPrice: destTokenPrice,
+                                       destTokenPrice: destTokenPrice.value,
                                        gasFeeUsd: self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed ?? 0), gasPrice: self.gasPrice),
                                        showSaveTag: index == 0,
                                        savedAmount: savedAmount)
@@ -393,8 +396,11 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   }
   
   private func getSourceAmountUsdString(amount: BigInt?) -> String? {
-    guard let sourceToken = sourceToken.value, let sourceTokenPrice = sourceTokenPrice.value, let amount = amount else {
+    guard let sourceToken = sourceToken.value, let amount = amount else {
       return nil
+    }
+    guard let sourceTokenPrice = sourceTokenPrice.value else {
+      return "-"
     }
     let amountUSD = amount * BigInt(sourceTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(sourceToken.decimals)
     let formattedAmountUSD = NumberFormatUtils.usdAmount(value: amountUSD, decimals: 18)
@@ -438,6 +444,8 @@ extension SwapV2ViewModel {
       checkPendingTx()
       currentChain.value = KNGeneralProvider.shared.currentChain
       sourceToken.value = KNGeneralProvider.shared.quoteTokenObject.toData()
+      sourceTokenPrice.value = nil
+      destTokenPrice.value = nil
       state.value = .emptyAmount
       sourceBalance.value = nil
       destBalance.value = nil
