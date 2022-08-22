@@ -1006,6 +1006,8 @@
 		C3A6911A25638DE700F57756 /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6910F25638DE700F57756 /* Lato-BoldItalic.ttf */; };
 		C3A6911B25638DE700F57756 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6911025638DE700F57756 /* Lato-Light.ttf */; };
 		C3A6911C25638DE700F57756 /* Lato-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6911125638DE700F57756 /* Lato-ThinItalic.ttf */; };
+		C3B1FF0F28AFAAD7004CB9EF /* WalletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B1FF0D28AFAAD7004CB9EF /* WalletCell.swift */; };
+		C3B1FF1028AFAAD7004CB9EF /* WalletCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3B1FF0E28AFAAD7004CB9EF /* WalletCell.xib */; };
 		C3B79EC5285C70B8008547F5 /* TradingViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B79EC4285C70B8008547F5 /* TradingViewData.swift */; };
 		C3BA31FD27184367008E8DF6 /* GasPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BA31FC27184367008E8DF6 /* GasPrice.swift */; };
 		C3BBC55F25FB4A2F004E1FB6 /* InvestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BBC55E25FB4A2F004E1FB6 /* InvestCoordinator.swift */; };
@@ -2185,6 +2187,8 @@
 		C3A6910F25638DE700F57756 /* Lato-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BoldItalic.ttf"; sourceTree = "<group>"; };
 		C3A6911025638DE700F57756 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
 		C3A6911125638DE700F57756 /* Lato-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-ThinItalic.ttf"; sourceTree = "<group>"; };
+		C3B1FF0D28AFAAD7004CB9EF /* WalletCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCell.swift; sourceTree = "<group>"; };
+		C3B1FF0E28AFAAD7004CB9EF /* WalletCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletCell.xib; sourceTree = "<group>"; };
 		C3B79EC4285C70B8008547F5 /* TradingViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingViewData.swift; sourceTree = "<group>"; };
 		C3BA31FC27184367008E8DF6 /* GasPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPrice.swift; sourceTree = "<group>"; };
 		C3BBC55E25FB4A2F004E1FB6 /* InvestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestCoordinator.swift; sourceTree = "<group>"; };
@@ -5942,6 +5946,8 @@
 				C3A241A32567BEB50073703C /* WalletListTableViewCell.xib */,
 				C3409E1825AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift */,
 				C3409E1925AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib */,
+				C3B1FF0D28AFAAD7004CB9EF /* WalletCell.swift */,
+				C3B1FF0E28AFAAD7004CB9EF /* WalletCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -6459,6 +6465,7 @@
 				C3F71CA1261C084C00285935 /* EarnTutorialViewController.xib in Resources */,
 				25929C6120DA5C760045CFA3 /* SF-Pro-Display-UltralightItalic.otf in Resources */,
 				25073D23211AF20D00833C92 /* Montserrat-Regular.ttf in Resources */,
+				C3B1FF1028AFAAD7004CB9EF /* WalletCell.xib in Resources */,
 				25073D28211AF20D00833C92 /* Montserrat-ExtraLight.ttf in Resources */,
 				25FB472422CC939F00374CE8 /* config_env_staging2.json in Resources */,
 				C6FE41822383A0C10096AAD8 /* KNWalletConnectViewController.xib in Resources */,
@@ -7672,6 +7679,7 @@
 				258C47EF2081F29D00BD4068 /* NSObject+Kyber.swift in Sources */,
 				25C45ADD20AD5EF900CDA1FF /* KNImportWalletCoordinator.swift in Sources */,
 				7E44DBEA2849BA3100E4AD26 /* BridgeTransactionStatusPopup.swift in Sources */,
+				C3B1FF0F28AFAAD7004CB9EF /* WalletCell.swift in Sources */,
 				A6CC317C2877ED8700891200 /* OcrDetector.swift in Sources */,
 				257A37A9205DA06400E86794 /* KNTransactionStatusCoordinator.swift in Sources */,
 				C3C0B0CB2602F8C6001A1710 /* Marketing.swift in Sources */,
