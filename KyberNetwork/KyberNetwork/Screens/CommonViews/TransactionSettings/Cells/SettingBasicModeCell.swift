@@ -15,6 +15,7 @@ class SettingBasicModeCellModel {
   var gasLimit: BigInt = .zero
   var selectedIndex = 2
   var actionHandler: (Int) -> Void = { _ in }
+  var rate: Rate?
   
   func resetData() {
     fast = KNGasCoordinator.shared.fastKNGas
@@ -61,11 +62,11 @@ class SettingBasicModeCell: UITableViewCell {
       priceView.textColor = selected ? UIColor.Kyber.buttonBg : UIColor.Kyber.whiteText
       switch aView.tag {
       case 3:
-        priceView.text = cellModel.fast.formatFeeString(gasLimit: cellModel.gasLimit, type: 3)
+        priceView.text = cellModel.fast.formatFeeString(type: 3, rate: cellModel.rate)
       case 2:
-        priceView.text = cellModel.medium.formatFeeString(gasLimit: cellModel.gasLimit, type: 2)
+        priceView.text = cellModel.medium.formatFeeString(type: 2, rate: cellModel.rate)
       case 1:
-        priceView.text = cellModel.slow.formatFeeString(gasLimit: cellModel.gasLimit, type: 1)
+        priceView.text = cellModel.slow.formatFeeString(type: 1, rate: cellModel.rate)
       default:
         break
       }

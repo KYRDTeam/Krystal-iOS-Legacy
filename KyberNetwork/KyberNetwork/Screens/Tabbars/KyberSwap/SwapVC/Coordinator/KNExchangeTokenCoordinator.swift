@@ -542,7 +542,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         }
       }
     case .openGasPriceSelect(let gasLimit, let baseGasLimit, let type, let percent, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
-      let vm = TransactionSettingsViewModel(gasLimit: gasLimit)
+      let vm = TransactionSettingsViewModel(gasLimit: gasLimit, rate: nil)
       let popup = TransactionSettingsViewController(viewModel: vm)
       vm.update(priorityFee: advancedPriorityFee, maxGas: advancedMaxFee, gasLimit: advancedGasLimit, nonceString: advancedNonce)
       

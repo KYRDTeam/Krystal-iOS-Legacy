@@ -33,6 +33,8 @@ class ExpertModeWarningViewController: KNBaseViewController {
     
     customizedText.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.Kyber.textWarningRed, range: NSRange(location: 0, length: "Expert Mode".count))
     messageLabel.attributedText = customizedText
+    
+    self.confirmTextField.attributedPlaceholder = NSAttributedString(string: "Confirm", attributes: [NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWPlaceHolder])
   }
   
   @IBAction func confirmButtonTapped(_ sender: UIButton) {

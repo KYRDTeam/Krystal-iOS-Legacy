@@ -16,7 +16,7 @@ struct SwapV2ViewModelActions {
   var onSelectOpenHistory: () -> ()
   var openSwapConfirm: (SwapObject) -> ()
   var openApprove: (_ token: TokenObject, _ amount: BigInt) -> ()
-  var openSettings: (_ gasLimit: BigInt, _ settings: SwapTransactionSettings) -> ()
+  var openSettings: (_ gasLimit: BigInt,_ rate: Rate?,_ settings: SwapTransactionSettings) -> ()
 }
 
 class SwapV2ViewModel: SwapInfoViewModelProtocol {
@@ -524,7 +524,8 @@ extension SwapV2ViewModel {
   }
   
   func openSettings() {
-    actions.openSettings(gasLimit, settings)
+    let selectedRate = selectedPlatformRate.value
+    actions.openSettings(gasLimit, selectedRate, settings)
   }
   
 }

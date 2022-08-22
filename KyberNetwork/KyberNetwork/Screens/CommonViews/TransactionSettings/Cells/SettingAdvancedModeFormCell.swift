@@ -26,11 +26,13 @@ class SettingAdvancedModeFormCellModel {
       self.customNonceString = "\(self.nonce)"
     }
   }
+  let rate: Rate?
 
-  init(gasLimit: BigInt, nonce: Int) {
+  init(gasLimit: BigInt, nonce: Int, rate: Rate?) {
     self.gasLimit = gasLimit
     self.nonce = nonce
     self.gasLimitString = gasLimit.description
+    self.rate = rate
   }
   
   func getAdvancedSettingInfo() -> AdvancedSettingsInfo {
@@ -82,8 +84,8 @@ class SettingAdvancedModeFormCellModel {
     guard !gasLimitString.isEmpty, let gasLimit = BigInt(gasLimitString) else {
       return .empty
     }
-    
-    if gasLimit < BigInt(21000) {
+    let estGasUsed = self.rate?.estGasConsumed ?? Constants.lowLimitGas
+    if gasLimit < BigInt(estGasUsed) {
       return .low
     } else {
       return .none
@@ -153,7 +155,7 @@ class SettingAdvancedModeFormCell: UITableViewCell {
     self.baseFeeLabel.text = (KNGasCoordinator.shared.baseFee?.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) ?? "") + " GWEI"
     self.maxPriorityFeeRefLabel.text = "Standard " + (KNGasCoordinator.shared.defaultPriorityFee?.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) ?? "") + " GWEI" + estTimeString
     self.maxFeeRefLabel.text = "Standard " + KNGasCoordinator.shared.standardKNGas.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) + " GWEI" + estTimeString
-    self.gasLimitRefLabel.text = "Est.gas consumed: \(cellModel.gasLimit.description)"
+    self.gasLimitRefLabel.text = "Est.gas consumed: \(cellModel.rate?.estGasConsumed ?? Constants.lowLimitGas)"
     self.updateValidationUI()
   }
   
