@@ -45,8 +45,8 @@ class SwapV2Coordinator: NSObject, Coordinator {
         openApprove: { tokenObject, amount in
           self.openApprove(token: tokenObject, amount: amount)
         },
-        openSettings: { gasLimit, settings in
-          self.openTransactionSettings(gasLimit: gasLimit, settings: settings)
+        openSettings: { gasLimit, rate, settings in
+          self.openTransactionSettings(gasLimit: gasLimit, rate: rate, settings: settings)
         }
       )
     )
@@ -63,7 +63,7 @@ class SwapV2Coordinator: NSObject, Coordinator {
     self.rootViewController.present(nav, animated: true)
   }
   
-  func openTransactionSettings(gasLimit: BigInt, settings: SwapTransactionSettings) {
+  func openTransactionSettings(gasLimit: BigInt, rate: Rate?, settings: SwapTransactionSettings) {
     let advancedGasLimit = (settings.advanced?.gasLimit).map(String.init)
     let advancedMaxPriorityFee = (settings.advanced?.maxPriorityFee).map {
       return NumberFormatUtils.format(value: $0, decimals: 9, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)
@@ -73,7 +73,7 @@ class SwapV2Coordinator: NSObject, Coordinator {
     }
     let advancedNonce = (settings.advanced?.nonce).map { "\($0)" }
     
-    let vm = TransactionSettingsViewModel(gasLimit: gasLimit, selectType: settings.basic?.gasPriceType ?? .medium)
+    let vm = TransactionSettingsViewModel(gasLimit: gasLimit, selectType: settings.basic?.gasPriceType ?? .medium, rate: rate)
     let popup = TransactionSettingsViewController(viewModel: vm)
     vm.update(priorityFee: advancedMaxPriorityFee, maxGas: advancedMaxFee, gasLimit: advancedGasLimit, nonceString: advancedNonce)
     
