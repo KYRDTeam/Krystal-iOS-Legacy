@@ -281,7 +281,7 @@ class SwapSummaryViewController: KNBaseViewController {
     }
     let advancedNonce = (settings.advanced?.nonce).map { "\($0)" }
     
-    let vm = TransactionSettingsViewModel(gasLimit: gasLimit)
+    let vm = TransactionSettingsViewModel(gasLimit: gasLimit, selectType: selectedGasPriceType)
     let popup = TransactionSettingsViewController(viewModel: vm)
     vm.update(priorityFee: advancedMaxPriorityFee, maxGas: advancedMaxFee, gasLimit: advancedGasLimit, nonceString: advancedNonce)
     
