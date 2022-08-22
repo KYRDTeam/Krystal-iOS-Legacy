@@ -114,6 +114,24 @@ class SwapSummaryViewController: KNBaseViewController {
       self?.priceImpactInfoView.setValue(value: string, highlighted: false)
     }
     
+    viewModel.priceImpactState.observeAndFire(on: self) { [weak self] state in
+      guard let self = self else { return }
+      switch state {
+      case .normal:
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
+        self.priceImpactInfoView.valueLabel.textColor = .white.withAlphaComponent(0.5)
+      case .high:
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
+        self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningYellow
+      case .veryHigh:
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
+        self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
+      case .veryHighNeedExpertMode:
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
+        self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
+      }
+    }
+    
     viewModel.maxGasFeeString.observeAndFire(on: self) { [weak self] string in
       self?.maxGasFeeInfoView.setValue(value: string, highlighted: false)
     }

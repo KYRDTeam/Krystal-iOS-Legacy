@@ -32,6 +32,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   var newRate: Observable<Rate?> = .init(nil)
   var error: Observable<String?> = .init(nil)
   var shouldDiplayLoading: Observable<Bool?> = .init(nil)
+  var priceImpactState: Observable<PriceImpactState> = .init(.normal)
 
   var showRevertedRate: Bool {
     didSet {
@@ -92,6 +93,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
     minReceiveString.value = calculateMinReceiveString(rate: swapObject.rate)
     estimatedGasFeeString.value = getEstimatedNetworkFeeString(rate: swapObject.rate)
     priceImpactString.value = getPriceImpactString(rate: swapObject.rate)
+    priceImpactState.value = getPriceImpactState(change: Double(swapObject.rate.priceImpact) / 100)
     maxGasFeeString.value = getMaxNetworkFeeString(rate: swapObject.rate)
     slippageString.value = "\(String(format: "%.1f", self.minRatePercent))%"
   }
@@ -101,6 +103,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
       swapObject.rate = newRate
       rateString.value = getRateString(sourceToken: swapObject.sourceToken, destToken: swapObject.destToken)
       priceImpactString.value = getPriceImpactString(rate: swapObject.rate)
+      priceImpactState.value = getPriceImpactState(change: Double(swapObject.rate.priceImpact) / 100)
       updateInfo()
       self.newRate.value = nil
     }
