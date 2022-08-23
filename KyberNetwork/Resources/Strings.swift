@@ -230,6 +230,7 @@ struct Strings {
   static let superFast = "super.fast".toBeLocalised()
   static let fast = "fast".toBeLocalised()
   static let regular = "regular".toBeLocalised()
+  static let standard = "standard".toBeLocalised()
   static let slow = "slow".toBeLocalised()
   static let advanced = "advanced".toBeLocalised()
   static let custom = "custom".toBeLocalised()
