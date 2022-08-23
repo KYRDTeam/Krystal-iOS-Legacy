@@ -47,6 +47,12 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       self.priceImpactState.value = self.selectedPlatformRate.value.map {
         return self.getPriceImpactState(change: Double($0.priceImpact) / 100)
       } ?? .normal
+      
+      if self.priceImpactState.value == .veryHighNeedExpertMode || self.priceImpactState.value == .outOfNegativeRange {
+        self.state.value = .requiredExpertMode
+      } else {
+        self.state.value = .ready
+      }
     }
   }
   
