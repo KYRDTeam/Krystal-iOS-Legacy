@@ -133,16 +133,20 @@ extension SwapInfoViewModelProtocol {
   }
   
   func getPriceImpactState(change: Double) -> PriceImpactState {
-    if -5 < change && change <= 100 {
-      return .normal
+    let isExpertModeOn = UserDefaults.standard.bool(forKey: Constants.expertModeSaveKey)
+    if change < -100 {
+      return isExpertModeOn ? .veryHigh : .outOfNegativeRange
+    }
+    if -100 <= change && change <= -15 {
+      return isExpertModeOn ? .veryHigh : .veryHighNeedExpertMode
     }
     if -15 < change && change <= -5 {
       return .high
     }
-    if UserDefaults.standard.bool(forKey: Constants.expertModeSaveKey) {
-      return .veryHigh
+    if -5 < change && change <= 100 {
+      return .normal
     }
-    return .veryHighNeedExpertMode
+    return .outOfPositiveRange
   }
   
   func getRateString(sourceToken: Token, destToken: Token) -> String? {

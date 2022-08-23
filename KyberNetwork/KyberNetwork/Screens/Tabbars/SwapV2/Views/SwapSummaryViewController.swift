@@ -126,7 +126,7 @@ class SwapSummaryViewController: KNBaseViewController {
       case .veryHigh:
         self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
         self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
-      case .veryHighNeedExpertMode:
+      case .veryHighNeedExpertMode, .outOfNegativeRange, .outOfPositiveRange:
         self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
         self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
       }

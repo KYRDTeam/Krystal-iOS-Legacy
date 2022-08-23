@@ -457,6 +457,22 @@ class SwapV2ViewController: KNBaseViewController {
         self.piWarningView.isHidden = false
         self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
         self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
+      case .outOfNegativeRange:
+        self.piWarningView.backgroundColor = .Kyber.textWarningRed.withAlphaComponent(0.1)
+        self.piWarningIcon.image = Images.swapWarningRed
+        self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact4.withLineSpacing()
+        self.piWarningLabel.textColor = .Kyber.textWarningRed
+        self.piWarningView.isHidden = false
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
+        self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
+      case .outOfPositiveRange:
+        self.piWarningView.backgroundColor = .Kyber.textWarningRed.withAlphaComponent(0.1)
+        self.piWarningIcon.image = Images.swapWarningRed
+        self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact5.withLineSpacing()
+        self.piWarningLabel.textColor = .Kyber.textWarningRed
+        self.piWarningView.isHidden = false
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
+        self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
       }
     }
     
