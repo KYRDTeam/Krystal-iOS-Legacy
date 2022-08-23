@@ -39,25 +39,12 @@
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CJy-is-0CU">
-                            <rect key="frame" x="16" y="34.333333333333336" width="46" height="36.000000000000007"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="46" id="VTO-EH-5Ln"/>
-                                <constraint firstAttribute="height" constant="36" id="bgK-lc-dA0"/>
-                            </constraints>
-                            <state key="normal" image="back_blue_icon"/>
-                            <connections>
-                                <action selector="onBackButtonTapped:" destination="-1" eventType="touchUpInside" id="KGf-7g-VlX"/>
-                            </connections>
-                        </button>
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
                         <constraint firstItem="gYH-qT-Fcz" firstAttribute="centerX" secondItem="Vhe-tP-MHs" secondAttribute="centerX" id="4JQ-of-oS8"/>
                         <constraint firstAttribute="height" constant="90" id="G7W-GP-zNd"/>
                         <constraint firstAttribute="bottom" secondItem="gYH-qT-Fcz" secondAttribute="bottom" constant="26" id="SPX-PV-EKV"/>
-                        <constraint firstItem="CJy-is-0CU" firstAttribute="leading" secondItem="Vhe-tP-MHs" secondAttribute="leading" constant="16" id="roc-bW-bgc"/>
-                        <constraint firstItem="CJy-is-0CU" firstAttribute="centerY" secondItem="gYH-qT-Fcz" secondAttribute="centerY" id="yAn-W0-5Ge"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -246,7 +233,6 @@
         </view>
     </objects>
     <resources>
-        <image name="back_blue_icon" width="22" height="18"/>
         <image name="icon-dino-create-wallet-success" width="96" height="96"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

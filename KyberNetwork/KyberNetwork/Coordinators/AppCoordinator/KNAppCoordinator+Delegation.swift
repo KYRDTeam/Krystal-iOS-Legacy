@@ -124,10 +124,6 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
   }
   
   func overviewCoordinatorDidStart() {
-    if self.isFirstLoad {
-      self.showBackupWalletIfNeeded()
-      self.isFirstLoad = false
-    }
   }
 
   func overviewCoordinatorDidSelectExportWallet() {

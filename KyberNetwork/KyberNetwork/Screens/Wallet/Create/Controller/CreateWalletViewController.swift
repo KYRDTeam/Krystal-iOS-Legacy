@@ -70,5 +70,13 @@ class CreateWalletViewController: KNBaseViewController {
   @IBAction func scanButtonTapped(_ sender: Any) {
     self.delegate?.createWalletViewController(self, run: .openQR)
   }
-  
+}
+
+extension CreateWalletViewController: UITextFieldDelegate {
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    guard let textFieldText = textField.text else {
+      return false
+    }
+    return textFieldText.count < 32
+  }
 }

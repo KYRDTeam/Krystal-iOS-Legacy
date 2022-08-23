@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KrystalWallets
 
 protocol ConfirmBackupViewControllerDelegate: class {
   func didFinishBackup(_ controller: ConfirmBackupViewController)
@@ -17,6 +18,7 @@ class ConfirmBackupViewController: KNBaseViewController {
   @IBOutlet weak var collectionView: UICollectionView!
   weak var delegate: ConfirmBackupViewControllerDelegate?
   var seedStrings: [String] = []
+  var walletId: String?
   var shuffledSeedStrings: [String] = []
   var questionIndexs: [Int] = []
   var currentIndex: Int = 0
@@ -81,6 +83,9 @@ class ConfirmBackupViewController: KNBaseViewController {
   }
   
   func showSuccessBackup() {
+    if let walletId = walletId {
+      WalletCache.shared.markWalletBackedUp(walletID: walletId)
+    }
     let successBackupVC = BackupSuccessViewController()
     successBackupVC.delegate = self
     self.show(successBackupVC, sender: nil)

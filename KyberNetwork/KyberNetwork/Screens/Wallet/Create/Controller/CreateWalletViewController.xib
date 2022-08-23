@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -30,20 +30,20 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="feF-N7-F9Y">
-                    <rect key="frame" x="0.0" y="44" width="414" height="90"/>
+                    <rect key="frame" x="0.0" y="44" width="375" height="90"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E6f-F6-rec">
-                            <rect key="frame" x="143.5" y="40.5" width="127" height="23.5"/>
+                            <rect key="frame" x="124" y="40.666666666666671" width="127" height="23.333333333333329"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rtX-W9-317">
-                            <rect key="frame" x="16" y="34.5" width="46" height="36"/>
+                            <rect key="frame" x="16" y="34.333333333333329" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="ckE-X9-MvX"/>
                                 <constraint firstAttribute="height" constant="36" id="yah-zQ-BOF"/>
@@ -70,10 +70,10 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VP3-9T-GPw">
-                    <rect key="frame" x="0.0" y="134" width="414" height="728"/>
+                    <rect key="frame" x="0.0" y="134" width="375" height="644"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ooe-u9-vzK" customClass="DinoChatCustomView" customModule="Krystal" customModuleProvider="target">
-                            <rect key="frame" x="38" y="38" width="338" height="170"/>
+                            <rect key="frame" x="38" y="38" width="299" height="180"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-create-wallet-multichain" translatesAutoresizingMaskIntoConstraints="NO" id="zfZ-yg-SJ2">
                                     <rect key="frame" x="22" y="28" width="24" height="24"/>
@@ -83,7 +83,7 @@
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a single wallet that works on multiple blockchains." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E72-F5-0z6">
-                                    <rect key="frame" x="55" y="23" width="268" height="40"/>
+                                    <rect key="frame" x="55" y="23" width="229" height="40"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="Drj-IL-Ixz"/>
                                     </constraints>
@@ -98,10 +98,10 @@
                                         <constraint firstAttribute="height" constant="24" id="woL-g3-ulO"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet private key is encrypted &amp; stored securely in your device" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fiD-zd-GxT">
-                                    <rect key="frame" x="55" y="79" width="268" height="40"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet private key is encrypted &amp; stored securely in your device." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fiD-zd-GxT">
+                                    <rect key="frame" x="55" y="79" width="229" height="60"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="sTu-Bt-jQt"/>
+                                        <constraint firstAttribute="height" constant="60" id="sTu-Bt-jQt"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                     <color key="textColor" name="textWhiteColor"/>
@@ -119,19 +119,19 @@
                                 <constraint firstAttribute="trailing" secondItem="E72-F5-0z6" secondAttribute="trailing" constant="15" id="gIf-4h-urf"/>
                                 <constraint firstItem="U3f-ut-knN" firstAttribute="leading" secondItem="Ooe-u9-vzK" secondAttribute="leading" constant="22" id="iwJ-cG-NpY"/>
                                 <constraint firstAttribute="trailing" secondItem="fiD-zd-GxT" secondAttribute="trailing" constant="15" id="n2x-U2-faS"/>
-                                <constraint firstAttribute="height" constant="170" id="oU6-PB-pgE"/>
+                                <constraint firstAttribute="height" constant="180" id="oU6-PB-pgE"/>
                                 <constraint firstItem="fiD-zd-GxT" firstAttribute="top" secondItem="U3f-ut-knN" secondAttribute="top" id="r89-Tp-Yn8"/>
                             </constraints>
                         </view>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-dino-create-wallet" translatesAutoresizingMaskIntoConstraints="NO" id="8NX-X6-ME5">
-                            <rect key="frame" x="38" y="210" width="96" height="96"/>
+                            <rect key="frame" x="38" y="220" width="96" height="96"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="96" id="7FO-dX-MNB"/>
                                 <constraint firstAttribute="width" constant="96" id="SCx-rz-KXW"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paste your Referral Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBR-TH-Htu">
-                            <rect key="frame" x="48" y="434" width="176.5" height="20"/>
+                            <rect key="frame" x="47.999999999999986" y="444" width="176.66666666666663" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="ZIh-2a-TTG"/>
                             </constraints>
@@ -140,7 +140,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ldm-6x-4iL">
-                            <rect key="frame" x="48" y="326" width="93" height="20"/>
+                            <rect key="frame" x="48" y="336" width="93" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="8Tn-aU-fGr"/>
                             </constraints>
@@ -149,17 +149,17 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YPG-mg-OyV">
-                            <rect key="frame" x="38" y="467" width="338" height="42"/>
+                            <rect key="frame" x="38" y="477" width="299" height="42"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Paste your referral link" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Od9-ha-kHP">
-                                    <rect key="frame" x="20" y="0.0" width="229" height="42"/>
+                                    <rect key="frame" x="20" y="0.0" width="190" height="42"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="password"/>
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BMA-s8-NnS">
-                                    <rect key="frame" x="304" y="9" width="24" height="24"/>
+                                    <rect key="frame" x="265" y="9" width="24" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="24" id="DVT-0D-iSL"/>
                                         <constraint firstAttribute="height" constant="24" id="SEQ-kc-weM"/>
@@ -170,7 +170,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Hd-Wv-uHg">
-                                    <rect key="frame" x="259" y="12" width="35" height="18"/>
+                                    <rect key="frame" x="220" y="12" width="35" height="18"/>
                                     <color key="backgroundColor" name="buttonBackgroundColor"/>
                                     <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="10"/>
                                     <inset key="contentEdgeInsets" minX="5" minY="3" maxX="5" maxY="3"/>
@@ -208,7 +208,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CaH-2m-gdw">
-                            <rect key="frame" x="38" y="550" width="338" height="38"/>
+                            <rect key="frame" x="38" y="560" width="299" height="38"/>
                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="zYr-i3-36X"/>
@@ -228,14 +228,17 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="otJ-h4-Kpx">
-                            <rect key="frame" x="38" y="358" width="338" height="42"/>
+                            <rect key="frame" x="38" y="368" width="299" height="42"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Paste your referral link" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="EeD-6k-3lT" userLabel="Wallet name">
-                                    <rect key="frame" x="20" y="0.0" width="298" height="42"/>
+                                    <rect key="frame" x="20" y="0.0" width="259" height="42"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="password"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="6EP-Yd-6j8"/>
+                                    </connections>
                                 </textField>
                             </subviews>
                             <color key="backgroundColor" name="innerContainerBgColor"/>
