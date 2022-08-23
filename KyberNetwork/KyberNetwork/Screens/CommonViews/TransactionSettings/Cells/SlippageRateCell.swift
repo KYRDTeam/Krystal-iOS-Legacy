@@ -21,10 +21,9 @@ class SlippageRateCellModel {
   var currentRate: Double
   fileprivate(set) var minRateType: KAdvancedSettingsMinRateType = .zeroPointFive
   var slippageChangedEvent: (Double) -> Void = { _ in }
-  
-  
+
   init() {
-    self.currentRate = UserDefaults.standard.double(forKey: KNEnvironment.default.envPrefix + Constants.slippageRateSaveKey)
+    self.currentRate = UserDefaults.standard.double(forKey: Constants.slippageRateSaveKey)
     if currentRate == 0 {
       currentRate = 0.5
     }
@@ -140,6 +139,7 @@ class SlippageRateCell: UITableViewCell {
       self.updateFocusForView(view: self.thirdOptionSlippageButton, isFocus: true)
     default:
       self.updateFocusForView(view: self.advancedCustomRateTextField, isFocus: true)
+      advancedCustomRateTextField.text = "\(cellModel.currentRate)%"
     }
     self.updateSlippageHintLabel()
   }
@@ -206,17 +206,21 @@ extension SlippageRateCell: UITextFieldDelegate {
     let value = stringFormatter.decimal(with: text)?.doubleValue
     
     if let val = value {
-      self.advancedCustomRateTextField.text = text
-      self.cellModel.updateCurrentMinRate(val)
-      self.cellModel.updateMinRateType(.custom(value: val))
-      
       if val >= 0, val <= maxMinRatePercent {
+        self.advancedCustomRateTextField.text = text
+        self.cellModel.updateCurrentMinRate(val)
+        self.cellModel.updateMinRateType(.custom(value: val))
+        self.configSlippageUIByType(.custom(value: val))
+        textField.text = text + "%"
         self.cellModel.slippageChangedEvent(val)
       } else {
+        self.advancedCustomRateTextField.text = "0.5"
+        self.cellModel.updateCurrentMinRate(0.5)
+        self.cellModel.updateMinRateType(.custom(value: 0.5))
+        self.configSlippageUIByType(.custom(value: 0.5))
+        textField.text = "0.5" + "%"
         self.cellModel.slippageChangedEvent(cellModel.defaultSlippageInputValue)
       }
-      self.configSlippageUIByType(.custom(value: val))
-      textField.text = text + "%"
     }
   }
 }

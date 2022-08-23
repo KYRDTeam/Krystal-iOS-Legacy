@@ -248,8 +248,8 @@ class TransactionSettingsViewModel {
   }
   
   func saveWithBlock() {
-    UserDefaults.standard.set(switchExpertMode.isOn, forKey: KNEnvironment.default.envPrefix + Constants.expertModeSaveKey)
-    UserDefaults.standard.set(slippageCellModel.currentRate, forKey: KNEnvironment.default.envPrefix + Constants.slippageRateSaveKey)
+    UserDefaults.standard.set(switchExpertMode.isOn, forKey: Constants.expertModeSaveKey)
+    UserDefaults.standard.set(slippageCellModel.currentRate, forKey: Constants.slippageRateSaveKey)
     saveEventHandler(buildSwapSetting())
   }
 }
