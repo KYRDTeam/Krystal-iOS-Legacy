@@ -486,7 +486,7 @@ class SwapV2ViewController: KNBaseViewController {
     
     viewModel.error.observe(on: self) { [weak self] error in
       guard let error = error else { return }
-      self?.showErrorTopBannerMessage(with: error.title, message: error.message)
+      self?.showErrorTopBannerMessage(with: error.title ?? "", message: error.message)
     }
     
     viewModel.isExpanding.observeAndFire(on: self) { [weak self] isExpanding in
@@ -722,6 +722,10 @@ extension SwapV2ViewController: SwapSummaryViewControllerDelegate {
     viewModel.selectPlatform(hint: selectedPlatformHint)
     viewModel.reloadPlatformRatesViewModels()
     viewModel.reloadRates(isRefresh: true)
+  }
+  
+  func onSwapSummarySubmitTransaction() {
+    viewModel.updateSettings(settings: SwapTransactionSettings.getDefaultSettings())
   }
   
 }

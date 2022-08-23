@@ -10,6 +10,7 @@ import BigInt
 
 protocol SwapSummaryViewControllerDelegate: AnyObject {
   func onSwapSummaryViewClose(selectedPlatformHint: String)
+  func onSwapSummarySubmitTransaction()
 }
 
 class SwapSummaryViewController: KNBaseViewController {
@@ -145,6 +146,7 @@ class SwapSummaryViewController: KNBaseViewController {
         let controller = SwapProcessPopup(transaction: pendingTransaction)
         controller.delegate = self
         self?.present(controller, animated: true, completion: nil)
+        self?.delegate?.onSwapSummarySubmitTransaction()
       }
     }
     
@@ -156,6 +158,10 @@ class SwapSummaryViewController: KNBaseViewController {
           self?.hideLoading(animated: false)
         }
       }
+    }
+    
+    viewModel.onUpdateRate = { [weak self] rate in
+      self?.updateRateAndTokenInfo()
     }
   }
   
@@ -223,6 +229,14 @@ class SwapSummaryViewController: KNBaseViewController {
   }
   
   func updateRateChangedViewUI(rateChanged: Bool) {
+    if let newRateHint = viewModel.newRate.value?.hint, newRateHint != viewModel.swapObject.rate.hint {
+      let message = String(format: Strings.swapAlertPlatformChanged,
+                           viewModel.swapObject.rate.platformShort,
+                           viewModel.newRate.value?.platformShort ?? "")
+      showTopBannerView(message: message)
+      return
+    }
+    
     if rateChanged {
       self.confirmSwapButton.isEnabled = false
       self.confirmSwapButton.setBackgroundColor(UIColor(named: "navButtonBgColor")!, forState: .disabled)
@@ -231,13 +245,7 @@ class SwapSummaryViewController: KNBaseViewController {
       self.confirmSwapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
     }
     
-    if viewModel.newRate.value?.hint != viewModel.swapObject.rate.hint {
-      rateChangedLabel.attributedText = String(format: Strings.swapAlertPlatformChanged,
-                                               viewModel.swapObject.rate.platformShort,
-                                               viewModel.newRate.value?.platformShort ?? "").withLineSpacing()
-    } else {
-      rateChangedLabel.text = Strings.swapAlertRateChanged
-    }
+    rateChangedLabel.text = Strings.swapAlertRateChanged
     
     UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
       self.rateChangedView.isHidden = !rateChanged
@@ -246,13 +254,17 @@ class SwapSummaryViewController: KNBaseViewController {
     }
   }
   
-  @IBAction func acceptRateChangedButtonTapped(_ sender: Any) {
-    viewModel.updateRate()
-    
+  func updateRateAndTokenInfo() {
     platformView.setLeftValueIcon(icon: viewModel.swapObject.rate.platformIcon, isHidden: false)
     platformView.setValue(value: viewModel.swapObject.rate.platformShort, highlighted: false)
     destTokenBalanceLabel.text = viewModel.getDestAmountString()
     destTokenValueLabel.text = viewModel.getDestAmountUsdString()
+  }
+  
+  @IBAction func acceptRateChangedButtonTapped(_ sender: Any) {
+    viewModel.updateRate()
+    
+    updateRateAndTokenInfo()
   }
 
   @IBAction func confirmSwapButtonTapped(_ sender: Any) {

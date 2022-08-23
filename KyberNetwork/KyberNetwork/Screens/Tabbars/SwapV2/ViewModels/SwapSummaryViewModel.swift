@@ -33,6 +33,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   var error: Observable<String?> = .init(nil)
   var shouldDiplayLoading: Observable<Bool?> = .init(nil)
   var priceImpactState: Observable<PriceImpactState> = .init(.normal)
+  var onUpdateRate: ((Rate) -> ())?
 
   var showRevertedRate: Bool {
     didSet {
@@ -79,7 +80,6 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   }
   
   fileprivate var updateRateTimer: Timer?
-  let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
   let swapRepository = SwapRepository()
 
   init(swapObject: SwapObject) {
@@ -104,7 +104,9 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
       rateString.value = getRateString(sourceToken: swapObject.sourceToken, destToken: swapObject.destToken)
       priceImpactString.value = getPriceImpactString(rate: swapObject.rate)
       priceImpactState.value = getPriceImpactState(change: Double(swapObject.rate.priceImpact) / 100)
+      
       updateInfo()
+      onUpdateRate?(swapObject.rate)
       self.newRate.value = nil
     }
   }
@@ -159,22 +161,6 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   }
 
   func fetchRate() {
-    provider.requestWithFilter(.getExpectedRate(src: self.swapObject.sourceToken.address.lowercased(), dst: self.swapObject.destToken.address.lowercased(), srcAmount: self.swapObject.sourceAmount.description, hint: self.swapObject.rate.hint, isCaching: true)) { [weak self] result in
-      guard let `self` = self else { return }
-      if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let rate = json["rate"] as? String, let priceImpact = json["priceImpact"] as? Int {
-        if self.swapObject.rate.rate != rate {
-          let currentRate = self.swapObject.rate
-          currentRate.rate = rate
-          currentRate.priceImpact = priceImpact
-          self.newRate.value = currentRate
-        }
-      } else {
-        self.fetchAllRates()
-      }
-    }
-  }
-  
-  func fetchAllRates() {
     swapRepository.getAllRates(address: currentAddress.addressString, srcTokenContract: self.swapObject.sourceToken.address.lowercased(), destTokenContract: self.swapObject.destToken.address.lowercased(), amount: self.swapObject.sourceAmount, focusSrc: false) { [weak self] rates in
       guard let self = self else { return }
       let sortedRates = rates.sorted { lhs, rhs in
@@ -183,7 +169,17 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
       if sortedRates.isEmpty {
         return
       }
-      self.newRate.value = sortedRates.first!
+      if let foundRate = sortedRates.first(where: { rate in
+        rate.hint == self.swapObject.rate.hint && rate.rate != self.swapObject.rate.rate
+      }) {
+        self.newRate.value = foundRate
+        return
+      } else {
+        self.newRate.value = sortedRates.first!
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+          self.updateRate()
+        }
+      }
     }
   }
   

@@ -131,7 +131,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   
   var isExpanding: Observable<Bool> = .init(false)
   var state: Observable<SwapState> = .init(.emptyAmount)
-  var settingsObservable: Observable<SwapTransactionSettings> = .init(.default)
+  var settingsObservable: Observable<SwapTransactionSettings> = .init(SwapTransactionSettings.getDefaultSettings())
   
   private let swapRepository = SwapRepository()
 
@@ -195,7 +195,12 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       }
       let sortedRates = self.getSortedRates(rates: rates, sortBySelected: !self.isExpanding.value)
       if !rates.contains(where: { $0.hint == self.selectedPlatformHint }) {
+        let oldPlatformName = self.selectedPlatformRate.value?.platformShort
         self.selectedPlatformHint = sortedRates.first?.hint
+        let newPlatformName = sortedRates.first?.platformShort
+        if let oldName = oldPlatformName, let newName = newPlatformName {
+          self.error.value = .rateHasBeenChanged(oldRate: oldName, newRate: newName)
+        }
       }
       self.platformRatesViewModels.value = self.createPlatformRatesViewModels(sortedRates: sortedRates)
       if sortedRates.isEmpty {
