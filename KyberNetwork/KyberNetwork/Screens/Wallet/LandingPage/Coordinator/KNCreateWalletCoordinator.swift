@@ -79,12 +79,6 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
       let mnemonic = try walletManager.exportMnemonic(walletID: wallet.id)
       let seeds = mnemonic.split(separator: " ").map({ return String($0) })
       let viewModel = BackUpWalletViewModel(seeds: seeds)
-//      let backUpVC: KNBackUpWalletViewController = {
-//        let viewModel = KNBackUpWalletViewModel(seeds: seeds)
-//        let controller = KNBackUpWalletViewController(viewModel: viewModel)
-//        controller.delegate = self
-//        return controller
-//      }()
       let backUpVC = BackUpWalletViewController(viewModel: viewModel)
       backUpVC.delegate = self
       self.navigationController.pushViewController(backUpVC, animated: true)
@@ -128,42 +122,6 @@ extension KNCreateWalletCoordinator: BackUpWalletViewControllerDelegate {
   }
 }
 
-extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
-  func backupWalletViewControllerDidFinish() {
-    guard let wallet = self.newWallet else { return }
-    WalletCache.shared.markWalletBackedUp(walletID: wallet.id)
-    self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, chain: targetChain)
-  }
-
-  func backupWalletViewControllerDidConfirmSkipWallet() {
-    let alertController = KNPrettyAlertController(
-      title: Strings.skip,
-      isWarning: true,
-      message: Strings.skipBackupWarningText,
-      secondButtonTitle: Strings.OK,
-      firstButtonTitle: Strings.Cancel,
-      secondButtonAction: {
-        self.skipBackup()
-      },
-      firstButtonAction: {
-      }
-    )
-    alertController.popupHeight = 468
-    self.navigationController.present(alertController, animated: true, completion: nil)
-  }
-  
-  fileprivate func skipBackup() {
-    guard let wallet = self.newWallet else { return }
-    self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, chain: targetChain)
-  }
-  
-  fileprivate func openQRCode(_ controller: UIViewController) {
-    let qrcode = QRCodeReaderViewController()
-    qrcode.delegate = self
-    controller.present(qrcode, animated: true, completion: nil)
-  }
-}
-
 extension KNCreateWalletCoordinator: CreateWalletViewControllerDelegate {
   func createWalletViewController(_ controller: CreateWalletViewController, run event: CreateWalletViewControllerEvent) {
     switch event {
@@ -193,6 +151,12 @@ extension KNCreateWalletCoordinator: CreateWalletViewControllerDelegate {
     case .sendRefCode(code: let code):
       self.refCode = code
     }
+  }
+
+  fileprivate func openQRCode(_ controller: UIViewController) {
+    let qrcode = QRCodeReaderViewController()
+    qrcode.delegate = self
+    controller.present(qrcode, animated: true, completion: nil)
   }
 }
 
