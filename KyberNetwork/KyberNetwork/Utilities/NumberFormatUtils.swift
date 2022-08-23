@@ -23,7 +23,7 @@ class NumberFormatUtils {
   }()
 
   static func rate(value: BigInt, decimals: Int) -> String {
-    return format(value: value, decimals: decimals, maxDecimalMeaningDigits: 4, maxDecimalDigits: 4)
+    return format(value: value, decimals: decimals, maxDecimalMeaningDigits: 4, maxDecimalDigits: nil)
   }
   
   static func gasFee(value: BigInt) -> String {
@@ -47,7 +47,7 @@ class NumberFormatUtils {
     return "0" + separator.decimal + decimalPart
   }
   
-  static func format(value: BigInt, decimals: Int, maxDecimalMeaningDigits: Int?, maxDecimalDigits: Int) -> String {
+  static func format(value: BigInt, decimals: Int, maxDecimalMeaningDigits: Int?, maxDecimalDigits: Int?) -> String {
     if value.isZero {
       return "0"
     }
@@ -81,9 +81,15 @@ class NumberFormatUtils {
       
       var decimalPart: String = ""
       if let maxDecimalMeaningDigits = maxDecimalMeaningDigits {
-        decimalPart = String(afterDot.prefix(totalLeadingZeros + maxDecimalMeaningDigits).prefix(maxDecimalDigits))
-      } else {
+        if let maxDecimalDigits = maxDecimalDigits {
+          decimalPart = String(afterDot.prefix(totalLeadingZeros + maxDecimalMeaningDigits).prefix(maxDecimalDigits))
+        } else {
+          decimalPart = String(afterDot.prefix(totalLeadingZeros + maxDecimalMeaningDigits))
+        }
+      } else if let maxDecimalDigits = maxDecimalDigits {
         decimalPart = String(afterDot.prefix(maxDecimalDigits))
+      } else {
+        decimalPart = afterDot
       }
       
       let integerPath = withSeparator.string(from: (Int(beforeDot) ?? 0) as NSNumber) ?? "0"
