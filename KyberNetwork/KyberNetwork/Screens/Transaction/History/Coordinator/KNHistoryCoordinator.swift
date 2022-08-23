@@ -489,7 +489,7 @@ extension KNHistoryCoordinator: KNSendTokenViewCoordinatorDelegate {
 }
 
 extension KNHistoryCoordinator: GasFeeSelectorPopupViewControllerDelegate {
-  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+  func gasFeeSelectorPopupViewController(_ controller: KNBaseViewController, run event: GasFeeSelectorPopupViewEvent) {
     switch event {
     case .helpPressed(let tag):
       var message = "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised()

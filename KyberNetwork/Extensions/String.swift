@@ -23,6 +23,15 @@ extension String {
     return data.hexEncoded
   }
   
+  func toDouble() -> Double? {
+    let formatter = NumberFormatter()
+    formatter.locale = Locale.current
+    if let result = formatter.number(from: self.removeGroupSeparator(groupingSeparator: formatter.groupingSeparator)) {
+      return result.doubleValue
+    }
+    return nil
+  }
+  
   var doubleValue: Double {
     let formatter = NumberFormatter()
     formatter.locale = Locale.current

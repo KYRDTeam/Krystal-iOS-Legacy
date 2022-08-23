@@ -100,7 +100,7 @@ extension SwapInfoViewModelProtocol {
         case .fast:
           return Strings.fast
         case .medium:
-          return Strings.regular
+          return Strings.standard
         case .slow:
           return Strings.slow
         case .custom:
@@ -139,7 +139,10 @@ extension SwapInfoViewModelProtocol {
     if -15 < change && change <= -5 {
       return .high
     }
-    return .veryHigh
+    if UserDefaults.standard.bool(forKey: KNEnvironment.default.envPrefix + Constants.expertModeSaveKey) {
+      return .veryHigh
+    }
+    return .veryHighNeedExpertMode
   }
   
   func getRateString(sourceToken: Token, destToken: Token) -> String? {
@@ -155,6 +158,14 @@ extension SwapInfoViewModelProtocol {
       let rateString = NumberFormatUtils.rate(value: BigInt(selectedPlatform.rate) ?? .zero, decimals: 18)
       return "1 \(sourceToken.symbol) = \(rateString) \(destToken.symbol)"
     }
+  }
+  
+  func diffInUSD(lhs: Rate, rhs: Rate, destToken: Token, destTokenPrice: Double) -> BigInt {
+    let diffAmount = (BigInt(lhs.amount) ?? BigInt(0)) - (BigInt(rhs.amount) ?? BigInt(0))
+    let diffFee = BigInt(lhs.estimatedGas) - BigInt(rhs.estimatedGas)
+    let diffAmountUSD = diffAmount * BigInt(destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(destToken.decimals)
+    let diffFeeUSD = self.getGasFeeUSD(estGas: diffFee, gasPrice: self.gasPrice)
+    return diffAmountUSD - diffFeeUSD
   }
   
 }

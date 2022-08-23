@@ -9,7 +9,7 @@ import UIKit
 import BigInt
 
 protocol SwapSummaryViewControllerDelegate: AnyObject {
-  func onSwapSummaryViewClose()
+  func onSwapSummaryViewClose(selectedPlatformHint: String)
 }
 
 class SwapSummaryViewController: KNBaseViewController {
@@ -18,6 +18,7 @@ class SwapSummaryViewController: KNBaseViewController {
   @IBOutlet weak var rateChangedView: UIView!
   @IBOutlet weak var signSuccessView: UIView!
   @IBOutlet weak var errorView: UIView!
+  @IBOutlet weak var platformView: SwapInfoView!
   @IBOutlet weak var rateInfoView: SwapInfoView!
   @IBOutlet weak var slippageInfoView: SwapInfoView!
   @IBOutlet weak var minReceiveInfoView: SwapInfoView!
@@ -35,6 +36,8 @@ class SwapSummaryViewController: KNBaseViewController {
   @IBOutlet weak var stackViewTopConstraint: NSLayoutConstraint!
   @IBOutlet weak var confirmSwapButton: UIButton!
   @IBOutlet weak var confirmSwapButtonTopConstraint: NSLayoutConstraint!
+  @IBOutlet weak var rateChangedLabel: UILabel!
+  
   var viewModel: SwapSummaryViewModel
 
   weak var delegate: SwapSummaryViewControllerDelegate?
@@ -54,6 +57,12 @@ class SwapSummaryViewController: KNBaseViewController {
     setupUI()
     self.viewModel.updateData()
     self.viewModel.startUpdateRate()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    navigationController?.setNavigationBarHidden(true, animated: true)
   }
   
   func setupUI() {
@@ -105,6 +114,24 @@ class SwapSummaryViewController: KNBaseViewController {
       self?.priceImpactInfoView.setValue(value: string, highlighted: false)
     }
     
+    viewModel.priceImpactState.observeAndFire(on: self) { [weak self] state in
+      guard let self = self else { return }
+      switch state {
+      case .normal:
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
+        self.priceImpactInfoView.valueLabel.textColor = .white.withAlphaComponent(0.5)
+      case .high:
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
+        self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningYellow
+      case .veryHigh:
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
+        self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
+      case .veryHighNeedExpertMode:
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
+        self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
+      }
+    }
+    
     viewModel.maxGasFeeString.observeAndFire(on: self) { [weak self] string in
       self?.maxGasFeeInfoView.setValue(value: string, highlighted: false)
     }
@@ -133,6 +160,10 @@ class SwapSummaryViewController: KNBaseViewController {
   }
   
   func setupInfoViews() {
+    platformView.setTitle(title: "Platform", underlined: false)
+    platformView.setLeftValueIcon(icon: viewModel.swapObject.rate.platformIcon, isHidden: false)
+    platformView.setValue(value: viewModel.swapObject.rate.platformShort, highlighted: false)
+    
     rateInfoView.setTitle(title: "Rate", underlined: false, shouldShowIcon: true)
     rateInfoView.onTapRightIcon = { [weak self] in
       self?.viewModel.showRevertedRate.toggle()
@@ -200,6 +231,14 @@ class SwapSummaryViewController: KNBaseViewController {
       self.confirmSwapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
     }
     
+    if viewModel.newRate.value?.hint != viewModel.swapObject.rate.hint {
+      rateChangedLabel.attributedText = String(format: Strings.swapAlertPlatformChanged,
+                                               viewModel.swapObject.rate.platformShort,
+                                               viewModel.newRate.value?.platformShort ?? "").withLineSpacing()
+    } else {
+      rateChangedLabel.text = Strings.swapAlertRateChanged
+    }
+    
     UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
       self.rateChangedView.isHidden = !rateChanged
       self.stackViewTopConstraint.constant = rateChanged ? 86 : 26
@@ -209,6 +248,9 @@ class SwapSummaryViewController: KNBaseViewController {
   
   @IBAction func acceptRateChangedButtonTapped(_ sender: Any) {
     viewModel.updateRate()
+    
+    platformView.setLeftValueIcon(icon: viewModel.swapObject.rate.platformIcon, isHidden: false)
+    platformView.setValue(value: viewModel.swapObject.rate.platformShort, highlighted: false)
     destTokenBalanceLabel.text = viewModel.getDestAmountString()
     destTokenValueLabel.text = viewModel.getDestAmountUsdString()
   }
@@ -218,7 +260,7 @@ class SwapSummaryViewController: KNBaseViewController {
   }
   
   @IBAction func onCloseButtonTapped(_ sender: Any) {
-    delegate?.onSwapSummaryViewClose()
+    delegate?.onSwapSummaryViewClose(selectedPlatformHint: viewModel.swapObject.rate.hint)
     self.dismiss(animated: true)
   }
   
@@ -230,51 +272,23 @@ class SwapSummaryViewController: KNBaseViewController {
       return .custom
     }()
     
-    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: selectedGasPriceType, currentRatePercentage: settings.slippage, isUseGasToken: false)
-    viewModel.updateGasPrices(
-      fast: KNGasCoordinator.shared.fastKNGas,
-      medium: KNGasCoordinator.shared.standardKNGas,
-      slow: KNGasCoordinator.shared.lowKNGas,
-      superFast: KNGasCoordinator.shared.superFastKNGas
-    )
-    viewModel.advancedGasLimit = (settings.advanced?.gasLimit).map(String.init)
-    viewModel.advancedMaxPriorityFee = (settings.advanced?.maxPriorityFee).map {
+    let advancedGasLimit = (settings.advanced?.gasLimit).map(String.init)
+    let advancedMaxPriorityFee = (settings.advanced?.maxPriorityFee).map {
       return NumberFormatUtils.format(value: $0, decimals: 9, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)
     }
-    viewModel.advancedMaxFee = (settings.advanced?.maxFee).map {
+    let advancedMaxFee = (settings.advanced?.maxFee).map {
       return NumberFormatUtils.format(value: $0, decimals: 9, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)
     }
-    viewModel.advancedNonce = (settings.advanced?.nonce).map { "\($0)" }
-
-    let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
-    vc.delegate = self
-    self.present(vc, animated: true, completion: nil)
-  }
-}
-
-extension SwapSummaryViewController: GasFeeSelectorPopupViewControllerDelegate {
-  
-  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
-    switch event {
-    case .gasPriceChanged(let type, _):
-      self.viewModel.updateGasPriceType(type: type)
-      
-    case .minRatePercentageChanged(let percent):
-      self.viewModel.updateSlippage(slippage: percent)
-      
-    case .updateAdvancedSetting(let gasLimit, let maxPriorityFee, let maxFee):
-      guard let gasLimit = BigInt(gasLimit), let maxFee = maxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit), let maxPriorityFee = maxPriorityFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) else {
-        return
-      }
-      self.viewModel.updateAdvancedFee(maxFee: maxFee, maxPriorityFee: maxPriorityFee, gasLimit: gasLimit)
-      
-    case .updateAdvancedNonce(let nonce):
-      guard let nonce = Int(nonce) else { return }
-      self.viewModel.updateAdvancedNonce(nonce: nonce)
-      
-    default:
-      return
+    let advancedNonce = (settings.advanced?.nonce).map { "\($0)" }
+    
+    let vm = TransactionSettingsViewModel(gasLimit: gasLimit, selectType: selectedGasPriceType, rate: viewModel.swapObject.rate)
+    let popup = TransactionSettingsViewController(viewModel: vm)
+    vm.update(priorityFee: advancedMaxPriorityFee, maxGas: advancedMaxFee, gasLimit: advancedGasLimit, nonceString: advancedNonce)
+    
+    vm.saveEventHandler = { [weak self] swapSettings in
+      self?.viewModel.updateSettings(settings: swapSettings)
     }
+    self.navigationController?.pushViewController(popup, animated: true, completion: nil)
   }
   
 }

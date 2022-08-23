@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BackupSuccessViewController" customModule="Krystal" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SiZ-YM-gUN">
+                    <rect key="frame" x="0.0" y="44" width="414" height="90"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Congrats!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zjf-Vr-8mT">
+                            <rect key="frame" x="161" y="40.5" width="92" height="23.5"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstItem="Zjf-Vr-8mT" firstAttribute="centerX" secondItem="SiZ-YM-gUN" secondAttribute="centerX" id="ItC-PN-n4M"/>
+                        <constraint firstAttribute="bottom" secondItem="Zjf-Vr-8mT" secondAttribute="bottom" constant="26" id="kd5-pX-mqf"/>
+                        <constraint firstAttribute="height" constant="90" id="zyn-WQ-acV"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DMt-0r-oZx" customClass="DinoChatCustomView" customModule="Krystal" customModuleProvider="target">
+                    <rect key="frame" x="38" y="143" width="338" height="115"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your wallet has been backed up successfully." lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0o-IK-S3Z">
+                            <rect key="frame" x="31" y="21" width="281" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="48" id="B4b-8d-RTE"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="investButtonBgColor"/>
+                    <constraints>
+                        <constraint firstItem="B0o-IK-S3Z" firstAttribute="top" secondItem="DMt-0r-oZx" secondAttribute="top" constant="21" id="46i-PU-kHC"/>
+                        <constraint firstAttribute="trailing" secondItem="B0o-IK-S3Z" secondAttribute="trailing" constant="26" id="GmH-Pj-lnx"/>
+                        <constraint firstItem="B0o-IK-S3Z" firstAttribute="leading" secondItem="DMt-0r-oZx" secondAttribute="leading" constant="31" id="f2b-zs-oov"/>
+                        <constraint firstAttribute="height" constant="115" id="hZG-AO-KLl"/>
+                    </constraints>
+                </view>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-dino-create-wallet-success" translatesAutoresizingMaskIntoConstraints="NO" id="Q7u-e1-YtK">
+                    <rect key="frame" x="38" y="272" width="96" height="96"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="96" id="Ps2-zL-O27"/>
+                        <constraint firstAttribute="width" constant="96" id="SDB-ug-meb"/>
+                    </constraints>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Ck-io-ct0">
+                    <rect key="frame" x="38" y="708" width="338" height="42"/>
+                    <color key="backgroundColor" name="buttonBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="42" id="FLP-84-h50"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="15"/>
+                    <state key="normal" title="Continue">
+                        <color key="titleColor" name="mainViewBgColor"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="16"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="continueButtonTapped:" destination="-1" eventType="touchUpInside" id="jLx-dR-Dde"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="mainViewBgColor"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="SiZ-YM-gUN" secondAttribute="trailing" id="7yC-Bg-eFG"/>
+                <constraint firstItem="SiZ-YM-gUN" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="O1U-Hz-4Zh"/>
+                <constraint firstItem="Q7u-e1-YtK" firstAttribute="top" secondItem="DMt-0r-oZx" secondAttribute="bottom" constant="14" id="PXm-zI-cXP"/>
+                <constraint firstItem="Q7u-e1-YtK" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="38" id="aob-k1-ep9"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="4Ck-io-ct0" secondAttribute="trailing" constant="38" id="drG-lm-ENZ"/>
+                <constraint firstItem="4Ck-io-ct0" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="38" id="gQi-5G-kek"/>
+                <constraint firstItem="SiZ-YM-gUN" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="mQl-Up-mxT"/>
+                <constraint firstItem="DMt-0r-oZx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="38" id="pA7-H7-0fH"/>
+                <constraint firstItem="DMt-0r-oZx" firstAttribute="top" secondItem="SiZ-YM-gUN" secondAttribute="bottom" constant="9" id="rjT-1k-KeE"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="4Ck-io-ct0" secondAttribute="bottom" constant="112" id="x3u-Bg-Xqr"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="DMt-0r-oZx" secondAttribute="trailing" constant="38" id="yQr-D2-ydX"/>
+            </constraints>
+            <point key="canvasLocation" x="131.8840579710145" y="108.48214285714285"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon-dino-create-wallet-success" width="96" height="96"/>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="investButtonBgColor">
+            <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

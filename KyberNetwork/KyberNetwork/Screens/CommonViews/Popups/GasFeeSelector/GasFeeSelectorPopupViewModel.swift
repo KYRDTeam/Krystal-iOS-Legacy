@@ -19,6 +19,7 @@ enum AdvancedInputError {
   case none
   case high
   case low
+  case empty
 }
 
 extension KNSelectedGasPriceType {
@@ -36,14 +37,77 @@ extension KNSelectedGasPriceType {
       return "custom"
     }
   }
-}
-
-enum KAdvancedSettingsMinRateType {
-  case zeroPointOne
-  case zeroPointFive
-  case onePercent
-  case anyRate
-  case custom(value: Double)
+  
+  func displayTime() -> String {
+    switch self {
+    case .fast:
+      return "30s"
+    case .medium:
+      return "45s"
+    case .slow:
+      return "10m"
+    case .superFast:
+      return ""
+    case .custom:
+      return ""
+    }
+  }
+  
+  func getGasValue() -> BigInt {
+    switch self {
+    case .fast:
+      return KNGasCoordinator.shared.fastKNGas
+    case .medium:
+      return KNGasCoordinator.shared.standardKNGas
+    case .slow:
+      return KNGasCoordinator.shared.lowKNGas
+    case .superFast:
+      return KNGasCoordinator.shared.superFastKNGas
+    case .custom:
+      return .zero
+    }
+  }
+  
+  func getEstTime() -> Int? {
+    switch self {
+    case .fast:
+      return KNGasCoordinator.shared.estTime?.fast
+    case .medium:
+      return KNGasCoordinator.shared.estTime?.standard
+    case .slow:
+      return KNGasCoordinator.shared.estTime?.slow
+    case .superFast:
+      return nil
+    case .custom:
+      return nil
+    }
+  }
+  
+  func getPriorityFeeValue() -> BigInt? {
+    switch self {
+    case .fast:
+      return KNGasCoordinator.shared.fastPriorityFee
+    case .medium:
+      return KNGasCoordinator.shared.standardPriorityFee
+    case .slow:
+      return KNGasCoordinator.shared.lowPriorityFee
+    case .superFast:
+      return KNGasCoordinator.shared.superFastPriorityFee
+    case .custom:
+      return nil
+    }
+  }
+  
+  func getPriorityFeeValueString() -> String {
+    guard let value = self.getPriorityFeeValue() else {
+      return ""
+    }
+    return value.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2)
+  }
+  
+  func getGasValueString() -> String {
+    return self.getGasValue().string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2)
+  }
 }
 
 enum GasFeeSelectorPopupViewEvent {
@@ -59,6 +123,7 @@ enum GasFeeSelectorPopupViewEvent {
   case cancelTransactionFailure(message: String)
   case speedupTransactionSuccessfully(speedupTransaction: InternalHistoryTransaction)
   case speedupTransactionFailure(message: String)
+  case expertModeEnable(status: Bool)
 }
 
 class GasFeeSelectorPopupViewModel {
