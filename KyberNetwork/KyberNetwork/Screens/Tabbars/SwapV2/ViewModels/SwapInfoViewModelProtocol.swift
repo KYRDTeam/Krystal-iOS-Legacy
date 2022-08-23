@@ -100,7 +100,7 @@ extension SwapInfoViewModelProtocol {
         case .fast:
           return Strings.fast
         case .medium:
-          return Strings.regular
+          return Strings.standard
         case .slow:
           return Strings.slow
         case .custom:
