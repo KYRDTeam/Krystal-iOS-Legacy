@@ -734,9 +734,10 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     case .select(token: let token, chainId: let chainId):
       self.openChartView(token: token, chainId: chainId)
     case .selectListWallet:
-      let viewModel = WalletsListViewModel()
-      let walletsList = WalletsListViewController(viewModel: viewModel)
-      walletsList.delegate = self
+//      let viewModel = WalletsListViewModel()
+//      let walletsList = WalletsListViewController(viewModel: viewModel)
+//      walletsList.delegate = self
+      let walletsList = WalletListV2ViewController()
       self.navigationController.present(walletsList, animated: true, completion: nil)
     case .send(let recipientAddress):
       self.openSendTokenView(nil, recipientAddress: recipientAddress ?? "")

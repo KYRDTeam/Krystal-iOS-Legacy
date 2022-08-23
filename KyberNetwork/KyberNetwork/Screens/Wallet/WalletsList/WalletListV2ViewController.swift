@@ -45,6 +45,11 @@ class WalletListV2ViewController: KNBaseViewController {
     
     walletsTableView.registerCell(WalletCell.self)
   }
+  
+  @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
+    self.dismiss(animated: true, completion: nil)
+  }
+  
 }
 
 
@@ -78,5 +83,9 @@ extension WalletListV2ViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return 9
+  }
+  
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 60
   }
 }

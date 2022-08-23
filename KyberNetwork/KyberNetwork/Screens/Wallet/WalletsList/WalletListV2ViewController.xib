@@ -17,6 +17,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WalletListV2ViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
+                <outlet property="contentView" destination="UAc-kD-j7m" id="z9S-wV-7M3"/>
+                <outlet property="contentViewTopContraint" destination="sPd-sz-yvG" id="qva-0n-H2g"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletsTableView" destination="oCm-bx-EyP" id="4ZC-YQ-YcR"/>
             </connections>
@@ -102,13 +104,22 @@
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="UAc-kD-j7m" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="HBL-tv-ivB"/>
                 <constraint firstItem="UAc-kD-j7m" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Oin-tS-1zs"/>
                 <constraint firstItem="UAc-kD-j7m" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="67" id="sPd-sz-yvG"/>
             </constraints>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="8nK-Dz-kAL" appends="YES" id="hGX-2v-kgq"/>
+            </connections>
             <point key="canvasLocation" x="138.40000000000001" y="76.911544227886068"/>
         </view>
+        <tapGestureRecognizer id="8nK-Dz-kAL">
+            <connections>
+                <action selector="tapOutsidePopup:" destination="-1" id="dmj-bD-YD5"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="qr_code_blue_icon" width="20" height="20"/>
