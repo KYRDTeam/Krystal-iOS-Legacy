@@ -23,7 +23,6 @@ class CreateWalletViewController: KNBaseViewController {
   @IBOutlet weak var refCodeTextField: UITextField!
   @IBOutlet weak var walletNameTextField: UITextField!
   @IBOutlet weak var createButton: UIButton!
-  
   weak var delegate: CreateWalletViewControllerDelegate?
   
   override func viewDidLoad() {
