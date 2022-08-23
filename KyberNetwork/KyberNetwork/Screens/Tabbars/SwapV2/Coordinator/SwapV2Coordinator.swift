@@ -60,6 +60,7 @@ class SwapV2Coordinator: NSObject, Coordinator {
     let swapSummaryVC = SwapSummaryViewController(viewModel: viewModel)
     swapSummaryVC.delegate = rootViewController
     let nav = UINavigationController(rootViewController: swapSummaryVC)
+    nav.modalPresentationStyle = .overFullScreen
     self.rootViewController.present(nav, animated: true)
   }
   

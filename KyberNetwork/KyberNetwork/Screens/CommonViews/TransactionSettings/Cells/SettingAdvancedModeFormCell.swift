@@ -174,7 +174,7 @@ class SettingAdvancedModeFormCell: UITableViewCell {
       maxPriorityFeeErrorLabel.text = "priority.fee.low.warning".toBeLocalised()
       maxPriorityFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
     case .high:
-      maxPriorityFeeErrorLabel.text = "priority.fee.high.warning".toBeLocalised()
+      maxPriorityFeeErrorLabel.text = String(format: "priority.fee.high.warning".toBeLocalised(), KNGasCoordinator.shared.defaultPriorityFee?.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) ?? "")
       maxPriorityFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
     case .none, .empty:
       maxPriorityFeeErrorLabel.text = ""
@@ -186,7 +186,7 @@ class SettingAdvancedModeFormCell: UITableViewCell {
       maxFeeErrorLabel.text = "max.fee.low.warning".toBeLocalised()
       maxFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
     case .high:
-      maxFeeErrorLabel.text = "max.fee.high.warning".toBeLocalised()
+      maxFeeErrorLabel.text = String(format: "max.fee.high.warning".toBeLocalised(), KNGasCoordinator.shared.standardKNGas.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2))
       maxFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
     case .none, .empty:
       maxFeeErrorLabel.text = ""
@@ -220,19 +220,27 @@ class SettingAdvancedModeFormCell: UITableViewCell {
 
 extension SettingAdvancedModeFormCell: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-    let number = text.replacingOccurrences(of: ",", with: ".")
-    let value: Double? = number.isEmpty ? 0 : Double(number)
+    var text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    text = text.replacingOccurrences(of: ",", with: ".")
+    let value: Double? = text.isEmpty ? 0 : Double(text)
     
     guard value != nil else { return false }
     
     if textField == self.maxPriorityFeeTextField {
       cellModel.maxPriorityFeeString = text
       cellModel.maxPriorityFeeChangedHandler(text)
+      if string == "," {
+        textField.text = text
+        return false
+      }
       
     } else if textField == self.maxFeeTextField {
       cellModel.maxFeeString = text
       cellModel.maxFeeChangedHandler(text)
+      if string == "," {
+        textField.text = text
+        return false
+      }
     } else if textField == self.gasLimitTextField {
       cellModel.gasLimitString = text
       cellModel.gasLimitChangedHandler(text)
