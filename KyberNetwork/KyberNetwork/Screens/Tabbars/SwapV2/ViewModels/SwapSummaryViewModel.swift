@@ -161,7 +161,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   }
 
   func fetchRate() {
-    swapRepository.getAllRates(address: currentAddress.addressString, srcTokenContract: self.swapObject.sourceToken.address.lowercased(), destTokenContract: self.swapObject.destToken.address.lowercased(), amount: self.swapObject.sourceAmount, focusSrc: false) { [weak self] rates in
+    swapRepository.getAllRates(address: currentAddress.addressString, srcTokenContract: self.swapObject.sourceToken.address.lowercased(), destTokenContract: self.swapObject.destToken.address.lowercased(), amount: self.swapObject.sourceAmount, focusSrc: true) { [weak self] rates in
       guard let self = self else { return }
       let sortedRates = rates.sorted { lhs, rhs in
         return self.diffInUSD(lhs: lhs, rhs: rhs, destToken: self.swapObject.destToken, destTokenPrice: self.swapObject.destTokenPrice) > 0
@@ -170,9 +170,11 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
         return
       }
       if let foundRate = sortedRates.first(where: { rate in
-        rate.hint == self.swapObject.rate.hint && rate.rate != self.swapObject.rate.rate
+        rate.hint == self.swapObject.rate.hint
       }) {
-        self.newRate.value = foundRate
+        if foundRate.rate != self.swapObject.rate.rate {
+          self.newRate.value = foundRate
+        }
         return
       } else {
         self.newRate.value = sortedRates.first!
