@@ -17,7 +17,6 @@ protocol FinishCreateWalletViewControllerDelegate: class {
   func finishCreateWalletViewController(_ controller: FinishCreateWalletViewController, run event: FinishCreateWalletViewControllerEvent)
 }
 
-
 class FinishCreateWalletViewModel {
   let wallet: KWallet
   init(wallet: KWallet) {

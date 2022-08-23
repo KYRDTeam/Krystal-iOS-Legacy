@@ -32,9 +32,9 @@ class ConfirmBackupViewController: KNBaseViewController {
     for index in 0..<answerWordViews.count {
       let view = answerWordViews[index]
       if view.tag == currentIndex {
-        view.backgroundColor = UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.2)
+        view.backgroundColor = UIColor.Kyber.buttonBg.withAlphaComponent(0.2)
       } else {
-        view.backgroundColor = UIColor(named: "grayBackgroundColor")!
+        view.backgroundColor = UIColor.Kyber.grayBackgroundColor
       }
       view.layer.borderWidth = 0
     }
@@ -43,15 +43,15 @@ class ConfirmBackupViewController: KNBaseViewController {
   func updateAnswerLabel(answer: String, isCorrect: Bool) {
     guard isCorrect else {
       let currentAnswerView = answerWordViews.first(where: { $0.tag == currentIndex })
-      currentAnswerView?.backgroundColor = UIColor(named: "error_red_color")!.withAlphaComponent(0.2)
+      currentAnswerView?.backgroundColor = UIColor.Kyber.errorText.withAlphaComponent(0.2)
       currentAnswerView?.shakeViewError()
       let label = answerWordLabel.first(where: { $0.tag == currentIndex })
-      label?.textColor = UIColor(named: "error_red_color")!
+      label?.textColor = UIColor.Kyber.errorText
       label?.text = "\(questionIndexs[currentIndex]). " + answer
       return
     }
     if let label = answerWordLabel.first(where: { $0.tag == currentIndex }) {
-      label.textColor = UIColor(named: "textWhiteColor")!
+      label.textColor = UIColor.Kyber.whiteText
       label.text = answer.isEmpty ? "\(questionIndexs[currentIndex])" : "\(questionIndexs[currentIndex]). " + answer
     }
   }
@@ -100,7 +100,7 @@ extension ConfirmBackupViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(SeedStringCell.self, indexPath: indexPath)!
     cell.titleLabel.text = shuffledSeedStrings[indexPath.row]
-    cell.titleLabel.backgroundColor = UIColor(named: "innerContainerBgColor")!
+    cell.titleLabel.backgroundColor = UIColor.Kyber.cellBackground
     return cell
   }
 }
@@ -132,7 +132,7 @@ extension ConfirmBackupViewController: UICollectionViewDelegate {
     let answer = shuffledSeedStrings[indexPath.row]
     let index = questionIndexs[currentIndex]
     if checkAnswer(answer: answer, index: index) {
-      cell.titleLabel.backgroundColor = UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.5)
+      cell.titleLabel.backgroundColor = UIColor.Kyber.buttonBg.withAlphaComponent(0.5)
       updateAnswerLabel(answer: answer, isCorrect: true)
       currentIndex += 1
       updateAnswerView()
@@ -142,7 +142,7 @@ extension ConfirmBackupViewController: UICollectionViewDelegate {
         }
       }
     } else {
-      cell.titleLabel.backgroundColor = UIColor(named: "error_red_color")!.withAlphaComponent(0.5)
+      cell.titleLabel.backgroundColor = UIColor.Kyber.errorText.withAlphaComponent(0.5)
       updateAnswerLabel(answer: answer, isCorrect: false)
       DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
         self.reset()

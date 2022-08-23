@@ -49,22 +49,22 @@ class BackUpWalletViewController: KNBaseViewController {
       let label = wordLabels.first(where: { $0.tag == index })
       label?.text = index < 9 ? " \(index + 1). " + viewModel.seeds[index] : "\(index + 1). " + viewModel.seeds[index]
     }
-    infoLabel1.attributedText = self.getDescriptionAttributedString(baseString: "Recovery phrase is a list of 12 secret words that back up your wallet.", highlightString: "12 secret words")
-    infoLabel2.attributedText = self.getDescriptionAttributedString(baseString: "If you ever lose your device, Recovery Phrase is the only way to recover your wallet and your funds.", highlightString: "the only way")
-    infoLabel3.attributedText = self.getDescriptionAttributedString(baseString: "Find a safe and private place to write down the recovery phrase; keep it somewhere safe and do not share with anyone.", highlightString: "do not share")
+    infoLabel1.attributedText = self.getDescriptionAttributedString(baseString: Strings.recoveryPhase1, highlightString: Strings.recoveryHightlightPhase1)
+    infoLabel2.attributedText = self.getDescriptionAttributedString(baseString: Strings.recoveryPhase2, highlightString: Strings.recoveryHightlightPhase2)
+    infoLabel3.attributedText = self.getDescriptionAttributedString(baseString: Strings.recoveryPhase3, highlightString: Strings.recoveryHightlightPhase3)
   }
   
   func getDescriptionAttributedString(baseString: String, highlightString: String) -> NSAttributedString {
     let regularttributes: [NSAttributedString.Key: Any] = [
       NSAttributedString.Key.font: UIFont.Kyber.regular(with: 16),
-      NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor")!
+      NSAttributedString.Key.foregroundColor: UIColor.Kyber.whiteText
     ]
     let highlightAttribute: [NSAttributedString.Key: Any] = [
       NSAttributedString.Key.font: UIFont.Kyber.regular(with: 16),
-      NSAttributedString.Key.foregroundColor: UIColor(named: "textRedColor")!
+      NSAttributedString.Key.foregroundColor: UIColor.Kyber.textRedColor
     ]
     
-    let listOfWords = NSString(string:baseString)
+    let listOfWords = NSString(string: baseString)
     let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: "\(listOfWords) ", attributes: regularttributes)
     let highlightRange = listOfWords.range(of: highlightString)
     attributedString.setAttributes(highlightAttribute, range: highlightRange)
