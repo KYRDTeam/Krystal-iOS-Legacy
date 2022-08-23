@@ -8,6 +8,7 @@
 import Foundation
 import BigInt
 import KrystalWallets
+import Result
 
 struct SwapV2ViewModelActions {
   var onSelectSwitchChain: () -> ()
@@ -15,17 +16,17 @@ struct SwapV2ViewModelActions {
   var onSelectOpenHistory: () -> ()
   var openSwapConfirm: (SwapObject) -> ()
   var openApprove: (_ token: TokenObject, _ amount: BigInt) -> ()
-  var openSettings: (_ gasLimit: BigInt, _ settings: SwapTransactionSettings) -> ()
+  var openSettings: (_ gasLimit: BigInt,_ rate: Rate?,_ settings: SwapTransactionSettings) -> ()
 }
 
 class SwapV2ViewModel: SwapInfoViewModelProtocol {
 
   var actions: SwapV2ViewModelActions
   
-  private(set) var selectedPlatformName: String? {
+  private(set) var selectedPlatformHint: String? {
     didSet {
-      self.selectedPlatformRate.value = platformRates.value.first(where: { rate in
-        rate.platform == selectedPlatformName
+      self.selectedPlatformRate.value = self.platformRates.value.first(where: { rate in
+        rate.hint == selectedPlatformHint
       })
       guard let destToken = destToken.value, let sourceToken = sourceToken.value else {
         return
@@ -46,16 +47,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       self.priceImpactState.value = self.selectedPlatformRate.value.map {
         return self.getPriceImpactState(change: Double($0.priceImpact) / 100)
       } ?? .normal
-    }
-  }
-  
-  var sortedRates: [Rate] = [] {
-    didSet {
-      guard let destToken = self.destToken.value else {
-        self.platformRatesViewModels.value = []
-        return
-      }
-      self.platformRatesViewModels.value = createPlatformRatesViewModels(destToken: destToken, sortedRates: sortedRates)
     }
   }
   
@@ -80,52 +71,27 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     return platformRatesViewModels.value.count
   }
   
-  var gasPrice: BigInt {
-    if let basic = settings.basic {
-      if isEIP1559 {
-        let baseFee = KNGasCoordinator.shared.baseFee ?? .zero
-        let priorityFee = self.getPriorityFee(forType: basic.gasPriceType) ?? .zero
-        return baseFee + priorityFee
-      } else {
-        return self.getGasPrice(forType: basic.gasPriceType)
-      }
-    } else if let advanced = settings.advanced {
-      if isEIP1559 {
-        return advanced.maxFee + advanced.maxPriorityFee
-      } else {
-        return advanced.maxFee
-      }
-    }
-    return KNGasCoordinator.shared.defaultKNGas
-  }
-  
   var settings: SwapTransactionSettings = .default
   
   var isEIP1559: Bool {
     return currentChain.value.isSupportedEIP1559()
   }
   
+  var isSourceTokenQuote: Bool {
+    return sourceToken.value?.address.lowercased() == currentChain.value.quoteTokenObject().address.lowercased()
+  }
+  
   var maxAvailableSourceTokenAmount: BigInt {
     guard let balance = sourceBalance.value, !balance.isZero else {
       return .zero
     }
-    if sourceToken.value?.isQuoteToken ?? false {
-      if balance <= gasPrice * estimatedGas {
+    if isSourceTokenQuote {
+      if balance <= gasPrice * gasLimit {
         return .zero
       }
-      return balance - gasPrice * estimatedGas
+      return balance - gasPrice * gasLimit
     } else {
       return sourceBalance.value ?? .zero
-    }
-  }
-  
-  var estimatedGas: BigInt {
-    if let advanced = settings.advanced {
-      return advanced.gasLimit
-    } else if let rate = selectedPlatformRate.value {
-      return BigInt(rate.estimatedGas)
-    } else {
-      return KNGasConfiguration.exchangeTokensGasLimitDefault
     }
   }
   
@@ -159,7 +125,9 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   var routeString: Observable<String?> = .init(nil)
   var priceImpactState: Observable<PriceImpactState> = .init(.normal)
   var hasPendingTransaction: Observable<Bool> = .init(false)
+  var error: Observable<SwapError?> = .init(nil)
   
+  var isExpanding: Observable<Bool> = .init(false)
   var state: Observable<SwapState> = .init(.emptyAmount)
   
   private let swapRepository = SwapRepository()
@@ -207,27 +175,46 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       guard let self = self else { return }
       self.souceAmountUsdString.value = self.getSourceAmountUsdString(amount: amount)
       if amount == nil || amount!.isZero {
-        self.selectedPlatformName = nil
+        self.selectedPlatformHint = nil
         self.state.value = .emptyAmount
       } else {
-        self.reloadRates(amount: amount!)
+        self.reloadRates(amount: amount!, isRefresh: false)
       }
+    }
+    sourceTokenPrice.observeAndFire(on: self) { [weak self] _ in
+      guard let self = self else { return }
+      self.souceAmountUsdString.value = self.getSourceAmountUsdString(amount: self.sourceAmount.value)
     }
     platformRates.observe(on: self) { [weak self] rates in
       guard let self = self else { return }
-      self.selectedPlatformName = rates.first?.platform
-      self.sortedRates = self.sortedRates(rates: rates)
-      if rates.isEmpty {
+      guard self.state.value.isActiveState else {
+        return
+      }
+      let sortedRates = self.getSortedRates(rates: rates, sortBySelected: !self.isExpanding.value)
+      if !rates.contains(where: { $0.hint == self.selectedPlatformHint }) {
+        self.selectedPlatformHint = sortedRates.first?.hint
+      }
+      self.platformRatesViewModels.value = self.createPlatformRatesViewModels(sortedRates: sortedRates)
+      if sortedRates.isEmpty {
         self.state.value = .rateNotFound
       } else {
         if self.currentAddress.value.isWatchWallet {
           self.state.value = .notConnected
         } else if self.sourceAmount.value ?? .zero <= self.maxAvailableSourceTokenAmount {
-          self.state.value = .checkingAllowance
           self.checkAllowance()
         } else {
           self.state.value = .insufficientBalance
         }
+      }
+    }
+    sourceToken.observe(on: self) { [weak self] token in
+      if token?.address.lowercased() == self?.destToken.value?.address.lowercased() {
+        self?.error.value = .sameSourceDestToken
+      }
+    }
+    destToken.observe(on: self) { [weak self] token in
+      if token?.address.lowercased() == self?.sourceToken.value?.address.lowercased() {
+        self?.error.value = .sameSourceDestToken
       }
     }
   }
@@ -240,23 +227,34 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   }
   
   func checkAllowance() {
-    swapRepository.getAllowance(tokenAddress: sourceToken.value?.address ?? "", address: addressString) { [weak self] allowance, _ in
-      guard let self = self else { return }
-      if allowance < self.sourceAmount.value ?? .zero {
-        self.state.value = .notApproved(remainingAmount: self.sourceAmount.value ?? .zero - allowance)
-      } else {
-        self.state.value = .ready
+    self.state.value = .checkingAllowance
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+      self.swapRepository.getAllowance(tokenAddress: self.sourceToken.value?.address ?? "", address: self.addressString) { [weak self] allowance, _ in
+        guard let self = self else { return }
+        if allowance < self.sourceAmount.value ?? .zero {
+          if self.isApproving() {
+            self.state.value = .approving
+          } else {
+            self.state.value = .notApproved(currentAllowance: allowance)
+          }
+        } else if self.priceImpactState.value == .veryHighNeedExpertMode {
+          self.state.value = .requiredExpertMode
+        } else {
+          self.state.value = .ready
+        }
       }
     }
   }
   
-  func reloadRates(amount: BigInt) {
-    self.selectedPlatformName = nil
-    self.priceImpactState.value = .normal
+  func reloadRates(amount: BigInt, isRefresh: Bool) {
     guard let sourceToken = sourceToken.value, let destToken = destToken.value else {
       return
     }
-    self.state.value = .fetchingRates
+    if !isRefresh {
+      self.selectedPlatformHint = nil
+      self.priceImpactState.value = .normal
+    }
+    self.state.value = isRefresh ? .refreshingRates : .fetchingRates
     self.swapRepository.getAllRates(address: addressString, srcTokenContract: sourceToken.address, destTokenContract: destToken.address, amount: amount, focusSrc: true) { [weak self] rates in
       self?.platformRates.value = rates
     }
@@ -286,39 +284,51 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
   }
   
-  func approve(tokenAddress: String, amount: BigInt, gasLimit: BigInt) {
+  func approve(tokenAddress: String, currentAllowance: BigInt, gasLimit: BigInt) {
     state.value = .approving
-    swapRepository.approve(address: currentAddress.value, tokenAddress: tokenAddress, value: amount, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
+    swapRepository.approve(address: currentAddress.value, tokenAddress: tokenAddress, currentAllowance: currentAllowance, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
       switch result {
       case .success:
-        if tokenAddress == self?.sourceToken.value?.address {
-          self?.state.value = .ready
-        }
-      case .failure:
-        self?.state.value = .notApproved(remainingAmount: amount)
+        return
+      case .failure(let error):
+        self?.error.value = .approvalFailed(error: error)
+        self?.state.value = .notApproved(currentAllowance: currentAllowance)
       }
     }
   }
   
-  func selectPlatform(platform: String) {
-    self.selectedPlatformName = platform
-    self.sortedRates = self.sortedRates(rates: platformRates.value)
+  func selectPlatform(hint: String) {
+    self.selectedPlatformHint = hint
+    self.reloadPlatformRatesViewModels()
+  }
+  
+  func reloadPlatformRatesViewModels() {
+    let rates = self.getSortedRates(rates: self.platformRates.value, sortBySelected: !isExpanding.value)
+    self.platformRatesViewModels.value = self.createPlatformRatesViewModels(sortedRates: rates)
   }
   
   func updateSourceToken(token: Token) {
+    if token.address == destToken.value?.address {
+      error.value = .sameSourceDestToken
+      return
+    }
     self.sourceBalance.value = nil
     self.sourceToken.value = token
     self.sourceAmount.value = nil
-    self.selectedPlatformName = nil
+    self.selectedPlatformHint = nil
     self.loadSourceTokenPrice()
     self.reloadSourceBalance()
   }
   
   func updateDestToken(token: Token) {
+    if token.address == sourceToken.value?.address {
+      error.value = .sameSourceDestToken
+      return
+    }
     self.destBalance.value = nil
     self.destToken.value = token
     self.sourceAmount.value = self.sourceAmount.value // Trigger reload
-    self.selectedPlatformName = nil
+    self.selectedPlatformHint = nil
     self.reloadSourceBalance()
     self.loadDestTokenPrice()
     self.reloadDestBalance()
@@ -328,68 +338,69 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     (sourceBalance.value, destBalance.value) = (destBalance.value, sourceBalance.value)
     (sourceToken.value, destToken.value) = (destToken.value, sourceToken.value)
     self.sourceAmount.value = nil
-    self.selectedPlatformName = nil
+    self.selectedPlatformHint = nil
     self.loadSourceTokenPrice()
     self.loadDestTokenPrice()
     self.reloadSourceBalance()
     self.reloadDestBalance()
   }
   
-  func reloadRates() {
-    guard state.value.isActiveState else {
-      return
-    }
+  func reloadRates(isRefresh: Bool) {
     guard let amount = self.sourceAmount.value, !amount.isZero else {
       return
     }
-    reloadRates(amount: amount)
+    reloadRates(amount: amount, isRefresh: isRefresh)
   }
   
-  func updateSettings(settings: SwapTransactionSettings) {
-    self.settings = settings
-    updateInfo()
-  }
-  
-  private func sortedRates(rates: [Rate]) -> [Rate] {
-    let sortedRates = rates.sorted { lhs, rhs in
-      return BigInt.bigIntFromString(value: lhs.rate) > BigInt.bigIntFromString(value: rhs.rate)
+  func isApproving() -> Bool {
+    let allTransactions = EtherscanTransactionStorage.shared.getInternalHistoryTransaction()
+    let pendingApproveTxs = allTransactions.filter { tx in
+      return tx.transactionDetailDescription.lowercased() == sourceToken.value?.address.lowercased() && tx.type == .allowance
     }
-    if sortedRates.isEmpty {
-      return []
+    return !pendingApproveTxs.isEmpty
+  }
+  
+  private func getSortedRates(rates: [Rate], sortBySelected: Bool) -> [Rate] {
+    guard let destToken = destToken.value else { return [] }
+    let price = destTokenPrice.value ?? 0
+    
+    if rates.isEmpty { return [] }
+    
+    let sortedRates = rates.sorted { lhs, rhs in
+      return diffInUSD(lhs: lhs, rhs: rhs, destToken: destToken, destTokenPrice: price) > 0
     }
     return [sortedRates.first!] + sortedRates.dropFirst().sorted { lhs, rhs in
-      if lhs.platform == selectedPlatformName {
+      if lhs.hint == selectedPlatformHint && sortBySelected {
         return true
       }
-      return BigInt.bigIntFromString(value: lhs.rate) > BigInt.bigIntFromString(value: rhs.rate)
+      return diffInUSD(lhs: lhs, rhs: rhs, destToken: destToken, destTokenPrice: price) > 0
     }
   }
   
-  private func createPlatformRatesViewModels(destToken: Token, sortedRates: [Rate]) -> [SwapPlatformItemViewModel] {
-    let destTokenPrice = destTokenPrice.value ?? 0
+  private func createPlatformRatesViewModels(sortedRates: [Rate]) -> [SwapPlatformItemViewModel] {
+    guard let destToken = destToken.value else { return [] }
     var savedAmount: BigInt = 0
     if sortedRates.count >= 2 {
-      let diffAmount = (BigInt(sortedRates[0].amount) ?? BigInt(0)) - (BigInt(sortedRates[1].amount) ?? BigInt(0))
-      let diffFee = BigInt(sortedRates[0].estimatedGas) - BigInt(sortedRates[1].estimatedGas)
-      let diffAmountUSD = diffAmount * BigInt(destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(destToken.decimals)
-      let diffFeeUSD = diffFee * self.getGasFeeUSD(estGas: diffFee, gasPrice: self.gasPrice)
-      savedAmount = diffAmountUSD - diffFeeUSD
+      savedAmount = diffInUSD(lhs: sortedRates[0], rhs: sortedRates[1], destToken: destToken, destTokenPrice: destTokenPrice.value ?? 0)
     }
     return sortedRates.enumerated().map { index, rate in
       return SwapPlatformItemViewModel(platformRate: rate,
-                                       isSelected: rate.platform == selectedPlatformName,
+                                       isSelected: rate.hint == selectedPlatformHint,
                                        quoteToken: currentChain.value.quoteTokenObject(),
                                        destToken: destToken,
-                                       destTokenPrice: destTokenPrice,
+                                       destTokenPrice: destTokenPrice.value,
                                        gasFeeUsd: self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed ?? 0), gasPrice: self.gasPrice),
-                                       showSaveTag: sortedRates.count > 1 && index == 0 && savedAmount > BigInt(0.1 * pow(10.0, 18.0)),
+                                       showSaveTag: index == 0,
                                        savedAmount: savedAmount)
     }
   }
   
   private func getSourceAmountUsdString(amount: BigInt?) -> String? {
-    guard let sourceToken = sourceToken.value, let sourceTokenPrice = sourceTokenPrice.value, let amount = amount else {
+    guard let sourceToken = sourceToken.value, let amount = amount else {
       return nil
+    }
+    guard let sourceTokenPrice = sourceTokenPrice.value else {
+      return "-"
     }
     let amountUSD = amount * BigInt(sourceTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(sourceToken.decimals)
     let formattedAmountUSD = NumberFormatUtils.usdAmount(value: amountUSD, decimals: 18)
@@ -433,6 +444,9 @@ extension SwapV2ViewModel {
       checkPendingTx()
       currentChain.value = KNGeneralProvider.shared.currentChain
       sourceToken.value = KNGeneralProvider.shared.quoteTokenObject.toData()
+      sourceTokenPrice.value = nil
+      destTokenPrice.value = nil
+      state.value = .emptyAmount
       sourceBalance.value = nil
       destBalance.value = nil
       destToken.value = nil
@@ -448,6 +462,7 @@ extension SwapV2ViewModel {
   @objc func appDidSwitchAddress() {
     checkPendingTx()
     currentAddress.value = AppDelegate.session.address
+    state.value = .emptyAmount
     sourceAmount.value = nil
     sourceBalance.value = nil
     destBalance.value = nil
@@ -494,8 +509,8 @@ extension SwapV2ViewModel {
   
   func didTapContinue() {
     switch state.value {
-    case .notApproved(let remainingAmount):
-      approve(remainingAmount)
+    case .notApproved(let currentAllowance):
+      approve(currentAllowance)
     case .ready:
       guard let sourceToken = sourceToken.value, let destToken = destToken.value else { return }
       guard let selectedRate = selectedPlatformRate.value else { return }
@@ -517,7 +532,8 @@ extension SwapV2ViewModel {
   }
   
   func openSettings() {
-    actions.openSettings(estimatedGas, settings)
+    let selectedRate = selectedPlatformRate.value
+    actions.openSettings(gasLimit, selectedRate, settings)
   }
   
 }
@@ -527,6 +543,7 @@ extension SwapV2ViewModel {
   
   func updateInfo() {
     guard let destToken = destToken.value else { return }
+    self.slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
     self.minReceiveString.value = self.selectedPlatformRate.value.map {
       return self.getMinReceiveString(destToken: destToken, rate: $0)
     }
@@ -538,50 +555,18 @@ extension SwapV2ViewModel {
     }
   }
   
-  func updateSlippage(slippage: Double) {
-    settings.slippage = slippage
-    slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
-    updateInfo()
-  }
-  
-  func updateGasPriceType(type: KNSelectedGasPriceType) {
-    settings.basic = .init(gasPriceType: type)
-    settings.advanced = nil
-    updateInfo()
-  }
-  
-  func updateAdvancedNonce(nonce: Int) {
-    if let advanced = settings.advanced {
-      settings.basic = nil
-      settings.advanced = .init(gasLimit: advanced.gasLimit,
-                                maxFee: advanced.maxFee,
-                                maxPriorityFee: advanced.maxPriorityFee,
-                                nonce: nonce)
-    } else if let basic = settings.basic {
-      settings.basic = nil
-      settings.advanced = .init(gasLimit: estimatedGas,
-                                maxFee: gasPrice,
-                                maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
-                                nonce: nonce)
+  func updateSettings(settings: SwapTransactionSettings) {
+    self.settings = settings
+    
+    if priceImpactState.value == .veryHighNeedExpertMode, settings.expertModeOn {
+      priceImpactState.value = .veryHigh
+      state.value = .ready
+    } else if priceImpactState.value == .veryHigh, !settings.expertModeOn {
+      priceImpactState.value = .veryHighNeedExpertMode
+      state.value = .requiredExpertMode
     }
-    updateInfo()
-  }
-  
-  func updateAdvancedFee(maxFee: BigInt, maxPriorityFee: BigInt, gasLimit: BigInt) {
-    if let advanced = settings.advanced {
-      settings.basic = nil
-      settings.advanced = .init(gasLimit: gasLimit,
-                                maxFee: maxFee,
-                                maxPriorityFee: maxPriorityFee,
-                                nonce: advanced.nonce)
-    } else {
-      settings.basic = nil
-      settings.advanced = .init(gasLimit: gasLimit,
-                                maxFee: maxFee,
-                                maxPriorityFee: maxPriorityFee,
-                                nonce: NonceCache.shared.getCachingNonce(address: addressString, chain: currentChain.value))
-    }
-    updateInfo()
+    
+    self.updateInfo()
   }
   
 }

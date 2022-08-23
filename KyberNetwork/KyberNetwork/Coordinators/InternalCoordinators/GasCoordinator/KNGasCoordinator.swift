@@ -49,6 +49,7 @@ class KNGasCoordinator {
       return nil
     }
   }
+  var estTime: EstTime?
 
   var maxKNGas: BigInt = KNGasConfiguration.gasPriceMax
 
@@ -122,6 +123,7 @@ class KNGasCoordinator {
     self.lowKNGas = data.gasPrice.low.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? self.lowKNGas
     self.standardKNGas = data.gasPrice.standard.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? self.standardKNGas
     self.fastKNGas = data.gasPrice.fast.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? self.fastKNGas
+    self.estTime = data.estTime
     if let priorityFee = data.priorityFee, let baseFee = data.baseFee {
       self.defaultPriorityFee = priorityFee.gasPriceDefault.shortBigInt(units: UnitConfiguration.gasPriceUnit)
       self.lowPriorityFee = priorityFee.low.shortBigInt(units: UnitConfiguration.gasPriceUnit)

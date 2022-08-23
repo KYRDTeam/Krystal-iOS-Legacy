@@ -23,10 +23,7 @@ class SwapRepository {
       case .success(let response):
         do {
           let data = try JSONDecoder().decode(RateResponse.self, from: response.data)
-          let sortedRates = data.rates.sorted { lhs, rhs in
-            return BigInt.bigIntFromString(value: lhs.rate) > BigInt.bigIntFromString(value: rhs.rate)
-          }
-          completion(sortedRates)
+          completion(data.rates)
         } catch {
           completion([])
         }
@@ -80,19 +77,38 @@ class SwapRepository {
     }
   }
   
-  func approve(address: KAddress, tokenAddress: String, value: BigInt, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Bool, AnyError>) -> ()) {
+  func approve(address: KAddress, tokenAddress: String, currentAllowance: BigInt, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Bool, AnyError>) -> ()) {
     let networkAddress = KNGeneralProvider.shared.networkAddress
     let currentChain = KNGeneralProvider.shared.currentChain
-    let nonce = NonceCache.shared.getCachingNonce(address: address.addressString, chain: currentChain)
-    KNGeneralProvider.shared.approve(address: address, tokenAddress: tokenAddress, value: value, currentNonce: nonce, networkAddress: networkAddress, gasPrice: gasPrice, gasLimit: gasLimit) { result in
-      switch result {
-      case .success(let nonce):
-        NonceCache.shared.updateNonce(address: address.addressString, chain: currentChain, nonce: nonce)
-        completion(.success(true))
-      case .failure(let error):
-        completion(.failure(error))
+    let currentNonce = NonceCache.shared.getCachingNonce(address: address.addressString, chain: currentChain)
+    
+    let approveMaxFunction: (Int, @escaping (Result<Bool, AnyError>) -> ()) -> () = { nonce, completion in
+      KNGeneralProvider.shared.approve(address: address, tokenAddress: tokenAddress, value: Constants.maxValueBigInt, currentNonce: nonce, networkAddress: networkAddress, gasPrice: gasPrice, gasLimit: gasLimit) { result in
+        switch result {
+        case .success(let newNonce):
+          NonceCache.shared.updateNonce(address: address.addressString, chain: currentChain, nonce: newNonce)
+          completion(.success(true))
+        case .failure(let error):
+          completion(.failure(error))
+        }
       }
     }
+    
+    if currentAllowance.isZero {
+      approveMaxFunction(currentNonce, completion)
+    } else {
+      // Reset to 0
+      KNGeneralProvider.shared.approve(address: address, tokenAddress: tokenAddress, value: .zero, currentNonce: currentNonce, networkAddress: networkAddress, gasPrice: gasPrice, gasLimit: gasLimit) { result in
+        switch result {
+        case .success(let nonce):
+          NonceCache.shared.updateNonce(address: address.addressString, chain: currentChain, nonce: nonce)
+          approveMaxFunction(nonce, completion)
+        case .failure(let error):
+          completion(.failure(error))
+        }
+      }
+    }
+    
   }
   
   func getCommonBaseTokens(completion: @escaping ([Token]) -> ()) {

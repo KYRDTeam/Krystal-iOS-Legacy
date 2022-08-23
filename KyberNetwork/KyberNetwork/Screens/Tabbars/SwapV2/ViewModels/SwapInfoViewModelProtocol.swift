@@ -20,7 +20,7 @@ extension SwapInfoViewModelProtocol {
     return KNGeneralProvider.shared.currentChain.isSupportedEIP1559()
   }
   
-  var estimatedGas: BigInt {
+  var gasLimit: BigInt {
     if let advanced = settings.advanced {
       return advanced.gasLimit
     } else if let rate = selectedRate {
@@ -114,11 +114,11 @@ extension SwapInfoViewModelProtocol {
   }
   
   func getMaxNetworkFeeString(rate: Rate) -> String {
-    if settings.basic != nil {
-      let feeInUSD = self.getGasFeeUSD(estGas: estimatedGas, gasPrice: gasPrice)
+    if let basic = settings.basic {
+      let feeInUSD = self.getGasFeeUSD(estGas: gasLimit, gasPrice: self.getGasPrice(forType: basic.gasPriceType))
       return "$\(NumberFormatUtils.usdAmount(value: feeInUSD, decimals: 18))"
     } else if let advanced = settings.advanced {
-      let feeInUSD = self.getGasFeeUSD(estGas: estimatedGas, gasPrice: advanced.maxFee)
+      let feeInUSD = self.getGasFeeUSD(estGas: gasLimit, gasPrice: advanced.maxFee)
       return "$\(NumberFormatUtils.usdAmount(value: feeInUSD, decimals: 18))"
     }
     return ""
@@ -139,7 +139,10 @@ extension SwapInfoViewModelProtocol {
     if -15 < change && change <= -5 {
       return .high
     }
-    return .veryHigh
+    if UserDefaults.standard.bool(forKey: KNEnvironment.default.envPrefix + Constants.expertModeSaveKey) {
+      return .veryHigh
+    }
+    return .veryHighNeedExpertMode
   }
   
   func getRateString(sourceToken: Token, destToken: Token) -> String? {
@@ -155,6 +158,14 @@ extension SwapInfoViewModelProtocol {
       let rateString = NumberFormatUtils.rate(value: BigInt(selectedPlatform.rate) ?? .zero, decimals: 18)
       return "1 \(sourceToken.symbol) = \(rateString) \(destToken.symbol)"
     }
+  }
+  
+  func diffInUSD(lhs: Rate, rhs: Rate, destToken: Token, destTokenPrice: Double) -> BigInt {
+    let diffAmount = (BigInt(lhs.amount) ?? BigInt(0)) - (BigInt(rhs.amount) ?? BigInt(0))
+    let diffFee = BigInt(lhs.estimatedGas) - BigInt(rhs.estimatedGas)
+    let diffAmountUSD = diffAmount * BigInt(destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(destToken.decimals)
+    let diffFeeUSD = self.getGasFeeUSD(estGas: diffFee, gasPrice: self.gasPrice)
+    return diffAmountUSD - diffFeeUSD
   }
   
 }

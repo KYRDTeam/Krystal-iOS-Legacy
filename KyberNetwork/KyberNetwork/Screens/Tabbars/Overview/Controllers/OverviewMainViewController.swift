@@ -192,6 +192,7 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   fileprivate func reloadUI() {
+    guard isViewLoaded else { return }
     self.viewModel.reloadAllData()
     self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
     self.currentPageNameLabel.text = self.viewModel.displayCurrentPageName

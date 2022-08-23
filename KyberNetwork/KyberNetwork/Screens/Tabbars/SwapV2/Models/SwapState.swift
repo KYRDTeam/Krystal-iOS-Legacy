@@ -11,17 +11,19 @@ import BigInt
 enum SwapState {
   case emptyAmount
   case fetchingRates
+  case refreshingRates
   case rateNotFound
   case notConnected
   case insufficientBalance
   case checkingAllowance
-  case notApproved(remainingAmount: BigInt)
+  case notApproved(currentAllowance: BigInt)
   case approving
+  case requiredExpertMode
   case ready
   
   var isActiveState: Bool {
     switch self {
-    case .emptyAmount, .insufficientBalance:
+    case .emptyAmount:
       return false
     default:
       return true

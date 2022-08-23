@@ -45,8 +45,8 @@ class SwapV2Coordinator: NSObject, Coordinator {
         openApprove: { tokenObject, amount in
           self.openApprove(token: tokenObject, amount: amount)
         },
-        openSettings: { gasLimit, settings in
-          self.openTransactionSettings(gasLimit: gasLimit, settings: settings)
+        openSettings: { gasLimit, rate, settings in
+          self.openTransactionSettings(gasLimit: gasLimit, rate: rate, settings: settings)
         }
       )
     )
@@ -58,36 +58,29 @@ class SwapV2Coordinator: NSObject, Coordinator {
   func openSwapConfirm(object: SwapObject) {
     let viewModel = SwapSummaryViewModel(swapObject: object)
     let swapSummaryVC = SwapSummaryViewController(viewModel: viewModel)
-    self.rootViewController.present(swapSummaryVC, animated: true)
+    swapSummaryVC.delegate = rootViewController
+    let nav = UINavigationController(rootViewController: swapSummaryVC)
+    self.rootViewController.present(nav, animated: true)
   }
   
-  func openTransactionSettings(gasLimit: BigInt, settings: SwapTransactionSettings) {
-    let selectedGasPriceType: KNSelectedGasPriceType = {
-      if let basic = settings.basic {
-        return basic.gasPriceType
-      }
-      return .custom
-    }()
+  func openTransactionSettings(gasLimit: BigInt, rate: Rate?, settings: SwapTransactionSettings) {
+    let advancedGasLimit = (settings.advanced?.gasLimit).map(String.init)
+    let advancedMaxPriorityFee = (settings.advanced?.maxPriorityFee).map {
+      return NumberFormatUtils.format(value: $0, decimals: 9, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)
+    }
+    let advancedMaxFee = (settings.advanced?.maxFee).map {
+      return NumberFormatUtils.format(value: $0, decimals: 9, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)
+    }
+    let advancedNonce = (settings.advanced?.nonce).map { "\($0)" }
     
-    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: selectedGasPriceType, currentRatePercentage: settings.slippage, isUseGasToken: false)
-    viewModel.updateGasPrices(
-      fast: KNGasCoordinator.shared.fastKNGas,
-      medium: KNGasCoordinator.shared.standardKNGas,
-      slow: KNGasCoordinator.shared.lowKNGas,
-      superFast: KNGasCoordinator.shared.superFastKNGas
-    )
-    viewModel.advancedGasLimit = (settings.advanced?.gasLimit).map(String.init)
-    viewModel.advancedMaxPriorityFee = (settings.advanced?.maxPriorityFee).map {
-      return NumberFormatUtils.format(value: $0, decimals: 9, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)
+    let vm = TransactionSettingsViewModel(gasLimit: gasLimit, selectType: settings.basic?.gasPriceType ?? .medium, rate: rate)
+    let popup = TransactionSettingsViewController(viewModel: vm)
+    vm.update(priorityFee: advancedMaxPriorityFee, maxGas: advancedMaxFee, gasLimit: advancedGasLimit, nonceString: advancedNonce)
+    
+    vm.saveEventHandler = { [weak self] swapSettings in
+      self?.rootViewController.viewModel.updateSettings(settings: swapSettings)
     }
-    viewModel.advancedMaxFee = (settings.advanced?.maxFee).map {
-      return NumberFormatUtils.format(value: $0, decimals: 9, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)
-    }
-    viewModel.advancedNonce = (settings.advanced?.nonce).map { "\($0)" }
-
-    let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
-    vc.delegate = self
-    self.navigationController.present(vc, animated: true, completion: nil)
+    self.navigationController.pushViewController(popup, animated: true, completion: nil)
   }
   
   func openApprove(token: TokenObject, amount: BigInt) {
@@ -221,11 +214,11 @@ extension SwapV2Coordinator: KNHistoryCoordinatorDelegate {
 extension SwapV2Coordinator: ApproveTokenViewControllerDelegate {
   
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt) {
-    rootViewController.viewModel.approve(tokenAddress: token.address, amount: remain, gasLimit: gasLimit)
+    rootViewController.viewModel.approve(tokenAddress: token.address, currentAllowance: remain, gasLimit: gasLimit)
   }
   
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt) {
-    rootViewController.viewModel.approve(tokenAddress: address, amount: remain, gasLimit: gasLimit)
+    rootViewController.viewModel.approve(tokenAddress: address, currentAllowance: remain, gasLimit: gasLimit)
   }
   
   func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: String, value: BigInt) {
@@ -234,33 +227,6 @@ extension SwapV2Coordinator: ApproveTokenViewControllerDelegate {
   
   func approveTokenViewControllerDidSelectGasSetting(_ controller: ApproveTokenViewController, gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?) {
     
-  }
-  
-}
-
-extension SwapV2Coordinator: GasFeeSelectorPopupViewControllerDelegate {
-  
-  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
-    switch event {
-    case .gasPriceChanged(let type, _):
-      rootViewController.viewModel.updateGasPriceType(type: type)
-      
-    case .minRatePercentageChanged(let percent):
-      rootViewController.viewModel.updateSlippage(slippage: percent)
-      
-    case .updateAdvancedSetting(let gasLimit, let maxPriorityFee, let maxFee):
-      guard let gasLimit = BigInt(gasLimit), let maxFee = maxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit), let maxPriorityFee = maxPriorityFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) else {
-        return
-      }
-      rootViewController.viewModel.updateAdvancedFee(maxFee: maxFee, maxPriorityFee: maxPriorityFee, gasLimit: gasLimit)
-      
-    case .updateAdvancedNonce(let nonce):
-      guard let nonce = Int(nonce) else { return }
-      rootViewController.viewModel.updateAdvancedNonce(nonce: nonce)
-      
-    default:
-      return
-    }
   }
   
 }

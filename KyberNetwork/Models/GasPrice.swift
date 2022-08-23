@@ -13,6 +13,12 @@ struct GasPriceResponse: Codable {
   let gasPrice: GasPrice
   let priorityFee: GasPrice?
   let baseFee: String?
+  let estTime: EstTime
+}
+
+// MARK: - EstTime
+struct EstTime: Codable {
+    let fast, slow, standard: Int
 }
 
 // MARK: - GasPrice

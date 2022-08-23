@@ -52,11 +52,10 @@ class KNAppCoordinator: NSObject, Coordinator {
     coordinator.delegate = self
     return coordinator
   }()
-
+  
   internal var promoCodeCoordinator: KNPromoCodeCoordinator?
   var isFirstLoad: Bool = true
   var isFirstUpdateChain: Bool = true
-  let appMigrationManager: AppMigrationManager
   
   init(
     navigationController: UINavigationController = UINavigationController(),
@@ -65,7 +64,6 @@ class KNAppCoordinator: NSObject, Coordinator {
       self.navigationController = navigationController
       self.window = window
       self.keystore = keystore
-      self.appMigrationManager = .init(keystore: keystore)
       super.init()
       self.window.rootViewController = self.navigationController
       self.window.makeKeyAndVisible()
@@ -77,12 +75,10 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
 
   func start() {
-    self.appMigrationManager.execute()
     self.startLandingPageCoordinator()
     self.startFirstSessionIfNeeded()
     self.addInternalObserveNotification()
     self.setPredefineValues()
-//    AppMigrationManager.migrateCustomNFTIfNeeded()
     if UIDevice.isIphone5 {
       self.navigationController.displaySuccess(title: "", message: "We are not fully supported iphone5 or small screen size. Some UIs might be broken.")
     }

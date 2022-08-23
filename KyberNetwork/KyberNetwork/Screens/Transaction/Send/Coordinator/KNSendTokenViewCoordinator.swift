@@ -641,7 +641,7 @@ extension KNSendTokenViewCoordinator: KNTransactionStatusPopUpDelegate {
 }
 
 extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate {
-  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+  func gasFeeSelectorPopupViewController(_ controller: KNBaseViewController, run event: GasFeeSelectorPopupViewEvent) {
     switch event {
     case .gasPriceChanged(let type, let value):
       if self.sendNFTController != nil {
