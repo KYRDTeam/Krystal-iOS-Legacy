@@ -567,6 +567,7 @@ extension SwapV2ViewModel {
     }
     
     self.updateInfo()
+    self.reloadPlatformRatesViewModels()
   }
   
 }
