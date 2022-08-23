@@ -44,6 +44,8 @@ public extension WalletManager {
     return getAllAddresses(walletID: "")
   }
   
+  
+  
   func getWallet(id: String) -> KWallet? {
     return getAllWallets().first { $0.id == id }
   }

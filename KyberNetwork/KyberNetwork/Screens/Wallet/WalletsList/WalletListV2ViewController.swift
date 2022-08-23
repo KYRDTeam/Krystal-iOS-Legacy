@@ -6,16 +6,31 @@
 //
 
 import UIKit
+import KrystalWallets
+
+class WalletListV2ViewModel {
+  var wallets: [KWallet] = []
+  var watchAddresses: [KAddress] = []
+  
+  
+  
+  func reloadData() {
+    wallets = WalletManager.shared.getAllWallets()
+    watchAddresses = WalletManager.shared.watchAddresses()
+    
+    
+  }
+}
 
 class WalletListV2ViewController: KNBaseViewController {
   
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
+  @IBOutlet weak var walletsTableView: UITableView!
   
   let transitor = TransitionDelegate()
   
   init() {
-    
     super.init(nibName: WalletsListViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
@@ -28,7 +43,7 @@ class WalletListV2ViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    
+    walletsTableView.registerCell(WalletCell.self)
   }
 }
 
@@ -47,5 +62,21 @@ extension WalletListV2ViewController: BottomPopUpAbstract {
 
   func getPopupContentView() -> UIView {
     return self.contentView
+  }
+}
+
+extension WalletListV2ViewController: UITableViewDataSource {
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(
+      withIdentifier: WalletCell.cellID,
+      for: indexPath
+    ) as! WalletCell
+    
+    return cell
+  }
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 9
   }
 }
