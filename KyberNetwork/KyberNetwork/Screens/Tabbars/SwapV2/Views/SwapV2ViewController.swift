@@ -30,7 +30,7 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var sourceTokenView: UIView!
   @IBOutlet weak var destTokenView: UIView!
   @IBOutlet weak var sourceAmountUsdLabel: UILabel!
-  
+  @IBOutlet weak var settingButton: UIButton!
   // Info Views
   @IBOutlet weak var rateInfoView: SwapInfoView!
   @IBOutlet weak var slippageInfoView: SwapInfoView!
@@ -144,6 +144,8 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   func setupButtons() {
+    settingButton.setImage(Images.swapSettings.withRenderingMode(.alwaysTemplate), for: .normal)
+    
     continueButton.setBackgroundColor(.Kyber.primaryGreenColor, forState: .normal)
     continueButton.setBackgroundColor(.Kyber.evenBg, forState: .disabled)
     continueButton.setTitleColor(.black, for: .normal)
@@ -473,6 +475,10 @@ class SwapV2ViewController: KNBaseViewController {
     
     viewModel.isExpanding.observeAndFire(on: self) { [weak self] isExpanding in
       self?.expandIcon.image = isExpanding ? Images.swapPullup : Images.swapDropdown
+    }
+    
+    viewModel.settingsObservable.observeAndFire(on: self) { [weak self] settings in
+      self?.settingButton.tintColor = settings.expertModeOn ? .red : .white
     }
   }
   

@@ -71,8 +71,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     return platformRatesViewModels.value.count
   }
   
-  var settings: SwapTransactionSettings = .default
-  
   var isEIP1559: Bool {
     return currentChain.value.isSupportedEIP1559()
   }
@@ -97,6 +95,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   
   var selectedRate: Rate? {
     return selectedPlatformRate.value
+  }
+  
+  var settings: SwapTransactionSettings {
+    return settingsObservable.value
   }
   
   let fetchingBalanceInterval: Double = 10.0
@@ -129,11 +131,12 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   
   var isExpanding: Observable<Bool> = .init(false)
   var state: Observable<SwapState> = .init(.emptyAmount)
+  var settingsObservable: Observable<SwapTransactionSettings> = .init(.default)
   
   private let swapRepository = SwapRepository()
 
   init(actions: SwapV2ViewModelActions) {
-    slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
+    slippageString.value = "\(String(format: "%.1f", self.settingsObservable.value.slippage))%"
     
     self.actions = actions
     self.scheduleFetchingBalance()
@@ -556,7 +559,7 @@ extension SwapV2ViewModel {
   }
   
   func updateSettings(settings: SwapTransactionSettings) {
-    self.settings = settings
+    self.settingsObservable.value = settings
     
     if priceImpactState.value == .veryHighNeedExpertMode, settings.expertModeOn {
       priceImpactState.value = .veryHigh
