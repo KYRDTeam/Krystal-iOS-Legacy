@@ -235,10 +235,10 @@ struct Strings {
   static let custom = "custom".toBeLocalised()
   
   // Create Wallets
-  static let recoveryPhase1 = "Recovery phrase is a list of 12 secret words that back up your wallet.".toBeLocalised()
-  static let recoveryHightlightPhase1 = "12 secret words".toBeLocalised()
-  static let recoveryPhase2 = "If you ever lose your device, Recovery Phrase is the only way to recover your wallet and your funds.".toBeLocalised()
-  static let recoveryHightlightPhase2 = "the only way".toBeLocalised()
-  static let recoveryPhase3 = "Find a safe and private place to write down the recovery phrase; keep it somewhere safe and do not share with anyone.".toBeLocalised()
-  static let recoveryHightlightPhase3 = "do not share".toBeLocalised()
+  static let recoveryPhase1 = "recovery.phrase.1".toBeLocalised()
+  static let recoveryHightlightPhase1 = "recovery.hightlight.phrase.1".toBeLocalised()
+  static let recoveryPhase2 = "recovery.phrase.2".toBeLocalised()
+  static let recoveryHightlightPhase2 = "recovery.hightlight.phrase.2".toBeLocalised()
+  static let recoveryPhase3 = "recovery.phrase.3".toBeLocalised()
+  static let recoveryHightlightPhase3 = "recovery.hightlight.phrase.3".toBeLocalised()
 }

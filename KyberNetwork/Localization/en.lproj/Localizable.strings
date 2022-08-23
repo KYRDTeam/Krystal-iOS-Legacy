@@ -929,3 +929,11 @@
 "checking.allowance" = "Checking Allowance";
 "approve.token" = "Approve %@";
 "approving.token" = "Approving %@";
+
+// Create wallet
+"recovery.phrase.1" = "Recovery phrase is a list of 12 secret words that back up your wallet."
+"recovery.hightlight.phrase.1" = "12 secret words"
+"recovery.phrase.2" = "If you ever lose your device, Recovery Phrase is the only way to recover your wallet and your funds."
+"recovery.hightlight.phrase.2" = "the only way"
+"recovery.phrase.3" = "Find a safe and private place to write down the recovery phrase; keep it somewhere safe and do not share with anyone."
+"recovery.hightlight.phrase.3" = "do not share"
