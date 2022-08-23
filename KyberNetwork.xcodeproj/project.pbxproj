@@ -5214,8 +5214,10 @@
 		A6BA4CB128A3D15D002E2B30 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A6BA4CA128A213AD002E2B30 /* SwapState.swift */,
 				A6BA4CB228A3D171002E2B30 /* SwapTransactionSettings.swift */,
 				A6BB10B728AB8A2C00AA6FB2 /* SwapError.swift */,
+				A6BA4CA328A24F5D002E2B30 /* PriceImpactState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -5351,8 +5353,6 @@
 			children = (
 				A6D38BF7289915F8003579F2 /* SwapPlatformItemViewModel.swift */,
 				A6D38BFC289916F7003579F2 /* SwapV2ViewModel.swift */,
-				A6BA4CA128A213AD002E2B30 /* SwapState.swift */,
-				A6BA4CA328A24F5D002E2B30 /* PriceImpactState.swift */,
 				A639B66328A4FC6400AF8517 /* SwapInfoViewModelProtocol.swift */,
 				7E7C074828A36887002E8068 /* SwapSummaryViewModel.swift */,
 			);

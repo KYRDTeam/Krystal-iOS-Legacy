@@ -49,16 +49,28 @@ class TransactionSettingsViewModel {
   var saveEventHandler: (SwapTransactionSettings) -> Void = { _ in }
   var titleLabelTappedWithIndex: (Int) -> Void = { _ in }
   
-  init(gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium) {
+  init(gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium, rate: Rate?) {
     self.gasPrice = selectType.getGasValue()
     self.gasLimit = gasLimit
     self.basicSelectedType = selectType
+
     self.basicModeCellModel.gasLimit = gasLimit
+    self.basicModeCellModel.rate = rate
+    switch self.basicSelectedType {
+    case .fast:
+      basicModeCellModel.selectedIndex = 3
+    case .medium:
+      basicModeCellModel.selectedIndex = 2
+    case .slow:
+      basicModeCellModel.selectedIndex = 1
+    default:
+      basicModeCellModel.selectedIndex = -1
+    }
     self.slippageCellModel.slippageChangedEvent = { value in
       print("[Setting][SlippageChanged] \(value)")
     }
-    self.basicAdvancedCellModel = SettingBasicAdvancedFormCellModel(gasLimit: gasLimit, nonce: -1)
-    self.advancedModeCellModel = SettingAdvancedModeFormCellModel(gasLimit: gasLimit, nonce: -1)
+    self.basicAdvancedCellModel = SettingBasicAdvancedFormCellModel(gasLimit: gasLimit, nonce: -1, rate: rate)
+    self.advancedModeCellModel = SettingAdvancedModeFormCellModel(gasLimit: gasLimit, nonce: -1, rate: rate)
     
     self.segmentedCellModel.valueChangeHandler = { value in
       self.isAdvancedMode = value == 1

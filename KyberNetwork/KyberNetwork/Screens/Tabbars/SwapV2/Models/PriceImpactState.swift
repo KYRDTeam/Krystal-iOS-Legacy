@@ -11,5 +11,5 @@ enum PriceImpactState {
   case normal
   case high
   case veryHigh
-  case veryHighWithoutExpertMode
+  case veryHighNeedExpertMode
 }

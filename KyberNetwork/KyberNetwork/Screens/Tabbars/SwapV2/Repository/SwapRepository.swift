@@ -23,10 +23,7 @@ class SwapRepository {
       case .success(let response):
         do {
           let data = try JSONDecoder().decode(RateResponse.self, from: response.data)
-          let sortedRates = data.rates.sorted { lhs, rhs in
-            return BigInt.bigIntFromString(value: lhs.rate) > BigInt.bigIntFromString(value: rhs.rate)
-          }
-          completion(sortedRates)
+          completion(data.rates)
         } catch {
           completion([])
         }

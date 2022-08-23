@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -78,7 +78,7 @@ Please type the word ‘confirm’ below to enable Expert Mode.</string>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Use this mode if you are aware of the risks" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ttg-i1-cjb">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Only use this mode if you are aware of the risks." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ttg-i1-cjb">
                             <rect key="frame" x="37" y="269" width="301" height="14.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                             <color key="textColor" name="normalTextColor"/>

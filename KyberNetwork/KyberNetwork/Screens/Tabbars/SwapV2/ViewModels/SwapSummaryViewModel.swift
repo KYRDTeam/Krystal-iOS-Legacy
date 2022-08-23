@@ -32,6 +32,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   var newRate: Observable<Rate?> = .init(nil)
   var error: Observable<String?> = .init(nil)
   var shouldDiplayLoading: Observable<Bool?> = .init(nil)
+  var priceImpactState: Observable<PriceImpactState> = .init(.normal)
 
   var showRevertedRate: Bool {
     didSet {
@@ -78,6 +79,8 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   }
   
   fileprivate var updateRateTimer: Timer?
+  let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+  let swapRepository = SwapRepository()
 
   init(swapObject: SwapObject) {
     self.swapObject = swapObject
@@ -90,6 +93,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
     minReceiveString.value = calculateMinReceiveString(rate: swapObject.rate)
     estimatedGasFeeString.value = getEstimatedNetworkFeeString(rate: swapObject.rate)
     priceImpactString.value = getPriceImpactString(rate: swapObject.rate)
+    priceImpactState.value = getPriceImpactState(change: Double(swapObject.rate.priceImpact) / 100)
     maxGasFeeString.value = getMaxNetworkFeeString(rate: swapObject.rate)
     slippageString.value = "\(String(format: "%.1f", self.minRatePercent))%"
   }
@@ -99,59 +103,21 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
       swapObject.rate = newRate
       rateString.value = getRateString(sourceToken: swapObject.sourceToken, destToken: swapObject.destToken)
       priceImpactString.value = getPriceImpactString(rate: swapObject.rate)
+      priceImpactState.value = getPriceImpactState(change: Double(swapObject.rate.priceImpact) / 100)
+      updateInfo()
       self.newRate.value = nil
     }
   }
   
   func updateInfo() {
+    self.slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
     self.minReceiveString.value = self.getMinReceiveString(destToken: swapObject.destToken, rate: swapObject.rate)
     self.estimatedGasFeeString.value = self.getEstimatedNetworkFeeString(rate: swapObject.rate)
     self.maxGasFeeString.value = self.getMaxNetworkFeeString(rate: swapObject.rate)
   }
   
-  func updateSlippage(slippage: Double) {
-    swapObject.swapSetting.slippage = slippage
-    slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
-    updateInfo()
-  }
-  
-  func updateGasPriceType(type: KNSelectedGasPriceType) {
-    swapObject.swapSetting.basic = .init(gasPriceType: type)
-    swapObject.swapSetting.advanced = nil
-    updateInfo()
-  }
-  
-  func updateAdvancedNonce(nonce: Int) {
-    if let advanced = settings.advanced {
-      swapObject.swapSetting.basic = nil
-      swapObject.swapSetting.advanced = .init(gasLimit: advanced.gasLimit,
-                                              maxFee: advanced.maxFee,
-                                              maxPriorityFee: advanced.maxPriorityFee,
-                                              nonce: nonce)
-    } else if let basic = settings.basic {
-      swapObject.swapSetting.basic = nil
-      swapObject.swapSetting.advanced = .init(gasLimit: gasLimit,
-                                              maxFee: gasPrice,
-                                              maxPriorityFee: getPriorityFee(forType: basic.gasPriceType) ?? .zero,
-                                              nonce: nonce)
-    }
-    updateInfo()
-  }
-  
-  func updateAdvancedFee(maxFee: BigInt, maxPriorityFee: BigInt, gasLimit: BigInt) {
-    if let advanced = settings.advanced {
-      swapObject.swapSetting.basic = nil
-      swapObject.swapSetting.advanced = .init(gasLimit: gasLimit,
-                                              maxFee: maxFee,
-                                              maxPriorityFee: maxPriorityFee,
-                                              nonce: advanced.nonce)
-    } else {
-      swapObject.swapSetting.basic = nil
-      swapObject.swapSetting.advanced = .init(gasLimit: gasLimit,
-                                              maxFee: maxFee,
-                                              maxPriorityFee: maxPriorityFee,
-                                              nonce: NonceCache.shared.getCachingNonce(address: AppDelegate.session.address.addressString, chain: KNGeneralProvider.shared.currentChain))
-    }
+  func updateSettings(settings: SwapTransactionSettings) {
+    self.swapObject.swapSetting = settings
     updateInfo()
   }
 
@@ -193,7 +159,6 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   }
 
   func fetchRate() {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.requestWithFilter(.getExpectedRate(src: self.swapObject.sourceToken.address.lowercased(), dst: self.swapObject.destToken.address.lowercased(), srcAmount: self.swapObject.sourceAmount.description, hint: self.swapObject.rate.hint, isCaching: true)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let rate = json["rate"] as? String, let priceImpact = json["priceImpact"] as? Int {
@@ -204,8 +169,21 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
           self.newRate.value = currentRate
         }
       } else {
-        // do nothing in background
+        self.fetchAllRates()
       }
+    }
+  }
+  
+  func fetchAllRates() {
+    swapRepository.getAllRates(address: currentAddress.addressString, srcTokenContract: self.swapObject.sourceToken.address.lowercased(), destTokenContract: self.swapObject.destToken.address.lowercased(), amount: self.swapObject.sourceAmount, focusSrc: false) { [weak self] rates in
+      guard let self = self else { return }
+      let sortedRates = rates.sorted { lhs, rhs in
+        return self.diffInUSD(lhs: lhs, rhs: rhs, destToken: self.swapObject.destToken, destTokenPrice: self.swapObject.destTokenPrice) > 0
+      }
+      if sortedRates.isEmpty {
+        return
+      }
+      self.newRate.value = sortedRates.first!
     }
   }
   
