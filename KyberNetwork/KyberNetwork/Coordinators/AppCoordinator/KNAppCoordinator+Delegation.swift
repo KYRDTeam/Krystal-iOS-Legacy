@@ -124,10 +124,6 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
   }
   
   func overviewCoordinatorDidStart() {
-    if self.isFirstLoad {
-      self.showBackupWalletIfNeeded()
-      self.isFirstLoad = false
-    }
   }
 
   func overviewCoordinatorDidSelectExportWallet() {
@@ -302,6 +298,7 @@ extension KNAppCoordinator: KNTransactionStatusCoordinatorDelegate {
 extension KNAppCoordinator: KNAddNewWalletCoordinatorDelegate {
   
   func addNewWalletCoordinator(didAdd wallet: KWallet, chain: ChainType) {
+    self.tabbarController.selectedIndex = 0
     switchWallet(wallet: wallet, chain: chain)
   }
   

@@ -85,7 +85,7 @@
                         <constraint firstAttribute="height" constant="42" id="FLP-84-h50"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="15"/>
-                    <state key="normal" title="Continue">
+                    <state key="normal" title="Finish">
                         <color key="titleColor" name="mainViewBgColor"/>
                     </state>
                     <userDefinedRuntimeAttributes>
