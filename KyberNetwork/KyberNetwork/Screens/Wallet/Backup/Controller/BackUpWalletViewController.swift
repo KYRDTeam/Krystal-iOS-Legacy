@@ -78,7 +78,9 @@ class BackUpWalletViewController: KNBaseViewController {
   }
 
   @IBAction func backButtonTapped(_ sender: Any) {
-    self.navigationController?.popViewController(animated: true)
+    self.navigationController?.popViewController(animated: true, completion: {
+      self.navigationController?.dismiss(animated: true)
+    })
   }
 
   @IBAction func copyButtonTapped(_ sender: Any) {

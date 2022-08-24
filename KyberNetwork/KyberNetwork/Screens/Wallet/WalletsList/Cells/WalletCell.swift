@@ -67,7 +67,6 @@ class WalletCell: UITableViewCell {
   @IBOutlet weak var backupLabel: UILabel!
   @IBOutlet weak var backupView: UIView!
   var didSelectBackup: (() -> Void)?
-  
   static let cellHeight: CGFloat = 60
   static let cellID: String = "WalletCell"
   

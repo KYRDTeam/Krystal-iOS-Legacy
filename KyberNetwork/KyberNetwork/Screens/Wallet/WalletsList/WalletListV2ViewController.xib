@@ -20,6 +20,7 @@
                 <outlet property="connectWalletButton" destination="OB2-sm-rae" id="k9g-lM-kst"/>
                 <outlet property="contentView" destination="UAc-kD-j7m" id="z9S-wV-7M3"/>
                 <outlet property="contentViewTopContraint" destination="sPd-sz-yvG" id="qva-0n-H2g"/>
+                <outlet property="tapOutSideBackgroundView" destination="2S5-ih-IqH" id="Anh-zz-754"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletsTableView" destination="oCm-bx-EyP" id="4ZC-YQ-YcR"/>
             </connections>
@@ -109,25 +110,27 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2S5-ih-IqH">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="67"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="UAc-kD-j7m" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="HBL-tv-ivB"/>
                 <constraint firstItem="UAc-kD-j7m" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Oin-tS-1zs"/>
-                <constraint firstItem="UAc-kD-j7m" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="67" id="sPd-sz-yvG"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="2S5-ih-IqH" secondAttribute="trailing" id="QRz-hl-kM2"/>
+                <constraint firstItem="2S5-ih-IqH" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="eGv-9V-9vW"/>
+                <constraint firstItem="UAc-kD-j7m" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="ioh-5v-0ss"/>
+                <constraint firstItem="2S5-ih-IqH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="lzH-cQ-sKB"/>
+                <constraint firstItem="UAc-kD-j7m" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="67" id="sPd-sz-yvG"/>
+                <constraint firstItem="UAc-kD-j7m" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="sdz-M2-2Nm"/>
+                <constraint firstItem="UAc-kD-j7m" firstAttribute="top" secondItem="2S5-ih-IqH" secondAttribute="bottom" id="wwd-k9-pPk"/>
             </constraints>
-            <connections>
-                <outletCollection property="gestureRecognizers" destination="8nK-Dz-kAL" appends="YES" id="hGX-2v-kgq"/>
-            </connections>
             <point key="canvasLocation" x="138.40000000000001" y="76.911544227886068"/>
         </view>
-        <tapGestureRecognizer id="8nK-Dz-kAL">
-            <connections>
-                <action selector="tapOutsidePopup:" destination="-1" id="dmj-bD-YD5"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="qr_code_blue_icon" width="20" height="20"/>

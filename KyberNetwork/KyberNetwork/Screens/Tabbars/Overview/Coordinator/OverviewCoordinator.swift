@@ -738,7 +738,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
 //      let walletsList = WalletsListViewController(viewModel: viewModel)
 //      walletsList.delegate = self
       let walletsList = WalletListV2ViewController()
-      self.navigationController.present(walletsList, animated: true, completion: nil)
+      let navigation = UINavigationController(rootViewController: walletsList)
+      self.navigationController.present(navigation, animated: true, completion: nil)
     case .send(let recipientAddress):
       self.openSendTokenView(nil, recipientAddress: recipientAddress ?? "")
     case .receive:
