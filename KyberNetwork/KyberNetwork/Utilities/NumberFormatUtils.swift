@@ -21,6 +21,11 @@ class NumberFormatUtils {
   static let separator: (grouping: String, decimal: String) = {
     return (withSeparator.groupingSeparator ?? ",", withSeparator.decimalSeparator ?? "")
   }()
+  
+  static func percent(value: Double, maxDecimalDigits: Int = 2) -> String {
+    let valueBigInt = BigInt(value * pow(10.0, Double(maxDecimalDigits)))
+    return format(value: valueBigInt, decimals: maxDecimalDigits, maxDecimalMeaningDigits: nil, maxDecimalDigits: maxDecimalDigits) + "%"
+  }
 
   static func rate(value: BigInt, decimals: Int) -> String {
     return format(value: value, decimals: decimals, maxDecimalMeaningDigits: 4, maxDecimalDigits: nil)

@@ -21,8 +21,6 @@ class SettingSegmentedCellModel {
 class SettingSegmentedCell: UITableViewCell {
   @IBOutlet weak var segmentedControl: UISegmentedControl!
   
-  static let cellID: String = "SettingSegmentedCell"
-  
   var cellModel: SettingSegmentedCellModel!
   
   override func awakeFromNib() {
