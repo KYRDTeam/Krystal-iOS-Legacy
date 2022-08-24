@@ -24,8 +24,10 @@ class WalletListV2ViewController: KNBaseViewController {
   @IBOutlet weak var walletsTableView: UITableView!
   @IBOutlet weak var connectWalletButton: UIButton!
   let transitor = TransitionDelegate()
-  
+  let viewModel: WalletListV2ViewModel
   init() {
+    viewModel = WalletListV2ViewModel()
+    viewModel.reloadData()
     super.init(nibName: WalletListV2ViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
@@ -38,7 +40,7 @@ class WalletListV2ViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    walletsTableView.registerCell(WalletCell.self)
+    walletsTableView.registerCellNib(WalletCell.self)
   }
   
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
@@ -71,6 +73,9 @@ extension WalletListV2ViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(WalletCell.self, indexPath: indexPath)!
+    let wallet = viewModel.wallets[indexPath.row]
+    let cellModel = RealWalletCellModel(wallet: wallet)
+    cell.updateCell(cellModel)
     cell.didSelectBackup = {
       
     }
@@ -78,10 +83,10 @@ extension WalletListV2ViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 9
+    return viewModel.wallets.count
   }
   
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return 60
-  }
+//  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//    return 60
+//  }
 }
