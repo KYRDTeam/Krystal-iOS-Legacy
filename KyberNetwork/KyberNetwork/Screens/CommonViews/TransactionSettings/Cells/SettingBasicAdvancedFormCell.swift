@@ -100,8 +100,6 @@ class SettingBasicAdvancedFormCellModel {
 }
 
 class SettingBasicAdvancedFormCell: UITableViewCell {
-  static let cellID: String = "SettingBasicAdvancedFormCell"
-  
   @IBOutlet weak var gasPriceValueLabel: UILabel!
   @IBOutlet weak var gasPriceTextField: UITextField!
   @IBOutlet weak var gasLimitTextField: UITextField!

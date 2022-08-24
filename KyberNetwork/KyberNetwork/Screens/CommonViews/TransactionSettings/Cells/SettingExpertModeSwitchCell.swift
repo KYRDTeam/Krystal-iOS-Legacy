@@ -22,7 +22,6 @@ class SettingExpertModeSwitchCellModel {
 
 class SettingExpertModeSwitchCell: UITableViewCell {
   var cellModel: SettingExpertModeSwitchCellModel!
-  static let cellID: String = "SettingExpertModeSwitchCell"
   
   @IBOutlet weak var expertSwitch: UISwitch!
   

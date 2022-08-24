@@ -24,9 +24,6 @@ class SlippageRateCellModel {
 
   init() {
     self.currentRate = UserDefaults.standard.double(forKey: Constants.slippageRateSaveKey)
-    if currentRate == 0 {
-      currentRate = 0.5
-    }
     switch currentRate {
     case 0.1:
       self.minRateType = .zeroPointOne
@@ -89,13 +86,19 @@ class SlippageRateCell: UITableViewCell {
   
   
   static let cellHeight: CGFloat = 60
-  static let cellID: String = "SlippageRateCell"
   
   override func awakeFromNib() {
     super.awakeFromNib()
-    // Initialization code
+
+    setupButtonTitles()
     self.advancedCustomRateTextField.delegate = self
-    self.advancedCustomRateTextField.setPlaceholder(text: "Custom", color: UIColor(named: "navButtonBgColor")!)
+    self.advancedCustomRateTextField.setPlaceholder(text: Strings.custom, color: .Kyber.navButtonBg)
+  }
+  
+  func setupButtonTitles() {
+    firstOptionSlippageButton.setTitle(NumberFormatUtils.percent(value: 0.1), for: .normal)
+    secondOptionSippageButton.setTitle(NumberFormatUtils.percent(value: 0.5), for: .normal)
+    thirdOptionSlippageButton.setTitle(NumberFormatUtils.percent(value: 1), for: .normal)
   }
   
   func updateFocusForView(view: UIView, isFocus: Bool) {
@@ -110,10 +113,10 @@ class SlippageRateCell: UITableViewCell {
       return
     }
     if isFocus {
-      view.rounded(color: UIColor(named: "buttonBackgroundColor")!, width: 1.0, radius: 14.0)
+      view.rounded(color: .Kyber.buttonBg, width: 1.0, radius: 14.0)
       view.backgroundColor = UIColor(named: "innerContainerBgColor")!
     } else {
-      view.rounded(color: UIColor(named: "navButtonBgColor")!, width: 1.0, radius: 14.0)
+      view.rounded(color: .Kyber.navButtonBg, width: 1.0, radius: 14.0)
       view.backgroundColor = .clear
     }
     
@@ -155,24 +158,20 @@ class SlippageRateCell: UITableViewCell {
       self.updateFocusForView(view: self.thirdOptionSlippageButton, isFocus: true)
     default:
       self.updateFocusForView(view: self.advancedCustomRateTextField, isFocus: true)
-      advancedCustomRateTextField.text = "\(cellModel.currentRate)%"
+      advancedCustomRateTextField.text = NumberFormatUtils.percent(value: cellModel.currentRate)
     }
     self.updateSlippageHintLabel()
   }
   
   func updateSlippageHintLabel() {
-    var shouldShowWarningLabel = false
     var warningText = ""
     var warningColor = UIColor(named: "warningColor")!
     if self.cellModel.minRatePercent <= 0.1 {
-      shouldShowWarningLabel = true
       warningText = "Your transaction may fail".toBeLocalised()
     } else if self.cellModel.minRatePercent > 50.0 {
-      shouldShowWarningLabel = true
       warningText = "Enter a valid slippage percentage".toBeLocalised()
       warningColor = UIColor(named: "textRedColor")!
     } else if self.cellModel.minRatePercent >= 10 {
-      shouldShowWarningLabel = true
       warningText = "Your transaction may be frontrun".toBeLocalised()
     }
     self.warningSlippageLabel.text = warningText
@@ -203,7 +202,7 @@ extension SlippageRateCell: UITextFieldDelegate {
     if let text = textField.text {
       textField.text = text.replacingOccurrences(of: "%", with: "")
     }
-    textField.setPlaceholder(text: "\(self.cellModel.minRatePercent)", color: UIColor(named: "navButtonBgColor")!)
+    textField.setPlaceholder(text: "\(self.cellModel.minRatePercent)", color: .Kyber.navButtonBg)
     self.cellModel.updateMinRateType(.custom(value: self.cellModel.currentRate))
     self.configSlippageUIByType(.custom(value: self.cellModel.currentRate))
 
