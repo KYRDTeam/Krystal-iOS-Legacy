@@ -456,6 +456,7 @@ extension SwapV2ViewModel {
   @objc func appDidSwitchChain() {
     if KNGeneralProvider.shared.currentChain != currentChain.value {
       checkPendingTx()
+      settingsObservable.value = SwapTransactionSettings.getDefaultSettings()
       currentChain.value = KNGeneralProvider.shared.currentChain
       sourceToken.value = KNGeneralProvider.shared.quoteTokenObject.toData()
       sourceTokenPrice.value = nil
