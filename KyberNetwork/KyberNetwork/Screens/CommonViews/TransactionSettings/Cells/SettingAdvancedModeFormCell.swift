@@ -26,6 +26,10 @@ class SettingAdvancedModeFormCellModel {
       self.customNonceString = "\(self.nonce)"
     }
   }
+  
+  var customNonceValue: Int {
+    return Int(customNonceString) ?? 0
+  }
   let rate: Rate?
 
   init(gasLimit: BigInt, nonce: Int, rate: Rate?) {
@@ -43,6 +47,7 @@ class SettingAdvancedModeFormCellModel {
     gasLimitString = gasLimit.description
     maxPriorityFeeString = ""
     maxFeeString = ""
+    customNonceString = "\(nonce)"
   }
   
   var maxPriorityErrorStatus: AdvancedInputError {
