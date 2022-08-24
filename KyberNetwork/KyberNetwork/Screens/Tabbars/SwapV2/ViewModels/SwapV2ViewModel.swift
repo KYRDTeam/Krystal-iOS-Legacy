@@ -47,6 +47,12 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       self.priceImpactState.value = self.selectedPlatformRate.value.map {
         return self.getPriceImpactState(change: Double($0.priceImpact) / 100)
       } ?? .normal
+      
+      if self.priceImpactState.value == .veryHighNeedExpertMode || self.priceImpactState.value == .outOfNegativeRange {
+        self.state.value = .requiredExpertMode
+      } else {
+        self.state.value = .ready
+      }
     }
   }
   
@@ -136,7 +142,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   private let swapRepository = SwapRepository()
 
   init(actions: SwapV2ViewModelActions) {
-    slippageString.value = "\(String(format: "%.1f", self.settingsObservable.value.slippage))%"
+    slippageString.value = NumberFormatUtils.percent(value: self.settingsObservable.value.slippage)
     
     self.actions = actions
     self.scheduleFetchingBalance()
@@ -450,6 +456,7 @@ extension SwapV2ViewModel {
   @objc func appDidSwitchChain() {
     if KNGeneralProvider.shared.currentChain != currentChain.value {
       checkPendingTx()
+      settingsObservable.value = SwapTransactionSettings.getDefaultSettings()
       currentChain.value = KNGeneralProvider.shared.currentChain
       sourceToken.value = KNGeneralProvider.shared.quoteTokenObject.toData()
       sourceTokenPrice.value = nil
@@ -551,7 +558,7 @@ extension SwapV2ViewModel {
   
   func updateInfo() {
     guard let destToken = destToken.value else { return }
-    self.slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
+    self.slippageString.value = NumberFormatUtils.percent(value: self.settings.slippage)
     self.minReceiveString.value = self.selectedPlatformRate.value.map {
       return self.getMinReceiveString(destToken: destToken, rate: $0)
     }
@@ -573,6 +580,8 @@ extension SwapV2ViewModel {
       guard let selectedRate = self.selectedPlatformRate.value else { return }
       priceImpactState.value = self.getPriceImpactState(change: Double(selectedRate.priceImpact) / 100)
       state.value = .requiredExpertMode
+    } else if !state.value.isActiveState {
+      return
     }
     
     self.updateInfo()

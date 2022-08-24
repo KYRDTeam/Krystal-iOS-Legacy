@@ -112,9 +112,6 @@ class SettingAdvancedModeFormCellModel {
 }
 
 class SettingAdvancedModeFormCell: UITableViewCell {
-
-  static let cellID: String = "SettingAdvancedModeFormCell"
-  
   @IBOutlet weak var maxPriorityFeeTextField: UITextField!
   @IBOutlet weak var maxFeeTextField: UITextField!
   @IBOutlet weak var gasLimitTextField: UITextField!

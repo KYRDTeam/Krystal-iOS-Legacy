@@ -457,56 +457,38 @@ extension TransactionSettingsViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     switch indexPath.row {
     case 0:
-      let cell = tableView.dequeueReusableCell(
-        withIdentifier: SlippageRateCell.cellID,
-        for: indexPath
-      ) as! SlippageRateCell
+      let cell = tableView.dequeueReusableCell(SlippageRateCell.self, indexPath: indexPath)!
       cell.cellModel = viewModel.slippageCellModel
       cell.configSlippageUI()
       return cell
     case 1:
-      let cell = tableView.dequeueReusableCell(
-        withIdentifier: SettingSegmentedCell.cellID,
-        for: indexPath
-      ) as! SettingSegmentedCell
+      let cell = tableView.dequeueReusableCell(SettingSegmentedCell.self, indexPath: indexPath)!
       cell.cellModel = viewModel.segmentedCellModel
       cell.updateUI()
       return cell
     case 2:
       if self.viewModel.isAdvancedMode {
         if KNGeneralProvider.shared.isUseEIP1559 {
-          let cell = tableView.dequeueReusableCell(
-            withIdentifier: SettingAdvancedModeFormCell.cellID,
-            for: indexPath
-          ) as! SettingAdvancedModeFormCell
+          let cell = tableView.dequeueReusableCell(SettingAdvancedModeFormCell.self, indexPath: indexPath)!
           cell.cellModel = viewModel.advancedModeCellModel
           cell.fillFormUI()
           cell.updateUI()
           return cell
         } else {
-          let cell = tableView.dequeueReusableCell(
-            withIdentifier: SettingBasicAdvancedFormCell.cellID,
-            for: indexPath
-          ) as! SettingBasicAdvancedFormCell
+          let cell = tableView.dequeueReusableCell(SettingBasicAdvancedFormCell.self, indexPath: indexPath)!
           cell.cellModel = viewModel.basicAdvancedCellModel
           cell.fillFormValues()
           cell.updateUI()
           return cell
         }
       } else {
-        let cell = tableView.dequeueReusableCell(
-          withIdentifier: SettingBasicModeCell.cellID,
-          for: indexPath
-        ) as! SettingBasicModeCell
+        let cell = tableView.dequeueReusableCell(SettingBasicModeCell.self, indexPath: indexPath)!
         cell.cellModel = viewModel.basicModeCellModel
         cell.updateUI()
         return cell
       }
     case 3:
-      let cell = tableView.dequeueReusableCell(
-        withIdentifier: SettingExpertModeSwitchCell.cellID,
-        for: indexPath
-      ) as! SettingExpertModeSwitchCell
+      let cell = tableView.dequeueReusableCell(SettingExpertModeSwitchCell.self, indexPath: indexPath)!
       cell.cellModel = self.viewModel.switchExpertMode
       cell.updateUI()
      

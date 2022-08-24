@@ -20,7 +20,7 @@ struct SwapTransactionSettings {
       slippage: slippage > 0 ? 0.5 : slippage,
       basic: BasicTransactionSettings(gasPriceType: .medium),
       advanced: nil,
-      expertModeOn: false
+      expertModeOn: UserDefaults.standard.bool(forKey: Constants.expertModeSaveKey)
     )
   }
   

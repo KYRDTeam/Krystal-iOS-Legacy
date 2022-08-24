@@ -27,9 +27,6 @@ class SettingBasicModeCellModel {
 
 
 class SettingBasicModeCell: UITableViewCell {
-  
-  static let cellID: String = "SettingBasicModeCell"
-  
   @IBOutlet weak var fastContainerView: UIView!
   @IBOutlet weak var standardContainerView: UIView!
   @IBOutlet weak var slowContainerView: UIView!
