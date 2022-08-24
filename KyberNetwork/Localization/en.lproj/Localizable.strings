@@ -909,8 +909,8 @@
 "gas.price.low.warning" = "Gas price is low for current network conditions";
 "gas.price.high.warning" = "Gas price is higher than necessary";
 "gas.limit.low.warning" = "Gas limit can not be smaller than the estimated gas consumed";
-"priority.fee.low.warning" = "Max Priority Fee is low for current network conditions";
-"priority.fee.high.warning" = "The standard priority fee now is %@ Gwei";
+"priority.fee.low.warning" = "The standard priority fee now is %@ Gwei";
+
 "max.fee.low.warning" = "Max fee cannot be lower than max priority + base fee";
 "max.fee.high.warning" = "The standard fee now is %@ Gwei";
 "nonce.low.warning" = "Nonce is too low";

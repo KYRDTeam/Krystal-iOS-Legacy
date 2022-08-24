@@ -16,6 +16,10 @@ class SettingBasicAdvancedFormCellModel {
     }
   }
   
+  var customNonceValue: Int {
+    return Int(nonceString) ?? 0
+  }
+  
   var gasPriceChangedHandler: (String) -> Void = { _ in }
   var gasLimitChangedHandler: (String) -> Void = { _ in }
   var nonceChangedHandler: (String) -> Void = { _ in }
@@ -45,6 +49,7 @@ class SettingBasicAdvancedFormCellModel {
   func resetData() {
     gasPriceString = ""
     gasLimitString = gasLimit.description
+    nonceString = "\(nonce)"
   }
   
   func getAdvancedSettingInfo() -> AdvancedSettingsInfo {

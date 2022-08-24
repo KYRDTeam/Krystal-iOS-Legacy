@@ -109,8 +109,6 @@ class TransactionSettingsViewModel {
     
     self.basicAdvancedCellModel.nonceChangedHandler = { value in
       print("[Setting][BasicAdvanced] \(value)")
-      let nonceValue = Int(value) ?? 0
-      self.nonce = nonceValue
       self.advancedSettingValueChangeHander()
     }
     
@@ -131,8 +129,6 @@ class TransactionSettingsViewModel {
     
     self.advancedModeCellModel.customNonceChangedHander = { value in
       print("[Setting][Advanced] \(value)")
-      let nonceValue = Int(value) ?? 0
-      self.nonce = nonceValue
       self.advancedSettingValueChangeHander()
     }
     
@@ -167,9 +163,9 @@ class TransactionSettingsViewModel {
   
   func getAdvancedNonce() -> Int {
     if KNGeneralProvider.shared.isUseEIP1559 {
-      return advancedModeCellModel.nonce
+      return advancedModeCellModel.customNonceValue
     } else {
-      return basicAdvancedCellModel.nonce
+      return basicAdvancedCellModel.customNonceValue
     }
   }
   
