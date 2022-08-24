@@ -74,7 +74,7 @@ class SwapV2Coordinator: NSObject, Coordinator {
     }
     let advancedNonce = (settings.advanced?.nonce).map { "\($0)" }
     
-    let vm = TransactionSettingsViewModel(gasLimit: gasLimit, selectType: settings.basic?.gasPriceType ?? .medium, rate: rate)
+    let vm = TransactionSettingsViewModel(gasLimit: gasLimit, selectType: settings.basic?.gasPriceType ?? .medium, rate: rate, defaultOpenAdvancedMode: settings.advanced != nil)
     let popup = TransactionSettingsViewController(viewModel: vm)
     vm.update(priorityFee: advancedMaxPriorityFee, maxGas: advancedMaxFee, gasLimit: advancedGasLimit, nonceString: advancedNonce)
     

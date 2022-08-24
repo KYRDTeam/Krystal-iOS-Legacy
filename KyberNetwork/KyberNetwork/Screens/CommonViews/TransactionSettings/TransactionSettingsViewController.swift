@@ -49,10 +49,11 @@ class TransactionSettingsViewModel {
   var saveEventHandler: (SwapTransactionSettings) -> Void = { _ in }
   var titleLabelTappedWithIndex: (Int) -> Void = { _ in }
   
-  init(gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium, rate: Rate?) {
+  init(gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium, rate: Rate?, defaultOpenAdvancedMode: Bool) {
     self.gasPrice = selectType.getGasValue()
     self.gasLimit = gasLimit
     self.basicSelectedType = selectType
+    self.isAdvancedMode = defaultOpenAdvancedMode
 
     self.basicModeCellModel.gasLimit = gasLimit
     self.basicModeCellModel.rate = rate
@@ -72,6 +73,7 @@ class TransactionSettingsViewModel {
     self.basicAdvancedCellModel = SettingBasicAdvancedFormCellModel(gasLimit: gasLimit, nonce: -1, rate: rate)
     self.advancedModeCellModel = SettingAdvancedModeFormCellModel(gasLimit: gasLimit, nonce: -1, rate: rate)
     
+    self.segmentedCellModel.selectedIndex = isAdvancedMode ? 1 : 0
     self.segmentedCellModel.valueChangeHandler = { value in
       self.isAdvancedMode = value == 1
       self.switchAdvancedModeEventHandle(self.isAdvancedMode)
