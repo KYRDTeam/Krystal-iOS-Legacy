@@ -11,27 +11,22 @@ import KrystalWallets
 class WalletListV2ViewModel {
   var wallets: [KWallet] = []
   var watchAddresses: [KAddress] = []
-  
-  
-  
+
   func reloadData() {
     wallets = WalletManager.shared.getAllWallets()
     watchAddresses = WalletManager.shared.watchAddresses()
-    
-    
   }
 }
 
 class WalletListV2ViewController: KNBaseViewController {
-  
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var walletsTableView: UITableView!
-  
+  @IBOutlet weak var connectWalletButton: UIButton!
   let transitor = TransitionDelegate()
   
   init() {
-    super.init(nibName: WalletsListViewController.className, bundle: nil)
+    super.init(nibName: WalletListV2ViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
   }
@@ -49,9 +44,11 @@ class WalletListV2ViewController: KNBaseViewController {
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
     self.dismiss(animated: true, completion: nil)
   }
-  
-}
 
+  @IBAction func connectWalletButtonTapped(_ sender: UIButton) {
+    
+  }
+}
 
 extension WalletListV2ViewController: BottomPopUpAbstract {
   func setTopContrainConstant(value: CGFloat) {
@@ -73,11 +70,10 @@ extension WalletListV2ViewController: BottomPopUpAbstract {
 extension WalletListV2ViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(
-      withIdentifier: WalletCell.cellID,
-      for: indexPath
-    ) as! WalletCell
-    
+    let cell = tableView.dequeueReusableCell(WalletCell.self, indexPath: indexPath)!
+    cell.didSelectBackup = {
+      
+    }
     return cell
   }
   

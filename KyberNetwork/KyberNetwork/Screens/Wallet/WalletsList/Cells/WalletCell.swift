@@ -12,6 +12,7 @@ protocol WalletCellModel {
   func displayAvatar() -> UIImage?
   func displayWalletName() -> String
   func diplayWalletAddress() -> String
+  func isBackupedWallet() -> Bool
 }
 
 struct RealWalletCellModel: WalletCellModel {
@@ -27,6 +28,10 @@ struct RealWalletCellModel: WalletCellModel {
   func diplayWalletAddress() -> String {
     let typeString = wallet.importType == .mnemonic ? "Multichain" : wallet.generateWalletDescrition()
     return typeString
+  }
+  
+  func isBackupedWallet() -> Bool {
+    return WalletCache.shared.isWalletBackedUp(walletID: wallet.id)
   }
   
   let wallet: KWallet
@@ -46,6 +51,10 @@ struct WatchWalletCellModel: WalletCellModel {
     return address.generateAddressDescription()
   }
   
+  func isBackupedWallet() -> Bool {
+    return true
+  }
+  
   let address: KAddress
 }
 
@@ -54,6 +63,10 @@ class WalletCell: UITableViewCell {
   @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var walletNameLabel: UILabel!
   @IBOutlet weak var walletDescriptionLabel: UILabel!
+  @IBOutlet weak var descriptionLabelBottomConstraint: NSLayoutConstraint!
+  @IBOutlet weak var backupLabel: UILabel!
+  @IBOutlet weak var backupView: UIView!
+  var didSelectBackup: (() -> Void)?
   
   static let cellHeight: CGFloat = 60
   static let cellID: String = "WalletCell"
@@ -67,6 +80,22 @@ class WalletCell: UITableViewCell {
     iconImageView.image = cellModel.displayAvatar()
     walletNameLabel.text = cellModel.displayWalletName()
     walletDescriptionLabel.text = cellModel.diplayWalletAddress()
+    
+    if cellModel.isBackupedWallet() {
+      descriptionLabelBottomConstraint.constant = 13
+      backupLabel.isHidden = true
+      backupView.isHidden = true
+    } else {
+      descriptionLabelBottomConstraint.constant = 33
+      backupLabel.isHidden = false
+      backupView.isHidden = false
+    }
+  }
+
+  @IBAction func backupButtonTapped(_ sender: Any) {
+    if let didSelectBackup = didSelectBackup {
+      didSelectBackup()
+    }
   }
 }
 
