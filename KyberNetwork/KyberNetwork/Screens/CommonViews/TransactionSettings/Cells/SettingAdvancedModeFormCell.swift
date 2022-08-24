@@ -217,27 +217,17 @@ class SettingAdvancedModeFormCell: UITableViewCell {
 
 extension SettingAdvancedModeFormCell: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    var text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-    text = text.replacingOccurrences(of: ",", with: ".")
-    let value: Double? = text.isEmpty ? 0 : Double(text)
+    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    let value = StringFormatter().decimal(with: text)?.doubleValue
     
     guard value != nil else { return false }
     
     if textField == self.maxPriorityFeeTextField {
       cellModel.maxPriorityFeeString = text
       cellModel.maxPriorityFeeChangedHandler(text)
-      if string == "," {
-        textField.text = text
-        return false
-      }
-      
     } else if textField == self.maxFeeTextField {
       cellModel.maxFeeString = text
       cellModel.maxFeeChangedHandler(text)
-      if string == "," {
-        textField.text = text
-        return false
-      }
     } else if textField == self.gasLimitTextField {
       cellModel.gasLimitString = text
       cellModel.gasLimitChangedHandler(text)
@@ -245,7 +235,6 @@ extension SettingAdvancedModeFormCell: UITextFieldDelegate {
       cellModel.customNonceString = text
       cellModel.customNonceChangedHander(text)
     }
-    
     return true
   }
   
