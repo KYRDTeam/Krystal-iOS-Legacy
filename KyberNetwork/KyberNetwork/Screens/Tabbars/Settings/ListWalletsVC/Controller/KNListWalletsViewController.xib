@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -17,7 +17,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNListWalletsViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNListWalletsViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="addWalletButton" destination="8dd-He-VDD" id="u40-Jn-4EG"/>
                 <outlet property="bottomPaddingConstraintForTableView" destination="fPU-Qc-GQ7" id="K07-PO-QRu"/>
@@ -128,7 +128,7 @@
                         <constraint firstItem="WAM-Gt-QfK" firstAttribute="top" secondItem="khX-ck-Eac" secondAttribute="top" constant="10" id="zeJ-zH-cdI"/>
                     </constraints>
                 </view>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="n1m-mB-qB7" customClass="SegmentedControl" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="n1m-mB-qB7" customClass="SegmentedControl" customModule="Krystal" customModuleProvider="target">
                     <rect key="frame" x="20" y="113" width="185.5" height="32"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <segments>

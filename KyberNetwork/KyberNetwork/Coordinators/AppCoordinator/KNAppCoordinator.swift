@@ -54,7 +54,6 @@ class KNAppCoordinator: NSObject, Coordinator {
   }()
   
   internal var promoCodeCoordinator: KNPromoCodeCoordinator?
-  var isFirstLoad: Bool = true
   var isFirstUpdateChain: Bool = true
   
   init(
@@ -140,31 +139,6 @@ class KNAppCoordinator: NSObject, Coordinator {
       self.startNewSession(address: address)
       Tracker.updateUserID(address.addressString)
     }
-  }
-
-  @discardableResult
-  func showBackupWalletIfNeeded() -> Bool {
-    guard let lastUsedAddress = walletCache.lastUsedAddress else {
-      return false
-    }
-    guard let _ = walletManager.getAllWallets().first(where: { wallet in
-      return walletCache.isWalletBackedUp(walletID: wallet.id) == false
-        && lastUsedAddress.walletID == wallet.id
-        && lastUsedAddress.isWatchWallet == false
-    }) else {
-      return false
-    }
-
-    let controller = OverviewWarningBackupViewController {
-      self.tabbarController = nil
-      self.addCoordinator(self.landingPageCoordinator)
-      self.landingPageCoordinator.start()
-    } alreadyAction: {
-      self.walletCache.markWalletBackedUp(walletID: lastUsedAddress.walletID)
-      print(self.walletCache.isWalletBackedUp(walletID: lastUsedAddress.walletID))
-    }
-    self.overviewTabCoordinator?.navigationController.present(controller, animated: true)
-    return false
   }
 
   func sendRefCode(_ code: String) {

@@ -59,10 +59,6 @@ class FinishCreateWalletViewController: KNBaseViewController {
     self.solanaAddressLabel.text = self.viewModel.getSolanaAddress()
   }
 
-  @IBAction func onBackButtonTapped(_ sender: Any) {
-    self.navigationController?.popViewController(animated: true)
-  }
-
   @IBAction func onContinueButtonTapped(_ sender: Any) {
     self.delegate?.finishCreateWalletViewController(self, run: .continueUseApp)
   }

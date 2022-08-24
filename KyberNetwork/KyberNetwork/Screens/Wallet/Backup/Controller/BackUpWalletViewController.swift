@@ -13,8 +13,10 @@ protocol BackUpWalletViewControllerDelegate: class {
 
 class BackUpWalletViewModel {
   let seeds: [String]
-  init(seeds: [String]) {
+  let walletId: String
+  init(seeds: [String], walletId: String) {
     self.seeds = seeds
+    self.walletId = walletId
   }
 }
 
@@ -90,6 +92,7 @@ class BackUpWalletViewController: KNBaseViewController {
     let confirmVC = ConfirmBackupViewController()
     confirmVC.delegate = self
     confirmVC.seedStrings = viewModel.seeds
+    confirmVC.walletId = viewModel.walletId
     self.show(confirmVC, sender: nil)
   }
 }

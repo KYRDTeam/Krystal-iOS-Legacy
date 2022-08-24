@@ -365,7 +365,10 @@ class KNLoadBalanceCoordinator {
   }
 
   func loadLendingBalances(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
-    guard KNGeneralProvider.shared.currentChain.isSupportSwap() else { return }
+    guard KNGeneralProvider.shared.currentChain.isSupportSwap() else {
+      completion(false)
+      return
+    }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
     
