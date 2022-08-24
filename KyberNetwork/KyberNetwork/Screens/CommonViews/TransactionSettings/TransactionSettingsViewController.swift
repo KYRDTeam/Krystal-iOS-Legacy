@@ -175,12 +175,13 @@ class TransactionSettingsViewModel {
   
   func hasNoError() -> Bool {
     guard isAdvancedMode else {
-      return true
+      
+      return slippageCellModel.hasNoError()
     }
     if KNGeneralProvider.shared.isUseEIP1559 {
-      return advancedModeCellModel.hasNoError()
+      return advancedModeCellModel.hasNoError() && slippageCellModel.hasNoError()
     } else {
-      return basicAdvancedCellModel.hasNoError()
+      return basicAdvancedCellModel.hasNoError() && slippageCellModel.hasNoError()
     }
   }
   
@@ -291,6 +292,7 @@ class TransactionSettingsViewController: KNBaseViewController {
     }
     
     self.viewModel.slippageChangedEventHandler = { value in
+      self.updateUISaveButton()
       self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: CGFloat(value)))
     }
     
