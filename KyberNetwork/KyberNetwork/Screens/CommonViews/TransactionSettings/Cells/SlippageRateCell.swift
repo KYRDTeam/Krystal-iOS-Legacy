@@ -71,6 +71,10 @@ class SlippageRateCellModel {
     minRateType = .zeroPointFive
     currentRate = 0.5
   }
+  
+  func hasNoError() -> Bool {
+    return currentRate >= 0 && currentRate <= 50.0
+  }
 }
 
 class SlippageRateCell: UITableViewCell {
@@ -95,6 +99,16 @@ class SlippageRateCell: UITableViewCell {
   }
   
   func updateFocusForView(view: UIView, isFocus: Bool) {
+    if view == advancedCustomRateTextField, isFocus {
+      if cellModel.hasNoError() {
+        view.rounded(color: UIColor(named: "buttonBackgroundColor")!, width: 1.0, radius: 14.0)
+        view.backgroundColor = UIColor(named: "innerContainerBgColor")!
+      } else {
+        view.rounded(color: UIColor(named: "textRedColor")!, width: 1.0, radius: 14.0)
+        view.backgroundColor = UIColor(named: "innerContainerBgColor")!
+      }
+      return
+    }
     if isFocus {
       view.rounded(color: UIColor(named: "buttonBackgroundColor")!, width: 1.0, radius: 14.0)
       view.backgroundColor = UIColor(named: "innerContainerBgColor")!
@@ -102,6 +116,8 @@ class SlippageRateCell: UITableViewCell {
       view.rounded(color: UIColor(named: "navButtonBgColor")!, width: 1.0, radius: 14.0)
       view.backgroundColor = .clear
     }
+    
+    
   }
     
   func configSlippageUIByType(_ type: KAdvancedSettingsMinRateType) {
@@ -206,21 +222,12 @@ extension SlippageRateCell: UITextFieldDelegate {
     let value = stringFormatter.decimal(with: text)?.doubleValue
     
     if let val = value {
-      if val >= 0, val <= maxMinRatePercent {
-        self.advancedCustomRateTextField.text = text
-        self.cellModel.updateCurrentMinRate(val)
-        self.cellModel.updateMinRateType(.custom(value: val))
-        self.configSlippageUIByType(.custom(value: val))
-        textField.text = text + "%"
-        self.cellModel.slippageChangedEvent(val)
-      } else {
-        self.advancedCustomRateTextField.text = "0.5"
-        self.cellModel.updateCurrentMinRate(0.5)
-        self.cellModel.updateMinRateType(.custom(value: 0.5))
-        self.configSlippageUIByType(.custom(value: 0.5))
-        textField.text = "0.5" + "%"
-        self.cellModel.slippageChangedEvent(cellModel.defaultSlippageInputValue)
-      }
+      self.cellModel.updateCurrentMinRate(val)
+      self.cellModel.updateMinRateType(.custom(value: val))
+      self.configSlippageUIByType(.custom(value: val))
+      textField.text = text + "%"
+      updateSlippageHintLabel()
+      self.cellModel.slippageChangedEvent(val)
     }
   }
 }
