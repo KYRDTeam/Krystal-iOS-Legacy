@@ -50,14 +50,11 @@ class SettingAdvancedModeFormCellModel {
       return .empty
     }
 
-    let lowerLimit = KNGasCoordinator.shared.lowPriorityFee ?? BigInt(0)
-    let upperLimit = (KNGasCoordinator.shared.fastPriorityFee ?? BigInt(0)) * BigInt(2)
+    let lowerLimit = KNGasCoordinator.shared.standardPriorityFee ?? BigInt(0)
     let maxPriorityBigInt = maxPriorityFeeString.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
 
     if maxPriorityBigInt < lowerLimit {
       return .low
-    } else if maxPriorityBigInt > (BigInt(2) * upperLimit) {
-      return .high
     } else {
       return .none
     }
@@ -67,14 +64,17 @@ class SettingAdvancedModeFormCellModel {
     guard !maxFeeString.isEmpty else {
       return .empty
     }
-    let lowerLimit = KNSelectedGasPriceType.slow.getGasValue().string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue
-    let upperLimit = KNSelectedGasPriceType.superFast.getGasValue().string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue
-    let maxFeeDouble = maxFeeString.doubleValue
+    let baseFee = KNGasCoordinator.shared.baseFee ?? .zero
+    let currentPriority = maxPriorityFeeString.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? .zero
+    let standardFee = KNGasCoordinator.shared.standardKNGas ?? .zero
+    
+    let lowerLimit = baseFee + currentPriority
+    let maxFee = maxFeeString.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
 
-    if maxFeeDouble < lowerLimit {
+    if maxFee < lowerLimit {
       return .low
-    } else if maxFeeDouble > upperLimit {
-      return .high
+    } else if maxFee < standardFee {
+      return .high //This is label for case fee < standard fee
     } else {
       return .none
     }
@@ -106,7 +106,7 @@ class SettingAdvancedModeFormCellModel {
   }
   
   func hasNoError() -> Bool {
-    return maxPriorityErrorStatus == .none && maxFeeErrorStatus == .none && advancedGasLimitErrorStatus == .none && advancedNonceErrorStatus == .none
+    return (maxPriorityErrorStatus == .none || maxPriorityErrorStatus == .low) && (maxFeeErrorStatus == .none || maxFeeErrorStatus == .high) && advancedGasLimitErrorStatus == .none && advancedNonceErrorStatus == .none
   }
 
 }
@@ -168,23 +168,25 @@ class SettingAdvancedModeFormCell: UITableViewCell {
   func updateValidationUI() {
     switch cellModel.maxPriorityErrorStatus {
     case .low:
-      maxPriorityFeeErrorLabel.text = "priority.fee.low.warning".toBeLocalised()
-      maxPriorityFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
-    case .high:
-      maxPriorityFeeErrorLabel.text = String(format: "priority.fee.high.warning".toBeLocalised(), KNGasCoordinator.shared.defaultPriorityFee?.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) ?? "")
-      maxPriorityFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
+      maxPriorityFeeErrorLabel.text = String(format: "priority.fee.low.warning".toBeLocalised(), KNGasCoordinator.shared.defaultPriorityFee?.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2) ?? "")
+      maxPriorityFeeErrorLabel.textColor = UIColor.Kyber.textWarningYellow
+      maxPriorityFeeContainerView.rounded(color: UIColor.Kyber.textWarningYellow, width: 1, radius: 16)
     case .none, .empty:
       maxPriorityFeeErrorLabel.text = ""
       maxPriorityFeeContainerView.rounded(color: .clear, width: 0, radius: 16)
+    default:
+      return
     }
     
     switch cellModel.maxFeeErrorStatus {
     case .low:
       maxFeeErrorLabel.text = "max.fee.low.warning".toBeLocalised()
+      maxFeeErrorLabel.textColor = UIColor.Kyber.textRedColor
       maxFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
     case .high:
       maxFeeErrorLabel.text = String(format: "max.fee.high.warning".toBeLocalised(), KNGasCoordinator.shared.standardKNGas.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2))
-      maxFeeContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
+      maxFeeErrorLabel.textColor = UIColor.Kyber.textWarningYellow
+      maxFeeContainerView.rounded(color: UIColor.Kyber.textWarningYellow, width: 1, radius: 16)
     case .none, .empty:
       maxFeeErrorLabel.text = ""
       maxFeeContainerView.rounded(color: .clear, width: 0, radius: 16)
