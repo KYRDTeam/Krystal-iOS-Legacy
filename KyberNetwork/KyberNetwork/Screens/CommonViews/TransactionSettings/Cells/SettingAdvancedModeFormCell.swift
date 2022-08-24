@@ -220,7 +220,7 @@ class SettingAdvancedModeFormCell: UITableViewCell {
 extension SettingAdvancedModeFormCell: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-    let value = StringFormatter().decimal(with: text)?.doubleValue
+    let value = text.isEmpty ? 0 : StringFormatter().decimal(with: text)?.doubleValue
     
     guard value != nil else { return false }
     
