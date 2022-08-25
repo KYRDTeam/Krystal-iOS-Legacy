@@ -11,8 +11,6 @@ class SwitchChainViewController: KNBaseViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var tableView: UITableView!
-  @IBOutlet weak var nextButton: UIButton!
-  @IBOutlet weak var cancelButton: UIButton!
   @IBOutlet weak var outsideBackgroundView: UIView!
   let transitor = TransitionDelegate()
   var dataSource: [ChainType] = []
@@ -21,6 +19,13 @@ class SwitchChainViewController: KNBaseViewController {
   var currentChain: ChainType
   var completionHandler: (ChainType) -> Void = { selected in }
   let isIncludedAllOption: Bool
+  
+  var displayingChains: [ChainType] {
+    if dataSource.isEmpty {
+      return ChainType.getAllChain(includeAll: self.isIncludedAllOption)
+    }
+    return dataSource
+  }
 
   init(includedAll: Bool = false, selected: ChainType = KNGeneralProvider.shared.currentChain) {
     self.isIncludedAllOption = includedAll
@@ -38,40 +43,13 @@ class SwitchChainViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.initializeData()
     self.setupUI()
   }
   
   func setupUI() {
-    self.updateSelectedChainUI()
-    self.cancelButton.rounded(radius: 16)
-    self.nextButton.rounded(radius: 16)
-    self.nextButton.setTitle(self.nextButtonTitle, for: .normal)
     self.tableView.registerCellNib(SwitchChainCell.self)
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
     self.outsideBackgroundView.addGestureRecognizer(tapGesture)
-  }
-
-  func initializeData() {
-    if self.dataSource.isEmpty {
-      self.dataSource = ChainType.getAllChain(includeAll: self.isIncludedAllOption)
-    }
-  }
-
-  fileprivate func updateSelectedChainUI() {
-    let enableNextButton = self.selectedChain != self.currentChain
-    self.nextButton.isEnabled = enableNextButton
-    self.nextButton.alpha = enableNextButton ? 1.0 : 0.5
-  }
-
-  @IBAction func nextButtonTapped(_ sender: UIButton) {
-    self.dismiss(animated: true, completion: {
-      self.completionHandler(self.selectedChain)
-    })
-  }
-
-  @IBAction func cancelButtonTapped(_ sender: UIButton) {
-    self.dismiss(animated: true, completion: nil)
   }
 
   @objc func tapOutside() {
@@ -81,12 +59,12 @@ class SwitchChainViewController: KNBaseViewController {
 
 extension SwitchChainViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.dataSource.count
+    return self.displayingChains.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(SwitchChainCell.self, indexPath: indexPath)!
-    let chain = self.dataSource[indexPath.row]
+    let chain = self.displayingChains[indexPath.row]
     cell.configCell(chain: chain, isSelected: self.selectedChain == chain)
     return cell
   }
@@ -94,10 +72,14 @@ extension SwitchChainViewController: UITableViewDataSource {
 
 extension SwitchChainViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let chain = self.dataSource[indexPath.row]
+    let chain = self.displayingChains[indexPath.row]
     self.selectedChain = chain
-    self.updateSelectedChainUI()
     self.tableView.reloadData()
+    DispatchQueue.main.async {
+      self.dismiss(animated: true, completion: {
+        self.completionHandler(self.selectedChain)
+      })
+    }
   }
 }
 

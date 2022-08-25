@@ -199,6 +199,9 @@ class MultiSendApproveViewController: KNBaseViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
   
+  @IBOutlet weak var chainIcon: UIImageView!
+  @IBOutlet weak var chainLabel: UILabel!
+  
   @IBOutlet weak var option1Button: UIButton!
   @IBOutlet weak var option2Button: UIButton!
   
@@ -232,6 +235,7 @@ class MultiSendApproveViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    setupChainInfo()
     let nib = UINib(nibName: ApproveTokenCell.className, bundle: nil)
     self.tokensTableView.register(nib, forCellReuseIdentifier: ApproveTokenCell.cellID)
     self.tokensTableView.rowHeight = ApproveTokenCell.cellHeight
@@ -242,6 +246,11 @@ class MultiSendApproveViewController: KNBaseViewController {
     self.approveButton.rounded(radius: 16)
 
     self.delegate?.multiSendApproveVieController(self, run: .estimateGas(items: self.viewModel.items))
+  }
+  
+  func setupChainInfo() {
+    chainIcon.image = KNGeneralProvider.shared.currentChain.squareIcon()
+    chainLabel.text = KNGeneralProvider.shared.currentChain.chainName()
   }
   
   private func updateUIForCheckBox() {

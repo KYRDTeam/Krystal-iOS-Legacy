@@ -11,9 +11,9 @@ import QRCodeReaderViewController
 import WalletConnectSwift
 
 class BaseWalletOrientedViewController: KNBaseViewController {
-  @IBOutlet weak var walletButton: UIButton!
-  @IBOutlet weak var chainIcon: UIImageView!
-  @IBOutlet weak var chainButton: UIButton!
+  @IBOutlet weak var walletButton: UIButton?
+  @IBOutlet weak var chainIcon: UIImageView?
+  @IBOutlet weak var chainButton: UIButton?
   var walletConnectQRReaderDelegate: KQRCodeReaderDelegate?
   
   var currentAddress: KAddress {
@@ -81,12 +81,12 @@ class BaseWalletOrientedViewController: KNBaseViewController {
   }
   
   func reloadWalletName() {
-    walletButton.setTitle(currentAddress.name, for: .normal)
+    walletButton?.setTitle(currentAddress.name, for: .normal)
   }
   
   func reloadChain() {
-    chainIcon.image = KNGeneralProvider.shared.currentChain.squareIcon()
-    chainButton.setTitle(KNGeneralProvider.shared.currentChain.chainName(), for: .normal)
+    chainIcon?.image = KNGeneralProvider.shared.currentChain.squareIcon()
+    chainButton?.setTitle(KNGeneralProvider.shared.currentChain.chainName(), for: .normal)
   }
   
   @IBAction func onWalletButtonTapped(_ sender: UIButton) {
@@ -142,6 +142,7 @@ extension BaseWalletOrientedViewController: WalletsListViewControllerDelegate {
       self.reloadWalletName()
       return
     case .addWallet:
+      // TODO: Add wallet
       //      self.delegate?.swapV2CoordinatorDidSelectAddWallet()
       return
     }

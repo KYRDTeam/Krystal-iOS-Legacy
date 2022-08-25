@@ -93,9 +93,8 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                             <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="16"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                    <real key="value" value="14"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                             <connections>
@@ -474,7 +473,7 @@
                 <constraint firstItem="ibe-Tm-lI1" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="96c-2k-Wx9"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="2bX-gH-E8o" secondAttribute="trailing" id="9q5-9u-M3B"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="ibe-Tm-lI1" secondAttribute="bottom" id="XzY-uJ-78q"/>
-                <constraint firstItem="2bX-gH-E8o" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="YbZ-np-lEe"/>
+                <constraint firstItem="2bX-gH-E8o" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="YbZ-np-lEe"/>
                 <constraint firstItem="ibe-Tm-lI1" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="jKS-rJ-BQC"/>
                 <constraint firstItem="2bX-gH-E8o" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="nzb-Y5-mQN"/>
                 <constraint firstItem="ibe-Tm-lI1" firstAttribute="top" secondItem="2bX-gH-E8o" secondAttribute="bottom" id="zNB-rW-cUf"/>

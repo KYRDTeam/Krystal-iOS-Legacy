@@ -14,22 +14,16 @@ protocol EarnOverviewViewControllerDelegate: class {
   func earnOverviewViewControllerAddChainWallet(_ controller: EarnOverviewViewController, chainType: ChainType)
 }
 
-class EarnOverviewViewController: KNBaseViewController {
+class EarnOverviewViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var exploreButton: UIButton!
   @IBOutlet weak var contentView: UIView!
-  @IBOutlet weak var walletListButton: UIButton!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
-  @IBOutlet weak var currentChainIcon: UIImageView!
 
   weak var delegate: EarnOverviewViewControllerDelegate?
   weak var navigationDelegate: NavigationBarDelegate?
 
   let depositViewController: OverviewDepositViewController
   var firstTimeLoaded: Bool = false
-  
-  var currentAddress: KAddress {
-    return AppDelegate.session.address
-  }
 
   init(_ controller: OverviewDepositViewController) {
     self.depositViewController = controller
@@ -51,7 +45,6 @@ class EarnOverviewViewController: KNBaseViewController {
     self.depositViewController.view.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
     self.depositViewController.view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
     self.depositViewController.view.translatesAutoresizingMaskIntoConstraints = false
-    self.updateUIWalletSelectButton()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -69,7 +62,6 @@ class EarnOverviewViewController: KNBaseViewController {
       }
     }
     self.firstTimeLoaded = true
-    self.updateUISwitchChain()
   }
   
   fileprivate func updateUIPendingTxIndicatorView() {
@@ -82,14 +74,6 @@ class EarnOverviewViewController: KNBaseViewController {
     self.pendingTxIndicatorView.isHidden = pendingTransaction == nil
   }
 
-  fileprivate func updateUISwitchChain() {
-    guard self.isViewLoaded else {
-      return
-    }
-    let icon = KNGeneralProvider.shared.chainIconImage
-    self.currentChainIcon.image = icon
-  }
-
   @IBAction func exploreButtonTapped(_ sender: UIButton) {
     self.delegate?.earnOverviewViewControllerDidSelectExplore(self)
   }
@@ -98,34 +82,8 @@ class EarnOverviewViewController: KNBaseViewController {
     self.navigationDelegate?.viewControllerDidSelectHistory(self)
   }
   
-  @IBAction func walletListButtonTapped(_ sender: UIButton) {
-    self.navigationDelegate?.viewControllerDidSelectWallets(self)
-  }
-
-  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
-    let popup = SwitchChainViewController()
-    popup.completionHandler = { [weak self] selected in
-      guard let self = self else { return }
-      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
-      if addresses.isEmpty {
-        self.delegate?.earnOverviewViewControllerAddChainWallet(self, chainType: selected)
-        return
-      } else {
-        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-        self.present(secondPopup, animated: true, completion: nil)
-      }
-    }
-    self.present(popup, animated: true, completion: nil)
-  }
-
-  fileprivate func updateUIWalletSelectButton() {
-    self.walletListButton.setTitle(currentAddress.name, for: .normal)
-  }
-  
   func coordinatorAppSwitchAddress() {
     if self.isViewLoaded {
-      self.updateUIWalletSelectButton()
       self.depositViewController.coordinatorAppSwitchAddress()
       self.updateUIPendingTxIndicatorView()
       self.updateUIPendingTxIndicatorView()
@@ -134,10 +92,6 @@ class EarnOverviewViewController: KNBaseViewController {
 
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
-  }
-  
-  func coordinatorDidUpdateChain() {
-    self.updateUISwitchChain()
   }
 
   func coordinatorDidUpdateHideBalanceStatus(_ status: Bool) {
