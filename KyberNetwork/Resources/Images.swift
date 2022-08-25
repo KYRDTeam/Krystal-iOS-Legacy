@@ -62,4 +62,17 @@ struct Images {
   static let swapWarningRed = UIImage(named: "swap_warning_red")!
   static let swapInfo = UIImage(named: "info_white")!
   static let swapSettings = UIImage(named: "swap_settings")!
+  
+  // Chains
+  static let allNetworkSquare = UIImage(named: "network_all_square")!
+  static let chainEthSquare = UIImage(named: "chain_eth_square")!
+  static let chainBscSquare = UIImage(named: "chain_bsc_square")!
+  static let chainPolygonSquare = UIImage(named: "chain_polygon_square")!
+  static let chainAvaxSquare = UIImage(named: "chain_avax_square")!
+  static let chainFantomSquare = UIImage(named: "chain_ftm_square")!
+  static let chainCronosSquare = UIImage(named: "chain_cronos_square")!
+  static let chainArbitrumSquare = UIImage(named: "chain_arbitrum_square")!
+  static let chainAuroraSquare = UIImage(named: "chain_aurora_square")!
+  static let chainSolanaSquare = UIImage(named: "chain_solana_square")!
+  static let chainKlaytnSquare = UIImage(named: "chain_klaytn_square")!
 }
