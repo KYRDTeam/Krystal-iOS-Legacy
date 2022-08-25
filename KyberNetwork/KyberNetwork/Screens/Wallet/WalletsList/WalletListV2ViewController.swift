@@ -29,6 +29,7 @@ class WalletListV2ViewModel {
 protocol WalletListV2ViewControllerDelegate {
   func didSelectWallet(wallet: KWallet)
   func didSelectWatchWallet(address: KAddress)
+  func didSelectAddWallet()
 }
 
 class WalletListV2ViewController: KNBaseViewController {
