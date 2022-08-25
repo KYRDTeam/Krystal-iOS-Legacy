@@ -30,7 +30,7 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var sourceTokenView: UIView!
   @IBOutlet weak var destTokenView: UIView!
   @IBOutlet weak var sourceAmountUsdLabel: UILabel!
-  
+  @IBOutlet weak var settingButton: UIButton!
   // Info Views
   @IBOutlet weak var rateInfoView: SwapInfoView!
   @IBOutlet weak var slippageInfoView: SwapInfoView!
@@ -144,6 +144,8 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   func setupButtons() {
+    settingButton.setImage(Images.swapSettings.withRenderingMode(.alwaysTemplate), for: .normal)
+    
     continueButton.setBackgroundColor(.Kyber.primaryGreenColor, forState: .normal)
     continueButton.setBackgroundColor(.Kyber.evenBg, forState: .disabled)
     continueButton.setTitleColor(.black, for: .normal)
@@ -455,6 +457,22 @@ class SwapV2ViewController: KNBaseViewController {
         self.piWarningView.isHidden = false
         self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
         self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
+      case .outOfNegativeRange:
+        self.piWarningView.backgroundColor = .Kyber.textWarningRed.withAlphaComponent(0.1)
+        self.piWarningIcon.image = Images.swapWarningRed
+        self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact4.withLineSpacing()
+        self.piWarningLabel.textColor = .Kyber.textWarningRed
+        self.piWarningView.isHidden = false
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
+        self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
+      case .outOfPositiveRange:
+        self.piWarningView.backgroundColor = .Kyber.textWarningRed.withAlphaComponent(0.1)
+        self.piWarningIcon.image = Images.swapWarningRed
+        self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact5.withLineSpacing()
+        self.piWarningLabel.textColor = .Kyber.textWarningRed
+        self.piWarningView.isHidden = false
+        self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
+        self.priceImpactInfoView.valueLabel.textColor = .Kyber.textWarningRed
       }
     }
     
@@ -468,11 +486,15 @@ class SwapV2ViewController: KNBaseViewController {
     
     viewModel.error.observe(on: self) { [weak self] error in
       guard let error = error else { return }
-      self?.showErrorTopBannerMessage(with: error.title, message: error.message)
+      self?.showErrorTopBannerMessage(with: error.title ?? "", message: error.message)
     }
     
     viewModel.isExpanding.observeAndFire(on: self) { [weak self] isExpanding in
       self?.expandIcon.image = isExpanding ? Images.swapPullup : Images.swapDropdown
+    }
+    
+    viewModel.settingsObservable.observeAndFire(on: self) { [weak self] settings in
+      self?.settingButton.tintColor = settings.expertModeOn ? .red : .white
     }
   }
   
@@ -700,6 +722,10 @@ extension SwapV2ViewController: SwapSummaryViewControllerDelegate {
     viewModel.selectPlatform(hint: selectedPlatformHint)
     viewModel.reloadPlatformRatesViewModels()
     viewModel.reloadRates(isRefresh: true)
+  }
+  
+  func onSwapSummarySubmitTransaction() {
+    viewModel.updateSettings(settings: SwapTransactionSettings.getDefaultSettings())
   }
   
 }

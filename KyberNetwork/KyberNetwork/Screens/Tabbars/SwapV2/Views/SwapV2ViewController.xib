@@ -13,11 +13,11 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
-        </array>
-        <array key="Karla-VariableFont_wght.ttf">
-            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -55,6 +55,7 @@
                 <outlet property="rateInfoView" destination="c25-Oe-hgy" id="4Oj-28-b7f"/>
                 <outlet property="rateLoadingView" destination="13u-tV-7BB" id="P8t-jH-grh"/>
                 <outlet property="routeInfoView" destination="aTl-kC-ce3" id="XsK-79-8FI"/>
+                <outlet property="settingButton" destination="dZN-TU-lXf" id="i8g-I7-8X4"/>
                 <outlet property="slippageInfoView" destination="GRw-Yi-h5h" id="Bzk-W2-VM6"/>
                 <outlet property="sourceAmountUsdLabel" destination="agw-Vs-X9w" id="u1J-TH-xcZ"/>
                 <outlet property="sourceBalanceLabel" destination="zEe-a6-qHl" id="Lpl-kZ-JvG"/>

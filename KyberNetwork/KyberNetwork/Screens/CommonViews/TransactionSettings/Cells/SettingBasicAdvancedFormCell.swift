@@ -16,6 +16,10 @@ class SettingBasicAdvancedFormCellModel {
     }
   }
   
+  var customNonceValue: Int {
+    return Int(nonceString) ?? 0
+  }
+  
   var gasPriceChangedHandler: (String) -> Void = { _ in }
   var gasLimitChangedHandler: (String) -> Void = { _ in }
   var nonceChangedHandler: (String) -> Void = { _ in }
@@ -45,6 +49,7 @@ class SettingBasicAdvancedFormCellModel {
   func resetData() {
     gasPriceString = ""
     gasLimitString = gasLimit.description
+    nonceString = "\(nonce)"
   }
   
   func getAdvancedSettingInfo() -> AdvancedSettingsInfo {
@@ -100,8 +105,6 @@ class SettingBasicAdvancedFormCellModel {
 }
 
 class SettingBasicAdvancedFormCell: UITableViewCell {
-  static let cellID: String = "SettingBasicAdvancedFormCell"
-  
   @IBOutlet weak var gasPriceValueLabel: UILabel!
   @IBOutlet weak var gasPriceTextField: UITextField!
   @IBOutlet weak var gasLimitTextField: UITextField!
@@ -177,14 +180,18 @@ class SettingBasicAdvancedFormCell: UITableViewCell {
 
 extension SettingBasicAdvancedFormCell: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-    let number = text.replacingOccurrences(of: ",", with: ".")
-    let value: Double? = number.isEmpty ? 0 : Double(number)
+    var text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    text = text.replacingOccurrences(of: ",", with: ".")
+    let value: Double? = text.isEmpty ? 0 : Double(text)
     guard value != nil else { return false }
     if textField == self.gasPriceTextField {
       cellModel.gasPriceString = text
       cellModel.gasPriceChangedHandler(text)
       updateUI()
+      if string == "," {
+        textField.text = text
+        return false
+      }
     } else if textField == self.gasLimitTextField {
       cellModel.gasLimitString = text
       cellModel.gasLimitChangedHandler(text)

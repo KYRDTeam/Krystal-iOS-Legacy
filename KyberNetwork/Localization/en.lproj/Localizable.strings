@@ -889,6 +889,8 @@
 "swap.warn_price_impact_1" = "Price Impact is High";
 "swap.warn_price_impact_2" = "Price Impact is Very High. Please turn on Expert Mode for high slippage trades";
 "swap.warn_price_impact_3" = "Price Impact is Very High";
+"swap.warn_price_impact_4" = "We couldn't calculate Price Impact. Please turn on Expert Mode for this trade.";
+"swap.warn_price_impact_5" = "We couldn't calculate Price Impact, please trade with caution.";
 "swap.warn_approve" = "Allow Krystal smart contracts permission to use your %@";
 "swap.rate_not_found" = "Sorry, we couldn’t find any rate for this pair";
 "swap.small_amount_of_quote_token_will_be_used" = "A small amount of %@ will be used for transaction fee";
@@ -907,10 +909,10 @@
 "gas.price.low.warning" = "Gas price is low for current network conditions";
 "gas.price.high.warning" = "Gas price is higher than necessary";
 "gas.limit.low.warning" = "Gas limit can not be smaller than the estimated gas consumed";
-"priority.fee.low.warning" = "Max Priority Fee is low for current network conditions";
-"priority.fee.high.warning" = "Max Priority Fee is higher than necessary";
-"max.fee.low.warning" = "Max Fee is low for current network conditions";
-"max.fee.high.warning" = "Max Fee is higher than necessary";
+"priority.fee.low.warning" = "The standard priority fee now is %@ Gwei";
+
+"max.fee.low.warning" = "Max fee cannot be lower than max priority + base fee";
+"max.fee.high.warning" = "The standard fee now is %@ Gwei";
 "nonce.low.warning" = "Nonce is too low";
 "swap.best" = "Best";
 "swap.alert_platform_change_could_not_update" = "Couldn't update %@ rate, %@ will be used instead.";

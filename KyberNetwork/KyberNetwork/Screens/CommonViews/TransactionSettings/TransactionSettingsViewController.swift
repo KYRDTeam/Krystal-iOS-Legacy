@@ -49,10 +49,11 @@ class TransactionSettingsViewModel {
   var saveEventHandler: (SwapTransactionSettings) -> Void = { _ in }
   var titleLabelTappedWithIndex: (Int) -> Void = { _ in }
   
-  init(gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium, rate: Rate?) {
+  init(gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium, rate: Rate?, defaultOpenAdvancedMode: Bool) {
     self.gasPrice = selectType.getGasValue()
     self.gasLimit = gasLimit
     self.basicSelectedType = selectType
+    self.isAdvancedMode = defaultOpenAdvancedMode
 
     self.basicModeCellModel.gasLimit = gasLimit
     self.basicModeCellModel.rate = rate
@@ -72,6 +73,7 @@ class TransactionSettingsViewModel {
     self.basicAdvancedCellModel = SettingBasicAdvancedFormCellModel(gasLimit: gasLimit, nonce: -1, rate: rate)
     self.advancedModeCellModel = SettingAdvancedModeFormCellModel(gasLimit: gasLimit, nonce: -1, rate: rate)
     
+    self.segmentedCellModel.selectedIndex = isAdvancedMode ? 1 : 0
     self.segmentedCellModel.valueChangeHandler = { value in
       self.isAdvancedMode = value == 1
       self.switchAdvancedModeEventHandle(self.isAdvancedMode)
@@ -107,8 +109,6 @@ class TransactionSettingsViewModel {
     
     self.basicAdvancedCellModel.nonceChangedHandler = { value in
       print("[Setting][BasicAdvanced] \(value)")
-      let nonceValue = Int(value) ?? 0
-      self.nonce = nonceValue
       self.advancedSettingValueChangeHander()
     }
     
@@ -129,8 +129,6 @@ class TransactionSettingsViewModel {
     
     self.advancedModeCellModel.customNonceChangedHander = { value in
       print("[Setting][Advanced] \(value)")
-      let nonceValue = Int(value) ?? 0
-      self.nonce = nonceValue
       self.advancedSettingValueChangeHander()
     }
     
@@ -165,20 +163,21 @@ class TransactionSettingsViewModel {
   
   func getAdvancedNonce() -> Int {
     if KNGeneralProvider.shared.isUseEIP1559 {
-      return advancedModeCellModel.nonce
+      return advancedModeCellModel.customNonceValue
     } else {
-      return basicAdvancedCellModel.nonce
+      return basicAdvancedCellModel.customNonceValue
     }
   }
   
   func hasNoError() -> Bool {
     guard isAdvancedMode else {
-      return true
+      
+      return slippageCellModel.hasNoError()
     }
     if KNGeneralProvider.shared.isUseEIP1559 {
-      return advancedModeCellModel.hasNoError()
+      return advancedModeCellModel.hasNoError() && slippageCellModel.hasNoError()
     } else {
-      return basicAdvancedCellModel.hasNoError()
+      return basicAdvancedCellModel.hasNoError() && slippageCellModel.hasNoError()
     }
   }
   
@@ -248,8 +247,8 @@ class TransactionSettingsViewModel {
   }
   
   func saveWithBlock() {
-    UserDefaults.standard.set(switchExpertMode.isOn, forKey: KNEnvironment.default.envPrefix + Constants.expertModeSaveKey)
-    UserDefaults.standard.set(slippageCellModel.currentRate, forKey: KNEnvironment.default.envPrefix + Constants.slippageRateSaveKey)
+    UserDefaults.standard.set(switchExpertMode.isOn, forKey: Constants.expertModeSaveKey)
+    UserDefaults.standard.set(slippageCellModel.currentRate, forKey: Constants.slippageRateSaveKey)
     saveEventHandler(buildSwapSetting())
   }
 }
@@ -289,6 +288,7 @@ class TransactionSettingsViewController: KNBaseViewController {
     }
     
     self.viewModel.slippageChangedEventHandler = { value in
+      self.updateUISaveButton()
       self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: CGFloat(value)))
     }
     
@@ -457,56 +457,38 @@ extension TransactionSettingsViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     switch indexPath.row {
     case 0:
-      let cell = tableView.dequeueReusableCell(
-        withIdentifier: SlippageRateCell.cellID,
-        for: indexPath
-      ) as! SlippageRateCell
+      let cell = tableView.dequeueReusableCell(SlippageRateCell.self, indexPath: indexPath)!
       cell.cellModel = viewModel.slippageCellModel
       cell.configSlippageUI()
       return cell
     case 1:
-      let cell = tableView.dequeueReusableCell(
-        withIdentifier: SettingSegmentedCell.cellID,
-        for: indexPath
-      ) as! SettingSegmentedCell
+      let cell = tableView.dequeueReusableCell(SettingSegmentedCell.self, indexPath: indexPath)!
       cell.cellModel = viewModel.segmentedCellModel
       cell.updateUI()
       return cell
     case 2:
       if self.viewModel.isAdvancedMode {
         if KNGeneralProvider.shared.isUseEIP1559 {
-          let cell = tableView.dequeueReusableCell(
-            withIdentifier: SettingAdvancedModeFormCell.cellID,
-            for: indexPath
-          ) as! SettingAdvancedModeFormCell
+          let cell = tableView.dequeueReusableCell(SettingAdvancedModeFormCell.self, indexPath: indexPath)!
           cell.cellModel = viewModel.advancedModeCellModel
           cell.fillFormUI()
           cell.updateUI()
           return cell
         } else {
-          let cell = tableView.dequeueReusableCell(
-            withIdentifier: SettingBasicAdvancedFormCell.cellID,
-            for: indexPath
-          ) as! SettingBasicAdvancedFormCell
+          let cell = tableView.dequeueReusableCell(SettingBasicAdvancedFormCell.self, indexPath: indexPath)!
           cell.cellModel = viewModel.basicAdvancedCellModel
           cell.fillFormValues()
           cell.updateUI()
           return cell
         }
       } else {
-        let cell = tableView.dequeueReusableCell(
-          withIdentifier: SettingBasicModeCell.cellID,
-          for: indexPath
-        ) as! SettingBasicModeCell
+        let cell = tableView.dequeueReusableCell(SettingBasicModeCell.self, indexPath: indexPath)!
         cell.cellModel = viewModel.basicModeCellModel
         cell.updateUI()
         return cell
       }
     case 3:
-      let cell = tableView.dequeueReusableCell(
-        withIdentifier: SettingExpertModeSwitchCell.cellID,
-        for: indexPath
-      ) as! SettingExpertModeSwitchCell
+      let cell = tableView.dequeueReusableCell(SettingExpertModeSwitchCell.self, indexPath: indexPath)!
       cell.cellModel = self.viewModel.switchExpertMode
       cell.updateUI()
      

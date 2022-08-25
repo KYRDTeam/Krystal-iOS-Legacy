@@ -47,6 +47,12 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       self.priceImpactState.value = self.selectedPlatformRate.value.map {
         return self.getPriceImpactState(change: Double($0.priceImpact) / 100)
       } ?? .normal
+      
+      if self.priceImpactState.value == .veryHighNeedExpertMode || self.priceImpactState.value == .outOfNegativeRange {
+        self.state.value = .requiredExpertMode
+      } else {
+        self.state.value = .ready
+      }
     }
   }
   
@@ -70,8 +76,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   var numberOfRateRows: Int {
     return platformRatesViewModels.value.count
   }
-  
-  var settings: SwapTransactionSettings = .default
   
   var isEIP1559: Bool {
     return currentChain.value.isSupportedEIP1559()
@@ -97,6 +101,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   
   var selectedRate: Rate? {
     return selectedPlatformRate.value
+  }
+  
+  var settings: SwapTransactionSettings {
+    return settingsObservable.value
   }
   
   let fetchingBalanceInterval: Double = 10.0
@@ -129,11 +137,12 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   
   var isExpanding: Observable<Bool> = .init(false)
   var state: Observable<SwapState> = .init(.emptyAmount)
+  var settingsObservable: Observable<SwapTransactionSettings> = .init(SwapTransactionSettings.getDefaultSettings())
   
   private let swapRepository = SwapRepository()
 
   init(actions: SwapV2ViewModelActions) {
-    slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
+    slippageString.value = NumberFormatUtils.percent(value: self.settingsObservable.value.slippage)
     
     self.actions = actions
     self.scheduleFetchingBalance()
@@ -192,7 +201,12 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       }
       let sortedRates = self.getSortedRates(rates: rates, sortBySelected: !self.isExpanding.value)
       if !rates.contains(where: { $0.hint == self.selectedPlatformHint }) {
+        let oldPlatformName = self.selectedPlatformRate.value?.platformShort
         self.selectedPlatformHint = sortedRates.first?.hint
+        let newPlatformName = sortedRates.first?.platformShort
+        if let oldName = oldPlatformName, let newName = newPlatformName {
+          self.error.value = .rateHasBeenChanged(oldRate: oldName, newRate: newName)
+        }
       }
       self.platformRatesViewModels.value = self.createPlatformRatesViewModels(sortedRates: sortedRates)
       if sortedRates.isEmpty {
@@ -237,7 +251,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
           } else {
             self.state.value = .notApproved(currentAllowance: allowance)
           }
-        } else if self.priceImpactState.value == .veryHighNeedExpertMode {
+        } else if self.priceImpactState.value == .veryHighNeedExpertMode || self.priceImpactState.value == .outOfNegativeRange {
           self.state.value = .requiredExpertMode
         } else {
           self.state.value = .ready
@@ -442,6 +456,7 @@ extension SwapV2ViewModel {
   @objc func appDidSwitchChain() {
     if KNGeneralProvider.shared.currentChain != currentChain.value {
       checkPendingTx()
+      settingsObservable.value = SwapTransactionSettings.getDefaultSettings()
       currentChain.value = KNGeneralProvider.shared.currentChain
       sourceToken.value = KNGeneralProvider.shared.quoteTokenObject.toData()
       sourceTokenPrice.value = nil
@@ -543,7 +558,7 @@ extension SwapV2ViewModel {
   
   func updateInfo() {
     guard let destToken = destToken.value else { return }
-    self.slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
+    self.slippageString.value = NumberFormatUtils.percent(value: self.settings.slippage)
     self.minReceiveString.value = self.selectedPlatformRate.value.map {
       return self.getMinReceiveString(destToken: destToken, rate: $0)
     }
@@ -556,14 +571,17 @@ extension SwapV2ViewModel {
   }
   
   func updateSettings(settings: SwapTransactionSettings) {
-    self.settings = settings
+    self.settingsObservable.value = settings
     
-    if priceImpactState.value == .veryHighNeedExpertMode, settings.expertModeOn {
+    if priceImpactState.value == .veryHighNeedExpertMode || priceImpactState.value == .outOfNegativeRange, settings.expertModeOn {
       priceImpactState.value = .veryHigh
       state.value = .ready
     } else if priceImpactState.value == .veryHigh, !settings.expertModeOn {
-      priceImpactState.value = .veryHighNeedExpertMode
+      guard let selectedRate = self.selectedPlatformRate.value else { return }
+      priceImpactState.value = self.getPriceImpactState(change: Double(selectedRate.priceImpact) / 100)
       state.value = .requiredExpertMode
+    } else if !state.value.isActiveState {
+      return
     }
     
     self.updateInfo()

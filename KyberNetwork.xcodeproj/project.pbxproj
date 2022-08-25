@@ -956,8 +956,6 @@
 		C34A2266277AE64300F240B8 /* BrowserOptionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C34A2264277AE64300F240B8 /* BrowserOptionsViewController.xib */; };
 		C35136E626CCE53D006A55F4 /* OverviewNFTTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35136E426CCE53D006A55F4 /* OverviewNFTTableViewCell.swift */; };
 		C35136E726CCE53D006A55F4 /* OverviewNFTTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C35136E526CCE53D006A55F4 /* OverviewNFTTableViewCell.xib */; };
-		C351B6F22722A54C00811319 /* OverviewWarningBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C351B6F02722A54B00811319 /* OverviewWarningBackupViewController.swift */; };
-		C351B6F32722A54C00811319 /* OverviewWarningBackupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C351B6F12722A54C00811319 /* OverviewWarningBackupViewController.xib */; };
 		C3554D89280E5E3F0043BC1B /* SolanaUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */; };
 		C35A133326F1CEBA002B627C /* SRCountdownTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35A133226F1CEBA002B627C /* SRCountdownTimer.swift */; };
 		C35E9DEC27DB2BE000E1E7CE /* PromoCodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E9DEB27DB2BE000E1E7CE /* PromoCodeCoordinator.swift */; };
@@ -2163,8 +2161,6 @@
 		C34A2264277AE64300F240B8 /* BrowserOptionsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BrowserOptionsViewController.xib; sourceTree = "<group>"; };
 		C35136E426CCE53D006A55F4 /* OverviewNFTTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewNFTTableViewCell.swift; sourceTree = "<group>"; };
 		C35136E526CCE53D006A55F4 /* OverviewNFTTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewNFTTableViewCell.xib; sourceTree = "<group>"; };
-		C351B6F02722A54B00811319 /* OverviewWarningBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewWarningBackupViewController.swift; sourceTree = "<group>"; };
-		C351B6F12722A54C00811319 /* OverviewWarningBackupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewWarningBackupViewController.xib; sourceTree = "<group>"; };
 		C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaUtil.swift; sourceTree = "<group>"; };
 		C35A133226F1CEBA002B627C /* SRCountdownTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRCountdownTimer.swift; sourceTree = "<group>"; };
 		C35E9DEB27DB2BE000E1E7CE /* PromoCodeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoCodeCoordinator.swift; sourceTree = "<group>"; };
@@ -5761,8 +5757,6 @@
 				C325984526D345A100F87D25 /* OverviewShareNFTViewController.xib */,
 				C3A58E2226D49BCF00EE3801 /* OverviewAddNFTViewController.swift */,
 				C3A58E2326D49BCF00EE3801 /* OverviewAddNFTViewController.xib */,
-				C351B6F02722A54B00811319 /* OverviewWarningBackupViewController.swift */,
-				C351B6F12722A54C00811319 /* OverviewWarningBackupViewController.xib */,
 				7EEA4D7628AA3A4500C56EE3 /* DinoChatCustomView.swift */,
 			);
 			path = Controllers;
@@ -6822,7 +6816,6 @@
 				25929C5220DA5C760045CFA3 /* SF-Pro-Text-BoldItalic.otf in Resources */,
 				C3EE06BC267A15E50090B432 /* Karla-SemiBold.ttf in Resources */,
 				C37AF0C825CCFB29006FB880 /* EarnSwapViewController.xib in Resources */,
-				C351B6F32722A54C00811319 /* OverviewWarningBackupViewController.xib in Resources */,
 				C3ED1DCE2616F0090024970C /* NotificationsViewController.xib in Resources */,
 				254BB359211D9F1400B8E75D /* KConfirmSendViewController.xib in Resources */,
 				C3A6E02228A103730079926E /* TransactionSettingsViewController.xib in Resources */,
@@ -7481,7 +7474,6 @@
 				29FA00D4201EC662002F7DC5 /* NSObject.swift in Sources */,
 				A6E6C9C52816FA1B00EEB2E6 /* TransactionRepository.swift in Sources */,
 				255A70EF214FB908005D7A6A /* KNEditWalletViewController.swift in Sources */,
-				C351B6F22722A54C00811319 /* OverviewWarningBackupViewController.swift in Sources */,
 				C360FAA026AADA99006D22D0 /* ChooseRateTableViewCell.swift in Sources */,
 				257C9FC42078A9F800EE0128 /* KNTransactionCollectionReusableView.swift in Sources */,
 				771AA94E1FF971CD00D25403 /* DappAction.swift in Sources */,

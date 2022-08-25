@@ -263,7 +263,7 @@ extension KNListWalletsViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
-    view.backgroundColor = .clear
+    view.backgroundColor = UIColor.Kyber.mainViewBg
     let titleLabel = UILabel(frame: CGRect(x: 28, y: 0, width: 200, height: 40))
     titleLabel.center.y = view.center.y
     titleLabel.text = self.viewModel.titleForSection(section: section)
