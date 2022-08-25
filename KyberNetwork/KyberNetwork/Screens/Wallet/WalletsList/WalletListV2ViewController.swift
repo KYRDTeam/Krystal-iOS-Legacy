@@ -7,6 +7,8 @@
 
 import UIKit
 import KrystalWallets
+import QRCodeReaderViewController
+import WalletConnectSwift
 
 class WalletListV2ViewModel {
   var wallets: [KWallet] = []
@@ -43,6 +45,9 @@ class WalletListV2ViewController: KNBaseViewController {
   let transitor = TransitionDelegate()
   let viewModel: WalletListV2ViewModel
   weak var delegate: WalletListV2ViewControllerDelegate?
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
   init() {
     viewModel = WalletListV2ViewModel()
     viewModel.reloadData()
@@ -67,7 +72,9 @@ class WalletListV2ViewController: KNBaseViewController {
   }
 
   @IBAction func connectWalletButtonTapped(_ sender: UIButton) {
-    
+    let qrcode = QRCodeReaderViewController()
+    qrcode.delegate = self
+    self.present(qrcode, animated: true, completion: nil)
   }
   
   @IBAction func addWalletButtonTapped(_ sender: Any) {
@@ -135,7 +142,6 @@ extension WalletListV2ViewController: BackUpWalletViewControllerDelegate {
 }
 
 extension WalletListV2ViewController: UITableViewDataSource {
-  
   func numberOfSections(in tableView: UITableView) -> Int {
     return viewModel.numberOfSection()
   }
@@ -199,5 +205,40 @@ extension WalletListV2ViewController: UITableViewDelegate {
       return view
     }
     return nil
+  }
+}
+
+extension WalletListV2ViewController: QRCodeReaderDelegate {
+  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
+    reader.dismiss(animated: true, completion: nil)
+  }
+
+  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
+    reader.dismiss(animated: true) {
+      guard let url = WCURL(result) else {
+        self.showTopBannerView(
+          with: Strings.invalidSession,
+          message: Strings.invalidSessionTryOtherQR,
+          time: 1.5
+        )
+        return
+      }
+      do {
+        let privateKey = try WalletManager.shared.exportPrivateKey(address: self.currentAddress)
+        DispatchQueue.main.async {
+          let controller = KNWalletConnectViewController(
+            wcURL: url,
+            pk: privateKey
+          )
+          self.present(controller, animated: true, completion: nil)
+        }
+      } catch {
+        self.showTopBannerView(
+          with: Strings.privateKeyError,
+          message: Strings.canNotGetPrivateKey,
+          time: 1.5
+        )
+      }
+    }
   }
 }
