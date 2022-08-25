@@ -767,7 +767,9 @@ extension OverviewMainViewController: UICollectionViewDataSource {
       totalValueString = self.viewModel.displayTotalSummaryValue
     }
     
-    cell.updateCell(chain: viewModel.currentChain, totalValue: totalValueString, hideBalanceStatus: self.viewModel.hideBalanceStatus, shouldShowAction: indexPath.item == 0)
+    let isAllChainOverallCell = indexPath.item != 0
+    
+    cell.updateCell(chain: isAllChainOverallCell ? .all : viewModel.currentChain, totalValue: totalValueString, hideBalanceStatus: self.viewModel.hideBalanceStatus, shouldShowAction: indexPath.item == 0, isAllChainOverralCell: isAllChainOverallCell)
     
     cell.chainButtonTapped = {
       self.onChainButtonTapped(self.infoCollectionView)

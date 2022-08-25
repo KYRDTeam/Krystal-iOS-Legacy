@@ -25,6 +25,8 @@ class OverviewTotalInfoCell: UICollectionViewCell {
   var hideBalanceButtonTapped: (() -> Void)?
   var transferButtonTapped: (() -> Void)?
   var receiveButtonTapped: (() -> Void)?
+  
+  var isAllChainOverralCell: Bool = false
 
   @IBAction func hideBalanceButtonTapped(_ sender: Any) {
     if let hideBalanceButtonTapped = hideBalanceButtonTapped {
@@ -64,7 +66,9 @@ class OverviewTotalInfoCell: UICollectionViewCell {
   }
   
   @objc func onTapChainButton() {
-    chainButtonTapped?()
+    if !isAllChainOverralCell {
+      chainButtonTapped?()
+    }
   }
 
   private func updateUIForActionButtons(shouldShowAction: Bool) {
@@ -73,13 +77,15 @@ class OverviewTotalInfoCell: UICollectionViewCell {
     self.totalNetWorthLabel.isHidden = shouldShowAction
   }
 
-  func updateCell(chain: ChainType, totalValue: String, hideBalanceStatus: Bool, shouldShowAction: Bool) {
+  func updateCell(chain: ChainType, totalValue: String, hideBalanceStatus: Bool, shouldShowAction: Bool, isAllChainOverralCell: Bool) {
+    self.isAllChainOverralCell = isAllChainOverralCell
     self.chainIcon.image = chain.squareIcon()
     self.chainButton.setTitle(chain.chainName(), for: .normal)
     self.totalValueLabel.text = totalValue
     self.updateUIForActionButtons(shouldShowAction: shouldShowAction)
     let eyeImage = hideBalanceStatus ? UIImage(named: "hide_eye_icon") : UIImage(named: "show_eye_icon")
     self.hideBalanceButton.setImage(eyeImage, for: .normal)
+    self.chainButton.setImage(isAllChainOverralCell ? nil : Images.arrowDropDownWhite, for: .normal)
   }
 
 }

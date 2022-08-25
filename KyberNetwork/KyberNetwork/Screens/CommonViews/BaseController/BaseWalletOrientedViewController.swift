@@ -160,7 +160,7 @@ class BaseWalletOrientedViewController: KNBaseViewController {
         if supportAllChainOption {
           return chain == .all || chain.addressType == address.addressType
         } else {
-          return chain.addressType == address.addressType
+          return chain != .all && chain.addressType == address.addressType
         }
       }
     }
