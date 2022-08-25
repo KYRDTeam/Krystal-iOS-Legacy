@@ -202,7 +202,12 @@ extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
   
   func didSelectWatchWallet(address: KAddress) {
     if address.addressType == currentChain.addressType {
-      AppDelegate.shared.coordinator.switchToWatchAddress(address: address, chain: currentChain)
+      if currentChain == .all {
+        AppDelegate.shared.coordinator.switchToWatchAddress(address: address, chain: KNGeneralProvider.shared.currentChain)
+        onChainSelected(chain: .all)
+      } else {
+        AppDelegate.shared.coordinator.switchToWatchAddress(address: address, chain: currentChain)
+      }
     } else {
       guard let chain = ChainType.allCases.first(where: { $0 != .all && $0.addressType == address.addressType }) else { return }
       AppDelegate.shared.coordinator.switchToWatchAddress(address: address, chain: chain)
@@ -225,7 +230,7 @@ extension BaseWalletOrientedViewController: KNAddNewWalletCoordinatorDelegate {
   }
   
   func addNewWalletCoordinatorDidSendRefCode(_ code: String) {
-    service.sendRefCode(address: currentAddress, code.uppercased()) { isSuccess, message in
+    service.sendRefCode(address: currentAddress, code.uppercased()) { _, message in
       AppDelegate.shared.coordinator.tabbarController.showTopBannerView(message: message)
     }
   }
