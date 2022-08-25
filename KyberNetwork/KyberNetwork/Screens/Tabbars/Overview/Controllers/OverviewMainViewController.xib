@@ -9,13 +9,14 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OverviewMainViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
+                <outlet property="backupIcon" destination="MQ6-83-f17" id="YIj-ng-AeR"/>
                 <outlet property="currentPageNameLabel" destination="HNo-ND-wfP" id="JtI-eF-6kZ"/>
                 <outlet property="infoCollectionView" destination="b0l-VW-gNn" id="6vm-3X-Uus"/>
                 <outlet property="insestView" destination="AQD-Qn-mCt" id="gZU-nP-B6b"/>
@@ -35,6 +36,7 @@
                 <outlet property="totatlInfoView" destination="HuO-ub-YO7" id="iwc-kz-RV9"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletButton" destination="Oga-qf-j0A" id="Vnt-lh-d6c"/>
+                <outlet property="walletView" destination="6XL-nB-iH8" id="F9N-6a-PQC"/>
                 <outletCollection property="sortButtons" destination="RXK-up-Jn3" collectionClass="NSMutableArray" id="Dlz-cR-SWC"/>
                 <outletCollection property="sortButtons" destination="Ih9-uC-ejJ" collectionClass="NSMutableArray" id="d2V-8t-TUV"/>
                 <outletCollection property="sortButtons" destination="BUf-ej-KPK" collectionClass="NSMutableArray" id="egY-tO-BDq"/>
@@ -255,29 +257,54 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TLC-f0-6zS">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oga-qf-j0A">
-                            <rect key="frame" x="12" y="4" width="102" height="32"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6XL-nB-iH8">
+                            <rect key="frame" x="12" y="4" width="92" height="32"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="ITk-m5-Ifb">
+                                    <rect key="frame" x="12" y="0.0" width="74" height="32"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backup_warning" translatesAutoresizingMaskIntoConstraints="NO" id="MQ6-83-f17">
+                                            <rect key="frame" x="0.0" y="4" width="24" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="5K0-Aq-Uc2"/>
+                                                <constraint firstAttribute="width" constant="24" id="Imm-yp-cZi"/>
+                                            </constraints>
+                                        </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oga-qf-j0A">
+                                            <rect key="frame" x="30" y="0.0" width="44" height="32"/>
+                                            <color key="backgroundColor" red="0.16078431369999999" green="0.1764705882" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="102" id="QdI-d0-Ouo"/>
+                                                <constraint firstAttribute="height" constant="32" id="qTA-f2-fGg"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                                            <color key="tintColor" red="0.81568627449999997" green="0.83137254900000002" blue="0.86666666670000003" alpha="1" colorSpace="calibratedRGB"/>
+                                            <state key="normal" title="abc" image="arrow_down_template">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                                    <real key="value" value="14"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
                             <color key="backgroundColor" red="0.16078431369999999" green="0.1764705882" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="102" id="f9X-41-eG8"/>
-                                <constraint firstAttribute="height" constant="32" id="qTA-f2-fGg"/>
+                                <constraint firstItem="ITk-m5-Ifb" firstAttribute="leading" secondItem="6XL-nB-iH8" secondAttribute="leading" constant="12" id="Axj-3v-5z7"/>
+                                <constraint firstAttribute="bottom" secondItem="ITk-m5-Ifb" secondAttribute="bottom" id="Ifh-Df-m7D"/>
+                                <constraint firstAttribute="trailing" secondItem="ITk-m5-Ifb" secondAttribute="trailing" constant="6" id="gxs-L8-FZe"/>
+                                <constraint firstItem="ITk-m5-Ifb" firstAttribute="top" secondItem="6XL-nB-iH8" secondAttribute="top" id="pAq-XG-hQa"/>
+                                <constraint firstAttribute="height" constant="32" id="s7J-8z-hCV"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
-                            <color key="tintColor" red="0.81568627449999997" green="0.83137254900000002" blue="0.86666666670000003" alpha="1" colorSpace="calibratedRGB"/>
-                            <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="27" maxY="0.0"/>
-                            <inset key="imageEdgeInsets" minX="72" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Imported" image="arrow_down_template">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </state>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
                                     <real key="value" value="14"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
-                            <connections>
-                                <action selector="onWalletButtonTapped:" destination="-1" eventType="touchUpInside" id="dlG-bD-gxK"/>
-                            </connections>
-                        </button>
+                        </view>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dCw-rk-TQ8">
                             <rect key="frame" x="231" y="4" width="128" height="32"/>
                             <subviews>
@@ -323,9 +350,9 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="CAZ-0J-Oug"/>
-                        <constraint firstItem="Oga-qf-j0A" firstAttribute="leading" secondItem="TLC-f0-6zS" secondAttribute="leading" constant="12" id="Gwt-hq-1qt"/>
+                        <constraint firstItem="6XL-nB-iH8" firstAttribute="leading" secondItem="TLC-f0-6zS" secondAttribute="leading" constant="12" id="IEc-aK-gzQ"/>
+                        <constraint firstItem="6XL-nB-iH8" firstAttribute="centerY" secondItem="TLC-f0-6zS" secondAttribute="centerY" id="a06-cG-Ih3"/>
                         <constraint firstAttribute="trailing" secondItem="dCw-rk-TQ8" secondAttribute="trailing" constant="16" id="fbp-4C-8zp"/>
-                        <constraint firstItem="Oga-qf-j0A" firstAttribute="centerY" secondItem="TLC-f0-6zS" secondAttribute="centerY" id="gbS-hQ-wv3"/>
                         <constraint firstItem="dCw-rk-TQ8" firstAttribute="centerY" secondItem="TLC-f0-6zS" secondAttribute="centerY" id="k0k-HU-wGM"/>
                     </constraints>
                 </view>
@@ -346,6 +373,7 @@
     </objects>
     <resources>
         <image name="arrow_down_template" width="24" height="24"/>
+        <image name="backup_warning" width="24" height="24"/>
         <image name="noti_overview_icon" width="18" height="21"/>
         <image name="option_overview_icon" width="25" height="25"/>
         <image name="scan" width="32" height="32"/>

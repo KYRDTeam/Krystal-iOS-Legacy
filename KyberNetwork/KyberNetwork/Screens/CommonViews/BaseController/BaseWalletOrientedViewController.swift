@@ -12,8 +12,10 @@ import WalletConnectSwift
 
 class BaseWalletOrientedViewController: KNBaseViewController {
   @IBOutlet weak var walletButton: UIButton?
+  @IBOutlet weak var backupIcon: UIImageView?
   @IBOutlet weak var chainIcon: UIImageView?
   @IBOutlet weak var chainButton: UIButton?
+  @IBOutlet weak var walletView: UIView?
   
   var walletConnectQRReaderDelegate: KQRCodeReaderDelegate?
   
@@ -40,10 +42,18 @@ class BaseWalletOrientedViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    setupGestures()
     observeNotifications()
-    reloadWalletName()
+    reloadWallet()
     reloadChain()
     setupDelegates()
+  }
+  
+  func setupGestures() {
+    walletView?.isUserInteractionEnabled = true
+    let gesture = UITapGestureRecognizer(target: self, action: #selector(onWalletButtonTapped))
+    gesture.cancelsTouchesInView = false
+    walletView?.addGestureRecognizer(gesture)
   }
   
   func setupDelegates() {
@@ -103,8 +113,9 @@ class BaseWalletOrientedViewController: KNBaseViewController {
     NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidSwitchChain, object: nil)
   }
   
-  func reloadWalletName() {
+  func reloadWallet() {
     walletButton?.setTitle(currentAddress.name, for: .normal)
+    backupIcon?.isHidden = currentAddress.walletID.isEmpty || WalletCache.shared.isWalletBackedUp(walletID: currentAddress.walletID)
   }
   
   func reloadChain() {
@@ -112,7 +123,7 @@ class BaseWalletOrientedViewController: KNBaseViewController {
     chainButton?.setTitle(KNGeneralProvider.shared.currentChain.chainName(), for: .normal)
   }
   
-  @IBAction func onWalletButtonTapped(_ sender: Any) {
+  @objc func onWalletButtonTapped() {
     openWalletList()
   }
   
@@ -125,7 +136,7 @@ class BaseWalletOrientedViewController: KNBaseViewController {
   }
   
   @objc func onAppSwitchAddress() {
-    reloadWalletName()
+    reloadWallet()
   }
   
   func openWalletConnect() {
