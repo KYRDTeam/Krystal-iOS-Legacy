@@ -17,6 +17,12 @@ class BaseWalletOrientedViewController: KNBaseViewController {
   
   var walletConnectQRReaderDelegate: KQRCodeReaderDelegate?
   
+  lazy var addWalletCoordinator: KNAddNewWalletCoordinator = {
+    let coordinator = KNAddNewWalletCoordinator()
+    coordinator.delegate = self
+    return coordinator
+  }()
+  
   var supportAllChainOption: Bool {
     return false
   }
@@ -157,21 +163,14 @@ class BaseWalletOrientedViewController: KNBaseViewController {
     KNGeneralProvider.shared.currentChain = chain
     AppEventCenter.shared.switchChain(chain: chain)
   }
-
-  
-  lazy var addWalletCoordinator: KNAddNewWalletCoordinator = {
-    let coordinator = KNAddNewWalletCoordinator()
-    coordinator.delegate = self
-    return coordinator
-  }()
 }
 
 extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
   
   func didSelectAddWallet() {
-    let coordinator = KNAddNewWalletCoordinator()
-    coordinator.delegate = self
-    coordinator.start()
+    present(addWalletCoordinator.navigationController, animated: false) {
+      self.addWalletCoordinator.start(type: .full)
+    }
   }
   
   func didSelectWallet(wallet: KWallet) {

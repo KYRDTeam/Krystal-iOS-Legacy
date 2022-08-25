@@ -79,7 +79,9 @@ class WalletListV2ViewController: KNBaseViewController {
   }
   
   @IBAction func addWalletButtonTapped(_ sender: Any) {
-    self.delegate?.didSelectAddWallet()
+    self.dismiss(animated: true) {
+      self.delegate?.didSelectAddWallet()
+    }
   }
 
   @IBAction func manageWalletButtonTapped(_ sender: Any) {
