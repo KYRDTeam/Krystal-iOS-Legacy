@@ -100,12 +100,20 @@
                                 <action selector="addWalletButtonTapped:" destination="-1" eventType="touchUpInside" id="h0E-9I-tBH"/>
                             </connections>
                         </button>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="my-wallets-icon" translatesAutoresizingMaskIntoConstraints="NO" id="WMg-p9-wzW">
+                            <rect key="frame" x="124" y="28.5" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="czD-8q-ROF"/>
+                                <constraint firstAttribute="width" constant="20" id="mn1-Uc-wcQ"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" name="popupBackgroundColor"/>
                     <constraints>
                         <constraint firstItem="OB2-sm-rae" firstAttribute="trailing" secondItem="u8X-qo-MXu" secondAttribute="trailing" id="Ais-7j-L3W"/>
                         <constraint firstItem="L52-bc-rij" firstAttribute="top" secondItem="UAc-kD-j7m" secondAttribute="top" constant="29" id="CJZ-1K-E02"/>
                         <constraint firstItem="DYc-lr-n4K" firstAttribute="trailing" secondItem="u8X-qo-MXu" secondAttribute="trailing" id="E79-1X-87R"/>
+                        <constraint firstItem="WMg-p9-wzW" firstAttribute="centerY" secondItem="L52-bc-rij" secondAttribute="centerY" id="MLO-Fa-nMd"/>
                         <constraint firstItem="OB2-sm-rae" firstAttribute="leading" secondItem="u8X-qo-MXu" secondAttribute="leading" id="Mp7-te-Tdy"/>
                         <constraint firstItem="v7e-Aw-EKY" firstAttribute="leading" secondItem="u8X-qo-MXu" secondAttribute="leading" id="N1b-u7-KOc"/>
                         <constraint firstItem="rkB-Xp-bC8" firstAttribute="centerY" secondItem="OB2-sm-rae" secondAttribute="centerY" id="N86-8I-KwA"/>
@@ -121,6 +129,7 @@
                         <constraint firstItem="DYc-lr-n4K" firstAttribute="leading" secondItem="u8X-qo-MXu" secondAttribute="leading" id="lTo-cc-Gvp"/>
                         <constraint firstItem="OB2-sm-rae" firstAttribute="trailing" secondItem="rkB-Xp-bC8" secondAttribute="trailing" id="lXD-GW-3Sk"/>
                         <constraint firstItem="v7e-Aw-EKY" firstAttribute="top" secondItem="OB2-sm-rae" secondAttribute="bottom" constant="2" id="nFd-H2-jkB"/>
+                        <constraint firstItem="WMg-p9-wzW" firstAttribute="leading" secondItem="L52-bc-rij" secondAttribute="trailing" constant="7" id="rzf-yV-Vhh"/>
                         <constraint firstAttribute="trailing" secondItem="9tx-a7-6a0" secondAttribute="trailing" constant="20" id="tYY-BT-bSD"/>
                         <constraint firstItem="9tx-a7-6a0" firstAttribute="top" secondItem="UAc-kD-j7m" secondAttribute="top" constant="20" id="wVh-vj-1vu"/>
                         <constraint firstAttribute="trailing" secondItem="DYc-lr-n4K" secondAttribute="trailing" constant="32" id="wuj-Aa-1zq"/>
@@ -157,6 +166,7 @@
     </objects>
     <resources>
         <image name="add_wallet_icon" width="32" height="32"/>
+        <image name="my-wallets-icon" width="20" height="20"/>
         <image name="qr_code_blue_icon" width="20" height="20"/>
         <namedColor name="popupBackgroundColor">
             <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
