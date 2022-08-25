@@ -71,7 +71,7 @@ class WalletListV2ViewController: KNBaseViewController {
   }
   
   @IBAction func addWalletButtonTapped(_ sender: Any) {
-    
+    self.delegate?.didSelectAddWallet()
   }
 
   @IBAction func manageWalletButtonTapped(_ sender: Any) {
@@ -164,10 +164,14 @@ extension WalletListV2ViewController: UITableViewDataSource {
 
 extension WalletListV2ViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    if indexPath.section == 0 {
-      
-    } else {
-      
+    self.dismiss(animated: true) {
+      if indexPath.section == 0 {
+        let wallet = self.viewModel.wallets[indexPath.row]
+        self.delegate?.didSelectWallet(wallet: wallet)
+      } else {
+        let kAddress = self.viewModel.watchAddresses[indexPath.row]
+        self.delegate?.didSelectWatchWallet(address: kAddress)
+      }
     }
   }
 
