@@ -55,12 +55,6 @@ class KNSettingsCoordinator: NSObject, Coordinator {
     coordinator.delegate = self
     return coordinator
   }()
-  
-  lazy var customTokenCoordinator: AddTokenCoordinator = {
-    let coordinator = AddTokenCoordinator(navigationController: self.navigationController)
-    coordinator.delegate = self
-    return coordinator
-  }()
 
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
 //  fileprivate var manageAlertCoordinator: KNManageAlertCoordinator?
@@ -203,9 +197,6 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.navigationController.openSafari(with: "https://goo.gl/forms/ZarhiV7MPE0mqr712")
     case .rateOurApp:
       self.navigationController.openSafari(with: "https://apps.apple.com/us/app/id1558105691")
-    case .addCustomToken:
-      self.customTokenCoordinator.rootViewController.tokenObject = nil
-      self.customTokenCoordinator.start()
     case .termOfUse:
       self.navigationController.openSafari(with: "https://files.krystal.app/terms.pdf")
     case .privacyPolicy:
@@ -414,14 +405,10 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   
   func appCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.navigationController.popToRootViewController(animated: false)
-    self.customTokenCoordinator.start()
-    self.customTokenCoordinator.coordinatorDidUpdateTokenObject(token)
   }
   
   func appCoordinatorDidAddTokens(srcToken: TokenObject?, destToken: TokenObject?) {
     self.navigationController.popToRootViewController(animated: false)
-    self.customTokenCoordinator.start()
-    self.customTokenCoordinator.coordinatorDidUpdateTokensObject(srcToken: srcToken, destToken: destToken)
   }
 
   func appCoordinatorDidUpdateChain() {
@@ -616,12 +603,6 @@ extension KNSettingsCoordinator: KNSendTokenViewCoordinatorDelegate {
   
   func sendTokenCoordinatorDidSelectAddWallet() {
     self.delegate?.settingsCoordinatorDidSelectAddWallet()
-  }
-}
-
-extension KNSettingsCoordinator: AddTokenCoordinatorDelegate {
-  func addCoordinatorDidImportDeepLinkTokens(srcToken: TokenObject?, destToken: TokenObject?) {
-    self.delegate?.settingsCoordinatorDidImportDeepLinkTokens(srcToken: srcToken, destToken: destToken)
   }
 }
 

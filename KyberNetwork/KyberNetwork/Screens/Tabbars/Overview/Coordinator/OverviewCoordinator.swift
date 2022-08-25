@@ -75,7 +75,6 @@ class OverviewCoordinator: NSObject, Coordinator {
   var balances: [String: Balance] = [:]
   var sendCoordinator: KNSendTokenViewCoordinator?
   var qrCodeCoordinator: KNWalletQRCodeCoordinator?
-  var addTokenCoordinator: AddTokenCoordinator?
   var historyCoordinator: KNHistoryCoordinator?
   var withdrawCoordinator: WithdrawCoordinator?
   var krytalCoordinator: KrytalCoordinator?
@@ -226,12 +225,6 @@ class OverviewCoordinator: NSObject, Coordinator {
     let qrcodeCoordinator = KNWalletQRCodeCoordinator(navigationController: self.navigationController)
     qrcodeCoordinator.start()
     self.qrCodeCoordinator = qrcodeCoordinator
-  }
-  
-  func openAddTokenScreen() {
-    let tokenCoordinator = AddTokenCoordinator(navigationController: self.navigationController)
-    tokenCoordinator.start()
-    self.addTokenCoordinator = tokenCoordinator
   }
   
   func openHistoryScreen() {

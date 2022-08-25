@@ -283,18 +283,11 @@ class KNLoadBalanceCoordinator {
             }
           }
           BalanceStorage.shared.setBalances(tokenBalances)
-          KNSupportedTokenStorage.shared.updateNewDataForCustomTokensIfHave(allTokens)
-          KNSupportedTokenStorage.shared.checkAddCustomTokenIfNeeded(allTokens)
           KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
           self.delegate?.loadBalanceCoordinatorDidGetBalance(chainBalances: chainBalanceModels)
         }
         completion(true)
       case .failure(let error):
-//        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
-//          with: "",
-//          message: error.localizedDescription,
-//          time: 2.0
-//        )
         completion(false)
       }
     }

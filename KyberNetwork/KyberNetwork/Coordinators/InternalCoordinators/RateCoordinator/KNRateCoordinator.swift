@@ -142,7 +142,7 @@ class KNRateCoordinator {
       operation: "load-token-price-operation"
     )
 
-    let tokenAddress = KNSupportedTokenStorage.shared.getActiveCustomToken().map { (token) -> String in
+    let tokenAddress = KNSupportedTokenStorage.shared.getActiveSupportedToken().map { (token) -> String in
       return token.address
     }
     let splitCount = tokenAddress.count > 100 ? tokenAddress.count / 3 : 100
@@ -202,7 +202,6 @@ class KNRateCoordinator {
       }
       tx.finish()
     }
-    
   }
 }
 
