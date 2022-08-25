@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -112,46 +112,8 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uha-ah-auB">
-                            <rect key="frame" x="15" y="151" width="345" height="87"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CUSTOM TOKENS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XOs-38-ntL">
-                                    <rect key="frame" x="24" y="18" width="123.5" height="19"/>
-                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                                    <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NwH-fq-MHe">
-                                    <rect key="frame" x="24" y="49" width="297" height="19"/>
-                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                                    <color key="tintColor" name="textWhiteColor"/>
-                                    <inset key="titleEdgeInsets" minX="19" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                    <state key="normal" title="Add Custom Token" image="setting_add_custom_token">
-                                        <color key="titleColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="addCustomTokenTapped:" destination="-1" eventType="touchUpInside" id="fAf-6O-wNb"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" name="mainViewBgColor"/>
-                            <constraints>
-                                <constraint firstItem="XOs-38-ntL" firstAttribute="top" secondItem="Uha-ah-auB" secondAttribute="top" constant="18" id="3Be-Vb-Jt7"/>
-                                <constraint firstAttribute="trailing" secondItem="NwH-fq-MHe" secondAttribute="trailing" constant="24" id="Tvx-ZE-eDe"/>
-                                <constraint firstItem="NwH-fq-MHe" firstAttribute="top" secondItem="XOs-38-ntL" secondAttribute="bottom" constant="12" id="gKj-Lv-LLG"/>
-                                <constraint firstItem="XOs-38-ntL" firstAttribute="leading" secondItem="Uha-ah-auB" secondAttribute="leading" constant="24" id="luO-Y8-2KC"/>
-                                <constraint firstItem="NwH-fq-MHe" firstAttribute="leading" secondItem="Uha-ah-auB" secondAttribute="leading" constant="24" id="vFS-Vs-kCh"/>
-                                <constraint firstAttribute="height" constant="87" id="wiS-UV-CbY"/>
-                            </constraints>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="8"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Ow-BM-69D">
-                            <rect key="frame" x="15" y="256" width="345" height="120"/>
+                            <rect key="frame" x="15" y="151" width="345" height="120"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SECURITY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OcM-p5-aad">
                                     <rect key="frame" x="24" y="18" width="70" height="19"/>
@@ -211,7 +173,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gtu-Tc-Eer">
-                            <rect key="frame" x="15" y="394" width="345" height="118"/>
+                            <rect key="frame" x="15" y="289" width="345" height="118"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SUPPORT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cG4-Dx-3rq">
                                     <rect key="frame" x="24" y="18" width="66" height="19"/>
@@ -264,7 +226,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dr4-La-f9X">
-                            <rect key="frame" x="15" y="530" width="345" height="400"/>
+                            <rect key="frame" x="15" y="425" width="345" height="400"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OTHERS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2pf-32-VzG">
                                     <rect key="frame" x="24" y="18" width="57.5" height="19"/>
@@ -455,9 +417,7 @@
                     </subviews>
                     <constraints>
                         <constraint firstItem="7lQ-yL-ejU" firstAttribute="leading" secondItem="r2z-gX-MLZ" secondAttribute="leading" constant="15" id="3mG-6w-BoJ"/>
-                        <constraint firstItem="Uha-ah-auB" firstAttribute="top" secondItem="7lQ-yL-ejU" secondAttribute="bottom" constant="18" id="3xI-wQ-SRM"/>
-                        <constraint firstAttribute="trailing" secondItem="Uha-ah-auB" secondAttribute="trailing" constant="15" id="9Mn-r7-sGS"/>
-                        <constraint firstItem="Uha-ah-auB" firstAttribute="leading" secondItem="r2z-gX-MLZ" secondAttribute="leading" constant="15" id="HPS-20-jyM"/>
+                        <constraint firstItem="6Ow-BM-69D" firstAttribute="top" secondItem="7lQ-yL-ejU" secondAttribute="bottom" constant="18" id="8vD-0f-AVu"/>
                         <constraint firstAttribute="trailing" secondItem="7lQ-yL-ejU" secondAttribute="trailing" constant="15" id="I5X-zy-Hc6"/>
                         <constraint firstItem="Dr4-La-f9X" firstAttribute="top" secondItem="gtu-Tc-Eer" secondAttribute="bottom" constant="18" id="IxP-iU-kRS"/>
                         <constraint firstItem="7lQ-yL-ejU" firstAttribute="top" secondItem="r2z-gX-MLZ" secondAttribute="top" constant="15" id="Jqt-B3-cKW"/>
@@ -467,7 +427,6 @@
                         <constraint firstItem="6Ow-BM-69D" firstAttribute="leading" secondItem="r2z-gX-MLZ" secondAttribute="leading" constant="15" id="aKQ-lU-hOP"/>
                         <constraint firstItem="Dr4-La-f9X" firstAttribute="leading" secondItem="r2z-gX-MLZ" secondAttribute="leading" constant="15" id="ez1-f9-BEu"/>
                         <constraint firstAttribute="bottom" secondItem="Dr4-La-f9X" secondAttribute="bottom" constant="90" id="f3e-km-1SJ"/>
-                        <constraint firstItem="6Ow-BM-69D" firstAttribute="top" secondItem="Uha-ah-auB" secondAttribute="bottom" constant="18" id="juD-Ub-WgN"/>
                         <constraint firstAttribute="trailing" secondItem="Dr4-La-f9X" secondAttribute="trailing" constant="15" id="nlB-CP-db3"/>
                         <constraint firstAttribute="trailing" secondItem="gtu-Tc-Eer" secondAttribute="trailing" constant="15" id="tyc-y4-IXc"/>
                         <constraint firstItem="7lQ-yL-ejU" firstAttribute="centerX" secondItem="r2z-gX-MLZ" secondAttribute="centerX" id="uLq-vt-YbI"/>
@@ -491,7 +450,6 @@
     </objects>
     <resources>
         <image name="ref_policy_icon" width="24" height="24"/>
-        <image name="setting_add_custom_token" width="19" height="19"/>
         <image name="setting_email_icon" width="24" height="24"/>
         <image name="setting_fa0" width="24" height="24"/>
         <image name="setting_fingerprint" width="20" height="22"/>
