@@ -16,6 +16,14 @@ class WalletListV2ViewModel {
     wallets = WalletManager.shared.getAllWallets()
     watchAddresses = WalletManager.shared.watchAddresses()
   }
+  
+  func numberOfSection() -> Int {
+    return watchAddresses.isEmpty ? 1 : 2
+  }
+  
+  func numberOfRows(section: Int) -> Int {
+    return section == 0 ? wallets.count : watchAddresses.count
+  }
 }
 
 class WalletListV2ViewController: KNBaseViewController {
@@ -52,6 +60,14 @@ class WalletListV2ViewController: KNBaseViewController {
   }
 
   @IBAction func connectWalletButtonTapped(_ sender: UIButton) {
+    
+  }
+  
+  @IBAction func addWalletButtonTapped(_ sender: Any) {
+    
+  }
+
+  @IBAction func manageWalletButtonTapped(_ sender: Any) {
     
   }
   
@@ -109,41 +125,62 @@ extension WalletListV2ViewController: BackUpWalletViewControllerDelegate {
   }
 }
 
-extension WalletListV2ViewController: BottomPopUpAbstract {
-  func setTopContrainConstant(value: CGFloat) {
-    self.contentViewTopContraint.constant = value
-  }
-
-  func getPopupHeight() -> CGFloat {
-//    let padding = KNGeneralProvider.shared.currentChain == .solana ? 125 : 179
-//    return self.viewModel.walletTableViewHeight + CGFloat(padding)
-    
-    return 600
-  }
-
-  func getPopupContentView() -> UIView {
-    return self.contentView
-  }
-}
-
 extension WalletListV2ViewController: UITableViewDataSource {
   
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(WalletCell.self, indexPath: indexPath)!
-    let wallet = viewModel.wallets[indexPath.row]
-    let cellModel = RealWalletCellModel(wallet: wallet)
-    cell.updateCell(cellModel)
-    cell.didSelectBackup = {
-      self.showBackupWallet(walletId: wallet.id)
-    }
-    return cell
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return viewModel.numberOfSection()
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return viewModel.wallets.count
+    return viewModel.numberOfRows(section: section)
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+    let cell = tableView.dequeueReusableCell(WalletCell.self, indexPath: indexPath)!
+    var cellModel: WalletCellModel
+    if indexPath.section == 0 {
+      let wallet = viewModel.wallets[indexPath.row]
+      cellModel = RealWalletCellModel(wallet: wallet)
+      cell.didSelectBackup = {
+        self.showBackupWallet(walletId: wallet.id)
+      }
+    } else {
+      let kAddress = viewModel.watchAddresses[indexPath.row]
+      cellModel = WatchWalletCellModel(address: kAddress)
+    }
+
+    cell.updateCell(cellModel)
+    return cell
+  }
+}
+
+extension WalletListV2ViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+  }
+
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return section == 0 ? 0 : 45
   }
   
-//  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//    return 60
-//  }
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    if section == 1 {
+      let view = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 45))
+      view.backgroundColor = UIColor.Kyber.popupBackgroundColor
+      
+      let seperatorView = UIView(frame: CGRect(x: 32, y: 0, width: UIScreen.main.bounds.size.width - 64, height: 1))
+      seperatorView.backgroundColor = UIColor.Kyber.grayBackgroundColor
+      view.addSubview(seperatorView)
+      
+      let label = UILabel(frame: CGRect(x: 32, y: 19, width: 74, height: 19))
+      label.text = Strings.Watchlist
+      label.textColor = UIColor.Kyber.whiteText
+      label.font = UIFont.Kyber.bold(with: 16)
+      view.addSubview(label)
+      
+      return view
+    }
+    return nil
+  }
 }

@@ -55,6 +55,9 @@
                             <state key="normal" title="Manage Wallets">
                                 <color key="titleColor" red="0.92549019610000005" green="0.92941176469999998" blue="0.93725490199999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="manageWalletButtonTapped:" destination="-1" eventType="touchUpInside" id="n9d-0X-yZO"/>
+                            </connections>
                         </button>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="qr_code_blue_icon" translatesAutoresizingMaskIntoConstraints="NO" id="rkB-Xp-bC8">
                             <rect key="frame" x="323" y="518" width="20" height="20"/>
@@ -72,8 +75,8 @@
                                 <action selector="connectWalletButtonTapped:" destination="-1" eventType="touchUpInside" id="xLk-ld-GzN"/>
                             </connections>
                         </button>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="oCm-bx-EyP">
-                            <rect key="frame" x="0.0" y="91" width="375" height="411"/>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="oCm-bx-EyP">
+                            <rect key="frame" x="0.0" y="54" width="375" height="448"/>
                             <color key="backgroundColor" name="popupBackgroundColor"/>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="tkQ-jc-8wL"/>
@@ -86,6 +89,17 @@
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9tx-a7-6a0">
+                            <rect key="frame" x="323" y="20" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="aDd-wM-vhS"/>
+                                <constraint firstAttribute="height" constant="32" id="voP-Rt-rN0"/>
+                            </constraints>
+                            <state key="normal" image="add_wallet_icon"/>
+                            <connections>
+                                <action selector="addWalletButtonTapped:" destination="-1" eventType="touchUpInside" id="h0E-9I-tBH"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" name="popupBackgroundColor"/>
                     <constraints>
@@ -99,7 +113,7 @@
                         <constraint firstItem="DYc-lr-n4K" firstAttribute="top" secondItem="v7e-Aw-EKY" secondAttribute="bottom" id="Xzf-il-UIy"/>
                         <constraint firstItem="v7e-Aw-EKY" firstAttribute="trailing" secondItem="u8X-qo-MXu" secondAttribute="trailing" id="cNQ-hg-ehY"/>
                         <constraint firstAttribute="trailing" secondItem="oCm-bx-EyP" secondAttribute="trailing" id="dJc-gN-C2S"/>
-                        <constraint firstItem="oCm-bx-EyP" firstAttribute="top" secondItem="UAc-kD-j7m" secondAttribute="top" id="dmr-S8-LQE"/>
+                        <constraint firstItem="oCm-bx-EyP" firstAttribute="top" secondItem="UAc-kD-j7m" secondAttribute="top" constant="54" id="dmr-S8-LQE"/>
                         <constraint firstAttribute="bottom" secondItem="DYc-lr-n4K" secondAttribute="bottom" id="eg3-PH-Fqu"/>
                         <constraint firstItem="DYc-lr-n4K" firstAttribute="leading" secondItem="UAc-kD-j7m" secondAttribute="leading" constant="32" id="f6h-Oi-KbU"/>
                         <constraint firstItem="L52-bc-rij" firstAttribute="leading" secondItem="UAc-kD-j7m" secondAttribute="leading" constant="34" id="fEV-VQ-Yhc"/>
@@ -107,6 +121,8 @@
                         <constraint firstItem="DYc-lr-n4K" firstAttribute="leading" secondItem="u8X-qo-MXu" secondAttribute="leading" id="lTo-cc-Gvp"/>
                         <constraint firstItem="OB2-sm-rae" firstAttribute="trailing" secondItem="rkB-Xp-bC8" secondAttribute="trailing" id="lXD-GW-3Sk"/>
                         <constraint firstItem="v7e-Aw-EKY" firstAttribute="top" secondItem="OB2-sm-rae" secondAttribute="bottom" constant="2" id="nFd-H2-jkB"/>
+                        <constraint firstAttribute="trailing" secondItem="9tx-a7-6a0" secondAttribute="trailing" constant="20" id="tYY-BT-bSD"/>
+                        <constraint firstItem="9tx-a7-6a0" firstAttribute="top" secondItem="UAc-kD-j7m" secondAttribute="top" constant="20" id="wVh-vj-1vu"/>
                         <constraint firstAttribute="trailing" secondItem="DYc-lr-n4K" secondAttribute="trailing" constant="32" id="wuj-Aa-1zq"/>
                         <constraint firstItem="u8X-qo-MXu" firstAttribute="top" secondItem="oCm-bx-EyP" secondAttribute="bottom" id="xSU-A3-hba"/>
                         <constraint firstItem="oCm-bx-EyP" firstAttribute="leading" secondItem="UAc-kD-j7m" secondAttribute="leading" id="ysr-w4-VBb"/>
@@ -140,6 +156,7 @@
         </view>
     </objects>
     <resources>
+        <image name="add_wallet_icon" width="32" height="32"/>
         <image name="qr_code_blue_icon" width="20" height="20"/>
         <namedColor name="popupBackgroundColor">
             <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -34,7 +34,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DF123456...abcdef  •  Solana" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9IY-MZ-994">
-                        <rect key="frame" x="79" y="38" width="149" height="15"/>
+                        <rect key="frame" x="79" y="38" width="301" height="15"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="JIm-Qd-bte"/>
                         </constraints>
@@ -106,6 +106,7 @@
                     <constraint firstItem="9IY-MZ-994" firstAttribute="leading" secondItem="HqI-RC-lPS" secondAttribute="leading" id="ZQZ-NI-nYV"/>
                     <constraint firstAttribute="trailing" secondItem="eFg-nk-C7u" secondAttribute="trailing" constant="18" id="b3Z-BC-dzb"/>
                     <constraint firstAttribute="bottom" secondItem="eFg-nk-C7u" secondAttribute="bottom" constant="9" id="bA4-Uz-XIp"/>
+                    <constraint firstAttribute="trailing" secondItem="9IY-MZ-994" secondAttribute="trailing" constant="32" id="uMO-Vf-dcp"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

@@ -111,6 +111,7 @@ extension KWallet {
 extension KAddress {
   func generateAddressDescription() -> String {
     let chainType = self.addressString.has0xPrefix ? "Ethereum" : "Solana"
-    return "\(self.addressString)  •  \(chainType)"
+    
+    return "\(self.addressString.shortTypeAddress)  •  \(chainType)"
   }
 }
