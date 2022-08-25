@@ -513,8 +513,8 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
     viewModel.didTapHistoryButton()
   }
   
-  @objc override func onSwitchChain() {
-    super.onSwitchChain()
+  @objc override func onAppSwitchChain() {
+    super.onAppSwitchChain()
     viewModel.appDidSwitchChain()
   }
   

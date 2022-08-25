@@ -10,26 +10,21 @@ import UIKit
 class OverviewTotalInfoCell: UICollectionViewCell {
 
   static let cellID: String = "OverviewTotalInfoCell"
-  @IBOutlet weak var walletListButton: UIButton!
   @IBOutlet weak var backgroundContainView: UIView!
   @IBOutlet weak var hideBalanceButton: UIButton!
   @IBOutlet weak var totalValueLabel: UILabel!
-  @IBOutlet weak var walletNameLabel: UILabel!
   @IBOutlet weak var totalNetWorthLabel: UILabel!
   @IBOutlet weak var transferButton: UIButton!
   @IBOutlet weak var receiveButton: UIButton!
-
-  var walletListButtonTapped: (() -> Void)?
+  @IBOutlet weak var chainIcon: UIImageView!
+  @IBOutlet weak var chainButton: UIButton!
+  @IBOutlet weak var chainView: UIView!
+  
+  var chainButtonTapped: (() -> Void)?
   var walletOptionButtonTapped: (() -> Void)?
   var hideBalanceButtonTapped: (() -> Void)?
   var transferButtonTapped: (() -> Void)?
   var receiveButtonTapped: (() -> Void)?
-
-  @IBAction func walletListButtonTapped(_ sender: UIButton) {
-    if let walletListButtonTapped = walletListButtonTapped {
-      walletListButtonTapped()
-    }
-  }
 
   @IBAction func hideBalanceButtonTapped(_ sender: Any) {
     if let hideBalanceButtonTapped = hideBalanceButtonTapped {
@@ -57,7 +52,19 @@ class OverviewTotalInfoCell: UICollectionViewCell {
 
   override func awakeFromNib() {
     super.awakeFromNib()
+    self.addGestures()
     self.backgroundContainView.rounded(radius: 16.0)
+  }
+  
+  func addGestures() {
+    chainView.isUserInteractionEnabled = true
+    let gesture = UITapGestureRecognizer(target: self, action: #selector(onTapChainButton))
+    gesture.cancelsTouchesInView = false
+    chainView.addGestureRecognizer(gesture)
+  }
+  
+  @objc func onTapChainButton() {
+    chainButtonTapped?()
   }
 
   private func updateUIForActionButtons(shouldShowAction: Bool) {
@@ -66,8 +73,9 @@ class OverviewTotalInfoCell: UICollectionViewCell {
     self.totalNetWorthLabel.isHidden = shouldShowAction
   }
 
-  func updateCell(walletName: String, totalValue: String, hideBalanceStatus: Bool, shouldShowAction: Bool) {
-    self.walletNameLabel.text = walletName
+  func updateCell(chain: ChainType, totalValue: String, hideBalanceStatus: Bool, shouldShowAction: Bool) {
+    self.chainIcon.image = chain.squareIcon()
+    self.chainButton.setTitle(chain.chainName(), for: .normal)
     self.totalValueLabel.text = totalValue
     self.updateUIForActionButtons(shouldShowAction: shouldShowAction)
     let eyeImage = hideBalanceStatus ? UIImage(named: "hide_eye_icon") : UIImage(named: "show_eye_icon")

@@ -15,15 +15,13 @@ protocol OverviewMainViewControllerDelegate: class {
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent)
 }
 
-class OverviewMainViewController: KNBaseViewController {
+class OverviewMainViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var totalBalanceContainerView: UIView!
   @IBOutlet weak var notificationButton: UIButton!
   @IBOutlet weak var searchButton: UIButton!
   @IBOutlet weak var totalPageValueLabel: UILabel!
   @IBOutlet weak var currentPageNameLabel: UILabel!
-  @IBOutlet weak var currentChainIcon: UIImageView!
-  @IBOutlet weak var currentChainLabel: UILabel!
   @IBOutlet weak var sortingContainerView: UIView!
   @IBOutlet weak var totatlInfoView: UIView!
   @IBOutlet weak var sortMarketByNameButton: UIButton!
@@ -41,6 +39,14 @@ class OverviewMainViewController: KNBaseViewController {
   let refreshControl = UIRefreshControl()
   let viewModel: OverviewMainViewModel
   let calculatingQueue = DispatchQueue.global()
+  
+  override var supportAllChainOption: Bool {
+    return true
+  }
+  
+  override var currentChain: ChainType {
+    return viewModel.currentChain
+  }
   
   init(viewModel: OverviewMainViewModel) {
     self.viewModel = viewModel
@@ -183,7 +189,6 @@ class OverviewMainViewController: KNBaseViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.updateUIByFeatureFlags()
-    self.updateUISwitchChain()
     self.delegate?.overviewMainViewController(self, run: .didAppear)
   }
   
@@ -203,12 +208,6 @@ class OverviewMainViewController: KNBaseViewController {
     self.updateCh24Button()
     self.tableView.reloadData()
     self.infoCollectionView.reloadData()
-  }
-  
-  fileprivate func updateUISwitchChain() {
-    let selected = self.viewModel.currentChain
-    self.currentChainIcon.image = selected.chainIcon()
-    self.currentChainLabel.text = selected.chainName()
   }
   
   fileprivate func updateCh24Button() {
@@ -259,33 +258,44 @@ class OverviewMainViewController: KNBaseViewController {
     self.reloadUI()
   }
   
-  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
-    let popup = SwitchChainViewController(includedAll: true, selected: self.viewModel.currentChain)
-    popup.completionHandler = { [weak self] selected in
-      guard let self = self else { return }
-      guard selected != .all else {
-        self.viewModel.currentChain = selected
-        self.updateUISwitchChain()
-        self.tableView.reloadData()
-        self.delegate?.overviewMainViewController(self, run: .selectAllChain)
-        return
-      }
-      
-      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
-      if addresses.isEmpty {
-        self.delegate?.overviewMainViewController(self, run: .addChainWallet(chain: selected))
-        return
-      } else {
-        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-        viewModel.completionHandler = { selected in
-          self.viewModel.currentChain = selected
-        }
-        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-        self.present(secondPopup, animated: true, completion: nil)
-      }
+  override func onChainSelected(chain: ChainType) {
+    if chain == .all {
+      self.viewModel.currentChain = chain
+      self.tableView.reloadData()
+      self.delegate?.overviewMainViewController(self, run: .selectAllChain)
+      return
+    } else {
+      self.viewModel.currentChain = chain
+      super.onChainSelected(chain: chain)
     }
-    self.present(popup, animated: true, completion: nil)
   }
+  
+//  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
+//    let popup = SwitchChainViewController(includedAll: true, selected: self.viewModel.currentChain)
+//    popup.completionHandler = { [weak self] selected in
+//      guard let self = self else { return }
+//      guard selected != .all else {
+//        self.viewModel.currentChain = selected
+//        self.tableView.reloadData()
+//        self.delegate?.overviewMainViewController(self, run: .selectAllChain)
+//        return
+//      }
+//
+//      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
+//      if addresses.isEmpty {
+//        self.delegate?.overviewMainViewController(self, run: .addChainWallet(chain: selected))
+//        return
+//      } else {
+//        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+//        viewModel.completionHandler = { selected in
+//          self.viewModel.currentChain = selected
+//        }
+//        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+//        self.present(secondPopup, animated: true, completion: nil)
+//      }
+//    }
+//    self.present(popup, animated: true, completion: nil)
+//  }
   
   @IBAction func toolbarOptionButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .changeMode(current: self.viewModel.currentMode))
@@ -390,18 +400,21 @@ class OverviewMainViewController: KNBaseViewController {
     self.configPullToRefresh()
   }
   
-  func coordinatorDidUpdateChain() {
+  @objc override func onAppSwitchChain() {
+    super.onAppSwitchChain()
+    
     guard self.isViewLoaded else {
       return
     }
     if self.viewModel.currencyMode.isQuoteCurrency {
       self.viewModel.currencyMode = KNGeneralProvider.shared.quoteCurrency
     }
-    self.updateUISwitchChain()
     self.reloadUI()
   }
   
-  func coordinatorAppSwitchAddress() {
+  @objc override func onAppSwitchAddress() {
+    super.onAppSwitchAddress()
+    
     if self.viewModel.currentChain != .all {
       self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
     }
@@ -410,7 +423,6 @@ class OverviewMainViewController: KNBaseViewController {
     calculatingQueue.async {
       self.viewModel.reloadAllData()
       DispatchQueue.main.async {
-        self.updateUISwitchChain()
         self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
         self.tableView.reloadData()
         self.infoCollectionView.reloadData()
@@ -755,10 +767,10 @@ extension OverviewMainViewController: UICollectionViewDataSource {
       totalValueString = self.viewModel.displayTotalSummaryValue
     }
     
-    cell.updateCell(walletName: viewModel.currentWalletName, totalValue: totalValueString, hideBalanceStatus: self.viewModel.hideBalanceStatus, shouldShowAction: indexPath.item == 0)
+    cell.updateCell(chain: viewModel.currentChain, totalValue: totalValueString, hideBalanceStatus: self.viewModel.hideBalanceStatus, shouldShowAction: indexPath.item == 0)
     
-    cell.walletListButtonTapped = {
-      self.delegate?.overviewMainViewController(self, run: .selectListWallet)
+    cell.chainButtonTapped = {
+      self.onChainButtonTapped(self.infoCollectionView)
     }
     
     cell.hideBalanceButtonTapped = {

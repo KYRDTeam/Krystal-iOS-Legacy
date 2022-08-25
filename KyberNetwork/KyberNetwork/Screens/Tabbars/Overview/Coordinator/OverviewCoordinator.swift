@@ -171,7 +171,6 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
   
   @objc func appDidSwitchAddress() {
-    self.rootViewController.coordinatorAppSwitchAddress()
     self.sendCoordinator?.coordinatorAppSwitchAddress()
     self.historyCoordinator?.appDidSwitchAddress()
     self.krytalCoordinator?.coordinatorAppSwitchAddress()
@@ -207,7 +206,6 @@ class OverviewCoordinator: NSObject, Coordinator {
       self.currentCurrencyType = KNGeneralProvider.shared.quoteCurrency
     }
     UserDefaults.standard.setValue(self.currentCurrencyType.rawValue, forKey: Constants.currentCurrencyMode)
-    self.rootViewController.coordinatorDidUpdateChain()
     self.sendCoordinator?.appCoordinatorDidUpdateChain()
   }
 

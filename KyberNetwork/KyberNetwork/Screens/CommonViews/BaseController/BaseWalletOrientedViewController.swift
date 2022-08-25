@@ -17,6 +17,10 @@ class BaseWalletOrientedViewController: KNBaseViewController {
   
   var walletConnectQRReaderDelegate: KQRCodeReaderDelegate?
   
+  var supportAllChainOption: Bool {
+    return false
+  }
+  
   var currentChain: ChainType {
     return KNGeneralProvider.shared.currentChain
   }
@@ -74,8 +78,14 @@ class BaseWalletOrientedViewController: KNBaseViewController {
   func observeNotifications() {
     NotificationCenter.default.addObserver(
       self,
-      selector: #selector(onSwitchChain),
+      selector: #selector(onAppSwitchChain),
       name: AppEventCenter.shared.kAppDidSwitchChain,
+      object: nil
+    )
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(onAppSwitchAddress),
+      name: AppEventCenter.shared.kAppDidChangeAddress,
       object: nil
     )
   }
@@ -94,16 +104,20 @@ class BaseWalletOrientedViewController: KNBaseViewController {
     chainButton?.setTitle(KNGeneralProvider.shared.currentChain.chainName(), for: .normal)
   }
   
-  @IBAction func onWalletButtonTapped(_ sender: UIButton) {
+  @IBAction func onWalletButtonTapped(_ sender: Any) {
     openWalletList()
   }
   
-  @IBAction func onChainButtonTapped(_ sender: UIButton) {
+  @IBAction func onChainButtonTapped(_ sender: Any) {
     openSwitchChain()
   }
   
-  @objc func onSwitchChain() {
+  @objc func onAppSwitchChain() {
     reloadChain()
+  }
+  
+  @objc func onAppSwitchAddress() {
+    reloadWalletName()
   }
   
   func openWalletConnect() {
@@ -121,17 +135,25 @@ class BaseWalletOrientedViewController: KNBaseViewController {
   }
   
   func openSwitchChain() {
-    let popup = SwitchChainViewController()
+    let popup = SwitchChainViewController(selected: currentChain)
     popup.dataSource = WalletManager.shared.getAllAddresses(walletID: currentAddress.walletID).flatMap { address in
       return ChainType.allCases.filter { chain in
-        return chain != .all && chain.addressType == address.addressType
+        if supportAllChainOption {
+          return chain == .all || chain.addressType == address.addressType
+        } else {
+          return chain.addressType == address.addressType
+        }
       }
     }
-    popup.completionHandler = { selectedChain in
-      KNGeneralProvider.shared.currentChain = selectedChain
-      AppEventCenter.shared.switchChain(chain: selectedChain)
+    popup.completionHandler = { [weak self] selectedChain in
+      self?.onChainSelected(chain: selectedChain)
     }
     present(popup, animated: true, completion: nil)
+  }
+  
+  func onChainSelected(chain: ChainType) {
+    KNGeneralProvider.shared.currentChain = chain
+    AppEventCenter.shared.switchChain(chain: chain)
   }
 
 }
@@ -149,7 +171,9 @@ extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
       AppDelegate.shared.coordinator.switchAddress(address: matchingChainAddress)
     } else {
       let address = addresses.first!
-      guard let chain = ChainType.allCases.first(where: { $0 != .all && $0.addressType == address.addressType }) else { return }
+      guard let chain = ChainType.allCases.first(where: {
+        return ($0 != .all || supportAllChainOption) && $0.addressType == address.addressType
+      }) else { return }
       KNGeneralProvider.shared.currentChain = chain
       AppEventCenter.shared.switchChain(chain: chain)
       AppDelegate.shared.coordinator.switchAddress(address: address)

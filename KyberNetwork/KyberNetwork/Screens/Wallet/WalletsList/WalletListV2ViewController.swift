@@ -41,8 +41,6 @@ class WalletListV2ViewController: KNBaseViewController {
   @IBOutlet weak var connectWalletButton: UIButton!
   @IBOutlet weak var tapOutSideBackgroundView: UIView!
   
-  weak var delegate: WalletListV2ViewControllerDelegate?
-  
   var passcodeCoordinator: KNPasscodeCoordinator?
   var currentWalletId: String?
   let transitor = TransitionDelegate()
