@@ -26,7 +26,7 @@ class WalletListV2ViewModel {
   }
 }
  
-protocol WalletListV2ViewControllerDelegate {
+protocol WalletListV2ViewControllerDelegate: class {
   func didSelectWallet(wallet: KWallet)
   func didSelectWatchWallet(address: KAddress)
   func didSelectAddWallet()
@@ -42,6 +42,7 @@ class WalletListV2ViewController: KNBaseViewController {
   var currentWalletId: String?
   let transitor = TransitionDelegate()
   let viewModel: WalletListV2ViewModel
+  weak var delegate: WalletListV2ViewControllerDelegate?
   init() {
     viewModel = WalletListV2ViewModel()
     viewModel.reloadData()
@@ -163,7 +164,11 @@ extension WalletListV2ViewController: UITableViewDataSource {
 
 extension WalletListV2ViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
+    if indexPath.section == 0 {
+      
+    } else {
+      
+    }
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
