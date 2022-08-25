@@ -75,7 +75,9 @@ class WalletListV2ViewController: KNBaseViewController {
   }
 
   @IBAction func manageWalletButtonTapped(_ sender: Any) {
-    
+    self.dismiss(animated: true) {
+      AppDelegate.shared.coordinator.didSelectManageWallet()
+    }
   }
   
   func showBackupWallet(walletId: String) {

@@ -95,6 +95,11 @@ class KNAppCoordinator: NSObject, Coordinator {
     }
   }
   
+  func didSelectManageWallet() {
+    self.tabbarController.selectedIndex = 4
+    self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
+  }
+  
   func switchToWatchAddress(address: KAddress, chain: ChainType) {
     KNGeneralProvider.shared.currentChain = chain
     switchAddress(address: address)
