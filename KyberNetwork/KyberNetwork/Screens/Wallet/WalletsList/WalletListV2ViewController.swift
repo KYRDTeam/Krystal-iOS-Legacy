@@ -25,6 +25,11 @@ class WalletListV2ViewModel {
     return section == 0 ? wallets.count : watchAddresses.count
   }
 }
+ 
+protocol WalletListV2ViewControllerDelegate {
+  func didSelectWallet(wallet: KWallet)
+  func didSelectWatchWallet(address: KAddress)
+}
 
 class WalletListV2ViewController: KNBaseViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
