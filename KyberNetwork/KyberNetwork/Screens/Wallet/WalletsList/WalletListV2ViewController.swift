@@ -77,7 +77,7 @@ extension WalletListV2ViewController: KNPasscodeCoordinatorDelegate {
         do {
           let mnemonic = try WalletManager.shared.exportMnemonic(walletID: currentWalletId)
           let seeds = mnemonic.split(separator: " ").map({ return String($0) })
-          let viewModel = BackUpWalletViewModel(seeds: seeds)
+          let viewModel = BackUpWalletViewModel(seeds: seeds, walletId: currentWalletId)
           let backUpVC = BackUpWalletViewController(viewModel: viewModel)
           backUpVC.delegate = self
           let navigation = UINavigationController(rootViewController: backUpVC)

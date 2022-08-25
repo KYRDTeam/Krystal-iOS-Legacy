@@ -739,6 +739,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
 //      walletsList.delegate = self
       let walletsList = WalletListV2ViewController()
       let navigation = UINavigationController(rootViewController: walletsList)
+      navigation.setNavigationBarHidden(true, animated: false)
       self.navigationController.present(navigation, animated: true, completion: nil)
     case .send(let recipientAddress):
       self.openSendTokenView(nil, recipientAddress: recipientAddress ?? "")

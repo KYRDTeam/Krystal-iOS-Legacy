@@ -6,7 +6,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -73,18 +72,25 @@
                                 <action selector="connectWalletButtonTapped:" destination="-1" eventType="touchUpInside" id="xLk-ld-GzN"/>
                             </connections>
                         </button>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="oCm-bx-EyP">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="502"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="oCm-bx-EyP">
+                            <rect key="frame" x="0.0" y="91" width="375" height="411"/>
+                            <color key="backgroundColor" name="popupBackgroundColor"/>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="tkQ-jc-8wL"/>
                                 <outlet property="delegate" destination="-1" id="J1G-oo-qLQ"/>
                             </connections>
                         </tableView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Wallets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L52-bc-rij">
+                            <rect key="frame" x="34" y="29" width="83" height="19"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="16"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" name="popupBackgroundColor"/>
                     <constraints>
                         <constraint firstItem="OB2-sm-rae" firstAttribute="trailing" secondItem="u8X-qo-MXu" secondAttribute="trailing" id="Ais-7j-L3W"/>
+                        <constraint firstItem="L52-bc-rij" firstAttribute="top" secondItem="UAc-kD-j7m" secondAttribute="top" constant="29" id="CJZ-1K-E02"/>
                         <constraint firstItem="DYc-lr-n4K" firstAttribute="trailing" secondItem="u8X-qo-MXu" secondAttribute="trailing" id="E79-1X-87R"/>
                         <constraint firstItem="OB2-sm-rae" firstAttribute="leading" secondItem="u8X-qo-MXu" secondAttribute="leading" id="Mp7-te-Tdy"/>
                         <constraint firstItem="v7e-Aw-EKY" firstAttribute="leading" secondItem="u8X-qo-MXu" secondAttribute="leading" id="N1b-u7-KOc"/>
@@ -96,6 +102,7 @@
                         <constraint firstItem="oCm-bx-EyP" firstAttribute="top" secondItem="UAc-kD-j7m" secondAttribute="top" id="dmr-S8-LQE"/>
                         <constraint firstAttribute="bottom" secondItem="DYc-lr-n4K" secondAttribute="bottom" id="eg3-PH-Fqu"/>
                         <constraint firstItem="DYc-lr-n4K" firstAttribute="leading" secondItem="UAc-kD-j7m" secondAttribute="leading" constant="32" id="f6h-Oi-KbU"/>
+                        <constraint firstItem="L52-bc-rij" firstAttribute="leading" secondItem="UAc-kD-j7m" secondAttribute="leading" constant="34" id="fEV-VQ-Yhc"/>
                         <constraint firstItem="OB2-sm-rae" firstAttribute="top" secondItem="u8X-qo-MXu" secondAttribute="bottom" constant="2" id="lFA-u7-aiU"/>
                         <constraint firstItem="DYc-lr-n4K" firstAttribute="leading" secondItem="u8X-qo-MXu" secondAttribute="leading" id="lTo-cc-Gvp"/>
                         <constraint firstItem="OB2-sm-rae" firstAttribute="trailing" secondItem="rkB-Xp-bC8" secondAttribute="trailing" id="lXD-GW-3Sk"/>
@@ -140,8 +147,8 @@
         <namedColor name="separatorColor">
             <color red="0.22745098039215686" green="0.22745098039215686" blue="0.22745098039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>
