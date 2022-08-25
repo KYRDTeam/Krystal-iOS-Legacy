@@ -29,6 +29,8 @@ class BaseWalletOrientedViewController: KNBaseViewController {
     return AppDelegate.session.address
   }
   
+  let service = KrystalService()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -156,12 +158,20 @@ class BaseWalletOrientedViewController: KNBaseViewController {
     AppEventCenter.shared.switchChain(chain: chain)
   }
 
+  
+  lazy var addWalletCoordinator: KNAddNewWalletCoordinator = {
+    let coordinator = KNAddNewWalletCoordinator()
+    coordinator.delegate = self
+    return coordinator
+  }()
 }
 
 extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
   
   func didSelectAddWallet() {
-    
+    let coordinator = KNAddNewWalletCoordinator()
+    coordinator.delegate = self
+    coordinator.start()
   }
   
   func didSelectWallet(wallet: KWallet) {
@@ -189,20 +199,28 @@ extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
     }
   }
   
-  func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
-    switch event {
-    case .connectWallet:
-      self.openWalletConnect()
-    case .manageWallet:
-      return
-    case .didSelect:
-      self.reloadWalletName()
-      return
-    case .addWallet:
-      // TODO: Add wallet
-      //      self.delegate?.swapV2CoordinatorDidSelectAddWallet()
-      return
-    }
+}
+
+extension BaseWalletOrientedViewController: KNAddNewWalletCoordinatorDelegate {
+  
+  func addNewWalletCoordinator(didAdd wallet: KWallet, chain: ChainType) {
+    AppDelegate.shared.coordinator.tabbarController.selectedIndex = 0
+    onChainSelected(chain: chain)
+    didSelectWallet(wallet: wallet)
   }
   
+  func addNewWalletCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {
+    onChainSelected(chain: chain)
+    didSelectWatchWallet(address: watchAddress)
+  }
+  
+  func addNewWalletCoordinatorDidSendRefCode(_ code: String) {
+    service.sendRefCode(address: currentAddress, code.uppercased()) { isSuccess, message in
+      AppDelegate.shared.coordinator.tabbarController.showTopBannerView(message: message)
+    }
+  }
+
+  func addNewWalletCoordinator(remove wallet: KWallet) {
+
+  }
 }

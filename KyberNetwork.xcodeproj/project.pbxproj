@@ -767,6 +767,7 @@
 		A6E26FE428129CAC0054427E /* HistoryModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E26FE328129CAC0054427E /* HistoryModelType.swift */; };
 		A6E60708284F5D8E00387388 /* EthereumTransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E60707284F5D8E00387388 /* EthereumTransactionProcessor.swift */; };
 		A6E6070E2851A25600387388 /* SignerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6070D2851A25600387388 /* SignerFactory.swift */; };
+		A6E6463C28B7742F009556F9 /* KrystalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6463B28B7742F009556F9 /* KrystalService.swift */; };
 		A6E6C9B528168DA200EEB2E6 /* LoadingIndicatorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9B428168DA100EEB2E6 /* LoadingIndicatorCell.swift */; };
 		A6E6C9C52816FA1B00EEB2E6 /* TransactionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9C42816FA1B00EEB2E6 /* TransactionRepository.swift */; };
 		A6E6C9C72816FAE700EEB2E6 /* GetSolanaTransactionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9C62816FAE700EEB2E6 /* GetSolanaTransactionsUseCase.swift */; };
@@ -1967,6 +1968,7 @@
 		A6E6070D2851A25600387388 /* SignerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignerFactory.swift; sourceTree = "<group>"; };
 		A6E6070F2851A2B900387388 /* SolanaSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaSigner.swift; sourceTree = "<group>"; };
 		A6E607112851A31C00387388 /* Signer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signer.swift; sourceTree = "<group>"; };
+		A6E6463B28B7742F009556F9 /* KrystalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalService.swift; sourceTree = "<group>"; };
 		A6E6C9B428168DA100EEB2E6 /* LoadingIndicatorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingIndicatorCell.swift; sourceTree = "<group>"; };
 		A6E6C9C42816FA1B00EEB2E6 /* TransactionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRepository.swift; sourceTree = "<group>"; };
 		A6E6C9C62816FAE700EEB2E6 /* GetSolanaTransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSolanaTransactionsUseCase.swift; sourceTree = "<group>"; };
@@ -5204,6 +5206,7 @@
 				A6E6C9E52817FE0A00EEB2E6 /* KNInternalProvider.swift */,
 				A6E6C9E42817FE0900EEB2E6 /* KyberNetworkService.swift */,
 				A6B3CD8128125737005D0D66 /* KrystalApi.swift */,
+				A6E6463B28B7742F009556F9 /* KrystalService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -7906,6 +7909,7 @@
 				25EE47EE21267B97002657DF /* KNAppStyle.swift in Sources */,
 				C3A6592025F1EC3300A89241 /* EarnOverviewViewController.swift in Sources */,
 				A6F5DCAE28572FF200FD02C9 /* NonceCache.swift in Sources */,
+				A6E6463C28B7742F009556F9 /* KrystalService.swift in Sources */,
 				25D325A720C075DE008BB235 /* KNSendTokenViewCoordinator.swift in Sources */,
 				C3743295278EC076002C97A9 /* Int.swift in Sources */,
 				A6D38BF32899118F003579F2 /* SwapV2PlatformCell.swift in Sources */,
