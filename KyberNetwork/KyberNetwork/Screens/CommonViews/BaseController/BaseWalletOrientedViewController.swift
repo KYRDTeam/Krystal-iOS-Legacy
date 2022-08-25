@@ -14,7 +14,12 @@ class BaseWalletOrientedViewController: KNBaseViewController {
   @IBOutlet weak var walletButton: UIButton?
   @IBOutlet weak var chainIcon: UIImageView?
   @IBOutlet weak var chainButton: UIButton?
+  
   var walletConnectQRReaderDelegate: KQRCodeReaderDelegate?
+  
+  var currentChain: ChainType {
+    return KNGeneralProvider.shared.currentChain
+  }
   
   var currentAddress: KAddress {
     return AppDelegate.session.address
@@ -108,10 +113,11 @@ class BaseWalletOrientedViewController: KNBaseViewController {
   }
   
   func openWalletList() {
-    let viewModel = WalletsListViewModel()
-    let walletsList = WalletsListViewController(viewModel: viewModel)
+    let walletsList = WalletListV2ViewController()
     walletsList.delegate = self
-    present(walletsList, animated: true, completion: nil)
+    let navigation = UINavigationController(rootViewController: walletsList)
+    navigation.setNavigationBarHidden(true, animated: false)
+    present(navigation, animated: true, completion: nil)
   }
   
   func openSwitchChain() {
@@ -130,7 +136,34 @@ class BaseWalletOrientedViewController: KNBaseViewController {
 
 }
 
-extension BaseWalletOrientedViewController: WalletsListViewControllerDelegate {
+extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
+  
+  func didSelectAddWallet() {
+    
+  }
+  
+  func didSelectWallet(wallet: KWallet) {
+    let addresses = WalletManager.shared.getAllAddresses(walletID: wallet.id)
+    guard addresses.isNotEmpty else { return }
+    if let matchingChainAddress = addresses.first(where: { $0.addressType == currentChain.addressType }) {
+      AppDelegate.shared.coordinator.switchAddress(address: matchingChainAddress)
+    } else {
+      let address = addresses.first!
+      guard let chain = ChainType.allCases.first(where: { $0 != .all && $0.addressType == address.addressType }) else { return }
+      KNGeneralProvider.shared.currentChain = chain
+      AppEventCenter.shared.switchChain(chain: chain)
+      AppDelegate.shared.coordinator.switchAddress(address: address)
+    }
+  }
+  
+  func didSelectWatchWallet(address: KAddress) {
+    if address.addressType == currentChain.addressType {
+      AppDelegate.shared.coordinator.switchToWatchAddress(address: address, chain: currentChain)
+    } else {
+      guard let chain = ChainType.allCases.first(where: { $0 != .all && $0.addressType == address.addressType }) else { return }
+      AppDelegate.shared.coordinator.switchToWatchAddress(address: address, chain: chain)
+    }
+  }
   
   func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
     switch event {
