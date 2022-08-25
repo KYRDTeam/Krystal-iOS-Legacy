@@ -28,4 +28,14 @@ class MixPanelManager {
       "user-id": address
     ])
   }
+  
+  static func track(_ event: String, properties: Properties? = nil) {
+    var shouldConfigTrackingTool = true
+    if #available(iOS 14, *) {
+      let status = ATTrackingManager.trackingAuthorizationStatus
+      shouldConfigTrackingTool = status == .authorized
+    }
+    guard shouldConfigTrackingTool else { return }
+    Mixpanel.mainInstance().track(event: event, properties: properties)
+  }
 }

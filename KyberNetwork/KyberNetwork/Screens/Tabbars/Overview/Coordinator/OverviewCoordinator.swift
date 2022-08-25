@@ -468,6 +468,7 @@ extension OverviewCoordinator: WalletsListViewControllerDelegate {
       return
     case .addWallet:
       self.delegate?.overviewCoordinatorDidSelectAddWallet()
+      MixPanelManager.track("import_option_popup_open", properties: ["screenid": "import_option_popup"])
     }
   }
 }
@@ -731,6 +732,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       let walletsList = WalletsListViewController(viewModel: viewModel)
       walletsList.delegate = self
       self.navigationController.present(walletsList, animated: true, completion: nil)
+      MixPanelManager.track("wallet_popup_open", properties: ["screenid": "wallet_popup"])
     case .send(let recipientAddress):
       self.openSendTokenView(nil, recipientAddress: recipientAddress ?? "")
     case .receive:

@@ -257,6 +257,11 @@ class OverviewMainViewController: KNBaseViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.reloadUI()
+    if viewModel.overviewMode == .summary {
+      MixPanelManager.track("homepage_total_open", properties: ["screenid": "homepage_total"])
+    } else {
+      MixPanelManager.track("homepage_open", properties: ["screenid": "homepage"])
+    }
   }
   
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
@@ -285,6 +290,7 @@ class OverviewMainViewController: KNBaseViewController {
       }
     }
     self.present(popup, animated: true, completion: nil)
+    MixPanelManager.track("import_select_chain_open", properties: ["screenid": "import_select_chain"])
   }
   
   @IBAction func toolbarOptionButtonTapped(_ sender: UIButton) {
@@ -448,6 +454,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.insestView.frame.size.height = insetViewHeight
     self.tableView.reloadData()
     self.configPullToRefresh()
+    
   }
   
   static var hasSafeArea: Bool {
@@ -726,11 +733,13 @@ extension OverviewMainViewController: UIScrollViewDelegate {
       DispatchQueue.main.async {
         self.infoCollectionView.scrollToItem(at: IndexPath(item: 1, section: 0), at: .centeredHorizontally, animated: true)
         self.overviewModeDidChanged(isSummary: true)
+        MixPanelManager.track("homepage_total_open", properties: ["screenid": "homepage_total"])
       }
     } else {
       DispatchQueue.main.async {
         self.infoCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: true)
         self.overviewModeDidChanged(isSummary: false)
+        MixPanelManager.track("homepage_open", properties: ["screenid": "homepage"])
       }
     }
   }
@@ -768,6 +777,7 @@ extension OverviewMainViewController: UICollectionViewDataSource {
     
     cell.walletOptionButtonTapped = {
       self.delegate?.overviewMainViewController(self, run: .walletConfig)
+      MixPanelManager.track("wallet_details_pop_up_open", properties: ["screenid": "wallet_details_pop_up"])
     }
     
     cell.receiveButtonTapped = {

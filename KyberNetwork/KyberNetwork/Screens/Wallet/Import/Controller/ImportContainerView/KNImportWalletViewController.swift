@@ -271,6 +271,16 @@ class KNImportWalletViewController: KNBaseViewController {
       let x = CGFloat(page) * self.scrollView.frame.size.width
       self.scrollView.setContentOffset(CGPoint(x: x, y: 0), animated: true)
       self.view.layoutIfNeeded()
+      switch page {
+      case 0:
+        MixPanelManager.track("import_by_json_open", properties: ["screenid": "import_by_json"])
+      case 1:
+        MixPanelManager.track("import_by_private_key_open", properties: ["screenid": "import_by_private_key"])
+      case 2:
+        MixPanelManager.track("import_by_private_seeds_open", properties: ["screenid": "import_by_private_seeds"])
+      default:
+        break
+      }
     }
   }
 
