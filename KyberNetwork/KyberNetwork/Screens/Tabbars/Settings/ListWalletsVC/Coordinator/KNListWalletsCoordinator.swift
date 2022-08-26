@@ -162,6 +162,7 @@ extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
     }
     KNContactStorage.shared.update(contacts: contacts)
     try? WalletManager.shared.renameWallet(wallet: wallet, newName: name)
+    AppEventCenter.shared.walletListHasUpdate()
     self.rootViewController.reloadData()
     if AppDelegate.session.address.walletID == wallet.id {
       AppDelegate.session.refreshCurrentAddressInfo()
