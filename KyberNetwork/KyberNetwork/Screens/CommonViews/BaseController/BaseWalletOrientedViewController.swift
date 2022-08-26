@@ -184,6 +184,7 @@ class BaseWalletOrientedViewController: KNBaseViewController {
   func onChainSelected(chain: ChainType) {
     KNGeneralProvider.shared.currentChain = chain
     AppEventCenter.shared.switchChain(chain: chain)
+    AppDelegate.shared.coordinator.loadBalanceCoordinator?.loadTokenBalancesFromApi(completion: { _ in })
   }
 }
 
@@ -205,8 +206,7 @@ extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
       guard let chain = ChainType.allCases.first(where: {
         return ($0 != .all || supportAllChainOption) && $0.addressType == address.addressType
       }) else { return }
-      KNGeneralProvider.shared.currentChain = chain
-      AppEventCenter.shared.switchChain(chain: chain)
+      self.onChainSelected(chain: chain)
       AppDelegate.shared.coordinator.switchAddress(address: address)
     }
   }
