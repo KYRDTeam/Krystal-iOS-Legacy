@@ -13,6 +13,7 @@ protocol WalletCellModel {
   func displayWalletName() -> String
   func diplayWalletAddress() -> String
   func isBackupedWallet() -> Bool
+  func isCurrentWallet() -> Bool
 }
 
 struct RealWalletCellModel: WalletCellModel {
@@ -32,6 +33,10 @@ struct RealWalletCellModel: WalletCellModel {
   
   func isBackupedWallet() -> Bool {
     return WalletCache.shared.isWalletBackedUp(walletID: wallet.id)
+  }
+  
+  func isCurrentWallet() -> Bool {
+    return AppDelegate.session.address.walletID == wallet.id
   }
   
   let wallet: KWallet
@@ -55,6 +60,10 @@ struct WatchWalletCellModel: WalletCellModel {
     return true
   }
   
+  func isCurrentWallet() -> Bool {
+    return AppDelegate.session.address.addressString == address.addressString
+  }
+  
   let address: KAddress
 }
 
@@ -66,6 +75,7 @@ class WalletCell: UITableViewCell {
   @IBOutlet weak var descriptionLabelBottomConstraint: NSLayoutConstraint!
   @IBOutlet weak var backupLabel: UILabel!
   @IBOutlet weak var backupView: UIView!
+  @IBOutlet weak var checkIcon: UIImageView!
   var didSelectBackup: (() -> Void)?
   static let cellHeight: CGFloat = 60
   static let cellID: String = "WalletCell"
@@ -79,7 +89,6 @@ class WalletCell: UITableViewCell {
     iconImageView.image = cellModel.displayAvatar()
     walletNameLabel.text = cellModel.displayWalletName()
     walletDescriptionLabel.text = cellModel.diplayWalletAddress()
-    
     if cellModel.isBackupedWallet() {
       descriptionLabelBottomConstraint.constant = 13
       backupLabel.isHidden = true
@@ -89,6 +98,7 @@ class WalletCell: UITableViewCell {
       backupLabel.isHidden = false
       backupView.isHidden = false
     }
+    checkIcon.isHidden = !cellModel.isCurrentWallet()
   }
 
   @IBAction func backupButtonTapped(_ sender: Any) {

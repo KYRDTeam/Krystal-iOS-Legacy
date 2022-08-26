@@ -92,6 +92,13 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </view>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check_icon_green" translatesAutoresizingMaskIntoConstraints="NO" id="R41-et-0x7">
+                        <rect key="frame" x="367" y="18" width="24" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="24" id="Fqz-jw-gkl"/>
+                            <constraint firstAttribute="height" constant="24" id="drb-rz-pcs"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" name="popupBackgroundColor"/>
                 <constraints>
@@ -104,8 +111,10 @@
                     <constraint firstAttribute="bottom" secondItem="9IY-MZ-994" secondAttribute="bottom" constant="33" id="TAN-Id-8FC"/>
                     <constraint firstItem="vFn-9W-Cg0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="32" id="U10-iQ-c6H"/>
                     <constraint firstItem="9IY-MZ-994" firstAttribute="leading" secondItem="HqI-RC-lPS" secondAttribute="leading" id="ZQZ-NI-nYV"/>
+                    <constraint firstAttribute="trailing" secondItem="R41-et-0x7" secondAttribute="trailing" constant="21" id="ZUu-kX-03y"/>
                     <constraint firstAttribute="trailing" secondItem="eFg-nk-C7u" secondAttribute="trailing" constant="18" id="b3Z-BC-dzb"/>
                     <constraint firstAttribute="bottom" secondItem="eFg-nk-C7u" secondAttribute="bottom" constant="9" id="bA4-Uz-XIp"/>
+                    <constraint firstItem="R41-et-0x7" firstAttribute="centerY" secondItem="vFn-9W-Cg0" secondAttribute="centerY" id="eGU-Xl-jze"/>
                     <constraint firstAttribute="trailing" secondItem="9IY-MZ-994" secondAttribute="trailing" constant="32" id="uMO-Vf-dcp"/>
                 </constraints>
             </tableViewCellContentView>
@@ -113,15 +122,17 @@
             <connections>
                 <outlet property="backupLabel" destination="gma-lJ-qbd" id="KQl-7C-fb9"/>
                 <outlet property="backupView" destination="eFg-nk-C7u" id="6AC-FO-8yJ"/>
+                <outlet property="checkIcon" destination="R41-et-0x7" id="CDJ-MZ-QLA"/>
                 <outlet property="descriptionLabelBottomConstraint" destination="TAN-Id-8FC" id="syn-Vu-O3P"/>
                 <outlet property="iconImageView" destination="vFn-9W-Cg0" id="7is-IT-Tdw"/>
                 <outlet property="walletDescriptionLabel" destination="9IY-MZ-994" id="kI1-Pc-OQG"/>
                 <outlet property="walletNameLabel" destination="HqI-RC-lPS" id="jwW-fj-VoW"/>
             </connections>
-            <point key="canvasLocation" x="204.34782608695653" y="121.54017857142857"/>
+            <point key="canvasLocation" x="204.34782608695653" y="121.20535714285714"/>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="check_icon_green" width="14" height="10"/>
         <image name="my_wallet_placeholder_avatar" width="32" height="32"/>
         <namedColor name="importPKSelectedColor">
             <color red="0.94901960784313721" green="0.74509803921568629" blue="0.21568627450980393" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

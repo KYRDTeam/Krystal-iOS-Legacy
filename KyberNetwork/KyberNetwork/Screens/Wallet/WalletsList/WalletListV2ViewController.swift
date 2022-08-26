@@ -26,6 +26,19 @@ class WalletListV2ViewModel {
   func numberOfRows(section: Int) -> Int {
     return section == 0 ? wallets.count : watchAddresses.count
   }
+  
+  func calculateHeight() -> CGFloat {
+    let headerViewHeight = watchAddresses.isEmpty ? 0 : 45
+    var section1Height: CGFloat = 0.0
+    for index in 0..<numberOfRows(section: 0) {
+      let wallet = wallets[index]
+      let cellModel = RealWalletCellModel(wallet: wallet)
+      section1Height += cellModel.isBackupedWallet() ? 83 : 60
+    }
+
+    let height = CGFloat(numberOfRows(section: 1) * 60 + headerViewHeight + 250) + section1Height
+    return min(height, 600)
+  }
 }
  
 protocol WalletListV2ViewControllerDelegate: class {
@@ -40,6 +53,7 @@ class WalletListV2ViewController: KNBaseViewController {
   @IBOutlet weak var walletsTableView: UITableView!
   @IBOutlet weak var connectWalletButton: UIButton!
   @IBOutlet weak var tapOutSideBackgroundView: UIView!
+  @IBOutlet weak var contentViewHeight: NSLayoutConstraint!
   
   var passcodeCoordinator: KNPasscodeCoordinator?
   var currentWalletId: String?
@@ -66,6 +80,7 @@ class WalletListV2ViewController: KNBaseViewController {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
     tapOutSideBackgroundView.addGestureRecognizer(tapGesture)
     walletsTableView.registerCellNib(WalletCell.self)
+    contentViewHeight.constant = viewModel.calculateHeight()
   }
   
   @objc func tapOutside() {
