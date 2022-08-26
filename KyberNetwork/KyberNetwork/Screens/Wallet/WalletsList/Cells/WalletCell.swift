@@ -61,7 +61,7 @@ struct WatchWalletCellModel: WalletCellModel {
   }
   
   func isCurrentWallet() -> Bool {
-    return AppDelegate.session.address.walletID == address.walletID
+    return AppDelegate.session.address.addressString == address.addressString
   }
   
   let address: KAddress
