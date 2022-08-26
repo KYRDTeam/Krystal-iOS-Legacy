@@ -33,8 +33,7 @@ protocol KSendTokenViewControllerDelegate: class {
 }
 
 //swiftlint:disable file_length
-class KSendTokenViewController: KNBaseViewController {
-
+class KSendTokenViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var amountTextField: UITextField!
@@ -55,9 +54,7 @@ class KSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var maxAmountButton: UIButton!
   @IBOutlet weak var sendMessageLabel: UILabel!
   @IBOutlet weak var currentTokenButton: UIButton!
-  @IBOutlet weak var walletsSelectButton: UIButton!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
-  @IBOutlet weak var currentChainIcon: UIImageView!
   @IBOutlet weak var estGasFeeTitleLabel: UILabel!
   @IBOutlet weak var estGasFeeValueLabel: UILabel!
   @IBOutlet weak var gasFeeTittleLabelTopContraint: NSLayoutConstraint!
@@ -82,6 +79,7 @@ class KSendTokenViewController: KNBaseViewController {
   }()
 
   weak var delegate: KSendTokenViewControllerDelegate?
+  var scanAddressQRDelegate: KQRCodeReaderDelegate?
   fileprivate let viewModel: KNSendTokenViewModel
 
   init(viewModel: KNSendTokenViewModel) {
@@ -123,6 +121,24 @@ class KSendTokenViewController: KNBaseViewController {
     self.isViewDisappeared = true
     self.view.endEditing(true)
   }
+  
+  override func setupDelegates() {
+    super.setupDelegates()
+    
+    scanAddressQRDelegate = KQRCodeReaderDelegate(onResult: { result in
+      let address: String = {
+        if result.count < 42 { return result }
+        if result.starts(with: "0x") { return result }
+        let string = "\(result.suffix(42))"
+        if string.starts(with: "0x") { return string }
+        return result
+      }()
+      let isAddressChanged = self.viewModel.inputAddress != address
+      self.viewModel.updateInputString(address)
+      self.getEnsAddressFromName(address)
+      self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
+    })
+  }
 
   fileprivate func setupUI() {
     self.setupNavigationView()
@@ -145,7 +161,6 @@ class KSendTokenViewController: KNBaseViewController {
 
   fileprivate func setupNavigationView() {
     self.navTitleLabel.text = self.viewModel.navTitle
-    self.walletsSelectButton.setTitle(self.viewModel.addressName, for: .normal)
   }
 
   fileprivate func setupTokenView() {
@@ -234,7 +249,7 @@ class KSendTokenViewController: KNBaseViewController {
     }
     let qrcodeReaderVC: QRCodeReaderViewController = {
       let controller = QRCodeReaderViewController()
-      controller.delegate = self
+      controller.delegate = scanAddressQRDelegate
       return controller
     }()
     self.present(qrcodeReaderVC, animated: true, completion: nil)
@@ -257,10 +272,6 @@ class KSendTokenViewController: KNBaseViewController {
 
   @IBAction func historyButtonTapped(_ sender: UIButton) {
     self.delegate?.kSendTokenViewController(self, run: .openHistory)
-  }
-
-  @IBAction func walletsSelectButtonTapped(_ sender: UIButton) {
-    self.delegate?.kSendTokenViewController(self, run: .openWalletsList)
   }
 
   fileprivate func updateAmountFieldUIForTransferAllIfNeeded() {
@@ -401,22 +412,22 @@ class KSendTokenViewController: KNBaseViewController {
     return false
   }
   
-  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
-    let popup = SwitchChainViewController()
-    popup.completionHandler = { [weak self] selected in
-      guard let self = self else { return }
-      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
-      if addresses.isEmpty {
-        self.delegate?.kSendTokenViewController(self, run: .addChainWallet(chainType: selected))
-        return
-      } else {
-        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-        self.present(secondPopup, animated: true, completion: nil)
-      }
-    }
-    self.present(popup, animated: true, completion: nil)
-  }
+//  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
+//    let popup = SwitchChainViewController()
+//    popup.completionHandler = { [weak self] selected in
+//      guard let self = self else { return }
+//      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
+//      if addresses.isEmpty {
+//        self.delegate?.kSendTokenViewController(self, run: .addChainWallet(chainType: selected))
+//        return
+//      } else {
+//        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+//        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+//        self.present(secondPopup, animated: true, completion: nil)
+//      }
+//    }
+//    self.present(popup, animated: true, completion: nil)
+//  }
   
   @IBAction func multiSendButtonTapped(_ sender: UIButton) {
     self.delegate?.kSendTokenViewController(self, run: .openMultiSend)
@@ -466,8 +477,6 @@ extension KSendTokenViewController {
   }
   
   fileprivate func updateUISwitchChain() {
-    let icon = KNGeneralProvider.shared.chainIconImage
-    self.currentChainIcon.image = icon
     self.gasSettingButton.isHidden = KNGeneralProvider.shared.currentChain == .solana
     self.multiSendButton.isHidden = KNGeneralProvider.shared.currentChain == .solana
   }
@@ -747,28 +756,6 @@ extension KSendTokenViewController {
     SolanaUtil.getTokenAccountsByOwner(ownerAddress: walletAddress, tokenAddress: self.viewModel.from.address) { amount, recipientAccount in
       completion(recipientAccount)
       self.navigationController?.hideLoading()
-    }
-  }
-}
-
-extension KSendTokenViewController: QRCodeReaderDelegate {
-  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
-    reader.dismiss(animated: true, completion: nil)
-  }
-
-  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
-    reader.dismiss(animated: true) {
-      let address: String = {
-        if result.count < 42 { return result }
-        if result.starts(with: "0x") { return result }
-        let string = "\(result.suffix(42))"
-        if string.starts(with: "0x") { return string }
-        return result
-      }()
-      let isAddressChanged = self.viewModel.inputAddress != address
-      self.viewModel.updateInputString(address)
-      self.getEnsAddressFromName(address)
-      self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     }
   }
 }

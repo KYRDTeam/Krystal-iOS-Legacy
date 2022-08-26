@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,14 +11,14 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="OverviewTotalInfoCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="OverviewTotalInfoCell" customModule="Krystal" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="350" height="190"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -29,46 +29,41 @@
                         <rect key="frame" x="0.0" y="0.0" width="350" height="190"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Zz-KE-zUa">
-                                <rect key="frame" x="21" y="20" width="100" height="32"/>
+                                <rect key="frame" x="21" y="20" width="110" height="32"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DmP-QW-6Uf">
-                                        <rect key="frame" x="0.0" y="1" width="100" height="30"/>
-                                        <connections>
-                                            <action selector="walletListButtonTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="S2Q-5q-vgR"/>
-                                        </connections>
-                                    </button>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="arrow_down_icon" translatesAutoresizingMaskIntoConstraints="NO" id="9UT-ed-PDM">
-                                        <rect key="frame" x="72" y="4" width="24" height="24"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="network_all_square" translatesAutoresizingMaskIntoConstraints="NO" id="Hqz-wA-Gqf">
+                                        <rect key="frame" x="12" y="8" width="16" height="16"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="24" id="Sx4-pg-ons"/>
-                                            <constraint firstAttribute="width" constant="24" id="vN8-Ph-pGe"/>
+                                            <constraint firstAttribute="width" constant="16" id="nPI-vm-bHW"/>
+                                            <constraint firstAttribute="height" constant="16" id="sa2-Cb-tOG"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                                <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0xb2…f2c" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P1l-4k-pI5">
-                                        <rect key="frame" x="16" y="9" width="54" height="14"/>
+                                    <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rOw-Ry-vmc">
+                                        <rect key="frame" x="34" y="8.5" width="64" height="15"/>
                                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                        <inset key="imageEdgeInsets" minX="8" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Ethereum" image="arrow_down_icon_white">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                    </button>
                                 </subviews>
-                                <color key="backgroundColor" name="navButtonBgColor"/>
+                                <color key="backgroundColor" red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="P1l-4k-pI5" firstAttribute="centerY" secondItem="1Zz-KE-zUa" secondAttribute="centerY" id="59u-tI-uHe"/>
-                                    <constraint firstItem="P1l-4k-pI5" firstAttribute="leading" secondItem="1Zz-KE-zUa" secondAttribute="leading" constant="16" id="JGw-GU-0Cf"/>
-                                    <constraint firstAttribute="bottom" secondItem="DmP-QW-6Uf" secondAttribute="bottom" constant="1" id="LE1-zh-Uds"/>
-                                    <constraint firstItem="9UT-ed-PDM" firstAttribute="centerY" secondItem="1Zz-KE-zUa" secondAttribute="centerY" id="LSq-2g-p7b"/>
+                                    <constraint firstAttribute="trailing" secondItem="rOw-Ry-vmc" secondAttribute="trailing" constant="12" id="6n0-4N-qjy"/>
+                                    <constraint firstItem="rOw-Ry-vmc" firstAttribute="leading" secondItem="Hqz-wA-Gqf" secondAttribute="trailing" constant="6" id="Hml-1g-Niw"/>
                                     <constraint firstAttribute="height" constant="32" id="LaC-5l-ajd"/>
-                                    <constraint firstItem="DmP-QW-6Uf" firstAttribute="leading" secondItem="1Zz-KE-zUa" secondAttribute="leading" id="Mfg-2g-pUY"/>
-                                    <constraint firstAttribute="trailing" secondItem="9UT-ed-PDM" secondAttribute="trailing" constant="4" id="Oai-7v-LhL"/>
-                                    <constraint firstAttribute="trailing" secondItem="DmP-QW-6Uf" secondAttribute="trailing" id="UF8-ji-RdH"/>
-                                    <constraint firstAttribute="width" constant="100" id="h2x-BM-ZuU"/>
-                                    <constraint firstItem="DmP-QW-6Uf" firstAttribute="top" secondItem="1Zz-KE-zUa" secondAttribute="top" constant="1" id="tis-Id-Vb2"/>
-                                    <constraint firstItem="9UT-ed-PDM" firstAttribute="leading" secondItem="P1l-4k-pI5" secondAttribute="trailing" constant="2" id="wOu-iu-nkt"/>
+                                    <constraint firstItem="rOw-Ry-vmc" firstAttribute="centerY" secondItem="1Zz-KE-zUa" secondAttribute="centerY" id="njc-eZ-EfY"/>
+                                    <constraint firstItem="Hqz-wA-Gqf" firstAttribute="leading" secondItem="1Zz-KE-zUa" secondAttribute="leading" constant="12" id="qfa-2d-RV5"/>
+                                    <constraint firstItem="Hqz-wA-Gqf" firstAttribute="centerY" secondItem="1Zz-KE-zUa" secondAttribute="centerY" id="vBA-Ye-5gA"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="14"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                        <real key="value" value="12"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
@@ -175,19 +170,21 @@
             <size key="customSize" width="415" height="232"/>
             <connections>
                 <outlet property="backgroundContainView" destination="D81-q9-yfh" id="qma-uF-G60"/>
+                <outlet property="chainButton" destination="rOw-Ry-vmc" id="6WG-qc-r09"/>
+                <outlet property="chainIcon" destination="Hqz-wA-Gqf" id="d4n-Jh-ILp"/>
+                <outlet property="chainView" destination="1Zz-KE-zUa" id="Fqj-tb-CQR"/>
                 <outlet property="hideBalanceButton" destination="1E5-fD-4o1" id="0GL-tu-bB3"/>
                 <outlet property="receiveButton" destination="kCu-VO-x82" id="gez-N8-Xrz"/>
                 <outlet property="totalNetWorthLabel" destination="9Bp-Gg-fe3" id="UjJ-qg-WNl"/>
                 <outlet property="totalValueLabel" destination="I2C-EP-0hL" id="BBx-Mo-hr3"/>
                 <outlet property="transferButton" destination="fEY-S7-WGf" id="E11-lv-vBZ"/>
-                <outlet property="walletListButton" destination="DmP-QW-6Uf" id="EEA-36-rGK"/>
-                <outlet property="walletNameLabel" destination="P1l-4k-pI5" id="eL0-q7-Hc8"/>
             </connections>
             <point key="canvasLocation" x="-759.4202898550725" y="-21.428571428571427"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="arrow_down_icon" width="24" height="24"/>
+        <image name="arrow_down_icon_white" width="10" height="6"/>
+        <image name="network_all_square" width="32" height="32"/>
         <image name="option_overview_icon" width="25" height="25"/>
         <image name="show_eye_icon" width="24" height="24"/>
         <namedColor name="buttonBackgroundColor">
@@ -198,9 +195,6 @@
         </namedColor>
         <namedColor name="investButtonBgColor">
             <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="navButtonBgColor">
-            <color red="0.29411764705882354" green="0.30980392156862746" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="normalTextColor">
             <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>

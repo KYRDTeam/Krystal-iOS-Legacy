@@ -110,6 +110,7 @@ extension UIColor {
     static let textWarningRed = UIColor(hex: "FA6566")
     static let textInfoBlue = UIColor(hex: "0CC8F1")
     static let grayBackgroundColor = UIColor(named: "grayBackgroundColor")!
+    static let popupBackgroundColor = UIColor(named: "popupBackgroundColor")!
     
     static var buttonColors: [UIColor] = [
       UIColor.Kyber.enygold,

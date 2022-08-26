@@ -244,4 +244,5 @@ struct Strings {
   static let recoveryHightlightPhase2 = "recovery.hightlight.phrase.2".toBeLocalised()
   static let recoveryPhase3 = "recovery.phrase.3".toBeLocalised()
   static let recoveryHightlightPhase3 = "recovery.hightlight.phrase.3".toBeLocalised()
+  static let Watchlist = "Watchlist".toBeLocalised()
 }

@@ -20,7 +20,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EarnSwapViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EarnSwapViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="approveButton" destination="Eiy-Sh-shS" id="e9Q-aQ-ZgA"/>
                 <outlet property="approveButtonEqualWidthContraint" destination="6Xm-yf-TBM" id="Lzl-83-j9I"/>

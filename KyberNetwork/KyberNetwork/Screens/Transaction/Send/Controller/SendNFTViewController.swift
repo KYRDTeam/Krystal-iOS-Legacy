@@ -216,6 +216,8 @@ class SendNFTViewModel {
 }
 
 class SendNFTViewController: KNBaseViewController {
+  @IBOutlet weak var chainIcon: UIImageView!
+  @IBOutlet weak var chainLabel: UILabel!
   @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var scrollContainerView: UIScrollView!
   @IBOutlet weak var moreContactButton: UIButton!
@@ -256,6 +258,7 @@ class SendNFTViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.setupChainInfo()
     self.updateGasFeeUI()
     self.updateUIEnsMessage()
     self.setupRecentContact()
@@ -263,6 +266,11 @@ class SendNFTViewController: KNBaseViewController {
     self.updateAmountViews()
   }
 
+  func setupChainInfo() {
+    chainIcon.image = KNGeneralProvider.shared.currentChain.squareIcon()
+    chainLabel.text = KNGeneralProvider.shared.currentChain.chainName()
+  }
+  
   func updateAmountViews() {
     if self.viewModel.isSupportERC721 {
       self.addressTitleTopContraint.constant = 40

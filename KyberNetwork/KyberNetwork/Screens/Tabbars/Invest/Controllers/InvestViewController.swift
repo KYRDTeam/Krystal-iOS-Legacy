@@ -29,8 +29,7 @@ protocol InvestViewControllerDelegate: class {
   func investViewController(_ controller: InvestViewController, run event: InvestViewEvent)
 }
 
-class InvestViewController: KNBaseViewController {
-  @IBOutlet weak var currentChainIcon: UIImageView!
+class InvestViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var collectionView: UICollectionView!
   
   let viewModel: ExploreViewModel = ExploreViewModel()
@@ -47,7 +46,6 @@ class InvestViewController: KNBaseViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
-    self.updateUISwitchChain()
     self.viewModel.reloadMenuItems()
   }
   
@@ -79,28 +77,6 @@ class InvestViewController: KNBaseViewController {
     collectionView.reloadSections(.init(arrayLiteral: index))
   }
   
-  fileprivate func updateUISwitchChain() {
-    let icon = KNGeneralProvider.shared.chainIconImage
-    self.currentChainIcon.image = icon
-  }
-
-  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
-    let popup = SwitchChainViewController()
-    popup.completionHandler = { [weak self] selected in
-      guard let self = self else { return }
-      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
-      if addresses.isEmpty {
-        self.delegate?.investViewController(self, run: .addChainWallet(chainType: selected))
-        return
-      } else {
-        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-        self.present(secondPopup, animated: true, completion: nil)
-      }
-    }
-    self.present(popup, animated: true, completion: nil)
-  }
-  
   func coordinatorDidUpdateMarketingAssets(_ assets: [Asset]) {
     self.viewModel.partners.value = assets.filter { $0.type == .partner }
     self.viewModel.banners.value = assets.filter { $0.type == .banner }
@@ -110,7 +86,6 @@ class InvestViewController: KNBaseViewController {
     guard self.isViewLoaded else {
       return
     }
-    self.updateUISwitchChain()
     self.viewModel.reloadMenuItems()
   }
   

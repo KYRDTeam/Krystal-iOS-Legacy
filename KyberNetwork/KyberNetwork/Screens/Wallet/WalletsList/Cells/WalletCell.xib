@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Medium.ttf">
+            <string>Karla-Medium</string>
+        </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="83" id="KGk-i7-Jjw" customClass="WalletCell" customModule="Krystal" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="412" height="86"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="412" height="86"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="my_wallet_placeholder_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="vFn-9W-Cg0">
+                        <rect key="frame" x="32" y="14" width="32" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="32" id="aJT-mC-Xam"/>
+                            <constraint firstAttribute="height" constant="32" id="l4g-ep-JGx"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DF123456...abcdef  •  Solana" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9IY-MZ-994">
+                        <rect key="frame" x="79" y="38" width="301" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="JIm-Qd-bte"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                        <color key="textColor" name="normalTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HqI-RC-lPS">
+                        <rect key="frame" x="79" y="14" width="93" height="19"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                        <color key="textColor" name="textWhiteColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet hasn’t been backed up" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gma-lJ-qbd">
+                        <rect key="frame" x="79" y="58" width="162" height="15"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                        <color key="textColor" name="importPKSelectedColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eFg-nk-C7u">
+                        <rect key="frame" x="320" y="52" width="74" height="25"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qdv-dB-K76">
+                                <rect key="frame" x="1" y="1" width="72" height="23"/>
+                                <color key="backgroundColor" name="popupBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="23" id="DBQ-9L-1GT"/>
+                                    <constraint firstAttribute="width" constant="72" id="S3S-4W-mD2"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Karla-Medium" family="Karla" pointSize="10"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="BACK UP">
+                                    <color key="titleColor" name="importPKSelectedColor"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="backupButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="lwv-Dw-dK8"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" name="importPKSelectedColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="qdv-dB-K76" secondAttribute="bottom" constant="1" id="Bw6-VX-D9h"/>
+                            <constraint firstAttribute="trailing" secondItem="qdv-dB-K76" secondAttribute="trailing" constant="1" id="GAZ-j2-KBu"/>
+                            <constraint firstItem="qdv-dB-K76" firstAttribute="leading" secondItem="eFg-nk-C7u" secondAttribute="leading" constant="1" id="LEk-Sd-GSn"/>
+                            <constraint firstItem="qdv-dB-K76" firstAttribute="top" secondItem="eFg-nk-C7u" secondAttribute="top" constant="1" id="dtW-QM-mql"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                <integer key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" name="popupBackgroundColor"/>
+                <constraints>
+                    <constraint firstItem="HqI-RC-lPS" firstAttribute="leading" secondItem="vFn-9W-Cg0" secondAttribute="trailing" constant="15" id="1oL-Af-AoL"/>
+                    <constraint firstItem="9IY-MZ-994" firstAttribute="top" secondItem="HqI-RC-lPS" secondAttribute="bottom" constant="5" id="4wp-61-VCK"/>
+                    <constraint firstItem="HqI-RC-lPS" firstAttribute="top" secondItem="vFn-9W-Cg0" secondAttribute="top" id="CfY-W8-IU9"/>
+                    <constraint firstAttribute="bottom" secondItem="gma-lJ-qbd" secondAttribute="bottom" constant="13" id="E58-IB-Puf"/>
+                    <constraint firstItem="gma-lJ-qbd" firstAttribute="leading" secondItem="9IY-MZ-994" secondAttribute="leading" id="OQI-gs-ftm"/>
+                    <constraint firstItem="vFn-9W-Cg0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="Sxj-rI-kgB"/>
+                    <constraint firstAttribute="bottom" secondItem="9IY-MZ-994" secondAttribute="bottom" constant="33" id="TAN-Id-8FC"/>
+                    <constraint firstItem="vFn-9W-Cg0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="32" id="U10-iQ-c6H"/>
+                    <constraint firstItem="9IY-MZ-994" firstAttribute="leading" secondItem="HqI-RC-lPS" secondAttribute="leading" id="ZQZ-NI-nYV"/>
+                    <constraint firstAttribute="trailing" secondItem="eFg-nk-C7u" secondAttribute="trailing" constant="18" id="b3Z-BC-dzb"/>
+                    <constraint firstAttribute="bottom" secondItem="eFg-nk-C7u" secondAttribute="bottom" constant="9" id="bA4-Uz-XIp"/>
+                    <constraint firstAttribute="trailing" secondItem="9IY-MZ-994" secondAttribute="trailing" constant="32" id="uMO-Vf-dcp"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="backupLabel" destination="gma-lJ-qbd" id="KQl-7C-fb9"/>
+                <outlet property="backupView" destination="eFg-nk-C7u" id="6AC-FO-8yJ"/>
+                <outlet property="descriptionLabelBottomConstraint" destination="TAN-Id-8FC" id="syn-Vu-O3P"/>
+                <outlet property="iconImageView" destination="vFn-9W-Cg0" id="7is-IT-Tdw"/>
+                <outlet property="walletDescriptionLabel" destination="9IY-MZ-994" id="kI1-Pc-OQG"/>
+                <outlet property="walletNameLabel" destination="HqI-RC-lPS" id="jwW-fj-VoW"/>
+            </connections>
+            <point key="canvasLocation" x="204.34782608695653" y="121.54017857142857"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="my_wallet_placeholder_avatar" width="32" height="32"/>
+        <namedColor name="importPKSelectedColor">
+            <color red="0.94901960784313721" green="0.74509803921568629" blue="0.21568627450980393" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="popupBackgroundColor">
+            <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

@@ -80,6 +80,10 @@ extension String {
       return string
     }
   }
+  
+  var shortTypeAddress: String {
+    return "\(self.prefix(8))...\(self.suffix(4))"
+  }
 }
 
 extension String {

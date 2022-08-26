@@ -2,8 +2,6 @@
 
 import UIKit
 
-
-
 class KNBaseViewController: UIViewController, UIGestureRecognizerDelegate {
 
   @IBOutlet weak var topBarHeight: NSLayoutConstraint?

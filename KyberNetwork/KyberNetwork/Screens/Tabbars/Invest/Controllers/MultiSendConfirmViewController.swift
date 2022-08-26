@@ -171,6 +171,8 @@ class MultiSendConfirmViewController: KNBaseViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
   
+  @IBOutlet weak var chainIcon: UIImageView!
+  @IBOutlet weak var chainLabel: UILabel!
   @IBOutlet weak var addressCountLabel: UILabel!
   @IBOutlet weak var amountTableView: UITableView!
   @IBOutlet weak var totalAmountLabel: UILabel!
@@ -202,6 +204,7 @@ class MultiSendConfirmViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    self.setupChainInfo()
     self.amountTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     self.amountTableView.rowHeight = 28
 
@@ -209,6 +212,11 @@ class MultiSendConfirmViewController: KNBaseViewController {
     self.updateGasFeeUI()
     self.backButton.rounded(radius: 16)
     self.confirmButton.rounded(radius: 16)
+  }
+  
+  func setupChainInfo() {
+    chainIcon.image = KNGeneralProvider.shared.currentChain.squareIcon()
+    chainLabel.text = KNGeneralProvider.shared.currentChain.chainName()
   }
   
   fileprivate func updateUI() {

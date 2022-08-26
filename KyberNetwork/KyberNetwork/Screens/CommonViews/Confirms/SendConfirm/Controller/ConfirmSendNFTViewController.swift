@@ -85,6 +85,9 @@ class ConfirmSendNFTViewModel {
 class ConfirmSendNFTViewController: KNBaseViewController {
   @IBOutlet weak var titleLabel: UILabel!
 
+  @IBOutlet weak var chainIcon: UIImageView!
+  @IBOutlet weak var chainLabel: UILabel!
+  
   @IBOutlet weak var contactImageView: UIImageView!
   @IBOutlet weak var contactNameLabel: UILabel!
   @IBOutlet weak var sendAddressLabel: UILabel!
@@ -126,10 +129,16 @@ class ConfirmSendNFTViewController: KNBaseViewController {
     super.viewDidLoad()
     
     self.setupUI()
+    self.setupChainInfo()
     
     //trick fix
     KNGeneralProvider.shared.getDecimalsEncodeData { result in
     }
+  }
+  
+  func setupChainInfo() {
+    chainIcon.image = KNGeneralProvider.shared.currentChain.squareIcon()
+    chainLabel.text = KNGeneralProvider.shared.currentChain.chainName()
   }
 
   fileprivate func setupUI() {
