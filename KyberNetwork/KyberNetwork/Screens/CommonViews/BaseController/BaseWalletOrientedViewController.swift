@@ -166,15 +166,15 @@ class BaseWalletOrientedViewController: KNBaseViewController {
   
   func openSwitchChain() {
     let popup = SwitchChainViewController(selected: currentChain)
-    popup.dataSource = WalletManager.shared.getAllAddresses(walletID: currentAddress.walletID).flatMap { address in
+    var chains = WalletManager.shared.getAllAddresses(walletID: currentAddress.walletID).flatMap { address in
       return ChainType.allCases.filter { chain in
-        if supportAllChainOption {
-          return chain == .all || chain.addressType == address.addressType
-        } else {
-          return chain != .all && chain.addressType == address.addressType
-        }
+        return chain != .all && chain.addressType == address.addressType
       }
     }
+    if supportAllChainOption {
+      chains = [.all] + chains
+    }
+    popup.dataSource = chains
     popup.completionHandler = { [weak self] selectedChain in
       self?.onChainSelected(chain: selectedChain)
     }

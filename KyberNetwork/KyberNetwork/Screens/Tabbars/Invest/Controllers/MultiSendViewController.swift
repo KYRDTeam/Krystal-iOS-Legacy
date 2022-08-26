@@ -124,7 +124,9 @@ class MultiSendViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var historyButton: UIButton!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
   @IBOutlet weak var useLastMultisendButton: UIButton!
-
+  @IBOutlet weak var comingSoonView: UIView!
+  @IBOutlet weak var mainView: UIScrollView!
+  
   let viewModel: MultiSendViewModel
   weak var delegate: MultiSendViewControllerDelegate?
 
@@ -197,6 +199,12 @@ class MultiSendViewController: BaseWalletOrientedViewController {
     guard self.isViewLoaded else { return }
     self.viewModel.resetDataSource()
     self.updateUIInputTableView()
+  }
+  
+  override func reloadChain() {
+    super.reloadChain()
+    
+    mainView.isHidden = !KNGeneralProvider.shared.currentChain.supportMultisend
   }
   
   fileprivate func updateUIPendingTxIndicatorView() {
