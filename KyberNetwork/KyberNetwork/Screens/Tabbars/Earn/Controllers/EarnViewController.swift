@@ -503,7 +503,6 @@ class EarnViewController: BaseWalletOrientedViewController, AbstractEarnViewCont
     self.updateUITokenDidChange(self.viewModel.tokenData)
     self.updateUIForSendApprove(isShowApproveButton: false)
     self.fromAmountTextField.setupCustomDeleteIcon()
-    
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -525,6 +524,13 @@ class EarnViewController: BaseWalletOrientedViewController, AbstractEarnViewCont
     super.viewWillDisappear(animated)
     self.isViewDisappeared = true
     self.view.endEditing(true)
+  }
+  
+  override func reloadChain() {
+    super.reloadChain()
+    
+    chainButton?.setImage(nil, for: .normal)
+    chainButton?.isEnabled = false
   }
 
   func updateUIBalanceDidChange() {
