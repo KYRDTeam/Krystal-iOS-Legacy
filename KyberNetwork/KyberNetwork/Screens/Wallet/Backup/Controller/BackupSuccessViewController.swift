@@ -18,6 +18,7 @@ class BackupSuccessViewController: KNBaseViewController {
   }
 
   @IBAction func continueButtonTapped(_ sender: Any) {
+    AppEventCenter.shared.walletListHasUpdate()
     self.delegate?.didFinishBackup(self)
   }
 }
