@@ -102,6 +102,9 @@ protocol EarnConfirmViewControllerDelegate: class {
 
 class EarnConfirmViewController: KNBaseViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
+  
+  @IBOutlet weak var chainIcon: UIImageView!
+  @IBOutlet weak var chainLabel: UILabel!
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var amountLabel: UILabel!
   @IBOutlet weak var platformNameLabel: UILabel!
@@ -143,6 +146,12 @@ class EarnConfirmViewController: KNBaseViewController {
     super.viewDidLoad()
     
     self.setupUI()
+    self.setupChainInfo()
+  }
+  
+  func setupChainInfo() {
+    chainIcon.image = KNGeneralProvider.shared.currentChain.squareIcon()
+    chainLabel.text = KNGeneralProvider.shared.currentChain.chainName()
   }
   
   fileprivate func setupUI() {

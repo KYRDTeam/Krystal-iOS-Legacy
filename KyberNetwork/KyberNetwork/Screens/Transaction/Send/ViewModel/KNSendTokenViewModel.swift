@@ -131,7 +131,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var navTitle: String {
-    return Strings.transfer.uppercased()
+    return Strings.transfer
   }
 
   var tokenButtonAttributedText: NSAttributedString {
