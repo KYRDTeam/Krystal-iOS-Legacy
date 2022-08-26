@@ -287,6 +287,8 @@ class ApproveTokenViewController: KNBaseViewController {
   @IBOutlet weak var editIcon: UIImageView!
   @IBOutlet weak var editLabel: UILabel!
   @IBOutlet weak var editButton: UIButton!
+  @IBOutlet weak var chainIcon: UIImageView!
+  @IBOutlet weak var chainLabel: UILabel!
   
   var viewModel: ApproveTokenViewModel
   let transitor = TransitionDelegate()
@@ -314,6 +316,7 @@ class ApproveTokenViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.setupChainInfo()
     self.gasFeeLabel.text = self.viewModel.getFeeString()
     self.gasFeeEstUSDLabel.text = self.viewModel.getFeeUSDString()
     self.cancelButton.rounded(radius: 16)
@@ -332,6 +335,11 @@ class ApproveTokenViewController: KNBaseViewController {
       self.editButton.isHidden = true
     }
     self.headerTitle.text = self.viewModel.headerTitle
+  }
+  
+  func setupChainInfo() {
+    chainIcon.image = KNGeneralProvider.shared.currentChain.squareIcon()
+    chainLabel.text = KNGeneralProvider.shared.currentChain.chainName()
   }
 
   @IBAction func confirmButtonTapped(_ sender: UIButton) {

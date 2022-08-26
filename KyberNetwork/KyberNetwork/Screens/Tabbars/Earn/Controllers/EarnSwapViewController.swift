@@ -736,7 +736,7 @@ class EarnSwapViewModel {
   
 }
 
-class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
+class EarnSwapViewController: BaseWalletOrientedViewController, AbstractEarnViewControler {
   @IBOutlet weak var platformTableView: UITableView!
   @IBOutlet weak var toAmountTextField: UITextField!
   @IBOutlet weak var selectedGasFeeLabel: UILabel!
@@ -753,7 +753,6 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   @IBOutlet weak var exchangeRateLabel: UILabel!
   @IBOutlet weak var rateWarningLabel: UILabel!
   @IBOutlet weak var changeRateButton: UIButton!
-  @IBOutlet weak var walletsSelectButton: UIButton!
   @IBOutlet weak var slippageLabel: UILabel!
   @IBOutlet weak var approveButtonLeftPaddingContraint: NSLayoutConstraint!
   @IBOutlet weak var approveButtonRightPaddingContaint: NSLayoutConstraint!
@@ -808,7 +807,6 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.toTokenButton.setTitle(self.viewModel.toTokenData.symbol.uppercased(), for: .normal)
     self.updateUITokenDidChange(self.viewModel.fromTokenData)
     self.resetBalanceValues()
-    self.updateUIWalletSelectButton()
     self.setUpGasFeeView()
     self.setupHideRateAndFeeViews(shouldHideInfo: true)
     self.destAmountContainerView.rounded(color: UIColor(named: "toolbarBgColor")!, width: 2, radius: 16)
@@ -949,14 +947,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     }
     self.approveButton.setTitle("Approve".toBeLocalised() + " " + fromTokenData.symbol, for: .normal)
   }
-
-  fileprivate func updateUIWalletSelectButton() {
-    guard self.isViewLoaded else {
-      return
-    }
-    self.walletsSelectButton.setTitle(self.viewModel.currentAddress.name, for: .normal)
-  }
-
+  
   fileprivate func updateUIForSendApprove(isShowApproveButton: Bool, token: TokenObject? = nil) {
     guard self.isViewLoaded else {
       return
@@ -1361,8 +1352,6 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   func coordinatorAppSwitchAddress() {
     if self.isViewSetup {
       self.updateUIBalanceDidChange()
-      self.updateUIWalletSelectButton()
-      self.updateUIWalletSelectButton()
       self.updateUIPendingTxIndicatorView()
     }
   }
