@@ -267,7 +267,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     } else {
       self.viewModel.currentChain = chain
       super.onChainSelected(chain: chain)
-      AppDelegate.shared.coordinator.loadBalanceCoordinator?.loadTokenBalancesFromApi(completion: { _ in })
+      self.delegate?.overviewMainViewController(self, run: .pullToRefreshed(current: self.viewModel.currentMode, overviewMode: self.viewModel.overviewMode))
     }
   }
   
