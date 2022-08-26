@@ -18,6 +18,7 @@
             <connections>
                 <outlet property="connectWalletButton" destination="OB2-sm-rae" id="k9g-lM-kst"/>
                 <outlet property="contentView" destination="UAc-kD-j7m" id="z9S-wV-7M3"/>
+                <outlet property="contentViewHeight" destination="TYU-y0-dHk" id="C0L-gX-3yJ"/>
                 <outlet property="contentViewTopContraint" destination="sPd-sz-yvG" id="qva-0n-H2g"/>
                 <outlet property="tapOutSideBackgroundView" destination="2S5-ih-IqH" id="Anh-zz-754"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
