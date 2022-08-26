@@ -267,35 +267,9 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     } else {
       self.viewModel.currentChain = chain
       super.onChainSelected(chain: chain)
+      AppDelegate.shared.coordinator.loadBalanceCoordinator?.loadTokenBalancesFromApi(completion: { _ in })
     }
   }
-  
-//  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
-//    let popup = SwitchChainViewController(includedAll: true, selected: self.viewModel.currentChain)
-//    popup.completionHandler = { [weak self] selected in
-//      guard let self = self else { return }
-//      guard selected != .all else {
-//        self.viewModel.currentChain = selected
-//        self.tableView.reloadData()
-//        self.delegate?.overviewMainViewController(self, run: .selectAllChain)
-//        return
-//      }
-//
-//      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
-//      if addresses.isEmpty {
-//        self.delegate?.overviewMainViewController(self, run: .addChainWallet(chain: selected))
-//        return
-//      } else {
-//        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-//        viewModel.completionHandler = { selected in
-//          self.viewModel.currentChain = selected
-//        }
-//        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-//        self.present(secondPopup, animated: true, completion: nil)
-//      }
-//    }
-//    self.present(popup, animated: true, completion: nil)
-//  }
   
   @IBAction func toolbarOptionButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .changeMode(current: self.viewModel.currentMode))
@@ -406,6 +380,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     guard self.isViewLoaded else {
       return
     }
+    viewModel.currentChain = KNGeneralProvider.shared.currentChain
     if self.viewModel.currencyMode.isQuoteCurrency {
       self.viewModel.currencyMode = KNGeneralProvider.shared.quoteCurrency
     }
