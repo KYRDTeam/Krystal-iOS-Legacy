@@ -363,6 +363,15 @@ enum ChainType: Codable, CaseIterable {
     return "Block Explorer"
   }
   
+  var supportMultisend: Bool {
+    switch self {
+    case .solana:
+      return false
+    default:
+      return true
+    }
+  }
+  
   func isSupportSwap() -> Bool {
     switch self {
     case .solana, .klaytn:
