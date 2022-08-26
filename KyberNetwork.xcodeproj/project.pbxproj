@@ -821,10 +821,6 @@
 		C31371FA2603B194003D432B /* KrytalTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31371F82603B194003D432B /* KrytalTableViewCell.xib */; };
 		C31371FF260490A1003D432B /* ShareReferralLinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31371FD260490A0003D432B /* ShareReferralLinkViewController.swift */; };
 		C3137200260490A1003D432B /* ShareReferralLinkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31371FE260490A0003D432B /* ShareReferralLinkViewController.xib */; };
-		C313720626077A44003D432B /* CustomTokenListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C313720426077A43003D432B /* CustomTokenListViewController.swift */; };
-		C313720726077A44003D432B /* CustomTokenListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C313720526077A43003D432B /* CustomTokenListViewController.xib */; };
-		C313720D26078051003D432B /* CustomTokenTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C313720B26078051003D432B /* CustomTokenTableViewCell.swift */; };
-		C313720E26078051003D432B /* CustomTokenTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C313720C26078051003D432B /* CustomTokenTableViewCell.xib */; };
 		C314F1692785525B00E3599B /* DappBrowerTransactionConfirmPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C314F1672785525A00E3599B /* DappBrowerTransactionConfirmPopup.swift */; };
 		C314F16A2785525B00E3599B /* DappBrowerTransactionConfirmPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = C314F1682785525A00E3599B /* DappBrowerTransactionConfirmPopup.xib */; };
 		C315AD5E240F845200620096 /* CustomAxisValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C315AD5D240F845200620096 /* CustomAxisValueFormatter.swift */; };
@@ -935,7 +931,6 @@
 		C33BF86B26D77E5C00D9F621 /* SendNFTViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C33BF86926D77E5C00D9F621 /* SendNFTViewController.xib */; };
 		C33C33B725ECC70700F347E5 /* AddTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33C33B525ECC70700F347E5 /* AddTokenViewController.swift */; };
 		C33C33B825ECC70700F347E5 /* AddTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C33C33B625ECC70700F347E5 /* AddTokenViewController.xib */; };
-		C33C33BC25ECCDAD00F347E5 /* AddTokenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33C33BB25ECCDAD00F347E5 /* AddTokenCoordinator.swift */; };
 		C33CCB2D23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33CCB2B23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift */; };
 		C33CCB2E23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib in Resources */ = {isa = PBXBuildFile; fileRef = C33CCB2C23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib */; };
 		C33DDBAF28ACEF9300D3041A /* WalletListV2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33DDBAD28ACEF9300D3041A /* WalletListV2ViewController.swift */; };
@@ -2028,10 +2023,6 @@
 		C31371F82603B194003D432B /* KrytalTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KrytalTableViewCell.xib; sourceTree = "<group>"; };
 		C31371FD260490A0003D432B /* ShareReferralLinkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareReferralLinkViewController.swift; sourceTree = "<group>"; };
 		C31371FE260490A0003D432B /* ShareReferralLinkViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShareReferralLinkViewController.xib; sourceTree = "<group>"; };
-		C313720426077A43003D432B /* CustomTokenListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTokenListViewController.swift; sourceTree = "<group>"; };
-		C313720526077A43003D432B /* CustomTokenListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTokenListViewController.xib; sourceTree = "<group>"; };
-		C313720B26078051003D432B /* CustomTokenTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTokenTableViewCell.swift; sourceTree = "<group>"; };
-		C313720C26078051003D432B /* CustomTokenTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTokenTableViewCell.xib; sourceTree = "<group>"; };
 		C314F1672785525A00E3599B /* DappBrowerTransactionConfirmPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappBrowerTransactionConfirmPopup.swift; sourceTree = "<group>"; };
 		C314F1682785525A00E3599B /* DappBrowerTransactionConfirmPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DappBrowerTransactionConfirmPopup.xib; sourceTree = "<group>"; };
 		C315AD5D240F845200620096 /* CustomAxisValueFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAxisValueFormatter.swift; sourceTree = "<group>"; };
@@ -2142,7 +2133,6 @@
 		C33BF86926D77E5C00D9F621 /* SendNFTViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SendNFTViewController.xib; sourceTree = "<group>"; };
 		C33C33B525ECC70700F347E5 /* AddTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTokenViewController.swift; sourceTree = "<group>"; };
 		C33C33B625ECC70700F347E5 /* AddTokenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddTokenViewController.xib; sourceTree = "<group>"; };
-		C33C33BB25ECCDAD00F347E5 /* AddTokenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTokenCoordinator.swift; sourceTree = "<group>"; };
 		C33CCB2B23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNConfirmCancelTransactionPopUp.swift; sourceTree = "<group>"; };
 		C33CCB2C23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNConfirmCancelTransactionPopUp.xib; sourceTree = "<group>"; };
 		C33DDBAD28ACEF9300D3041A /* WalletListV2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletListV2ViewController.swift; sourceTree = "<group>"; };
@@ -3268,7 +3258,6 @@
 			isa = PBXGroup;
 			children = (
 				A6D9BE65282923630009EEB4 /* CreateChainWalletMenu */,
-				C3137203260779AF003D432B /* CustomTokenList */,
 				C322EB0825B1A285009746FB /* CreateWalletMenu */,
 				C31BE89525B044960070A832 /* AddWatchWallet */,
 				250EE8DF2221A3E700121138 /* BackUpData */,
@@ -5664,25 +5653,6 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		C3137203260779AF003D432B /* CustomTokenList */ = {
-			isa = PBXGroup;
-			children = (
-				C313720A26078025003D432B /* Cells */,
-				C313720426077A43003D432B /* CustomTokenListViewController.swift */,
-				C313720526077A43003D432B /* CustomTokenListViewController.xib */,
-			);
-			path = CustomTokenList;
-			sourceTree = "<group>";
-		};
-		C313720A26078025003D432B /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				C313720B26078051003D432B /* CustomTokenTableViewCell.swift */,
-				C313720C26078051003D432B /* CustomTokenTableViewCell.xib */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
 		C31BE89525B044960070A832 /* AddWatchWallet */ = {
 			isa = PBXGroup;
 			children = (
@@ -5735,7 +5705,6 @@
 			isa = PBXGroup;
 			children = (
 				C31F749125DCD213008B21F7 /* OverviewCoordinator.swift */,
-				C33C33BB25ECCDAD00F347E5 /* AddTokenCoordinator.swift */,
 				C3263B0125EDE6FB005FBB60 /* WithdrawCoordinator.swift */,
 			);
 			path = Coordinator;
@@ -6636,13 +6605,11 @@
 				25369F0820F88835007231FE /* welcome_screen_data.json in Resources */,
 				7EFE441227167F2A006CF502 /* RewardDetailCell.xib in Resources */,
 				C38E5D7525F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.xib in Resources */,
-				C313720726077A44003D432B /* CustomTokenListViewController.xib in Resources */,
 				C3EE06C4267A15E50090B432 /* Karla-SemiBoldItalic.ttf in Resources */,
 				25929C5E20DA5C760045CFA3 /* SF-Pro-Text-RegularItalic.otf in Resources */,
 				C32017BB27BE41910055130B /* MultiSendAddressCell.xib in Resources */,
 				A6B3CD4028117806005D0D66 /* KNTransactionHistoryViewController.xib in Resources */,
 				C3EE06CA267A15E50090B432 /* OFL.txt in Resources */,
-				C313720E26078051003D432B /* CustomTokenTableViewCell.xib in Resources */,
 				25696F6E20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib in Resources */,
 				25929C9C20DA5CC10045CFA3 /* SFCompactText-HeavyItalic.otf in Resources */,
 				2542605021218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib in Resources */,
@@ -7399,7 +7366,6 @@
 				257740C120579335003323EB /* UIView+Kyber.swift in Sources */,
 				C31D05FF25F723E8000739D2 /* EtherscanTransactionStorage.swift in Sources */,
 				C32656B5266F55E200C69561 /* KrystalActionSheetCell.swift in Sources */,
-				C313720D26078051003D432B /* CustomTokenTableViewCell.swift in Sources */,
 				A6E6C9B528168DA200EEB2E6 /* LoadingIndicatorCell.swift in Sources */,
 				A651944628361AA6008F4AEB /* TransactionHistoryItemType.swift in Sources */,
 				7E12788D289D005400A2AE34 /* SearchTokenViewModel.swift in Sources */,
@@ -7745,7 +7711,6 @@
 				775C00B520195BFB001B5EBC /* BrowserAction.swift in Sources */,
 				A6D9BE682829238A0009EEB4 /* CreateChainWalletMenuViewController.swift in Sources */,
 				299B5E291FCA8F040051361C /* GetERC20Balance.swift in Sources */,
-				C313720626077A44003D432B /* CustomTokenListViewController.swift in Sources */,
 				7EEA4D7728AA3A4500C56EE3 /* DinoChatCustomView.swift in Sources */,
 				7EA34EB32886ACB7001D1DE6 /* OverviewAllChainTokenCell.swift in Sources */,
 				A693AFED2819057E00880503 /* RewardHuntingViewModel.swift in Sources */,
@@ -7759,7 +7724,6 @@
 				7E1EBE3D2834D97D00793B6D /* SelectTokenCell.swift in Sources */,
 				7EFE44092715855D006CF502 /* ClaimButtonTableViewCell.swift in Sources */,
 				25CC0AB220591A3D0009D0D5 /* KNRate.swift in Sources */,
-				C33C33BC25ECCDAD00F347E5 /* AddTokenCoordinator.swift in Sources */,
 				A685D4912848766A0066E177 /* GasCalculator.swift in Sources */,
 				A6E26FDE28129BF20054427E /* TransactionFactory.swift in Sources */,
 				7E8F02E927F2DD4200234E22 /* AllChains.swift in Sources */,

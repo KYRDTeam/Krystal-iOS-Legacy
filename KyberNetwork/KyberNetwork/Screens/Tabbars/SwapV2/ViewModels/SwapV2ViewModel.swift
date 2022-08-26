@@ -575,6 +575,7 @@ extension SwapV2ViewModel {
       priceImpactState.value = self.getPriceImpactState(change: Double(selectedRate.priceImpact) / 100)
       state.value = .requiredExpertMode
     } else if !state.value.isActiveState {
+      self.updateInfo()
       return
     }
     
