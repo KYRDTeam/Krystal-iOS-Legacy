@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,15 +12,17 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EarnConfirmViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EarnConfirmViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="amountLabel" destination="r1X-qd-RUI" id="qMA-xW-cdW"/>
                 <outlet property="cancelButton" destination="Bdl-zG-e6d" id="W5E-ch-avo"/>
+                <outlet property="chainIcon" destination="KxA-Xu-TYy" id="dax-86-bUw"/>
+                <outlet property="chainLabel" destination="pRR-fc-6Pi" id="oHq-P9-9Up"/>
                 <outlet property="compInfoLabel" destination="G9x-Z5-aYo" id="Ssb-H9-bNx"/>
                 <outlet property="compInfoMessageContainerView" destination="B9r-c5-FAq" id="64d-Io-J3s"/>
                 <outlet property="confirmButton" destination="hPX-A4-1L2" id="qGQ-4P-uWO"/>
@@ -58,19 +60,19 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3,800 DAI" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="r1X-qd-RUI">
-                            <rect key="frame" x="148.5" y="82.5" width="78.5" height="21"/>
+                            <rect key="frame" x="148.5" y="97" width="78.5" height="21"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="≈ 3,81245 USD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="L3J-OS-1Xl">
-                            <rect key="frame" x="136.5" y="104.5" width="102" height="19"/>
+                            <rect key="frame" x="136.5" y="119" width="102" height="19"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xtp-jI-ycf">
-                            <rect key="frame" x="37" y="159.5" width="301" height="114"/>
+                            <rect key="frame" x="37" y="174" width="301" height="114"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Compound" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ck9-kl-9XJ">
                                     <rect key="frame" x="110.5" y="14" width="80.5" height="19"/>
@@ -194,7 +196,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NkW-ap-UY0">
-                            <rect key="frame" x="37" y="293.5" width="301" height="102"/>
+                            <rect key="frame" x="37" y="308" width="301" height="102"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Net APY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HUz-tG-Wta">
                                     <rect key="frame" x="12" y="71" width="42" height="14"/>
@@ -286,7 +288,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B9r-c5-FAq">
-                            <rect key="frame" x="37" y="415.5" width="301" height="124.5"/>
+                            <rect key="frame" x="37" y="430" width="301" height="124.5"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G9x-Z5-aYo">
                                     <rect key="frame" x="50" y="20" width="239" height="84.5"/>
@@ -318,7 +320,7 @@ Once redeemed, COMP token can be swapped to any token.</string>
                             </userDefinedRuntimeAttributes>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPX-A4-1L2">
-                            <rect key="frame" x="203.5" y="555.5" width="134.5" height="38"/>
+                            <rect key="frame" x="203.5" y="570" width="134.5" height="38"/>
                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="G5g-BD-3Km"/>
@@ -332,7 +334,7 @@ Once redeemed, COMP token can be swapped to any token.</string>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bdl-zG-e6d">
-                            <rect key="frame" x="37" y="555.5" width="134.5" height="38"/>
+                            <rect key="frame" x="37" y="570" width="134.5" height="38"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="MXc-rq-WV8"/>
@@ -346,12 +348,26 @@ Once redeemed, COMP token can be swapped to any token.</string>
                             </connections>
                         </button>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="arrow_down_blue" translatesAutoresizingMaskIntoConstraints="NO" id="5KT-Yn-Aik">
-                            <rect key="frame" x="180.5" y="128.5" width="14" height="18"/>
+                            <rect key="frame" x="180.5" y="143" width="14" height="18"/>
                         </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="KxA-Xu-TYy">
+                            <rect key="frame" x="151.5" y="60" width="12" height="12"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="12" id="6Cv-nh-cGJ"/>
+                                <constraint firstAttribute="height" constant="12" id="QnT-6u-zFR"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Ethereum" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pRR-fc-6Pi">
+                            <rect key="frame" x="168.5" y="58.5" width="54" height="14.5"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" name="popupBackgroundColor"/>
                     <gestureRecognizers/>
                     <constraints>
+                        <constraint firstItem="pRR-fc-6Pi" firstAttribute="top" secondItem="n6D-Mz-50T" secondAttribute="bottom" constant="8" id="Brp-Vc-ShG"/>
                         <constraint firstItem="5KT-Yn-Aik" firstAttribute="centerX" secondItem="EyC-Jv-FHI" secondAttribute="centerX" id="CHH-Ef-NBv"/>
                         <constraint firstItem="L3J-OS-1Xl" firstAttribute="top" secondItem="r1X-qd-RUI" secondAttribute="bottom" constant="1" id="DAe-gs-WkV"/>
                         <constraint firstItem="5KT-Yn-Aik" firstAttribute="top" secondItem="L3J-OS-1Xl" secondAttribute="bottom" constant="5" id="G6Z-bF-aWU"/>
@@ -359,6 +375,8 @@ Once redeemed, COMP token can be swapped to any token.</string>
                         <constraint firstItem="Xtp-jI-ycf" firstAttribute="leading" secondItem="EyC-Jv-FHI" secondAttribute="leading" constant="37" id="KM5-eA-vOK"/>
                         <constraint firstAttribute="trailing" secondItem="hPX-A4-1L2" secondAttribute="trailing" constant="37" id="O5q-uD-3FX"/>
                         <constraint firstItem="NkW-ap-UY0" firstAttribute="top" secondItem="Xtp-jI-ycf" secondAttribute="bottom" constant="20" id="OUt-Kx-Nh7"/>
+                        <constraint firstItem="pRR-fc-6Pi" firstAttribute="leading" secondItem="KxA-Xu-TYy" secondAttribute="trailing" constant="5" id="OeM-vh-efB"/>
+                        <constraint firstItem="pRR-fc-6Pi" firstAttribute="centerX" secondItem="EyC-Jv-FHI" secondAttribute="centerX" constant="8" id="VJb-RA-wLw"/>
                         <constraint firstItem="NkW-ap-UY0" firstAttribute="leading" secondItem="EyC-Jv-FHI" secondAttribute="leading" constant="37" id="VMY-w6-5FT"/>
                         <constraint firstItem="Xtp-jI-ycf" firstAttribute="top" secondItem="L3J-OS-1Xl" secondAttribute="bottom" constant="36" id="Vqi-u1-iPb"/>
                         <constraint firstAttribute="trailing" secondItem="NkW-ap-UY0" secondAttribute="trailing" constant="37" id="XQO-ze-JM7"/>
@@ -370,11 +388,12 @@ Once redeemed, COMP token can be swapped to any token.</string>
                         <constraint firstItem="hPX-A4-1L2" firstAttribute="top" secondItem="NkW-ap-UY0" secondAttribute="bottom" constant="160" id="ecq-0K-sHy"/>
                         <constraint firstAttribute="height" constant="650" id="eyp-5L-Gnk"/>
                         <constraint firstAttribute="trailing" secondItem="B9r-c5-FAq" secondAttribute="trailing" constant="37" id="hqs-2w-Ql5"/>
-                        <constraint firstItem="r1X-qd-RUI" firstAttribute="top" secondItem="n6D-Mz-50T" secondAttribute="bottom" priority="750" constant="32" id="iMu-ki-pex"/>
+                        <constraint firstItem="r1X-qd-RUI" firstAttribute="top" secondItem="pRR-fc-6Pi" secondAttribute="bottom" priority="750" constant="24" id="iMu-ki-pex"/>
                         <constraint firstItem="B9r-c5-FAq" firstAttribute="leading" secondItem="EyC-Jv-FHI" secondAttribute="leading" constant="37" id="iQo-gU-mx4"/>
                         <constraint firstItem="Bdl-zG-e6d" firstAttribute="leading" secondItem="EyC-Jv-FHI" secondAttribute="leading" constant="37" id="ohw-KY-SQN"/>
                         <constraint firstItem="L3J-OS-1Xl" firstAttribute="centerX" secondItem="n6D-Mz-50T" secondAttribute="centerX" id="qno-kn-jEE"/>
                         <constraint firstItem="n6D-Mz-50T" firstAttribute="top" secondItem="EyC-Jv-FHI" secondAttribute="top" constant="27" id="qtT-VB-3k7"/>
+                        <constraint firstItem="KxA-Xu-TYy" firstAttribute="centerY" secondItem="pRR-fc-6Pi" secondAttribute="centerY" id="roY-Qf-eCk"/>
                         <constraint firstItem="hPX-A4-1L2" firstAttribute="centerY" secondItem="Bdl-zG-e6d" secondAttribute="centerY" id="tWO-6b-odB"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
@@ -407,6 +426,7 @@ Once redeemed, COMP token can be swapped to any token.</string>
         <image name="arrow_down_blue" width="14" height="18"/>
         <image name="comp_icon" width="24" height="24"/>
         <image name="dai" width="36" height="36"/>
+        <image name="eth" width="32" height="32"/>
         <image name="farming_icon" width="20" height="18"/>
         <image name="help_icon_blue" width="14" height="14"/>
         <namedColor name="buttonBackgroundColor">
