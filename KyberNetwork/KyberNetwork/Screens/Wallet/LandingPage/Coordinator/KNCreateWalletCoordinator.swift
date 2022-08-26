@@ -47,8 +47,11 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
     } else {
       self.isCreating = true
       let createWalletVC = CreateWalletViewController()
-      createWalletVC.loadViewIfNeeded()
+      createWalletVC.hidesBottomBarWhenPushed = true
       createWalletVC.delegate = self
+      if AppDelegate.shared.coordinator.tabbarController != nil {
+        AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = true
+      }
       self.navigationController.pushViewController(createWalletVC, animated: true)
       self.createWalletController = createWalletVC
     }
@@ -117,6 +120,9 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
 
 extension KNCreateWalletCoordinator: BackUpWalletViewControllerDelegate {
   func didFinishBackup(_ controller: BackUpWalletViewController) {
+    if AppDelegate.shared.coordinator.tabbarController != nil {
+      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
+    }
     guard let wallet = self.newWallet else { return }
     self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, chain: targetChain)
   }
@@ -127,9 +133,10 @@ extension KNCreateWalletCoordinator: CreateWalletViewControllerDelegate {
     switch event {
     case .back:
       self.navigationController.popViewController(animated: true) {
-        self.navigationController.dismiss(animated: true) {
-          self.delegate?.createWalletCoordinatorDidClose()
+        if AppDelegate.shared.coordinator.tabbarController != nil {
+          AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
         }
+        self.delegate?.createWalletCoordinatorDidClose()
       }
     case .next(let name):
       self.navigationController.displayLoading(text: Strings.creating, animated: true)
@@ -164,6 +171,9 @@ extension KNCreateWalletCoordinator: FinishCreateWalletViewControllerDelegate {
   func finishCreateWalletViewController(_ controller: FinishCreateWalletViewController, run event: FinishCreateWalletViewControllerEvent) {
     switch event {
     case .continueUseApp:
+        if AppDelegate.shared.coordinator.tabbarController != nil {
+          AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
+        }
       guard let wallet = self.newWallet else { return }
       self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, chain: targetChain)
     case .backup:
