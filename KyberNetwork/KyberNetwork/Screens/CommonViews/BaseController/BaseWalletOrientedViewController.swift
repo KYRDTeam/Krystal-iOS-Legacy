@@ -106,11 +106,18 @@ class BaseWalletOrientedViewController: KNBaseViewController {
       name: AppEventCenter.shared.kAppDidChangeAddress,
       object: nil
     )
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(onWalletListUpdated),
+      name: AppEventCenter.shared.kWalletListHasUpdate,
+      object: nil
+    )
   }
   
   func unobserveNotifications() {
     NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidChangeAddress, object: nil)
     NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidSwitchChain, object: nil)
+    NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kWalletListHasUpdate, object: nil)
   }
   
   func reloadWallet() {
@@ -121,6 +128,10 @@ class BaseWalletOrientedViewController: KNBaseViewController {
   func reloadChain() {
     chainIcon?.image = KNGeneralProvider.shared.currentChain.squareIcon()
     chainButton?.setTitle(KNGeneralProvider.shared.currentChain.chainName(), for: .normal)
+  }
+  
+  @objc func onWalletListUpdated() {
+    reloadWallet()
   }
   
   @objc func onWalletButtonTapped() {

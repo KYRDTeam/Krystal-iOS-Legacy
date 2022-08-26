@@ -18,6 +18,7 @@ class AppEventCenter {
   let kAppDidChangeAddress = Notification.Name("kAppDidChangeAddress")
   let kAppDidChangeCurrentAddressData = Notification.Name("kAppDidChangeCurrentAddressData")
   let kAppDidSwitchChain = Notification.Name("kChangeChainNotificationKey")
+  let kWalletListHasUpdate = Notification.Name("kWalletListHasUpdateKey")
   
   func switchAddress(address: KAddress) {
     notificationCenter.post(
@@ -29,6 +30,10 @@ class AppEventCenter {
     notificationCenter.post(
       Notification(name: kAppDidSwitchChain, object: nil, userInfo: ["chain": chain])
     )
+  }
+  
+  func walletListHasUpdate() {
+    notificationCenter.post(Notification(name: kWalletListHasUpdate))
   }
   
   func currentAddressUpdated() {
