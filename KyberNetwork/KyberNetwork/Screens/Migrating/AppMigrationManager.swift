@@ -23,7 +23,29 @@ class AppMigrationManager {
   }
   
   var needMigrate: Bool {
+    if getUnknownWallets().isNotEmpty && UserDefaults.hasMigratedUnknownKeystoreWallet == false {
+      return true
+    }
     return !UserDefaults.hasMigratedKeystoreWallet && !keystore.wallets.isEmpty
+  }
+  
+  func getUnknownWallets() -> [Wallet] {
+    let walletObjects = KNWalletStorage.shared.wallets
+    return self.keystore.wallets.filter { wallet in
+      guard let walletObject = walletObjects.first(where: { $0.address.lowercased() == wallet.address?.description.lowercased() }) else {
+        return false
+      }
+      switch wallet.type {
+      case .real:
+        guard let importType = ImportWalletChainType(rawValue: walletObject.chainType) else {
+          return false
+        }
+        let storageType = StorageType(rawValue: walletObject.storateType)
+        return (importType == .solana || importType == .solana) && storageType == .unknow
+      default:
+        return false
+      }
+    }
   }
   
   func execute(progressCallback: @escaping (Float) -> Void, completion: @escaping () -> Void) {
@@ -32,6 +54,7 @@ class AppMigrationManager {
         progressCallback(progress)
       } completion: {
         UserDefaults.hasMigratedKeystoreWallet = true
+        UserDefaults.hasMigratedUnknownKeystoreWallet = true
         completion()
       }
     }
