@@ -201,6 +201,8 @@ class EarnSwapConfirmViewController: KNBaseViewController {
   @IBOutlet weak var swapAnywayBtn: UIButton!
   @IBOutlet weak var topBackgroundView: UIView!
   @IBOutlet weak var slippageLabel: UILabel!
+  @IBOutlet weak var chainIcon: UIImageView!
+  @IBOutlet weak var chainLabel: UILabel!
   
   var isAccepted: Bool = true
   let transitor = TransitionDelegate()
@@ -220,11 +222,16 @@ class EarnSwapConfirmViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
-    
+    self.setupChainInfo()
   }
 
   @objc func tapOutside() {
     self.dismiss(animated: true, completion: nil)
+  }
+  
+  func setupChainInfo() {
+    chainIcon.image = KNGeneralProvider.shared.currentChain.squareIcon()
+    chainLabel.text = KNGeneralProvider.shared.currentChain.chainName()
   }
 
   fileprivate func setupUI() {
