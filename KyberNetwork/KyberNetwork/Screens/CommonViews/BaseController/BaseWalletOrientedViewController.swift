@@ -185,6 +185,8 @@ class BaseWalletOrientedViewController: KNBaseViewController {
     KNGeneralProvider.shared.currentChain = chain
     AppEventCenter.shared.switchChain(chain: chain)
     AppDelegate.shared.coordinator.loadBalanceCoordinator?.loadTokenBalancesFromApi(completion: { _ in })
+    AppDelegate.shared.coordinator.loadBalanceCoordinator?.loadLendingBalances(completion: { _ in })
+    AppDelegate.shared.coordinator.loadBalanceCoordinator?.loadLendingDistributionBalance(completion: { _ in })
   }
 }
 
