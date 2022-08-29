@@ -62,6 +62,7 @@ class SwapV2Coordinator: NSObject, Coordinator {
     let nav = UINavigationController(rootViewController: swapSummaryVC)
     nav.modalPresentationStyle = .overFullScreen
     self.rootViewController.present(nav, animated: true)
+    MixPanelManager.track("swap_confirm_pop_up_open", properties: ["screenid": "swap_confirm_pop_up"])
   }
   
   func openTransactionSettings(gasLimit: BigInt, rate: Rate?, settings: SwapTransactionSettings) {
@@ -82,6 +83,7 @@ class SwapV2Coordinator: NSObject, Coordinator {
       self?.rootViewController.viewModel.updateSettings(settings: swapSettings)
     }
     self.navigationController.pushViewController(popup, animated: true, completion: nil)
+    MixPanelManager.track("swap_txn_setting_pop_up_open", properties: ["screenid": "swap_txn_setting_pop_up"])
   }
   
   func openApprove(token: TokenObject, amount: BigInt) {

@@ -157,6 +157,7 @@ class MultiSendViewController: KNBaseViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.updateUIUseLast()
+    MixPanelManager.track("multi_send_open", properties: ["screenid": "multi_send"])
   }
   
   @IBAction func backButtonTapped(_ sender: UIButton) {

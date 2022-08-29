@@ -40,6 +40,7 @@ class KNListWalletsCoordinator: Coordinator {
   }
 
   func start() {
+    MixPanelManager.track("manage_wallet_open", properties: ["screenid": "manage_wallet"])
     self.navigationController.pushViewController(self.rootViewController, animated: true)
   }
   
@@ -84,6 +85,7 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
       let vc = CopyAddressViewController(viewModel: vm)
       vc.delegate = self
       self.navigationController.pushViewController(vc, animated: true)
+      MixPanelManager.track("multi_chain_wallets_open", properties: ["screenid": "multi_chain_wallets"])
     case .removeWallet(let wallet):
       self.showDeleteWalletAlert {
         self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wallet)
@@ -109,6 +111,7 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
       controller.loadViewIfNeeded()
       controller.delegate = self
       self.navigationController.pushViewController(controller, animated: true)
+      MixPanelManager.track("edit_wallet_open", properties: ["screenid": "edit_wallet"])
     case .addWallet(let type):
       self.delegate?.listWalletsCoordinatorDidSelectAddWallet(type: type)
     }

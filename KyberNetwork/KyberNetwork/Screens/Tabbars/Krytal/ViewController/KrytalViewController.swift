@@ -108,6 +108,7 @@ class KrytalViewController: KNBaseViewController {
     self.referralCodeTableView.register(nib, forCellReuseIdentifier: KrytalTableViewCell.cellID)
     self.referralCodeTableView.rowHeight = KrytalTableViewCell.cellHeight
     self.updateUI()
+    MixPanelManager.track("referral_open", properties: ["screenid": "referral"])
   }
 
   fileprivate func updateUI() {

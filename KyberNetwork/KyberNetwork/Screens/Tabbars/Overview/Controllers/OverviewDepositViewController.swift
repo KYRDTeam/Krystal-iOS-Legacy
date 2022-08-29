@@ -242,6 +242,7 @@ extension OverviewDepositViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if let viewModel = self.viewModel.getDataSourceForSection(indexPath.section)[indexPath.row] as? OverviewDepositLendingBalanceCellViewModel {
       self.delegate?.overviewDepositViewController(self, run: .withdrawBalance(platform: self.viewModel.sectionKeys[indexPath.section], balance: viewModel.balance))
+      MixPanelManager.track("earn_supply_info_pop_up_open", properties: ["screenid": "earn_supply_info_pop_up"])
     } else if let viewModel = self.viewModel.getDataSourceForSection(indexPath.section)[indexPath.row] as? OverviewDepositDistributionBalanceCellViewModel {
       self.delegate?.overviewDepositViewController(self, run: .claim(balance: viewModel.balance))
     }

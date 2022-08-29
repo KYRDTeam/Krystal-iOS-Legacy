@@ -257,6 +257,7 @@ extension KNListWalletsViewController: UITableViewDelegate {
         action.append(UIAlertAction(title: Strings.cancel, style: .cancel, handler: nil))
         let alertController = KNActionSheetAlertViewController(title: "", actions: action)
         self.present(alertController, animated: true, completion: nil)
+        MixPanelManager.track("manage_wallet_pop_up_open", properties: ["screenid": "manage_wallet_pop_up"])
       }
     }
   }

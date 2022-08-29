@@ -209,6 +209,7 @@ class MultiSendConfirmViewController: KNBaseViewController {
     self.updateGasFeeUI()
     self.backButton.rounded(radius: 16)
     self.confirmButton.rounded(radius: 16)
+    MixPanelManager.track("multi_send_confirm_pop_up_open", properties: ["screenid": "multi_send_confirm_pop_up"])
   }
   
   fileprivate func updateUI() {

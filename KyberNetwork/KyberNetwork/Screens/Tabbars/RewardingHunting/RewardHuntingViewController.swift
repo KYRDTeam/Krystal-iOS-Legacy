@@ -21,6 +21,7 @@ class RewardHuntingViewController: WebViewController {
     bindViewModel()
     viewModel.onViewLoaded()
     reloadWebView()
+    MixPanelManager.track("reward_hunting_open", properties: ["screenid": "reward_hunting"])
   }
   
   override func setupNavigationBar() {

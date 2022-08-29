@@ -140,6 +140,7 @@ class InvestCoordinator: Coordinator {
     let coordinator = RewardCoordinator(navigationController: self.navigationController)
     coordinator.start()
     self.rewardCoordinator = coordinator
+    
   }
   
   fileprivate func openBridgeView() {
@@ -239,12 +240,15 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.openSendTokenView()
     case .reward:
       self.openRewardView()
+      MixPanelManager.track("reward_open", properties: ["screenid": "reward"])
     case .krytal:
       self.openKrytalView()
     case .dapp:
       self.openDappBrowserScreen()
+      MixPanelManager.track("dapp_open", properties: ["screenid": "dapp"])
     case .buyCrypto:
       self.openBuyCryptoScreen()
+      MixPanelManager.track("buy_cryto_open", properties: ["screenid": "buy_cryto"])
     case .multiSend:
       self.multiSendCoordinator.start()
       Tracker.track(event: .exploreMultisend)
@@ -252,6 +256,7 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       let coordinator = PromoCodeCoordinator(navigationController: self.navigationController)
       coordinator.start()
       self.promoCodeCoordinator = coordinator
+      MixPanelManager.track("promotion_open", properties: ["screenid": "promotion"])
     case .rewardHunting:
       if currentAddress.isWatchWallet {
         self.rootViewController.showErrorTopBannerMessage(message: Strings.rewardHuntingWatchWalletErrorMessage)
@@ -297,6 +302,7 @@ extension InvestCoordinator: InvestViewControllerDelegate {
           self.openImportWalletFlow(privateKey: text, chain: .solana)
         }
       }
+      MixPanelManager.track("scanner_open", properties: ["screenid": "scanner"])
     }
   }
   

@@ -71,6 +71,7 @@ class KNSettingsTabViewController: KNBaseViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    MixPanelManager.track("settings_open", properties: ["screenid": "settings"])
   }
 
   override func viewDidLayoutSubviews() {

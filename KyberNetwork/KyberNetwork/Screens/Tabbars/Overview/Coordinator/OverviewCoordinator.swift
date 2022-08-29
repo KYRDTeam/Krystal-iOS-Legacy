@@ -654,6 +654,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       controller.coordinatorDidSelectMode(.favourite(rightMode: .ch24))
     }))
     self.navigationController.present(actionController, animated: true, completion: nil)
+    MixPanelManager.track("token_data_pop_up_open", properties: ["screenid": "token_data_pop_up"])
   }
   
   func configWallet(controller: OverviewMainViewController) {
@@ -726,6 +727,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     case .walletConfig:
         self.configWallet(controller: controller)
     case .select(token: let token, chainId: let chainId):
+      MixPanelManager.track("token_detail_open", properties: ["screenid": "token_detail"])
       self.openChartView(token: token, chainId: chainId)
     case .selectListWallet:
       let viewModel = WalletsListViewModel()
@@ -813,15 +815,18 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
         break
       }
       self.navigationController.present(actionController, animated: true, completion: nil)
+      MixPanelManager.track("display_data_pop_up_open", properties: ["screenid": "display_data_pop_up"])
     case .addNFT:
       let vc = OverviewAddNFTViewController()
       vc.delegate = self
       self.navigationController.pushViewController(vc, animated: true)
+      MixPanelManager.track("add_nft_open", properties: ["screenid": "add_nft"])
     case .openNFTDetail(item: let item, category: let category):
       let viewModel = OverviewNFTDetailViewModel(item: item, category: category)
       let vc = OverviewNFTDetailViewController(viewModel: viewModel)
       vc.delegate = self
       self.navigationController.pushViewController(vc, animated: true)
+      MixPanelManager.track("nft_detail_open", properties: ["screenid": "nft_detail"])
     case .didAppear:
       self.delegate?.overviewCoordinatorDidStart()
     case .buyCrypto:

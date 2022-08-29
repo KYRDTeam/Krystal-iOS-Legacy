@@ -521,6 +521,8 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
     self.updateUIBalanceDidChange()
     self.updateAllowance()
     Tracker.track(event: .openEarnView)
+    
+    MixPanelManager.track("earn_supply_open", properties: ["screenid": "earn_supply"])
   }
 
   override func viewWillDisappear(_ animated: Bool) {

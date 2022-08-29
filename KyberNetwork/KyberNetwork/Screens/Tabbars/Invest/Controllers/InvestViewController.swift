@@ -49,6 +49,7 @@ class InvestViewController: KNBaseViewController {
     
     self.updateUISwitchChain()
     self.viewModel.reloadMenuItems()
+    MixPanelManager.track("explore_open", properties: ["screenid": "explore"])
   }
   
   func setupCollectionView() {

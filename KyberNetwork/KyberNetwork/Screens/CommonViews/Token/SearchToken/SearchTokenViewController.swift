@@ -55,6 +55,7 @@ class SearchTokenViewController: KNBaseViewController {
     self.viewModel.fetchDataFromAPI(query: "", orderBy: self.orderBy) {
       self.reloadUI()
     }
+    MixPanelManager.track("search_open", properties: ["screenid": "search"])
   }
   
   func setupUI() {

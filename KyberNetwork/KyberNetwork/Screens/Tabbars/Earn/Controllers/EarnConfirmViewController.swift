@@ -143,6 +143,7 @@ class EarnConfirmViewController: KNBaseViewController {
     super.viewDidLoad()
     
     self.setupUI()
+    MixPanelManager.track("earn_confirmation_pop_up_open", properties: ["screenid": "earn_confirmation_pop_up"])
   }
   
   fileprivate func setupUI() {

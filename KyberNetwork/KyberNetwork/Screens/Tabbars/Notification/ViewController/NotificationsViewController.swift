@@ -31,6 +31,7 @@ class NotificationsViewController: KNBaseViewController {
     super.viewDidLoad()
     let nib = UINib(nibName: NotificationTableViewCell.className, bundle: nil)
     self.notificationTableView.register(nib, forCellReuseIdentifier: NotificationTableViewCell.cellID)
+    MixPanelManager.track("notifications_open", properties: ["screenid": "notifications"])
   }
   
   func coordinatorDidUpdateNotification(notifications: [NotificationItem]) {

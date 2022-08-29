@@ -114,6 +114,11 @@ class KNNewContactViewController: KNBaseViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.nameTextField.becomeFirstResponder()
+    if viewModel.isEditing {
+      MixPanelManager.track("contact_edit_open", properties: ["screenid": "contact_edit"])
+    } else {
+      MixPanelManager.track("contact_add_open", properties: ["screenid": "contact_add"])
+    }
   }
 
   override func viewDidDisappear(_ animated: Bool) {

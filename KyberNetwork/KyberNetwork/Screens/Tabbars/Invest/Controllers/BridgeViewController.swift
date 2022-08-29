@@ -59,6 +59,7 @@ class BridgeViewController: KNBaseViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.updateAllowance()
+    MixPanelManager.track("bridge_open", properties: ["screenid": "bridge"])
   }
   
   fileprivate func updateUIPendingTxIndicatorView() {

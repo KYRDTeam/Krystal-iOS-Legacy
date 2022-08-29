@@ -79,6 +79,7 @@ class EarnMenuViewController: KNBaseViewController {
     self.updateUIPendingTxIndicatorView()
     self.updateUISwitchChain()
     self.updateUIEmptyView()
+    MixPanelManager.track("earn_explore_open", properties: ["screenid": "earn_explore"])
   }
 
   fileprivate func updateUISwitchChain() {

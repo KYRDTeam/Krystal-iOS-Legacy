@@ -47,6 +47,7 @@ class MultisendAddressListViewController: KNBaseViewController {
     let nib = UINib(nibName: MultiSendAddressCell.className, bundle: nil)
     self.addressesTableView.register(nib, forCellReuseIdentifier: MultiSendAddressCell.cellID)
     self.addressesTableView.rowHeight = MultiSendAddressCell.cellHeight
+    MixPanelManager.track("multi_send_total_addresses_pop_up_open", properties: ["screenid": "multi_send_total_addresses_pop_up"])
   }
   
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {

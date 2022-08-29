@@ -116,6 +116,7 @@ class KSendTokenViewController: KNBaseViewController {
     self.updateUIPendingTxIndicatorView()
     Tracker.track(event: .openSendView)
     self.updateUISwitchChain()
+    MixPanelManager.track("transfer_open", properties: ["screenid": "transfer"])
   }
 
   override func viewWillDisappear(_ animated: Bool) {

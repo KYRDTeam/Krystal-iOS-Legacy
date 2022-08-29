@@ -95,6 +95,7 @@ class SwapV2ViewController: KNBaseViewController {
     super.viewWillAppear(animated)
     
     navigationController?.setNavigationBarHidden(true, animated: true)
+    MixPanelManager.track("swap_open", properties: ["screenid": "swap"])
   }
   
   deinit {

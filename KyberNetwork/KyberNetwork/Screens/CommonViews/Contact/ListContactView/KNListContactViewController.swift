@@ -61,6 +61,7 @@ class KNListContactViewController: KNBaseViewController {
     )
     self.emptyStateView.isHidden = !contacts.isEmpty
     self.contactTableView.isHidden = contacts.isEmpty
+    MixPanelManager.track("contact_open", properties: ["screenid": "contact"])
   }
 
   func removeObserveNotification() {
