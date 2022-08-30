@@ -90,6 +90,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   func switchWallet(wallet: KWallet, chain: ChainType) {
     if let address = getAddresses(wallet: wallet, chain: chain).first {
       KNGeneralProvider.shared.currentChain = chain
+      self.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
       switchAddress(address: address)
       AppEventCenter.shared.switchChain(chain: chain)
     }
