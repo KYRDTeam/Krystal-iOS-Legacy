@@ -674,6 +674,7 @@ extension SwapV2ViewController {
     } else {
       viewModel.sourceAmount.value = amountToChange
     }
+    MixPanelManager.track("swap_enter_amount", properties: ["screenid": "swap"])
   }
   
   func onSelectPlatformRateAt(index: Int) {

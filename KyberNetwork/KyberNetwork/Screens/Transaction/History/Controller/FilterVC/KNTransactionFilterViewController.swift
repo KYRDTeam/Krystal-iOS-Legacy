@@ -494,6 +494,7 @@ class KNTransactionFilterViewController: KNBaseViewController {
     self.navigationController?.popViewController(animated: true, completion: {
       self.delegate?.transactionFilterViewController(self, apply: filter)
     })
+    MixPanelManager.track("history_filter_save", properties: ["screenid": "history_filter"])
   }
 
   @IBAction func tapFromTextField(_ sender: UITapGestureRecognizer) {
