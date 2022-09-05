@@ -51,17 +51,9 @@ class KNAddNewWalletCoordinator: Coordinator {
     self.navigationController.popToRootViewController(animated: false)
     switch type {
     case .full, .onlyReal:
-      let isFull: Bool = {
-        switch type {
-        case .full:
-          return true
-        default:
-          return false
-        }
-      }()
-      let popup = CreateWalletMenuViewController(isFull: isFull)
+      let popup = AddWalletViewController()
       popup.delegate = self
-      self.navigationController.present(popup, animated: true, completion: {})
+      self.navigationController.pushViewController(popup, animated: true)
     case .watch:
       self.createWatchWallet(address)
     case .chain(let chainType):
@@ -108,7 +100,6 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
   }
 
   func createWalletCoordinatorDidClose() {
-    self.navigationController.dismiss(animated: false, completion: nil)
   }
 }
 
@@ -129,18 +120,17 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
   }
   
   func importWalletCoordinatorDidClose() {
-    self.navigationController.dismiss(animated: true, completion: nil)
   }
 }
 
-extension KNAddNewWalletCoordinator: CreateWalletMenuViewControllerDelegate {
-  func createWalletMenuViewController(_ controller: CreateWalletMenuViewController, run event: CreateWalletMenuViewControllerEvent) {
+extension KNAddNewWalletCoordinator: AddWalletViewControllerDelegate {
+  func addWalletViewController(_ controller: AddWalletViewController, run event: AddWalletViewControllerEvent) {
     switch event {
-    case .createRealWallet:
+    case .createWallet:
       self.createNewWallet()
     case .importWallet:
       self.importAWallet()
-    case .createWatchWallet:
+    case .importWatchWallet:
       self.createWatchWallet()
     case .close:
       self.navigationController.dismiss(animated: true, completion: nil)
