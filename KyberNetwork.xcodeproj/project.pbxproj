@@ -516,6 +516,8 @@
 		7EA5849D26F8A5900060250F /* KNActionSheetAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */; };
 		7EA694DB2839D5EB0033E5D2 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA694D92839D5EB0033E5D2 /* TextFieldCell.swift */; };
 		7EA694DC2839D5EB0033E5D2 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA694DA2839D5EB0033E5D2 /* TextFieldCell.xib */; };
+		7EA95E8628BF137100DDF3CB /* AddWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA95E8428BF137100DDF3CB /* AddWalletViewController.swift */; };
+		7EA95E8728BF137100DDF3CB /* AddWalletViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA95E8528BF137100DDF3CB /* AddWalletViewController.xib */; };
 		7EB2199627C5DD1500CF243C /* BuyCryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */; };
 		7EB2199727C5DD1500CF243C /* BuyCryptoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */; };
 		7EB2199927C6177300CF243C /* BuyCryptoCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */; };
@@ -1705,6 +1707,8 @@
 		7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNActionSheetAlertViewController.xib; sourceTree = "<group>"; };
 		7EA694D92839D5EB0033E5D2 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
 		7EA694DA2839D5EB0033E5D2 /* TextFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldCell.xib; sourceTree = "<group>"; };
+		7EA95E8428BF137100DDF3CB /* AddWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWalletViewController.swift; sourceTree = "<group>"; };
+		7EA95E8528BF137100DDF3CB /* AddWalletViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddWalletViewController.xib; sourceTree = "<group>"; };
 		7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyCryptoViewController.swift; sourceTree = "<group>"; };
 		7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BuyCryptoViewController.xib; sourceTree = "<group>"; };
 		7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyCryptoCoordinator.swift; sourceTree = "<group>"; };
@@ -5774,6 +5778,8 @@
 			children = (
 				C322EB0925B1A3D8009746FB /* CreateWalletMenuViewController.swift */,
 				C322EB0A25B1A3D8009746FB /* CreateWalletMenuViewController.xib */,
+				7EA95E8428BF137100DDF3CB /* AddWalletViewController.swift */,
+				7EA95E8528BF137100DDF3CB /* AddWalletViewController.xib */,
 			);
 			path = CreateWalletMenu;
 			sourceTree = "<group>";
@@ -6628,6 +6634,7 @@
 				25073D1E211AF20D00833C92 /* Montserrat-SemiBold.ttf in Resources */,
 				A6DA40F427F6E15D0078C58E /* ExploreMenuCell.xib in Resources */,
 				C3EE06BB267A15E50090B432 /* Karla-Italic.ttf in Resources */,
+				7EA95E8728BF137100DDF3CB /* AddWalletViewController.xib in Resources */,
 				7EFE440E27158594006CF502 /* ToggleTokenCell.xib in Resources */,
 				7E1EBE3A2834D65B00793B6D /* SelectChainCell.xib in Resources */,
 				C3114371249B1C2300084CD8 /* KNMigrationTutorialViewController.xib in Resources */,
@@ -7464,6 +7471,7 @@
 				A6664D1F2858878800CCAB1F /* TransactionProcessor.swift in Sources */,
 				29FF6D6B2011D2AF00A3011C /* InCoordinatorError.swift in Sources */,
 				7E1EBE412834DC1D00793B6D /* ChainInfoCell.swift in Sources */,
+				7EA95E8628BF137100DDF3CB /* AddWalletViewController.swift in Sources */,
 				254BB33C211C20E200B8E75D /* UIFont+Kyber.swift in Sources */,
 				C31371E52603511F003D432B /* KrytalCoordinator.swift in Sources */,
 				A6E6C9DB281798E100EEB2E6 /* Observable.swift in Sources */,
