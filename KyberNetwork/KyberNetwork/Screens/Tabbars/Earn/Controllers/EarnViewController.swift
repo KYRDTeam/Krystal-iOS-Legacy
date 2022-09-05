@@ -637,11 +637,16 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   
   @IBAction func nextButtonTapped(_ sender: UIButton) {
     Tracker.track(event: .earnSubmit)
-    //TODO: validate data before send
     guard !self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) else {
       return
     }
     self.buildTx()
+    MixPanelManager.track("earn_supply", properties: [
+      "screenid": "earn_supply",
+      "token_id": viewModel.tokenData.address,
+      "platform": viewModel.selectedPlatform,
+      "amount": viewModel.amountBigInt.description
+    ])
   }
   
   @IBAction func earnSwapMessageLabelTapped(_ sender: UITapGestureRecognizer) {
@@ -940,6 +945,7 @@ extension EarnViewController: UITextFieldDelegate {
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.viewModel.isEarnAllBalanace = false
+    MixPanelManager.track("earn_enter_amount", properties: ["screenid": "earn_supply"])
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {

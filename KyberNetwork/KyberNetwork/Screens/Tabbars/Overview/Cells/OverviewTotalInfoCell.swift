@@ -29,6 +29,7 @@ class OverviewTotalInfoCell: UICollectionViewCell {
     if let walletListButtonTapped = walletListButtonTapped {
       walletListButtonTapped()
     }
+    MixPanelManager.track("home_wallet_connect", properties: ["screenid": "homepage"])
   }
 
   @IBAction func hideBalanceButtonTapped(_ sender: Any) {
@@ -47,12 +48,14 @@ class OverviewTotalInfoCell: UICollectionViewCell {
     if let transferButtonTapped = transferButtonTapped {
       transferButtonTapped()
     }
+    MixPanelManager.track("home_transfer", properties: ["screenid": "homepage"])
   }
 
   @IBAction func receiveButtonTapped(_ sender: Any) {
     if let receiveButtonTapped = receiveButtonTapped {
       receiveButtonTapped()
     }
+    MixPanelManager.track("home_receive", properties: ["screenid": "homepage"])
   }
 
   override func awakeFromNib() {

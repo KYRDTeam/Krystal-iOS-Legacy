@@ -227,6 +227,14 @@ class KSendTokenViewController: KNBaseViewController {
       )
       self.delegate?.kSendTokenViewController(self, run: event)
     }
+    let tx = viewModel.unconfirmTransaction
+    MixPanelManager.track("transfer_submit", properties: [
+      "screenid": "transfer",
+      "number_token": tx.value.description,
+      "token_name": viewModel.from.name,
+      "wallet_address": viewModel.address,
+      "max_gas_fee": tx.maxGasFee
+    ])
   }
 
   @IBAction func scanQRCodeButtonPressed(_ sender: Any) {
@@ -703,6 +711,8 @@ extension KSendTokenViewController: UITextFieldDelegate {
     if textField == self.addressTextField {
       self.addressTextField.text = self.viewModel.inputAddress
     }
+    MixPanelManager.track("transfer_enter_amount", properties: ["screenid": "transfer"])
+
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {

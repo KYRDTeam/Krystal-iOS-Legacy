@@ -86,6 +86,23 @@ enum ViewMode: Equatable, Codable {
     }
   }
   
+  func toString() -> String {
+    switch self {
+    case .market:
+      return "market"
+    case .asset:
+      return "asset"
+    case .showLiquidityPool:
+      return "liquidity_pool"
+    case .supply:
+      return "supply"
+    case .favourite:
+      return "favourite"
+    case .nft:
+      return "nft"
+    }
+  }
+  
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     let key = container.allKeys.first

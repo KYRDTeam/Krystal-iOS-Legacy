@@ -173,6 +173,8 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
       privateKey: privateKeyString,
       name: self.walletNameTextField.text
     )
+    
+    MixPanelManager.track("import_wallet_ppk_connect", properties: ["screenid": "import_by_private_key", "name": walletNameTextField.text])
   }
   
   @IBAction func pasteButtonTapped(_ sender: UIButton) {

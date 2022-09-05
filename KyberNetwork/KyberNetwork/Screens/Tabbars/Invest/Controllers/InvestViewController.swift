@@ -231,26 +231,37 @@ extension InvestViewController: UICollectionViewDelegate {
       switch menuItem {
       case .swap:
         delegate?.investViewController(self, run: .swap)
+        MixPanelManager.track("Xplore_swap", properties: ["screenid": "explore"])
       case .transfer:
         delegate?.investViewController(self, run: .transfer)
+        MixPanelManager.track("Xplore_transfer", properties: ["screenid": "explore"])
       case .reward:
         delegate?.investViewController(self, run: .reward)
+        MixPanelManager.track("Xplore_reward", properties: ["screenid": "explore"])
       case .referral:
         delegate?.investViewController(self, run: .krytal)
+        MixPanelManager.track("Xplore_referral", properties: ["screenid": "explore"])
       case .dapps:
         delegate?.investViewController(self, run: .dapp)
+        MixPanelManager.track("Xplore_dapps", properties: ["screenid": "explore"])
       case .multisend:
         delegate?.investViewController(self, run: .multiSend)
+        MixPanelManager.track("Xplore_multisend", properties: ["screenid": "explore"])
       case .buyCrypto:
         delegate?.investViewController(self, run: .buyCrypto)
+        MixPanelManager.track("Xplore_buy_cryto", properties: ["screenid": "explore"])
       case .promotion:
         delegate?.investViewController(self, run: .promoCode)
+        MixPanelManager.track("Xplore_promotion", properties: ["screenid": "explore"])
       case .rewardHunting:
         delegate?.investViewController(self, run: .rewardHunting)
+        MixPanelManager.track("Xplore_reward_hunting", properties: ["screenid": "explore"])
       case .bridge:
         delegate?.investViewController(self, run: .bridge)
+        MixPanelManager.track("Xplore_Krystal_bridge", properties: ["screenid": "explore"])
       case .scanner:
         delegate?.investViewController(self, run: .scanner)
+        MixPanelManager.track("Xplore_Scanner", properties: ["screenid": "explore"])
       }
     case .partners:
       let partner = viewModel.partners.value[indexPath.item]

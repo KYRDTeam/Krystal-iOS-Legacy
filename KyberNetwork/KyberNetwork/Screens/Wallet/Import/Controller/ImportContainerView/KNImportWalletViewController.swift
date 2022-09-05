@@ -274,6 +274,7 @@ class KNImportWalletViewController: KNBaseViewController {
       switch page {
       case 0:
         MixPanelManager.track("import_by_json_open", properties: ["screenid": "import_by_json"])
+        
       case 1:
         MixPanelManager.track("import_by_private_key_open", properties: ["screenid": "import_by_private_key"])
       case 2:

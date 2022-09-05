@@ -229,6 +229,15 @@ class BuyCryptoViewController: KNBaseViewController {
       return
     }
     self.delegate?.didBuyCrypto(buyCryptoModel)
+    MixPanelManager.track("buy_cryto_buy_now", properties: [
+      "screenid": "explore",
+      "spend": buyCryptoModel.orderAmount,
+      "spending_currency": buyCryptoModel.fiatCurrency,
+      "receiving_token": buyCryptoModel.cryptoCurrency,
+      "received": cryptoTextField.text,
+      "received_address": viewModel.currentAddress.addressString,
+      "network": networkLabel.text
+    ])
   }
 
   @IBAction func selectFiatButtonTapped(_ sender: Any) {

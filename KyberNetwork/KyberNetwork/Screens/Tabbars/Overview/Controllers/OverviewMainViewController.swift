@@ -265,6 +265,7 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
+    MixPanelManager.track("home_switch_chain", properties: ["screenid": "homepage"])
     let popup = SwitchChainViewController(includedAll: true, selected: self.viewModel.currentChain)
     popup.completionHandler = { [weak self] selected in
       guard let self = self else { return }
@@ -295,6 +296,7 @@ class OverviewMainViewController: KNBaseViewController {
   
   @IBAction func toolbarOptionButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .changeMode(current: self.viewModel.currentMode))
+    
   }
   
   @IBAction func sortingButtonTapped(_ sender: UIButton) {
@@ -339,10 +341,12 @@ class OverviewMainViewController: KNBaseViewController {
   
   @IBAction func notificationsButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .notifications)
+    MixPanelManager.track("home_noti", properties: ["screenid": "homepage"])
   }
   
   @IBAction func searchButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .search)
+    MixPanelManager.track("home_search", properties: ["screenid": "homepage"])
   }
   
   @IBAction func scanWasTapped(_ sender: Any) {
@@ -377,6 +381,7 @@ class OverviewMainViewController: KNBaseViewController {
         self.delegate?.overviewMainViewController(self, run: .importWallet(privateKey: text, chain: .solana))
       }
     }
+    MixPanelManager.track("home_qr", properties: ["screenid": "homepage"])
   }
   
   fileprivate func updateUIForIndicatorView(button: UIButton, dec: Bool) {
@@ -394,6 +399,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.reloadUI()
     self.refreshControl.endRefreshing()
     self.configPullToRefresh()
+    MixPanelManager.track("home_token_data_pop_up", properties: ["screenid": "homepage", "show_option": mode.toString()])
   }
   
   func coordinatorDidUpdateChain() {

@@ -119,6 +119,7 @@ class KNImportJSONViewController: KNBaseViewController {
       password: password,
       name: self.nameWalletTextField.text
     )
+    MixPanelManager.track("import_wallet_json_connect", properties: ["screenid": "import_by_json", "name": nameWalletTextField.text])
   }
   
   @IBAction func pasteButtonTapped(_ sender: UIButton) {
