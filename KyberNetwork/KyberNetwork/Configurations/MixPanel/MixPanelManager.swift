@@ -8,9 +8,11 @@ import Mixpanel
 import Foundation
 import AppTrackingTransparency
 
-let mixPanelProjectToken = "df948aa0c8dc30f5c784b9cb19c125cc"
+let mixPanelProjectToken = KNEnvironment.default == .production ? KNSecret.prodMixPannelKey : KNSecret.devMixPannelKey
 
 class MixPanelManager {
+  
+  
   static let shared = MixPanelManager()
   
   func configClient() {
