@@ -173,6 +173,12 @@ class MultiSendViewController: KNBaseViewController {
     } else {
       self.delegate?.multiSendViewController(self, run: .checkApproval(items: self.viewModel.sendItems))
       self.viewModel.needValidation = false
+      
+      MixPanelManager.track("multisend_transfer", properties: [
+        "screenid": "multi_send",
+        "recipient_address": viewModel.sendItems.map { $0.0 }.joined(separator: ","),
+        "tokens": viewModel.sendItems.map { $0.2.name }.joined(separator: ",")
+      ])
     }
   }
   

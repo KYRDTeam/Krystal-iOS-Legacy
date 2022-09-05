@@ -247,6 +247,7 @@ class MultiSendConfirmViewController: KNBaseViewController {
     self.dismiss(animated: true) {
       self.delegate?.multiSendConfirmVieController(self, run: .confirm(setting: self.viewModel.customSetting))
     }
+    MixPanelManager.track("multisend_confirm", properties: ["screenid": "multi_send"])
   }
   
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {

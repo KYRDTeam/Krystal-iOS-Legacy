@@ -122,6 +122,7 @@ class BridgeViewController: KNBaseViewController {
 
     self.viewModel.changeAmountBlock = { amount in
       self.delegate?.bridgeViewControllerController(self, run: .changeAmount(amount: amount.doubleValue ))
+      MixPanelManager.track("bridge_enter_amount", properties: ["screenid": "bridge"])
     }
     
     self.viewModel.changeAddressBlock = { address in

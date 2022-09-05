@@ -92,12 +92,14 @@ class KNSettingsTabViewController: KNBaseViewController {
       }
     } else {
       self.delegate?.settingsTabViewController(self, run: .fingerPrint(status: sender.isOn))
+      MixPanelManager.track("settings_fingerprint", properties: ["screenid": "settings"])
     }
   }
   
 
   @IBAction func manageWalletButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .manageWallet)
+    MixPanelManager.track("settings_manage_wallets", properties: ["screenid": "settings"])
   }
 
   @IBAction func manageAlertsButtonPressed(_ sender: Any) {
@@ -110,14 +112,17 @@ class KNSettingsTabViewController: KNBaseViewController {
 
   @IBAction func contactButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .contact)
+    MixPanelManager.track("settings_manage_contacts", properties: ["screenid": "settings"])
   }
 
   @IBAction func supportButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .support)
+    MixPanelManager.track("settings_email", properties: ["screenid": "settings"])
   }
 
   @IBAction func changePasscodeButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .changePIN)
+    MixPanelManager.track("settings_change_pin", properties: ["screenid": "settings"])
   }
 
   @IBAction func aboutButtonPressed(_ sender: Any) {
@@ -130,6 +135,7 @@ class KNSettingsTabViewController: KNBaseViewController {
 
   @IBAction func shareWithFriendButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .shareWithFriends)
+    MixPanelManager.track("settings_share", properties: ["screenid": "settings"])
   }
 
   @IBAction func telegramButtonPressed(_ sender: Any) {

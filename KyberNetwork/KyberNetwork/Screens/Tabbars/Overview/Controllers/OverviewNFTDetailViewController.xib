@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,7 +16,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OverviewNFTDetailViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OverviewNFTDetailViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="assetImageView" destination="uMG-8P-csI" id="ZeA-hX-N8B"/>
                 <outlet property="descriptionLabel" destination="HZ8-Iy-5Zj" id="yby-GH-efe"/>
@@ -86,7 +86,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rah-gZ-IhV">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rah-gZ-IhV">
                     <rect key="frame" x="0.0" y="113" width="375" height="631"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uMG-8P-csI">
@@ -101,7 +101,7 @@
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="khH-97-sp4" customClass="TagListView" customModule="TagListView">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="khH-97-sp4" customClass="TagListView" customModule="TagListView">
                             <rect key="frame" x="37" y="356" width="301" height="36"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <userDefinedRuntimeAttributes>
@@ -131,14 +131,14 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HZ8-Iy-5Zj">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HZ8-Iy-5Zj">
                             <rect key="frame" x="37" y="410" width="301" height="94"/>
                             <string key="text">Not many have seen the Dragon Tribe. Some of the stones engraved the existence of a half-blooded dragon tribe with the invincible strength and wisdom of Gods. </string>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7X0-uH-QXg">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7X0-uH-QXg">
                             <rect key="frame" x="89.5" y="533" width="38" height="39"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
@@ -157,7 +157,7 @@
                                 <action selector="tranferButtonTapped:" destination="-1" eventType="touchUpInside" id="rUZ-Wr-T2Q"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ik3-8t-xJQ">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ik3-8t-xJQ">
                             <rect key="frame" x="142.5" y="533" width="38" height="39"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
@@ -176,7 +176,7 @@
                                 <action selector="linkButtonTapped:" destination="-1" eventType="touchUpInside" id="3eK-en-E5R"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fE9-83-Dsu">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fE9-83-Dsu">
                             <rect key="frame" x="195.5" y="533" width="38" height="39"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
@@ -195,7 +195,7 @@
                                 <action selector="shareButtonTapped:" destination="-1" eventType="touchUpInside" id="mAx-8N-DRN"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="341-gK-wtH">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="341-gK-wtH">
                             <rect key="frame" x="248.5" y="533" width="38" height="39"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
@@ -256,6 +256,11 @@
             <point key="canvasLocation" x="28" y="112.44377811094454"/>
         </view>
     </objects>
+    <designables>
+        <designable name="khH-97-sp4">
+            <size key="intrinsicContentSize" width="301" height="36"/>
+        </designable>
+    </designables>
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
         <image name="etherscan_actionsheet_icon" width="22" height="22"/>

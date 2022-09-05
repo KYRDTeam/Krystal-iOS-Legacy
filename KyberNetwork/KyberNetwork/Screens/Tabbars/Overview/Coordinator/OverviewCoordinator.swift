@@ -629,29 +629,35 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     let supplyType = mode == .supply ? ActionStyle.selected : ActionStyle.default
     actionController.addAction(Action(ActionData(title: "Show Supply", image: UIImage(named: "supply_actionsheet_icon")!), style: supplyType, handler: { _ in
       controller.coordinatorDidSelectMode(.supply)
+      MixPanelManager.track("token_data_show_supply", properties: ["screenid": "token_data_pop_up"])
     }))
     
     let assetType = mode == .asset(rightMode: .value) ? ActionStyle.selected : ActionStyle.default
     actionController.addAction(Action(ActionData(title: "Show Asset", image: UIImage(named: "asset_actionsheet_icon")!), style: assetType, handler: { _ in
       controller.coordinatorDidSelectMode(.asset(rightMode: .value))
+      MixPanelManager.track("token_data_show_asset", properties: ["screenid": "token_data_pop_up"])
     }))
       
     let showLPType = mode == .showLiquidityPool ? ActionStyle.selected : ActionStyle.default
     actionController.addAction(Action(ActionData(title: "Show Liquidity Pool", image: UIImage(named: "show_LP_icon")!), style: showLPType, handler: { _ in
       controller.coordinatorDidSelectMode(.showLiquidityPool)
+      MixPanelManager.track("token_data_show_liquidity_pool", properties: ["screenid": "token_data_pop_up"])
     }))
       
     let nftType = mode == .nft ? ActionStyle.selected : ActionStyle.default
     actionController.addAction(Action(ActionData(title: "Show NFT", image: UIImage(named: "nft_actionsheet_icon")!), style: nftType, handler: { _ in
       controller.coordinatorDidSelectMode(.nft)
+      MixPanelManager.track("token_data_show_nft", properties: ["screenid": "token_data_pop_up"])
     }))
     let marketType = mode == .market(rightMode: .ch24) ? ActionStyle.selected : ActionStyle.default
     actionController.addAction(Action(ActionData(title: "Show Market", image: UIImage(named: "market_actionsheet_icon")!), style: marketType, handler: { _ in
       controller.coordinatorDidSelectMode(.market(rightMode: .ch24))
+      MixPanelManager.track("token_data_show_market", properties: ["screenid": "token_data_pop_up"])
     }))
     let favType = mode == .favourite(rightMode: .ch24) ? ActionStyle.selected : ActionStyle.default
     actionController.addAction(Action(ActionData(title: "Favorites", image: UIImage(named: "favorites_actionsheet_icon")!), style: favType, handler: { _ in
       controller.coordinatorDidSelectMode(.favourite(rightMode: .ch24))
+      MixPanelManager.track("token_data_show_favorites", properties: ["screenid": "token_data_pop_up"])
     }))
     self.navigationController.present(actionController, animated: true, completion: nil)
     MixPanelManager.track("token_data_pop_up_open", properties: ["screenid": "token_data_pop_up"])
@@ -784,32 +790,39 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
         let priceType = mode == .lastPrice ? ActionStyle.selected : ActionStyle.default
         actionController.addAction(Action(ActionData(title: "Last Price", image: UIImage(named: "price_actionsheet_icon")!), style: priceType, handler: { _ in
           controller.coordinatorDidSelectMode(.market(rightMode: .lastPrice))
+          MixPanelManager.track("display_data_last_price", properties: ["screenid": "token_data_pop_up"])
         }))
         let ch24Type = mode == .ch24 ? ActionStyle.selected : ActionStyle.default
         actionController.addAction(Action(ActionData(title: "Percentage Change", image: UIImage(named: "24ch_actionsheet_icon")!), style: ch24Type, handler: { _ in
           controller.coordinatorDidSelectMode(.market(rightMode: .ch24))
+          MixPanelManager.track("display_data_percentage_change", properties: ["screenid": "token_data_pop_up"])
         }))
       case .favourite(rightMode: let mode):
         let priceType = mode == .lastPrice ? ActionStyle.selected : ActionStyle.default
         actionController.addAction(Action(ActionData(title: "Last Price", image: UIImage(named: "price_actionsheet_icon")!), style: priceType, handler: { _ in
           controller.coordinatorDidSelectMode(.favourite(rightMode: .lastPrice))
+          MixPanelManager.track("display_data_last_price", properties: ["screenid": "token_data_pop_up"])
         }))
         let ch24Type = mode == .ch24 ? ActionStyle.selected : ActionStyle.default
         actionController.addAction(Action(ActionData(title: "Percentage Change", image: UIImage(named: "24ch_actionsheet_icon")!), style: ch24Type, handler: { _ in
           controller.coordinatorDidSelectMode(.favourite(rightMode: .ch24))
+          MixPanelManager.track("display_data_percentage_change", properties: ["screenid": "token_data_pop_up"])
         }))
       case .asset(rightMode: let mode):
         let priceType = mode == .lastPrice ? ActionStyle.selected : ActionStyle.default
         actionController.addAction(Action(ActionData(title: "Last Price", image: UIImage(named: "price_actionsheet_icon")!), style: priceType, handler: { _ in
           controller.coordinatorDidSelectMode(.asset(rightMode: .lastPrice))
+          MixPanelManager.track("display_data_last_price", properties: ["screenid": "token_data_pop_up"])
         }))
         let valueType = mode == .value ? ActionStyle.selected : ActionStyle.default
         actionController.addAction(Action(ActionData(title: "Value", image: UIImage(named: "value_actionsheet_icon")!), style: valueType, handler: { _ in
           controller.coordinatorDidSelectMode(.asset(rightMode: .value))
+          MixPanelManager.track("display_data_value", properties: ["screenid": "token_data_pop_up"])
         }))
         let ch24Type = mode == .ch24 ? ActionStyle.selected : ActionStyle.default
         actionController.addAction(Action(ActionData(title: "Percentage Change", image: UIImage(named: "24ch_actionsheet_icon")!), style: ch24Type, handler: { _ in
           controller.coordinatorDidSelectMode(.asset(rightMode: .ch24))
+          MixPanelManager.track("display_data_percentage_change", properties: ["screenid": "token_data_pop_up"])
         }))
       default:
         break
