@@ -17,6 +17,11 @@ class MixPanelManager {
   
   func configClient() {
     Mixpanel.initialize(token: mixPanelProjectToken)
+    
+  }
+  
+  func setDistintID(_ id: String) {
+    Mixpanel.getInstance(name: mixPanelProjectToken)?.distinctId = id
   }
 
   func updateWalletAddress(address: String) {
