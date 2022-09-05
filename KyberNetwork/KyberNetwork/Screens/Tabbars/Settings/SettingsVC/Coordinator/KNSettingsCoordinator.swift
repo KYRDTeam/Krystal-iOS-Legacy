@@ -300,6 +300,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
           style: .default,
           handler: { _ in
             self.backupMnemonic(wallet: wallet)
+            MixPanelManager.track("edit_wallet_export_options", properties: ["screenid": "export_wallet_pop_up", "option": "export_seeds"])
           }
         ))
       case .privateKey:
@@ -311,6 +312,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
           style: .default,
           handler: { _ in
             self.backupKeystore(wallet: wallet, addressType: addressType)
+            MixPanelManager.track("edit_wallet_export_options", properties: ["screenid": "export_wallet_pop_up", "option": "export_json"])
           }
         ))
       }
@@ -319,6 +321,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
         style: .default,
         handler: { _ in
           self.backupPrivateKey(wallet: wallet, addressType: addressType)
+          MixPanelManager.track("edit_wallet_export_options", properties: ["screenid": "export_wallet_pop_up", "option": "export_key"])
         }
       ))
       

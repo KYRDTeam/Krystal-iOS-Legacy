@@ -23,6 +23,7 @@ extension KNAppCoordinator {
     
     FeatureFlagManager.shared.configClient(session: self.session)
     self.tabbarController = KNTabBarController()
+    self.tabbarController.delegate = self
     
     let overviewCoordinator = OverviewCoordinator()
     self.addCoordinator(overviewCoordinator)

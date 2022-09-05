@@ -71,5 +71,6 @@ extension NotificationsViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     self.openSafari(with: self.viewModel.dataSource[indexPath.row].notification.link)
+    MixPanelManager.track("notification_item", properties: ["screenid": "notifications", "notificationitem": viewModel.dataSource[indexPath.row].notification.link])
   }
 }

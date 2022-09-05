@@ -154,6 +154,7 @@ class RewardsViewController: KNBaseViewController {
       self.present(alertController, animated: true, completion: nil)
     } else {
       claimRewards()
+      MixPanelManager.track("reward_swap", properties: ["screenid": "reward"])
     }
   }
   

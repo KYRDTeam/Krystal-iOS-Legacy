@@ -78,10 +78,12 @@ class KNListContactViewController: KNBaseViewController {
 
   @IBAction func backButtonPressed(_ sender: Any) {
     self.delegate?.listContactViewController(self, run: .back)
+    MixPanelManager.track("contact_back", properties: ["screenid": "contact"])
   }
 
   @IBAction func addButtonPressed(_ sender: Any) {
     self.openNewContact(address: "")
+    MixPanelManager.track("contact_add_contact_button", properties: ["screenid": "contact"])
   }
 
   fileprivate func openNewContact(address: String) {

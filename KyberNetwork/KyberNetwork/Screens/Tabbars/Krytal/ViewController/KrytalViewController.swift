@@ -201,6 +201,7 @@ extension KrytalViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: true)
     let viewModel = self.viewModel.displayReferralCodes[indexPath.row]
     self.delegate?.krytalViewController(self, run: .openShareCode(refCode: viewModel.referralCode, codeObject: viewModel.codeObject))
+    MixPanelManager.track("referral_code", properties: ["screenid": "referral"])
   }
 }
 

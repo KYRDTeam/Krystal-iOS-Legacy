@@ -370,3 +370,22 @@ extension KNAppCoordinator: SwapV2CoordinatorDelegate {
   }
 
 }
+
+extension KNAppCoordinator: UITabBarControllerDelegate {
+  func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+    switch tabBarController.selectedIndex {
+    case 0:
+      MixPanelManager.track("homepage", properties: ["screenid": "global"])
+    case 1:
+      MixPanelManager.track("swap", properties: ["screenid": "global"])
+    case 2:
+      MixPanelManager.track("explore", properties: ["screenid": "global"])
+    case 3:
+      MixPanelManager.track("earn", properties: ["screenid": "global"])
+    case 4:
+      MixPanelManager.track("settings", properties: ["screenid": "global"])
+    default:
+      break
+    }
+  }
+}

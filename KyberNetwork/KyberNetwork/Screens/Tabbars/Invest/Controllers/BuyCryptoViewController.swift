@@ -214,6 +214,7 @@ class BuyCryptoViewController: KNBaseViewController {
 
   @IBAction func historyListButtonTapped(_ sender: UIButton) {
     self.delegate?.buyCryptoViewController(self, run: .openHistory)
+    MixPanelManager.track("buy_cryto_history", properties: ["screenid": "buy_cryto"])
   }
 
   @IBAction func walletsListButtonTapped(_ sender: UIButton) {

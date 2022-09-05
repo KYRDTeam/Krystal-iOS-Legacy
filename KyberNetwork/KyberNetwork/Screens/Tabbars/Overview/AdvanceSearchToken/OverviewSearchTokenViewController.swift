@@ -207,9 +207,11 @@ extension OverviewSearchTokenViewController: UITextFieldDelegate {
   @objc func doSearch() {
     if let text = self.searchField.text {
       presenter.doSearch(keyword: text)
+      MixPanelManager.track("search_input", properties: ["screenid": "search", "searchvalue": text])
     }
     self.updateUIRecentSearchView()
     self.emptyView.isHidden = true
+    
   }
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -222,5 +224,6 @@ extension OverviewSearchTokenViewController: TagListViewDelegate {
     self.searchField.text = title
     self.updateUIStartSearchingMode()
     self.doSearch()
+    MixPanelManager.track("search_suggestion", properties: ["screenid": "search", "searchvalue": title])
   }
 }
