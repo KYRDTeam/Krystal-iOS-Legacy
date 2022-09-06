@@ -269,6 +269,7 @@ class SwapSummaryViewController: KNBaseViewController {
 
   @IBAction func confirmSwapButtonTapped(_ sender: Any) {
     viewModel.didConfirmSwap()
+    MixPanelManager.track("swap_confirm", properties: ["screenid": "swap_confirm_pop_up"])
   }
   
   @IBAction func onCloseButtonTapped(_ sender: Any) {

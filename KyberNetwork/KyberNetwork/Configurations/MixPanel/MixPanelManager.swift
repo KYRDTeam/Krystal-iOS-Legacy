@@ -7,14 +7,29 @@
 import Mixpanel
 import Foundation
 import AppTrackingTransparency
+import KrystalWallets
 
-let mixPanelProjectToken = "df948aa0c8dc30f5c784b9cb19c125cc"
+let mixPanelProjectToken = KNEnvironment.default == .production ? KNSecret.prodMixPannelKey : KNSecret.devMixPannelKey
 
 class MixPanelManager {
+  
+  
   static let shared = MixPanelManager()
   
   func configClient() {
     Mixpanel.initialize(token: mixPanelProjectToken)
+    
+  }
+  
+  func setDistintID(_ address: KAddress) {
+    var shouldConfigTrackingTool = true
+    if #available(iOS 14, *) {
+      let status = ATTrackingManager.trackingAuthorizationStatus
+      shouldConfigTrackingTool = status == .authorized
+    }
+    guard shouldConfigTrackingTool else { return }
+    Mixpanel.mainInstance().distinctId = address.getDistintID()
+    Mixpanel.mainInstance().registerSuperProperties(address.getSuperProperty())
   }
 
   func updateWalletAddress(address: String) {
@@ -27,5 +42,57 @@ class MixPanelManager {
     Mixpanel.mainInstance().track(event: "wallet_address", properties: [
       "user-id": address
     ])
+  }
+  
+  static func track(_ event: String, properties: Properties? = nil) {
+    var shouldConfigTrackingTool = true
+    if #available(iOS 14, *) {
+      let status = ATTrackingManager.trackingAuthorizationStatus
+      shouldConfigTrackingTool = status == .authorized
+    }
+    guard shouldConfigTrackingTool else { return }
+    Mixpanel.mainInstance().track(event: event, properties: properties)
+  }
+}
+
+
+extension KAddress {
+  func getDistintID() -> String {
+    if let wallet = WalletManager.shared.wallet(forAddress: self), wallet.importType == .mnemonic {
+      if self.addressString.has0xPrefix {
+        return "multi-\(self.addressString)"
+      } else if let address = WalletManager.shared.getAllAddresses(walletID: wallet.id).first {
+        return "multi-\(address.addressString)"
+      } else {
+        return "multi-\(self.addressString)"
+      }
+    } else {
+      if self.addressString.has0xPrefix {
+        return self.addressString.lowercased()
+      } else {
+        return self.addressString
+      }
+    }
+  }
+  
+  func getSuperProperty() -> [String: String] {
+    var result: [String: String] = [:]
+    if let wallet = WalletManager.shared.wallet(forAddress: self), wallet.importType == .mnemonic {
+      if let evmAddress = WalletManager.shared.getAllAddresses(walletID: wallet.id, addressType: .evm).first {
+        result["ethereum_address"] = evmAddress.addressString.lowercased()
+      }
+      
+      if let solAddress = WalletManager.shared.getAllAddresses(walletID: wallet.id, addressType: .solana).first {
+        result["solana_address"] = solAddress.addressString
+      }
+    } else {
+      if self.addressString.has0xPrefix {
+        result["ethereum_address"] = self.addressString.lowercased()
+      } else {
+        result["solana_address"] = self.addressString
+      }
+    }
+    
+    return result
   }
 }

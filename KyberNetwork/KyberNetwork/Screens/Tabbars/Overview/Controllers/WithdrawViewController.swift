@@ -451,6 +451,7 @@ class WithdrawViewController: KNBaseViewController {
     if self.viewModel.isBearingTokenApproved {
       guard !self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) else { return }
       self.buildTx()
+      MixPanelManager.track("earn_withdraw", properties: ["screenid": "earn_withdraw_pop_up"])
     } else {
       self.sendApprove()
     }
@@ -549,6 +550,7 @@ extension WithdrawViewController: UITextFieldDelegate {
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
+    MixPanelManager.track("enter_withdraw_amount", properties: ["screenid": "earn_withdraw_pop_up"])
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {

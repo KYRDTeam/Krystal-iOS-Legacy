@@ -76,17 +76,20 @@ class KNEditWalletViewController: KNBaseViewController {
   @IBAction func showBackUpPhraseButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
     self.delegate?.editWalletViewController(self, run: .backup(wallet: self.viewModel.wallet, addressType: viewModel.addressType))
+    MixPanelManager.track("edit_wallet_export", properties: ["screenid": "edit_wallet"])
   }
 
   @IBAction func deleteButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
     self.delegate?.editWalletViewController(self, run: .delete(wallet: self.viewModel.wallet))
+    MixPanelManager.track("edit_wallet_delete", properties: ["screenid": "edit_wallet"])
   }
 
   @IBAction func saveButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
     let newName = self.walletNameTextField.text ?? Strings.untitled
     self.delegate?.editWalletViewController(self, run: .update(wallet: self.viewModel.wallet, name: newName))
+    MixPanelManager.track("edit_wallet_done", properties: ["screenid": "edit_wallet"])
   }
 
   @IBAction func edgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {

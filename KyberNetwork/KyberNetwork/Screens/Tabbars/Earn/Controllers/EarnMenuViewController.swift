@@ -75,6 +75,7 @@ class EarnMenuViewController: BaseWalletOrientedViewController {
     self.isViewSetup = true
     self.updateUIPendingTxIndicatorView()
     self.updateUIEmptyView()
+    MixPanelManager.track("earn_explore_open", properties: ["screenid": "earn_explore"])
   }
 
   @IBAction func historyButtonTapped(_ sender: UIButton) {

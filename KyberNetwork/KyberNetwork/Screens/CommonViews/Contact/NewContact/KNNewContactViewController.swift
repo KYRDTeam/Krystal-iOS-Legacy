@@ -114,6 +114,11 @@ class KNNewContactViewController: KNBaseViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.nameTextField.becomeFirstResponder()
+    if viewModel.isEditing {
+      MixPanelManager.track("contact_edit_open", properties: ["screenid": "contact_edit"])
+    } else {
+      MixPanelManager.track("contact_add_open", properties: ["screenid": "contact_add"])
+    }
   }
 
   override func viewDidDisappear(_ animated: Bool) {
@@ -198,6 +203,11 @@ class KNNewContactViewController: KNBaseViewController {
     KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
     self.delegate?.newContactViewController(self, run: .dismiss)
     self.navigationController?.showTopBannerView(message: "New contact is added")
+    if !viewModel.isEditing {
+      MixPanelManager.track("contact_add_add", properties: ["screenid": "contact_add"])
+    } else {
+      MixPanelManager.track("contact_edit_done", properties: ["screenid": "contact_edit"])
+    }
   }
 
   @IBAction func deleteButtonPressed(_ sender: Any) {
@@ -214,6 +224,9 @@ class KNNewContactViewController: KNBaseViewController {
             firstButtonAction: nil
           )
     self.present(alertController, animated: true, completion: nil)
+    if viewModel.isEditing {
+      MixPanelManager.track("contact_edit_delete", properties: ["screenid": "contact_edit"])
+    }
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
@@ -227,6 +240,9 @@ class KNNewContactViewController: KNBaseViewController {
       return
     }
     self.delegate?.newContactViewController(self, run: .send(address: address))
+    if viewModel.isEditing {
+      MixPanelManager.track("contact_edit_transfer", properties: ["screenid": "contact_edit"])
+    }
   }
 
   @IBAction func qrcodeButtonPressed(_ sender: Any) {
@@ -236,6 +252,10 @@ class KNNewContactViewController: KNBaseViewController {
     let qrcodeVC = QRCodeReaderViewController()
     qrcodeVC.delegate = self
     self.present(qrcodeVC, animated: true, completion: nil)
+    if !viewModel.isEditing {
+      MixPanelManager.track("contact_add_scan", properties: ["screenid": "contact_add"])
+    }
+    
   }
 
   @IBAction func screenEdgePanAction(_ sender: UIScreenEdgePanGestureRecognizer) {

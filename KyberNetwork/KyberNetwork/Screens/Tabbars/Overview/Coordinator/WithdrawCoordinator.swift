@@ -273,6 +273,8 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
       }
       self.withdrawViewController?.present(vc, animated: true, completion: nil)
       self.gasPriceSelectVC = vc
+      MixPanelManager.track("earn_txn_setting_pop_up_open", properties: ["screenid": "earn_txn_setting_pop_up"])
+
     }
   }
 

@@ -1106,6 +1106,7 @@ extension EarnCoordinator: OverviewDepositViewControllerDelegate {
       coordinator.balance = balance
       coordinator.start()
       self.withdrawCoordinator = coordinator
+      MixPanelManager.track("earn_withdraw_pop_up_open", properties: ["screenid": "earn_withdraw_pop_up"])
     case .claim(balance: let balance):
       let coordinator = WithdrawCoordinator(navigationController: self.navigationController)
       coordinator.claimBalance = balance

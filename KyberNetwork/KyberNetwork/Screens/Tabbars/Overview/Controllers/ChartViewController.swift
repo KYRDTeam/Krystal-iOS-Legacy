@@ -562,6 +562,7 @@ class ChartViewController: KNBaseViewController {
     hud.mode = .text
     hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
     hud.hide(animated: true, afterDelay: 1.5)
+    MixPanelManager.track("token_detail_copy_address", properties: ["screenid": "token_detail"])
   }
 
   func setupConstraints() {
@@ -626,8 +627,10 @@ class ChartViewController: KNBaseViewController {
     self.infoSegment.underlinePosition()
     if sender.selectedSegmentIndex == 1 {
       self.hidePoolView()
+      MixPanelManager.track("token_detail_about", properties: ["screenid": "token_detail"])
     } else {
       self.showPoolView()
+      MixPanelManager.track("token_detail_pools_show_all", properties: ["screenid": "token_detail"])
     }
   }
 
@@ -647,14 +650,17 @@ class ChartViewController: KNBaseViewController {
   
   @IBAction func transferButtonTapped(_ sender: UIButton) {
     self.delegate?.chartViewController(self, run: .transfer(token: self.viewModel.token))
+    MixPanelManager.track("token_detail_transfer", properties: ["screenid": "token_detail"])
   }
   
   @IBAction func swapButtonTapped(_ sender: UIButton) {
     self.delegate?.chartViewController(self, run: .swap(token: self.viewModel.token))
+    MixPanelManager.track("token_detail_swap", properties: ["screenid": "token_detail"])
   }
   
   @IBAction func investButtonTapped(_ sender: UIButton) {
     self.delegate?.chartViewController(self, run: .invest(token: self.viewModel.token))
+    MixPanelManager.track("token_detail_earn", properties: ["screenid": "token_detail"])
   }
   
   @IBAction func etherscanButtonTapped(_ sender: UIButton) {
@@ -681,6 +687,7 @@ class ChartViewController: KNBaseViewController {
     viewModel.isFaved = !viewModel.isFaved
     KNSupportedTokenStorage.shared.setFavedStatusWithAddress(viewModel.token.address, status: viewModel.isFaved)
     self.favButton.setImage(self.viewModel.displayFavIcon, for: .normal)
+    MixPanelManager.track("token_detail_favorite", properties: ["screenid": "token_detail"])
   }
   
   @IBAction func showAllPoolButtonTapped(_ sender: Any) {
@@ -939,6 +946,7 @@ extension ChartViewController: UITableViewDelegate {
       self.isSelectingLineChart = false
       let poolData = self.viewModel.poolData[indexPath.row]
       self.onSelectPool(pool: poolData)
+      MixPanelManager.track("token_detail_pair", properties: ["screenid": "token_detail", "pair": poolData.name])
     }
   }
   

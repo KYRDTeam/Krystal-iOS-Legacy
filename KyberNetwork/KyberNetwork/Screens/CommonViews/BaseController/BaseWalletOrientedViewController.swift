@@ -165,6 +165,7 @@ class BaseWalletOrientedViewController: KNBaseViewController {
   }
   
   func openSwitchChain() {
+    MixPanelManager.track("import_select_chain_open", properties: ["screenid": "import_select_chain"])
     let popup = SwitchChainViewController(selected: currentChain)
     var chains = WalletManager.shared.getAllAddresses(walletID: currentAddress.walletID).flatMap { address in
       return ChainType.allCases.filter { chain in

@@ -468,6 +468,7 @@ class KNHistoryViewController: KNBaseViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+    MixPanelManager.track("history_open", properties: ["screenid": "history"])
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -611,6 +612,7 @@ class KNHistoryViewController: KNBaseViewController {
     filterVC.loadViewIfNeeded()
     filterVC.delegate = self
     self.navigationController?.pushViewController(filterVC, animated: true)
+    MixPanelManager.track("history_filter_open", properties: ["screenid": "history_filter"])
   }
 
   @IBAction func emptyStateEtherScanButtonTapped(_ sender: UIButton) {
@@ -689,6 +691,7 @@ extension KNHistoryViewController: UICollectionViewDelegate {
         self.delegate?.historyViewController(self, run: .selectCompletedKrystalTransaction(data: transaction))
       }
     }
+    MixPanelManager.track("history_txn_details_open", properties: ["screenid": "history_txn_details"])
   }
 }
 

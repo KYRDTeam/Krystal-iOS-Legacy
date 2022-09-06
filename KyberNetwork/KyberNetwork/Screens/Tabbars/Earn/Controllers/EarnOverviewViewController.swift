@@ -64,6 +64,11 @@ class EarnOverviewViewController: BaseWalletOrientedViewController {
     self.firstTimeLoaded = true
   }
   
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    MixPanelManager.track("earn_open", properties: ["screenid": "earn"])
+  }
+  
   fileprivate func updateUIPendingTxIndicatorView() {
     guard self.isViewLoaded else {
       return

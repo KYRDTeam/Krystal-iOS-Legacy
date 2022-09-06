@@ -33,6 +33,7 @@ class KNWalletQRCodeViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
+    MixPanelManager.track("receive_open", properties: ["screenid": "receive"])
   }
 
   fileprivate func setupUI() {

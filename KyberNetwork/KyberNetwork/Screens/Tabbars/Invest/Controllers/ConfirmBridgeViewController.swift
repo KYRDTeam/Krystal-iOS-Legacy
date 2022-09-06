@@ -135,6 +135,7 @@ class ConfirmBridgeViewController: KNBaseViewController {
     self.bridgeFeeLabel.text = self.viewModel.bridgeFee
     self.usdValueLabel.text = self.viewModel.feeUSDString
     self.gasDescriptionLabel.text = self.viewModel.transactionGasPriceString
+    MixPanelManager.track("bridge_confirm_pop_up_open", properties: ["screenid": "bridge_confirm_pop_up"])
   }
   
   @objc func tapOutside() {
@@ -170,6 +171,8 @@ class ConfirmBridgeViewController: KNBaseViewController {
 //
 //      self.delegate?.didConfirm(self, confirm: self.viewModel.transaction, eip1559Tx: unwrap, internalHistoryTransaction: internalHistory)
 //    }
+    
+    MixPanelManager.track("kbridge_confirm", properties: ["screenid": "bridge"])
   }
 }
 

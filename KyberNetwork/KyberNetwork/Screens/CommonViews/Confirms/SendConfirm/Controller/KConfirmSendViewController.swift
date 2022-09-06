@@ -63,6 +63,7 @@ class KConfirmSendViewController: KNBaseViewController {
     
     self.setupUI()
     self.setupChainInfo()
+ 	MixPanelManager.track("transfer_confirm_pop_up_open", properties: ["screenid": "transfer_confirm_pop_up"])
   }
   
   func setupChainInfo() {
@@ -118,6 +119,7 @@ class KConfirmSendViewController: KNBaseViewController {
     historyTransaction.transactionSuccessDescription = "-\(self.viewModel.totalAmountString) to \(self.viewModel.shortAddress.lowercased())"
     let event = KConfirmViewEvent.confirm(type: KNTransactionType.transfer(viewModel.transaction), historyTransaction: historyTransaction)
     self.delegate?.kConfirmSendViewController(self, run: event)
+    MixPanelManager.track("transfer_confirm", properties: ["screenid": "transfer_confirm_pop-up"])
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

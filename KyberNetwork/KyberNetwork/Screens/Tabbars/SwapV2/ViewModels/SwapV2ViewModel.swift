@@ -535,6 +535,12 @@ extension SwapV2ViewModel {
                                   destTokenPrice: self.destTokenPrice.value ?? 0,
                                   swapSetting: self.settings)
       actions.openSwapConfirm(swapObject)
+      MixPanelManager.track("swap_swap_noe", properties: [
+        "screenid": "swap",
+        "source_amount": sourceAmount.description,
+        "source_token": sourceToken.symbol,
+        "dest_token": destToken.symbol
+      ])
     default:
       return
     }
@@ -581,6 +587,21 @@ extension SwapV2ViewModel {
     
     self.updateInfo()
     self.reloadPlatformRatesViewModels()
+    if let basic = settings.basic {
+      MixPanelManager.track("txn_setting_basic_save", properties: [
+        "screenid": "swap_txn_setting_pop_up",
+        "gas_fee": basic.gasPriceType.getGasValueString(),
+        "slippage": settings.slippage
+      ])
+    } else if let advancedSettings = settings.advanced {
+      MixPanelManager.track("txn_setting_advanced_save", properties: [
+        "screenid": "swap_txn_setting_pop_up",
+        "gas_limit": advancedSettings.gasLimit.description,
+        "max_fee": advancedSettings.maxFee.description,
+        "custom_nonce": advancedSettings.nonce,
+        "slippage": settings.slippage
+      ])
+    }
   }
   
 }

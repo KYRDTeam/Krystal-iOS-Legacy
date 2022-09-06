@@ -91,6 +91,7 @@ class KNAddNewWalletCoordinator: Coordinator {
     let controller = AddWatchWalletViewController(viewModel: viewModel)
     controller.delegate = self
     self.navigationController.present(controller, animated: true, completion: nil)
+    MixPanelManager.track("add_watch_wallet_pop_up_open", properties: ["screenid": "add_watch_wallet_pop_up"])
   }
 }
 

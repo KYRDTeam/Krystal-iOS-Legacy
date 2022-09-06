@@ -108,8 +108,11 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   @IBAction func addressesAreaTapped(_ sender: UIButton) {
     if sender.tag == 1 {
       self.delegate?.transactionDetailsViewController(self, run: .openEtherScanAddress(hash: self.viewModel.displayToAddress))
+      let key = viewModel.toFieldTitle == Strings.contract ? "contract_address" : "dest_wallet"
+      MixPanelManager.track("history_txn_detail_scan_page", properties: ["screenid": "history_txn_detail", key: viewModel.displayToAddress])
     } else {
       self.delegate?.transactionDetailsViewController(self, run: .openEtherScanAddress(hash: self.viewModel.displayFromAddress))
+      MixPanelManager.track("history_txn_detail_scan_page", properties: ["screenid": "history_txn_detail", "source_wallet": viewModel.displayFromAddress])
     }
   }
 
@@ -143,6 +146,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
 
   @IBAction func viewOnEtherscanButtonPressed(_ sender: Any) {
     self.delegate?.transactionDetailsViewController(self, run: .openEtherScan(hash: self.viewModel.displayHash))
+    MixPanelManager.track("history_txn_detail_scan_page", properties: ["screenid": "history_txn_detail", "tx_hash": viewModel.displayHash])
   }
   
   @IBAction func helpButtonTapped(_ sender: UIButton) {

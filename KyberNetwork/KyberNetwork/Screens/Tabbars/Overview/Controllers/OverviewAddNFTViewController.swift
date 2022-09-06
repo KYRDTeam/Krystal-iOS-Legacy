@@ -46,16 +46,19 @@ class OverviewAddNFTViewController: KNBaseViewController {
       return
     }
     self.delegate?.addTokenViewController(self, run: .done(address: address, id: id))
+    MixPanelManager.track("add_nft_done", properties: ["screenid": "add_nft", "id": id, "address": address])
   }
   
   @IBAction func pasteButtonTapped(_ sender: UIButton) {
     if let string = UIPasteboard.general.string {
       self.tokenAddressField.text = string
+      MixPanelManager.track("add_nft_paste_address", properties: ["screenid": "add_nft"])
     }
   }
   
   @IBAction func qrButtonTapped(_ sender: UIButton) {
     self.openQRCode()
+    MixPanelManager.track("add_nft_scan", properties: ["screenid": "add_nft"])
   }
 }
 

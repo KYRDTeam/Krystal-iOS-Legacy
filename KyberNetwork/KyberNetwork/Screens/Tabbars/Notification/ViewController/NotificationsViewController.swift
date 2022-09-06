@@ -31,6 +31,7 @@ class NotificationsViewController: KNBaseViewController {
     super.viewDidLoad()
     let nib = UINib(nibName: NotificationTableViewCell.className, bundle: nil)
     self.notificationTableView.register(nib, forCellReuseIdentifier: NotificationTableViewCell.cellID)
+    MixPanelManager.track("notifications_open", properties: ["screenid": "notifications"])
   }
   
   func coordinatorDidUpdateNotification(notifications: [NotificationItem]) {
@@ -70,5 +71,6 @@ extension NotificationsViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     self.openSafari(with: self.viewModel.dataSource[indexPath.row].notification.link)
+    MixPanelManager.track("notification_item", properties: ["screenid": "notifications", "notificationitem": viewModel.dataSource[indexPath.row].notification.link])
   }
 }
