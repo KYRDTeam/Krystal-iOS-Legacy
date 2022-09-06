@@ -126,7 +126,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
     guard shouldConfigTrackingTool else { return }
     MixPanelManager.shared.configClient()
-    MixPanelManager.shared.setDistintID(coordinator.session.address)
+    if coordinator.session != nil {
+      MixPanelManager.shared.setDistintID(coordinator.session.address)
+    }
+    
     guard !SentrySDK.isEnabled else { return }
     self.setupSentry()
   }
