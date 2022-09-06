@@ -94,7 +94,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   lazy var browsingRootViewController: OverviewBrowsingViewController = {
     let viewModel = OverviewBrowsingViewModel()
     let viewController = OverviewBrowsingViewController(viewModel: viewModel)
-//    viewController.delegate = self
+    viewController.delegate = self
     return viewController
   }()
 
@@ -627,6 +627,19 @@ extension OverviewCoordinator: KrytalCoordinatorDelegate {
   
   func krytalCoordinatorDidSelectManageWallet() {
     self.delegate?.overviewCoordinatorDidSelectManageWallet()
+  }
+}
+
+extension OverviewCoordinator: OverviewBrowsingViewControllerDelegate {
+  func didSelectSearch(_ controller: OverviewBrowsingViewController) {
+    let module = searchRouter.createModule(currencyMode: self.currentCurrencyType, coordinator: self)
+    navigationController.pushViewController(module, animated: true)
+  }
+
+  func didSelectNotification(_ controller: OverviewBrowsingViewController) {
+    let coordinator = NotificationCoordinator(navigationController: self.navigationController)
+    coordinator.start()
+    self.notificationsCoordinator = coordinator
   }
 }
 

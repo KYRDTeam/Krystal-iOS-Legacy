@@ -97,8 +97,6 @@ class KNAddNewWalletCoordinator: Coordinator {
   
   func didImportWallet(wallet: KWallet, chain: ChainType) {
     self.newWallet = wallet
-//    self.targetChain = chain
-    
     // Check if first wallet
     if WalletManager.shared.getAllWallets().count == 1 {
       KNPasscodeUtil.shared.deletePasscode()

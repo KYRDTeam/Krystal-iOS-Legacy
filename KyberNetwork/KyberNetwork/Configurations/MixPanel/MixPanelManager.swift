@@ -51,7 +51,7 @@ class MixPanelManager {
       shouldConfigTrackingTool = status == .authorized
     }
     guard shouldConfigTrackingTool else { return }
-    Mixpanel.mainInstance().track(event: event, properties: properties)
+//    Mixpanel.mainInstance().track(event: event, properties: properties)
   }
 }
 

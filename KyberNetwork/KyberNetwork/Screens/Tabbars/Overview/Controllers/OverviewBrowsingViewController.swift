@@ -7,12 +7,18 @@
 
 import UIKit
 
+protocol OverviewBrowsingViewControllerDelegate: class {
+  func didSelectSearch(_ controller: OverviewBrowsingViewController)
+  func didSelectNotification(_ controller: OverviewBrowsingViewController)
+}
+
 class OverviewBrowsingViewModel {
   var displayHeader: ThreadProtectedObject<[SectionKeyType]> = .init(storageValue: [])
   var dataSource: ThreadProtectedObject<[String: [OverviewMainCellViewModel]]> = .init(storageValue: [:])
   var marketSortType: MarketSortType = .ch24(des: true)
   var currencyMode: CurrencyMode
   var rightMode: RightMode = .value
+
   init() {
     if let savedCurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) {
       self.currencyMode = savedCurrencyMode.isQuoteCurrency ? KNGeneralProvider.shared.quoteCurrency : savedCurrencyMode
@@ -63,7 +69,7 @@ class OverviewBrowsingViewController: InAppBrowsingViewController {
   @IBOutlet weak var sortMarketByCh24Button: UIButton!
   @IBOutlet weak var rightModeSortLabel: UILabel!
   let viewModel: OverviewBrowsingViewModel
-  
+  weak var delegate: OverviewBrowsingViewControllerDelegate?
   init(viewModel: OverviewBrowsingViewModel) {
     self.viewModel = viewModel
     super.init(nibName: OverviewBrowsingViewController.className, bundle: nil)
@@ -100,6 +106,16 @@ class OverviewBrowsingViewController: InAppBrowsingViewController {
       self.sortMarketByCh24Button.tag = 5
       self.rightModeSortLabel.text = "Cap"
     }
+  }
+  
+  @IBAction func notificationsButtonTapped(_ sender: UIButton) {
+    self.delegate?.didSelectNotification(self)
+    MixPanelManager.track("home_noti", properties: ["screenid": "homepage"])
+  }
+  
+  @IBAction func searchButtonTapped(_ sender: UIButton) {
+    self.delegate?.didSelectSearch(self)
+    MixPanelManager.track("home_search", properties: ["screenid": "homepage"])
   }
 
   @IBAction func sortingButtonTapped(_ sender: UIButton) {
