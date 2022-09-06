@@ -263,35 +263,35 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     }
   }
   
-  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
-    MixPanelManager.track("home_switch_chain", properties: ["screenid": "homepage"])
-    let popup = SwitchChainViewController(includedAll: true, selected: self.viewModel.currentChain)
-    popup.completionHandler = { [weak self] selected in
-      guard let self = self else { return }
-      guard selected != .all else {
-        self.viewModel.currentChain = selected
-        self.updateUISwitchChain()
-        self.tableView.reloadData()
-        self.delegate?.overviewMainViewController(self, run: .selectAllChain)
-        return
-      }
-      
-      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
-      if addresses.isEmpty {
-        self.delegate?.overviewMainViewController(self, run: .addChainWallet(chain: selected))
-        return
-      } else {
-        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-        viewModel.completionHandler = { selected in
-          self.viewModel.currentChain = selected
-        }
-        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-        self.present(secondPopup, animated: true, completion: nil)
-      }
-    }
-    self.present(popup, animated: true, completion: nil)
-    MixPanelManager.track("import_select_chain_open", properties: ["screenid": "import_select_chain"])
-  }
+//  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
+//    MixPanelManager.track("home_switch_chain", properties: ["screenid": "homepage"])
+//    let popup = SwitchChainViewController(includedAll: true, selected: self.viewModel.currentChain)
+//    popup.completionHandler = { [weak self] selected in
+//      guard let self = self else { return }
+//      guard selected != .all else {
+//        self.viewModel.currentChain = selected
+//        self.updateUISwitchChain()
+//        self.tableView.reloadData()
+//        self.delegate?.overviewMainViewController(self, run: .selectAllChain)
+//        return
+//      }
+//
+//      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
+//      if addresses.isEmpty {
+//        self.delegate?.overviewMainViewController(self, run: .addChainWallet(chain: selected))
+//        return
+//      } else {
+//        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+//        viewModel.completionHandler = { selected in
+//          self.viewModel.currentChain = selected
+//        }
+//        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+//        self.present(secondPopup, animated: true, completion: nil)
+//      }
+//    }
+//    self.present(popup, animated: true, completion: nil)
+//
+//  }
 
   override func onChainSelected(chain: ChainType) {
     if chain == .all {

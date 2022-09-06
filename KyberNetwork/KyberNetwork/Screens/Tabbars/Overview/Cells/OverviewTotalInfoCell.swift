@@ -26,12 +26,6 @@ class OverviewTotalInfoCell: UICollectionViewCell {
   var transferButtonTapped: (() -> Void)?
   var receiveButtonTapped: (() -> Void)?
   var isAllChainOverralCell: Bool = false
-  @IBAction func walletListButtonTapped(_ sender: UIButton) {
-    if let walletListButtonTapped = walletListButtonTapped {
-      walletListButtonTapped()
-    }
-    MixPanelManager.track("home_wallet_connect", properties: ["screenid": "homepage"])
-  }
 
   @IBAction func hideBalanceButtonTapped(_ sender: Any) {
     if let hideBalanceButtonTapped = hideBalanceButtonTapped {
@@ -43,6 +37,7 @@ class OverviewTotalInfoCell: UICollectionViewCell {
     if let walletOptionButtonTapped = walletOptionButtonTapped {
       walletOptionButtonTapped()
     }
+    MixPanelManager.track("home_wallet_connect", properties: ["screenid": "homepage"])
   }
 
   @IBAction func transferButtonTapped(_ sender: Any) {
