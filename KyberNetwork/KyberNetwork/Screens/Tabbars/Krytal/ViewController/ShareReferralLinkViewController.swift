@@ -61,6 +61,7 @@ class ShareReferralLinkViewController: UIViewController {
     hud.mode = .text
     hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
     hud.hide(animated: true, afterDelay: 1.5)
+    MixPanelManager.track("referral_code_copy", properties: ["screenid": "referral_code_pop_up"])
   }
   
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
@@ -83,6 +84,7 @@ class ShareReferralLinkViewController: UIViewController {
     activitiy.title = NSLocalizedString("share.with.friends", value: "Share with friends", comment: "")
     activitiy.popoverPresentationController?.sourceView = self.view
     self.present(activitiy, animated: true, completion: nil)
+    MixPanelManager.track("referral_code_share", properties: ["screenid": "referral_code_pop_up"])
   }
 }
 

@@ -84,6 +84,7 @@ class KNTransactionHistoryViewController: KNBaseViewController {
 
   @IBAction func filterButtonPressed(_ sender: Any) {
     viewModel.didTapFilter()
+    MixPanelManager.track("history_filter", properties: ["screenid": "history"])
   }
 
   @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
@@ -153,10 +154,12 @@ extension KNTransactionHistoryViewController: KNTransactionListViewControllerDel
   
   func selectSwapNow(_ viewController: KNTransactionListViewController) {
     viewModel.didTapSwap()
+    MixPanelManager.track("history_txn_swap", properties: ["screenid": "history_txn_details"])
   }
   
   func transactionListViewController(_ viewController: KNTransactionListViewController, openDetail transaction: TransactionHistoryItem) {
     viewModel.didSelectTransaction(transaction: transaction)
+    MixPanelManager.track("history_txn_detail", properties: ["screenid": "history_txn_details"])
   }
 
 }

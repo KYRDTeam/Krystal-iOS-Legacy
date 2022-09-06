@@ -256,8 +256,43 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.reloadUI()
+    if viewModel.overviewMode == .summary {
+      MixPanelManager.track("homepage_total_open", properties: ["screenid": "homepage_total"])
+    } else {
+      MixPanelManager.track("homepage_open", properties: ["screenid": "homepage"])
+    }
   }
   
+//  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
+//    MixPanelManager.track("home_switch_chain", properties: ["screenid": "homepage"])
+//    let popup = SwitchChainViewController(includedAll: true, selected: self.viewModel.currentChain)
+//    popup.completionHandler = { [weak self] selected in
+//      guard let self = self else { return }
+//      guard selected != .all else {
+//        self.viewModel.currentChain = selected
+//        self.updateUISwitchChain()
+//        self.tableView.reloadData()
+//        self.delegate?.overviewMainViewController(self, run: .selectAllChain)
+//        return
+//      }
+//
+//      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
+//      if addresses.isEmpty {
+//        self.delegate?.overviewMainViewController(self, run: .addChainWallet(chain: selected))
+//        return
+//      } else {
+//        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+//        viewModel.completionHandler = { selected in
+//          self.viewModel.currentChain = selected
+//        }
+//        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+//        self.present(secondPopup, animated: true, completion: nil)
+//      }
+//    }
+//    self.present(popup, animated: true, completion: nil)
+//
+//  }
+
   override func onChainSelected(chain: ChainType) {
     if chain == .all {
       self.viewModel.currentChain = chain
@@ -273,6 +308,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   
   @IBAction func toolbarOptionButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .changeMode(current: self.viewModel.currentMode))
+    
   }
   
   @IBAction func sortingButtonTapped(_ sender: UIButton) {
@@ -317,10 +353,12 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   
   @IBAction func notificationsButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .notifications)
+    MixPanelManager.track("home_noti", properties: ["screenid": "homepage"])
   }
   
   @IBAction func searchButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .search)
+    MixPanelManager.track("home_search", properties: ["screenid": "homepage"])
   }
   
   @IBAction func scanWasTapped(_ sender: Any) {
@@ -355,6 +393,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
         self.delegate?.overviewMainViewController(self, run: .importWallet(privateKey: text, chain: .solana))
       }
     }
+    MixPanelManager.track("home_qr", properties: ["screenid": "homepage"])
   }
   
   fileprivate func updateUIForIndicatorView(button: UIButton, dec: Bool) {
@@ -372,6 +411,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     self.reloadUI()
     self.refreshControl.endRefreshing()
     self.configPullToRefresh()
+    MixPanelManager.track("home_token_data_pop_up", properties: ["screenid": "homepage", "show_option": mode.toString()])
   }
   
   @objc override func onAppSwitchChain() {
@@ -435,6 +475,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     self.insestView.frame.size.height = insetViewHeight
     self.tableView.reloadData()
     self.configPullToRefresh()
+    
   }
   
   static var hasSafeArea: Bool {
@@ -713,11 +754,13 @@ extension OverviewMainViewController: UIScrollViewDelegate {
       DispatchQueue.main.async {
         self.infoCollectionView.scrollToItem(at: IndexPath(item: 1, section: 0), at: .centeredHorizontally, animated: true)
         self.overviewModeDidChanged(isSummary: true)
+        MixPanelManager.track("homepage_total_open", properties: ["screenid": "homepage_total"])
       }
     } else {
       DispatchQueue.main.async {
         self.infoCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: true)
         self.overviewModeDidChanged(isSummary: false)
+        MixPanelManager.track("homepage_open", properties: ["screenid": "homepage"])
       }
     }
   }
@@ -757,6 +800,7 @@ extension OverviewMainViewController: UICollectionViewDataSource {
     
     cell.walletOptionButtonTapped = {
       self.delegate?.overviewMainViewController(self, run: .walletConfig)
+      MixPanelManager.track("wallet_details_pop_up_open", properties: ["screenid": "wallet_details_pop_up"])
     }
     
     cell.receiveButtonTapped = {

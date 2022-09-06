@@ -200,6 +200,7 @@ extension KrytalCoordinator: KrytalViewControllerDelegate {
       let viewModel = ShareReferralLinkViewModel(refCode: refCode, codeObject: codeObject)
       let controller = ShareReferralLinkViewController(viewModel: viewModel)
       self.navigationController.present(controller, animated: true, completion: nil)
+      MixPanelManager.track("referral_code_pop_up_open", properties: ["screenid": "referral_code_pop_up"])
     case .openHistory:
       self.navigationController.pushViewController(self.historyViewController, animated: true)
     case .openWalletList:

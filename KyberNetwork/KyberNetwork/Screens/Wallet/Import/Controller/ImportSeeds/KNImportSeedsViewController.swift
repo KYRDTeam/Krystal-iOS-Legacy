@@ -106,6 +106,7 @@ class KNImportSeedsViewController: KNBaseViewController {
           seeds: words.map({ return try! String($0) }),
           name: self.walletNameTextField.text
         )
+        MixPanelManager.track("import_wallet_seed_connect", properties: ["screenid": "import_by_private_seed", "name": walletNameTextField.text])
       } else {
         self.parent?.showErrorTopBannerMessage(
           with: NSLocalizedString("invalid.seeds", value: "Invalid Seeds", comment: ""),

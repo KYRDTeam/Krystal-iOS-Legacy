@@ -147,6 +147,7 @@ class EarnConfirmViewController: KNBaseViewController {
     
     self.setupUI()
     self.setupChainInfo()
+	MixPanelManager.track("earn_confirmation_pop_up_open", properties: ["screenid": "earn_confirmation_pop_up"])
   }
   
   func setupChainInfo() {
@@ -229,7 +230,7 @@ class EarnConfirmViewController: KNBaseViewController {
       historyTransaction.earnTransactionSuccessDescription = "You’ve received \(earnTokenString) token because you supplied \(self.viewModel.token.symbol) in \(self.viewModel.platform.name). Simply by holding \(earnTokenString) token, you will earn interest."
       self.delegate?.earnConfirmViewController(self, didConfirm: self.viewModel.transaction, eip1559Transaction: self.viewModel.eip1559Transaction, amount: self.viewModel.amountString, netAPY: self.viewModel.netAPYString, platform: self.viewModel.platform, historyTransaction: historyTransaction)
     }
-    
+    MixPanelManager.track("earn_supply_confirm", properties: ["screenid": "earn_confirmation_pop_up"])
   }
 }
 

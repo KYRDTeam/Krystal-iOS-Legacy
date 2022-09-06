@@ -187,6 +187,7 @@ class BridgeCoordinator: NSObject, Coordinator {
         )
         alertController.popupHeight = 350
         self.navigationController.present(alertController, animated: true, completion: nil)
+        MixPanelManager.track("bridge_warning_pop_up_open", properties: ["screenid": "bridge_warning_pop_up"])
       }
     })
     self.fetchData()

@@ -285,6 +285,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       }
     )
     self.navigationController.present(alertController, animated: true, completion: nil)
+    MixPanelManager.track("export_wallet_warning_pop_up_open", properties: ["screenid": "export_wallet_warning_pop_up"])
   }
 
   fileprivate func showActionSheetBackupPhrase(wallet: KWallet, addressType: KAddressType) {
@@ -299,6 +300,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
           style: .default,
           handler: { _ in
             self.backupMnemonic(wallet: wallet)
+            MixPanelManager.track("edit_wallet_export_options", properties: ["screenid": "export_wallet_pop_up", "option": "export_seeds"])
           }
         ))
       case .privateKey:
@@ -310,6 +312,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
           style: .default,
           handler: { _ in
             self.backupKeystore(wallet: wallet, addressType: addressType)
+            MixPanelManager.track("edit_wallet_export_options", properties: ["screenid": "export_wallet_pop_up", "option": "export_json"])
           }
         ))
       }
@@ -318,6 +321,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
         style: .default,
         handler: { _ in
           self.backupPrivateKey(wallet: wallet, addressType: addressType)
+          MixPanelManager.track("edit_wallet_export_options", properties: ["screenid": "export_wallet_pop_up", "option": "export_key"])
         }
       ))
       
@@ -332,6 +336,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       let alertController = KNActionSheetAlertViewController(title: "", actions: action)
       self.navigationController.hideLoading()
       self.navigationController.topViewController?.present(alertController, animated: true, completion: nil)
+      MixPanelManager.track("export_wallet_pop_up_open", properties: ["screenid": "export_wallet_pop_up"])
     }
   }
 
@@ -347,11 +352,14 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     createPassword.modalTransitionStyle = .crossDissolve
     self.selectedAddressType = addressType
     self.navigationController.topViewController?.present(createPassword, animated: true, completion: nil)
+    MixPanelManager.track("export_keystore_pop_up_open", properties: ["screenid": "export_keystore_pop_up"])
+
   }
 
   fileprivate func backupPrivateKey(wallet: KWallet, addressType: KAddressType) {
     do {
       let privateKey = try WalletManager.shared.exportPrivateKey(walletID: wallet.id, addressType: addressType)
+      MixPanelManager.track("export_private_key_open", properties: ["screenid": "export_private_key"])
       self.openShowBackUpView(data: privateKey, wallet: wallet)
     } catch {
       self.navigationController.topViewController?.displayError(error: error)
@@ -362,6 +370,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     do {
       let mnemonic = try WalletManager.shared.exportMnemonic(walletID: wallet.id)
       self.openShowBackUpView(data: mnemonic, wallet: wallet)
+      MixPanelManager.track("export_mnemonic_open", properties: ["screenid": "export_mnemonic"])
     } catch {
       self.navigationController.topViewController?.displayError(error: error)
     }

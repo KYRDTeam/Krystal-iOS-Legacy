@@ -215,6 +215,7 @@ class KNListWalletsViewController: KNBaseViewController {
 
   @IBAction func addButtonPressed(_ sender: Any) {
     self.delegate?.listWalletsViewController(self, run: .addWallet(type: .full))
+    MixPanelManager.track("manage_wallet_import", properties: ["screenid": "manage_wallet"])
   }
 
   @IBAction func emptyViewAddButtonTapped(_ sender: UIButton) {
@@ -225,6 +226,7 @@ class KNListWalletsViewController: KNBaseViewController {
 extension KNListWalletsViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
+    MixPanelManager.track("manage_wallet_select", properties: ["screenid": "manage_wallet"])
     if viewModel.isWatchWalletsTabSelecting {
       let watchAddress = viewModel.watchAddresses[indexPath.row]
       var action = [UIAlertAction]()
@@ -250,13 +252,16 @@ extension KNListWalletsViewController: UITableViewDelegate {
         var action = [UIAlertAction]()
         action.append(UIAlertAction(title: Strings.edit, style: .default, handler: { _ in
           self.delegate?.listWalletsViewController(self, run: .editWallet(wallet: wallet, addressType: address.addressType))
+          MixPanelManager.track("manage_wallet_edit", properties: ["screenid": "manage_wallet_pop_up"])
         }))
         action.append(UIAlertAction(title: Strings.delete, style: .destructive, handler: { _ in
           self.delegate?.listWalletsViewController(self, run: .removeWallet(wallet: wallet))
+          MixPanelManager.track("manage_wallet_delete", properties: ["screenid": "manage_wallet_pop_up"])
         }))
         action.append(UIAlertAction(title: Strings.cancel, style: .cancel, handler: nil))
         let alertController = KNActionSheetAlertViewController(title: "", actions: action)
         self.present(alertController, animated: true, completion: nil)
+        MixPanelManager.track("manage_wallet_pop_up_open", properties: ["screenid": "manage_wallet_pop_up"])
       }
     }
   }

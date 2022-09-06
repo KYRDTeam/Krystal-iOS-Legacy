@@ -129,6 +129,7 @@ class OverviewNFTDetailViewController: KNBaseViewController {
   
   @IBAction func favoriteButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewNFTDetailViewController(self, run: .favoriteItem(item: self.viewModel.item, category: self.viewModel.category, status: !self.viewModel.isFaved))
+    MixPanelManager.track("nft_detail_favourite", properties: ["screenid": "nft_detail"])
   }
   
   @IBAction func etherscanButtonTapped(_ sender: UIButton) {

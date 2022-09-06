@@ -92,6 +92,7 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
     super.viewWillAppear(animated)
     
     navigationController?.setNavigationBarHidden(true, animated: true)
+    MixPanelManager.track("swap_open", properties: ["screenid": "swap"])
   }
   
   deinit {
@@ -665,6 +666,7 @@ extension SwapV2ViewController {
     } else {
       viewModel.sourceAmount.value = amountToChange
     }
+    MixPanelManager.track("swap_enter_amount", properties: ["screenid": "swap"])
   }
   
   func onSelectPlatformRateAt(index: Int) {

@@ -56,18 +56,21 @@ class CreateWalletMenuViewController: UIViewController {
     self.dismiss(animated: true) {
       self.delegate?.createWalletMenuViewController(self, run: .createRealWallet)
     }
+    MixPanelManager.track("import_create_new_wallet", properties: ["screenid": "import_options_pop_up"])
   }
 
   @IBAction func importWalletButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true) {
       self.delegate?.createWalletMenuViewController(self, run: .importWallet)
     }
+    MixPanelManager.track("import_import_wallet", properties: ["screenid": "import_options_pop_up"])
   }
   
   @IBAction func createWatchWalletButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true) {
       self.delegate?.createWalletMenuViewController(self, run: .createWatchWallet)
     }
+    MixPanelManager.track("import_add_watch_wallet", properties: ["screenid": "import_options_pop_up"])
   }
 
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
