@@ -141,6 +141,7 @@ class SwapProcessPopup: KNBaseViewController {
       self.destTokenInfoContainerView.rounded(color: UIColor.Kyber.buttonBg, width: 1, radius: 16)
       self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
       self.processStatusLabel.text = "Swapped Successfully"
+      MixPanelManager.track("swap_done_pop_up_open", properties: ["screenid": "swap_done_pop_up"])
     case .failure:
       self.loadingIndicatorView.isHidden = true
       self.transactionStateIcon.isHidden = false
@@ -151,6 +152,7 @@ class SwapProcessPopup: KNBaseViewController {
       self.destTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
       self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
       self.processStatusLabel.text = "Transaction Failed"
+      MixPanelManager.track("swap_fail_pop_up_open", properties: ["screenid": "swap_fail_pop_up"])
     }
   }
   
