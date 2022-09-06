@@ -32,6 +32,9 @@ struct RealWalletCellModel: WalletCellModel {
   }
   
   func isBackupedWallet() -> Bool {
+    if wallet.importType != .mnemonic {
+      return true
+    }
     return WalletCache.shared.isWalletBackedUp(walletID: wallet.id)
   }
   

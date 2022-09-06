@@ -464,11 +464,6 @@ class KNLoadBalanceCoordinator {
         self.delegate?.loadBalanceCoordinatorDidGetLP(chainLP: chainLiquidityPoolModels)
         completion(true)
       case .failure(let error):
-        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
-          with: "",
-          message: error.localizedDescription,
-          time: 2.0
-        )
         self.delegate?.loadBalanceCoordinatorDidGetLP(chainLP: chainLiquidityPoolModels)
         completion(false)
       }
