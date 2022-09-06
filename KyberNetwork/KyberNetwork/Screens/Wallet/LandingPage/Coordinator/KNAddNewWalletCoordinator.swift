@@ -157,9 +157,7 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
   }
   
   func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
-    navigationController.dismiss(animated: true) {
-      self.delegate?.addNewWalletCoordinator(didAdd: wallet, chain: chain)
-    }
+    didImportWallet(wallet: wallet, chain: chain)
   }
   
   func importWalletCoordinatorDidSendRefCode(_ code: String) {
