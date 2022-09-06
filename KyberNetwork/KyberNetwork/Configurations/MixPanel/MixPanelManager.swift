@@ -29,6 +29,7 @@ class MixPanelManager {
     }
     guard shouldConfigTrackingTool else { return }
     Mixpanel.mainInstance().distinctId = address.getDistintID()
+    Mixpanel.mainInstance().clearSuperProperties()
     Mixpanel.mainInstance().registerSuperProperties(address.getSuperProperty())
   }
 
