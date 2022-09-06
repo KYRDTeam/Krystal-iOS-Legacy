@@ -14,6 +14,11 @@ extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
     switchWallet(wallet: wallet, chain: chain)
   }
   
+  func landingPageCoordinatorStartedBrowsing() {
+    let address = walletManager.emptyAddress()
+    self.startNewSession(address: address)
+  }
+  
   func landingPageCoordinator(add watchAddress: KAddress, chain: ChainType) {
     
   }

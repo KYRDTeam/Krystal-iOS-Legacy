@@ -18,4 +18,7 @@ public struct KAddress {
     return walletID.isEmpty
   }
   
+  public var isBrowsingWallet: Bool {
+    return id.isEmpty
+  }
 }

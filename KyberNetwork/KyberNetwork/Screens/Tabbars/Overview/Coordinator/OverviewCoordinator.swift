@@ -90,6 +90,13 @@ class OverviewCoordinator: NSObject, Coordinator {
     viewController.delegate = self
     return viewController
   }()
+  
+  lazy var browsingRootViewController: OverviewBrowsingViewController = {
+    let viewModel = OverviewBrowsingViewModel()
+    let viewController = OverviewBrowsingViewController(viewModel: viewModel)
+//    viewController.delegate = self
+    return viewController
+  }()
 
   lazy var depositViewController: OverviewDepositViewController = {
     let controller = OverviewDepositViewController()
@@ -113,7 +120,12 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
   
   func start() {
-    self.navigationController.viewControllers = [self.rootViewController]
+    if currentAddress.isBrowsingWallet {
+      self.navigationController.viewControllers = [self.browsingRootViewController]
+    } else {
+      self.navigationController.viewControllers = [self.rootViewController]
+    }
+    
     self.observeAppEvents()
   }
   

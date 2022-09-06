@@ -109,6 +109,10 @@ public extension WalletManager {
     }
   }
   
+  func emptyAddress() -> KAddress {
+    return KAddress(id: "", walletID: "", addressType: .evm, name: "", addressString: "")
+  }
+  
   func `import`(keystore: String, addressType: KAddressType, password: String, name: String) throws -> KWallet {
     do {
       guard let json = keystore.data(using: .utf8) else {

@@ -133,7 +133,7 @@ extension KNAddNewWalletCoordinator: AddWalletViewControllerDelegate {
     case .importWatchWallet:
       self.createWatchWallet()
     case .close:
-      self.navigationController.dismiss(animated: true, completion: nil)
+      self.navigationController.dismiss(animated: false, completion: nil)
     }
   }
 }

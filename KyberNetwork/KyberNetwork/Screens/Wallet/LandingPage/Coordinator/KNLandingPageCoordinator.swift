@@ -4,11 +4,14 @@ import UIKit
 import SafariServices
 import MessageUI
 import KrystalWallets
+import WalletCore
+import RealmSwift
 
 protocol KNLandingPageCoordinatorDelegate: class {
   func landingPageCoordinator(import wallet: KWallet, chain: ChainType)
   func landingPageCoordinator(add watchAddress: KAddress, chain: ChainType)
   func landingPageCoordinatorDidSendRefCode(_ code: String)
+  func landingPageCoordinatorStartedBrowsing()
 }
 
 /**
@@ -124,6 +127,8 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
 extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
   func landinagePageViewController(_ controller: KNLandingPageViewController, run event: KNLandingPageViewEvent) {
     switch event {
+    case .getStarted:
+      self.delegate?.landingPageCoordinatorStartedBrowsing()
     case .openCreateWallet:
       Tracker.track(event: .introCreateWallet)
       if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {

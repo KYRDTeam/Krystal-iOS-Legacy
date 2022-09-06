@@ -36,7 +36,7 @@
 			<key>Key</key>
 			<string>apiEndpointSetting</string>
 			<key>DefaultValue</key>
-			<string>Staging</string>
+			<string>Dev</string>
 			<key>Titles</key>
 			<array>
 				<string>Dev</string>

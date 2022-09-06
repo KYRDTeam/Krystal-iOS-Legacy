@@ -465,6 +465,7 @@
 		7E3FCF0F28574DB9009DD914 /* AdvanceSearchTokenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3FCF0928574DB9009DD914 /* AdvanceSearchTokenRouter.swift */; };
 		7E3FCF1128574DB9009DD914 /* AdvanceSearchTokenProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3FCF0B28574DB9009DD914 /* AdvanceSearchTokenProtocols.swift */; };
 		7E3FCF1228574DB9009DD914 /* AdvanceSearchTokenInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3FCF0C28574DB9009DD914 /* AdvanceSearchTokenInteractor.swift */; };
+		7E41F5C928C6EFB000BDC60A /* InAppBrowsingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41F5C828C6EFB000BDC60A /* InAppBrowsingViewController.swift */; };
 		7E448D042808064E00C1617F /* SelectChainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E448D022808064E00C1617F /* SelectChainViewController.swift */; };
 		7E448D052808064E00C1617F /* SelectChainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E448D032808064E00C1617F /* SelectChainViewController.xib */; };
 		7E44DBEA2849BA3100E4AD26 /* BridgeTransactionStatusPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E44DBE82849BA3100E4AD26 /* BridgeTransactionStatusPopup.swift */; };
@@ -512,6 +513,8 @@
 		7EA10B7D289A7B650036E696 /* SearchTokenViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA10B7B289A7B650036E696 /* SearchTokenViewCell.xib */; };
 		7EA34EB32886ACB7001D1DE6 /* OverviewAllChainTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA34EB12886ACB7001D1DE6 /* OverviewAllChainTokenCell.swift */; };
 		7EA34EB42886ACB7001D1DE6 /* OverviewAllChainTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA34EB22886ACB7001D1DE6 /* OverviewAllChainTokenCell.xib */; };
+		7EA381DB28C6068E000D8FBB /* OverviewBrowsingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA381D928C6068E000D8FBB /* OverviewBrowsingViewController.swift */; };
+		7EA381DC28C6068E000D8FBB /* OverviewBrowsingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA381DA28C6068E000D8FBB /* OverviewBrowsingViewController.xib */; };
 		7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */; };
 		7EA5849D26F8A5900060250F /* KNActionSheetAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */; };
 		7EA694DB2839D5EB0033E5D2 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA694D92839D5EB0033E5D2 /* TextFieldCell.swift */; };
@@ -1656,6 +1659,7 @@
 		7E3FCF0928574DB9009DD914 /* AdvanceSearchTokenRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchTokenRouter.swift; sourceTree = "<group>"; };
 		7E3FCF0B28574DB9009DD914 /* AdvanceSearchTokenProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchTokenProtocols.swift; sourceTree = "<group>"; };
 		7E3FCF0C28574DB9009DD914 /* AdvanceSearchTokenInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchTokenInteractor.swift; sourceTree = "<group>"; };
+		7E41F5C828C6EFB000BDC60A /* InAppBrowsingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppBrowsingViewController.swift; sourceTree = "<group>"; };
 		7E448D022808064E00C1617F /* SelectChainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectChainViewController.swift; sourceTree = "<group>"; };
 		7E448D032808064E00C1617F /* SelectChainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectChainViewController.xib; sourceTree = "<group>"; };
 		7E44DBE82849BA3100E4AD26 /* BridgeTransactionStatusPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeTransactionStatusPopup.swift; sourceTree = "<group>"; };
@@ -1703,6 +1707,8 @@
 		7EA10B7B289A7B650036E696 /* SearchTokenViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchTokenViewCell.xib; sourceTree = "<group>"; };
 		7EA34EB12886ACB7001D1DE6 /* OverviewAllChainTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewAllChainTokenCell.swift; sourceTree = "<group>"; };
 		7EA34EB22886ACB7001D1DE6 /* OverviewAllChainTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewAllChainTokenCell.xib; sourceTree = "<group>"; };
+		7EA381D928C6068E000D8FBB /* OverviewBrowsingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewBrowsingViewController.swift; sourceTree = "<group>"; };
+		7EA381DA28C6068E000D8FBB /* OverviewBrowsingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewBrowsingViewController.xib; sourceTree = "<group>"; };
 		7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNActionSheetAlertViewController.swift; sourceTree = "<group>"; };
 		7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNActionSheetAlertViewController.xib; sourceTree = "<group>"; };
 		7EA694D92839D5EB0033E5D2 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
@@ -3166,6 +3172,7 @@
 			isa = PBXGroup;
 			children = (
 				257A3793205BC27400E86794 /* KNBaseViewController.swift */,
+				7E41F5C828C6EFB000BDC60A /* InAppBrowsingViewController.swift */,
 				A655908E28B60CC200925B65 /* BaseWalletOrientedViewController.swift */,
 				A608C45128B726A600B0B867 /* KQRCodeReaderDelegate.swift */,
 			);
@@ -5731,6 +5738,8 @@
 				C3D560A9260C641E00408875 /* OverviewClaimViewController.xib */,
 				C30568A92670B87700F331CE /* OverviewMainViewController.swift */,
 				C30568AA2670B87700F331CE /* OverviewMainViewController.xib */,
+				7EA381D928C6068E000D8FBB /* OverviewBrowsingViewController.swift */,
+				7EA381DA28C6068E000D8FBB /* OverviewBrowsingViewController.xib */,
 				C311AAD2269D86AC0082A728 /* OverviewChangeCurrencyViewController.swift */,
 				C311AAD3269D86AC0082A728 /* OverviewChangeCurrencyViewController.xib */,
 				C32649D926CF81BE001B6E11 /* OverviewNFTDetailViewController.swift */,
@@ -6821,6 +6830,7 @@
 				C3A6911825638DE700F57756 /* Lato-BlackItalic.ttf in Resources */,
 				C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */,
 				7E921A0E28589B8D00CA6F5C /* AdvanceSearchTokenCell.xib in Resources */,
+				7EA381DC28C6068E000D8FBB /* OverviewBrowsingViewController.xib in Resources */,
 				25F96F8121537B6400D7F927 /* KNHoldingDocumentInfoPopUp.xib in Resources */,
 				C3EE06CB267A15E50090B432 /* README.txt in Resources */,
 				C320D80C27B39EBC0001DC71 /* MultiSendViewController.xib in Resources */,
@@ -7440,6 +7450,7 @@
 				7E1EBE452834F82A00793B6D /* BridgeSendToCell.swift in Sources */,
 				257740CF20579CE0003323EB /* KNSplashScreenCoordinator.swift in Sources */,
 				7E29FEE7289B8693008D01BD /* CommonBaseTokenCell.swift in Sources */,
+				7E41F5C928C6EFB000BDC60A /* InAppBrowsingViewController.swift in Sources */,
 				C3ED1DCD2616F0090024970C /* NotificationsViewController.swift in Sources */,
 				A6E6C9D128171A1400EEB2E6 /* SolanaTransactionListViewModel.swift in Sources */,
 				C322EB0B25B1A3D8009746FB /* CreateWalletMenuViewController.swift in Sources */,
@@ -7795,6 +7806,7 @@
 				25C45ACD20AC475700CDA1FF /* KNImportWalletViewController.swift in Sources */,
 				C344975B28A20C4900028AFB /* SlippageRateCell.swift in Sources */,
 				C68AA276237A6BE900B9EC35 /* KNTransactionStatusPopUp.swift in Sources */,
+				7EA381DB28C6068E000D8FBB /* OverviewBrowsingViewController.swift in Sources */,
 				73ED85A72034BFEF00593BF3 /* UITextFieldAdditions.swift in Sources */,
 				C3A58E2426D49BCF00EE3801 /* OverviewAddNFTViewController.swift in Sources */,
 				2923D9B51FDA4E07000CF3F8 /* PasswordGenerator.swift in Sources */,
