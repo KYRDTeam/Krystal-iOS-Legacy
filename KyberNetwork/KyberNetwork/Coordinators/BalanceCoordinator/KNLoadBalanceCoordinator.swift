@@ -452,23 +452,24 @@ class KNLoadBalanceCoordinator {
       }
     }
     provider.requestWithFilter(.getLiquidityPool(address: addressString, chainIds: chainIds, quoteSymbols: quoteSymbols)) { (result) in
+      var chainLiquidityPoolModels: [ChainLiquidityPoolModel] = []
       switch result {
       case .success(let resp):
-        var chainLiquidityPoolModels: [ChainLiquidityPoolModel] = []
         if let responseJson = try? resp.mapJSON() as? JSONDictionary ?? [:], let jsons = responseJson["data"] as? [JSONDictionary] {
           jsons.forEach { jsonData in
             let chainModel = ChainLiquidityPoolModel(json: jsonData)
             chainLiquidityPoolModels.append(chainModel)
           }
-          self.delegate?.loadBalanceCoordinatorDidGetLP(chainLP: chainLiquidityPoolModels)
         }
+        self.delegate?.loadBalanceCoordinatorDidGetLP(chainLP: chainLiquidityPoolModels)
         completion(true)
       case .failure(let error):
-//        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
-//          with: "",
-//          message: error.localizedDescription,
-//          time: 2.0
-//        )
+        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
+          with: "",
+          message: error.localizedDescription,
+          time: 2.0
+        )
+        self.delegate?.loadBalanceCoordinatorDidGetLP(chainLP: chainLiquidityPoolModels)
         completion(false)
       }
     }

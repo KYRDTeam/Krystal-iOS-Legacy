@@ -448,7 +448,7 @@ protocol AbstractEarnViewControler: class {
   func coordinatorDidUpdateAdvancedNonce(_ nonce: String)
 }
 
-class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
+class EarnViewController: BaseWalletOrientedViewController, AbstractEarnViewControler {
   
   @IBOutlet weak var platformTableView: UITableView!
   @IBOutlet weak var fromAmountTextField: UITextField!
@@ -462,7 +462,6 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   @IBOutlet weak var sendButtonTopContraint: NSLayoutConstraint!
   @IBOutlet weak var earnButton: UIButton!
   @IBOutlet weak var selectDepositTitleLabel: UILabel!
-  @IBOutlet weak var walletsSelectButton: UIButton!
   @IBOutlet weak var approveButtonLeftPaddingContraint: NSLayoutConstraint!
   @IBOutlet weak var approveButtonRightPaddingContaint: NSLayoutConstraint!
   @IBOutlet weak var approveButton: UIButton!
@@ -502,10 +501,8 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
     
     self.earnButton.setTitle("Next".toBeLocalised(), for: .normal)
     self.updateUITokenDidChange(self.viewModel.tokenData)
-    self.updateUIWalletSelectButton()
     self.updateUIForSendApprove(isShowApproveButton: false)
     self.fromAmountTextField.setupCustomDeleteIcon()
-    
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -530,16 +527,19 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
     self.isViewDisappeared = true
     self.view.endEditing(true)
   }
+  
+  override func reloadChain() {
+    super.reloadChain()
+    
+    chainButton?.setImage(nil, for: .normal)
+    chainButton?.isEnabled = false
+  }
 
   func updateUIBalanceDidChange() {
     guard self.isViewSetup else {
       return
     }
     self.fromBalanceLable.text = self.viewModel.totalBalanceText
-  }
-
-  fileprivate func updateUIWalletSelectButton() {
-    self.walletsSelectButton.setTitle(viewModel.currentAddress.name, for: .normal)
   }
 
   fileprivate func updateGasFeeUI() {
@@ -739,7 +739,6 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   func coordinatorAppSwitchAddress() {
     self.viewModel.resetBalances()
     self.updateUIBalanceDidChange()
-    self.updateUIWalletSelectButton()
     self.updateUIPendingTxIndicatorView()
   }
 

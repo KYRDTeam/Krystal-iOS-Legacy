@@ -35,7 +35,6 @@ class EarnCoordinator: NSObject, Coordinator {
   var balances: [String: Balance] = [:]
   var withdrawCoordinator: WithdrawCoordinator?
   var sendCoordinator: KNSendTokenViewCoordinator?
-
   
   fileprivate var historyCoordinator: KNHistoryCoordinator?
   
@@ -233,7 +232,6 @@ class EarnCoordinator: NSObject, Coordinator {
   
   func appCoordinatorDidUpdateChain() {
     self.navigationController.popToRootViewController(animated: false)
-    self.rootViewController.coordinatorDidUpdateChain()
     self.loadCachedLendingTokens()
     self.getLendingOverview()
     self.sendCoordinator?.appCoordinatorDidUpdateChain()

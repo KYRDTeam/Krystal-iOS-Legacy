@@ -9,7 +9,7 @@ import UIKit
 import Lottie
 import BigInt
 
-class SwapV2ViewController: KNBaseViewController {
+class SwapV2ViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var platformTableView: UITableView!
   @IBOutlet weak var continueButton: UIButton!
   @IBOutlet weak var sourceTokenLabel: UILabel!
@@ -52,11 +52,8 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var errorLabel: UILabel!
   
    // Header
-  @IBOutlet weak var chainIcon: UIImageView!
-  @IBOutlet weak var walletButton: UIButton!
   @IBOutlet weak var dotView: UIView!
   @IBOutlet weak var containerView: UIView!
-  
   @IBOutlet weak var loadingIndicator: SRCountdownTimer!
   
   var viewModel: SwapV2ViewModel!
@@ -224,12 +221,10 @@ class SwapV2ViewController: KNBaseViewController {
   
   func bindViewModel() {
     viewModel.currentChain.observeAndFire(on: self) { [weak self] chain in
-      self?.chainIcon.image = KNGeneralProvider.shared.chainIconImage
       self?.containerView.isHidden = !KNGeneralProvider.shared.currentChain.isSupportSwap()
     }
     
     viewModel.currentAddress.observeAndFire(on: self) { [weak self] address in
-      self?.walletButton.setTitle(address.name, for: .normal)
       self?.sourceTextField.text = nil
     }
     
@@ -515,16 +510,13 @@ class SwapV2ViewController: KNBaseViewController {
     self.isInfoExpanded.toggle()
   }
   
-  @IBAction func chainButtonWasTapped(_ sender: Any) {
-    viewModel.didTapChainButton()
-  }
-  
-  @IBAction func walletButtonWasTapped(_ sender: Any) {
-    viewModel.didTapWalletButton()
-  }
-  
   @IBAction func historyButtonWasTapped(_ sender: Any) {
     viewModel.didTapHistoryButton()
+  }
+  
+  @objc override func onAppSwitchChain() {
+    super.onAppSwitchChain()
+    viewModel.appDidSwitchChain()
   }
   
   @objc func onToggleExpand() {

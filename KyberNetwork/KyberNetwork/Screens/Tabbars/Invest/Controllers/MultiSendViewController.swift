@@ -118,16 +118,15 @@ class MultiSendViewModel {
   }
 }
 
-class MultiSendViewController: KNBaseViewController {
+class MultiSendViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var inputTableView: UITableView!
   @IBOutlet weak var inputTableViewHeight: NSLayoutConstraint!
-
   @IBOutlet weak var historyButton: UIButton!
-  @IBOutlet weak var currentChainIcon: UIImageView!
-  @IBOutlet weak var walletsListButton: UIButton!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
   @IBOutlet weak var useLastMultisendButton: UIButton!
-
+  @IBOutlet weak var comingSoonView: UIView!
+  @IBOutlet weak var mainView: UIScrollView!
+  
   let viewModel: MultiSendViewModel
   weak var delegate: MultiSendViewControllerDelegate?
 
@@ -148,7 +147,6 @@ class MultiSendViewController: KNBaseViewController {
     self.inputTableView.rowHeight = MultiSendCell.cellHeight
     self.updateAvailableBalanceForToken(KNGeneralProvider.shared.quoteTokenObject.toToken())
     self.updateUISwitchChain()
-    self.updateUIWalletButton()
     self.updateUIPendingTxIndicatorView()
     self.useLastMultisendButton.rounded(color: UIColor(named: "textWhiteColor")!, width: 1, radius: 21)
     
@@ -181,27 +179,6 @@ class MultiSendViewController: KNBaseViewController {
       ])
     }
   }
-  
-  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
-    let popup = SwitchChainViewController()
-    popup.completionHandler = { [weak self] selected in
-      guard let self = self else { return }
-      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
-      if addresses.isEmpty {
-        self.delegate?.multiSendViewController(self, run: .addChainWallet(chainType: selected))
-        return
-      } else {
-        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-        self.present(secondPopup, animated: true, completion: nil)
-      }
-    }
-    self.present(popup, animated: true, completion: nil)
-  }
-  
-  @IBAction func switchWalletButtonTapped(_ sender: UIButton) {
-    self.delegate?.multiSendViewController(self, run: .openWalletsList)
-  }
 
   @IBAction func historyButtonTapped(_ sender: UIButton) {
     self.delegate?.multiSendViewController(self, run: .openHistory)
@@ -224,17 +201,17 @@ class MultiSendViewController: KNBaseViewController {
     self.viewModel.resetDataSource()
     self.updateUIInputTableView()
   }
-  
-  fileprivate func updateUIWalletButton() {
-    self.walletsListButton.setTitle(self.viewModel.address.name, for: .normal)
-  }
 
   fileprivate func updateUISwitchChain() {
     guard self.isViewLoaded else { return }
-    let icon = KNGeneralProvider.shared.chainIconImage
-    self.currentChainIcon.image = icon
     self.viewModel.resetDataSource()
     self.updateUIInputTableView()
+  }
+  
+  override func reloadChain() {
+    super.reloadChain()
+    
+    mainView.isHidden = !KNGeneralProvider.shared.currentChain.supportMultisend
   }
   
   fileprivate func updateUIPendingTxIndicatorView() {
@@ -309,7 +286,6 @@ class MultiSendViewController: KNBaseViewController {
   
   func coordinatorAppSwitchAddress() {
     guard self.isViewLoaded else { return }
-    self.updateUIWalletButton()
     self.viewModel.resetDataSource()
     self.updateUIInputTableView()
     self.updateUIPendingTxIndicatorView()

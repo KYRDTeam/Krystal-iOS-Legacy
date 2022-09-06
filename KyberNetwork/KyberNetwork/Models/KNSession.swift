@@ -41,6 +41,7 @@ class KNSession {
     self.address = address
     WalletCache.shared.lastUsedAddress = address
     AppEventCenter.shared.currentAddressUpdated()
+    AppEventCenter.shared.walletListHasUpdate()
   }
   
   func getCurrentWalletAddresses() -> [KAddress] {

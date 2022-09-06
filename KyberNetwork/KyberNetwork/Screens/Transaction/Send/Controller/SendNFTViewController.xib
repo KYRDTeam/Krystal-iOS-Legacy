@@ -13,7 +13,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -27,6 +27,8 @@
                 <outlet property="amountTitleView" destination="fh6-mg-PWa" id="m06-NA-g9y"/>
                 <outlet property="balanceLabel" destination="Por-wN-COr" id="77D-uj-0Aj"/>
                 <outlet property="bottomPaddingConstraintForScrollView" destination="rdC-lM-rfi" id="wL3-1S-3Gb"/>
+                <outlet property="chainIcon" destination="Urr-KZ-qg6" id="8xD-Y8-zuC"/>
+                <outlet property="chainLabel" destination="WyI-nd-8vh" id="Ptp-WF-dTN"/>
                 <outlet property="ensAddressLabel" destination="gsD-Tm-WVZ" id="WPD-Fd-5m6"/>
                 <outlet property="estGasFeeTitleLabel" destination="oc5-cu-GVr" id="d4e-NR-scS"/>
                 <outlet property="estGasFeeValueLabel" destination="MVC-9s-jfh" id="c07-Q2-s3B"/>
@@ -44,7 +46,6 @@
                 <outlet property="scrollContainerView" destination="Ut7-Gy-SfI" id="EIH-1e-3rd"/>
                 <outlet property="selectedGasFeeLabel" destination="SOv-KD-7uX" id="EAa-cI-fya"/>
                 <outlet property="sendButton" destination="pDd-uu-8SH" id="zR4-Fd-bWn"/>
-                <outlet property="topBarHeight" destination="TBq-sP-UtW" id="G4c-UA-2N5"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -54,16 +55,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3oA-8K-md3">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="92"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transfer NFT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UEz-EF-0bU">
-                            <rect key="frame" x="134.5" y="65.5" width="106.5" height="21.5"/>
+                            <rect key="frame" x="134.5" y="24" width="106.5" height="21.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oLj-w9-VOW">
-                            <rect key="frame" x="16" y="58.5" width="46" height="36"/>
+                            <rect key="frame" x="16" y="17" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="7ji-fr-A4G"/>
                                 <constraint firstAttribute="width" constant="46" id="vly-g0-ye6"/>
@@ -73,13 +74,30 @@
                                 <action selector="backButtonTapped:" destination="-1" eventType="touchUpInside" id="u8o-2f-Fa3"/>
                             </connections>
                         </button>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="Urr-KZ-qg6">
+                            <rect key="frame" x="151.5" y="55" width="12" height="12"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="12" id="NQM-bE-gNe"/>
+                                <constraint firstAttribute="height" constant="12" id="Seh-eu-u6J"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WyI-nd-8vh">
+                            <rect key="frame" x="168.5" y="53.5" width="54" height="14.5"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="UEz-EF-0bU" firstAttribute="centerX" secondItem="3oA-8K-md3" secondAttribute="centerX" id="2Jn-I6-pBQ"/>
-                        <constraint firstAttribute="bottom" secondItem="UEz-EF-0bU" secondAttribute="bottom" constant="26" id="9oN-je-P9p"/>
-                        <constraint firstAttribute="height" constant="113" id="TBq-sP-UtW"/>
+                        <constraint firstItem="WyI-nd-8vh" firstAttribute="top" secondItem="UEz-EF-0bU" secondAttribute="bottom" constant="8" id="AHD-x6-S3u"/>
+                        <constraint firstItem="WyI-nd-8vh" firstAttribute="centerX" secondItem="3oA-8K-md3" secondAttribute="centerX" constant="8" id="Gdt-Ta-lug"/>
+                        <constraint firstAttribute="bottom" secondItem="WyI-nd-8vh" secondAttribute="bottom" constant="24" id="Jld-ZU-6kU"/>
+                        <constraint firstItem="WyI-nd-8vh" firstAttribute="leading" secondItem="Urr-KZ-qg6" secondAttribute="trailing" constant="5" id="LDA-eO-Ips"/>
+                        <constraint firstItem="Urr-KZ-qg6" firstAttribute="centerY" secondItem="WyI-nd-8vh" secondAttribute="centerY" id="MuU-5w-47u"/>
+                        <constraint firstItem="UEz-EF-0bU" firstAttribute="top" secondItem="3oA-8K-md3" secondAttribute="top" constant="24" id="Nl1-E3-XPo"/>
                         <constraint firstItem="oLj-w9-VOW" firstAttribute="leading" secondItem="3oA-8K-md3" secondAttribute="leading" constant="16" id="UEM-FG-ePL"/>
                         <constraint firstItem="oLj-w9-VOW" firstAttribute="centerY" secondItem="UEz-EF-0bU" secondAttribute="centerY" id="en4-aT-djV"/>
                     </constraints>
@@ -91,7 +109,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ut7-Gy-SfI">
-                    <rect key="frame" x="0.0" y="113" width="375" height="554"/>
+                    <rect key="frame" x="0.0" y="92" width="375" height="575"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mp7-2b-yfK">
                             <rect key="frame" x="37" y="412.5" width="301" height="42"/>
@@ -411,7 +429,7 @@
                 <constraint firstItem="Ut7-Gy-SfI" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Tu3-it-5Nv"/>
                 <constraint firstItem="Ut7-Gy-SfI" firstAttribute="top" secondItem="3oA-8K-md3" secondAttribute="bottom" id="VXW-h3-Wce"/>
                 <constraint firstItem="3oA-8K-md3" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="hFx-mo-moS"/>
-                <constraint firstItem="3oA-8K-md3" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="kH0-NB-5T1"/>
+                <constraint firstItem="3oA-8K-md3" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="kH0-NB-5T1"/>
                 <constraint firstItem="Ut7-Gy-SfI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="kld-f0-tp7"/>
                 <constraint firstItem="Ut7-Gy-SfI" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="rdC-lM-rfi"/>
             </constraints>
@@ -421,6 +439,7 @@
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
         <image name="empty_nft" width="132" height="144"/>
+        <image name="eth" width="32" height="32"/>
         <image name="gas_config_icon" width="36" height="36"/>
         <image name="scan" width="32" height="32"/>
         <namedColor name="buttonBackgroundColor">

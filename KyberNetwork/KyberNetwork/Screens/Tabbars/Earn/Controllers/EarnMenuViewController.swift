@@ -21,11 +21,9 @@ class EarnMenuViewModel {
   }
 }
 
-class EarnMenuViewController: KNBaseViewController {
+class EarnMenuViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var menuTableView: UITableView!
-  @IBOutlet weak var walletsSelectButton: UIButton!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
-  @IBOutlet weak var currentChainIcon: UIImageView!
   @IBOutlet var warningContainerView: UIView!
   @IBOutlet weak var mainInfoTitle: UILabel!
   @IBOutlet weak var emptyView: UIView!
@@ -54,7 +52,6 @@ class EarnMenuViewController: KNBaseViewController {
       forCellReuseIdentifier: EarnMenuTableViewCell.kCellID
     )
     self.menuTableView.rowHeight = EarnMenuTableViewCell.kCellHeight
-    self.updateUIWalletSelectButton()
     self.menuTableView.tableFooterView = self.warningContainerView
     let attributedString = NSMutableAttributedString(string: "Select the token you wish to supply to earn interest. Interest rate may change as per market dynamics.\n", attributes: [
       .font: UIFont(name: "Karla-Regular", size: 16.0)!,
@@ -77,29 +74,12 @@ class EarnMenuViewController: KNBaseViewController {
     super.viewWillAppear(animated)
     self.isViewSetup = true
     self.updateUIPendingTxIndicatorView()
-    self.updateUISwitchChain()
     self.updateUIEmptyView()
     MixPanelManager.track("earn_explore_open", properties: ["screenid": "earn_explore"])
   }
 
-  fileprivate func updateUISwitchChain() {
-    guard self.isViewLoaded else {
-      return
-    }
-    let icon = KNGeneralProvider.shared.chainIconImage
-    self.currentChainIcon.image = icon
-  }
-  
-  fileprivate func updateUIWalletSelectButton() {
-    self.walletsSelectButton.setTitle(viewModel.currentAddress.name, for: .normal)
-  }
-
   @IBAction func historyButtonTapped(_ sender: UIButton) {
     self.navigationDelegate?.viewControllerDidSelectHistory(self)
-  }
-
-  @IBAction func walletsButtonTapped(_ sender: UIButton) {
-    self.navigationDelegate?.viewControllerDidSelectWallets(self)
   }
 
   @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -112,23 +92,6 @@ class EarnMenuViewController: KNBaseViewController {
       icon: UIImage(named: "help_icon_large") ?? UIImage(),
       time: 10
     )
-  }
-
-  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
-    let popup = SwitchChainViewController()
-    popup.completionHandler = { [weak self] selected in
-      guard let self = self else { return }
-      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
-      if addresses.isEmpty {
-        self.delegate?.earnMenuViewControllerDidSelectAddChainWallet(controller: self, chainType: selected)
-        return
-      } else {
-        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-        self.present(secondPopup, animated: true, completion: nil)
-      }
-    }
-    self.present(popup, animated: true, completion: nil)
   }
   
   fileprivate func updateUIPendingTxIndicatorView() {
@@ -162,7 +125,6 @@ class EarnMenuViewController: KNBaseViewController {
   
   func coordinatorAppSwitchAddress() {
     if self.isViewSetup {
-      self.updateUIWalletSelectButton()
       self.updateUIPendingTxIndicatorView()
     }
   }
@@ -172,7 +134,9 @@ class EarnMenuViewController: KNBaseViewController {
   }
 
   func coordinatorDidUpdateChain() {
-    self.updateUISwitchChain()
+    if self.isViewSetup {
+      self.updateUIPendingTxIndicatorView()
+    }
   }
 }
 

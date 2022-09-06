@@ -15,10 +15,9 @@ class SwitchChainCell: UITableViewCell {
   @IBOutlet weak var iconHeightConstraint: NSLayoutConstraint!
 
   func configCell(chain: ChainType, isSelected: Bool) {
-    self.chainIcon.rounded(radius: self.iconHeightConstraint.constant/2)
-    self.chainIcon.image = chain.chainIcon()
+    self.chainIcon.image = chain.squareIcon()
     self.chainNameLabel.text = chain.chainName()
     self.markIcon.isHidden = !isSelected
-    self.cellBackgroundView.backgroundColor = isSelected ? UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.2) : .clear
+    self.cellBackgroundView.backgroundColor = isSelected ? .Kyber.buttonBg.withAlphaComponent(0.2) : .clear
   }
 }

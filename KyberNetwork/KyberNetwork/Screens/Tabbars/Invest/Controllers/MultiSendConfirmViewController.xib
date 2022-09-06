@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,17 +12,19 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MultiSendConfirmViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MultiSendConfirmViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="addressCountLabel" destination="Lvu-qp-kMP" id="IW0-e1-q1G"/>
                 <outlet property="amountTableView" destination="dZj-jZ-tDv" id="U98-pZ-1Ql"/>
                 <outlet property="amountTableViewHeightContraint" destination="pvg-9n-SsP" id="ngG-Hc-VtO"/>
                 <outlet property="backButton" destination="74V-r3-y7m" id="j4t-GD-ho6"/>
+                <outlet property="chainIcon" destination="iCJ-KX-vIf" id="6hM-sW-Mxm"/>
+                <outlet property="chainLabel" destination="NCl-qU-u3D" id="6dS-VI-QJa"/>
                 <outlet property="confirmButton" destination="RsA-65-FPT" id="Yay-AL-DKY"/>
                 <outlet property="contentView" destination="01x-YX-DxM" id="tzY-tX-y20"/>
                 <outlet property="contentViewTopContraint" destination="YuL-Bz-gZE" id="8FM-rq-Jgv"/>
@@ -52,7 +54,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RsA-65-FPT">
-                                    <rect key="frame" x="203.5" y="499" width="134.5" height="38"/>
+                                    <rect key="frame" x="203.5" y="523.5" width="134.5" height="38"/>
                                     <color key="backgroundColor" name="buttonBackgroundColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="38" id="sZV-Sg-VSy"/>
@@ -66,7 +68,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="74V-r3-y7m">
-                                    <rect key="frame" x="37" y="499" width="134.5" height="38"/>
+                                    <rect key="frame" x="37" y="523.5" width="134.5" height="38"/>
                                     <color key="backgroundColor" name="navButtonBgColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="38" id="UxV-oc-HDT"/>
@@ -80,7 +82,7 @@
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jTg-8W-O7U">
-                                    <rect key="frame" x="37" y="337" width="301" height="132"/>
+                                    <rect key="frame" x="37" y="361.5" width="301" height="132"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Fee" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RZq-9Z-eGH">
                                             <rect key="frame" x="12" y="44" width="100" height="16.5"/>
@@ -154,7 +156,7 @@
                                     </userDefinedRuntimeAttributes>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number Addresses" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ybG-3u-Mwh">
-                                    <rect key="frame" x="37" y="76" width="121.5" height="17"/>
+                                    <rect key="frame" x="37" y="100.5" width="121.5" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="c93-H1-WY5"/>
                                     </constraints>
@@ -163,7 +165,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="dZj-jZ-tDv">
-                                    <rect key="frame" x="169" y="111" width="185" height="177"/>
+                                    <rect key="frame" x="169" y="135.5" width="185" height="177"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="177" id="pvg-9n-SsP"/>
@@ -173,7 +175,7 @@
                                     </connections>
                                 </tableView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount to Transfer" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfE-G6-tCP">
-                                    <rect key="frame" x="37" y="111" width="122" height="17"/>
+                                    <rect key="frame" x="37" y="135.5" width="122" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="vYE-rB-v06"/>
                                     </constraints>
@@ -182,7 +184,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~ 0.213 USD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EOQ-iT-xQM">
-                                    <rect key="frame" x="265" y="296" width="73" height="17"/>
+                                    <rect key="frame" x="265" y="320.5" width="73" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="J4o-Ro-k3c"/>
                                     </constraints>
@@ -191,7 +193,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E6o-qM-m2e">
-                                    <rect key="frame" x="304" y="71" width="34" height="27"/>
+                                    <rect key="frame" x="304" y="95.5" width="34" height="27"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                     <inset key="imageEdgeInsets" minX="-4" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                     <state key="normal" title="SHOW">
@@ -203,8 +205,21 @@
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="18" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lvu-qp-kMP">
-                                    <rect key="frame" x="283.5" y="75" width="15.5" height="19"/>
+                                    <rect key="frame" x="283.5" y="99.5" width="15.5" height="19"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                    <color key="textColor" name="textWhiteColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="iCJ-KX-vIf">
+                                    <rect key="frame" x="151.5" y="63.5" width="12" height="12"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="12" id="6GX-Pm-Mnr"/>
+                                        <constraint firstAttribute="width" constant="12" id="W6t-cD-b0d"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NCl-qU-u3D">
+                                    <rect key="frame" x="168.5" y="62" width="54" height="14.5"/>
+                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                     <color key="textColor" name="textWhiteColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -216,14 +231,16 @@
                                 <constraint firstItem="74V-r3-y7m" firstAttribute="top" secondItem="jTg-8W-O7U" secondAttribute="bottom" constant="30" id="AOF-DH-VSh"/>
                                 <constraint firstItem="gfE-G6-tCP" firstAttribute="leading" secondItem="g84-if-G70" secondAttribute="leading" constant="37" id="BNx-4x-MfS"/>
                                 <constraint firstItem="ybG-3u-Mwh" firstAttribute="leading" secondItem="g84-if-G70" secondAttribute="leading" constant="37" id="G5v-i6-I9X"/>
-                                <constraint firstItem="ybG-3u-Mwh" firstAttribute="top" secondItem="pgy-b8-UVV" secondAttribute="bottom" constant="22" id="Glc-w0-Vck"/>
+                                <constraint firstItem="ybG-3u-Mwh" firstAttribute="top" secondItem="NCl-qU-u3D" secondAttribute="bottom" constant="24" id="Glc-w0-Vck"/>
                                 <constraint firstAttribute="trailing" secondItem="RsA-65-FPT" secondAttribute="trailing" constant="37" id="PAv-YH-KVw"/>
+                                <constraint firstItem="NCl-qU-u3D" firstAttribute="centerX" secondItem="g84-if-G70" secondAttribute="centerX" constant="8" id="PeS-ki-RRU"/>
                                 <constraint firstItem="EOQ-iT-xQM" firstAttribute="top" secondItem="dZj-jZ-tDv" secondAttribute="bottom" constant="8" symbolic="YES" id="QxR-Dd-mmY"/>
                                 <constraint firstAttribute="trailing" secondItem="E6o-qM-m2e" secondAttribute="trailing" constant="37" id="SwB-7I-ffX"/>
                                 <constraint firstAttribute="bottom" secondItem="RsA-65-FPT" secondAttribute="bottom" constant="60" id="W1c-ZL-Sh5"/>
                                 <constraint firstItem="jTg-8W-O7U" firstAttribute="top" secondItem="EOQ-iT-xQM" secondAttribute="bottom" constant="24" id="Wff-AJ-FpQ"/>
                                 <constraint firstItem="74V-r3-y7m" firstAttribute="leading" secondItem="g84-if-G70" secondAttribute="leading" constant="37" id="XxV-LN-QUD"/>
                                 <constraint firstAttribute="trailing" secondItem="dZj-jZ-tDv" secondAttribute="trailing" constant="21" id="YeK-gC-HpG"/>
+                                <constraint firstItem="NCl-qU-u3D" firstAttribute="top" secondItem="pgy-b8-UVV" secondAttribute="bottom" constant="8" id="ZCF-4c-esG"/>
                                 <constraint firstItem="RsA-65-FPT" firstAttribute="width" secondItem="74V-r3-y7m" secondAttribute="width" id="b0R-gZ-caH"/>
                                 <constraint firstItem="E6o-qM-m2e" firstAttribute="centerY" secondItem="Lvu-qp-kMP" secondAttribute="centerY" id="b3k-Nl-qTp"/>
                                 <constraint firstItem="E6o-qM-m2e" firstAttribute="centerY" secondItem="ybG-3u-Mwh" secondAttribute="centerY" id="bW4-x4-zvB"/>
@@ -237,6 +254,8 @@
                                 <constraint firstItem="jTg-8W-O7U" firstAttribute="centerX" secondItem="g84-if-G70" secondAttribute="centerX" id="kOj-rn-2Qq"/>
                                 <constraint firstItem="pgy-b8-UVV" firstAttribute="top" secondItem="g84-if-G70" secondAttribute="top" constant="30" id="qpB-oC-Wdb"/>
                                 <constraint firstItem="dZj-jZ-tDv" firstAttribute="leading" secondItem="gfE-G6-tCP" secondAttribute="trailing" constant="10" id="ukK-ga-NQb"/>
+                                <constraint firstItem="NCl-qU-u3D" firstAttribute="leading" secondItem="iCJ-KX-vIf" secondAttribute="trailing" constant="5" id="vY9-PS-u75"/>
+                                <constraint firstItem="iCJ-KX-vIf" firstAttribute="centerY" secondItem="NCl-qU-u3D" secondAttribute="centerY" id="xfy-JM-i8p"/>
                             </constraints>
                         </scrollView>
                     </subviews>
@@ -276,6 +295,7 @@
     </objects>
     <resources>
         <image name="edit_confirm_icon" width="16" height="16"/>
+        <image name="eth" width="32" height="32"/>
         <image name="help_icon_blue" width="14" height="14"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

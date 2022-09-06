@@ -170,7 +170,6 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
   
   @objc func appDidSwitchAddress() {
-    self.rootViewController.coordinatorAppSwitchAddress()
     self.sendCoordinator?.coordinatorAppSwitchAddress()
     self.historyCoordinator?.appDidSwitchAddress()
     self.krytalCoordinator?.coordinatorAppSwitchAddress()
@@ -206,7 +205,6 @@ class OverviewCoordinator: NSObject, Coordinator {
       self.currentCurrencyType = KNGeneralProvider.shared.quoteCurrency
     }
     UserDefaults.standard.setValue(self.currentCurrencyType.rawValue, forKey: Constants.currentCurrencyMode)
-    self.rootViewController.coordinatorDidUpdateChain()
     self.sendCoordinator?.appCoordinatorDidUpdateChain()
   }
 
@@ -736,10 +734,9 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       MixPanelManager.track("token_detail_open", properties: ["screenid": "token_detail"])
       self.openChartView(token: token, chainId: chainId)
     case .selectListWallet:
-      let viewModel = WalletsListViewModel()
-      let walletsList = WalletsListViewController(viewModel: viewModel)
-      walletsList.delegate = self
-      self.navigationController.present(walletsList, animated: true, completion: nil)
+      let walletsList = WalletListV2ViewController()
+      let navigation = UINavigationController(rootViewController: walletsList)
+      navigation.setNavigationBarHidden(true, animated: false)
       MixPanelManager.track("wallet_popup_open", properties: ["screenid": "wallet_popup"])
     case .send(let recipientAddress):
       self.openSendTokenView(nil, recipientAddress: recipientAddress ?? "")

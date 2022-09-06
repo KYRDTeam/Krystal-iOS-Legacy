@@ -163,6 +163,7 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
       return
     }
     self.emptyView.isHidden = self.viewModel.totalValueBigInt != BigInt(0)
+    self.viewModel.reloadAllData()
     self.viewModel.reloadDataSource()
     self.tableView.reloadData()
     self.updateUITotalValue()

@@ -574,6 +574,7 @@
 		7EFFAB8528AE4F5B007CFE7D /* SeedStringCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EFFAB8328AE4F5B007CFE7D /* SeedStringCell.xib */; };
 		8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
 		938288E2ED2CF2CECDBAEA28 /* Pods_KyberNetworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */; };
+		A608C45228B726A600B0B867 /* KQRCodeReaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A608C45128B726A600B0B867 /* KQRCodeReaderDelegate.swift */; };
 		A6156B4E2885188700276120 /* CameraHoleCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6156B4D2885188700276120 /* CameraHoleCover.swift */; };
 		A6156B5128856E1700276120 /* CustomSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6156B5028856E1700276120 /* CustomSegmentView.swift */; };
 		A6156B5328856E4F00276120 /* CustomSegmentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6156B5228856E4F00276120 /* CustomSegmentView.xib */; };
@@ -611,6 +612,7 @@
 		A655619A283503A900944624 /* BridgeSubTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6556198283503A900944624 /* BridgeSubTransactionCell.swift */; };
 		A655619B283503A900944624 /* BridgeSubTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6556199283503A900944624 /* BridgeSubTransactionCell.xib */; };
 		A655619E28350D7600944624 /* TransactionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A655619D28350D7600944624 /* TransactionStatus.swift */; };
+		A655908F28B60CC200925B65 /* BaseWalletOrientedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A655908E28B60CC200925B65 /* BaseWalletOrientedViewController.swift */; };
 		A6573B80284DE16000A25CBF /* CrosschainTransactionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6573B7F284DE16000A25CBF /* CrosschainTransactionService.swift */; };
 		A6595C80289C0EA300CE7E42 /* PolygonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6595C7F289C0EA300CE7E42 /* PolygonView.swift */; };
 		A6595C86289D2C3100CE7E42 /* rocket.json in Resources */ = {isa = PBXBuildFile; fileRef = A6595C85289D2C3100CE7E42 /* rocket.json */; };
@@ -765,6 +767,7 @@
 		A6E26FE428129CAC0054427E /* HistoryModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E26FE328129CAC0054427E /* HistoryModelType.swift */; };
 		A6E60708284F5D8E00387388 /* EthereumTransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E60707284F5D8E00387388 /* EthereumTransactionProcessor.swift */; };
 		A6E6070E2851A25600387388 /* SignerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6070D2851A25600387388 /* SignerFactory.swift */; };
+		A6E6463C28B7742F009556F9 /* KrystalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6463B28B7742F009556F9 /* KrystalService.swift */; };
 		A6E6C9B528168DA200EEB2E6 /* LoadingIndicatorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9B428168DA100EEB2E6 /* LoadingIndicatorCell.swift */; };
 		A6E6C9C52816FA1B00EEB2E6 /* TransactionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9C42816FA1B00EEB2E6 /* TransactionRepository.swift */; };
 		A6E6C9C72816FAE700EEB2E6 /* GetSolanaTransactionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9C62816FAE700EEB2E6 /* GetSolanaTransactionsUseCase.swift */; };
@@ -930,6 +933,8 @@
 		C33C33B825ECC70700F347E5 /* AddTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C33C33B625ECC70700F347E5 /* AddTokenViewController.xib */; };
 		C33CCB2D23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33CCB2B23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift */; };
 		C33CCB2E23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib in Resources */ = {isa = PBXBuildFile; fileRef = C33CCB2C23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib */; };
+		C33DDBAF28ACEF9300D3041A /* WalletListV2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33DDBAD28ACEF9300D3041A /* WalletListV2ViewController.swift */; };
+		C33DDBB028ACEF9300D3041A /* WalletListV2ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C33DDBAE28ACEF9300D3041A /* WalletListV2ViewController.xib */; };
 		C33DDBB228AE4C3C00D3041A /* BigInt+SwapSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33DDBB128AE4C3B00D3041A /* BigInt+SwapSettings.swift */; };
 		C33F749025E8E8AF0065F333 /* GrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33F748F25E8E8AE0065F333 /* GrowingTextView.swift */; };
 		C3409E1A25AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3409E1825AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift */; };
@@ -1025,6 +1030,8 @@
 		C3A6911C25638DE700F57756 /* Lato-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6911125638DE700F57756 /* Lato-ThinItalic.ttf */; };
 		C3A6E02128A103730079926E /* TransactionSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A6E01F28A103730079926E /* TransactionSettingsViewController.swift */; };
 		C3A6E02228A103730079926E /* TransactionSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A6E02028A103730079926E /* TransactionSettingsViewController.xib */; };
+		C3B1FF0F28AFAAD7004CB9EF /* WalletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B1FF0D28AFAAD7004CB9EF /* WalletCell.swift */; };
+		C3B1FF1028AFAAD7004CB9EF /* WalletCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3B1FF0E28AFAAD7004CB9EF /* WalletCell.xib */; };
 		C3B79EC5285C70B8008547F5 /* TradingViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B79EC4285C70B8008547F5 /* TradingViewData.swift */; };
 		C3BA31FD27184367008E8DF6 /* GasPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BA31FC27184367008E8DF6 /* GasPrice.swift */; };
 		C3BBC55F25FB4A2F004E1FB6 /* InvestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BBC55E25FB4A2F004E1FB6 /* InvestCoordinator.swift */; };
@@ -1759,6 +1766,7 @@
 		97C64E77FB15CCDC5F0BA6B5 /* Pods_KrystalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KrystalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3B747245A27436E621E7E41 /* Pods-TrustUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrustUITests/Pods-TrustUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A48A17FC2CC895AF2BB871D0 /* Pods_TrustTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrustTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A608C45128B726A600B0B867 /* KQRCodeReaderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KQRCodeReaderDelegate.swift; sourceTree = "<group>"; };
 		A6156B4D2885188700276120 /* CameraHoleCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraHoleCover.swift; sourceTree = "<group>"; };
 		A6156B5028856E1700276120 /* CustomSegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentView.swift; sourceTree = "<group>"; };
 		A6156B5228856E4F00276120 /* CustomSegmentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomSegmentView.xib; sourceTree = "<group>"; };
@@ -1797,6 +1805,7 @@
 		A6556198283503A900944624 /* BridgeSubTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeSubTransactionCell.swift; sourceTree = "<group>"; };
 		A6556199283503A900944624 /* BridgeSubTransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BridgeSubTransactionCell.xib; sourceTree = "<group>"; };
 		A655619D28350D7600944624 /* TransactionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionStatus.swift; sourceTree = "<group>"; };
+		A655908E28B60CC200925B65 /* BaseWalletOrientedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseWalletOrientedViewController.swift; sourceTree = "<group>"; };
 		A6573B7F284DE16000A25CBF /* CrosschainTransactionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosschainTransactionService.swift; sourceTree = "<group>"; };
 		A6595C7F289C0EA300CE7E42 /* PolygonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonView.swift; sourceTree = "<group>"; };
 		A6595C85289D2C3100CE7E42 /* rocket.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = rocket.json; sourceTree = "<group>"; };
@@ -1954,6 +1963,7 @@
 		A6E6070D2851A25600387388 /* SignerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignerFactory.swift; sourceTree = "<group>"; };
 		A6E6070F2851A2B900387388 /* SolanaSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaSigner.swift; sourceTree = "<group>"; };
 		A6E607112851A31C00387388 /* Signer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signer.swift; sourceTree = "<group>"; };
+		A6E6463B28B7742F009556F9 /* KrystalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalService.swift; sourceTree = "<group>"; };
 		A6E6C9B428168DA100EEB2E6 /* LoadingIndicatorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingIndicatorCell.swift; sourceTree = "<group>"; };
 		A6E6C9C42816FA1B00EEB2E6 /* TransactionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRepository.swift; sourceTree = "<group>"; };
 		A6E6C9C62816FAE700EEB2E6 /* GetSolanaTransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSolanaTransactionsUseCase.swift; sourceTree = "<group>"; };
@@ -2125,6 +2135,8 @@
 		C33C33B625ECC70700F347E5 /* AddTokenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddTokenViewController.xib; sourceTree = "<group>"; };
 		C33CCB2B23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNConfirmCancelTransactionPopUp.swift; sourceTree = "<group>"; };
 		C33CCB2C23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNConfirmCancelTransactionPopUp.xib; sourceTree = "<group>"; };
+		C33DDBAD28ACEF9300D3041A /* WalletListV2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletListV2ViewController.swift; sourceTree = "<group>"; };
+		C33DDBAE28ACEF9300D3041A /* WalletListV2ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletListV2ViewController.xib; sourceTree = "<group>"; };
 		C33DDBB128AE4C3B00D3041A /* BigInt+SwapSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BigInt+SwapSettings.swift"; sourceTree = "<group>"; };
 		C33F748F25E8E8AE0065F333 /* GrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		C3409E1825AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletListSectionTableViewCell.swift; sourceTree = "<group>"; };
@@ -2223,6 +2235,8 @@
 		C3A6911125638DE700F57756 /* Lato-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-ThinItalic.ttf"; sourceTree = "<group>"; };
 		C3A6E01F28A103730079926E /* TransactionSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSettingsViewController.swift; sourceTree = "<group>"; };
 		C3A6E02028A103730079926E /* TransactionSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionSettingsViewController.xib; sourceTree = "<group>"; };
+		C3B1FF0D28AFAAD7004CB9EF /* WalletCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCell.swift; sourceTree = "<group>"; };
+		C3B1FF0E28AFAAD7004CB9EF /* WalletCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletCell.xib; sourceTree = "<group>"; };
 		C3B79EC4285C70B8008547F5 /* TradingViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingViewData.swift; sourceTree = "<group>"; };
 		C3BA31FC27184367008E8DF6 /* GasPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPrice.swift; sourceTree = "<group>"; };
 		C3BBC55E25FB4A2F004E1FB6 /* InvestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestCoordinator.swift; sourceTree = "<group>"; };
@@ -3148,6 +3162,8 @@
 			isa = PBXGroup;
 			children = (
 				257A3793205BC27400E86794 /* KNBaseViewController.swift */,
+				A655908E28B60CC200925B65 /* BaseWalletOrientedViewController.swift */,
+				A608C45128B726A600B0B867 /* KQRCodeReaderDelegate.swift */,
 			);
 			path = BaseController;
 			sourceTree = "<group>";
@@ -5179,6 +5195,7 @@
 				A6E6C9E52817FE0A00EEB2E6 /* KNInternalProvider.swift */,
 				A6E6C9E42817FE0900EEB2E6 /* KyberNetworkService.swift */,
 				A6B3CD8128125737005D0D66 /* KrystalApi.swift */,
+				A6E6463B28B7742F009556F9 /* KrystalService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -5975,6 +5992,8 @@
 				C3A241A12567BC050073703C /* Cells */,
 				C3A241992567AD610073703C /* WalletsListViewController.swift */,
 				C3A2419A2567AD610073703C /* WalletsListViewController.xib */,
+				C33DDBAD28ACEF9300D3041A /* WalletListV2ViewController.swift */,
+				C33DDBAE28ACEF9300D3041A /* WalletListV2ViewController.xib */,
 			);
 			path = WalletsList;
 			sourceTree = "<group>";
@@ -5986,6 +6005,8 @@
 				C3A241A32567BEB50073703C /* WalletListTableViewCell.xib */,
 				C3409E1825AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift */,
 				C3409E1925AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib */,
+				C3B1FF0D28AFAAD7004CB9EF /* WalletCell.swift */,
+				C3B1FF0E28AFAAD7004CB9EF /* WalletCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -6412,7 +6433,6 @@
 					2912CCF41F6A830700C6CBE3 = {
 						CreatedOnToolsVersion = 9.0;
 						LastSwiftMigration = 0910;
-						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -6455,7 +6475,6 @@
 					};
 					C3794175262816E100FBCA14 = {
 						CreatedOnToolsVersion = 12.4;
-						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -6517,6 +6536,7 @@
 				C3F71CA1261C084C00285935 /* EarnTutorialViewController.xib in Resources */,
 				25929C6120DA5C760045CFA3 /* SF-Pro-Display-UltralightItalic.otf in Resources */,
 				25073D23211AF20D00833C92 /* Montserrat-Regular.ttf in Resources */,
+				C3B1FF1028AFAAD7004CB9EF /* WalletCell.xib in Resources */,
 				25073D28211AF20D00833C92 /* Montserrat-ExtraLight.ttf in Resources */,
 				25FB472422CC939F00374CE8 /* config_env_staging2.json in Resources */,
 				C6FE41822383A0C10096AAD8 /* KNWalletConnectViewController.xib in Resources */,
@@ -6763,6 +6783,7 @@
 				C3EE06BA267A15E50090B432 /* Karla-Italic-VariableFont_wght.ttf in Resources */,
 				7EB47FF527C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib in Resources */,
 				253F50E821E5B5290068813D /* KNPromoCodeViewController.xib in Resources */,
+				C33DDBB028ACEF9300D3041A /* WalletListV2ViewController.xib in Resources */,
 				25929C6820DA5C760045CFA3 /* SF-Pro-Display-Light.otf in Resources */,
 				2502AC19209475BE007F23CD /* KNListWalletsTableViewCell.xib in Resources */,
 				C3D6996E26410CCB004B34E1 /* GoogleService-Info.plist in Resources */,
@@ -7496,9 +7517,11 @@
 				A6BB3C2628605F760097EB75 /* EthereumTransactionSigner.swift in Sources */,
 				C331F373289BBF1D00A71B81 /* SwapProcessPopup.swift in Sources */,
 				25F9C7672213D0D20001064D /* UIColor.swift in Sources */,
+				A655908F28B60CC200925B65 /* BaseWalletOrientedViewController.swift in Sources */,
 				A6B3CD582811C07C005D0D66 /* PendingHistoryTransactonViewModel.swift in Sources */,
 				25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */,
 				A6DA40EF27F6E1450078C58E /* ExploreBannersCell.swift in Sources */,
+				A608C45228B726A600B0B867 /* KQRCodeReaderDelegate.swift in Sources */,
 				7ECCB1FC2861711800499FA0 /* SearchResult.swift in Sources */,
 				A64CC665289405B8006BA1C6 /* Web3Factory.swift in Sources */,
 				C33BB80027955BC800851BC6 /* ABIEncoder.swift in Sources */,
@@ -7546,6 +7569,7 @@
 				7EA10B7C289A7B650036E696 /* SearchTokenViewCell.swift in Sources */,
 				2561454420C6442400FB00CF /* KNContact.swift in Sources */,
 				294DFBAE1FE6F254004CEB56 /* TokenObject.swift in Sources */,
+				C33DDBAF28ACEF9300D3041A /* WalletListV2ViewController.swift in Sources */,
 				A6B3CD602811CBBA005D0D66 /* ViewControllerAssembly.swift in Sources */,
 				A6F5DCAA2857129E00FD02C9 /* EthereumWeb3Service.swift in Sources */,
 				C3263B0225EDE6FB005FBB60 /* WithdrawCoordinator.swift in Sources */,
@@ -7744,6 +7768,7 @@
 				25C45ADD20AD5EF900CDA1FF /* KNImportWalletCoordinator.swift in Sources */,
 				C33DDBB228AE4C3C00D3041A /* BigInt+SwapSettings.swift in Sources */,
 				7E44DBEA2849BA3100E4AD26 /* BridgeTransactionStatusPopup.swift in Sources */,
+				C3B1FF0F28AFAAD7004CB9EF /* WalletCell.swift in Sources */,
 				A6CC317C2877ED8700891200 /* OcrDetector.swift in Sources */,
 				257A37A9205DA06400E86794 /* KNTransactionStatusCoordinator.swift in Sources */,
 				C3C0B0CB2602F8C6001A1710 /* Marketing.swift in Sources */,
@@ -7848,6 +7873,7 @@
 				25EE47EE21267B97002657DF /* KNAppStyle.swift in Sources */,
 				C3A6592025F1EC3300A89241 /* EarnOverviewViewController.swift in Sources */,
 				A6F5DCAE28572FF200FD02C9 /* NonceCache.swift in Sources */,
+				A6E6463C28B7742F009556F9 /* KrystalService.swift in Sources */,
 				25D325A720C075DE008BB235 /* KNSendTokenViewCoordinator.swift in Sources */,
 				C3743295278EC076002C97A9 /* Int.swift in Sources */,
 				A6D38BF32899118F003579F2 /* SwapV2PlatformCell.swift in Sources */,
@@ -8205,10 +8231,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "KyberNetwork/KyberSwap - Crypto ExchangeDebug.entitlements";
-				CODE_SIGN_IDENTITY = "Apple Development: Toi Duong (PZRB6AA23F)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Toi Duong (PZRB6AA23F)";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				ENABLE_BITCODE = YES;
@@ -8219,7 +8245,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.18;
+				MARKETING_VERSION = 1.2.19;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios;
 				PRODUCT_NAME = Krystal;
@@ -8239,10 +8265,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "KyberNetwork/KyberSwap - Crypto ExchangeDebug.entitlements";
-				CODE_SIGN_IDENTITY = "Apple Development: Toi Duong (PZRB6AA23F)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Toi Duong (PZRB6AA23F)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				ENABLE_BITCODE = YES;
@@ -8253,7 +8279,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.18;
+				MARKETING_VERSION = 1.2.19;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios;
 				PRODUCT_NAME = Krystal;
 				PROVISIONING_PROFILE_SPECIFIER = "Krytal Dev";
@@ -8418,9 +8444,9 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CODE_SIGN_IDENTITY = "Apple Development: Toi Duong (PZRB6AA23F)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Toi Duong (PZRB6AA23F)";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
@@ -8460,12 +8486,12 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CODE_SIGN_IDENTITY = "Apple Development: Toi Duong (PZRB6AA23F)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Toi Duong (PZRB6AA23F)";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = G9CRYMTLBL;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -8548,10 +8574,10 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "Apple Development: Toi Duong (PZRB6AA23F)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Toi Duong (PZRB6AA23F)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
@@ -8562,7 +8588,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.18;
+				MARKETING_VERSION = 1.2.19;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -8582,8 +8608,8 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "Apple Development: Toi Duong (PZRB6AA23F)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Toi Duong (PZRB6AA23F)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -8595,7 +8621,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.18;
+				MARKETING_VERSION = 1.2.19;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios.KrystalNotificationServiceExtension;

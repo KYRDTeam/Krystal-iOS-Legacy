@@ -195,6 +195,33 @@ enum ChainType: Codable, CaseIterable {
     }
     return UIImage(named: self.customRPC().chainIcon)
   }
+  
+  func squareIcon() -> UIImage {
+    switch self {
+    case .all:
+      return Images.allNetworkSquare
+    case .eth:
+      return Images.chainEthSquare
+    case .bsc:
+      return Images.chainBscSquare
+    case .polygon:
+      return Images.chainPolygonSquare
+    case .avalanche:
+      return Images.chainAvaxSquare
+    case .cronos:
+      return Images.chainCronosSquare
+    case .fantom:
+      return Images.chainFantomSquare
+    case .arbitrum:
+      return Images.chainArbitrumSquare
+    case .aurora:
+      return Images.chainAuroraSquare
+    case .solana:
+      return Images.chainSolanaSquare
+    case .klaytn:
+      return Images.chainKlaytnSquare
+    }
+  }
 
   func compoundSymbol() -> String {
     switch self {
@@ -334,6 +361,15 @@ enum ChainType: Codable, CaseIterable {
 
   func blockExploreName() -> String {
     return "Block Explorer"
+  }
+  
+  var supportMultisend: Bool {
+    switch self {
+    case .solana:
+      return false
+    default:
+      return true
+    }
   }
   
   func isSupportSwap() -> Bool {

@@ -17,6 +17,9 @@ protocol KConfirmSendViewControllerDelegate: class {
 class KConfirmSendViewController: KNBaseViewController {
   @IBOutlet weak var titleLabel: UILabel!
 
+  @IBOutlet weak var chainIcon: UIImageView!
+  @IBOutlet weak var chainLabel: UILabel!
+  
   @IBOutlet weak var contactImageView: UIImageView!
   @IBOutlet weak var contactNameLabel: UILabel!
   @IBOutlet weak var sendAddressLabel: UILabel!
@@ -57,13 +60,18 @@ class KConfirmSendViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    
     self.setupUI()
-    MixPanelManager.track("transfer_confirm_pop_up_open", properties: ["screenid": "transfer_confirm_pop_up"])
+    self.setupChainInfo()
+ 	MixPanelManager.track("transfer_confirm_pop_up_open", properties: ["screenid": "transfer_confirm_pop_up"])
+  }
+  
+  func setupChainInfo() {
+    chainIcon.image = KNGeneralProvider.shared.currentChain.squareIcon()
+    chainLabel.text = KNGeneralProvider.shared.currentChain.chainName()
   }
 
-
   fileprivate func setupUI() {
-
     self.contactImageView.rounded(radius: self.contactImageView.frame.height / 2.0)
     self.contactImageView.image = self.viewModel.addressToIcon
 

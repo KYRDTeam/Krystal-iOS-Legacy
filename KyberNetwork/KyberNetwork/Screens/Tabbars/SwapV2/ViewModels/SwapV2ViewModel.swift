@@ -435,12 +435,6 @@ extension SwapV2ViewModel {
   private func observeNotifications() {
     NotificationCenter.default.addObserver(
       self,
-      selector: #selector(appDidSwitchChain),
-      name: AppEventCenter.shared.kAppDidSwitchChain,
-      object: nil
-    )
-    NotificationCenter.default.addObserver(
-      self,
       selector: #selector(appDidSwitchAddress),
       name: AppEventCenter.shared.kAppDidChangeAddress,
       object: nil
@@ -587,6 +581,7 @@ extension SwapV2ViewModel {
       priceImpactState.value = self.getPriceImpactState(change: Double(selectedRate.priceImpact) / 100)
       state.value = .requiredExpertMode
     } else if !state.value.isActiveState {
+      self.updateInfo()
       return
     }
     

@@ -15,15 +15,13 @@ protocol OverviewMainViewControllerDelegate: class {
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent)
 }
 
-class OverviewMainViewController: KNBaseViewController {
+class OverviewMainViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var totalBalanceContainerView: UIView!
   @IBOutlet weak var notificationButton: UIButton!
   @IBOutlet weak var searchButton: UIButton!
   @IBOutlet weak var totalPageValueLabel: UILabel!
   @IBOutlet weak var currentPageNameLabel: UILabel!
-  @IBOutlet weak var currentChainIcon: UIImageView!
-  @IBOutlet weak var currentChainLabel: UILabel!
   @IBOutlet weak var sortingContainerView: UIView!
   @IBOutlet weak var totatlInfoView: UIView!
   @IBOutlet weak var sortMarketByNameButton: UIButton!
@@ -41,6 +39,14 @@ class OverviewMainViewController: KNBaseViewController {
   let refreshControl = UIRefreshControl()
   let viewModel: OverviewMainViewModel
   let calculatingQueue = DispatchQueue.global()
+  
+  override var supportAllChainOption: Bool {
+    return true
+  }
+  
+  override var currentChain: ChainType {
+    return viewModel.currentChain
+  }
   
   init(viewModel: OverviewMainViewModel) {
     self.viewModel = viewModel
@@ -183,7 +189,6 @@ class OverviewMainViewController: KNBaseViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.updateUIByFeatureFlags()
-    self.updateUISwitchChain()
     self.delegate?.overviewMainViewController(self, run: .didAppear)
   }
   
@@ -203,12 +208,6 @@ class OverviewMainViewController: KNBaseViewController {
     self.updateCh24Button()
     self.tableView.reloadData()
     self.infoCollectionView.reloadData()
-  }
-  
-  fileprivate func updateUISwitchChain() {
-    let selected = self.viewModel.currentChain
-    self.currentChainIcon.image = selected.chainIcon()
-    self.currentChainLabel.text = selected.chainName()
   }
   
   fileprivate func updateCh24Button() {
@@ -292,6 +291,19 @@ class OverviewMainViewController: KNBaseViewController {
     }
     self.present(popup, animated: true, completion: nil)
     MixPanelManager.track("import_select_chain_open", properties: ["screenid": "import_select_chain"])
+  }
+
+  override func onChainSelected(chain: ChainType) {
+    if chain == .all {
+      self.viewModel.currentChain = chain
+      self.tableView.reloadData()
+      self.delegate?.overviewMainViewController(self, run: .selectAllChain)
+      return
+    } else {
+      self.viewModel.currentChain = chain
+      super.onChainSelected(chain: chain)
+      self.delegate?.overviewMainViewController(self, run: .pullToRefreshed(current: self.viewModel.currentMode, overviewMode: self.viewModel.overviewMode))
+    }
   }
   
   @IBAction func toolbarOptionButtonTapped(_ sender: UIButton) {
@@ -402,18 +414,22 @@ class OverviewMainViewController: KNBaseViewController {
     MixPanelManager.track("home_token_data_pop_up", properties: ["screenid": "homepage", "show_option": mode.toString()])
   }
   
-  func coordinatorDidUpdateChain() {
+  @objc override func onAppSwitchChain() {
+    super.onAppSwitchChain()
+    
     guard self.isViewLoaded else {
       return
     }
+    viewModel.currentChain = KNGeneralProvider.shared.currentChain
     if self.viewModel.currencyMode.isQuoteCurrency {
       self.viewModel.currencyMode = KNGeneralProvider.shared.quoteCurrency
     }
-    self.updateUISwitchChain()
     self.reloadUI()
   }
   
-  func coordinatorAppSwitchAddress() {
+  @objc override func onAppSwitchAddress() {
+    super.onAppSwitchAddress()
+    
     if self.viewModel.currentChain != .all {
       self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
     }
@@ -422,7 +438,6 @@ class OverviewMainViewController: KNBaseViewController {
     calculatingQueue.async {
       self.viewModel.reloadAllData()
       DispatchQueue.main.async {
-        self.updateUISwitchChain()
         self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
         self.tableView.reloadData()
         self.infoCollectionView.reloadData()
@@ -770,10 +785,12 @@ extension OverviewMainViewController: UICollectionViewDataSource {
       totalValueString = self.viewModel.displayTotalSummaryValue
     }
     
-    cell.updateCell(walletName: viewModel.currentWalletName, totalValue: totalValueString, hideBalanceStatus: self.viewModel.hideBalanceStatus, shouldShowAction: indexPath.item == 0)
+    let isAllChainOverallCell = indexPath.item != 0
     
-    cell.walletListButtonTapped = {
-      self.delegate?.overviewMainViewController(self, run: .selectListWallet)
+    cell.updateCell(chain: isAllChainOverallCell ? .all : viewModel.currentChain, totalValue: totalValueString, hideBalanceStatus: self.viewModel.hideBalanceStatus, shouldShowAction: indexPath.item == 0, isAllChainOverralCell: isAllChainOverallCell)
+    
+    cell.chainButtonTapped = {
+      self.onChainButtonTapped(self.infoCollectionView)
     }
     
     cell.hideBalanceButtonTapped = {
