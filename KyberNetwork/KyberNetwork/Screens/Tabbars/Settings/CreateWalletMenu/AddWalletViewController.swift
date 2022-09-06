@@ -22,19 +22,35 @@ protocol AddWalletViewControllerDelegate: class {
 
 class AddWalletViewController: KNBaseViewController {
   weak var delegate: AddWalletViewControllerDelegate?
+  var isCloseByGesture: Bool = true
   override func viewDidLoad() {
     super.viewDidLoad()
   }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    isCloseByGesture = true
+  }
+  
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    if isCloseByGesture {
+      self.delegate?.addWalletViewController(self, run: .close)
+    }
+  }
 
   @IBAction func createWalletButtonTapped(_ sender: Any) {
+    isCloseByGesture = false
     self.delegate?.addWalletViewController(self, run: .createWallet)
   }
 
   @IBAction func importWalletButtonTapped(_ sender: Any) {
+    isCloseByGesture = false
     self.delegate?.addWalletViewController(self, run: .importWallet)
   }
   
   @IBAction func onCloseButtonTapped(_ sender: Any) {
+    isCloseByGesture = false
     self.navigationController?.popViewController(animated: true, completion: {
       self.delegate?.addWalletViewController(self, run: .close)
     })
