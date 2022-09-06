@@ -202,6 +202,7 @@ extension KNAppCoordinator {
 
     MixPanelManager.shared.updateWalletAddress(address: address.addressString)
     Tracker.updateUserID(address.addressString)
+    MixPanelManager.shared.setDistintID(address)
   }
   
   private func switchToLastImportedAddress() {
