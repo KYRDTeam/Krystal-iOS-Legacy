@@ -146,6 +146,18 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       }
       self.view.layoutSubviews()
     } else if self.transaction.state == .done {
+      if transaction.type == .transferETH || transaction.type == .transferToken || transaction.type == .selfTransfer {
+        MixPanelManager.track("transfer_done_pop_up_open", properties: ["screenid": "transfer_done_pop_up"])
+      } else if transaction.type == .multiSend {
+        MixPanelManager.track("multisend_done_pop_up_open", properties: ["screenid": "multisend_done_pop_up"])
+      } else if transaction.type == .bridge {
+        MixPanelManager.track("bridge_done_pop_up_open", properties: ["screenid": "bridge_done_pop_up"])
+      } else if transaction.type == .earn {
+        MixPanelManager.track("supply_done_pop_up_open", properties: ["screenid": "supply_done_pop_up"])
+      } else if transaction.type == .withdraw {
+        MixPanelManager.track("withdraw_done_pop_up_open", properties: ["screenid": "withdraw_done_pop_up"])
+      }
+      
       self.titleIconImageView.image = UIImage(named: "tx_success_icon")
       self.titleLabel.text = "Done!".toBeLocalised().uppercased()
       self.subTitleLabel.text = {
