@@ -144,7 +144,8 @@ class BridgeViewController: KNBaseViewController {
           "from_number_token": self.viewModel.sourceAmount,
           "to_chain": self.viewModel.currentDestChain?.chainName(),
           "to_number_token": self.viewModel.estimatedDestAmount.shortString(decimals: self.viewModel.currentDestToken?.decimals ?? 18),
-          "recipient_address": self.viewModel.currentSendToAddress
+          "recipient_address": self.viewModel.currentSendToAddress,
+          "returned_message": self.viewModel.errorMsg
         ])
       }
     }

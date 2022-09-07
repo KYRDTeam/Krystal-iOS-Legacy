@@ -248,7 +248,7 @@ class KSendTokenViewController: BaseWalletOrientedViewController {
       "number_token": tx.value.shortString(decimals: viewModel.from.decimals),
       "token_name": viewModel.from.name,
       "wallet_address": viewModel.address,
-      "gas_fee": tx.maxGasFee
+      "gas_fee": KNGeneralProvider.shared.currentChain == .solana ? viewModel.solFeeString : viewModel.ethFeeBigInt.shortString(decimals: 18)
     ])
   }
 
