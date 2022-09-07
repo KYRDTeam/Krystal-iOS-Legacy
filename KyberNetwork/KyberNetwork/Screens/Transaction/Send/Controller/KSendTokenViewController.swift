@@ -253,10 +253,10 @@ class KSendTokenViewController: InAppBrowsingViewController {
     let tx = viewModel.unconfirmTransaction
     MixPanelManager.track("transfer_submit", properties: [
       "screenid": "transfer",
-      "number_token": tx.value.description,
+      "number_token": tx.value.shortString(decimals: viewModel.from.decimals),
       "token_name": viewModel.from.name,
       "wallet_address": viewModel.address,
-      "max_gas_fee": tx.maxGasFee
+      "gas_fee": tx.maxGasFee
     ])
   }
 

@@ -172,7 +172,7 @@ class ConfirmBridgeViewController: KNBaseViewController {
 //      self.delegate?.didConfirm(self, confirm: self.viewModel.transaction, eip1559Tx: unwrap, internalHistoryTransaction: internalHistory)
 //    }
     
-    MixPanelManager.track("kbridge_confirm", properties: ["screenid": "bridge"])
+    MixPanelManager.track("kbridge_confirm", properties: ["screenid": "bridge_confirm_pop_up"])
   }
 }
 

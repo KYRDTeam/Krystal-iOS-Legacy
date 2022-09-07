@@ -348,7 +348,6 @@ class BridgeViewModel {
           cell.swapButton.setTitle(self.isNeedApprove ? "Approve \(currentSourceToken.symbol)" : "Review Transfer", for: .normal)
         } else {
           cell.swapButton.setTitle("Review Transfer", for: .normal)
-          MixPanelManager.track("kbridge_review_transfer", properties: ["screenid": "bridge"])
         }
         return cell
       }

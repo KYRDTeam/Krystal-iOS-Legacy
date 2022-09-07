@@ -22,6 +22,7 @@ class MixPanelManager {
   }
   
   func setDistintID(_ address: KAddress) {
+    guard Mixpanel.getInstance(name: mixPanelProjectToken) != nil else { return }
     var shouldConfigTrackingTool = true
     if #available(iOS 14, *) {
       let status = ATTrackingManager.trackingAuthorizationStatus
@@ -29,10 +30,12 @@ class MixPanelManager {
     }
     guard shouldConfigTrackingTool else { return }
     Mixpanel.mainInstance().distinctId = address.getDistintID()
+    Mixpanel.mainInstance().clearSuperProperties()
     Mixpanel.mainInstance().registerSuperProperties(address.getSuperProperty())
   }
 
   func updateWalletAddress(address: String) {
+    guard Mixpanel.getInstance(name: mixPanelProjectToken) != nil else { return }
     var shouldConfigTrackingTool = true
     if #available(iOS 14, *) {
       let status = ATTrackingManager.trackingAuthorizationStatus
@@ -45,6 +48,7 @@ class MixPanelManager {
   }
   
   static func track(_ event: String, properties: Properties? = nil) {
+    guard Mixpanel.getInstance(name: mixPanelProjectToken) != nil else { return }
     var shouldConfigTrackingTool = true
     if #available(iOS 14, *) {
       let status = ATTrackingManager.trackingAuthorizationStatus

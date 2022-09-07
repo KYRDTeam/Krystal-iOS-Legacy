@@ -126,14 +126,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
     guard shouldConfigTrackingTool else { return }
     setupMixPanel()
+    
     guard !SentrySDK.isEnabled else { return }
     self.setupSentry()
   }
   
   func setupMixPanel() {
-    guard coordinator.session != nil else { return }
     MixPanelManager.shared.configClient()
-    MixPanelManager.shared.setDistintID(coordinator.session.address)
+    if coordinator.session != nil {
+      MixPanelManager.shared.setDistintID(coordinator.session.address)
+    }
   }
   
   fileprivate func setupFirebase() {
