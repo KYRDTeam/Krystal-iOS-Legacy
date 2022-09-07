@@ -153,9 +153,9 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       } else if transaction.type == .bridge {
         MixPanelManager.track("bridge_done_pop_up_open", properties: ["screenid": "bridge_done_pop_up"])
       } else if transaction.type == .earn {
-        MixPanelManager.track("supply_done_pop_up_open", properties: ["screenid": "supply_done_pop_up"])
+        MixPanelManager.track("earn_supply_done_pop_up_open", properties: ["screenid": "earn_supply_done_pop_up"])
       } else if transaction.type == .withdraw {
-        MixPanelManager.track("withdraw_done_pop_up_open", properties: ["screenid": "withdraw_done_pop_up"])
+        MixPanelManager.track("earn_withdraw_done_pop_up_open", properties: ["screenid": "earn_withdraw_done_pop_up"])
       }
       
       self.titleIconImageView.image = UIImage(named: "tx_success_icon")

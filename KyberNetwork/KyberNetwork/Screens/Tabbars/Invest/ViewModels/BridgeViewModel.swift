@@ -75,6 +75,7 @@ class BridgeViewModel {
   var sourceAmount: Double = 0.0
   var isValidSourceAmount: Bool = false
   var isValidDestAmount: Bool = false
+  var errorMsg: String?
   
   var currentAddress: KAddress {
     return AppDelegate.session.address
@@ -264,6 +265,7 @@ class BridgeViewModel {
         }
         self.isValidSourceAmount = errMsg == nil && !currentSourceText.isEmpty
         cell.showErrorIfNeed(errorMsg: errMsg)
+        self.errorMsg = errMsg
         return cell
       }
     } else {
@@ -309,6 +311,7 @@ class BridgeViewModel {
         }
         self.isValidDestAmount = errMsg == nil && !currentDestText.isEmpty
         cell.showErrorIfNeed(errorMsg: errMsg)
+        self.errorMsg = errMsg
         return cell
       case .sendToRow:
         let cell = tableView.dequeueReusableCell(BridgeSendToCell.self, indexPath: indexPath)!

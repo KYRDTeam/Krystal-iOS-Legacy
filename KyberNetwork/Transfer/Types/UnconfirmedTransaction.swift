@@ -56,4 +56,6 @@ struct UnconfirmedTransaction {
       reservedGasLimit: self.gasLimit?.hexEncoded.hexSigned2Complement ?? ""
     )
   }
+  
+  func getGasFee
 }
