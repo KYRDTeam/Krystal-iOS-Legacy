@@ -137,6 +137,15 @@ class BridgeViewController: KNBaseViewController {
         self.delegate?.bridgeViewControllerController(self, run: .sendApprove(token: remain.0, remain: remain.1, value: BigInt(self.viewModel.sourceAmount * pow(10, Double(self.viewModel.currentSourceToken?.decimals ?? 18)))))
       } else {
         self.delegate?.bridgeViewControllerController(self, run: .selectSwap)
+        MixPanelManager.track("kbridge_review_transfer", properties: [
+          "screenid": "bridge",
+          "from_chain": self.viewModel.currentSourceChain?.chainName(),
+          "from_token": self.viewModel.currentSourceToken?.name,
+          "from_number_token": self.viewModel.sourceAmount,
+          "to_chain": self.viewModel.currentDestChain?.chainName(),
+          "to_number_token": self.viewModel.estimatedDestAmount.shortString(decimals: self.viewModel.currentDestToken?.decimals ?? 18),
+          "recipient_address": self.viewModel.currentSendToAddress
+        ])
       }
     }
     self.viewModel.selectMaxBlock = {

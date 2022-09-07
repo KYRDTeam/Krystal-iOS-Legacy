@@ -537,7 +537,7 @@ extension SwapV2ViewModel {
       actions.openSwapConfirm(swapObject)
       MixPanelManager.track("swap_swap_now", properties: [
         "screenid": "swap",
-        "source_amount": sourceAmount.description,
+        "source_amount": sourceAmount.shortString(decimals: sourceToken.decimals),
         "source_token": sourceToken.symbol,
         "dest_token": destToken.symbol
       ])
