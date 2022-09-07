@@ -129,7 +129,7 @@ extension KNAddNewWalletCoordinator: KNPasscodeCoordinatorDelegate {
 //      return
 //    }
     navigationController.dismiss(animated: true) {
-      self.delegate?.addNewWalletCoordinator(didAdd: wallet, chain: .eth)
+      self.delegate?.addNewWalletCoordinator(didAdd: wallet, chain: .bsc)
     }
   }
 }

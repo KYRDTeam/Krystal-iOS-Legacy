@@ -15,6 +15,10 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
     super.viewDidLoad()
     observeNotifications()
     reloadChainUI()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     browsingView?.isHidden = !currentAddress.isBrowsingWallet
   }
   
@@ -99,6 +103,7 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
     didSelectWallet(wallet: wallet)
     AppDelegate.shared.coordinator.overviewTabCoordinator?.stop()
     AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
+    browsingView?.isHidden = !currentAddress.isBrowsingWallet
   }
   
   override func addNewWallet(watchAddress: KAddress, chain: ChainType) {
