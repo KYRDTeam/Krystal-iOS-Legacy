@@ -151,6 +151,7 @@ class BridgeViewController: KNBaseViewController {
     }
     self.viewModel.selectMaxBlock = {
       self.delegate?.bridgeViewControllerController(self, run: .selectMaxSource)
+      MixPanelManager.track("bridge_enter_amount", properties: ["screenid": "bridge"])
     }
     
     self.viewModel.scanQRBlock = {

@@ -633,6 +633,7 @@ class EarnViewController: BaseWalletOrientedViewController, AbstractEarnViewCont
 
   @IBAction func maxAmountButtonTapped(_ sender: UIButton) {
     self.keyboardSendAllButtonPressed(sender)
+    MixPanelManager.track("earn_enter_amount", properties: ["screenid": "earn_supply"])
   }
   
   @IBAction func nextButtonTapped(_ sender: UIButton) {
