@@ -2,6 +2,7 @@
 
 import UIKit
 import LocalAuthentication
+import KrystalWallets
 
 enum KNSettingsTabViewEvent {
   case manageWallet
@@ -32,18 +33,20 @@ protocol KNSettingsTabViewControllerDelegate: class {
   func settingsTabViewController(_ controller: KNSettingsTabViewController, run event: KNSettingsTabViewEvent)
 }
 
-class KNSettingsTabViewController: KNBaseViewController {
+class KNSettingsTabViewController: InAppBrowsingViewController {
 
   weak var delegate: KNSettingsTabViewControllerDelegate?
-
+  @IBOutlet weak var addWalletView: UIView!
   @IBOutlet weak var securitySectionHeightContraint: NSLayoutConstraint!
+  @IBOutlet weak var securityViewTopConstraint: NSLayoutConstraint!
   @IBOutlet weak var shareWithFriendsButton: UIButton!
   @IBOutlet weak var fingerprintSwitch: UISwitch!
   @IBOutlet weak var versionLabel: UILabel!
   @IBOutlet weak var fingerprintButton: UIButton!
+  @IBOutlet weak var securityView: UIView!
   var error: NSError?
   let context = LAContext()
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -51,9 +54,8 @@ class KNSettingsTabViewController: KNBaseViewController {
     
     if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
       self.versionLabel.text = version + "-\(KNEnvironment.default.displayName)"
-       }
-    
-    
+    }
+
     guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
       self.fingerprintSwitch.isHidden = true
       self.fingerprintButton.isHidden = true
@@ -72,6 +74,10 @@ class KNSettingsTabViewController: KNBaseViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     MixPanelManager.track("settings_open", properties: ["screenid": "settings"])
+    addWalletView.isHidden = !currentAddress.isBrowsingWallet
+    securityView.isHidden = currentAddress.isBrowsingWallet
+    securitySectionHeightContraint.constant = currentAddress.isBrowsingWallet ? 0 : context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) ? 120 : 90
+    securityViewTopConstraint.constant = currentAddress.isBrowsingWallet ? 0 : 18
   }
 
   override func viewDidLayoutSubviews() {
@@ -96,7 +102,6 @@ class KNSettingsTabViewController: KNBaseViewController {
     }
   }
   
-
   @IBAction func manageWalletButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .manageWallet)
     MixPanelManager.track("settings_manage_wallets", properties: ["screenid": "settings"])

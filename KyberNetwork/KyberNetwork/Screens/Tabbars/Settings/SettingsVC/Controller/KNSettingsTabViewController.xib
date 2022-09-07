@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,16 +12,19 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSettingsTabViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
+                <outlet property="addWalletView" destination="zhl-Y8-4Yc" id="AkY-Dh-qng"/>
                 <outlet property="fingerprintButton" destination="qeT-KP-iDr" id="DUg-RD-QD6"/>
                 <outlet property="fingerprintSwitch" destination="bzU-97-rEA" id="wKc-b1-oPx"/>
                 <outlet property="securitySectionHeightContraint" destination="Ru5-UE-g3u" id="cUn-O7-UxW"/>
+                <outlet property="securityView" destination="6Ow-BM-69D" id="Gst-yj-RSm"/>
+                <outlet property="securityViewTopConstraint" destination="8vD-0f-AVu" id="Iuw-iX-2MA"/>
                 <outlet property="shareWithFriendsButton" destination="ijc-DN-FUu" id="Fpv-Fa-f23"/>
                 <outlet property="topBarHeight" destination="XGd-Zo-BPF" id="33e-tk-hgZ"/>
                 <outlet property="versionLabel" destination="nzz-dO-flI" id="xMn-ad-svF"/>
@@ -92,15 +95,50 @@
                                         <action selector="manageWalletButtonPressed:" destination="-1" eventType="touchUpInside" id="JSQ-er-z2P"/>
                                     </connections>
                                 </button>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zhl-Y8-4Yc">
+                                    <rect key="frame" x="0.0" y="37" width="345" height="81"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cFg-PO-kSU">
+                                            <rect key="frame" x="27" y="21.5" width="291" height="38"/>
+                                            <color key="backgroundColor" name="buttonBackgroundColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="38" id="Y9Q-9q-diJ"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="15"/>
+                                            <state key="normal" title="Add Wallet">
+                                                <color key="titleColor" name="mainViewBgColor"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="16"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="onAddWalletButtonTapped:" destination="-1" eventType="touchUpInside" id="URV-4V-i3c"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" name="mainViewBgColor"/>
+                                    <constraints>
+                                        <constraint firstItem="cFg-PO-kSU" firstAttribute="centerX" secondItem="zhl-Y8-4Yc" secondAttribute="centerX" id="OFn-Uq-pPg"/>
+                                        <constraint firstItem="cFg-PO-kSU" firstAttribute="centerY" secondItem="zhl-Y8-4Yc" secondAttribute="centerY" id="Xvt-GL-6WT"/>
+                                        <constraint firstItem="cFg-PO-kSU" firstAttribute="leading" secondItem="zhl-Y8-4Yc" secondAttribute="leading" constant="27" id="cva-yl-OhU"/>
+                                    </constraints>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" name="mainViewBgColor"/>
                             <constraints>
                                 <constraint firstItem="XDo-Po-iWz" firstAttribute="top" secondItem="OVZ-jU-hlZ" secondAttribute="bottom" constant="12" id="4HI-cd-P8E"/>
                                 <constraint firstAttribute="trailing" secondItem="OVZ-jU-hlZ" secondAttribute="trailing" constant="24" id="4UH-8H-d5S"/>
+                                <constraint firstAttribute="trailing" secondItem="zhl-Y8-4Yc" secondAttribute="trailing" id="5bQ-GU-gT0"/>
                                 <constraint firstAttribute="height" constant="118" id="JBO-kX-kmV"/>
                                 <constraint firstItem="OVZ-jU-hlZ" firstAttribute="top" secondItem="1Jq-H6-lCP" secondAttribute="bottom" constant="12" id="QKp-fK-AFS"/>
+                                <constraint firstAttribute="bottom" secondItem="zhl-Y8-4Yc" secondAttribute="bottom" id="Zmf-sw-Z5K"/>
                                 <constraint firstItem="OVZ-jU-hlZ" firstAttribute="leading" secondItem="7lQ-yL-ejU" secondAttribute="leading" constant="24" id="bDb-5h-iRA"/>
                                 <constraint firstItem="1Jq-H6-lCP" firstAttribute="top" secondItem="7lQ-yL-ejU" secondAttribute="top" constant="18" id="c6u-yk-EmR"/>
+                                <constraint firstItem="zhl-Y8-4Yc" firstAttribute="top" secondItem="1Jq-H6-lCP" secondAttribute="bottom" id="c9z-D0-lvP"/>
+                                <constraint firstItem="zhl-Y8-4Yc" firstAttribute="leading" secondItem="7lQ-yL-ejU" secondAttribute="leading" id="jzR-2z-fbD"/>
                                 <constraint firstItem="XDo-Po-iWz" firstAttribute="leading" secondItem="7lQ-yL-ejU" secondAttribute="leading" constant="24" id="ndT-qJ-OB6"/>
                                 <constraint firstAttribute="trailing" secondItem="XDo-Po-iWz" secondAttribute="trailing" constant="24" id="tcY-9i-4Y9"/>
                                 <constraint firstItem="1Jq-H6-lCP" firstAttribute="leading" secondItem="7lQ-yL-ejU" secondAttribute="leading" constant="24" id="uKW-SF-ivq"/>
