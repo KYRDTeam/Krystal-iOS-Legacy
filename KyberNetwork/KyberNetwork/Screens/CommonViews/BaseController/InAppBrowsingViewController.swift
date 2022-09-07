@@ -14,6 +14,7 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     observeNotifications()
+    reloadChainUI()
   }
   
   deinit {
@@ -21,6 +22,7 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
   }
   
   override func observeNotifications() {
+    super.observeNotifications()
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(onAppBrowsingSwitchChain),
@@ -37,6 +39,7 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
   }
   
   override func unobserveNotifications() {
+    super.unobserveNotifications()
     NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidSwitchChain, object: nil)
     
     let supportedTokensName = Notification.Name(kSupportedTokenListDidUpdateNotificationKey)

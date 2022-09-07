@@ -1489,13 +1489,15 @@ extension KrytalService: TargetType {
     case .getCommonBaseToken:
       return .requestPlain
     case .getSearchToken(let address, let query, let orderBy):
-      let json: JSONDictionary = [
-        "address": address,
+      var json: JSONDictionary = [
         "query": query,
         "orderBy": orderBy,
         "limit": 50,
         "tags": "PROMOTION,VERIFIED,UNVERIFIED"
       ]
+      if !address.isEmpty {
+        json["address"] = address
+      }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
   }

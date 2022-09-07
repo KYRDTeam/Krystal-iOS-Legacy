@@ -9,7 +9,7 @@ import UIKit
 import Lottie
 import BigInt
 
-class SwapV2ViewController: BaseWalletOrientedViewController {
+class SwapV2ViewController: InAppBrowsingViewController {
   @IBOutlet weak var platformTableView: UITableView!
   @IBOutlet weak var continueButton: UIButton!
   @IBOutlet weak var sourceTokenLabel: UILabel!
@@ -55,7 +55,8 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var dotView: UIView!
   @IBOutlet weak var containerView: UIView!
   @IBOutlet weak var loadingIndicator: SRCountdownTimer!
-  
+  @IBOutlet weak var browsingView: UIView!
+
   var viewModel: SwapV2ViewModel!
   
   let platformRateItemHeight: CGFloat = 96
@@ -148,6 +149,8 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
     continueButton.setBackgroundColor(.Kyber.evenBg, forState: .disabled)
     continueButton.setTitleColor(.black, for: .normal)
     continueButton.setTitleColor(.white.withAlphaComponent(0.3), for: .disabled)
+    let title = currentAddress.isBrowsingWallet ? Strings.connectWallet : Strings.reviewSwap
+    continueButton.setTitle(title, for: .normal)
   }
   
   func setupSourceView() {
@@ -316,8 +319,10 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
       guard let self = self else { return }
       switch state {
       case .emptyAmount:
-        self.continueButton.isEnabled = false
-        self.continueButton.setTitle(Strings.enterAnAmount, for: .normal)
+        if !self.currentAddress.isBrowsingWallet {
+          self.continueButton.isEnabled = false
+          self.continueButton.setTitle(Strings.enterAnAmount, for: .normal)
+        }
         self.rateLoadingView.isHidden = true
         self.platformTableView.isHidden = true
         self.errorView.isHidden = true
@@ -503,6 +508,10 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
   }
   
   @IBAction func continueWasTapped(_ sender: Any) {
+    guard !currentAddress.isBrowsingWallet else {
+      onAddWalletButtonTapped(sender)
+      return
+    }
     viewModel.didTapContinue()
   }
   
