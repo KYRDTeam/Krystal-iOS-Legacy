@@ -33,7 +33,7 @@ protocol KSendTokenViewControllerDelegate: class {
 }
 
 //swiftlint:disable file_length
-class KSendTokenViewController: BaseWalletOrientedViewController {
+class KSendTokenViewController: InAppBrowsingViewController {
   @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var amountTextField: UITextField!
@@ -61,6 +61,7 @@ class KSendTokenViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var gasSettingButton: UIButton!
   @IBOutlet weak var multiSendButton: UIButton!
   @IBOutlet weak var recentContactViewTopConstraint: NSLayoutConstraint!
+  @IBOutlet weak var browsingView: UIView!
   let keyboardUtil = KeyboardTypingUtil()
 
   fileprivate var isViewSetup: Bool = false
@@ -101,6 +102,9 @@ class KSendTokenViewController: BaseWalletOrientedViewController {
     super.viewDidLoad()
     self.addressTextField.setupCustomDeleteIcon()
     self.amountTextField.setupCustomDeleteIcon()
+    browsingView.isHidden = !currentAddress.isBrowsingWallet
+    let title = currentAddress.isBrowsingWallet ? Strings.connectWallet : Strings.transfer
+    sendButton.setTitle(title, for: .normal)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -228,6 +232,10 @@ class KSendTokenViewController: BaseWalletOrientedViewController {
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
+    guard !currentAddress.isBrowsingWallet else {
+      onAddWalletButtonTapped(sender)
+      return
+    }
     Tracker.track(event: .transferSubmit)
     if self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) { return }
     if self.showWarningInvalidAddressIfNeeded() { return }

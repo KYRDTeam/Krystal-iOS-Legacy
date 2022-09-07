@@ -8,24 +8,9 @@
 import UIKit
 import KrystalWallets
 
-class InAppBrowsingViewController: KNBaseViewController {
+class InAppBrowsingViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var chainLabel: UILabel?
-  @IBOutlet weak var chainIcon: UIImageView?
-  
-  var currentChain: ChainType {
-    return KNGeneralProvider.shared.currentChain
-  }
-  
-  var currentAddress: KAddress {
-    return AppDelegate.session.address
-  }
-  
-  lazy var addWalletCoordinator: KNAddNewWalletCoordinator = {
-    let coordinator = KNAddNewWalletCoordinator()
-    coordinator.delegate = self
-    return coordinator
-  }()
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     observeNotifications()
@@ -35,10 +20,10 @@ class InAppBrowsingViewController: KNBaseViewController {
     unobserveNotifications()
   }
   
-  func observeNotifications() {
+  override func observeNotifications() {
     NotificationCenter.default.addObserver(
       self,
-      selector: #selector(onAppSwitchChain),
+      selector: #selector(onAppBrowsingSwitchChain),
       name: AppEventCenter.shared.kAppDidSwitchChain,
       object: nil
     )
@@ -51,7 +36,7 @@ class InAppBrowsingViewController: KNBaseViewController {
     )
   }
   
-  func unobserveNotifications() {
+  override func unobserveNotifications() {
     NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidSwitchChain, object: nil)
     
     let supportedTokensName = Notification.Name(kSupportedTokenListDidUpdateNotificationKey)
@@ -62,15 +47,15 @@ class InAppBrowsingViewController: KNBaseViewController {
     )
   }
   
-  @objc func onAppSwitchChain() {
-    reloadChain()
+  @objc func onAppBrowsingSwitchChain() {
+    reloadChainUI()
   }
   
   @objc func tokenObjectListDidUpdate(_ sender: Any?) {
     reloadChainData()
   }
 
-  func reloadChain() {
+  func reloadChainUI() {
     chainIcon?.image = KNGeneralProvider.shared.currentChain.squareIcon()
     chainLabel?.text = KNGeneralProvider.shared.currentChain.chainName()
   }
@@ -92,10 +77,10 @@ class InAppBrowsingViewController: KNBaseViewController {
   }
   
   @IBAction func onSwitchChainButtonTapped(_ sender: Any) {
-    openSwitchChain()
+    openBrowsingSwitchChain()
   }
   
-  func openSwitchChain() {
+  func openBrowsingSwitchChain() {
     let popup = SwitchChainViewController(selected: currentChain)
     popup.dataSource = ChainType.getAllChain()
     popup.completionHandler = { [weak self] selectedChain in
@@ -104,46 +89,7 @@ class InAppBrowsingViewController: KNBaseViewController {
     present(popup, animated: true, completion: nil)
   }
   
-  func onChainSelected(chain: ChainType) {
-    KNGeneralProvider.shared.currentChain = chain
-    AppEventCenter.shared.switchChain(chain: chain)
-    AppDelegate.shared.coordinator.loadBalanceCoordinator?.shouldFetchAllChain = (chain == .all)
-    AppDelegate.shared.coordinator.loadBalanceCoordinator?.resume()
-  }
-  
-  func didSelectWallet(wallet: KWallet) {
-    let addresses = WalletManager.shared.getAllAddresses(walletID: wallet.id)
-    guard addresses.isNotEmpty else { return }
-    if let matchingChainAddress = addresses.first(where: { $0.addressType == currentChain.addressType }) {
-      AppDelegate.shared.coordinator.switchAddress(address: matchingChainAddress)
-    } else {
-      let address = addresses.first!
-      guard let chain = ChainType.allCases.first(where: {
-        return ($0 != .all) && $0.addressType == address.addressType
-      }) else { return }
-      self.onChainSelected(chain: chain)
-      AppDelegate.shared.coordinator.switchAddress(address: address)
-    }
-  }
-  
-  func didSelectWatchWallet(address: KAddress) {
-    if address.addressType == currentChain.addressType {
-      if currentChain == .all {
-        AppDelegate.shared.coordinator.switchToWatchAddress(address: address, chain: KNGeneralProvider.shared.currentChain)
-        onChainSelected(chain: .all)
-      } else {
-        AppDelegate.shared.coordinator.switchToWatchAddress(address: address, chain: currentChain)
-      }
-    } else {
-      guard let chain = ChainType.allCases.first(where: { $0 != .all && $0.addressType == address.addressType }) else { return }
-      AppDelegate.shared.coordinator.switchToWatchAddress(address: address, chain: chain)
-    }
-  }
-}
-
-extension InAppBrowsingViewController: KNAddNewWalletCoordinatorDelegate {
-  
-  func addNewWalletCoordinator(didAdd wallet: KWallet, chain: ChainType) {
+  override func addNewWallet(wallet: KWallet, chain: ChainType) {
     AppDelegate.shared.setupMixPanel()
     onChainSelected(chain: chain)
     didSelectWallet(wallet: wallet)
@@ -152,18 +98,18 @@ extension InAppBrowsingViewController: KNAddNewWalletCoordinatorDelegate {
     AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
   }
   
-  func addNewWalletCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {
+  override func addNewWallet(watchAddress: KAddress, chain: ChainType) {
     onChainSelected(chain: chain)
     didSelectWatchWallet(address: watchAddress)
   }
   
-  func addNewWalletCoordinatorDidSendRefCode(_ code: String) {
+  override func addNewWalletDidSendRefCode(_ code: String) {
     KrystalService().sendRefCode(address: currentAddress, code.uppercased()) { _, message in
       AppDelegate.shared.coordinator.tabbarController.showTopBannerView(message: message)
     }
   }
 
-  func addNewWalletCoordinator(remove wallet: KWallet) {
+  override func removeWallet(wallet: KWallet) {
 
   }
 }
