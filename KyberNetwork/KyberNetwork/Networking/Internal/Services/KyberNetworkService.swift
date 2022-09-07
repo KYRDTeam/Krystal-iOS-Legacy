@@ -1094,9 +1094,13 @@ extension KrytalService: TargetType {
       var json: JSONDictionary = [
         "src": src,
         "dest": dst,
-        "userAddress": userAddress,
         "platformWallet": Constants.platformWallet
       ]
+        
+      if !userAddress.isEmpty {
+        json["userAddress"] = userAddress
+      }
+        
       if focusSrc {
         json["srcAmount"] = amount
       } else {

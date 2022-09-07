@@ -319,10 +319,8 @@ class SwapV2ViewController: InAppBrowsingViewController {
       guard let self = self else { return }
       switch state {
       case .emptyAmount:
-        if !self.currentAddress.isBrowsingWallet {
-          self.continueButton.isEnabled = false
-          self.continueButton.setTitle(Strings.enterAnAmount, for: .normal)
-        }
+        self.continueButton.isEnabled = false
+        self.continueButton.setTitle(Strings.enterAnAmount, for: .normal)
         self.rateLoadingView.isHidden = true
         self.platformTableView.isHidden = true
         self.errorView.isHidden = true
@@ -424,6 +422,9 @@ class SwapV2ViewController: InAppBrowsingViewController {
         self.platformTableView.isHidden = false
         self.loadingView.isHidden = true
         self.approveGuideView.isHidden = true
+      }
+      if self.currentAddress.isBrowsingWallet {
+        self.continueButton.isEnabled = true
       }
     }
     
@@ -657,6 +658,9 @@ extension SwapV2ViewController {
   }
   
   func onSourceAmountChange(value: String) {
+    if currentAddress.isBrowsingWallet {
+      viewModel.sourceBalance.value = BigInt(0)
+    }
     guard let doubleValue = value.toDouble() else {
       viewModel.sourceAmount.value = nil
       return
