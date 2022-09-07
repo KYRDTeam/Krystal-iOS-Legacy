@@ -61,7 +61,6 @@ class KSendTokenViewController: InAppBrowsingViewController {
   @IBOutlet weak var gasSettingButton: UIButton!
   @IBOutlet weak var multiSendButton: UIButton!
   @IBOutlet weak var recentContactViewTopConstraint: NSLayoutConstraint!
-  @IBOutlet weak var browsingView: UIView!
   let keyboardUtil = KeyboardTypingUtil()
 
   fileprivate var isViewSetup: Bool = false
@@ -102,7 +101,6 @@ class KSendTokenViewController: InAppBrowsingViewController {
     super.viewDidLoad()
     self.addressTextField.setupCustomDeleteIcon()
     self.amountTextField.setupCustomDeleteIcon()
-    browsingView.isHidden = !currentAddress.isBrowsingWallet
     let title = currentAddress.isBrowsingWallet ? Strings.connectWallet : Strings.transfer
     sendButton.setTitle(title, for: .normal)
   }

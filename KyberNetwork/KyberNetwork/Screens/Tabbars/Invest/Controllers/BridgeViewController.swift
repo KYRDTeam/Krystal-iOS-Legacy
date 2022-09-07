@@ -31,10 +31,8 @@ protocol BridgeViewControllerDelegate: class {
   func bridgeViewControllerController(_ controller: BridgeViewController, run event: BridgeEvent)
 }
 
-class BridgeViewController: KNBaseViewController {
-  @IBOutlet weak var chainIcon: UIImageView!
+class BridgeViewController: InAppBrowsingViewController {
   @IBOutlet weak var tableView: UITableView!
-  @IBOutlet weak var walletsListButton: UIButton!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
   weak var delegate: BridgeViewControllerDelegate?
   var viewModel: BridgeViewModel
@@ -159,8 +157,6 @@ class BridgeViewController: KNBaseViewController {
   
   func updateUISwitchChain() {
     let icon = KNGeneralProvider.shared.chainIconImage
-    self.chainIcon.image = icon
-    self.walletsListButton.setTitle(viewModel.currentAddress.name, for: .normal)
     self.tableView.reloadData()
   }
   
@@ -170,7 +166,6 @@ class BridgeViewController: KNBaseViewController {
   }
   
   func appDidSwitchAddress() {
-    self.walletsListButton.setTitle(viewModel.currentAddress.name, for: .normal)
     self.updateUIPendingTxIndicatorView()
   }
   

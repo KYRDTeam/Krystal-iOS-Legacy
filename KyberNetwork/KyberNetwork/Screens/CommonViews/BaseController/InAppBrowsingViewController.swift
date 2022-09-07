@@ -10,11 +10,12 @@ import KrystalWallets
 
 class InAppBrowsingViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var chainLabel: UILabel?
-
+  @IBOutlet weak var browsingView: UIView?
   override func viewDidLoad() {
     super.viewDidLoad()
     observeNotifications()
     reloadChainUI()
+    browsingView?.isHidden = !currentAddress.isBrowsingWallet
   }
   
   deinit {
@@ -96,7 +97,6 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
     AppDelegate.shared.setupMixPanel()
     onChainSelected(chain: chain)
     didSelectWallet(wallet: wallet)
-    AppDelegate.shared.coordinator.tabbarController.selectedIndex = 0
     AppDelegate.shared.coordinator.overviewTabCoordinator?.stop()
     AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
   }

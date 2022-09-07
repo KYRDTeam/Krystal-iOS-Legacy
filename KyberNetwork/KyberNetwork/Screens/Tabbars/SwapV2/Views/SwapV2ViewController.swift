@@ -55,7 +55,6 @@ class SwapV2ViewController: InAppBrowsingViewController {
   @IBOutlet weak var dotView: UIView!
   @IBOutlet weak var containerView: UIView!
   @IBOutlet weak var loadingIndicator: SRCountdownTimer!
-  @IBOutlet weak var browsingView: UIView!
 
   var viewModel: SwapV2ViewModel!
   
