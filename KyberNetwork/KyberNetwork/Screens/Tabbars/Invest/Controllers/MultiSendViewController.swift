@@ -118,7 +118,7 @@ class MultiSendViewModel {
   }
 }
 
-class MultiSendViewController: BaseWalletOrientedViewController {
+class MultiSendViewController: InAppBrowsingViewController {
   @IBOutlet weak var inputTableView: UITableView!
   @IBOutlet weak var inputTableViewHeight: NSLayoutConstraint!
   @IBOutlet weak var historyButton: UIButton!
@@ -126,7 +126,8 @@ class MultiSendViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var useLastMultisendButton: UIButton!
   @IBOutlet weak var comingSoonView: UIView!
   @IBOutlet weak var mainView: UIScrollView!
-  
+  @IBOutlet weak var sendButton: UIButton!
+
   let viewModel: MultiSendViewModel
   weak var delegate: MultiSendViewControllerDelegate?
 
@@ -149,7 +150,8 @@ class MultiSendViewController: BaseWalletOrientedViewController {
     self.updateUISwitchChain()
     self.updateUIPendingTxIndicatorView()
     self.useLastMultisendButton.rounded(color: UIColor(named: "textWhiteColor")!, width: 1, radius: 21)
-    
+    let title = currentAddress.isBrowsingWallet ? Strings.connectWallet : Strings.transfer
+    sendButton.setTitle(title, for: .normal)
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -163,6 +165,10 @@ class MultiSendViewController: BaseWalletOrientedViewController {
   }
   
   @IBAction func sendButtonTapped(_ sender: UIButton) {
+    guard !currentAddress.isBrowsingWallet else {
+      onAddWalletButtonTapped(sender)
+      return
+    }
     self.viewModel.needValidation = true
     self.view.endEditing(true)
     if case .error(let description) = self.viewModel.isFormValid {
