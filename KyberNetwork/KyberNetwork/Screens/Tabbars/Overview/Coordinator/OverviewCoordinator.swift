@@ -631,6 +631,11 @@ extension OverviewCoordinator: KrytalCoordinatorDelegate {
 }
 
 extension OverviewCoordinator: OverviewBrowsingViewControllerDelegate {
+  func didSelectToken(_ controller: OverviewBrowsingViewController, token: Token) {
+    MixPanelManager.track("token_detail_open", properties: ["screenid": "token_detail"])
+    self.openChartView(token: token, chainId: nil)
+  }
+  
   func didSelectSearch(_ controller: OverviewBrowsingViewController) {
     let module = searchRouter.createModule(currencyMode: self.currentCurrencyType, coordinator: self)
     navigationController.pushViewController(module, animated: true)

@@ -10,6 +10,7 @@ import UIKit
 protocol OverviewBrowsingViewControllerDelegate: class {
   func didSelectSearch(_ controller: OverviewBrowsingViewController)
   func didSelectNotification(_ controller: OverviewBrowsingViewController)
+  func didSelectToken(_ controller: OverviewBrowsingViewController, token: Token)
 }
 
 class OverviewBrowsingViewModel {
@@ -215,12 +216,22 @@ extension OverviewBrowsingViewController: UITableViewDataSource {
     }
     return cell
   }
-  
-  
 }
 
 extension OverviewBrowsingViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return OverviewMainViewCell.kCellHeight
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[safe: indexPath.row] {
+      switch cellModel.mode {
+      case .market(token: let token, _):
+        self.delegate?.didSelectToken(self, token: token)
+      default:
+        return
+      }
+    }
+    
   }
 }
