@@ -645,7 +645,7 @@ class EarnViewController: BaseWalletOrientedViewController, AbstractEarnViewCont
       "screenid": "earn_supply",
       "token_id": viewModel.tokenData.address,
       "platform": viewModel.selectedPlatform,
-      "amount": viewModel.amountBigInt.description
+      "amount": viewModel.amount
     ])
   }
   
