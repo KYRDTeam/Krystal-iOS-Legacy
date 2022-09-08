@@ -29,7 +29,7 @@ protocol InvestViewControllerDelegate: class {
   func investViewController(_ controller: InvestViewController, run event: InvestViewEvent)
 }
 
-class InvestViewController: BaseWalletOrientedViewController {
+class InvestViewController: InAppBrowsingViewController {
   @IBOutlet weak var collectionView: UICollectionView!
   
   let viewModel: ExploreViewModel = ExploreViewModel()

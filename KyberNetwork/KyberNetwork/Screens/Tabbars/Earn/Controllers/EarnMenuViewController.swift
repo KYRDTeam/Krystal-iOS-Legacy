@@ -21,7 +21,7 @@ class EarnMenuViewModel {
   }
 }
 
-class EarnMenuViewController: BaseWalletOrientedViewController {
+class EarnMenuViewController: InAppBrowsingViewController {
   @IBOutlet weak var menuTableView: UITableView!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
   @IBOutlet var warningContainerView: UIView!
