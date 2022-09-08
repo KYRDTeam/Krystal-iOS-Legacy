@@ -55,28 +55,34 @@ class ExploreViewModel {
     let isBridgeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bridgeIntegration)
     let isScannerEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
     
+    let isNotBrowsing = !AppDelegate.session.address.isBrowsingWallet
+    
     var menuItems: [ExploreMenuItem] = []
     menuItems.append(.swap)
     menuItems.append(.transfer)
     
     if KNGeneralProvider.shared.currentChain.isSupportSwap() {
-      menuItems.append(contentsOf: [.reward, .referral, .dapps, .multisend])
+      menuItems.append(contentsOf: [.dapps, .multisend])
       
-      if isBuyCryptoEnabled {
+      if isNotBrowsing {
+        menuItems.append(contentsOf: [.reward, .referral])
+      }
+      
+      if isBuyCryptoEnabled && isNotBrowsing {
         menuItems.append(.buyCrypto)
       }
-      if isPromoCodeEnabled {
+      if isPromoCodeEnabled && isNotBrowsing {
         menuItems.append(.promotion)
       }
     }
     
-    if isRewardHuntingEnabled {
+    if isRewardHuntingEnabled && isNotBrowsing {
       menuItems.append(.rewardHunting)
     }
     if isBridgeEnabled {
       menuItems.append(.bridge)
     }
-    if isScannerEnabled {
+    if isScannerEnabled && isNotBrowsing {
       menuItems.append(.scanner)
     }
     if self.menuItems.value != menuItems {
