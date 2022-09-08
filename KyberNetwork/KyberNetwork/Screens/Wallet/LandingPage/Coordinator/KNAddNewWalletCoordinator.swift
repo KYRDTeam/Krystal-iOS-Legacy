@@ -124,11 +124,11 @@ extension KNAddNewWalletCoordinator: KNPasscodeCoordinatorDelegate {
     guard let address = WalletManager.shared.address(forWalletID: wallet.id) else {
       return
     }
-//    guard let chain = ChainType.allCases.first(where: { $0.addressType == address.addressType }) else {
-//      return
-//    }
+    guard let chain = ChainType.allCases.first(where: { $0.addressType == address.addressType }) else {
+      return
+    }
     navigationController.dismiss(animated: true) {
-      self.delegate?.addNewWalletCoordinator(didAdd: wallet, chain: .bsc)
+      self.delegate?.addNewWalletCoordinator(didAdd: wallet, chain: chain)
     }
   }
 }

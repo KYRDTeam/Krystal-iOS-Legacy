@@ -152,7 +152,7 @@ class KNGeneralProvider {
     if let saved = Storage.retrieve(Constants.currentChainSaveFileName, as: ChainType.self) {
       self.currentChain = saved
     } else {
-      self.currentChain = .eth
+      self.currentChain = .bsc
     }
   }
   

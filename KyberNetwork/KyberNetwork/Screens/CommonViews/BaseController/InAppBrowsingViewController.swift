@@ -102,6 +102,7 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
     onChainSelected(chain: chain)
     didSelectWallet(wallet: wallet)
     AppDelegate.shared.coordinator.overviewTabCoordinator?.stop()
+    AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
     AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
     browsingView?.isHidden = !currentAddress.isBrowsingWallet
   }
