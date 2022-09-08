@@ -206,6 +206,7 @@ class KSendTokenViewController: InAppBrowsingViewController {
 
   @IBAction func maxButtonTapped(_ sender: UIButton) {
     self.tokenBalanceLabelTapped(sender)
+    MixPanelManager.track("transfer_enter_amount", properties: ["screenid": "transfer"])
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -254,7 +255,7 @@ class KSendTokenViewController: InAppBrowsingViewController {
       "number_token": tx.value.shortString(decimals: viewModel.from.decimals),
       "token_name": viewModel.from.name,
       "wallet_address": viewModel.address,
-      "gas_fee": tx.maxGasFee
+      "gas_fee": KNGeneralProvider.shared.currentChain == .solana ? viewModel.solFeeString : viewModel.ethFeeBigInt.shortString(decimals: 18)
     ])
   }
 

@@ -141,13 +141,15 @@ class BridgeViewController: InAppBrowsingViewController {
           "from_token": self.viewModel.currentSourceToken?.name,
           "from_number_token": self.viewModel.sourceAmount,
           "to_chain": self.viewModel.currentDestChain?.chainName(),
-          "to_number_token": self.viewModel.estimatedDestAmount.shortString(decimals: self.viewModel.currentDestToken?.decimals ?? 18),
-          "recipient_address": self.viewModel.currentSendToAddress
+          "to_number_token": self.viewModel.estimatedDestAmount.shortString(decimals: self.viewModel.currentSourceToken?.decimals ?? 18),
+          "recipient_address": self.viewModel.currentSendToAddress,
+          "returned_message": self.viewModel.errorMsg
         ])
       }
     }
     self.viewModel.selectMaxBlock = {
       self.delegate?.bridgeViewControllerController(self, run: .selectMaxSource)
+      MixPanelManager.track("bridge_enter_amount", properties: ["screenid": "bridge"])
     }
     
     self.viewModel.scanQRBlock = {
