@@ -346,7 +346,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
         self.loadingIndicator.isHidden = false
         self.rateLoadingView.isHidden = true
       case .notConnected:
-        self.continueButton.isEnabled = false
+        self.continueButton.isEnabled = true
         self.continueButton.setTitle(Strings.connectWallet, for: .normal)
         self.errorView.isHidden = true
         self.approveGuideView.isHidden = true
@@ -421,9 +421,6 @@ class SwapV2ViewController: InAppBrowsingViewController {
         self.platformTableView.isHidden = false
         self.loadingView.isHidden = true
         self.approveGuideView.isHidden = true
-      }
-      if self.currentAddress.isBrowsingWallet {
-        self.continueButton.isEnabled = true
       }
     }
     
