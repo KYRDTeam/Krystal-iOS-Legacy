@@ -99,6 +99,7 @@ class KNAddNewWalletCoordinator: Coordinator {
     self.newWallet = wallet
     // Check if first wallet
     if !KNGeneralProvider.shared.isCreatedPassCode {
+      KNGeneralProvider.shared.currentChain = chain
       self.passcodeCoordinator.start()
     } else {
       navigationController.dismiss(animated: true) {
@@ -121,14 +122,14 @@ extension KNAddNewWalletCoordinator: KNPasscodeCoordinatorDelegate {
     guard let wallet = self.newWallet else {
       return
     }
-    guard let address = WalletManager.shared.address(forWalletID: wallet.id) else {
-      return
-    }
-    guard let chain = ChainType.allCases.first(where: { $0.addressType == address.addressType }) else {
-      return
-    }
+//    guard let address = WalletManager.shared.address(forWalletID: wallet.id) else {
+//      return
+//    }
+//    guard let chain = ChainType.allCases.first(where: { $0.addressType == address.addressType }) else {
+//      return
+//    }
     navigationController.dismiss(animated: true) {
-      self.delegate?.addNewWalletCoordinator(didAdd: wallet, chain: chain)
+      self.delegate?.addNewWalletCoordinator(didAdd: wallet, chain: KNGeneralProvider.shared.currentChain)
     }
   }
 }
