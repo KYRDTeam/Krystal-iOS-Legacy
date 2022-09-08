@@ -99,7 +99,6 @@ class KNAddNewWalletCoordinator: Coordinator {
     self.newWallet = wallet
     // Check if first wallet
     if !KNGeneralProvider.shared.isCreatedPassCode {
-      KNPasscodeUtil.shared.deletePasscode()
       self.passcodeCoordinator.start()
     } else {
       navigationController.dismiss(animated: true) {
