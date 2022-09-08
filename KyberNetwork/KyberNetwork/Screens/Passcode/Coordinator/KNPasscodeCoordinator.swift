@@ -125,6 +125,7 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
   
   fileprivate func didCreateNewPasscode(_ passcode: String) {
     KNPasscodeUtil.shared.setNewPasscode(passcode)
+    UserDefaults.standard.set(true, forKey: Constants.isCreatedPassCode)
     self.delegate?.passcodeCoordinatorDidCreatePasscode()
   }
 }

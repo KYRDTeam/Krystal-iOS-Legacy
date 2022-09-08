@@ -143,6 +143,10 @@ class KNGeneralProvider {
   var chainAddressType: KAddressType {
     return currentChain.addressType
   }
+  
+  var isCreatedPassCode: Bool {
+    return UserDefaults.standard.bool(forKey: Constants.isCreatedPassCode)
+  }
 
   init() {
     if let saved = Storage.retrieve(Constants.currentChainSaveFileName, as: ChainType.self) {
