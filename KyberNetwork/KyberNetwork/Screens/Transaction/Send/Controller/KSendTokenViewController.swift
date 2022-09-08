@@ -628,6 +628,8 @@ extension KSendTokenViewController {
     self.setupNavigationView()
     self.updateUIBalanceDidChange()
     self.updateUIPendingTxIndicatorView()
+    let title = currentAddress.isBrowsingWallet ? Strings.connectWallet : Strings.transfer
+    sendButton.setTitle(title, for: .normal)
   }
 
   func coordinatorDidUpdateChain() {
