@@ -80,6 +80,10 @@ class SwapV2ViewController: InAppBrowsingViewController {
     }
   }
   
+  var titleForContinueButton: String {
+    return currentAddress.isBrowsingWallet ? Strings.connectWallet : Strings.reviewSwap
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -148,8 +152,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
     continueButton.setBackgroundColor(.Kyber.evenBg, forState: .disabled)
     continueButton.setTitleColor(.black, for: .normal)
     continueButton.setTitleColor(.white.withAlphaComponent(0.3), for: .disabled)
-    let title = currentAddress.isBrowsingWallet ? Strings.connectWallet : Strings.reviewSwap
-    continueButton.setTitle(title, for: .normal)
+    continueButton.setTitle(titleForContinueButton, for: .normal)
   }
   
   func setupSourceView() {
@@ -356,7 +359,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
         self.resetCountdownView()
       case .rateNotFound:
         self.continueButton.isEnabled = false
-        self.continueButton.setTitle(Strings.reviewSwap, for: .normal)
+        self.continueButton.setTitle(self.titleForContinueButton, for: .normal)
         self.rateLoadingView.isHidden = false
         self.platformTableView.isHidden = true
         self.loadingView.isHidden = true
@@ -407,7 +410,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
         self.approveGuideLabel.attributedText = String(format: Strings.swapApproveWarn, sourceSymbol).withLineSpacing()
       case .requiredExpertMode:
         self.continueButton.isEnabled = false
-        self.continueButton.setTitle(Strings.reviewSwap, for: .normal)
+        self.continueButton.setTitle(self.titleForContinueButton, for: .normal)
         self.rateLoadingView.isHidden = false
         self.errorView.isHidden = true
         self.platformTableView.isHidden = false
@@ -415,7 +418,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
         self.approveGuideView.isHidden = true
       case .ready:
         self.continueButton.isEnabled = true
-        self.continueButton.setTitle(Strings.reviewSwap, for: .normal)
+        self.continueButton.setTitle(self.titleForContinueButton, for: .normal)
         self.rateLoadingView.isHidden = false
         self.errorView.isHidden = true
         self.platformTableView.isHidden = false
