@@ -128,6 +128,13 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
   func landinagePageViewController(_ controller: KNLandingPageViewController, run event: KNLandingPageViewEvent) {
     switch event {
     case .getStarted:
+      if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
+        self.termViewController.nextAction = {
+          self.delegate?.landingPageCoordinatorStartedBrowsing()
+        }
+        self.navigationController.present(self.termViewController, animated: true, completion: nil)
+        return
+      }
       self.delegate?.landingPageCoordinatorStartedBrowsing()
     case .openCreateWallet:
       Tracker.track(event: .introCreateWallet)
