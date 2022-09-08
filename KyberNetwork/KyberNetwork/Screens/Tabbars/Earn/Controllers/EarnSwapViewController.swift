@@ -736,7 +736,7 @@ class EarnSwapViewModel {
   
 }
 
-class EarnSwapViewController: BaseWalletOrientedViewController, AbstractEarnViewControler {
+class EarnSwapViewController: InAppBrowsingViewController, AbstractEarnViewControler {
   @IBOutlet weak var platformTableView: UITableView!
   @IBOutlet weak var toAmountTextField: UITextField!
   @IBOutlet weak var selectedGasFeeLabel: UILabel!

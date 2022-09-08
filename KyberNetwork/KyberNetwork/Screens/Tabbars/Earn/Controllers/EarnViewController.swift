@@ -448,7 +448,7 @@ protocol AbstractEarnViewControler: class {
   func coordinatorDidUpdateAdvancedNonce(_ nonce: String)
 }
 
-class EarnViewController: BaseWalletOrientedViewController, AbstractEarnViewControler {
+class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler {
   
   @IBOutlet weak var platformTableView: UITableView!
   @IBOutlet weak var fromAmountTextField: UITextField!

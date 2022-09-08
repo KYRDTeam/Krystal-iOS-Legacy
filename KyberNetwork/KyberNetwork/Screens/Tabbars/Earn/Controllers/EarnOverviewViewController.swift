@@ -14,7 +14,7 @@ protocol EarnOverviewViewControllerDelegate: class {
   func earnOverviewViewControllerAddChainWallet(_ controller: EarnOverviewViewController, chainType: ChainType)
 }
 
-class EarnOverviewViewController: BaseWalletOrientedViewController {
+class EarnOverviewViewController: InAppBrowsingViewController {
   @IBOutlet weak var exploreButton: UIButton!
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
