@@ -411,6 +411,10 @@ class EarnViewModel {
       }
     }
   }
+  
+  var titleForContinueButton: String {
+    return KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.next
+  }
 }
 
 enum EarnViewEvent {
@@ -499,10 +503,11 @@ class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler
     )
     self.platformTableView.rowHeight = EarnSelectTableViewCell.kCellHeight
     
-    self.earnButton.setTitle("Next".toBeLocalised(), for: .normal)
+    self.earnButton.setTitle(viewModel.titleForContinueButton, for: .normal)
     self.updateUITokenDidChange(self.viewModel.tokenData)
     self.updateUIForSendApprove(isShowApproveButton: false)
     self.fromAmountTextField.setupCustomDeleteIcon()
+    hintToNavigateToSwapViewLabel.isHidden = KNGeneralProvider.shared.isBrowsingMode
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -591,8 +596,15 @@ class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler
     self.view.layoutIfNeeded()
   }
   
+  override func reloadChainUI() {
+    super.reloadChainUI()
+    earnButton.setTitle(viewModel.titleForContinueButton, for: .normal)
+    hintToNavigateToSwapViewLabel.isHidden = KNGeneralProvider.shared.isBrowsingMode
+    updateAllowance()
+  }
+  
   fileprivate func updateAllowance() {
-    
+    guard !KNGeneralProvider.shared.isBrowsingMode else { return }
     self.delegate?.earnViewController(self, run: .checkAllowance(token: self.viewModel.tokenData))
   }
   
@@ -637,6 +649,10 @@ class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler
   }
   
   @IBAction func nextButtonTapped(_ sender: UIButton) {
+    guard !KNGeneralProvider.shared.isBrowsingMode else {
+      onAddWalletButtonTapped(sender)
+      return
+    }
     Tracker.track(event: .earnSubmit)
     guard !self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) else {
       return
