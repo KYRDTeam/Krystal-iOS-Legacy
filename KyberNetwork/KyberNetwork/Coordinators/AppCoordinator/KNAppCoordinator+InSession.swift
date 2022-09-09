@@ -160,22 +160,16 @@ extension KNAppCoordinator {
   }
   
   func stopAllSessions() {
-    self.landingPageCoordinator.resetNavigationToRoot()
-    self.loadBalanceCoordinator?.exit()
-    self.loadBalanceCoordinator = nil
-
     self.walletManager.removeAll()
-    
     self.session.stopSession()
-    self.session = nil
-
-    self.navigationController.popToRootViewController(animated: true)
-
+    self.session.address = self.walletManager.emptyAddress()
     self.exchangeCoordinator?.stop()
     self.exchangeCoordinator = nil
     self.settingsCoordinator?.stop()
     self.settingsCoordinator = nil
-    self.tabbarController = nil
+    self.overviewTabCoordinator?.stop()
+    self.overviewTabCoordinator?.start()
+    self.tabbarController.selectedIndex = 0
   }
 
   func restartSession(address: KAddress) {
