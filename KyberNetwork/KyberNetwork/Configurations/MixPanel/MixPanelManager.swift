@@ -55,14 +55,14 @@ class MixPanelManager {
       shouldConfigTrackingTool = status == .authorized
     }
     guard shouldConfigTrackingTool else { return }
-//    Mixpanel.mainInstance().track(event: event, properties: properties)
+    Mixpanel.mainInstance().track(event: event, properties: properties)
   }
 }
 
 
 extension KAddress {
   func getDistintID() -> String {
-    if let wallet = WalletManager.shared.wallet(forAddress: self), wallet.importType == .mnemonic {
+    if let wallet = WalletManager.shared.getWalletWithLocalRealm(forAddress: self), wallet.importType == .mnemonic {
       if self.addressString.has0xPrefix {
         return "multi-\(self.addressString)"
       } else if let address = WalletManager.shared.getAllAddresses(walletID: wallet.id).first {
@@ -81,12 +81,12 @@ extension KAddress {
   
   func getSuperProperty() -> [String: String] {
     var result: [String: String] = [:]
-    if let wallet = WalletManager.shared.wallet(forAddress: self), wallet.importType == .mnemonic {
-      if let evmAddress = WalletManager.shared.getAllAddresses(walletID: wallet.id, addressType: .evm).first {
+    if let wallet = WalletManager.shared.getWalletWithLocalRealm(forAddress: self), wallet.importType == .mnemonic {
+      if let evmAddress = WalletManager.shared.getAllAddressesWithLocalRealm(walletID: wallet.id, addressType: .evm).first {
         result["ethereum_address"] = evmAddress.addressString.lowercased()
       }
       
-      if let solAddress = WalletManager.shared.getAllAddresses(walletID: wallet.id, addressType: .solana).first {
+      if let solAddress = WalletManager.shared.getAllAddressesWithLocalRealm(walletID: wallet.id, addressType: .solana).first {
         result["solana_address"] = solAddress.addressString
       }
     } else {
