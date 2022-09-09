@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import KrystalWallets
 
 protocol KNPasscodeCoordinatorDelegate: class {
   func passcodeCoordinatorDidCancel()
@@ -36,7 +37,8 @@ class KNPasscodeCoordinator: Coordinator {
   }
   
   func start() {
-    if KNPasscodeUtil.shared.currentPasscode() == nil, case .authenticate = self.type { return }
+    let wallets = WalletManager.shared.getAllWallets()
+    if wallets.isEmpty || KNPasscodeUtil.shared.currentPasscode() == nil, case .authenticate = self.type { return }
     self.passcodeViewController.resetUI()
     if case .authenticate(let isUpdating) = self.type {
       if isUpdating {
