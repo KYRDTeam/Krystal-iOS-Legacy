@@ -372,8 +372,13 @@ class SwapV2ViewController: InAppBrowsingViewController {
         self.rateLoadingView.isHidden = false
         self.resetCountdownView()
       case .insufficientBalance:
-        self.continueButton.isEnabled = false
-        self.continueButton.setTitle(String(format: Strings.insufficientTokenBalance, self.viewModel.sourceToken.value?.symbol ?? ""), for: .normal)
+        if KNGeneralProvider.shared.isBrowsingMode {
+          self.continueButton.isEnabled = true
+          self.continueButton.setTitle(self.titleForContinueButton, for: .normal)
+        } else {
+          self.continueButton.isEnabled = false
+          self.continueButton.setTitle(String(format: Strings.insufficientTokenBalance, self.viewModel.sourceToken.value?.symbol ?? ""), for: .normal)
+        }
         self.errorView.isHidden = true
         self.platformTableView.isHidden = false
         self.approveGuideView.isHidden = true
