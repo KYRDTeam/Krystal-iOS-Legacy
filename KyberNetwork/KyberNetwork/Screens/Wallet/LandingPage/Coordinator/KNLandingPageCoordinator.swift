@@ -86,7 +86,6 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
     let wallets = walletManager.getAllWallets()
     if wallets.isEmpty && KNPasscodeUtil.shared.currentPasscode() != nil {
       self.navigationController.viewControllers = [self.rootViewController]
-      KNPasscodeUtil.shared.deletePasscode()
     }
     
     if !wallets.isEmpty {

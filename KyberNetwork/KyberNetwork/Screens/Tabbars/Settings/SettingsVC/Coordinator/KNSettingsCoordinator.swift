@@ -230,16 +230,13 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   func settingsViewControllerWalletsButtonPressed() {
-    guard self.listWalletsCoordinator != nil else {
-      let coordinator = KNListWalletsCoordinator(
-        navigationController: self.navigationController,
-        session: self.session,
-        delegate: self
-      )
-      coordinator.start()
-      self.listWalletsCoordinator = coordinator
-      return
-    }
+    let coordinator = KNListWalletsCoordinator(
+      navigationController: self.navigationController,
+      session: self.session,
+      delegate: self
+    )
+    coordinator.start()
+    self.listWalletsCoordinator = coordinator
   }
 
   func settingsViewControllerPasscodeDidChange(_ isOn: Bool) {
