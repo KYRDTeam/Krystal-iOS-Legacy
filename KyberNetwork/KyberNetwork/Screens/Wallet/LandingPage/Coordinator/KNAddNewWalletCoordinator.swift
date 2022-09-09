@@ -176,6 +176,9 @@ extension KNAddNewWalletCoordinator: AddWalletViewControllerDelegate {
     case .importWatchWallet:
       self.createWatchWallet()
     case .close:
+      if AppDelegate.shared.coordinator.tabbarController != nil {
+        AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
+      }
       self.navigationController.dismiss(animated: false, completion: nil)
     }
   }

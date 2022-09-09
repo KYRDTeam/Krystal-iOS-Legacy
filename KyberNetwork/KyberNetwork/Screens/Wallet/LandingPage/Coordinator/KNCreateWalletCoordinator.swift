@@ -133,9 +133,6 @@ extension KNCreateWalletCoordinator: CreateWalletViewControllerDelegate {
     switch event {
     case .back:
       self.navigationController.popViewController(animated: true) {
-        if AppDelegate.shared.coordinator.tabbarController != nil {
-          AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-        }
         self.delegate?.createWalletCoordinatorDidClose()
       }
     case .next(let name):

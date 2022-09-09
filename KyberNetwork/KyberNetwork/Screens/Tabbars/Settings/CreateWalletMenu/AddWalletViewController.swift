@@ -25,6 +25,9 @@ class AddWalletViewController: KNBaseViewController {
   var isCloseByGesture: Bool = true
   override func viewDidLoad() {
     super.viewDidLoad()
+    if AppDelegate.shared.coordinator.tabbarController != nil {
+      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = true
+    }
   }
   
   override func viewWillAppear(_ animated: Bool) {
