@@ -74,6 +74,10 @@ class KNSettingsTabViewController: InAppBrowsingViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     MixPanelManager.track("settings_open", properties: ["screenid": "settings"])
+    updateUIForBrowsingModeIfNeed()
+  }
+  
+  func updateUIForBrowsingModeIfNeed() {
     addWalletView.isHidden = !currentAddress.isBrowsingWallet
     securityView.isHidden = currentAddress.isBrowsingWallet
     securitySectionHeightContraint.constant = currentAddress.isBrowsingWallet ? 0 : context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) ? 120 : 90
@@ -84,6 +88,10 @@ class KNSettingsTabViewController: InAppBrowsingViewController {
     super.viewDidLayoutSubviews()
   }
 
+  func coordinatorAppSwitchAddress() {
+    updateUIForBrowsingModeIfNeed()
+  }
+  
   @IBAction func fingerprintValueChanged(_ sender: UISwitch) {
     if sender.isOn {
       context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: NSLocalizedString("use.touchid/faceid.to.secure.your.account", value: "Use touchID/faceID to secure your account", comment: "")) { [weak self] (success, error) in
@@ -178,8 +186,7 @@ class KNSettingsTabViewController: InAppBrowsingViewController {
   @IBAction func referralPolicyButtonTapped(_ sender: UIButton) {
     self.delegate?.settingsTabViewController(self, run: .refPolicy)
   }
-  
-  
+
   @IBAction func termOfUseButtonTapped(_ sender: UIButton) {
     self.delegate?.settingsTabViewController(self, run: .termOfUse)
   }

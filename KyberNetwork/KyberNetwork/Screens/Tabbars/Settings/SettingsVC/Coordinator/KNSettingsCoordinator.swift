@@ -101,6 +101,7 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   
   @objc func appDidSwitchAddress() {
     self.listWalletsCoordinator?.appDidSwitchAddress()
+    self.rootViewController.coordinatorAppSwitchAddress()
   }
 
   func appCoordinatorTokenBalancesDidUpdate(balances: [String: Balance]) {
