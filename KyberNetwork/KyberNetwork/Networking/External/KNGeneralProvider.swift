@@ -135,6 +135,10 @@ class KNGeneralProvider {
   var isUseEIP1559: Bool {
     return KNGeneralProvider.shared.currentChain.isSupportedEIP1559()
   }
+  
+  var isBrowsingMode: Bool {
+    return AppDelegate.session.address.isBrowsingWallet
+  }
 
   var wrapperAddress: String {
     return self.customRPC.wrappedAddress
