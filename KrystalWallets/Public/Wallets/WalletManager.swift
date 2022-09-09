@@ -87,6 +87,22 @@ public extension WalletManager {
       .first
   }
   
+  //Quickfix crash
+  func getWallet(forAddress address: KAddress) -> KWallet? {
+    let localRealm = try! Realm()
+    return localRealm.objects(WalletObject.self)
+      .filter("%K = %@", "id", address.walletID)
+      .map { $0.toWallet() }
+      .first
+  }
+  
+  func getAllAddresses2(walletID: String, addressType: KAddressType) -> [KAddress] {
+    let localRealm = try! Realm()
+    return localRealm.objects(AddressObject.self)
+      .filter("%K = %@ and %K = %@", "walletID", walletID, "addressType", addressType.rawValue)
+      .map { $0.toAddress() }
+  }
+  
   func createWallet(name: String) throws -> KWallet {
     do {
       let password = PasswordGenerator.generateRandom()
