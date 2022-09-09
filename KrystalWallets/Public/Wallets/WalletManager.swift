@@ -88,7 +88,7 @@ public extension WalletManager {
   }
   
   //Quickfix crash
-  func getWallet(forAddress address: KAddress) -> KWallet? {
+  func getWalletWithLocalRealm(forAddress address: KAddress) -> KWallet? {
     let localRealm = try! Realm()
     return localRealm.objects(WalletObject.self)
       .filter("%K = %@", "id", address.walletID)
@@ -96,7 +96,7 @@ public extension WalletManager {
       .first
   }
   
-  func getAllAddresses2(walletID: String, addressType: KAddressType) -> [KAddress] {
+  func getAllAddressesWithLocalRealm(walletID: String, addressType: KAddressType) -> [KAddress] {
     let localRealm = try! Realm()
     return localRealm.objects(AddressObject.self)
       .filter("%K = %@ and %K = %@", "walletID", walletID, "addressType", addressType.rawValue)
