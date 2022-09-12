@@ -168,6 +168,8 @@ class BridgeViewController: InAppBrowsingViewController {
   }
   
   func appDidSwitchAddress() {
+    self.viewModel.resetUI()
+    self.tableView.reloadData()
     self.updateUIPendingTxIndicatorView()
   }
   
