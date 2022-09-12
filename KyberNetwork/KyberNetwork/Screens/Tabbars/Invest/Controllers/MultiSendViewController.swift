@@ -150,14 +150,14 @@ class MultiSendViewController: InAppBrowsingViewController {
     self.updateUISwitchChain()
     self.updateUIPendingTxIndicatorView()
     self.useLastMultisendButton.rounded(color: UIColor(named: "textWhiteColor")!, width: 1, radius: 21)
-    let title = currentAddress.isBrowsingWallet ? Strings.connectWallet : Strings.transfer
-    sendButton.setTitle(title, for: .normal)
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.updateUIUseLast()
     MixPanelManager.track("multi_send_open", properties: ["screenid": "multi_send"])
+    let title = KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.transfer
+    sendButton.setTitle(title, for: .normal)
   }
   
   @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -165,7 +165,7 @@ class MultiSendViewController: InAppBrowsingViewController {
   }
   
   @IBAction func sendButtonTapped(_ sender: UIButton) {
-    guard !currentAddress.isBrowsingWallet else {
+    guard !KNGeneralProvider.shared.isBrowsingMode else {
       onAddWalletButtonTapped(sender)
       return
     }
@@ -220,6 +220,18 @@ class MultiSendViewController: InAppBrowsingViewController {
     mainView.isHidden = !KNGeneralProvider.shared.currentChain.supportMultisend
   }
   
+  override func updateChainInfo() {
+    super.updateChainInfo()
+    let title = KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.transfer
+    sendButton.setTitle(title, for: .normal)
+  }
+  
+  override func addNewWallet(wallet: KWallet, chain: ChainType) {
+    super.addNewWallet(wallet: wallet, chain: chain)
+    let title = KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.transfer
+    sendButton.setTitle(title, for: .normal)
+  }
+
   fileprivate func updateUIPendingTxIndicatorView() {
     guard self.isViewLoaded else {
       return

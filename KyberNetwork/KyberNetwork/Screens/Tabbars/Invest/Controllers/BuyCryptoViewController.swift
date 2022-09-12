@@ -71,6 +71,13 @@ class BuyCryptoViewController: KNBaseViewController {
     super.viewDidLoad()
     self.updateUI()
   }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    if KNGeneralProvider.shared.isBrowsingMode {
+      self.navigationController?.popViewController(animated: true)
+    }
+  }
 
   func updateUI() {
     self.walletsListButton.setTitle(viewModel.currentAddress.addressString, for: .normal)
