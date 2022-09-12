@@ -208,6 +208,9 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var totalBalanceText: String {
+    if KNGeneralProvider.shared.isBrowsingMode {
+      return "0 \(self.from.symbol)"
+    }
     return "\(self.displayBalance) \(self.from.symbol)"
   }
 

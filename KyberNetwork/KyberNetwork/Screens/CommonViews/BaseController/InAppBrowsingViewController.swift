@@ -105,6 +105,9 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
     AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
     AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
     browsingView?.isHidden = !currentAddress.isBrowsingWallet
+    if AppDelegate.shared.coordinator.tabbarController != nil {
+      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
+    }
   }
   
   override func addNewWallet(watchAddress: KAddress, chain: ChainType) {

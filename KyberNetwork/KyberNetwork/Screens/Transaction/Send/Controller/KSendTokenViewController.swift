@@ -117,6 +117,10 @@ class KSendTokenViewController: InAppBrowsingViewController {
     Tracker.track(event: .openSendView)
     self.updateUISwitchChain()
     MixPanelManager.track("transfer_open", properties: ["screenid": "transfer"])
+    
+    if KNGeneralProvider.shared.isBrowsingMode {
+      self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
+    }
   }
 
   override func viewWillDisappear(_ animated: Bool) {
