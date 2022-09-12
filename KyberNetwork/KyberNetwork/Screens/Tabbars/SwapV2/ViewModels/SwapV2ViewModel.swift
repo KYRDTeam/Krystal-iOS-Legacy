@@ -48,11 +48,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
         return self.getPriceImpactState(change: Double($0.priceImpact) / 100)
       } ?? .normal
       
-      if self.priceImpactState.value == .veryHighNeedExpertMode || self.priceImpactState.value == .outOfNegativeRange {
-        self.state.value = .requiredExpertMode
-      } else {
-        self.state.value = .ready
-      }
+      self.updateState()
     }
   }
   
@@ -212,13 +208,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       if sortedRates.isEmpty {
         self.state.value = .rateNotFound
       } else {
-        if self.currentAddress.value.isWatchWallet {
-          self.state.value = .notConnected
-        } else if self.sourceAmount.value ?? .zero <= self.maxAvailableSourceTokenAmount {
-          self.checkAllowance()
-        } else {
-          self.state.value = .insufficientBalance
-        }
+        self.updateState()
       }
     }
     sourceToken.observe(on: self) { [weak self] token in
@@ -230,6 +220,16 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       if token?.address.lowercased() == self?.sourceToken.value?.address.lowercased() {
         self?.error.value = .sameSourceDestToken
       }
+    }
+  }
+  
+  private func updateState() {
+    if self.currentAddress.value.isWatchWallet {
+      self.state.value = .notConnected
+    } else if self.sourceAmount.value ?? .zero <= self.maxAvailableSourceTokenAmount {
+      self.checkAllowance()
+    } else {
+      self.state.value = .insufficientBalance
     }
   }
   
