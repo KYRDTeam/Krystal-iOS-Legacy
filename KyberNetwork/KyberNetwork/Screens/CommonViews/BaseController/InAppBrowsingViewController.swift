@@ -14,7 +14,7 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     observeNotifications()
-    reloadChainUI()
+    updateChainInfo()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -62,10 +62,14 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
   @objc func tokenObjectListDidUpdate(_ sender: Any?) {
     reloadChainData()
   }
-
-  func reloadChainUI() {
+  
+  func updateChainInfo() {
     chainIcon?.image = KNGeneralProvider.shared.currentChain.squareIcon()
     chainLabel?.text = KNGeneralProvider.shared.currentChain.chainName()
+  }
+
+  func reloadChainUI() {
+    updateChainInfo()
   }
   
   func reloadChainData() {
