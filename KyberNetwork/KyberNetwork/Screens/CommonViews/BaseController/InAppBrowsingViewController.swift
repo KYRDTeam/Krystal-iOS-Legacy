@@ -104,7 +104,7 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
   override func addNewWallet(wallet: KWallet, chain: ChainType) {
     AppDelegate.shared.setupMixPanel()
     onChainSelected(chain: chain)
-    didSelectWallet(wallet: wallet)
+    didSelectWallet(wallet: wallet, isCreatedFromBrowsing: true)
     AppDelegate.shared.coordinator.overviewTabCoordinator?.stop()
     AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
     AppDelegate.shared.coordinator.overviewTabCoordinator?.start()

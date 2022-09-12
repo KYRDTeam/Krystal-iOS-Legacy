@@ -212,6 +212,10 @@ class BaseWalletOrientedViewController: KNBaseViewController {
 }
 
 extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
+  func didSelectWallet(wallet: KWallet) {
+    didSelectWallet(wallet: wallet, isCreatedFromBrowsing: false)
+  }
+  
   
   func didSelectAddWallet() {
     present(addWalletCoordinator.navigationController, animated: false) {
@@ -219,11 +223,11 @@ extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
     }
   }
   
-  func didSelectWallet(wallet: KWallet) {
+  func didSelectWallet(wallet: KWallet, isCreatedFromBrowsing: Bool = false) {
     let addresses = WalletManager.shared.getAllAddresses(walletID: wallet.id)
     guard addresses.isNotEmpty else { return }
     if let matchingChainAddress = addresses.first(where: { $0.addressType == currentChain.addressType }) {
-      AppDelegate.shared.coordinator.switchAddress(address: matchingChainAddress)
+      AppDelegate.shared.coordinator.switchAddress(address: matchingChainAddress, isCreatedFromBrowsing: isCreatedFromBrowsing)
     } else {
       let address = addresses.first!
       guard let chain = ChainType.allCases.first(where: {
