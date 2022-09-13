@@ -132,6 +132,10 @@ class BridgeViewController: InAppBrowsingViewController {
     }
     
     self.viewModel.swapBlock = {
+      guard !KNGeneralProvider.shared.isBrowsingMode else {
+        self.onAddWalletButtonTapped(UIButton())
+        return
+      }
       if self.viewModel.isNeedApprove {
         guard let remain = self.viewModel.remainApprovedAmount else {
           return

@@ -96,6 +96,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
     super.viewWillAppear(animated)
     if KNGeneralProvider.shared.isBrowsingMode {
       self.viewModel.appDidSwitchAddress()
+      self.viewModel.appDidSwitchChain()
     }
     navigationController?.setNavigationBarHidden(true, animated: true)
     MixPanelManager.track("swap_open", properties: ["screenid": "swap"])
