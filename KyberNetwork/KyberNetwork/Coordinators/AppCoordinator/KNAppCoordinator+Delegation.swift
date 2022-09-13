@@ -15,7 +15,7 @@ extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
   }
   
   func landingPageCoordinatorStartedBrowsing() {
-    let address = walletManager.emptyAddress()
+    let address = walletManager.createEmptyAddress()
     self.startNewSession(address: address)
   }
   

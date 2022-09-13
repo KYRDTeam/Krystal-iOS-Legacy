@@ -125,7 +125,7 @@ public extension WalletManager {
     }
   }
   
-  func emptyAddress() -> KAddress {
+  func createEmptyAddress() -> KAddress {
     return KAddress(id: "", walletID: "", addressType: .evm, name: "", addressString: "")
   }
   

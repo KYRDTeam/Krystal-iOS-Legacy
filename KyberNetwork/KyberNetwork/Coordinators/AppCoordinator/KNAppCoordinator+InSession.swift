@@ -162,7 +162,7 @@ extension KNAppCoordinator {
   func stopAllSessions() {
     self.walletManager.removeAll()
     self.session.stopSession()
-    self.session.address = self.walletManager.emptyAddress()
+    self.session.address = self.walletManager.createEmptyAddress()
     self.exchangeCoordinator?.stop()
     self.exchangeCoordinator = nil
     self.settingsCoordinator?.stop()
