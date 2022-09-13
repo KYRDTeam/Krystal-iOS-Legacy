@@ -374,7 +374,7 @@ enum ChainType: Codable, CaseIterable {
   
   func isSupportSwap() -> Bool {
     switch self {
-    case .solana, .klaytn:
+    case .solana:
       return false
     default:
       return true
