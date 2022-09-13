@@ -33,6 +33,10 @@ class BaseWalletOrientedViewController: KNBaseViewController {
     return KNGeneralProvider.shared.currentChain
   }
   
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
+  
   let service = KrystalService()
   
   override func viewDidLoad() {
