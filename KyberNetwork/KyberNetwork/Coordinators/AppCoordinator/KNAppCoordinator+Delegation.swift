@@ -304,10 +304,16 @@ extension KNAppCoordinator: KNAddNewWalletCoordinatorDelegate {
   
   func addNewWalletCoordinator(didAdd wallet: KWallet, chain: ChainType) {
     switchWallet(wallet: wallet, chain: chain)
+    if AppDelegate.shared.coordinator.tabbarController != nil {
+      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
+    }
   }
   
   func addNewWalletCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {
     switchToWatchAddress(address: watchAddress, chain: chain)
+    if AppDelegate.shared.coordinator.tabbarController != nil {
+      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
+    }
   }
   
   func addNewWalletCoordinatorDidSendRefCode(_ code: String) {
