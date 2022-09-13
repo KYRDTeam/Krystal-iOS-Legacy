@@ -22,8 +22,12 @@ class AppMigrationManager {
     operationQueue.maxConcurrentOperationCount = 1
   }
   
+  var needMigrateUnknownWallets: Bool {
+    return getUnknownWallets().isNotEmpty && UserDefaults.hasMigratedUnknownKeystoreWallet == false
+  }
+  
   var needMigrate: Bool {
-    if getUnknownWallets().isNotEmpty && UserDefaults.hasMigratedUnknownKeystoreWallet == false {
+    if needMigrateUnknownWallets {
       return true
     }
     return !UserDefaults.hasMigratedKeystoreWallet && !keystore.wallets.isEmpty
@@ -37,11 +41,8 @@ class AppMigrationManager {
       }
       switch wallet.type {
       case .real:
-        guard let importType = ImportWalletChainType(rawValue: walletObject.chainType) else {
-          return false
-        }
         let storageType = StorageType(rawValue: walletObject.storateType)
-        return (importType == .solana || importType == .solana) && storageType == .unknow
+        return storageType == .unknow
       default:
         return false
       }
@@ -49,7 +50,7 @@ class AppMigrationManager {
   }
   
   func execute(progressCallback: @escaping (Float) -> Void, completion: @escaping () -> Void) {
-    if !UserDefaults.hasMigratedKeystoreWallet {
+    if needMigrate {
       migrateKeystoreWallets { progress in
         progressCallback(progress)
       } completion: {
@@ -69,7 +70,7 @@ class AppMigrationManager {
       completion()
     }
     self.keystore.wallets.forEach { wallet in
-      if let walletObject = walletObjects.first { $0.address.lowercased() == wallet.address?.description.lowercased() } {
+      if let walletObject = walletObjects.first(where: { $0.address.lowercased() == wallet.address?.description.lowercased() }) {
         let operation = MigratingWalletOperation(keystore: keystore, wallet: wallet, walletObject: walletObject)
         operation.onComplete = {
           DispatchQueue.main.async {
