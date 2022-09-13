@@ -166,7 +166,6 @@ extension KNAppCoordinator {
     self.exchangeCoordinator?.stop()
     self.exchangeCoordinator = nil
     self.settingsCoordinator?.stop()
-    self.settingsCoordinator = nil
     self.overviewTabCoordinator?.stop()
     self.overviewTabCoordinator?.start()
     self.tabbarController.selectedIndex = 0

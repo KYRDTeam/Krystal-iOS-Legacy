@@ -4,8 +4,6 @@ import UIKit
 import SafariServices
 import MessageUI
 import KrystalWallets
-import WalletCore
-import RealmSwift
 
 protocol KNLandingPageCoordinatorDelegate: class {
   func landingPageCoordinator(import wallet: KWallet, chain: ChainType)
