@@ -61,6 +61,12 @@ class InvestViewController: InAppBrowsingViewController {
     collectionView.dataSource = self
   }
   
+  override func addNewWallet(wallet: KWallet, chain: ChainType) {
+    super.addNewWallet(wallet: wallet, chain: chain)
+    viewModel.reloadMenuItems()
+    collectionView.reloadData()
+  }
+  
   func bindViewModel() {
     viewModel.banners.bind { [weak self] _ in
       self?.reloadSection(ofType: .banners)
