@@ -104,6 +104,9 @@ class EarnViewModel {
   }
 
   var totalBalanceText: String {
+    guard !KNGeneralProvider.shared.isBrowsingMode else {
+      return "0 \(self.tokenData.symbol)"
+    }
     return "\(self.displayBalance) \(self.tokenData.symbol)"
   }
   
@@ -503,7 +506,7 @@ class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler
     )
     self.platformTableView.rowHeight = EarnSelectTableViewCell.kCellHeight
     
-    self.earnButton.setTitle(viewModel.titleForContinueButton, for: .normal)
+    
     self.updateUITokenDidChange(self.viewModel.tokenData)
     self.updateUIForSendApprove(isShowApproveButton: false)
     self.fromAmountTextField.setupCustomDeleteIcon()
@@ -516,6 +519,7 @@ class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler
     self.isViewDisappeared = false
     self.updateUIPendingTxIndicatorView()
     self.updateGasFeeUI()
+    self.earnButton.setTitle(viewModel.titleForContinueButton, for: .normal)
   }
 
   override func viewDidAppear(_ animated: Bool) {
