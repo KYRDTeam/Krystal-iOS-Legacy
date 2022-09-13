@@ -23,7 +23,8 @@ class SlippageRateCellModel {
   var slippageChangedEvent: (Double) -> Void = { _ in }
 
   init() {
-    self.currentRate = UserDefaults.standard.double(forKey: Constants.slippageRateSaveKey)
+    let savedValue = UserDefaults.standard.double(forKey: Constants.slippageRateSaveKey)
+    self.currentRate = savedValue > 0 ? savedValue : 0.5
     switch currentRate {
     case 0.1:
       self.minRateType = .zeroPointOne
