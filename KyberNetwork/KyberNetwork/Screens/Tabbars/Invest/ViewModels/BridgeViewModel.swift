@@ -334,6 +334,13 @@ class BridgeViewModel {
         return UITableViewCell()
       case .swapRow:
         let cell = tableView.dequeueReusableCell(BridgeSwapButtonCell.self, indexPath: indexPath)!
+        guard !KNGeneralProvider.shared.isBrowsingMode else {
+          cell.swapButton.setTitle(Strings.connectWallet, for: .normal)
+          cell.swapButton.isEnabled = true
+          cell.swapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
+          return cell
+        }
+        
         if self.isNeedApprove || (self.isValidSourceAmount && self.isValidDestAmount && CryptoAddressValidator.isValidAddress(self.currentSendToAddress) && self.currentDestChain != nil) {
           cell.swapButton.isEnabled = true
           cell.swapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)

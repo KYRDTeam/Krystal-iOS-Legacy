@@ -58,6 +58,10 @@ class BridgeViewController: InAppBrowsingViewController {
     super.viewDidAppear(animated)
     self.updateAllowance()
     MixPanelManager.track("bridge_open", properties: ["screenid": "bridge"])
+    if KNGeneralProvider.shared.isBrowsingMode {
+      self.viewModel.resetUI()
+      self.tableView.reloadData()
+    }
   }
   
   fileprivate func updateUIPendingTxIndicatorView() {
