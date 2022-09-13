@@ -69,6 +69,11 @@ class EarnOverviewViewController: InAppBrowsingViewController {
     MixPanelManager.track("earn_open", properties: ["screenid": "earn"])
   }
   
+  override func addNewWallet(wallet: KWallet, chain: ChainType) {
+    super.addNewWallet(wallet: wallet, chain: chain)
+    depositViewController.coordinatorDidUpdateDidUpdateTokenList()
+  }
+  
   fileprivate func updateUIPendingTxIndicatorView() {
     guard self.isViewLoaded else {
       return

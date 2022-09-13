@@ -63,8 +63,10 @@ class InvestViewController: InAppBrowsingViewController {
   
   override func addNewWallet(wallet: KWallet, chain: ChainType) {
     super.addNewWallet(wallet: wallet, chain: chain)
-    viewModel.reloadMenuItems()
-    collectionView.reloadData()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      self.viewModel.reloadMenuItems()
+      self.collectionView.reloadData()
+    }
   }
   
   func bindViewModel() {
