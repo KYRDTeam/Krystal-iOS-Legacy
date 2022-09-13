@@ -101,8 +101,6 @@ class KSendTokenViewController: InAppBrowsingViewController {
     super.viewDidLoad()
     self.addressTextField.setupCustomDeleteIcon()
     self.amountTextField.setupCustomDeleteIcon()
-    let title = currentAddress.isBrowsingWallet ? Strings.connectWallet : Strings.transfer
-    sendButton.setTitle(title, for: .normal)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -117,10 +115,12 @@ class KSendTokenViewController: InAppBrowsingViewController {
     Tracker.track(event: .openSendView)
     self.updateUISwitchChain()
     MixPanelManager.track("transfer_open", properties: ["screenid": "transfer"])
-    
+    var title = Strings.transfer
     if KNGeneralProvider.shared.isBrowsingMode {
+      title = Strings.connectWallet
       self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
     }
+    sendButton.setTitle(title, for: .normal)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
