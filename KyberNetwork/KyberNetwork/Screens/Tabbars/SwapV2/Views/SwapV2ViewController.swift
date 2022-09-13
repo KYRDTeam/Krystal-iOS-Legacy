@@ -81,7 +81,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
   }
   
   var titleForContinueButton: String {
-    return currentAddress.isBrowsingWallet ? Strings.connectWallet : Strings.reviewSwap
+    return KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.reviewSwap
   }
   
   override func viewDidLoad() {
@@ -516,7 +516,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
   }
   
   @IBAction func continueWasTapped(_ sender: Any) {
-    guard !currentAddress.isBrowsingWallet else {
+    guard !KNGeneralProvider.shared.isBrowsingMode else {
       onAddWalletButtonTapped(sender)
       return
     }
@@ -665,7 +665,7 @@ extension SwapV2ViewController {
   }
   
   func onSourceAmountChange(value: String) {
-    if currentAddress.isBrowsingWallet {
+    if KNGeneralProvider.shared.isBrowsingMode {
       viewModel.sourceBalance.value = BigInt(0)
     }
     guard let doubleValue = value.toDouble() else {

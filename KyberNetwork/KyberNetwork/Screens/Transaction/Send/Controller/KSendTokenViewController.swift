@@ -235,7 +235,7 @@ class KSendTokenViewController: InAppBrowsingViewController {
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
-    guard !currentAddress.isBrowsingWallet else {
+    guard !KNGeneralProvider.shared.isBrowsingMode else {
       onAddWalletButtonTapped(sender)
       return
     }
@@ -632,7 +632,7 @@ extension KSendTokenViewController {
     self.setupNavigationView()
     self.updateUIBalanceDidChange()
     self.updateUIPendingTxIndicatorView()
-    let title = currentAddress.isBrowsingWallet ? Strings.connectWallet : Strings.transfer
+    let title = KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.transfer
     sendButton.setTitle(title, for: .normal)
   }
 

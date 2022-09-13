@@ -78,10 +78,10 @@ class KNSettingsTabViewController: InAppBrowsingViewController {
   }
   
   func updateUIForBrowsingModeIfNeed() {
-    addWalletView.isHidden = !currentAddress.isBrowsingWallet
-    securityView.isHidden = currentAddress.isBrowsingWallet
-    securitySectionHeightContraint.constant = currentAddress.isBrowsingWallet ? 0 : context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) ? 120 : 90
-    securityViewTopConstraint.constant = currentAddress.isBrowsingWallet ? 0 : 18
+    addWalletView.isHidden = !KNGeneralProvider.shared.isBrowsingMode
+    securityView.isHidden = KNGeneralProvider.shared.isBrowsingMode
+    securitySectionHeightContraint.constant = KNGeneralProvider.shared.isBrowsingMode ? 0 : context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) ? 120 : 90
+    securityViewTopConstraint.constant = KNGeneralProvider.shared.isBrowsingMode ? 0 : 18
   }
 
   override func viewDidLayoutSubviews() {

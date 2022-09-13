@@ -735,7 +735,7 @@ class EarnSwapViewModel {
   }
   
   var titleForContinueButton: String {
-    return currentAddress.isBrowsingWallet ? Strings.connectWallet : Strings.next
+    return KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.next
   }
 }
 

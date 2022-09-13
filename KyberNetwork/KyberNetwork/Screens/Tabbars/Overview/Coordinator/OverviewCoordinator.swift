@@ -120,7 +120,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
   
   func start() {
-    if currentAddress.isBrowsingWallet {
+    if KNGeneralProvider.shared.isBrowsingMode {
       self.navigationController.viewControllers = [self.browsingRootViewController]
     } else {
       self.navigationController.viewControllers = [self.rootViewController]

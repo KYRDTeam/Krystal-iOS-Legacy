@@ -17,8 +17,4 @@ public struct KAddress {
   public var isWatchWallet: Bool {
     return walletID.isEmpty
   }
-  
-  public var isBrowsingWallet: Bool {
-    return id.isEmpty
-  }
 }

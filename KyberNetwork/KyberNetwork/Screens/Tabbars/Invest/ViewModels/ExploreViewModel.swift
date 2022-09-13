@@ -55,7 +55,7 @@ class ExploreViewModel {
     let isBridgeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bridgeIntegration)
     let isScannerEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
     
-    let isNotBrowsing = !AppDelegate.session.address.isBrowsingWallet
+    let isNotBrowsing = !KNGeneralProvider.shared.isBrowsingMode
     
     var menuItems: [ExploreMenuItem] = []
     menuItems.append(.swap)

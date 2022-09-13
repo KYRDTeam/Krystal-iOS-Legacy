@@ -19,7 +19,7 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    browsingView?.isHidden = !currentAddress.isBrowsingWallet
+    browsingView?.isHidden = !KNGeneralProvider.shared.isBrowsingMode
   }
   
   deinit {
@@ -108,7 +108,7 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
     AppDelegate.shared.coordinator.overviewTabCoordinator?.stop()
     AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
     AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
-    browsingView?.isHidden = !currentAddress.isBrowsingWallet
+    browsingView?.isHidden = !KNGeneralProvider.shared.isBrowsingMode
     if AppDelegate.shared.coordinator.tabbarController != nil {
       AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
     }

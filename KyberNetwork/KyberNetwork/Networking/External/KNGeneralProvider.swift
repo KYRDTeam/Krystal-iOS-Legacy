@@ -137,7 +137,7 @@ class KNGeneralProvider {
   }
   
   var isBrowsingMode: Bool {
-    return AppDelegate.session.address.isBrowsingWallet
+    return AppDelegate.session.address.id.isEmpty
   }
 
   var wrapperAddress: String {
