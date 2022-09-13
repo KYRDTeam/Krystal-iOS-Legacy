@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -78,7 +78,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9mP-go-K6W">
-                    <rect key="frame" x="0.0" y="44" width="390" height="89"/>
+                    <rect key="frame" x="0.0" y="47" width="390" height="89"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swap" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rLk-W1-0nv">
                             <rect key="frame" x="37" y="24" width="46.666666666666657" height="21.333333333333329"/>
@@ -259,10 +259,10 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Ge-uB-0EW" userLabel="ComingSoon">
-                    <rect key="frame" x="0.0" y="133" width="390" height="677"/>
+                    <rect key="frame" x="0.0" y="136" width="390" height="674"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="comming_soon" translatesAutoresizingMaskIntoConstraints="NO" id="9Ej-ef-LPN">
-                            <rect key="frame" x="58" y="218.33333333333331" width="274" height="240"/>
+                            <rect key="frame" x="58" y="217" width="274" height="240"/>
                         </imageView>
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
@@ -272,13 +272,13 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xbn-SH-kmh">
-                    <rect key="frame" x="0.0" y="133" width="390" height="677"/>
+                    <rect key="frame" x="0.0" y="136" width="390" height="674"/>
                     <subviews>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HQZ-ae-e1K">
-                            <rect key="frame" x="0.0" y="0.0" width="390" height="677"/>
+                            <rect key="frame" x="0.0" y="0.0" width="390" height="674"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S6A-NR-SWi">
-                                    <rect key="frame" x="0.0" y="0.0" width="390" height="912"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="390" height="928"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZN-TU-lXf">
                                             <rect key="frame" x="314" y="16" width="32" height="32"/>
@@ -791,7 +791,7 @@
                                         <constraint firstAttribute="trailing" secondItem="dZN-TU-lXf" secondAttribute="trailing" constant="44" id="Xn3-i1-Ve3"/>
                                         <constraint firstItem="iJd-LF-kkd" firstAttribute="top" secondItem="Bw6-Um-U7Z" secondAttribute="bottom" constant="16" id="b3h-gA-AZz"/>
                                         <constraint firstAttribute="trailing" secondItem="aHo-uv-839" secondAttribute="trailing" constant="28" id="j7H-gj-gxa"/>
-                                        <constraint firstAttribute="bottom" secondItem="SOT-hf-WqE" secondAttribute="bottom" constant="24" id="o08-d3-tf6"/>
+                                        <constraint firstAttribute="bottom" secondItem="SOT-hf-WqE" secondAttribute="bottom" constant="40" id="o08-d3-tf6"/>
                                         <constraint firstItem="dZN-TU-lXf" firstAttribute="top" secondItem="S6A-NR-SWi" secondAttribute="top" constant="16" id="rCy-wv-SFV"/>
                                     </constraints>
                                 </view>
