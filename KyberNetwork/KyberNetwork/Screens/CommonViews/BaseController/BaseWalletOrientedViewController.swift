@@ -193,6 +193,9 @@ class BaseWalletOrientedViewController: KNBaseViewController {
     AppDelegate.shared.coordinator.tabbarController.selectedIndex = 0
     onChainSelected(chain: chain)
     didSelectWallet(wallet: wallet)
+    if AppDelegate.shared.coordinator.tabbarController != nil {
+      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
+    }
   }
   
   func addNewWallet(watchAddress: KAddress, chain: ChainType) {

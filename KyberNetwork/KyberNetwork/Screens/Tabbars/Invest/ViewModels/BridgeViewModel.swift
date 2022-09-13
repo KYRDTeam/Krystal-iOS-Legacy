@@ -334,6 +334,14 @@ class BridgeViewModel {
         return UITableViewCell()
       case .swapRow:
         let cell = tableView.dequeueReusableCell(BridgeSwapButtonCell.self, indexPath: indexPath)!
+        cell.swapBlock = self.swapBlock
+        guard !KNGeneralProvider.shared.isBrowsingMode else {
+          cell.swapButton.setTitle(Strings.connectWallet, for: .normal)
+          cell.swapButton.isEnabled = true
+          cell.swapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
+          return cell
+        }
+        
         if self.isNeedApprove || (self.isValidSourceAmount && self.isValidDestAmount && CryptoAddressValidator.isValidAddress(self.currentSendToAddress) && self.currentDestChain != nil) {
           cell.swapButton.isEnabled = true
           cell.swapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
@@ -341,7 +349,7 @@ class BridgeViewModel {
           cell.swapButton.isEnabled = false
           cell.swapButton.setBackgroundColor(UIColor(named: "navButtonBgColor")!, forState: .disabled)
         }
-        cell.swapBlock = self.swapBlock
+        
         if let currentSourceToken = currentSourceToken {
           cell.swapButton.setTitle(self.isNeedApprove ? "Approve \(currentSourceToken.symbol)" : "Review Transfer", for: .normal)
         } else {

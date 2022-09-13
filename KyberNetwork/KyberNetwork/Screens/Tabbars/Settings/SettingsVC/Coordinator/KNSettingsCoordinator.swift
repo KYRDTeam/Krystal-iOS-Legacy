@@ -78,7 +78,7 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   }
 
   func stop() {
-    self.removeObservers()
+//    self.removeObservers()
     self.navigationController.popToRootViewController(animated: false)
   }
 

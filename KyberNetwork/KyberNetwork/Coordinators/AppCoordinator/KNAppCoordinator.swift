@@ -110,7 +110,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   func switchAddress(address: KAddress, isCreatedFromBrowsing: Bool = false) {
     WalletCache.shared.lastUsedAddress = address
     KNAppTracker.updateAllTransactionLastBlockLoad(0, for: address.addressString)
-    if self.tabbarController == nil || isCreatedFromBrowsing {
+    if self.tabbarController == nil {
       self.startNewSession(address: address)
     } else {
       self.restartSession(address: address)

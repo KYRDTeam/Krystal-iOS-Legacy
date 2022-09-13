@@ -58,6 +58,10 @@ class BridgeViewController: InAppBrowsingViewController {
     super.viewDidAppear(animated)
     self.updateAllowance()
     MixPanelManager.track("bridge_open", properties: ["screenid": "bridge"])
+    if KNGeneralProvider.shared.isBrowsingMode {
+      self.viewModel.resetUI()
+      self.tableView.reloadData()
+    }
   }
   
   fileprivate func updateUIPendingTxIndicatorView() {
@@ -128,6 +132,10 @@ class BridgeViewController: InAppBrowsingViewController {
     }
     
     self.viewModel.swapBlock = {
+      guard !KNGeneralProvider.shared.isBrowsingMode else {
+        self.onAddWalletButtonTapped(UIButton())
+        return
+      }
       if self.viewModel.isNeedApprove {
         guard let remain = self.viewModel.remainApprovedAmount else {
           return
