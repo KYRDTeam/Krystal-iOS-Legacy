@@ -31,10 +31,8 @@ protocol BridgeViewControllerDelegate: class {
   func bridgeViewControllerController(_ controller: BridgeViewController, run event: BridgeEvent)
 }
 
-class BridgeViewController: KNBaseViewController {
-  @IBOutlet weak var chainIcon: UIImageView!
+class BridgeViewController: InAppBrowsingViewController {
   @IBOutlet weak var tableView: UITableView!
-  @IBOutlet weak var walletsListButton: UIButton!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
   weak var delegate: BridgeViewControllerDelegate?
   var viewModel: BridgeViewModel
@@ -60,6 +58,10 @@ class BridgeViewController: KNBaseViewController {
     super.viewDidAppear(animated)
     self.updateAllowance()
     MixPanelManager.track("bridge_open", properties: ["screenid": "bridge"])
+    if KNGeneralProvider.shared.isBrowsingMode {
+      self.viewModel.resetUI()
+      self.tableView.reloadData()
+    }
   }
   
   fileprivate func updateUIPendingTxIndicatorView() {
@@ -130,6 +132,10 @@ class BridgeViewController: KNBaseViewController {
     }
     
     self.viewModel.swapBlock = {
+      guard !KNGeneralProvider.shared.isBrowsingMode else {
+        self.onAddWalletButtonTapped(UIButton())
+        return
+      }
       if self.viewModel.isNeedApprove {
         guard let remain = self.viewModel.remainApprovedAmount else {
           return
@@ -161,8 +167,6 @@ class BridgeViewController: KNBaseViewController {
   
   func updateUISwitchChain() {
     let icon = KNGeneralProvider.shared.chainIconImage
-    self.chainIcon.image = icon
-    self.walletsListButton.setTitle(viewModel.currentAddress.name, for: .normal)
     self.tableView.reloadData()
   }
   
@@ -172,7 +176,8 @@ class BridgeViewController: KNBaseViewController {
   }
   
   func appDidSwitchAddress() {
-    self.walletsListButton.setTitle(viewModel.currentAddress.name, for: .normal)
+    self.viewModel.resetUI()
+    self.tableView.reloadData()
     self.updateUIPendingTxIndicatorView()
   }
   
@@ -296,7 +301,7 @@ extension BridgeViewController: UITableViewDataSource {
 
 extension BridgeViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return section == 0 ? CGFloat(150.0) : CGFloat(32.0)
+    return section == 0 ? CGFloat(105.0) : CGFloat(32.0)
   }
   
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

@@ -7,6 +7,7 @@ enum KNLandingPageViewEvent {
   case openImportWallet
   case openTermAndCondition
   case openMigrationAlert
+  case getStarted
 }
 
 protocol KNLandingPageViewControllerDelegate: class {
@@ -24,10 +25,10 @@ class KNLandingPageViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.createWalletButton.setTitle(
-      NSLocalizedString("create.wallet", value: "Create Wallet", comment: ""),
-      for: .normal
-    )
+//    self.createWalletButton.setTitle(
+//      NSLocalizedString("create.wallet", value: "Create Wallet", comment: ""),
+//      for: .normal
+//    )
     self.importWalletButton.setTitle(
       NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
       for: .normal
@@ -43,7 +44,8 @@ class KNLandingPageViewController: KNBaseViewController {
   }
 
   @IBAction func createWalletButtonPressed(_ sender: Any) {
-    self.delegate?.landinagePageViewController(self, run: .openCreateWallet)
+    self.delegate?.landinagePageViewController(self, run: .getStarted)
+//    self.delegate?.landinagePageViewController(self, run: .openCreateWallet)
   }
 
   @IBAction func importWalletButtonPressed(_ sender: Any) {

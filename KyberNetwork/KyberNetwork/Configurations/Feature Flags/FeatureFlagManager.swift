@@ -21,6 +21,7 @@ struct FeatureFlagKeys {
   static let scanner = "scanner"
   static let multichainPortfolio = "multichain-portfolio"
   static let swapV2 = "swap-v2"
+  static let appBrowsing = "app-browsing"
 }
 
 class FeatureFlagManager {

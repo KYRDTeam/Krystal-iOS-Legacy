@@ -143,6 +143,10 @@ class KNListWalletsViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     self.displayLoading()
     self.viewModel.reloadDataSource {
       self.walletTableView.reloadData()
@@ -150,10 +154,6 @@ class KNListWalletsViewController: KNBaseViewController {
     }
     self.setupUI()
     segmentedControl.highlightSelectedSegment()
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
   }
 
   fileprivate func setupUI() {

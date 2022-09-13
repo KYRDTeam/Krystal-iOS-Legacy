@@ -119,6 +119,9 @@ class TokenObject: Object {
   }
 
   func getBalanceBigInt() -> BigInt {
+    guard !KNGeneralProvider.shared.isBrowsingMode else {
+      return BigInt(0)
+    }
     let balance = BalanceStorage.shared.balanceForAddress(self.contract)
     return BigInt(balance?.balance ?? "") ?? BigInt(0)
   }

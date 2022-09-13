@@ -9,6 +9,7 @@ protocol KNLandingPageCoordinatorDelegate: class {
   func landingPageCoordinator(import wallet: KWallet, chain: ChainType)
   func landingPageCoordinator(add watchAddress: KAddress, chain: ChainType)
   func landingPageCoordinatorDidSendRefCode(_ code: String)
+  func landingPageCoordinatorStartedBrowsing()
 }
 
 /**
@@ -83,7 +84,6 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
     let wallets = walletManager.getAllWallets()
     if wallets.isEmpty && KNPasscodeUtil.shared.currentPasscode() != nil {
       self.navigationController.viewControllers = [self.rootViewController]
-      KNPasscodeUtil.shared.deletePasscode()
     }
     
     if !wallets.isEmpty {
@@ -124,6 +124,15 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
 extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
   func landinagePageViewController(_ controller: KNLandingPageViewController, run event: KNLandingPageViewEvent) {
     switch event {
+    case .getStarted:
+      if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
+        self.termViewController.nextAction = {
+          self.delegate?.landingPageCoordinatorStartedBrowsing()
+        }
+        self.navigationController.present(self.termViewController, animated: true, completion: nil)
+        return
+      }
+      self.delegate?.landingPageCoordinatorStartedBrowsing()
     case .openCreateWallet:
       Tracker.track(event: .introCreateWallet)
       if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {

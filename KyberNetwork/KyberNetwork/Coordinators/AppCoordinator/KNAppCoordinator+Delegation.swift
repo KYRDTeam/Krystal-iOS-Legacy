@@ -14,6 +14,11 @@ extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
     switchWallet(wallet: wallet, chain: chain)
   }
   
+  func landingPageCoordinatorStartedBrowsing() {
+    let address = walletManager.createEmptyAddress()
+    self.startNewSession(address: address)
+  }
+  
   func landingPageCoordinator(add watchAddress: KAddress, chain: ChainType) {
     
   }
@@ -298,12 +303,17 @@ extension KNAppCoordinator: KNTransactionStatusCoordinatorDelegate {
 extension KNAppCoordinator: KNAddNewWalletCoordinatorDelegate {
   
   func addNewWalletCoordinator(didAdd wallet: KWallet, chain: ChainType) {
-    self.tabbarController.selectedIndex = 0
     switchWallet(wallet: wallet, chain: chain)
+    if AppDelegate.shared.coordinator.tabbarController != nil {
+      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
+    }
   }
   
   func addNewWalletCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {
     switchToWatchAddress(address: watchAddress, chain: chain)
+    if AppDelegate.shared.coordinator.tabbarController != nil {
+      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
+    }
   }
   
   func addNewWalletCoordinatorDidSendRefCode(_ code: String) {

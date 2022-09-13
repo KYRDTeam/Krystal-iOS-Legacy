@@ -14,7 +14,7 @@ protocol EarnOverviewViewControllerDelegate: class {
   func earnOverviewViewControllerAddChainWallet(_ controller: EarnOverviewViewController, chainType: ChainType)
 }
 
-class EarnOverviewViewController: BaseWalletOrientedViewController {
+class EarnOverviewViewController: InAppBrowsingViewController {
   @IBOutlet weak var exploreButton: UIButton!
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
@@ -67,6 +67,11 @@ class EarnOverviewViewController: BaseWalletOrientedViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     MixPanelManager.track("earn_open", properties: ["screenid": "earn"])
+  }
+  
+  override func addNewWallet(wallet: KWallet, chain: ChainType) {
+    super.addNewWallet(wallet: wallet, chain: chain)
+    depositViewController.coordinatorDidUpdateDidUpdateTokenList()
   }
   
   fileprivate func updateUIPendingTxIndicatorView() {

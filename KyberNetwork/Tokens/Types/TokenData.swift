@@ -432,6 +432,9 @@ struct TokenData: Codable, Equatable {
   }
 
   func getBalanceBigInt() -> BigInt {
+    guard !KNGeneralProvider.shared.isBrowsingMode else {
+      return BigInt(0)
+    }
     let balance = BalanceStorage.shared.balanceForAddress(self.address)
     return BigInt(balance?.balance ?? "") ?? BigInt(0)
   }

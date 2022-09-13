@@ -33,7 +33,7 @@ protocol KSendTokenViewControllerDelegate: class {
 }
 
 //swiftlint:disable file_length
-class KSendTokenViewController: BaseWalletOrientedViewController {
+class KSendTokenViewController: InAppBrowsingViewController {
   @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var amountTextField: UITextField!
@@ -115,6 +115,12 @@ class KSendTokenViewController: BaseWalletOrientedViewController {
     Tracker.track(event: .openSendView)
     self.updateUISwitchChain()
     MixPanelManager.track("transfer_open", properties: ["screenid": "transfer"])
+    var title = Strings.transfer
+    if KNGeneralProvider.shared.isBrowsingMode {
+      title = Strings.connectWallet
+      self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
+    }
+    sendButton.setTitle(title, for: .normal)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -229,6 +235,10 @@ class KSendTokenViewController: BaseWalletOrientedViewController {
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
+    guard !KNGeneralProvider.shared.isBrowsingMode else {
+      onAddWalletButtonTapped(sender)
+      return
+    }
     Tracker.track(event: .transferSubmit)
     if self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) { return }
     if self.showWarningInvalidAddressIfNeeded() { return }
@@ -622,6 +632,8 @@ extension KSendTokenViewController {
     self.setupNavigationView()
     self.updateUIBalanceDidChange()
     self.updateUIPendingTxIndicatorView()
+    let title = KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.transfer
+    sendButton.setTitle(title, for: .normal)
   }
 
   func coordinatorDidUpdateChain() {

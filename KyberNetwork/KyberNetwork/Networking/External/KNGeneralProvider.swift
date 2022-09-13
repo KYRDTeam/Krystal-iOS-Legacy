@@ -135,6 +135,10 @@ class KNGeneralProvider {
   var isUseEIP1559: Bool {
     return KNGeneralProvider.shared.currentChain.isSupportedEIP1559()
   }
+  
+  var isBrowsingMode: Bool {
+    return AppDelegate.session.address.id.isEmpty
+  }
 
   var wrapperAddress: String {
     return self.customRPC.wrappedAddress
@@ -143,12 +147,16 @@ class KNGeneralProvider {
   var chainAddressType: KAddressType {
     return currentChain.addressType
   }
+  
+  var isCreatedPassCode: Bool {
+    return UserDefaults.standard.bool(forKey: Constants.isCreatedPassCode)
+  }
 
   init() {
     if let saved = Storage.retrieve(Constants.currentChainSaveFileName, as: ChainType.self) {
       self.currentChain = saved
     } else {
-      self.currentChain = .eth
+      self.currentChain = .bsc
     }
   }
   

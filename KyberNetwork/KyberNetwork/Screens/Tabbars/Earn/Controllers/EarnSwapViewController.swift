@@ -734,9 +734,12 @@ class EarnSwapViewModel {
     return .success
   }
   
+  var titleForContinueButton: String {
+    return KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.next
+  }
 }
 
-class EarnSwapViewController: BaseWalletOrientedViewController, AbstractEarnViewControler {
+class EarnSwapViewController: InAppBrowsingViewController, AbstractEarnViewControler {
   @IBOutlet weak var platformTableView: UITableView!
   @IBOutlet weak var toAmountTextField: UITextField!
   @IBOutlet weak var selectedGasFeeLabel: UILabel!
@@ -801,7 +804,7 @@ class EarnSwapViewController: BaseWalletOrientedViewController, AbstractEarnView
     self.platformTableView.rowHeight = EarnSelectTableViewCell.kCellHeight
     self.platformTableViewHeightContraint.constant = CGFloat(self.viewModel.platformDataSource.count) * EarnSelectTableViewCell.kCellHeight
     self.updateInforMessageUI()
-    self.earnButton.setTitle("Next".toBeLocalised(), for: .normal)
+    self.earnButton.setTitle(viewModel.titleForContinueButton, for: .normal)
     self.updateGasFeeUI()
     self.updateUIForSendApprove(isShowApproveButton: false)
     self.toTokenButton.setTitle(self.viewModel.toTokenData.symbol.uppercased(), for: .normal)
@@ -859,6 +862,12 @@ class EarnSwapViewController: BaseWalletOrientedViewController, AbstractEarnView
     self.estRateTimer = nil
     self.estGasLimitTimer?.invalidate()
     self.estGasLimitTimer = nil
+  }
+  
+  override func reloadChainUI() {
+    super.reloadChainUI()
+    earnButton.setTitle(viewModel.titleForContinueButton, for: .normal)
+    updateAllowance()
   }
   
   func resetBalanceValues() {
@@ -1010,6 +1019,7 @@ class EarnSwapViewController: BaseWalletOrientedViewController, AbstractEarnView
   }
 
   fileprivate func updateAllowance() {
+    guard !KNGeneralProvider.shared.isBrowsingMode else { return }
     guard let fromTokenData = viewModel.fromTokenData else { return }
     guard !(fromTokenData.isWrapToken && self.viewModel.toTokenData.isQuoteToken) else { return }
     self.delegate?.earnViewController(self, run: .checkAllowance(token: fromTokenData))
@@ -1075,6 +1085,10 @@ class EarnSwapViewController: BaseWalletOrientedViewController, AbstractEarnView
   }
   
   @IBAction func nextButtonTapped(_ sender: UIButton) {
+    guard !KNGeneralProvider.shared.isBrowsingMode else {
+      onAddWalletButtonTapped(sender)
+      return
+    }
     self.openSwapConfirm()
   }
   

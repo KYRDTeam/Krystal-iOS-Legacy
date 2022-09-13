@@ -157,12 +157,8 @@ class BridgeViewModel {
     if section == 0 {
       let view = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 142))
       view.backgroundColor = UIColor(named: "mainViewBgColor")!
-      let titleLabel = UILabel(frame: CGRect(x: (UIScreen.main.bounds.width - 140) / 2, y: 8, width: 140, height: 26))
-      titleLabel.text = Strings.KrystalBridge
-      titleLabel.textColor = UIColor(named: "textWhiteColor")!
-      titleLabel.font = UIFont.Kyber.regular(with: 22)
 
-      let detailLabel = UILabel(frame: CGRect(x: (UIScreen.main.bounds.width - 300) / 2, y: 45, width: 300, height: 44))
+      let detailLabel = UILabel(frame: CGRect(x: (UIScreen.main.bounds.width - 300) / 2, y: 0, width: 300, height: 44))
       detailLabel.text = "Seamlessly transfer tokens from one chain to another"
       detailLabel.textColor = UIColor(named: "textWhiteColor70")!
       detailLabel.font = UIFont.Kyber.regular(with: 16)
@@ -170,12 +166,11 @@ class BridgeViewModel {
       detailLabel.lineBreakMode = .byWordWrapping
       detailLabel.textAlignment = .center
 
-      let label = UILabel(frame: CGRect(x: 49, y: 117, width: 40, height: 24))
+      let label = UILabel(frame: CGRect(x: 49, y: 72, width: 40, height: 24))
       label.text = Strings.From
       label.textColor = UIColor(named: "textWhiteColor")!
       label.font = UIFont.Kyber.regular(with: 16)
 
-      view.addSubview(titleLabel)
       view.addSubview(detailLabel)
       view.addSubview(label)
       return view
@@ -339,6 +334,14 @@ class BridgeViewModel {
         return UITableViewCell()
       case .swapRow:
         let cell = tableView.dequeueReusableCell(BridgeSwapButtonCell.self, indexPath: indexPath)!
+        cell.swapBlock = self.swapBlock
+        guard !KNGeneralProvider.shared.isBrowsingMode else {
+          cell.swapButton.setTitle(Strings.connectWallet, for: .normal)
+          cell.swapButton.isEnabled = true
+          cell.swapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
+          return cell
+        }
+        
         if self.isNeedApprove || (self.isValidSourceAmount && self.isValidDestAmount && CryptoAddressValidator.isValidAddress(self.currentSendToAddress) && self.currentDestChain != nil) {
           cell.swapButton.isEnabled = true
           cell.swapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
@@ -346,7 +349,7 @@ class BridgeViewModel {
           cell.swapButton.isEnabled = false
           cell.swapButton.setBackgroundColor(UIColor(named: "navButtonBgColor")!, forState: .disabled)
         }
-        cell.swapBlock = self.swapBlock
+        
         if let currentSourceToken = currentSourceToken {
           cell.swapButton.setTitle(self.isNeedApprove ? "Approve \(currentSourceToken.symbol)" : "Review Transfer", for: .normal)
         } else {

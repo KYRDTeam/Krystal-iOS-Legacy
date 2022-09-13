@@ -24,10 +24,19 @@ class KNAddNewWalletCoordinator: Coordinator {
   let navigationController: UINavigationController  
   weak var delegate: KNAddNewWalletCoordinatorDelegate?
   var createWalletCoordinator: KNCreateWalletCoordinator?
-  
+  private var newWallet: KWallet?
   lazy var importWalletCoordinator: KNImportWalletCoordinator = {
     let coordinator = KNImportWalletCoordinator(
       navigationController: self.navigationController
+    )
+    coordinator.delegate = self
+    return coordinator
+  }()
+  
+  lazy var passcodeCoordinator: KNPasscodeCoordinator = {
+    let coordinator = KNPasscodeCoordinator(
+      navigationController: self.navigationController,
+      type: .setPasscode(cancellable: false)
     )
     coordinator.delegate = self
     return coordinator
@@ -51,17 +60,9 @@ class KNAddNewWalletCoordinator: Coordinator {
     self.navigationController.popToRootViewController(animated: false)
     switch type {
     case .full, .onlyReal:
-      let isFull: Bool = {
-        switch type {
-        case .full:
-          return true
-        default:
-          return false
-        }
-      }()
-      let popup = CreateWalletMenuViewController(isFull: isFull)
+      let popup = AddWalletViewController()
       popup.delegate = self
-      self.navigationController.present(popup, animated: true, completion: {})
+      self.navigationController.pushViewController(popup, animated: true)
     case .watch:
       self.createWatchWallet(address)
     case .chain(let chainType):
@@ -93,6 +94,44 @@ class KNAddNewWalletCoordinator: Coordinator {
     self.navigationController.present(controller, animated: true, completion: nil)
     MixPanelManager.track("add_watch_wallet_pop_up_open", properties: ["screenid": "add_watch_wallet_pop_up"])
   }
+  
+  func didImportWallet(wallet: KWallet, chain: ChainType) {
+    self.newWallet = wallet
+    // Check if first wallet
+    if !KNGeneralProvider.shared.isCreatedPassCode {
+      KNGeneralProvider.shared.currentChain = chain
+      self.passcodeCoordinator.start()
+    } else {
+      navigationController.dismiss(animated: true) {
+        self.delegate?.addNewWalletCoordinator(didAdd: wallet, chain: chain)
+      }
+    }
+  }
+}
+
+extension KNAddNewWalletCoordinator: KNPasscodeCoordinatorDelegate {
+  func passcodeCoordinatorDidCancel() {
+    self.passcodeCoordinator.stop { }
+  }
+
+  func passcodeCoordinatorDidEvaluatePIN() {
+    self.passcodeCoordinator.stop { }
+  }
+
+  func passcodeCoordinatorDidCreatePasscode() {
+    guard let wallet = self.newWallet else {
+      return
+    }
+//    guard let address = WalletManager.shared.address(forWalletID: wallet.id) else {
+//      return
+//    }
+//    guard let chain = ChainType.allCases.first(where: { $0.addressType == address.addressType }) else {
+//      return
+//    }
+    navigationController.dismiss(animated: true) {
+      self.delegate?.addNewWalletCoordinator(didAdd: wallet, chain: KNGeneralProvider.shared.currentChain)
+    }
+  }
 }
 
 extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
@@ -102,13 +141,10 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
   
   func createWalletCoordinatorDidCreateWallet(_ wallet: KWallet?, name: String?, chain: ChainType) {
     guard let wallet = wallet else { return }
-    navigationController.dismiss(animated: true) {
-      self.delegate?.addNewWalletCoordinator(didAdd: wallet, chain: chain)
-    }
+    didImportWallet(wallet: wallet, chain: chain)
   }
 
   func createWalletCoordinatorDidClose() {
-    self.navigationController.dismiss(animated: false, completion: nil)
   }
 }
 
@@ -119,9 +155,7 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
   }
   
   func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
-    navigationController.dismiss(animated: true) {
-      self.delegate?.addNewWalletCoordinator(didAdd: wallet, chain: chain)
-    }
+    didImportWallet(wallet: wallet, chain: chain)
   }
   
   func importWalletCoordinatorDidSendRefCode(_ code: String) {
@@ -129,21 +163,23 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
   }
   
   func importWalletCoordinatorDidClose() {
-    self.navigationController.dismiss(animated: true, completion: nil)
   }
 }
 
-extension KNAddNewWalletCoordinator: CreateWalletMenuViewControllerDelegate {
-  func createWalletMenuViewController(_ controller: CreateWalletMenuViewController, run event: CreateWalletMenuViewControllerEvent) {
+extension KNAddNewWalletCoordinator: AddWalletViewControllerDelegate {
+  func addWalletViewController(_ controller: AddWalletViewController, run event: AddWalletViewControllerEvent) {
     switch event {
-    case .createRealWallet:
+    case .createWallet:
       self.createNewWallet()
     case .importWallet:
       self.importAWallet()
-    case .createWatchWallet:
+    case .importWatchWallet:
       self.createWatchWallet()
     case .close:
-      self.navigationController.dismiss(animated: true, completion: nil)
+      if AppDelegate.shared.coordinator.tabbarController != nil {
+        AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
+      }
+      self.navigationController.dismiss(animated: false, completion: nil)
     }
   }
 }

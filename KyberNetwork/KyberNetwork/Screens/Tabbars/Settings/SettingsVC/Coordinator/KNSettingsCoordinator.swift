@@ -78,7 +78,7 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   }
 
   func stop() {
-    self.removeObservers()
+//    self.removeObservers()
     self.navigationController.popToRootViewController(animated: false)
   }
 
@@ -101,6 +101,7 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   
   @objc func appDidSwitchAddress() {
     self.listWalletsCoordinator?.appDidSwitchAddress()
+    self.rootViewController.coordinatorAppSwitchAddress()
   }
 
   func appCoordinatorTokenBalancesDidUpdate(balances: [String: Balance]) {
@@ -229,16 +230,13 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   func settingsViewControllerWalletsButtonPressed() {
-    guard self.listWalletsCoordinator != nil else {
-      let coordinator = KNListWalletsCoordinator(
-        navigationController: self.navigationController,
-        session: self.session,
-        delegate: self
-      )
-      coordinator.start()
-      self.listWalletsCoordinator = coordinator
-      return
-    }
+    let coordinator = KNListWalletsCoordinator(
+      navigationController: self.navigationController,
+      session: self.session,
+      delegate: self
+    )
+    coordinator.start()
+    self.listWalletsCoordinator = coordinator
   }
 
   func settingsViewControllerPasscodeDidChange(_ isOn: Bool) {

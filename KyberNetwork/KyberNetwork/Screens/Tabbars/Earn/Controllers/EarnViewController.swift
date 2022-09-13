@@ -104,6 +104,9 @@ class EarnViewModel {
   }
 
   var totalBalanceText: String {
+    guard !KNGeneralProvider.shared.isBrowsingMode else {
+      return "0 \(self.tokenData.symbol)"
+    }
     return "\(self.displayBalance) \(self.tokenData.symbol)"
   }
   
@@ -411,6 +414,10 @@ class EarnViewModel {
       }
     }
   }
+  
+  var titleForContinueButton: String {
+    return KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.next
+  }
 }
 
 enum EarnViewEvent {
@@ -448,7 +455,7 @@ protocol AbstractEarnViewControler: class {
   func coordinatorDidUpdateAdvancedNonce(_ nonce: String)
 }
 
-class EarnViewController: BaseWalletOrientedViewController, AbstractEarnViewControler {
+class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler {
   
   @IBOutlet weak var platformTableView: UITableView!
   @IBOutlet weak var fromAmountTextField: UITextField!
@@ -499,10 +506,11 @@ class EarnViewController: BaseWalletOrientedViewController, AbstractEarnViewCont
     )
     self.platformTableView.rowHeight = EarnSelectTableViewCell.kCellHeight
     
-    self.earnButton.setTitle("Next".toBeLocalised(), for: .normal)
+    
     self.updateUITokenDidChange(self.viewModel.tokenData)
     self.updateUIForSendApprove(isShowApproveButton: false)
     self.fromAmountTextField.setupCustomDeleteIcon()
+    hintToNavigateToSwapViewLabel.isHidden = KNGeneralProvider.shared.isBrowsingMode
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -511,6 +519,10 @@ class EarnViewController: BaseWalletOrientedViewController, AbstractEarnViewCont
     self.isViewDisappeared = false
     self.updateUIPendingTxIndicatorView()
     self.updateGasFeeUI()
+    self.earnButton.setTitle(viewModel.titleForContinueButton, for: .normal)
+    if KNGeneralProvider.shared.isBrowsingMode {
+      self.fromAmountTextField.text = ""
+    }
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -591,8 +603,15 @@ class EarnViewController: BaseWalletOrientedViewController, AbstractEarnViewCont
     self.view.layoutIfNeeded()
   }
   
+  override func reloadChainUI() {
+    super.reloadChainUI()
+    earnButton.setTitle(viewModel.titleForContinueButton, for: .normal)
+    hintToNavigateToSwapViewLabel.isHidden = KNGeneralProvider.shared.isBrowsingMode
+    updateAllowance()
+  }
+  
   fileprivate func updateAllowance() {
-    
+    guard !KNGeneralProvider.shared.isBrowsingMode else { return }
     self.delegate?.earnViewController(self, run: .checkAllowance(token: self.viewModel.tokenData))
   }
   
@@ -637,6 +656,10 @@ class EarnViewController: BaseWalletOrientedViewController, AbstractEarnViewCont
   }
   
   @IBAction func nextButtonTapped(_ sender: UIButton) {
+    guard !KNGeneralProvider.shared.isBrowsingMode else {
+      onAddWalletButtonTapped(sender)
+      return
+    }
     Tracker.track(event: .earnSubmit)
     guard !self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) else {
       return

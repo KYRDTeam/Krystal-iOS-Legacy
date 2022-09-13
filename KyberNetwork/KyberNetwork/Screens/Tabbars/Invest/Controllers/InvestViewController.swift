@@ -29,7 +29,7 @@ protocol InvestViewControllerDelegate: class {
   func investViewController(_ controller: InvestViewController, run event: InvestViewEvent)
 }
 
-class InvestViewController: BaseWalletOrientedViewController {
+class InvestViewController: InAppBrowsingViewController {
   @IBOutlet weak var collectionView: UICollectionView!
   
   let viewModel: ExploreViewModel = ExploreViewModel()
@@ -59,6 +59,14 @@ class InvestViewController: BaseWalletOrientedViewController {
     
     collectionView.delegate = self
     collectionView.dataSource = self
+  }
+  
+  override func addNewWallet(wallet: KWallet, chain: ChainType) {
+    super.addNewWallet(wallet: wallet, chain: chain)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      self.viewModel.reloadMenuItems()
+      self.collectionView.reloadData()
+    }
   }
   
   func bindViewModel() {

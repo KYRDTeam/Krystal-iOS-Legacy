@@ -188,9 +188,37 @@ class BaseWalletOrientedViewController: KNBaseViewController {
     AppDelegate.shared.coordinator.loadBalanceCoordinator?.shouldFetchAllChain = (chain == .all)
     AppDelegate.shared.coordinator.loadBalanceCoordinator?.resume()
   }
+  
+  func addNewWallet(wallet: KWallet, chain: ChainType) {
+    AppDelegate.shared.coordinator.tabbarController.selectedIndex = 0
+    onChainSelected(chain: chain)
+    didSelectWallet(wallet: wallet)
+    if AppDelegate.shared.coordinator.tabbarController != nil {
+      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
+    }
+  }
+  
+  func addNewWallet(watchAddress: KAddress, chain: ChainType) {
+    onChainSelected(chain: chain)
+    didSelectWatchWallet(address: watchAddress)
+  }
+  
+  func addNewWalletDidSendRefCode(_ code: String) {
+    service.sendRefCode(address: currentAddress, code.uppercased()) { _, message in
+      AppDelegate.shared.coordinator.tabbarController.showTopBannerView(message: message)
+    }
+  }
+
+  func removeWallet(wallet: KWallet) {
+
+  }
 }
 
 extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
+  func didSelectWallet(wallet: KWallet) {
+    didSelectWallet(wallet: wallet, isCreatedFromBrowsing: false)
+  }
+  
   
   func didSelectAddWallet() {
     present(addWalletCoordinator.navigationController, animated: false) {
@@ -198,11 +226,11 @@ extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
     }
   }
   
-  func didSelectWallet(wallet: KWallet) {
+  func didSelectWallet(wallet: KWallet, isCreatedFromBrowsing: Bool = false) {
     let addresses = WalletManager.shared.getAllAddresses(walletID: wallet.id)
     guard addresses.isNotEmpty else { return }
     if let matchingChainAddress = addresses.first(where: { $0.addressType == currentChain.addressType }) {
-      AppDelegate.shared.coordinator.switchAddress(address: matchingChainAddress)
+      AppDelegate.shared.coordinator.switchAddress(address: matchingChainAddress, isCreatedFromBrowsing: isCreatedFromBrowsing)
     } else {
       let address = addresses.first!
       guard let chain = ChainType.allCases.first(where: {
@@ -230,25 +258,19 @@ extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
 }
 
 extension BaseWalletOrientedViewController: KNAddNewWalletCoordinatorDelegate {
-  
   func addNewWalletCoordinator(didAdd wallet: KWallet, chain: ChainType) {
-    AppDelegate.shared.coordinator.tabbarController.selectedIndex = 0
-    onChainSelected(chain: chain)
-    didSelectWallet(wallet: wallet)
+    addNewWallet(wallet: wallet, chain: chain)
   }
   
   func addNewWalletCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {
-    onChainSelected(chain: chain)
-    didSelectWatchWallet(address: watchAddress)
-  }
+    addNewWallet(watchAddress: watchAddress, chain: chain)  }
   
   func addNewWalletCoordinatorDidSendRefCode(_ code: String) {
-    service.sendRefCode(address: currentAddress, code.uppercased()) { _, message in
-      AppDelegate.shared.coordinator.tabbarController.showTopBannerView(message: message)
-    }
+    addNewWalletDidSendRefCode(code)
   }
 
   func addNewWalletCoordinator(remove wallet: KWallet) {
-
+    removeWallet(wallet: wallet)
   }
+  
 }

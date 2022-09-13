@@ -133,9 +133,6 @@ extension KNCreateWalletCoordinator: CreateWalletViewControllerDelegate {
     switch event {
     case .back:
       self.navigationController.popViewController(animated: true) {
-        if AppDelegate.shared.coordinator.tabbarController != nil {
-          AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-        }
         self.delegate?.createWalletCoordinatorDidClose()
       }
     case .next(let name):
@@ -171,9 +168,9 @@ extension KNCreateWalletCoordinator: FinishCreateWalletViewControllerDelegate {
   func finishCreateWalletViewController(_ controller: FinishCreateWalletViewController, run event: FinishCreateWalletViewControllerEvent) {
     switch event {
     case .continueUseApp:
-        if AppDelegate.shared.coordinator.tabbarController != nil {
-          AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-        }
+      if AppDelegate.shared.coordinator.tabbarController != nil {
+        AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
+      }
       guard let wallet = self.newWallet else { return }
       self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, chain: targetChain)
     case .backup:

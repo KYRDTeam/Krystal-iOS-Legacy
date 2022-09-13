@@ -44,6 +44,10 @@ class TextFieldCell: UITableViewCell {
   }
   
   func updateErrorUI() {
+    guard !KNGeneralProvider.shared.isBrowsingMode else {
+      self.showErrorIfNeed(errorMsg: nil)
+      return
+    }
     if let text = self.textField.text {
       if CryptoAddressValidator.isValidAddress(text) {
         self.showErrorIfNeed(errorMsg: nil)

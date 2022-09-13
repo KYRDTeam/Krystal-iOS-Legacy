@@ -9,7 +9,7 @@ import UIKit
 import Lottie
 import BigInt
 
-class SwapV2ViewController: BaseWalletOrientedViewController {
+class SwapV2ViewController: InAppBrowsingViewController {
   @IBOutlet weak var platformTableView: UITableView!
   @IBOutlet weak var continueButton: UIButton!
   @IBOutlet weak var sourceTokenLabel: UILabel!
@@ -55,7 +55,7 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var dotView: UIView!
   @IBOutlet weak var containerView: UIView!
   @IBOutlet weak var loadingIndicator: SRCountdownTimer!
-  
+
   var viewModel: SwapV2ViewModel!
   
   let platformRateItemHeight: CGFloat = 96
@@ -80,6 +80,10 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
     }
   }
   
+  var titleForContinueButton: String {
+    return KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.reviewSwap
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -90,7 +94,10 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    
+    if KNGeneralProvider.shared.isBrowsingMode {
+      self.viewModel.appDidSwitchAddress()
+      self.viewModel.appDidSwitchChain()
+    }
     navigationController?.setNavigationBarHidden(true, animated: true)
     MixPanelManager.track("swap_open", properties: ["screenid": "swap"])
   }
@@ -148,6 +155,7 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
     continueButton.setBackgroundColor(.Kyber.evenBg, forState: .disabled)
     continueButton.setTitleColor(.black, for: .normal)
     continueButton.setTitleColor(.white.withAlphaComponent(0.3), for: .disabled)
+    continueButton.setTitle(titleForContinueButton, for: .normal)
   }
   
   func setupSourceView() {
@@ -344,7 +352,7 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
         self.loadingIndicator.isHidden = false
         self.rateLoadingView.isHidden = true
       case .notConnected:
-        self.continueButton.isEnabled = false
+        self.continueButton.isEnabled = true
         self.continueButton.setTitle(Strings.connectWallet, for: .normal)
         self.errorView.isHidden = true
         self.approveGuideView.isHidden = true
@@ -354,7 +362,7 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
         self.resetCountdownView()
       case .rateNotFound:
         self.continueButton.isEnabled = false
-        self.continueButton.setTitle(Strings.reviewSwap, for: .normal)
+        self.continueButton.setTitle(self.titleForContinueButton, for: .normal)
         self.rateLoadingView.isHidden = false
         self.platformTableView.isHidden = true
         self.loadingView.isHidden = true
@@ -367,8 +375,13 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
         self.rateLoadingView.isHidden = false
         self.resetCountdownView()
       case .insufficientBalance:
-        self.continueButton.isEnabled = false
-        self.continueButton.setTitle(String(format: Strings.insufficientTokenBalance, self.viewModel.sourceToken.value?.symbol ?? ""), for: .normal)
+        if KNGeneralProvider.shared.isBrowsingMode {
+          self.continueButton.isEnabled = true
+          self.continueButton.setTitle(self.titleForContinueButton, for: .normal)
+        } else {
+          self.continueButton.isEnabled = false
+          self.continueButton.setTitle(String(format: Strings.insufficientTokenBalance, self.viewModel.sourceToken.value?.symbol ?? ""), for: .normal)
+        }
         self.errorView.isHidden = true
         self.platformTableView.isHidden = false
         self.approveGuideView.isHidden = true
@@ -405,7 +418,7 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
         self.approveGuideLabel.attributedText = String(format: Strings.swapApproveWarn, sourceSymbol).withLineSpacing()
       case .requiredExpertMode:
         self.continueButton.isEnabled = false
-        self.continueButton.setTitle(Strings.reviewSwap, for: .normal)
+        self.continueButton.setTitle(self.titleForContinueButton, for: .normal)
         self.rateLoadingView.isHidden = false
         self.errorView.isHidden = true
         self.platformTableView.isHidden = false
@@ -413,7 +426,7 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
         self.approveGuideView.isHidden = true
       case .ready:
         self.continueButton.isEnabled = true
-        self.continueButton.setTitle(Strings.reviewSwap, for: .normal)
+        self.continueButton.setTitle(self.titleForContinueButton, for: .normal)
         self.rateLoadingView.isHidden = false
         self.errorView.isHidden = true
         self.platformTableView.isHidden = false
@@ -503,6 +516,10 @@ class SwapV2ViewController: BaseWalletOrientedViewController {
   }
   
   @IBAction func continueWasTapped(_ sender: Any) {
+    guard !KNGeneralProvider.shared.isBrowsingMode else {
+      onAddWalletButtonTapped(sender)
+      return
+    }
     viewModel.didTapContinue()
   }
   
@@ -648,6 +665,9 @@ extension SwapV2ViewController {
   }
   
   func onSourceAmountChange(value: String) {
+    if KNGeneralProvider.shared.isBrowsingMode {
+      viewModel.sourceBalance.value = BigInt(0)
+    }
     guard let doubleValue = value.toDouble() else {
       viewModel.sourceAmount.value = nil
       return

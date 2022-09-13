@@ -90,6 +90,13 @@ class OverviewCoordinator: NSObject, Coordinator {
     viewController.delegate = self
     return viewController
   }()
+  
+  lazy var browsingRootViewController: OverviewBrowsingViewController = {
+    let viewModel = OverviewBrowsingViewModel()
+    let viewController = OverviewBrowsingViewController(viewModel: viewModel)
+    viewController.delegate = self
+    return viewController
+  }()
 
   lazy var depositViewController: OverviewDepositViewController = {
     let controller = OverviewDepositViewController()
@@ -113,7 +120,12 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
   
   func start() {
-    self.navigationController.viewControllers = [self.rootViewController]
+    if KNGeneralProvider.shared.isBrowsingMode {
+      self.navigationController.viewControllers = [self.browsingRootViewController]
+    } else {
+      self.navigationController.viewControllers = [self.rootViewController]
+    }
+    
     self.observeAppEvents()
   }
   
@@ -615,6 +627,24 @@ extension OverviewCoordinator: KrytalCoordinatorDelegate {
   
   func krytalCoordinatorDidSelectManageWallet() {
     self.delegate?.overviewCoordinatorDidSelectManageWallet()
+  }
+}
+
+extension OverviewCoordinator: OverviewBrowsingViewControllerDelegate {
+  func didSelectToken(_ controller: OverviewBrowsingViewController, token: Token) {
+    MixPanelManager.track("token_detail_open", properties: ["screenid": "token_detail"])
+    self.openChartView(token: token, chainId: nil)
+  }
+  
+  func didSelectSearch(_ controller: OverviewBrowsingViewController) {
+    let module = searchRouter.createModule(currencyMode: self.currentCurrencyType, coordinator: self)
+    navigationController.pushViewController(module, animated: true)
+  }
+
+  func didSelectNotification(_ controller: OverviewBrowsingViewController) {
+    let coordinator = NotificationCoordinator(navigationController: self.navigationController)
+    coordinator.start()
+    self.notificationsCoordinator = coordinator
   }
 }
 

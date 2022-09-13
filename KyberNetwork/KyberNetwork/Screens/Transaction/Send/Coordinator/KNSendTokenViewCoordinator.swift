@@ -363,6 +363,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   }
   
   fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
+    guard !KNGeneralProvider.shared.isBrowsingMode else { return }
     let web3Service = EthereumWeb3Service(chain: KNGeneralProvider.shared.currentChain)
     web3Service.getTransactionCount(for: currentAddress.addressString) { result in
       switch result {

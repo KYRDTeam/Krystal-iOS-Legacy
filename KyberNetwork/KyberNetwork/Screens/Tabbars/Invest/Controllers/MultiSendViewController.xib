@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -20,6 +20,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MultiSendViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="backupIcon" destination="lL7-oD-Bl4" id="2HB-JH-Lw8"/>
+                <outlet property="browsingView" destination="s03-yu-DFa" id="pQw-hw-8ar"/>
                 <outlet property="chainButton" destination="MNH-sX-oRD" id="UVG-cy-7XG"/>
                 <outlet property="chainIcon" destination="VVn-5p-4N2" id="vEG-0T-qxA"/>
                 <outlet property="comingSoonView" destination="OQd-2P-wer" id="6ma-TM-Kb8"/>
@@ -28,6 +29,7 @@
                 <outlet property="inputTableViewHeight" destination="Jr6-nI-B3X" id="hFH-sv-eSG"/>
                 <outlet property="mainView" destination="6v6-SQ-Koa" id="MZi-hN-E3E"/>
                 <outlet property="pendingTxIndicatorView" destination="HAl-BF-sEn" id="ij7-3I-L60"/>
+                <outlet property="sendButton" destination="oCA-se-phj" id="RNg-56-inz"/>
                 <outlet property="useLastMultisendButton" destination="aFc-WY-Xds" id="yw4-eE-tpK"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletButton" destination="M2c-eB-UNi" id="C5s-VP-TxC"/>
@@ -162,6 +164,47 @@
                                 <action selector="onChainButtonTapped:" destination="-1" eventType="touchUpInside" id="tRG-sf-OrY"/>
                             </connections>
                         </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s03-yu-DFa">
+                            <rect key="frame" x="177" y="0.0" width="198" height="90.5"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-plus-square" translatesAutoresizingMaskIntoConstraints="NO" id="4Aw-Fe-4FG">
+                                    <rect key="frame" x="88.5" y="36.5" width="16" height="16"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="16" id="pCk-h4-gP4"/>
+                                        <constraint firstAttribute="width" constant="16" id="sye-o7-QF9"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Wallet" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8yQ-yd-Jn4">
+                                    <rect key="frame" x="106.5" y="35" width="68.5" height="19"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="19" id="i0h-3q-JPG"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                    <color key="textColor" name="buttonBackgroundColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yNH-m0-dcm">
+                                    <rect key="frame" x="88.5" y="28.5" width="86.5" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="32" id="QF1-sL-PGc"/>
+                                    </constraints>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <connections>
+                                        <action selector="onAddWalletButtonTapped:" destination="-1" eventType="touchUpInside" id="n24-zu-v9x"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" name="mainViewBgColor"/>
+                            <constraints>
+                                <constraint firstItem="8yQ-yd-Jn4" firstAttribute="centerY" secondItem="4Aw-Fe-4FG" secondAttribute="centerY" id="4Tc-4g-Q8h"/>
+                                <constraint firstAttribute="trailing" secondItem="yNH-m0-dcm" secondAttribute="trailing" constant="23" id="8QM-Mk-Azf"/>
+                                <constraint firstAttribute="bottom" secondItem="yNH-m0-dcm" secondAttribute="bottom" constant="30" id="Smd-iP-5X1"/>
+                                <constraint firstItem="4Aw-Fe-4FG" firstAttribute="leading" secondItem="yNH-m0-dcm" secondAttribute="leading" id="b7I-M9-uWg"/>
+                                <constraint firstItem="8yQ-yd-Jn4" firstAttribute="leading" secondItem="4Aw-Fe-4FG" secondAttribute="trailing" constant="2" id="fFF-GB-pFD"/>
+                                <constraint firstItem="yNH-m0-dcm" firstAttribute="trailing" secondItem="8yQ-yd-Jn4" secondAttribute="trailing" id="gAS-b7-kvp"/>
+                                <constraint firstItem="4Aw-Fe-4FG" firstAttribute="centerY" secondItem="yNH-m0-dcm" secondAttribute="centerY" id="v5p-R9-fy9"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <gestureRecognizers/>
@@ -169,6 +212,7 @@
                         <constraint firstItem="MNH-sX-oRD" firstAttribute="top" secondItem="Bsv-pO-Cpy" secondAttribute="bottom" constant="6" id="4HV-BX-iLc"/>
                         <constraint firstItem="HAl-BF-sEn" firstAttribute="trailing" secondItem="x1P-qb-xd0" secondAttribute="trailing" id="9pa-3P-D1i"/>
                         <constraint firstAttribute="trailing" secondItem="x1P-qb-xd0" secondAttribute="trailing" constant="17" id="Dly-Rd-62T"/>
+                        <constraint firstItem="s03-yu-DFa" firstAttribute="leading" secondItem="Bsv-pO-Cpy" secondAttribute="trailing" constant="30" id="Dmz-NK-ZLb"/>
                         <constraint firstItem="LaX-uZ-x5x" firstAttribute="centerY" secondItem="ilt-fG-ALY" secondAttribute="centerY" id="KbL-Vn-mQ8"/>
                         <constraint firstAttribute="bottom" secondItem="MNH-sX-oRD" secondAttribute="bottom" constant="24" id="Ml1-TS-UEK"/>
                         <constraint firstItem="Bsv-pO-Cpy" firstAttribute="leading" secondItem="ilt-fG-ALY" secondAttribute="leading" constant="51" id="Ocj-vB-Cr9"/>
@@ -176,11 +220,14 @@
                         <constraint firstItem="cnN-0O-wmZ" firstAttribute="leading" secondItem="ilt-fG-ALY" secondAttribute="leading" constant="16" id="XCj-zV-5BW"/>
                         <constraint firstItem="x1P-qb-xd0" firstAttribute="leading" secondItem="LaX-uZ-x5x" secondAttribute="trailing" constant="6" id="ZfE-nk-NOY"/>
                         <constraint firstItem="cnN-0O-wmZ" firstAttribute="centerY" secondItem="Bsv-pO-Cpy" secondAttribute="centerY" id="cFa-NN-a9j"/>
+                        <constraint firstAttribute="trailing" secondItem="s03-yu-DFa" secondAttribute="trailing" id="drw-Jo-nSo"/>
                         <constraint firstItem="MNH-sX-oRD" firstAttribute="leading" secondItem="VVn-5p-4N2" secondAttribute="trailing" constant="4" id="f5Y-bd-5IC"/>
                         <constraint firstItem="VVn-5p-4N2" firstAttribute="leading" secondItem="Bsv-pO-Cpy" secondAttribute="leading" id="fEB-PZ-ClX"/>
                         <constraint firstItem="HAl-BF-sEn" firstAttribute="top" secondItem="x1P-qb-xd0" secondAttribute="top" constant="3" id="iNR-LL-SW7"/>
+                        <constraint firstItem="s03-yu-DFa" firstAttribute="top" secondItem="ilt-fG-ALY" secondAttribute="top" id="mA1-6S-36s"/>
                         <constraint firstItem="x1P-qb-xd0" firstAttribute="centerY" secondItem="ilt-fG-ALY" secondAttribute="centerY" id="niW-UR-hBt"/>
                         <constraint firstItem="Bsv-pO-Cpy" firstAttribute="top" secondItem="ilt-fG-ALY" secondAttribute="top" constant="24" id="uG5-dS-Enf"/>
+                        <constraint firstAttribute="bottom" secondItem="s03-yu-DFa" secondAttribute="bottom" id="uMr-8P-dFy"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -324,6 +371,7 @@
         <image name="duplicate_form_multisend_icon" width="20" height="20"/>
         <image name="eth" width="32" height="32"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
+        <image name="icon-plus-square" width="16" height="16"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

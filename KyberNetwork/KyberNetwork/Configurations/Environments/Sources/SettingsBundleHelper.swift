@@ -36,6 +36,6 @@ class SettingsBundleHelper {
         return KNSecret.devKrytalURL
       }
     }
-    return nil
+    return KNSecret.devKrytalURL
   }
 }

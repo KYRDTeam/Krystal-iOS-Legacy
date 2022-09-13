@@ -118,7 +118,7 @@ class MultiSendViewModel {
   }
 }
 
-class MultiSendViewController: BaseWalletOrientedViewController {
+class MultiSendViewController: InAppBrowsingViewController {
   @IBOutlet weak var inputTableView: UITableView!
   @IBOutlet weak var inputTableViewHeight: NSLayoutConstraint!
   @IBOutlet weak var historyButton: UIButton!
@@ -126,7 +126,8 @@ class MultiSendViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var useLastMultisendButton: UIButton!
   @IBOutlet weak var comingSoonView: UIView!
   @IBOutlet weak var mainView: UIScrollView!
-  
+  @IBOutlet weak var sendButton: UIButton!
+
   let viewModel: MultiSendViewModel
   weak var delegate: MultiSendViewControllerDelegate?
 
@@ -149,13 +150,14 @@ class MultiSendViewController: BaseWalletOrientedViewController {
     self.updateUISwitchChain()
     self.updateUIPendingTxIndicatorView()
     self.useLastMultisendButton.rounded(color: UIColor(named: "textWhiteColor")!, width: 1, radius: 21)
-    
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.updateUIUseLast()
     MixPanelManager.track("multi_send_open", properties: ["screenid": "multi_send"])
+    let title = KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.transfer
+    sendButton.setTitle(title, for: .normal)
   }
   
   @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -163,6 +165,10 @@ class MultiSendViewController: BaseWalletOrientedViewController {
   }
   
   @IBAction func sendButtonTapped(_ sender: UIButton) {
+    guard !KNGeneralProvider.shared.isBrowsingMode else {
+      onAddWalletButtonTapped(sender)
+      return
+    }
     self.viewModel.needValidation = true
     self.view.endEditing(true)
     if case .error(let description) = self.viewModel.isFormValid {
@@ -214,6 +220,18 @@ class MultiSendViewController: BaseWalletOrientedViewController {
     mainView.isHidden = !KNGeneralProvider.shared.currentChain.supportMultisend
   }
   
+  override func updateChainInfo() {
+    super.updateChainInfo()
+    let title = KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.transfer
+    sendButton.setTitle(title, for: .normal)
+  }
+  
+  override func addNewWallet(wallet: KWallet, chain: ChainType) {
+    super.addNewWallet(wallet: wallet, chain: chain)
+    let title = KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.transfer
+    sendButton.setTitle(title, for: .normal)
+  }
+
   fileprivate func updateUIPendingTxIndicatorView() {
     guard self.isViewLoaded else {
       return
