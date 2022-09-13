@@ -173,7 +173,7 @@ public struct AllChains {
     type: "ARC20",
     name: "Avalanche",
     symbol: "AVAX",
-    endpoint: "https://speedy-nodes-nyc.moralis.io/847df1933775fb519982918b/avalanche/mainnet",
+    endpoint: "https://api.avax.network/ext/bc/C/rpc",
     endpointKyber: "https://rpc.ankr.com/avalanche",
     endpointAlchemy: "https://api.avax.network/ext/bc/C/rpc",
     etherScanEndpoint: "https://cchain.explorer.avax.network/",
