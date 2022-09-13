@@ -520,6 +520,9 @@ class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler
     self.updateUIPendingTxIndicatorView()
     self.updateGasFeeUI()
     self.earnButton.setTitle(viewModel.titleForContinueButton, for: .normal)
+    if KNGeneralProvider.shared.isBrowsingMode {
+      self.fromAmountTextField.text = ""
+    }
   }
 
   override func viewDidAppear(_ animated: Bool) {
