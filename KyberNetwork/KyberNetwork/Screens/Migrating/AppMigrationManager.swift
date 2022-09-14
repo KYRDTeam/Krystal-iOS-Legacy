@@ -35,7 +35,7 @@ class AppMigrationManager {
   
   func getUnknownWallets() -> [KNWalletObject] {
     return KNWalletStorage.shared.wallets.filter { element in
-      return element.isNeedMigration()
+      return element.storateType == 0
     }
   }
   
@@ -52,7 +52,7 @@ class AppMigrationManager {
   }
   
   private func migrateKeystoreWallets(progressCallback: @escaping (Float) -> (), completion: @escaping () -> ()) {
-    KNWalletStorage.shared.migrateDataIfNeeded(keyStore: keystore)
+    KNWalletStorage.shared.migrateUnknownWallets(keystore: keystore, walletObjects: getUnknownWallets().map { $0.clone() })
     let totalWallets = keystore.wallets.count
     var completedWallets: Int = 0
     let walletObjects = KNWalletStorage.shared.wallets
