@@ -22,22 +22,37 @@ class AppMigrationManager {
     operationQueue.maxConcurrentOperationCount = 1
   }
   
+  var needMigrateUnknownWallets: Bool {
+    return getUnknownWallets().isNotEmpty && UserDefaults.hasMigratedUnknownKeystoreWallet == false
+  }
+  
   var needMigrate: Bool {
+    if needMigrateUnknownWallets {
+      return true
+    }
     return !UserDefaults.hasMigratedKeystoreWallet && !keystore.wallets.isEmpty
   }
   
+  func getUnknownWallets() -> [KNWalletObject] {
+    return KNWalletStorage.shared.wallets.filter { element in
+      return element.storateType == 0
+    }
+  }
+  
   func execute(progressCallback: @escaping (Float) -> Void, completion: @escaping () -> Void) {
-    if !UserDefaults.hasMigratedKeystoreWallet {
+    if needMigrate {
       migrateKeystoreWallets { progress in
         progressCallback(progress)
       } completion: {
         UserDefaults.hasMigratedKeystoreWallet = true
+        UserDefaults.hasMigratedUnknownKeystoreWallet = true
         completion()
       }
     }
   }
   
   private func migrateKeystoreWallets(progressCallback: @escaping (Float) -> (), completion: @escaping () -> ()) {
+    KNWalletStorage.shared.migrateUnknownWallets(keystore: keystore, walletObjects: getUnknownWallets().map { $0.clone() })
     let totalWallets = keystore.wallets.count
     var completedWallets: Int = 0
     let walletObjects = KNWalletStorage.shared.wallets
@@ -46,7 +61,7 @@ class AppMigrationManager {
       completion()
     }
     self.keystore.wallets.forEach { wallet in
-      if let walletObject = walletObjects.first { $0.address.lowercased() == wallet.address?.description.lowercased() } {
+      if let walletObject = walletObjects.first(where: { $0.address.lowercased() == wallet.address?.description.lowercased() }) {
         let operation = MigratingWalletOperation(keystore: keystore, wallet: wallet, walletObject: walletObject)
         operation.onComplete = {
           DispatchQueue.main.async {
