@@ -36,6 +36,9 @@ class WalletCache {
   }
   
   func isWalletBackedUp(walletID: String) -> Bool {
+    if let wallet = WalletManager.shared.getWallet(id: walletID), wallet.importType != .mnemonic {
+      return true
+    }
     return userDefaults.bool(forKey: kIsWalletBackedUp + walletID)
   }
   
