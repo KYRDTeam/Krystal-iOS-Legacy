@@ -940,3 +940,6 @@
 "recovery.phrase.3" = "Find a safe and private place to write down the recovery phrase; keep it somewhere safe and do not share with anyone.";
 "recovery.hightlight.phrase.3" = "do not share";
 "Watchlist" = "Watchlist";
+"create.wallet" = "Create Wallet";
+"import.wallet" = "Import Wallet";
+"get.started" = "Get Started";

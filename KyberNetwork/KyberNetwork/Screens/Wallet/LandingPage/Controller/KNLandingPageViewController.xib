@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -22,6 +22,7 @@
                 <outlet property="createWalletButton" destination="7nN-NM-xeF" id="IIN-sb-ImQ"/>
                 <outlet property="importWalletButton" destination="hSF-ar-Svx" id="qW5-Nd-Q2c"/>
                 <outlet property="termAndConditionButton" destination="y2C-Xx-uQV" id="uZP-3S-nhg"/>
+                <outlet property="termOfUseTopConstraint" destination="c4D-m7-GNz" id="62S-yw-jUk"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="welcomeScreenCollectionView" destination="tFk-DS-wvQ" id="MN8-OV-dQw"/>
             </connections>
@@ -67,7 +68,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="y2C-Xx-uQV">
-                    <rect key="frame" x="37" y="548" width="301" height="31"/>
+                    <rect key="frame" x="37" y="598" width="301" height="31"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <state key="normal" title="Terms of Use">
@@ -86,7 +87,7 @@
                 <constraint firstItem="y2C-Xx-uQV" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="37" id="LAd-d6-SlT"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="y2C-Xx-uQV" secondAttribute="trailing" constant="37" id="LUb-hE-Dk6"/>
                 <constraint firstItem="tFk-DS-wvQ" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="MTS-Px-o0V"/>
-                <constraint firstItem="y2C-Xx-uQV" firstAttribute="top" secondItem="7nN-NM-xeF" secondAttribute="bottom" constant="15" id="c4D-m7-GNz"/>
+                <constraint firstItem="y2C-Xx-uQV" firstAttribute="top" secondItem="7nN-NM-xeF" secondAttribute="bottom" constant="65" id="c4D-m7-GNz"/>
                 <constraint firstItem="hSF-ar-Svx" firstAttribute="top" secondItem="7nN-NM-xeF" secondAttribute="bottom" constant="15" id="fi1-vh-7zO"/>
                 <constraint firstItem="7nN-NM-xeF" firstAttribute="top" secondItem="tFk-DS-wvQ" secondAttribute="bottom" constant="21" id="h4O-Br-gIg"/>
                 <constraint firstItem="tFk-DS-wvQ" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" constant="-20" id="luu-T1-JBr"/>

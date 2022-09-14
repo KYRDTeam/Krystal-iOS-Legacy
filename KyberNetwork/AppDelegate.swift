@@ -58,8 +58,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   
   func coordinatorFinishLaunching(keystore: Keystore) {
     coordinator = KNAppCoordinator(window: window!, keystore: keystore)
-    coordinator.start()
     coordinator.appDidFinishLaunch()
+    coordinator.start()
     // promptForPushNotifications will show the native iOS notification permission prompt.
     // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
     OneSignal.promptForPushNotifications(userResponse: { accepted in
