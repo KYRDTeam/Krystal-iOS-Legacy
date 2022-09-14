@@ -28,4 +28,7 @@ extension UserDefaults {
   @UserDefault(key: "has_migrated_keystore_wallets", defaultValue: false)
   static var hasMigratedKeystoreWallet: Bool
   
+  @UserDefault(key: "has_migrated_unknown_keystore_wallets", defaultValue: false)
+  static var hasMigratedUnknownKeystoreWallet: Bool
+  
 }
