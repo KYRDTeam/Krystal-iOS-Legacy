@@ -34,6 +34,7 @@ public struct Constants {
   public static let hightVolAmount = 100000.0
   public static let useGasTokenDataKey = "use_gas_token_data_key"
   public static let isCreatedPassCode = "is_created_passcode"
+  public static let isAppOpenAlready = "is_app_open_already"
 
   public static let oneSignalAppID = KNEnvironment.default == .ropsten ? "361e7815-4da2-41c9-ba0a-d35add5a58ef" : "0487532e-7b19-415b-91a1-2a285b0b8382"
   public static let gasTokenAddress = KNEnvironment.default == .ropsten ? "0x0000000000b3F879cb30FE243b4Dfee438691c04" : "0x0000000000004946c0e9F43F4Dee607b0eF1fA1c"
