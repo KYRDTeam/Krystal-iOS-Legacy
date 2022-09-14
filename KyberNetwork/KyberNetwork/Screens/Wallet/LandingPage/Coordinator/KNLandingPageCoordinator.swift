@@ -83,7 +83,10 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
   func start() {
     let wallets = walletManager.getAllWallets()
     if wallets.isEmpty && KNPasscodeUtil.shared.currentPasscode() != nil {
-      self.navigationController.viewControllers = [self.rootViewController]
+      if !UserDefaults.standard.bool(forKey: Constants.isAppOpenAlready) {
+        self.navigationController.viewControllers = [self.rootViewController]
+      }
+      return
     }
     
     if !wallets.isEmpty {
@@ -128,6 +131,7 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
       if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
         self.termViewController.nextAction = {
           self.delegate?.landingPageCoordinatorStartedBrowsing()
+          UserDefaults.standard.set(true, forKey: Constants.isAppOpenAlready)
         }
         self.navigationController.present(self.termViewController, animated: true, completion: nil)
         return

@@ -95,7 +95,7 @@ class MigratingWalletOperation: AsyncOperation {
                 ()
               }
             }
-          case .privateKey:
+          case .privateKey, .unknow:
             let keyResult = self.keystore.exportPrivateKey(account: account)
             switch keyResult {
             case .success(let key):
