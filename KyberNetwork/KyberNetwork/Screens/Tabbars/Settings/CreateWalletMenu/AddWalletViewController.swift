@@ -55,7 +55,9 @@ class AddWalletViewController: KNBaseViewController {
   @IBAction func onCloseButtonTapped(_ sender: Any) {
     isCloseByGesture = false
     self.navigationController?.popViewController(animated: true, completion: {
-      self.delegate?.addWalletViewController(self, run: .close)
+      DispatchQueue.main.async {
+        self.delegate?.addWalletViewController(self, run: .close)
+      }
     })
   }
 }

@@ -224,6 +224,11 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   }
   
   private func updateState() {
+    guard let sourceAmount = self.sourceAmount.value, !sourceAmount.isZero else {
+      self.state.value = .emptyAmount
+      return
+    }
+    
     if self.currentAddress.value.isWatchWallet {
       self.state.value = .notConnected
     } else if self.sourceAmount.value ?? .zero <= self.maxAvailableSourceTokenAmount {
