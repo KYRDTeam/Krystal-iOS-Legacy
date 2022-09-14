@@ -956,3 +956,13 @@
 "redeem.fail.message" = "Redeeming failed. Please try again.";
 "redeem" = "Redeem";
 "redeem.now" = "Redeem Now";
+
+// Notification
+"all" = "All";
+"unread" = "Unread";
+"one.days.ago" = "1 day ago";
+"x.days.ago" = "%d days ago";
+"x.hours.ago" = "%d hours ago";
+"x.mins.ago" = "%d minutes ago";
+"x.seconds.ago" = "%d seconds ago";
+"just.now" = "Just now";

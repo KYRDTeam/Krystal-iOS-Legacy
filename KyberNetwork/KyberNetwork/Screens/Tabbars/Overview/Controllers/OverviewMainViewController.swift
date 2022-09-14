@@ -322,7 +322,10 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   }
   
   @IBAction func notificationsButtonTapped(_ sender: UIButton) {
-    self.delegate?.overviewMainViewController(self, run: .notifications)
+//    self.delegate?.overviewMainViewController(self, run: .notifications)
+    let vc = NotificationV2ViewController.instantiateFromNib()
+    vc.hidesBottomBarWhenPushed = true
+    navigationController?.pushViewController(vc, animated: true)
     MixPanelManager.track("home_noti", properties: ["screenid": "homepage"])
   }
   
