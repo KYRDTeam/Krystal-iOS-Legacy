@@ -254,13 +254,15 @@ extension PromoCodeListViewController: UITextFieldDelegate {
     if let empty = textField.text?.isEmpty, empty == true {
       self.viewModel.clearSearchData()
       self.promoCodeTableView.reloadData()
+    } else {
+      self.delegate?.promoCodeListViewController(self, run: .checkCode(code: textField.text ?? ""))
     }
     textField.resignFirstResponder()
     return true
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    self.checkRequestCode()
+    self.delegate?.promoCodeListViewController(self, run: .checkCode(code: textField.text ?? ""))
   }
   
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
