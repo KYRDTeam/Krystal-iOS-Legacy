@@ -102,7 +102,7 @@ class RewardCoordinator: Coordinator {
       self.rootViewController.hideLoading()
       return
     }
-    guard let loginToken = Storage.retrieve(currentAddress.addressString + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
+    guard let token = UserDefaults.standard.getAuthToken(address: currentAddress.addressString) else {
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
       }
@@ -112,7 +112,7 @@ class RewardCoordinator: Coordinator {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let address = self.currentAddress.addressString
     
-    provider.requestWithFilter(.getRewards(address: address, accessToken: loginToken.token)) { (result) in
+    provider.requestWithFilter(.getRewards(address: address, accessToken: token)) { (result) in
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
       }
@@ -167,7 +167,7 @@ class RewardCoordinator: Coordinator {
       self.rootViewController.hideLoading()
       return
     }
-    guard let loginToken = Storage.retrieve(currentAddress.addressString + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
+    guard let token = UserDefaults.standard.getAuthToken(address: currentAddress.addressString) else {
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
       }
@@ -177,7 +177,7 @@ class RewardCoordinator: Coordinator {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let address = currentAddress.addressString
     
-    provider.requestWithFilter(.getClaimRewards(address: address, accessToken: loginToken.token)) { (result) in
+    provider.requestWithFilter(.getClaimRewards(address: address, accessToken: token)) { (result) in
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
       }

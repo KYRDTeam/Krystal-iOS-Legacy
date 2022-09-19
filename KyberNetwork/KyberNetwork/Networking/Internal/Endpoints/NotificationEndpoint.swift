@@ -68,7 +68,11 @@ extension NotificationEndpoint: TargetType {
   }
   
   var headers: [String: String]? {
-    return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjU1NjMxNjEsImp0aSI6IjB4OEQ2MWFCNzU3MWIxMTc2NDRBNTIyNDA0NTZERjY2RUY4NDZjZDk5OSJ9.qFHh5fz-rxc--RiIctNJ3Mibt8NoDIlYijay1tmhHJ0"]
+    switch self {
+    case .list(_, _, _, _, let userAddress):
+      let token = UserDefaults.standard.getAuthToken(address: userAddress) ?? ""
+      return ["Authorization": "Bearer \(token)"]
+    }
   }
   
 }

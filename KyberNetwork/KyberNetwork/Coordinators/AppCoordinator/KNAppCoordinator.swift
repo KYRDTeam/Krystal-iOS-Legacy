@@ -188,7 +188,7 @@ class KNAppCoordinator: NSObject, Coordinator {
           let decoder = JSONDecoder()
           do {
             let data = try decoder.decode(LoginToken.self, from: resp.data)
-            Storage.store(data, as: self.session.address.addressString + Constants.loginTokenStoreFileName)
+            UserDefaults.standard.saveAuthToken(address: self.session.address.addressString, token: data.token)
             completion(true)
           } catch let error {
             print("[Login][Error] \(error.localizedDescription)")
