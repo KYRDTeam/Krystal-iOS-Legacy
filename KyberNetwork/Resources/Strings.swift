@@ -161,6 +161,9 @@ struct Strings {
   static let backupKeystore = "backup.keystore".toBeLocalised()
   static let backupPrivateKey = "backup.private.key".toBeLocalised()
   static let backupMnemonic = "backup.mnemonic".toBeLocalised()
+  static let createWallet = "create.wallet".toBeLocalised()
+  static let importWallet = "import.wallet".toBeLocalised()
+  static let getStarted = "get.started".toBeLocalised()
   
   // Rewards
   static let switchToBSCToClaimRewards = "switch.to.bsc.to.claim.rewards".toBeLocalised()

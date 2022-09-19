@@ -21,7 +21,8 @@ class KNLandingPageViewController: KNBaseViewController {
   @IBOutlet weak var createWalletButton: UIButton!
   @IBOutlet weak var importWalletButton: UIButton!
   @IBOutlet weak var termAndConditionButton: UIButton!
-
+  @IBOutlet weak var termOfUseTopConstraint: NSLayoutConstraint!
+  var isBrowsingEnable: Bool = true
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -37,15 +38,46 @@ class KNLandingPageViewController: KNBaseViewController {
     self.createWalletButton.rounded(radius: 16)
     self.importWalletButton.rounded(radius: 16)
     self.welcomeScreenCollectionView.paggerViewLeadingConstraint.constant = (UIScreen.main.bounds.width - collectionViewLeadTrailPadding * 2 - KNWelcomeScreenCollectionView.paggerWidth) / 2
+    self.updateUI()
+    self.observeFeatureFlagChanged()
   }
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
   }
+  
+  func observeFeatureFlagChanged() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(reloadMenuItems),
+      name: Notification.Name(kUpdateFeatureFlag),
+      object: nil
+    )
+  }
+  
+  @objc func reloadMenuItems() {
+    self.isBrowsingEnable = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.appBrowsing)
+    updateUI()
+  }
+  
+  func updateUI() {
+    if self.isBrowsingEnable {
+      self.createWalletButton.setTitle(Strings.getStarted, for: .normal)
+      self.importWalletButton.isHidden = true
+      self.termOfUseTopConstraint.constant = 15
+    } else {
+      self.createWalletButton.setTitle(Strings.createWallet, for: .normal)
+      self.importWalletButton.isHidden = false
+      self.termOfUseTopConstraint.constant = 65
+    }
+  }
 
   @IBAction func createWalletButtonPressed(_ sender: Any) {
-    self.delegate?.landinagePageViewController(self, run: .getStarted)
-//    self.delegate?.landinagePageViewController(self, run: .openCreateWallet)
+    if self.isBrowsingEnable {
+      self.delegate?.landinagePageViewController(self, run: .getStarted)
+    } else {
+      self.delegate?.landinagePageViewController(self, run: .openCreateWallet)
+    }
   }
 
   @IBAction func importWalletButtonPressed(_ sender: Any) {
