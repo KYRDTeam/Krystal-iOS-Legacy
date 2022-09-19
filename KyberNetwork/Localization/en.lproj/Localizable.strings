@@ -943,3 +943,8 @@
 "create.wallet" = "Create Wallet";
 "import.wallet" = "Import Wallet";
 "get.started" = "Get Started";
+
+// Promotion
+"invalid.promotion.code" = "Sorry, the promotion code entered is fully redeemed or invalid.";
+"enter.promotion.code" = "Enter promotion code";
+"scan.promotion.code" = "Scan promotion code";

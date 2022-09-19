@@ -253,10 +253,7 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.multiSendCoordinator.start()
       Tracker.track(event: .exploreMultisend)
     case .promoCode:
-      let coordinator = PromoCodeCoordinator(navigationController: self.navigationController)
-      coordinator.start()
-      self.promoCodeCoordinator = coordinator
-      MixPanelManager.track("promotion_open", properties: ["screenid": "promotion"])
+      self.openPromotion(withCode: nil)
     case .rewardHunting:
       if currentAddress.isWatchWallet {
         self.rootViewController.showErrorTopBannerMessage(message: Strings.rewardHuntingWatchWalletErrorMessage)
@@ -272,7 +269,7 @@ extension InvestCoordinator: InvestViewControllerDelegate {
     case .addChainWallet(let chainType):
       delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
     case .scanner:
-      var acceptedResultTypes: [ScanResultType] = []
+      var acceptedResultTypes: [ScanResultType] = [.promotionCode]
       var scanModes: [ScanMode] = [.qr, .text]
       if KNGeneralProvider.shared.currentChain.isEVM {
         acceptedResultTypes.append(contentsOf: [.walletConnect, .ethPublicKey, .ethPrivateKey])
@@ -300,6 +297,9 @@ extension InvestCoordinator: InvestViewControllerDelegate {
           self.openSendTokenView(recipientAddress: text)
         case .solPrivateKey:
           self.openImportWalletFlow(privateKey: text, chain: .solana)
+        case .promotionCode:
+          guard let code = ScannerUtils.getPromotionCode(text: text) else { return }
+          self.openPromotion(withCode: code)
         }
       }
       MixPanelManager.track("scanner_open", properties: ["screenid": "scanner"])
@@ -311,6 +311,13 @@ extension InvestCoordinator: InvestViewControllerDelegate {
     self.importWalletCoordinator = coordinator
     coordinator.delegate = self
     coordinator.startImportFlow(privateKey: privateKey, chain: chain)
+  }
+  
+  func openPromotion(withCode code: String?) {
+    let coordinator = PromoCodeCoordinator(navigationController: self.navigationController, code: code)
+    coordinator.start()
+    self.promoCodeCoordinator = coordinator
+    MixPanelManager.track("promotion_open", properties: ["screenid": "promotion"])
   }
   
   func handleWalletConnectURI(_ result: String, disconnectAfterDisappear: Bool = true) {
