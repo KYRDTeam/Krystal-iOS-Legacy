@@ -125,7 +125,8 @@ class KNSession {
     self.transactionCoordinator = nil
 
     KNAppTracker.resetAllAppTrackerData()
-    WalletCache.shared.lastUsedAddress = nil
+    let address = walletManager.createEmptyAddress()
+    WalletCache.shared.lastUsedAddress = address
   }
 
   func clearWalletData(wallet: KWallet) {
