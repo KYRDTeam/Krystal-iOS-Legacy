@@ -253,9 +253,7 @@ class BridgeViewController: InAppBrowsingViewController {
         self.delegate?.bridgeViewControllerController(self, run: .addChainWallet(chainType: selected))
         return
       } else {
-        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-        self.present(secondPopup, animated: true, completion: nil)
+        self.onChainSelected(chain: selected)
       }
     }
     self.present(popup, animated: true, completion: nil)
