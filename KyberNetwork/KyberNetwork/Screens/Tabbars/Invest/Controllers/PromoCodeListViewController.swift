@@ -57,7 +57,7 @@ class PromoCodeListViewController: KNBaseViewController {
   @IBOutlet weak var promoCodeTableView: UITableView!
   @IBOutlet weak var searchContainerView: UIView!
   @IBOutlet weak var errorLabel: UILabel!
-  
+  @IBOutlet weak var scanButton: UIButton!
   
   let viewModel: PromoCodeListViewModel
   var cachedCell: [IndexPath: PromoCodeCell] = [:]
@@ -76,13 +76,44 @@ class PromoCodeListViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    self.setupTableView()
+    self.setupSearchField()
+    self.delegate?.promoCodeListViewController(self, run: .checkCode(code: viewModel.searchText))
+    self.delegate?.promoCodeListViewController(self, run: .loadUsedCode)
+    self.updateUIForSearchField(error: "")
+  }
+  
+  func setupSearchField() {
+    searchTextField.text = viewModel.searchText
+    searchTextField.setPlaceholder(text: Strings.enterPromotionCode, color: .white.withAlphaComponent(0.5))
+  }
+  
+  func setupTableView() {
     let nib = UINib(nibName: PromoCodeCell.className, bundle: nil)
     self.promoCodeTableView.register(nib, forCellReuseIdentifier: PromoCodeCell.cellID)
     self.promoCodeTableView.rowHeight = UITableView.automaticDimension
     self.promoCodeTableView.estimatedRowHeight = 200
-    self.delegate?.promoCodeListViewController(self, run: .loadUsedCode)
-    self.updateUIForSearchField(error: "")
-    
+  }
+  
+  @IBAction func scanWasTapped(_ sender: Any) {
+    guard let nav = self.navigationController else { return }
+    ScannerModule.start(
+      previousScreen: .explore,
+      navigationController: nav,
+      acceptedResultTypes: [.promotionCode],
+      scanModes: [.qr]
+    ) { [weak self] text, type in
+        guard let self = self else { return }
+        switch type {
+        case .promotionCode:
+          guard let code = ScannerUtils.getPromotionCode(text: text) else { return }
+          self.searchTextField.text = code
+          self.viewModel.searchText = code
+          self.delegate?.promoCodeListViewController(self, run: .checkCode(code: code))
+        default:
+          return
+        }
+      }
   }
   
   @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -94,11 +125,13 @@ class PromoCodeListViewController: KNBaseViewController {
       self.searchContainerView.rounded(radius: 16)
       self.searchTextField.textColor = UIColor(named: "textWhiteColor")
       self.errorLabel.isHidden = true
+      self.scanButton.isHidden = false
     } else {
       self.searchContainerView.rounded(color: UIColor(named: "textRedColor")!, width: 1, radius: 16)
       self.searchTextField.textColor = UIColor(named: "textRedColor")
       self.errorLabel.isHidden = false
       self.errorLabel.text = error
+      self.scanButton.isHidden = true
     }
   }
   
@@ -108,7 +141,11 @@ class PromoCodeListViewController: KNBaseViewController {
     self.viewModel.reloadDataSource()
     guard self.isViewLoaded else { return }
     self.promoCodeTableView.reloadData()
-    self.updateUIForSearchField(error: "")
+    if codes.isEmpty && !searchText.isEmpty {
+      self.updateUIForSearchField(error: Strings.invalidPromotionCode)
+    } else {
+      self.updateUIForSearchField(error: "")
+    }
   }
 
   func coordinatorDidUpdateUsedPromoCodeItems(_ codes: [PromoCode]) {
@@ -128,7 +165,6 @@ class PromoCodeListViewController: KNBaseViewController {
     self.updateUIForSearchField(error: error)
   }
 }
-
 
 extension PromoCodeListViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
@@ -218,13 +254,15 @@ extension PromoCodeListViewController: UITextFieldDelegate {
     if let empty = textField.text?.isEmpty, empty == true {
       self.viewModel.clearSearchData()
       self.promoCodeTableView.reloadData()
+    } else {
+      self.delegate?.promoCodeListViewController(self, run: .checkCode(code: textField.text ?? ""))
     }
     textField.resignFirstResponder()
     return true
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    self.checkRequestCode()
+    self.delegate?.promoCodeListViewController(self, run: .checkCode(code: textField.text ?? ""))
   }
   
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
@@ -260,8 +298,8 @@ extension PromoCodeListViewController: UITextFieldDelegate {
 //      self.updateUIForSearchField(error: "")
       return
     }
-    self.delegate?.promoCodeListViewController(self, run: .checkCode(code: text))
     self.viewModel.searchText = text
+    self.delegate?.promoCodeListViewController(self, run: .checkCode(code: text))
   }
 }
 

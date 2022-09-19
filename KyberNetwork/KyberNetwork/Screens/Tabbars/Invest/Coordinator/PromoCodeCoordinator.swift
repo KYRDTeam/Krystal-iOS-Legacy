@@ -24,11 +24,15 @@ class PromoCodeCoordinator: Coordinator {
     return controller
   }()
   
-  init(navigationController: UINavigationController = UINavigationController()) {
+  var code: String?
+  
+  init(navigationController: UINavigationController = UINavigationController(), code: String? = nil) {
+    self.code = code
     self.navigationController = navigationController
   }
   
   func start() {
+    self.rootViewController.viewModel.searchText = code ?? ""
     self.navigationController.pushViewController(self.rootViewController, animated: true, completion: nil)
   }
   
@@ -67,7 +71,10 @@ extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
   func promoCodeListViewController(_ viewController: PromoCodeListViewController, run event: PromoCodeListViewEvent) {
     switch event {
     case .checkCode(let code):
-      guard !code.isEmpty else { return }
+      guard !code.isEmpty else {
+        self.rootViewController.coordinatorDidUpdateSearchPromoCodeItems([], searchText: code)
+        return
+      }
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
       provider.requestWithFilter(.getPromotions(code: code, address: "")) { result in
         switch result {

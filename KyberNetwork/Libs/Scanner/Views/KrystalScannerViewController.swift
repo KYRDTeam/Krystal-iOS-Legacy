@@ -233,6 +233,9 @@ class KrystalScannerViewController: UIViewController {
   }
   
   private func getInfoText() -> String {
+    if acceptedResults.count == 1 && acceptedResults[0] == .promotionCode {
+      return Strings.scanPromotionCode
+    }
     var acceptedResultTypeName: [String] = []
     if acceptedResults.contains(.walletConnect) {
       acceptedResultTypeName.append("WalletConnect")
@@ -371,7 +374,7 @@ extension KrystalScannerViewController: AVCaptureVideoDataOutputSampleBufferDele
         let formattedText = ScannerUtils.formattedText(text: text, forType: type)
         return ScannerUtils.isValid(text: formattedText, forType: type)
       }) {
-        if scanMode == .text && (type == .solPrivateKey || type == .solPublicKey) {
+        if scanMode == .text && (type == .solPrivateKey || type == .solPublicKey || type == .promotionCode) {
           continue
         } else {
           handleValidResult(text: ScannerUtils.formattedText(text: text, forType: type), type: type)

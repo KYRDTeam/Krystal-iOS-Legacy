@@ -249,4 +249,9 @@ struct Strings {
   static let recoveryPhase3 = "recovery.phrase.3".toBeLocalised()
   static let recoveryHightlightPhase3 = "recovery.hightlight.phrase.3".toBeLocalised()
   static let Watchlist = "Watchlist".toBeLocalised()
+  
+  // Promotion
+  static let invalidPromotionCode = "invalid.promotion.code".toBeLocalised()
+  static let enterPromotionCode = "enter.promotion.code".toBeLocalised()
+  static let scanPromotionCode = "scan.promotion.code".toBeLocalised()
 }

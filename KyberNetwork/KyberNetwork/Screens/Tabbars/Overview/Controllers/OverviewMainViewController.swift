@@ -334,7 +334,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   @IBAction func scanWasTapped(_ sender: Any) {
     guard let nav = self.navigationController else { return }
     
-    var acceptedResultTypes: [ScanResultType] = []
+    var acceptedResultTypes: [ScanResultType] = [.promotionCode]
     var scanModes: [ScanMode] = [.qr, .text]
     if KNGeneralProvider.shared.currentChain.isEVM {
       acceptedResultTypes.append(contentsOf: [.walletConnect, .ethPublicKey, .ethPrivateKey])
@@ -361,6 +361,9 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
         self.delegate?.overviewMainViewController(self, run: .send(recipientAddress: text))
       case .solPrivateKey:
         self.delegate?.overviewMainViewController(self, run: .importWallet(privateKey: text, chain: .solana))
+      case .promotionCode:
+        guard let code = ScannerUtils.getPromotionCode(text: text) else { return }
+        self.delegate?.overviewMainViewController(self, run: .openPromotion(code: code))
       }
     }
     MixPanelManager.track("home_qr", properties: ["screenid": "homepage"])
