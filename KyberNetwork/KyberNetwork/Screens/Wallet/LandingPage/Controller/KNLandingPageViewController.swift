@@ -22,9 +22,7 @@ class KNLandingPageViewController: KNBaseViewController {
   @IBOutlet weak var importWalletButton: UIButton!
   @IBOutlet weak var termAndConditionButton: UIButton!
   @IBOutlet weak var termOfUseTopConstraint: NSLayoutConstraint!
-  var isBrowsingEnable: Bool {
-    return FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.appBrowsing)
-  }
+  var isBrowsingEnable: Bool = true
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -41,10 +39,25 @@ class KNLandingPageViewController: KNBaseViewController {
     self.importWalletButton.rounded(radius: 16)
     self.welcomeScreenCollectionView.paggerViewLeadingConstraint.constant = (UIScreen.main.bounds.width - collectionViewLeadTrailPadding * 2 - KNWelcomeScreenCollectionView.paggerWidth) / 2
     self.updateUI()
+    self.observeFeatureFlagChanged()
   }
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+  }
+  
+  func observeFeatureFlagChanged() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(reloadMenuItems),
+      name: Notification.Name(kUpdateFeatureFlag),
+      object: nil
+    )
+  }
+  
+  @objc func reloadMenuItems() {
+    self.isBrowsingEnable = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.appBrowsing)
+    updateUI()
   }
   
   func updateUI() {
