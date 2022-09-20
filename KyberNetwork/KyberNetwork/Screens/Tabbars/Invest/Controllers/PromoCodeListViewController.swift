@@ -358,6 +358,7 @@ extension PromoCodeListViewController: RedeemPopupViewControllerDelegate {
   func onRedeemPopupClose() {
     redeemPopup = nil
     redeemingCode = nil
+    reloadData()
   }
   
   @objc func checkstatus() {
@@ -424,8 +425,8 @@ extension PromoCodeListViewController: RedeemPopupViewControllerDelegate {
       redeemPopup.status = .success
     } else {
       showTopBannerView(message: Strings.redeemSuccessMessage)
-      reloadData()
     }
+    reloadData()
   }
   
 }
