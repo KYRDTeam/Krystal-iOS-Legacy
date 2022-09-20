@@ -30,6 +30,7 @@ enum OverviewMainViewEvent {
   case scannedWalletConnect(url: String)
   case selectAllChain
   case importWallet(privateKey: String, chain: ChainType)
+  case openPromotion(code: String)
 }
 
 enum OverviewMode {

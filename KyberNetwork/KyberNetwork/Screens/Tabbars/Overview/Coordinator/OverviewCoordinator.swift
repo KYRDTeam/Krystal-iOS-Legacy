@@ -28,6 +28,7 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidPullToRefresh(mode: ViewMode, overviewMode: OverviewMode)
   func overviewCoordinatorBuyCrypto()
   func overviewCoordinatorDidSelectAllChain()
+  func overviewCoordinatorOpenPromotion(code: String)
 }
 
 class PoolPairToken: Codable {
@@ -887,6 +888,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.importWalletCoordinator = coordinator
       coordinator.delegate = self
       coordinator.startImportFlow(privateKey: privateKey, chain: chain)
+    case .openPromotion(let code):
+      delegate?.overviewCoordinatorOpenPromotion(code: code)
     }
   }
 }

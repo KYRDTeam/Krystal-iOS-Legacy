@@ -120,10 +120,17 @@ extension KNAppCoordinator: EarnCoordinatorDelegate {
 }
 
 extension KNAppCoordinator: OverviewCoordinatorDelegate {
+  
+  func overviewCoordinatorOpenPromotion(code: String) {
+    self.tabbarController.selectedIndex = 2
+    self.investCoordinator?.openPromotion(withCode: code)
+  }
+  
   func overviewCoordinatorDidSelectAllChain() {
     self.loadBalanceCoordinator?.shouldFetchAllChain = true
     self.loadBalanceCoordinator?.resume()
   }
+  
   func overviewCoordinatorDidImportWallet(wallet: KWallet, chainType: ChainType) {
     switchWallet(wallet: wallet, chain: chainType)
   }

@@ -17,7 +17,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PromoCodeDetailViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PromoCodeDetailViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="bannerImageView" destination="g4M-UX-vIL" id="aYC-Kq-8U6"/>
                 <outlet property="descriptionTextView" destination="ZIB-zd-Iex" id="Z1w-4E-dvD"/>
@@ -88,7 +88,7 @@
                             </constraints>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="16"/>
                             <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
-                            <state key="normal" title="Use Now">
+                            <state key="normal" title="Redeem Now">
                                 <color key="titleColor" name="mainViewBgColor"/>
                             </state>
                             <connections>
