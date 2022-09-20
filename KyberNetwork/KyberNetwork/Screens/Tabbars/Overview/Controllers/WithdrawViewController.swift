@@ -198,7 +198,7 @@ protocol WithdrawViewControllerDelegate: class {
   func withdrawViewController(_ controller: WithdrawViewController, run event: WithdrawViewEvent)
 }
 
-class WithdrawViewController: KNBaseViewController {
+class WithdrawViewController: InAppBrowsingViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var titleLabel: UILabel!
@@ -518,7 +518,7 @@ extension WithdrawViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 450
+    return 470
   }
 
   func getPopupContentView() -> UIView {
