@@ -7,6 +7,7 @@
 
 import UIKit
 import Moya
+import SafariServices
 
 protocol RedeemPopupViewControllerDelegate: AnyObject {
   func onRedeemPopupClose()
@@ -27,6 +28,7 @@ class RedeemPopupViewController: UIViewController {
   weak var delegate: RedeemPopupViewControllerDelegate?
   
   var promoCode: PromoCode!
+  var hash: String?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -93,7 +95,8 @@ class RedeemPopupViewController: UIViewController {
   }
   
   func updateTxHash(hash: String?) {
-    hashLabel.text = hash
+    self.hash = hash
+    self.hashLabel.text = hash
   }
   
   @IBAction func closeWasTapped(_ sender: Any) {
@@ -109,7 +112,19 @@ class RedeemPopupViewController: UIViewController {
   }
   
   @IBAction func openTxHashWasTapped(_ sender: Any) {
-    
+    guard let hash = hash, !hash.isEmpty else { return }
+    openTx(hash: hash)
+  }
+  
+  func openTx(hash: String) {
+    guard let endpoint = ChainType.getChain(id: promoCode.campaign.chainID)?.customRPC().etherScanEndpoint else {
+      return
+    }
+    guard let url = URL(string: endpoint + "tx/" + hash) else {
+      return
+    }
+    let vc = SFSafariViewController(url: url)
+    present(vc, animated: true, completion: nil)
   }
   
 }
