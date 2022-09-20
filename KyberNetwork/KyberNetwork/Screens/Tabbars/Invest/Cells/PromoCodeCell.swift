@@ -9,7 +9,7 @@ import UIKit
 import Kingfisher
 
 protocol PromoCodeCellDelegate: class {
-  func promoCodeCell(_ cell: PromoCodeCell, claim code: String)
+  func promoCodeCell(_ cell: PromoCodeCell, claim item: PromoCode)
 }
 
 class PromoCodeCellModel {
@@ -77,6 +77,6 @@ class PromoCodeCell: UITableViewCell {
 
   @IBAction func useButtonTapped(_ sender: UIButton) {
     guard let cm = self.cellModel else { return }
-    self.delegate?.promoCodeCell(self, claim: cm.item.code)
+    self.delegate?.promoCodeCell(self, claim: cm.item)
   }
 }
