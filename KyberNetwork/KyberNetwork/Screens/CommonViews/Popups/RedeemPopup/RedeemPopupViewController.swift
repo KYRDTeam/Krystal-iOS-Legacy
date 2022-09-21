@@ -11,6 +11,7 @@ import SafariServices
 
 protocol RedeemPopupViewControllerDelegate: AnyObject {
   func onRedeemPopupClose()
+  func onOpenTxHash(popup: RedeemPopupViewController, txHash: String, chainID: Int)
 }
 
 class RedeemPopupViewController: UIViewController {
@@ -114,18 +115,8 @@ class RedeemPopupViewController: UIViewController {
   
   @IBAction func openTxHashWasTapped(_ sender: Any) {
     guard let hash = txHash, !hash.isEmpty else { return }
-    openTx(hash: hash)
-  }
-  
-  func openTx(hash: String) {
-    guard let endpoint = ChainType.getChain(id: promoCode.campaign.chainID)?.customRPC().etherScanEndpoint else {
-      return
-    }
-    guard let url = URL(string: endpoint + "tx/" + hash) else {
-      return
-    }
-    let vc = SFSafariViewController(url: url)
-    present(vc, animated: true, completion: nil)
+    let chainID = promoCode.campaign.chainID
+    delegate?.onOpenTxHash(popup: self, txHash: hash, chainID: chainID)
   }
   
 }

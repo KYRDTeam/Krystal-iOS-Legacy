@@ -91,15 +91,21 @@ extension PromoCodeDetailViewController: RedeemPopupViewControllerDelegate {
   func openRedeemPopup() {
     let popup = RedeemPopupViewController.instantiateFromNib()
     popup.promoCode = viewModel.item
+    popup.delegate = self
     
     var options = SheetOptions()
     options.pullBarHeight = 0
-    options.useFullScreenMode = false
     let sheet = SheetViewController(controller: popup, sizes: [.intrinsic], options: options)
     sheet.allowPullingPastMinHeight = false
     
     redeemPopup = popup
     present(sheet, animated: true)
+  }
+  
+  func onOpenTxHash(popup: RedeemPopupViewController, txHash: String, chainID: Int) {
+    popup.dismiss(animated: true) { [weak self] in
+      self?.openTxHash(txHash: txHash, chainID: chainID)
+    }
   }
   
   func onRedeemPopupClose() {

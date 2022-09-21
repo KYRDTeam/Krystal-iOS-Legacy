@@ -341,13 +341,19 @@ extension PromoCodeListViewController: PromoCodeCellDelegate {
 
 extension PromoCodeListViewController: RedeemPopupViewControllerDelegate {
   
+  func onOpenTxHash(popup: RedeemPopupViewController, txHash: String, chainID: Int) {
+    popup.dismiss(animated: true) { [weak self] in
+      self?.openTxHash(txHash: txHash, chainID: chainID)
+    }
+  }
+  
   func openRedeemPopup(code: PromoCode) {
     let popup = RedeemPopupViewController.instantiateFromNib()
     popup.promoCode = code
+    popup.delegate = self
     
     var options = SheetOptions()
     options.pullBarHeight = 0
-    options.useFullScreenMode = false
     let sheet = SheetViewController(controller: popup, sizes: [.intrinsic], options: options)
     sheet.allowPullingPastMinHeight = false
     sheet.didDismiss = { [weak self] _ in
