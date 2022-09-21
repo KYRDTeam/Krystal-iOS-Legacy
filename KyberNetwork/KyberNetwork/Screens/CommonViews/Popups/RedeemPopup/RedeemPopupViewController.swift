@@ -28,7 +28,7 @@ class RedeemPopupViewController: UIViewController {
   weak var delegate: RedeemPopupViewControllerDelegate?
   
   var promoCode: PromoCode!
-  var hash: String?
+  var txHash: String?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -95,7 +95,7 @@ class RedeemPopupViewController: UIViewController {
   }
   
   func updateTxHash(hash: String?) {
-    self.hash = hash
+    self.txHash = hash
     self.hashLabel.text = hash
   }
   
@@ -112,7 +112,7 @@ class RedeemPopupViewController: UIViewController {
   }
   
   @IBAction func openTxHashWasTapped(_ sender: Any) {
-    guard let hash = hash, !hash.isEmpty else { return }
+    guard let hash = txHash, !hash.isEmpty else { return }
     openTx(hash: hash)
   }
   

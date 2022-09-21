@@ -350,14 +350,15 @@ extension PromoCodeListViewController: RedeemPopupViewControllerDelegate {
     options.useFullScreenMode = false
     let sheet = SheetViewController(controller: popup, sizes: [.intrinsic], options: options)
     sheet.allowPullingPastMinHeight = false
-    
+    sheet.didDismiss = { [weak self] _ in
+      self?.onRedeemPopupClose()
+    }
     redeemPopup = popup
     present(sheet, animated: true)
   }
   
   func onRedeemPopupClose() {
     redeemPopup = nil
-    redeemingCode = nil
     reloadData()
   }
   
@@ -426,6 +427,7 @@ extension PromoCodeListViewController: RedeemPopupViewControllerDelegate {
     } else {
       showTopBannerView(message: Strings.redeemSuccessMessage)
     }
+    redeemingCode = nil
     reloadData()
   }
   
