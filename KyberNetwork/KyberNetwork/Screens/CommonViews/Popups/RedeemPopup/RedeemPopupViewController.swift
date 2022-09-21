@@ -96,6 +96,7 @@ class RedeemPopupViewController: UIViewController {
   
   func updateTxHash(hash: String?) {
     self.txHash = hash
+    self.hashLinkButton.isHidden = hash?.isEmpty ?? true
     self.hashLabel.text = hash
   }
   
