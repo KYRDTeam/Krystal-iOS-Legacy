@@ -75,6 +75,7 @@ PODS:
     - FirebaseInstallations (~> 8.0)
     - GoogleUtilities/Environment (~> 7.7)
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
+  - FittedSheets (2.4.2)
   - FSPagerView (0.8.3)
   - GoogleAppMeasurement (8.14.0):
     - GoogleAppMeasurement/AdIdSupport (= 8.14.0)
@@ -256,6 +257,7 @@ DEPENDENCIES:
   - Firebase/Analytics
   - Firebase/Crashlytics
   - FirebasePerformance
+  - FittedSheets
   - FSPagerView
   - GoogleMLKit/TextRecognition (= 2.2.0)
   - IQKeyboardManager (~> 6.5)
@@ -310,6 +312,7 @@ SPEC REPOS:
     - FirebaseInstallations
     - FirebasePerformance
     - FirebaseRemoteConfig
+    - FittedSheets
     - FSPagerView
     - GoogleAppMeasurement
     - GoogleDataTransport
@@ -395,6 +398,7 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 7d1d967a307c12f1aadd76844fc321cef699b1ce
   FirebasePerformance: ecaa182ba9c6654e2e3813e759036d80e22269a8
   FirebaseRemoteConfig: a5d9188d8f57f602636f111eca6460ebe32b9b71
+  FittedSheets: 661408776eb4ff514a31da75b3600bd7222b2b3d
   FSPagerView: 670405b2f18e2a87fa37f20b00de783e562c25a8
   GoogleAppMeasurement: 71156240babd3cc6ced03e0d54816f01a880c730
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
@@ -451,6 +455,6 @@ SPEC CHECKSUMS:
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: 1f357128f7416c4a4e96483e2e90183d13cf6c34
+PODFILE CHECKSUM: b383dbde9d319a5025689186be19ee11d27b335e
 
 COCOAPODS: 1.11.3

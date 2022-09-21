@@ -254,4 +254,12 @@ struct Strings {
   static let invalidPromotionCode = "invalid.promotion.code".toBeLocalised()
   static let enterPromotionCode = "enter.promotion.code".toBeLocalised()
   static let scanPromotionCode = "scan.promotion.code".toBeLocalised()
+  static let redeeming = "redeeming".toBeLocalised()
+  static let redeemFailed = "redeem.failed".toBeLocalised()
+  static let redeemSuccess = "redeem.success".toBeLocalised()
+  static let redeemProcessingMessage = "redeem.processing.message".toBeLocalised()
+  static let redeemSuccessMessage = "redeem.success.message".toBeLocalised()
+  static let redeemFailMessage = "redeem.fail.message".toBeLocalised()
+  static let redeem = "redeem".toBeLocalised()
+  static let redeemNow = "redeem.now".toBeLocalised()
 }

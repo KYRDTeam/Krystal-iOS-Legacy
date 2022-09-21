@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -72,7 +72,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xDK-bl-nvD">
                     <rect key="frame" x="21" y="128" width="333" height="42"/>
                     <subviews>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="f2c-gP-1nP">
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f2c-gP-1nP">
                             <rect key="frame" x="16" y="0.0" width="253" height="42"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="tintColor" name="buttonBackgroundColor"/>
@@ -113,16 +113,16 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="JOa-IB-FIP">
-                    <rect key="frame" x="0.0" y="190" width="375" height="477"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="JOa-IB-FIP">
+                    <rect key="frame" x="0.0" y="196" width="375" height="471"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="6W7-hA-17v"/>
                         <outlet property="delegate" destination="-1" id="fsR-ku-vvo"/>
                     </connections>
                 </tableView>
-                <label hidden="YES" opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KrN-hN-bXd">
-                    <rect key="frame" x="21" y="180" width="333" height="16.5"/>
+                <label hidden="YES" opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KrN-hN-bXd">
+                    <rect key="frame" x="21" y="180" width="333" height="0.0"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                     <color key="textColor" name="textRedColor"/>
                     <nil key="highlightedColor"/>
@@ -131,6 +131,7 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
+                <constraint firstItem="JOa-IB-FIP" firstAttribute="top" secondItem="KrN-hN-bXd" secondAttribute="bottom" constant="16" id="1GC-gC-qLO"/>
                 <constraint firstItem="xDK-bl-nvD" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="21" id="3sg-V5-jzz"/>
                 <constraint firstItem="KrN-hN-bXd" firstAttribute="leading" secondItem="xDK-bl-nvD" secondAttribute="leading" id="ADR-lR-CM0"/>
                 <constraint firstItem="JOa-IB-FIP" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="F9C-54-wlB"/>
@@ -138,7 +139,6 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="xDK-bl-nvD" secondAttribute="trailing" constant="21" id="VRW-LP-EnX"/>
                 <constraint firstItem="JOa-IB-FIP" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="YPd-1d-rLX"/>
                 <constraint firstItem="JOa-IB-FIP" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="aYL-05-NJg"/>
-                <constraint firstItem="JOa-IB-FIP" firstAttribute="top" secondItem="xDK-bl-nvD" secondAttribute="bottom" constant="20" id="k3a-TY-RoG"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="KrN-hN-bXd" secondAttribute="trailing" constant="21" id="m3z-T9-Dhf"/>
                 <constraint firstItem="gR1-Lq-JxG" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="mrN-4n-k5A"/>
                 <constraint firstItem="xDK-bl-nvD" firstAttribute="top" secondItem="gR1-Lq-JxG" secondAttribute="bottom" constant="15" id="pxS-p0-vaX"/>
