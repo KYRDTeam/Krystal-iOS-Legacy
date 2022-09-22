@@ -82,8 +82,7 @@ extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
           let decoder = JSONDecoder()
           do {
             let data = try decoder.decode(PromotionResponse.self, from: resp.data)
-            let filteredCodes = data.codes.filter { $0.status == "unclaimed" }
-            self.rootViewController.coordinatorDidUpdateSearchPromoCodeItems(filteredCodes, searchText: code)
+            self.rootViewController.coordinatorDidUpdateSearchPromoCodeItems(data.codes, searchText: code)
           } catch {
             self.rootViewController.showErrorTopBannerMessage(message: "Can not decode data")
           }
