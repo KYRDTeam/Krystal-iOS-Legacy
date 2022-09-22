@@ -28,6 +28,8 @@ enum NotificationStatus: String {
 
 enum NotificationEndpoint {
   case list(type: NotificationType?, page: Int, limit: Int, status: NotificationStatus?, userAddress: String)
+  case read(ids: [Int], address: String)
+  case readAll(type: NotificationType?, address: String)
 }
 
 extension NotificationEndpoint: TargetType {
@@ -40,6 +42,10 @@ extension NotificationEndpoint: TargetType {
     switch self {
     case .list:
       return "/v1/notifications"
+    case .read:
+      return "/v1/notifications/read"
+    case .readAll:
+      return "/v1/notifications/readAll"
     }
   }
   
@@ -47,6 +53,8 @@ extension NotificationEndpoint: TargetType {
     switch self {
     case .list:
       return .get
+    case .read, .readAll:
+      return .post
     }
   }
   
@@ -64,14 +72,21 @@ extension NotificationEndpoint: TargetType {
       params["status"] = status?.rawValue
       params["userAddress"] = userAddress
       return .requestParameters(parameters: params, encoding: URLEncoding.default)
+    case .read(let ids, _):
+      let params = ["ids": ids]
+      return .requestParameters(parameters: params, encoding: JSONEncoding.default)
+    case .readAll(let type, _):
+      var params: [String: Any] = [:]
+      params["type"] = type?.rawValue
+      return .requestParameters(parameters: params, encoding: JSONEncoding.default)
     }
   }
   
   var headers: [String: String]? {
     switch self {
-    case .list(_, _, _, _, let userAddress):
-      let token = UserDefaults.standard.getAuthToken(address: userAddress) ?? ""
-      return ["Authorization": "Bearer \(token)"]
+    case .list(_, _, _, _, let address), .read(_, let address), .readAll(_, let address):
+      let token = UserDefaults.standard.getAuthToken(address: address) ?? ""
+      return ["Authorization": "Bearer \(token)", "Content-Type": "application/json"]
     }
   }
   
