@@ -38,9 +38,9 @@ class PromoCodeListViewModel {
       return PromoCodeCellModel(item: element)
     })
     
-    self.usedDataSource = self.usedCodes.map({ element in
+    self.usedDataSource = searchText.isEmpty ? self.usedCodes.map({ element in
       return PromoCodeCellModel(item: element)
-    })
+    }) : []
   }
 
   var numberOfSection: Int {
@@ -276,25 +276,31 @@ extension PromoCodeListViewController: UITableViewDelegate {
 }
 
 extension PromoCodeListViewController: UITextFieldDelegate {
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    if let empty = textField.text?.isEmpty, empty == true {
+  
+  func onSearchTextUpdated(text: String) {
+    viewModel.searchText = text
+    if text.isEmpty {
       self.viewModel.clearSearchData()
       self.promoCodeTableView.reloadData()
+      self.updateUIForSearchField(error: "")
+      self.delegate?.promoCodeListViewController(self, run: .loadUsedCode)
     } else {
-      self.delegate?.promoCodeListViewController(self, run: .checkCode(code: textField.text ?? ""))
+      self.delegate?.promoCodeListViewController(self, run: .checkCode(code: text))
     }
+  }
+  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    onSearchTextUpdated(text: textField.text ?? "")
     textField.resignFirstResponder()
     return true
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    self.delegate?.promoCodeListViewController(self, run: .checkCode(code: textField.text ?? ""))
+    onSearchTextUpdated(text: textField.text ?? "")
   }
   
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
-    self.viewModel.clearSearchData()
-    self.promoCodeTableView.reloadData()
-    self.viewModel.searchText = ""
+    onSearchTextUpdated(text: "")
     return true
   }
 
@@ -319,13 +325,9 @@ extension PromoCodeListViewController: UITextFieldDelegate {
   
   fileprivate func checkRequestCode() {
     guard let text = self.searchTextField.text, text != self.viewModel.searchText else {
-//      self.viewModel.clearSearchData()
-//      self.promoCodeTableView.reloadData()
-//      self.updateUIForSearchField(error: "")
       return
     }
-    self.viewModel.searchText = text
-    self.delegate?.promoCodeListViewController(self, run: .checkCode(code: text))
+    onSearchTextUpdated(text: text)
   }
 }
 
