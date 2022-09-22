@@ -66,14 +66,14 @@ class KrytalCoordinator: NSObject, Coordinator {
   }
 
   func loadReferralOverview() {
-    guard let token = UserDefaults.standard.getAuthToken(address: currentAddress.addressString) else {
+    guard let loginToken = Storage.retrieve(currentAddress.addressString + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
         self.loadReferralOverview()
       }
       return
     }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.requestWithFilter(.getReferralOverview(address: currentAddress.addressString, accessToken: token)) { (result) in
+    provider.requestWithFilter(.getReferralOverview(address: currentAddress.addressString, accessToken: loginToken.token)) { (result) in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -122,9 +122,9 @@ class KrytalCoordinator: NSObject, Coordinator {
   }
 
   fileprivate func loadClaimHistory() {
-    guard let token = UserDefaults.standard.getAuthToken(address: currentAddress.addressString) else { return }
+    guard let loginToken = Storage.retrieve(currentAddress.addressString + Constants.loginTokenStoreFileName, as: LoginToken.self) else { return }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.requestWithFilter(.getClaimHistory(address: currentAddress.addressString, accessToken: token)) { (result) in
+    provider.requestWithFilter(.getClaimHistory(address: currentAddress.addressString, accessToken: loginToken.token)) { (result) in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
