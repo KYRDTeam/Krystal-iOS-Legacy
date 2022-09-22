@@ -76,10 +76,11 @@ class KNPasscodeViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.passcodeViews.forEach({ $0.rounded(radius: $0.frame.width / 2.0) })
-
     self.bioAuthenButton.isHidden = true
-
     self.updateUI()
+    if AppDelegate.shared.coordinator.tabbarController != nil {
+      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = true
+    }
   }
 
   fileprivate func updateUI() {
