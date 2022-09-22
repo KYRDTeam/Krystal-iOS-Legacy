@@ -814,6 +814,9 @@
 		A6F5DCAC28572EDE00FD02C9 /* EthereumEIP1559TransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCAB28572EDE00FD02C9 /* EthereumEIP1559TransactionProcessor.swift */; };
 		A6F5DCAE28572FF200FD02C9 /* NonceCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCAD28572FF200FD02C9 /* NonceCache.swift */; };
 		A6F5DCB02857367100FD02C9 /* TransferTransactionResultData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCAF2857367100FD02C9 /* TransferTransactionResultData.swift */; };
+		A6F6B95228DB1969000CB82C /* UserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6B95128DB1969000CB82C /* UserEndpoint.swift */; };
+		A6F6B95428DB1C4C000CB82C /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6B95328DB1C4C000CB82C /* UserService.swift */; };
+		A6F6B95628DB1D06000CB82C /* ConnectEVMResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6B95528DB1D06000CB82C /* ConnectEVMResponse.swift */; };
 		BB03A8712042B01300649DA0 /* BalanceStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB03A8702042B01300649DA0 /* BalanceStatusTests.swift */; };
 		C154BB4E1861959DEFE1048F /* Pods_KrystalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C64E77FB15CCDC5F0BA6B5 /* Pods_KrystalNotificationServiceExtension.framework */; };
 		C3012CC3269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3012CC1269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.swift */; };
@@ -1030,7 +1033,7 @@
 		C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38E5D7825F63FC000E5FC48 /* TransactionHistory.swift */; };
 		C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */; };
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
-		C39A7EED24778B03003EA57D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		C39D3FE126FB33610021DF8A /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D3FE026FB33610021DF8A /* History.swift */; };
 		C39E5FBB27F1A23600DDBF59 /* GoogleService-Info-Dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = C39E5FBA27F1A23600DDBF59 /* GoogleService-Info-Dev.plist */; };
 		C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241992567AD610073703C /* WalletsListViewController.swift */; };
@@ -2033,6 +2036,9 @@
 		A6F5DCAB28572EDE00FD02C9 /* EthereumEIP1559TransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumEIP1559TransactionProcessor.swift; sourceTree = "<group>"; };
 		A6F5DCAD28572FF200FD02C9 /* NonceCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonceCache.swift; sourceTree = "<group>"; };
 		A6F5DCAF2857367100FD02C9 /* TransferTransactionResultData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferTransactionResultData.swift; sourceTree = "<group>"; };
+		A6F6B95128DB1969000CB82C /* UserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEndpoint.swift; sourceTree = "<group>"; };
+		A6F6B95328DB1C4C000CB82C /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		A6F6B95528DB1D06000CB82C /* ConnectEVMResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectEVMResponse.swift; sourceTree = "<group>"; };
 		AC25765724B541DEB717EE4E /* Pods-KrystalWallets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KrystalWallets.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KrystalWallets/Pods-KrystalWallets.debug.xcconfig"; sourceTree = "<group>"; };
 		ACB15546CA9F3081C6AABCC5 /* Pods-KrystalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KrystalNotificationServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-KrystalNotificationServiceExtension/Pods-KrystalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		AE9A9579785EB006441CD478 /* Pods_KrystalUnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KrystalUnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4937,6 +4943,7 @@
 				A6573B7F284DE16000A25CBF /* CrosschainTransactionService.swift */,
 				7E12788A289CF92C00A2AE34 /* SearchSwapTokenService.swift */,
 				A69C5BCA28D1B25D000DE825 /* NotificationService.swift */,
+				A6F6B95328DB1C4C000CB82C /* UserService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -5165,6 +5172,7 @@
 			isa = PBXGroup;
 			children = (
 				A69C5BCD28D1B342000DE825 /* NotificationEndpoint.swift */,
+				A6F6B95128DB1969000CB82C /* UserEndpoint.swift */,
 			);
 			path = Endpoints;
 			sourceTree = "<group>";
@@ -5290,6 +5298,7 @@
 			children = (
 				A6B3CD83281258CD005D0D66 /* KrystalSolanaTransaction.swift */,
 				A69C5BCF28D1B5CC000DE825 /* NotificationResponse.swift */,
+				A6F6B95528DB1D06000CB82C /* ConnectEVMResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -7419,7 +7428,7 @@
 				7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */,
 				7EE92A0F286307E10050DC8D /* ShowAllCell.swift in Sources */,
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
-				C39A7EED24778B03003EA57D /* BuildFile in Sources */,
+				C39A7EED24778B03003EA57D /* (null) in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				C3233EFE2807DF4D0086C2BC /* CopyAddressCell.swift in Sources */,
 				A69C5BCE28D1B342000DE825 /* NotificationEndpoint.swift in Sources */,
@@ -7450,6 +7459,7 @@
 				A655619E28350D7600944624 /* TransactionStatus.swift in Sources */,
 				257A3794205BC27400E86794 /* KNBaseViewController.swift in Sources */,
 				25CE6F7220723F7C00A3A2F9 /* KNAppTracker.swift in Sources */,
+				A6F6B95628DB1D06000CB82C /* ConnectEVMResponse.swift in Sources */,
 				255F6F2620BBC9C000EF808F /* UIImage+Kyber.swift in Sources */,
 				7E01EFEB2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.swift in Sources */,
 				A6B3CD592811C07C005D0D66 /* PendingInternalHistoryTransactonViewModel.swift in Sources */,
@@ -7509,6 +7519,7 @@
 				C3409E1A25AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift in Sources */,
 				255C40EB2092D64F00475871 /* KNTokenStorage.swift in Sources */,
 				C3EEA45B2671EF840011DB97 /* OverviewMainViewCell.swift in Sources */,
+				A6F6B95428DB1C4C000CB82C /* UserService.swift in Sources */,
 				C347DA3825C02BE3000D6E81 /* EarnMenuViewController.swift in Sources */,
 				C37AF0BF25CA5639006FB880 /* EarnConfirmViewController.swift in Sources */,
 				A6B3CD7728124F96005D0D66 /* KrystalHistoryTransaction+TransactionHistoryItem.swift in Sources */,
@@ -7872,6 +7883,7 @@
 				A6C561B027F4758900E88ED6 /* UIViewController+nib.swift in Sources */,
 				7E6F51082733895D002DA0B2 /* OverviewSummaryCell.swift in Sources */,
 				A6E6070E2851A25600387388 /* SignerFactory.swift in Sources */,
+				A6F6B95228DB1969000CB82C /* UserEndpoint.swift in Sources */,
 				255A70EA214F9ECE005D7A6A /* KNSettingsTabViewController.swift in Sources */,
 				C65D31EA21D4DCD1005D0B04 /* UITextField+Kyber.swift in Sources */,
 				7EC008A2288F957900FCED48 /* OverviewMainCellViewModel.swift in Sources */,
