@@ -67,8 +67,8 @@ class NotificationListViewController: UIViewController {
   
   func reloadUI() {
     DispatchQueue.main.async {
-      self.emptyView.isHidden = !self.viewModel.notifications.isEmpty
-      self.tableView.reloadData()
+      self.emptyView?.isHidden = !self.viewModel.notifications.isEmpty
+      self.tableView?.reloadData()
     }
   }
   

@@ -41,7 +41,7 @@ class NotificationV2ViewController: UIViewController {
   var pageController: UIPageViewController!
   
   var filterTags: [NotificationFilterTag] = [.all, .unread]
-  var controllers: [UIViewController] = []
+  var controllers: [NotificationListViewController] = []
   var selectingFilterTagIndex: Int = 0
   
   override func viewDidLoad() {
@@ -79,7 +79,8 @@ class NotificationV2ViewController: UIViewController {
   }
   
   @IBAction func readAllWasTapped(_ sender: Any) {
-    controllers.compactMap { $0 as? NotificationListViewController }.forEach {
+    controllers[selectingFilterTagIndex].viewModel.readAll()
+    controllers.forEach {
       $0.readAll()
     }
   }
@@ -89,7 +90,8 @@ class NotificationV2ViewController: UIViewController {
 extension NotificationV2ViewController: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
   
   func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-    if let index = controllers.firstIndex(of: viewController) {
+    guard let vc = viewController as? NotificationListViewController else { return nil }
+    if let index = controllers.firstIndex(of: vc) {
       if index < controllers.count - 1 {
         return controllers[index + 1]
       } else {
@@ -100,7 +102,8 @@ extension NotificationV2ViewController: UIPageViewControllerDelegate, UIPageView
   }
   
   func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-    if let index = controllers.firstIndex(of: viewController) {
+    guard let vc = viewController as? NotificationListViewController else { return nil }
+    if let index = controllers.firstIndex(of: vc) {
       if index > 0 {
         return controllers[index - 1]
       } else {
@@ -147,7 +150,7 @@ extension NotificationV2ViewController: UICollectionViewDelegate, UICollectionVi
 extension NotificationV2ViewController: NotificationListViewControllerDelegate {
   
   func onSelectNotification(id: Int) {
-    controllers.compactMap { $0 as? NotificationListViewController }.forEach {
+    controllers.forEach {
       $0.readNotification(id: id)
     }
   }
