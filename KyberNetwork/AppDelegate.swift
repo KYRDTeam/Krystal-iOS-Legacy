@@ -233,7 +233,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         self.coordinator.overviewTabCoordinator?.navigationController.present(errorVC, animated: false)
       }
         
-    } else if components.path == "/promotion" && !KNGeneralProvider.shared.isBrowsingMode {
+    } else if components.path == "/promotion" && !KNGeneralProvider.shared.isBrowsingMode && FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.notiV2) {
       let vc = NotificationV2ViewController.instantiateFromNib()
       vc.hidesBottomBarWhenPushed = true
       self.coordinator.overviewTabCoordinator?.navigationController.pushViewController(vc, animated: true)
