@@ -262,4 +262,15 @@ struct Strings {
   static let redeemFailMessage = "redeem.fail.message".toBeLocalised()
   static let redeem = "redeem".toBeLocalised()
   static let redeemNow = "redeem.now".toBeLocalised()
+  
+  // Notifications
+  static let all = "all".toBeLocalised()
+  static let unread = "unread".toBeLocalised()
+  static let oneDayAgo = "one.day.ago".toBeLocalised()
+  static let xDaysAgo = "x.days.ago".toBeLocalised()
+  static let xHoursAgo = "x.hours.ago".toBeLocalised()
+  static let xMinsAgo = "x.mins.ago".toBeLocalised()
+  static let xSecondsAgo = "x.seconds.ago".toBeLocalised()
+  static let justNow = "just.now".toBeLocalised()
+
 }
