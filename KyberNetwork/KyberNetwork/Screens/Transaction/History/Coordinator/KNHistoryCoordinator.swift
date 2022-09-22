@@ -85,6 +85,14 @@ class KNHistoryCoordinator: NSObject, Coordinator {
       name: AppEventCenter.shared.kAppDidChangeAddress,
       object: nil
     )
+    
+    let tokenTxListName = Notification.Name(kTokenTransactionListDidUpdateNotificationKey)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(tokenTransactionListDidUpdate),
+      name: tokenTxListName,
+      object: nil
+    )
   }
   
   @objc func appDidSwitchAddress() {
@@ -93,6 +101,11 @@ class KNHistoryCoordinator: NSObject, Coordinator {
     self.appCoordinatorPendingTransactionDidUpdate()
     self.rootViewController.coordinatorAppSwitchAddress()
     self.sendCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
+  }
+  
+  @objc func tokenTransactionListDidUpdate() {
+    self.appCoordinatorTokensTransactionsDidUpdate()
+    self.rootViewController.coordinatorDidUpdateTransaction()
   }
 
   func appCoordinatorTokensTransactionsDidUpdate(showLoading: Bool = false) {

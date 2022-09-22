@@ -172,6 +172,7 @@ extension KNAppCoordinator {
   }
 
   func restartSession(address: KAddress) {
+    EtherscanTransactionStorage.shared.updateCurrentWallet(address)
     self.session.switchAddress(address: address)
     FeatureFlagManager.shared.configClient(session: self.session)
     self.loadBalanceCoordinator?.shouldFetchAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all
@@ -194,7 +195,6 @@ extension KNAppCoordinator {
     MixPanelManager.shared.updateWalletAddress(address: address.addressString)
     Tracker.updateUserID(address.addressString)
     MixPanelManager.shared.setDistintID(address)
-    EtherscanTransactionStorage.shared.updateCurrentWallet(address)
   }
   
   private func switchToLastImportedAddress() {
