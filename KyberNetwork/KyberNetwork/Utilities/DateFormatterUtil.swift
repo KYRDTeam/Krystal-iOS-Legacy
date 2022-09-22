@@ -68,9 +68,21 @@ class DateFormatterUtil {
     return formatter
   }()
   
+  lazy var notificationV2DisplayDateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "MMM dd"
+    return formatter
+  }()
+  
   lazy var notificationDateFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z"
+    return formatter
+  }()
+  
+  lazy var notificationV2DateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z"
     return formatter
   }()
   
@@ -78,6 +90,13 @@ class DateFormatterUtil {
     let formatter = DateFormatter()
     formatter.timeStyle = .short
     formatter.dateFormat = "HH:mm a dd MMM yyyy"
+    return formatter
+  }()
+  
+  lazy var todayTimeFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.timeStyle = .short
+    formatter.dateFormat = "HH:mm"
     return formatter
   }()
 }
