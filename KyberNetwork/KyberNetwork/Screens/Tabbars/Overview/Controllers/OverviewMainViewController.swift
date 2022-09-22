@@ -130,6 +130,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
         self.getNotificationBadgeNumber()
       }
     )
+    updateUIBadgeNotification()
   }
   
   func configHeaderTapped() {
@@ -197,11 +198,18 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   }
   
   func getNotificationBadgeNumber() {
+    guard FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.notiV2) else {
+      return
+    }
     delegate?.overviewMainViewController(self, run: .getBadgeNotification)
   }
   
   func updateUIBadgeNotification() {
     guard isViewLoaded else { return }
+    guard FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.notiV2) else {
+      badgeNumberLabel.isHidden = true
+      return
+    }
     if viewModel.badgeNumber > 0 {
       badgeNumberLabel.text = "\(viewModel.badgeNumber)".paddingString()
       badgeNumberLabel.isHidden = false
