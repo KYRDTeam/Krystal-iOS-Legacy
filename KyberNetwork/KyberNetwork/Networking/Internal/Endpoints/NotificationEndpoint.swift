@@ -33,7 +33,7 @@ enum NotificationEndpoint {
 extension NotificationEndpoint: TargetType {
   
   var baseURL: URL {
-    return URL(string: "https://notification-api-dev.krystal.team")!
+    return URL(string: KNEnvironment.default.notificationAPIURL)!
   }
   
   var path: String {

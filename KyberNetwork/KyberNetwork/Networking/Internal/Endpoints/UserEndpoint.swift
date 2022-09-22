@@ -15,7 +15,7 @@ enum UserEndpoint {
 extension UserEndpoint: TargetType {
   
   var baseURL: URL {
-    return URL(string: "https://user-api-dev.krystal.team")!
+    return URL(string: KNEnvironment.default.userAPIURL)!
   }
   
   var path: String {
