@@ -233,6 +233,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         self.coordinator.overviewTabCoordinator?.navigationController.present(errorVC, animated: false)
       }
         
+    } else if components.path == "/promotion" && !KNGeneralProvider.shared.isBrowsingMode {
+      let vc = NotificationV2ViewController.instantiateFromNib()
+      vc.hidesBottomBarWhenPushed = true
+      self.coordinator.overviewTabCoordinator?.navigationController.pushViewController(vc, animated: true)
     } else {
       self.coordinator.overviewTabCoordinator?.navigationController.openSafari(with: url)
     }
