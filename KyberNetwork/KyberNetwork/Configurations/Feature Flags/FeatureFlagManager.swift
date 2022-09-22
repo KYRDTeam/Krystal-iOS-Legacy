@@ -22,6 +22,7 @@ struct FeatureFlagKeys {
   static let multichainPortfolio = "multichain-portfolio"
   static let swapV2 = "swap-v2"
   static let appBrowsing = "app-browsing"
+  static let notiV2 = "noti-v2"
 }
 
 class FeatureFlagManager {
