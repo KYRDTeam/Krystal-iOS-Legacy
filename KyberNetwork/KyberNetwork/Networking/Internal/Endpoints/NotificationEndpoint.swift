@@ -30,6 +30,7 @@ enum NotificationEndpoint {
   case list(type: NotificationType?, page: Int, limit: Int, status: NotificationStatus?, userAddress: String)
   case read(ids: [Int], address: String)
   case readAll(type: NotificationType?, address: String)
+  case unread(userAddress: String)
 }
 
 extension NotificationEndpoint: TargetType {
@@ -46,12 +47,14 @@ extension NotificationEndpoint: TargetType {
       return "/v1/notifications/read"
     case .readAll:
       return "/v1/notifications/readAll"
+    case .unread:
+      return "/v1/notifications/unread"
     }
   }
   
   var method: Moya.Method {
     switch self {
-    case .list:
+    case .list, .unread:
       return .get
     case .read, .readAll:
       return .post
@@ -79,6 +82,8 @@ extension NotificationEndpoint: TargetType {
       var params: [String: Any] = [:]
       params["type"] = type?.rawValue
       return .requestParameters(parameters: params, encoding: JSONEncoding.default)
+    case .unread:
+      return .requestPlain
     }
   }
   
@@ -87,6 +92,12 @@ extension NotificationEndpoint: TargetType {
     case .list(_, _, _, _, let address), .read(_, let address), .readAll(_, let address):
       let token = UserDefaults.standard.getAuthToken(address: address) ?? ""
       return ["Authorization": "Bearer \(token)", "Content-Type": "application/json"]
+    case .list(_, _, _, _, let userAddress):
+      let token = UserDefaults.standard.getAuthToken(address: userAddress) ?? ""
+      return ["Authorization": "Bearer \(token)"]
+    case .unread(let userAddress):
+      let token = UserDefaults.standard.getAuthToken(address: userAddress) ?? ""
+      return ["Authorization": "Bearer \(token)"]
     }
   }
   

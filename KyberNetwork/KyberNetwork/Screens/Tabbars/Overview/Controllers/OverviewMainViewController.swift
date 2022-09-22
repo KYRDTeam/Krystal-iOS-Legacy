@@ -34,6 +34,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
   @IBOutlet weak var insestView: UIView!
   @IBOutlet weak var scanButton: UIButton!
+  @IBOutlet weak var badgeNumberLabel: UILabel!
   
   weak var delegate: OverviewMainViewControllerDelegate?
   let refreshControl = UIRefreshControl()
@@ -120,6 +121,15 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     
     self.configPullToRefresh()
     self.configHeaderTapped()
+    
+    Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.minutes2,
+      repeats: true,
+      block: { [weak self] _ in
+        guard let `self` = self else { return }
+        self.getNotificationBadgeNumber()
+      }
+    )
   }
   
   func configHeaderTapped() {
@@ -186,10 +196,27 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     }
   }
   
+  func getNotificationBadgeNumber() {
+    delegate?.overviewMainViewController(self, run: .getBadgeNotification)
+  }
+  
+  func updateUIBadgeNotification() {
+    guard isViewLoaded else { return }
+    if viewModel.badgeNumber > 0 {
+      badgeNumberLabel.text = "\(viewModel.badgeNumber)".paddingString()
+      badgeNumberLabel.isHidden = false
+    } else {
+      badgeNumberLabel.text = ""
+      badgeNumberLabel.isHidden = true
+    }
+  }
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.updateUIByFeatureFlags()
     self.delegate?.overviewMainViewController(self, run: .didAppear)
+    self.getNotificationBadgeNumber()
+    
   }
   
   func updateUIByFeatureFlags() {
@@ -457,6 +484,11 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     
   }
   
+  func coordinatorDidUpdateNotificationBadgeNumber(number: Int) {
+    viewModel.badgeNumber = number
+    updateUIBadgeNotification()
+  }
+
   static var hasSafeArea: Bool {
     guard #available(iOS 11.0, *), let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top, topPadding > 24 else {
       return false

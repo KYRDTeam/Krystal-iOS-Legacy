@@ -890,6 +890,11 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       coordinator.startImportFlow(privateKey: privateKey, chain: chain)
     case .openPromotion(let code):
       delegate?.overviewCoordinatorOpenPromotion(code: code)
+    case .getBadgeNotification:
+      let service = NotificationService()
+      service.getNotificationBadgeNumber(userAddress: self.currentAddress.addressString) { number in
+        self.rootViewController.coordinatorDidUpdateNotificationBadgeNumber(number: number)
+      }
     }
   }
 }

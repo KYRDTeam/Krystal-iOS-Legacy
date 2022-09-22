@@ -31,5 +31,18 @@ class NotificationService {
   func readAll(type: NotificationType?, address: String) {
     provider.requestWithFilter(.readAll(type: type, address: address)) { _ in }
   }
+
+  func getNotificationBadgeNumber(userAddress: String, completion: @escaping (Int) -> ()) {
+    guard userAddress.has0xPrefix else { return }
+    provider.requestWithFilter(.unread(userAddress: userAddress)) { result in
+      switch result {
+      case .success(let response):
+        let notificationResponse = try? JSONDecoder().decode(BadgeNumberResponse.self, from: response.data)
+        completion(notificationResponse?.data ?? 0)
+      case .failure:
+        completion(0)
+      }
+    }
+  }
   
 }

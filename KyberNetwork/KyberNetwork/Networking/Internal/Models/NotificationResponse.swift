@@ -30,3 +30,8 @@ struct NotificationModel: Decodable {
     case imageURL = "imageUrl"
   }
 }
+
+// MARK: - BadgeNumberResponse
+struct BadgeNumberResponse: Codable {
+    let data: Int
+}
