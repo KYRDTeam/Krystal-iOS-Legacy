@@ -68,6 +68,7 @@ class NotificationV2ViewController: UIViewController {
       let viewModel = NotificationListViewModel(type: tag.type, status: tag.status)
       let viewController = NotificationListViewController.instantiateFromNib()
       viewController.viewModel = viewModel
+      viewController.delegate = self
       return viewController
     }
     pageController.setViewControllers([controllers[0]], direction: .forward, animated: false)
@@ -75,6 +76,12 @@ class NotificationV2ViewController: UIViewController {
   
   @IBAction func backWasTapped(_ sender: Any) {
     navigationController?.popViewController(animated: true)
+  }
+  
+  @IBAction func readAllWasTapped(_ sender: Any) {
+    controllers.compactMap { $0 as? NotificationListViewController }.forEach {
+      $0.readAll()
+    }
   }
   
 }
@@ -132,6 +139,16 @@ extension NotificationV2ViewController: UICollectionViewDelegate, UICollectionVi
                                         animated: true)
       selectingFilterTagIndex = indexPath.item
       collectionView.reloadData()
+    }
+  }
+  
+}
+
+extension NotificationV2ViewController: NotificationListViewControllerDelegate {
+  
+  func onSelectNotification(id: Int) {
+    controllers.compactMap { $0 as? NotificationListViewController }.forEach {
+      $0.readNotification(id: id)
     }
   }
   

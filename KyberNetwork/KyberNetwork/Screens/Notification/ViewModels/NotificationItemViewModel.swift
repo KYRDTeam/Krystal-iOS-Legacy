@@ -8,6 +8,7 @@
 import Foundation
 
 class NotificationItemViewModel {
+  var id: Int
   var icon: String
   var title: String
   var timeString: String
@@ -15,6 +16,7 @@ class NotificationItemViewModel {
   var isRead: Bool
   
   init(notification: NotificationModel) {
+    self.id = notification.id
     self.icon = notification.imageURL
     self.title = notification.title
     self.content = notification.content

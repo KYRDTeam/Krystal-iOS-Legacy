@@ -56,4 +56,12 @@ class NotificationListViewModel {
     }
   }
   
+  func read(id: Int) {
+    service.read(ids: [id], address: address)
+  }
+  
+  func readAll() {
+    service.readAll(type: type, address: address)
+  }
+  
 }
