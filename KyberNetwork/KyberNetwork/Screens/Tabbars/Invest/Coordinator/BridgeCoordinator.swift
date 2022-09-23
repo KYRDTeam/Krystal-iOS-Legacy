@@ -218,6 +218,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   func appCoordinatorDidUpdateChain() {
     self.rootViewController.viewModel = BridgeViewModel()
     self.rootViewController.coordinatorDidUpdateChain()
+    self.fetchData()
   }
   
   func appCoordinatorSwitchAddress() {

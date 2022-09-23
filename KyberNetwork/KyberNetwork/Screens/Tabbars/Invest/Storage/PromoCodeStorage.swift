@@ -20,8 +20,6 @@ struct PromoCodeItem: Codable {
   let logoURL: String
   let bannerURL: String
   let type: PromoCodeStatus
-  
-  
 }
 
 // MARK: - PromotionResponse
@@ -33,6 +31,8 @@ struct PromotionResponse: Codable {
 struct PromoCode: Codable {
     let campaign: Campaign
     let code, reward, status: String
+    let claimTx: String?
+    let txnStatus: String?
 }
 
 // MARK: - Campaign
@@ -40,12 +40,14 @@ struct Campaign: Codable {
     let title: String
     let expired: Int
     let campaignDescription, logoURL, bannerURL: String
+    let chainID: Int
 
     enum CodingKeys: String, CodingKey {
         case title, expired
         case campaignDescription = "description"
         case logoURL = "logoUrl"
         case bannerURL = "bannerUrl"
+        case chainID
     }
 }
 

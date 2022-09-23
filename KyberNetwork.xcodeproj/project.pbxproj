@@ -659,6 +659,9 @@
 		A685D4AD2849FC870066E177 /* AppEventCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4AC2849FC870066E177 /* AppEventCenter.swift */; };
 		A686BC50288FEC0100DCE0E2 /* WalletUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686BC4F288FEC0100DCE0E2 /* WalletUtils.swift */; };
 		A68727C12885DEB9001C6369 /* OCRUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68727C02885DEB9001C6369 /* OCRUtilities.swift */; };
+		A687B19828D9690D00895337 /* RedeemPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A687B19628D9690D00895337 /* RedeemPopupViewController.swift */; };
+		A687B19928D9690D00895337 /* RedeemPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A687B19728D9690D00895337 /* RedeemPopupViewController.xib */; };
+		A687B19B28D9B41200895337 /* RedeemStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A687B19A28D9B41200895337 /* RedeemStatus.swift */; };
 		A693AFE82819017500880503 /* ClosureSleeve.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFE72819017500880503 /* ClosureSleeve.swift */; };
 		A693AFEB2819054300880503 /* RewardHuntingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */; };
 		A693AFED2819057E00880503 /* RewardHuntingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEC2819057E00880503 /* RewardHuntingViewModel.swift */; };
@@ -666,6 +669,21 @@
 		A6945A9528913BAB0041FE2E /* ScannerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6945A9428913BAB0041FE2E /* ScannerUtils.swift */; };
 		A6977DEE289BA01C00B2B6BD /* ScannerUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6977DED289BA01C00B2B6BD /* ScannerUtilsTests.swift */; };
 		A6977DF1289BD08A00B2B6BD /* SwapRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6977DF0289BD08A00B2B6BD /* SwapRepository.swift */; };
+		A69C5BCB28D1B25D000DE825 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BCA28D1B25D000DE825 /* NotificationService.swift */; };
+		A69C5BCE28D1B342000DE825 /* NotificationEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BCD28D1B342000DE825 /* NotificationEndpoint.swift */; };
+		A69C5BD028D1B5CC000DE825 /* NotificationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BCF28D1B5CC000DE825 /* NotificationResponse.swift */; };
+		A69C5BD428D1BA84000DE825 /* NotificationV2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BD228D1BA84000DE825 /* NotificationV2ViewController.swift */; };
+		A69C5BD528D1BA84000DE825 /* NotificationV2ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69C5BD328D1BA84000DE825 /* NotificationV2ViewController.xib */; };
+		A69C5BD828D1BA9C000DE825 /* NotificationListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BD628D1BA9C000DE825 /* NotificationListViewController.swift */; };
+		A69C5BD928D1BA9C000DE825 /* NotificationListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69C5BD728D1BA9C000DE825 /* NotificationListViewController.xib */; };
+		A69C5BDC28D1BAEF000DE825 /* NotificationItemV2Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BDA28D1BAEF000DE825 /* NotificationItemV2Cell.swift */; };
+		A69C5BDD28D1BAEF000DE825 /* NotificationItemV2Cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69C5BDB28D1BAEF000DE825 /* NotificationItemV2Cell.xib */; };
+		A69C5BDF28D1BECA000DE825 /* NotificationItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BDE28D1BECA000DE825 /* NotificationItemViewModel.swift */; };
+		A69C5BE128D1C10F000DE825 /* NotificationListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BE028D1C10F000DE825 /* NotificationListViewModel.swift */; };
+		A69C5BE428D1C45A000DE825 /* NotificationFilterTagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BE228D1C45A000DE825 /* NotificationFilterTagCell.swift */; };
+		A69C5BE528D1C45A000DE825 /* NotificationFilterTagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69C5BE328D1C45A000DE825 /* NotificationFilterTagCell.xib */; };
+		A69C5BE928D1E07D000DE825 /* ListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BE828D1E07D000DE825 /* ListEmptyView.swift */; };
+		A69C5BEB28D1E088000DE825 /* ListEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69C5BEA28D1E088000DE825 /* ListEmptyView.xib */; };
 		A6B0671E2859CDBE00DEBAE8 /* KrystalWallets.h in Headers */ = {isa = PBXBuildFile; fileRef = A6B0671D2859CDBE00DEBAE8 /* KrystalWallets.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6B067262859CF1900DEBAE8 /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; };
 		A6B067272859CF1900DEBAE8 /* KrystalWallets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -796,6 +814,9 @@
 		A6F5DCAC28572EDE00FD02C9 /* EthereumEIP1559TransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCAB28572EDE00FD02C9 /* EthereumEIP1559TransactionProcessor.swift */; };
 		A6F5DCAE28572FF200FD02C9 /* NonceCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCAD28572FF200FD02C9 /* NonceCache.swift */; };
 		A6F5DCB02857367100FD02C9 /* TransferTransactionResultData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCAF2857367100FD02C9 /* TransferTransactionResultData.swift */; };
+		A6F6B95228DB1969000CB82C /* UserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6B95128DB1969000CB82C /* UserEndpoint.swift */; };
+		A6F6B95428DB1C4C000CB82C /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6B95328DB1C4C000CB82C /* UserService.swift */; };
+		A6F6B95628DB1D06000CB82C /* ConnectEVMResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6B95528DB1D06000CB82C /* ConnectEVMResponse.swift */; };
 		BB03A8712042B01300649DA0 /* BalanceStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB03A8702042B01300649DA0 /* BalanceStatusTests.swift */; };
 		C154BB4E1861959DEFE1048F /* Pods_KrystalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C64E77FB15CCDC5F0BA6B5 /* Pods_KrystalNotificationServiceExtension.framework */; };
 		C3012CC3269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3012CC1269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.swift */; };
@@ -1868,6 +1889,9 @@
 		A685D4AE284A651D0066E177 /* WalletManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagerTests.swift; sourceTree = "<group>"; };
 		A686BC4F288FEC0100DCE0E2 /* WalletUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUtils.swift; sourceTree = "<group>"; };
 		A68727C02885DEB9001C6369 /* OCRUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRUtilities.swift; sourceTree = "<group>"; };
+		A687B19628D9690D00895337 /* RedeemPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedeemPopupViewController.swift; sourceTree = "<group>"; };
+		A687B19728D9690D00895337 /* RedeemPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RedeemPopupViewController.xib; sourceTree = "<group>"; };
+		A687B19A28D9B41200895337 /* RedeemStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedeemStatus.swift; sourceTree = "<group>"; };
 		A693AFE72819017500880503 /* ClosureSleeve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureSleeve.swift; sourceTree = "<group>"; };
 		A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingCoordinator.swift; sourceTree = "<group>"; };
 		A693AFEC2819057E00880503 /* RewardHuntingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingViewModel.swift; sourceTree = "<group>"; };
@@ -1875,6 +1899,21 @@
 		A6945A9428913BAB0041FE2E /* ScannerUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerUtils.swift; sourceTree = "<group>"; };
 		A6977DED289BA01C00B2B6BD /* ScannerUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerUtilsTests.swift; sourceTree = "<group>"; };
 		A6977DF0289BD08A00B2B6BD /* SwapRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapRepository.swift; sourceTree = "<group>"; };
+		A69C5BCA28D1B25D000DE825 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		A69C5BCD28D1B342000DE825 /* NotificationEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEndpoint.swift; sourceTree = "<group>"; };
+		A69C5BCF28D1B5CC000DE825 /* NotificationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponse.swift; sourceTree = "<group>"; };
+		A69C5BD228D1BA84000DE825 /* NotificationV2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationV2ViewController.swift; sourceTree = "<group>"; };
+		A69C5BD328D1BA84000DE825 /* NotificationV2ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationV2ViewController.xib; sourceTree = "<group>"; };
+		A69C5BD628D1BA9C000DE825 /* NotificationListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationListViewController.swift; sourceTree = "<group>"; };
+		A69C5BD728D1BA9C000DE825 /* NotificationListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationListViewController.xib; sourceTree = "<group>"; };
+		A69C5BDA28D1BAEF000DE825 /* NotificationItemV2Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationItemV2Cell.swift; sourceTree = "<group>"; };
+		A69C5BDB28D1BAEF000DE825 /* NotificationItemV2Cell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationItemV2Cell.xib; sourceTree = "<group>"; };
+		A69C5BDE28D1BECA000DE825 /* NotificationItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationItemViewModel.swift; sourceTree = "<group>"; };
+		A69C5BE028D1C10F000DE825 /* NotificationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationListViewModel.swift; sourceTree = "<group>"; };
+		A69C5BE228D1C45A000DE825 /* NotificationFilterTagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFilterTagCell.swift; sourceTree = "<group>"; };
+		A69C5BE328D1C45A000DE825 /* NotificationFilterTagCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationFilterTagCell.xib; sourceTree = "<group>"; };
+		A69C5BE828D1E07D000DE825 /* ListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEmptyView.swift; sourceTree = "<group>"; };
+		A69C5BEA28D1E088000DE825 /* ListEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListEmptyView.xib; sourceTree = "<group>"; };
 		A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KrystalWallets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B0671D2859CDBE00DEBAE8 /* KrystalWallets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KrystalWallets.h; sourceTree = "<group>"; };
 		A6B0673C2859F43A00DEBAE8 /* KrystalTransactionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalTransactionService.swift; sourceTree = "<group>"; };
@@ -1997,6 +2036,9 @@
 		A6F5DCAB28572EDE00FD02C9 /* EthereumEIP1559TransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumEIP1559TransactionProcessor.swift; sourceTree = "<group>"; };
 		A6F5DCAD28572FF200FD02C9 /* NonceCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonceCache.swift; sourceTree = "<group>"; };
 		A6F5DCAF2857367100FD02C9 /* TransferTransactionResultData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferTransactionResultData.swift; sourceTree = "<group>"; };
+		A6F6B95128DB1969000CB82C /* UserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEndpoint.swift; sourceTree = "<group>"; };
+		A6F6B95328DB1C4C000CB82C /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		A6F6B95528DB1D06000CB82C /* ConnectEVMResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectEVMResponse.swift; sourceTree = "<group>"; };
 		AC25765724B541DEB717EE4E /* Pods-KrystalWallets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KrystalWallets.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KrystalWallets/Pods-KrystalWallets.debug.xcconfig"; sourceTree = "<group>"; };
 		ACB15546CA9F3081C6AABCC5 /* Pods-KrystalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KrystalNotificationServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-KrystalNotificationServiceExtension/Pods-KrystalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		AE9A9579785EB006441CD478 /* Pods_KrystalUnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KrystalUnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2721,6 +2763,7 @@
 		2542604B21218EBC0015ECC7 /* Popups */ = {
 			isa = PBXGroup;
 			children = (
+				A687B19528D968FA00895337 /* RedeemPopup */,
 				C331F370289BBE7000A71B81 /* SwapProcessPopup */,
 				7E0AE5C127D869180078D135 /* RateTransactionPopup */,
 				C326703C2579E40E0063AA1F /* GasFeeSelector */,
@@ -3104,6 +3147,7 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				A69C5BD128D1BA73000DE825 /* Notification */,
 				A6390B0F28ACADC70083EF4C /* Migrating */,
 				A65C7A6D2818E146000FA9CE /* WebView */,
 				2559A02C22CF3D6F00D29735 /* Tooltip */,
@@ -3748,6 +3792,7 @@
 		25CC0AAC2059186E0009D0D5 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
+				A69C5BCC28D1B332000DE825 /* Endpoints */,
 				7E4EDD6228100A400000CB0B /* SolanaService.swift */,
 				A6B3CD8028125713005D0D66 /* Services */,
 				A6B3CD7F281256FC005D0D66 /* Models */,
@@ -4897,6 +4942,8 @@
 			children = (
 				A6573B7F284DE16000A25CBF /* CrosschainTransactionService.swift */,
 				7E12788A289CF92C00A2AE34 /* SearchSwapTokenService.swift */,
+				A69C5BCA28D1B25D000DE825 /* NotificationService.swift */,
+				A6F6B95328DB1C4C000CB82C /* UserService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -5085,6 +5132,16 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		A687B19528D968FA00895337 /* RedeemPopup */ = {
+			isa = PBXGroup;
+			children = (
+				A687B19628D9690D00895337 /* RedeemPopupViewController.swift */,
+				A687B19728D9690D00895337 /* RedeemPopupViewController.xib */,
+				A687B19A28D9B41200895337 /* RedeemStatus.swift */,
+			);
+			path = RedeemPopup;
+			sourceTree = "<group>";
+		};
 		A693AFE92819052000880503 /* RewardingHunting */ = {
 			isa = PBXGroup;
 			children = (
@@ -5109,6 +5166,50 @@
 				A6977DF0289BD08A00B2B6BD /* SwapRepository.swift */,
 			);
 			path = Repository;
+			sourceTree = "<group>";
+		};
+		A69C5BCC28D1B332000DE825 /* Endpoints */ = {
+			isa = PBXGroup;
+			children = (
+				A69C5BCD28D1B342000DE825 /* NotificationEndpoint.swift */,
+				A6F6B95128DB1969000CB82C /* UserEndpoint.swift */,
+			);
+			path = Endpoints;
+			sourceTree = "<group>";
+		};
+		A69C5BD128D1BA73000DE825 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				A69C5BE728D1C465000DE825 /* ViewModels */,
+				A69C5BE628D1C461000DE825 /* Views */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		A69C5BE628D1C461000DE825 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A69C5BD228D1BA84000DE825 /* NotificationV2ViewController.swift */,
+				A69C5BD328D1BA84000DE825 /* NotificationV2ViewController.xib */,
+				A69C5BD628D1BA9C000DE825 /* NotificationListViewController.swift */,
+				A69C5BD728D1BA9C000DE825 /* NotificationListViewController.xib */,
+				A69C5BDA28D1BAEF000DE825 /* NotificationItemV2Cell.swift */,
+				A69C5BDB28D1BAEF000DE825 /* NotificationItemV2Cell.xib */,
+				A69C5BE228D1C45A000DE825 /* NotificationFilterTagCell.swift */,
+				A69C5BE328D1C45A000DE825 /* NotificationFilterTagCell.xib */,
+				A69C5BE828D1E07D000DE825 /* ListEmptyView.swift */,
+				A69C5BEA28D1E088000DE825 /* ListEmptyView.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A69C5BE728D1C465000DE825 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A69C5BDE28D1BECA000DE825 /* NotificationItemViewModel.swift */,
+				A69C5BE028D1C10F000DE825 /* NotificationListViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		A6A8A1EE28168B9600F7AB88 /* LoadingCell */ = {
@@ -5196,6 +5297,8 @@
 			isa = PBXGroup;
 			children = (
 				A6B3CD83281258CD005D0D66 /* KrystalSolanaTransaction.swift */,
+				A69C5BCF28D1B5CC000DE825 /* NotificationResponse.swift */,
+				A6F6B95528DB1D06000CB82C /* ConnectEVMResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -6523,6 +6626,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C311AAD5269D86AD0082A728 /* OverviewChangeCurrencyViewController.xib in Resources */,
+				A69C5BE528D1C45A000DE825 /* NotificationFilterTagCell.xib in Resources */,
 				7ECCB899270AEE030080DC3B /* OverviewLiquidityPoolCell.xib in Resources */,
 				C6B4CA2A23CC50190049C843 /* KNTransferConsentViewController.xib in Resources */,
 				C3F71C91261AB0FF00285935 /* ClaimRewardViewController.xib in Resources */,
@@ -6557,6 +6661,7 @@
 				C6FE41822383A0C10096AAD8 /* KNWalletConnectViewController.xib in Resources */,
 				25682ABF229FC3C7004AB452 /* KNApproveTokenViewController.xib in Resources */,
 				25929C9D20DA5CC10045CFA3 /* SFCompactDisplay-Ultralight.otf in Resources */,
+				A69C5BD928D1BA9C000DE825 /* NotificationListViewController.xib in Resources */,
 				25929C6C20DA5C760045CFA3 /* SF-Pro-Text-SemiboldItalic.otf in Resources */,
 				25BE329D209096E800D760FB /* KNListWalletsViewController.xib in Resources */,
 				257B84A72074C2B9003DD40E /* KNDebugMenuViewController.xib in Resources */,
@@ -6668,6 +6773,8 @@
 				7E72917A27F193FC00ADF721 /* SwitchChainCell.xib in Resources */,
 				296106CE1F777E410006164B /* LaunchScreen.storyboard in Resources */,
 				7E1EBE4E283507E200793B6D /* BridgeSwapButtonCell.xib in Resources */,
+				A69C5BEB28D1E088000DE825 /* ListEmptyView.xib in Resources */,
+				A69C5BD528D1BA84000DE825 /* NotificationV2ViewController.xib in Resources */,
 				25929C9720DA5CC10045CFA3 /* SFCompactDisplay-Heavy.otf in Resources */,
 				290B2B541F8F50030053C83E /* Localizable.strings in Resources */,
 				C3EE06C8267A15E50090B432 /* Karla-LightItalic.ttf in Resources */,
@@ -6699,6 +6806,7 @@
 				7EA34EB42886ACB7001D1DE6 /* OverviewAllChainTokenCell.xib in Resources */,
 				C31F74B025DD3211008B21F7 /* OverviewMarketTableViewCell.xib in Resources */,
 				257C9FCA2078F6A600EE0128 /* KNCreatePasswordViewController.xib in Resources */,
+				A687B19928D9690D00895337 /* RedeemPopupViewController.xib in Resources */,
 				C3285AB6277EDFED00D28BC6 /* BrowserCell.xib in Resources */,
 				C3EE06BF267A15E50090B432 /* Karla-Light.ttf in Resources */,
 				C37CC093245803CA0081FB32 /* Roboto-Light.ttf in Resources */,
@@ -6745,6 +6853,7 @@
 				A6DA40FE27F7007A0078C58E /* ExploreSectionHeaderView.xib in Resources */,
 				25073D1A211AF20D00833C92 /* Montserrat-ExtraLightItalic.ttf in Resources */,
 				C344976428A258CE00028AFB /* SettingBasicModeCell.xib in Resources */,
+				A69C5BDD28D1BAEF000DE825 /* NotificationItemV2Cell.xib in Resources */,
 				2567B3F1216B10060006D963 /* index.html in Resources */,
 				C37CC097245803CA0081FB32 /* Roboto-BoldItalic.ttf in Resources */,
 				25929C6D20DA5C760045CFA3 /* SF-Pro-Display-Heavy.otf in Resources */,
@@ -7159,6 +7268,7 @@
 				"${BUILT_PRODUCTS_DIR}/FirebaseInstallations/FirebaseInstallations.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebasePerformance/FirebasePerformance.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseRemoteConfig/FirebaseRemoteConfig.framework",
+				"${BUILT_PRODUCTS_DIR}/FittedSheets/FittedSheets.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleDataTransport/GoogleDataTransport.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
@@ -7218,6 +7328,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseInstallations.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebasePerformance.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseRemoteConfig.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FittedSheets.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleDataTransport.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
@@ -7320,6 +7431,7 @@
 				C39A7EED24778B03003EA57D /* (null) in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				C3233EFE2807DF4D0086C2BC /* CopyAddressCell.swift in Sources */,
+				A69C5BCE28D1B342000DE825 /* NotificationEndpoint.swift in Sources */,
 				C3285AAD277EC2A600D28BC6 /* RecentlyHistoryViewController.swift in Sources */,
 				25D325A520C0708E008BB235 /* KNSendTokenViewModel.swift in Sources */,
 				A6DA40F327F6E15D0078C58E /* ExploreMenuCell.swift in Sources */,
@@ -7347,6 +7459,7 @@
 				A655619E28350D7600944624 /* TransactionStatus.swift in Sources */,
 				257A3794205BC27400E86794 /* KNBaseViewController.swift in Sources */,
 				25CE6F7220723F7C00A3A2F9 /* KNAppTracker.swift in Sources */,
+				A6F6B95628DB1D06000CB82C /* ConnectEVMResponse.swift in Sources */,
 				255F6F2620BBC9C000EF808F /* UIImage+Kyber.swift in Sources */,
 				7E01EFEB2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.swift in Sources */,
 				A6B3CD592811C07C005D0D66 /* PendingInternalHistoryTransactonViewModel.swift in Sources */,
@@ -7406,6 +7519,7 @@
 				C3409E1A25AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift in Sources */,
 				255C40EB2092D64F00475871 /* KNTokenStorage.swift in Sources */,
 				C3EEA45B2671EF840011DB97 /* OverviewMainViewCell.swift in Sources */,
+				A6F6B95428DB1C4C000CB82C /* UserService.swift in Sources */,
 				C347DA3825C02BE3000D6E81 /* EarnMenuViewController.swift in Sources */,
 				C37AF0BF25CA5639006FB880 /* EarnConfirmViewController.swift in Sources */,
 				A6B3CD7728124F96005D0D66 /* KrystalHistoryTransaction+TransactionHistoryItem.swift in Sources */,
@@ -7454,6 +7568,7 @@
 				C3ED1DCD2616F0090024970C /* NotificationsViewController.swift in Sources */,
 				A6E6C9D128171A1400EEB2E6 /* SolanaTransactionListViewModel.swift in Sources */,
 				C322EB0B25B1A3D8009746FB /* CreateWalletMenuViewController.swift in Sources */,
+				A69C5BE928D1E07D000DE825 /* ListEmptyView.swift in Sources */,
 				293112371FC9A24600966EEA /* UIGestureRecognizer+Closure.swift in Sources */,
 				29BDF1A11FEE51A80023A45F /* GasLimitConfiguration.swift in Sources */,
 				25696F4E20BD162F002CC53F /* XibViewLoader.swift in Sources */,
@@ -7593,6 +7708,7 @@
 				A6F5DCAA2857129E00FD02C9 /* EthereumWeb3Service.swift in Sources */,
 				C3263B0225EDE6FB005FBB60 /* WithdrawCoordinator.swift in Sources */,
 				A6B3CD512811BF85005D0D66 /* TransactionHistoryItemViewModelProtocol.swift in Sources */,
+				A69C5BD428D1BA84000DE825 /* NotificationV2ViewController.swift in Sources */,
 				A6B3A85F27FAB4F200F84819 /* PairKey.swift in Sources */,
 				258BF6A723068A4800988EDD /* KNOpenSettingsAllowCamera.swift in Sources */,
 				298542E81FBAD0B200CB5081 /* OperationType.swift in Sources */,
@@ -7642,6 +7758,7 @@
 				A6BA4CA228A213AD002E2B30 /* SwapState.swift in Sources */,
 				25C45AD320AD398C00CDA1FF /* KNImportJSONViewController.swift in Sources */,
 				C31F749225DCD213008B21F7 /* OverviewCoordinator.swift in Sources */,
+				A69C5BE428D1C45A000DE825 /* NotificationFilterTagCell.swift in Sources */,
 				2542604A21215C360015ECC7 /* KSwapViewModel.swift in Sources */,
 				A65CC8F528698C1F008620E2 /* Period.swift in Sources */,
 				C3362D8F2806D0E500840884 /* WalletData.swift in Sources */,
@@ -7694,6 +7811,7 @@
 				C3554D89280E5E3F0043BC1B /* SolanaUtil.swift in Sources */,
 				7EFE71492817DC2E00476184 /* SolFeeCoordinator.swift in Sources */,
 				7E7C074928A36887002E8068 /* SwapSummaryViewModel.swift in Sources */,
+				A69C5BD028D1B5CC000DE825 /* NotificationResponse.swift in Sources */,
 				291F52A51F6B762300B369AB /* EtherServiceRequest.swift in Sources */,
 				A639B66428A4FC6400AF8517 /* SwapInfoViewModelProtocol.swift in Sources */,
 				C6FE41812383A0C10096AAD8 /* KNWalletConnectViewController.swift in Sources */,
@@ -7717,9 +7835,11 @@
 				C320D80B27B39EBC0001DC71 /* MultiSendViewController.swift in Sources */,
 				7721A6C8202EF81B004DB16C /* CustomRPC.swift in Sources */,
 				253F50E721E5B5290068813D /* KNPromoCodeViewController.swift in Sources */,
+				A69C5BDC28D1BAEF000DE825 /* NotificationItemV2Cell.swift in Sources */,
 				C308BC1526D897290030022B /* ConfirmSendNFTViewController.swift in Sources */,
 				A6BB3C2428605E470097EB75 /* EIP1559TransactionSigner.swift in Sources */,
 				A66EC312287D176200D15FE0 /* MultiSendSubTransactionCell.swift in Sources */,
+				A69C5BD828D1BA9C000DE825 /* NotificationListViewController.swift in Sources */,
 				A655619A283503A900944624 /* BridgeSubTransactionCell.swift in Sources */,
 				294DFBA31FE0E2EA004CEB56 /* TransactionValue.swift in Sources */,
 				A6DA40E227F6B11B0078C58E /* ExploreViewModel.swift in Sources */,
@@ -7729,6 +7849,7 @@
 				25968731211DEC1D0080A33F /* KConfirmSwapViewController.swift in Sources */,
 				775C00B520195BFB001B5EBC /* BrowserAction.swift in Sources */,
 				A6D9BE682829238A0009EEB4 /* CreateChainWalletMenuViewController.swift in Sources */,
+				A687B19828D9690D00895337 /* RedeemPopupViewController.swift in Sources */,
 				299B5E291FCA8F040051361C /* GetERC20Balance.swift in Sources */,
 				7EEA4D7728AA3A4500C56EE3 /* DinoChatCustomView.swift in Sources */,
 				7EA34EB32886ACB7001D1DE6 /* OverviewAllChainTokenCell.swift in Sources */,
@@ -7762,6 +7883,7 @@
 				A6C561B027F4758900E88ED6 /* UIViewController+nib.swift in Sources */,
 				7E6F51082733895D002DA0B2 /* OverviewSummaryCell.swift in Sources */,
 				A6E6070E2851A25600387388 /* SignerFactory.swift in Sources */,
+				A6F6B95228DB1969000CB82C /* UserEndpoint.swift in Sources */,
 				255A70EA214F9ECE005D7A6A /* KNSettingsTabViewController.swift in Sources */,
 				C65D31EA21D4DCD1005D0B04 /* UITextField+Kyber.swift in Sources */,
 				7EC008A2288F957900FCED48 /* OverviewMainCellViewModel.swift in Sources */,
@@ -7771,6 +7893,7 @@
 				A6595C88289D2C4300CE7E42 /* Animation+.swift in Sources */,
 				7EF2E51428A21BF200D9947E /* SwapSummaryViewController.swift in Sources */,
 				25CE6F912073E0BC00A3A2F9 /* KNHistoryViewController.swift in Sources */,
+				A69C5BE128D1C10F000DE825 /* NotificationListViewModel.swift in Sources */,
 				2912CCF91F6A830700C6CBE3 /* AppDelegate.swift in Sources */,
 				C3319B0F28A3973300E5620A /* SettingBasicAdvancedFormCell.swift in Sources */,
 				C334A865283354C3006B3D55 /* KeyboardTypingUltil.swift in Sources */,
@@ -7838,6 +7961,7 @@
 				7EE3143C286036AF0012ADF9 /* TokenPoolCell.swift in Sources */,
 				A6CECBA62875421E001F3563 /* UIView+.swift in Sources */,
 				A65194382835F13D008F4AEB /* TransactionDetailContract.swift in Sources */,
+				A69C5BDF28D1BECA000DE825 /* NotificationItemViewModel.swift in Sources */,
 				25CC0ABD20591DFB0009D0D5 /* KNGasConfiguration.swift in Sources */,
 				29AD8A0C1F93FBBF008E10E7 /* Subscribable.swift in Sources */,
 				25D3D3EA20F61C110071D599 /* KNTrackerRate.swift in Sources */,
@@ -7871,6 +7995,7 @@
 				A6D38BEB2898E8B5003579F2 /* SwapV2ViewController.swift in Sources */,
 				293112351FC9A0D500966EEA /* CallRequest.swift in Sources */,
 				C33BB80727955C9A00851BC6 /* Function.swift in Sources */,
+				A69C5BCB28D1B25D000DE825 /* NotificationService.swift in Sources */,
 				A6BE04B7288927B600E63714 /* ScreenName.swift in Sources */,
 				A6E26FE028129C480054427E /* SignTransactionObject.swift in Sources */,
 				291F52A91F6B7BE100B369AB /* BlockNumber.swift in Sources */,
@@ -7925,6 +8050,7 @@
 				C3A241A42567BEB50073703C /* WalletListTableViewCell.swift in Sources */,
 				A6E6C9EC2818056800EEB2E6 /* SolanaTransactionObject.swift in Sources */,
 				A6664D23285986A700CCAB1F /* SolanaSerumService.swift in Sources */,
+				A687B19B28D9B41200895337 /* RedeemStatus.swift in Sources */,
 				A6E6C9D6281796C000EEB2E6 /* SolanaTransactionStorage.swift in Sources */,
 				25759623216D8E0D00AC490D /* Locale+Kyber.swift in Sources */,
 				C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */,

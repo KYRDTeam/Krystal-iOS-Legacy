@@ -17,10 +17,11 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PromoCodeListViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PromoCodeListViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="errorLabel" destination="KrN-hN-bXd" id="HCH-AW-ZRO"/>
                 <outlet property="promoCodeTableView" destination="JOa-IB-FIP" id="C1n-zi-mpi"/>
+                <outlet property="scanButton" destination="y1o-d9-Lmp" id="MQp-Ts-m1P"/>
                 <outlet property="searchContainerView" destination="xDK-bl-nvD" id="TFY-F5-mTR"/>
                 <outlet property="searchTextField" destination="f2c-gP-1nP" id="N7d-cy-Per"/>
                 <outlet property="topBarHeight" destination="XkO-yv-QJ5" id="X0I-mI-CEw"/>
@@ -71,25 +72,39 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xDK-bl-nvD">
                     <rect key="frame" x="21" y="128" width="333" height="42"/>
                     <subviews>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="f2c-gP-1nP">
-                            <rect key="frame" x="16" y="0.0" width="301" height="42"/>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f2c-gP-1nP">
+                            <rect key="frame" x="16" y="0.0" width="253" height="42"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="tintColor" name="buttonBackgroundColor"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                            <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" textContentType="password"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="sTq-MH-ACJ"/>
                             </connections>
                         </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y1o-d9-Lmp">
+                            <rect key="frame" x="285" y="5" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="XQI-kc-I0f"/>
+                                <constraint firstAttribute="width" constant="32" id="ijJ-iA-Ekp"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="scan"/>
+                            <connections>
+                                <action selector="scanWasTapped:" destination="-1" eventType="touchUpInside" id="e2K-Q1-Q2l"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" name="innerContainerBgColor"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="f2c-gP-1nP" secondAttribute="bottom" id="2Ss-cx-Dq5"/>
                         <constraint firstItem="f2c-gP-1nP" firstAttribute="leading" secondItem="xDK-bl-nvD" secondAttribute="leading" constant="16" id="6DX-CL-63x"/>
                         <constraint firstItem="f2c-gP-1nP" firstAttribute="top" secondItem="xDK-bl-nvD" secondAttribute="top" id="TQo-IG-AgL"/>
-                        <constraint firstAttribute="trailing" secondItem="f2c-gP-1nP" secondAttribute="trailing" constant="16" id="sif-6D-2wn"/>
+                        <constraint firstItem="y1o-d9-Lmp" firstAttribute="leading" secondItem="f2c-gP-1nP" secondAttribute="trailing" constant="16" id="enW-Ok-jXz"/>
+                        <constraint firstAttribute="trailing" secondItem="y1o-d9-Lmp" secondAttribute="trailing" constant="16" id="k4v-c7-j6c"/>
                         <constraint firstAttribute="height" constant="42" id="ue4-dy-Wsl"/>
+                        <constraint firstItem="y1o-d9-Lmp" firstAttribute="centerY" secondItem="xDK-bl-nvD" secondAttribute="centerY" id="vie-7E-bpC"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -98,16 +113,16 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="JOa-IB-FIP">
-                    <rect key="frame" x="0.0" y="190" width="375" height="477"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="JOa-IB-FIP">
+                    <rect key="frame" x="0.0" y="196" width="375" height="471"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="6W7-hA-17v"/>
                         <outlet property="delegate" destination="-1" id="fsR-ku-vvo"/>
                     </connections>
                 </tableView>
-                <label hidden="YES" opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KrN-hN-bXd">
-                    <rect key="frame" x="21" y="180" width="34.5" height="16.5"/>
+                <label hidden="YES" opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KrN-hN-bXd">
+                    <rect key="frame" x="21" y="180" width="333" height="0.0"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                     <color key="textColor" name="textRedColor"/>
                     <nil key="highlightedColor"/>
@@ -116,6 +131,7 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
+                <constraint firstItem="JOa-IB-FIP" firstAttribute="top" secondItem="KrN-hN-bXd" secondAttribute="bottom" constant="16" id="1GC-gC-qLO"/>
                 <constraint firstItem="xDK-bl-nvD" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="21" id="3sg-V5-jzz"/>
                 <constraint firstItem="KrN-hN-bXd" firstAttribute="leading" secondItem="xDK-bl-nvD" secondAttribute="leading" id="ADR-lR-CM0"/>
                 <constraint firstItem="JOa-IB-FIP" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="F9C-54-wlB"/>
@@ -123,7 +139,7 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="xDK-bl-nvD" secondAttribute="trailing" constant="21" id="VRW-LP-EnX"/>
                 <constraint firstItem="JOa-IB-FIP" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="YPd-1d-rLX"/>
                 <constraint firstItem="JOa-IB-FIP" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="aYL-05-NJg"/>
-                <constraint firstItem="JOa-IB-FIP" firstAttribute="top" secondItem="xDK-bl-nvD" secondAttribute="bottom" constant="20" id="k3a-TY-RoG"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="KrN-hN-bXd" secondAttribute="trailing" constant="21" id="m3z-T9-Dhf"/>
                 <constraint firstItem="gR1-Lq-JxG" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="mrN-4n-k5A"/>
                 <constraint firstItem="xDK-bl-nvD" firstAttribute="top" secondItem="gR1-Lq-JxG" secondAttribute="bottom" constant="15" id="pxS-p0-vaX"/>
                 <constraint firstItem="gR1-Lq-JxG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ubr-Qv-CZu"/>
@@ -134,6 +150,7 @@
     </objects>
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
+        <image name="scan" width="32" height="32"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

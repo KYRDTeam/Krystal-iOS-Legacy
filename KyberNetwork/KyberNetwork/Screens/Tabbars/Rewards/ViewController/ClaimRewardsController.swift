@@ -138,7 +138,7 @@ protocol ClaimRewardsControllerDelegate: class {
   func didSelectAdvancedSetting(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
 }
 
-class ClaimRewardsController: KNBaseViewController {
+class ClaimRewardsController: InAppBrowsingViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var tokenBalance: UILabel!
   @IBOutlet weak var tokenIcon: UIImageView!
@@ -286,7 +286,7 @@ extension ClaimRewardsController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 450
+    return 470
   }
 
   func getPopupContentView() -> UIView {

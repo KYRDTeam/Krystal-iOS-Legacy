@@ -30,6 +30,8 @@ enum OverviewMainViewEvent {
   case scannedWalletConnect(url: String)
   case selectAllChain
   case importWallet(privateKey: String, chain: ChainType)
+  case openPromotion(code: String)
+  case getBadgeNotification
 }
 
 enum OverviewMode {
@@ -234,6 +236,7 @@ class OverviewMainViewModel {
   }
   var assetChainBalanceModels: [ChainBalanceModel] = []
   var chainLiquidityPoolModels: [ChainLiquidityPoolModel] = []
+  var badgeNumber: Int = 0
   
   init() {
     if let savedCurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) {

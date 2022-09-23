@@ -157,6 +157,7 @@ extension KNAppCoordinator {
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
 
     self.doLogin { _ in }
+    UserService().connectEVM(address: address) {}
   }
   
   func stopAllSessions() {
@@ -172,6 +173,7 @@ extension KNAppCoordinator {
   }
 
   func restartSession(address: KAddress) {
+    EtherscanTransactionStorage.shared.updateCurrentWallet(address)
     self.session.switchAddress(address: address)
     FeatureFlagManager.shared.configClient(session: self.session)
     self.loadBalanceCoordinator?.shouldFetchAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all
@@ -184,6 +186,7 @@ extension KNAppCoordinator {
     self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     
     self.doLogin { _ in }
+    UserService().connectEVM(address: address) {}
     
     NotificationCenter.default.post(
       name: Notification.Name(kAppDidUpdateNewSession),

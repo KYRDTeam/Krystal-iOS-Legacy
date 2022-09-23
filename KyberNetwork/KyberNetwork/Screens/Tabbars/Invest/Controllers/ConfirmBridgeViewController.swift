@@ -80,7 +80,7 @@ protocol ConfirmBridgeViewControllerDelegate: class {
   func openGasPriceSelect()
 }
 
-class ConfirmBridgeViewController: KNBaseViewController {
+class ConfirmBridgeViewController: InAppBrowsingViewController {
 
   @IBOutlet weak var fromAddressLabel: UILabel!
   @IBOutlet weak var fromTokenValueLabel: UILabel!

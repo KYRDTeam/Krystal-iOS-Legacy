@@ -16,6 +16,7 @@ enum ScanResultType: CaseIterable {
   case ethPrivateKey
   case solPublicKey
   case solPrivateKey
+  case promotionCode
   
   var trackingOutputKey: String {
     switch self {
@@ -25,6 +26,8 @@ enum ScanResultType: CaseIterable {
       return "public_key"
     case .ethPrivateKey, .solPrivateKey:
       return "private_key"
+    case .promotionCode:
+      return "promotion_code"
     }
   }
 }
@@ -69,7 +72,27 @@ class ScannerUtils {
       return AnyAddress.isValid(string: text, coin: .solana)
     case .solPrivateKey:
       return SolanaUtils.isValidSolanaPrivateKey(text: text)
+    case .promotionCode:
+      return getPromotionCode(text: text) != nil
     }
   }
   
+  static func getPromotionCode(text: String) -> String? {
+    let range = NSRange(text.startIndex..<text.endIndex, in: text)
+    let pattern1 = #"promo:(?<code>.+)"#
+    let regex1 = try! NSRegularExpression(pattern: pattern1, options: [])
+    let matches1 = regex1.matches(in: text, range: range)
+    
+    let pattern2 = #"https://.+/promo/(?<code>.+)"#
+    let regex2 = try! NSRegularExpression(pattern: pattern2, options: [])
+    let matches2 = regex2.matches(in: text, range: range)
+    
+    let match1 = matches1.first.flatMap {
+      Range($0.range(withName: "code")).map { range in text.substring(with: range) }
+    }
+    let match2 = matches2.first.flatMap {
+      Range($0.range(withName: "code")).map { range in text.substring(with: range) }
+    }
+    return match1 ?? match2
+  }
 }
