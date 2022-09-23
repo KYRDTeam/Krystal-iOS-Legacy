@@ -17,7 +17,7 @@ struct SwapTransactionSettings {
   static func getDefaultSettings() -> SwapTransactionSettings {
     let slippage = UserDefaults.standard.double(forKey: Constants.slippageRateSaveKey)
     return SwapTransactionSettings(
-      slippage: slippage > 0 ? 0.5 : slippage,
+      slippage: slippage > 0 ? slippage : 0.5,
       basic: BasicTransactionSettings(gasPriceType: .medium),
       advanced: nil,
       expertModeOn: UserDefaults.standard.bool(forKey: Constants.expertModeSaveKey)
