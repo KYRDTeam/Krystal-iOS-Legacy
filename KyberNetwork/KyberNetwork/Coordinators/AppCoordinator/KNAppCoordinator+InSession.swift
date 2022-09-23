@@ -157,6 +157,7 @@ extension KNAppCoordinator {
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
 
     self.doLogin { _ in }
+    UserService().connectEVM(address: address) {}
   }
   
   func stopAllSessions() {
@@ -185,6 +186,7 @@ extension KNAppCoordinator {
     self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     
     self.doLogin { _ in }
+    UserService().connectEVM(address: address) {}
     
     NotificationCenter.default.post(
       name: Notification.Name(kAppDidUpdateNewSession),
