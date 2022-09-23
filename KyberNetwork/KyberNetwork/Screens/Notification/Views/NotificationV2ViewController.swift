@@ -89,6 +89,16 @@ class NotificationV2ViewController: UIViewController {
 
 extension NotificationV2ViewController: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
   
+  func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+    if completed {
+      if let currentViewController = pageViewController.viewControllers?.first as? NotificationListViewController,
+         let index = controllers.index(of: currentViewController) {
+        selectingFilterTagIndex = index
+        collectionView.reloadData()
+      }
+    }
+  }
+  
   func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
     guard let vc = viewController as? NotificationListViewController else { return nil }
     if let index = controllers.firstIndex(of: vc) {
