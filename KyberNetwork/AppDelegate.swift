@@ -234,6 +234,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       }
         
     } else if components.path == "/notifications" && !KNGeneralProvider.shared.isBrowsingMode && FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.notiV2) {
+      self.coordinator.overviewTabCoordinator?.navigationController.tabBarController?.selectedIndex = 0
+      self.coordinator.overviewTabCoordinator?.navigationController.popToRootViewController(animated: false)
       let vc = NotificationV2ViewController.instantiateFromNib()
       vc.hidesBottomBarWhenPushed = true
       self.coordinator.overviewTabCoordinator?.navigationController.pushViewController(vc, animated: true)
