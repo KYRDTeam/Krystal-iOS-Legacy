@@ -519,13 +519,13 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
         if self.viewModel.isSpeedupMode || self.viewModel.isCancelMode {
           let gasLimitBigInt = BigInt(gasLimit) ?? BigInt(0)
           let maxFeeBigInt = maxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
-          let maxPriorityFeeBigInt = maxPriorityFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
-          if self.viewModel.isSpeedupMode, let original = self.viewModel.transaction, let tx = original.transactionObject {
+          
+          if self.viewModel.isSpeedupMode {
             self.speedupTransaction(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
             print("[GasSelector][Legacy][Speedup] \(gasLimitBigInt.description) \(maxFeeBigInt.description)")
           }
 
-          if self.viewModel.isCancelMode, let original = self.viewModel.transaction, let tx = original.transactionObject {
+          if self.viewModel.isCancelMode {
             self.cancelTransaction(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
             print("[GasSelector][Legacy][Cancel] \(gasLimitBigInt.description) \(maxFeeBigInt.description)")
           }

@@ -74,8 +74,6 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-//    let isAdvancedSearchEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.advancedSearch)
-//    self.searchButton.isHidden = !isAdvancedSearchEnabled
     let nib = UINib(nibName: OverviewMainViewCell.className, bundle: nil)
     self.tableView.register(
       nib,
@@ -527,7 +525,7 @@ extension OverviewMainViewController: UITableViewDataSource {
       cell.action = {
         self.delegate?.overviewMainViewController(self, run: .buyCrypto)
       }
-      cell.button1.isHidden = !FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
+      cell.button1.isHidden = false
       cell.button2.isHidden = true
     case .favourite:
       cell.imageIcon.image = Images.emptyFavToken
