@@ -94,7 +94,11 @@ extension NotificationListViewController: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    delegate?.onSelectNotification(id: viewModel.notifications[indexPath.row].id)
+    let notiItem = viewModel.notifications[indexPath.row]
+    delegate?.onSelectNotification(id: notiItem.id)
+    if !notiItem.url.isEmpty {
+      openURL(notiItem.url)
+    }
   }
   
   func readNotification(id: Int) {
@@ -107,8 +111,10 @@ extension NotificationListViewController: UITableViewDelegate {
       } else {
         let indexPath = IndexPath(row: index, section: 0)
         viewModel.read(id: viewModel.notifications[index].id)
-        viewModel.notifications[index].isRead = true
-        tableView.reloadRows(at: [indexPath], with: .none)
+        if viewModel.notifications[index].isRead == false {
+          viewModel.notifications[index].isRead = true
+          tableView.reloadRows(at: [indexPath], with: .none)
+        }
       }
       view.layoutIfNeeded()
     }

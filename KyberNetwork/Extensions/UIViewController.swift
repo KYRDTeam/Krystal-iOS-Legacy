@@ -11,6 +11,14 @@ enum ConfirmationError: LocalizedError {
 }
 
 extension UIViewController {
+  
+    func openURL(_ urlString: String) {
+      guard let url = URL(string: urlString) else {
+        return
+      }
+      let vc = SFSafariViewController(url: url)
+      present(vc, animated: true, completion: nil)
+    }
     
     func openTxHash(txHash: String, chainID: Int) {
       guard let endpoint = ChainType.getChain(id: chainID)?.customRPC().etherScanEndpoint else {
