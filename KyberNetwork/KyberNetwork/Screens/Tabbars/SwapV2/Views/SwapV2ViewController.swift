@@ -87,6 +87,8 @@ class SwapV2ViewController: InAppBrowsingViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    tabBarItem.accessibilityIdentifier = "menuSwap"
+    
     configureViews()
     resetViews()
     bindViewModel()

@@ -7,6 +7,7 @@
 
 import UIKit
 
+@IBDesignable
 class SwapInfoView: BaseXibView {
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var valueLabel: UILabel!
@@ -17,6 +18,12 @@ class SwapInfoView: BaseXibView {
   var isTitleUnderlined: Bool = false {
     didSet {
       setNeedsLayout()
+    }
+  }
+  
+  @IBInspectable var valueAccessibilityID: String? {
+    didSet {
+      valueLabel.accessibilityID = valueAccessibilityID
     }
   }
   

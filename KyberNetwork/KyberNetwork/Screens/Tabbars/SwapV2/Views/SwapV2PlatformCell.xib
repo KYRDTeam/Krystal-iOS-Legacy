@@ -50,24 +50,36 @@
                                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtPlatform"/>
+                                        </userDefinedRuntimeAttributes>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="2,245.54" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fiu-vS-jYB">
                                         <rect key="frame" x="288.5" y="21.5" width="68.5" height="21.5"/>
                                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                         <color key="textColor" white="1" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtDestSwap"/>
+                                        </userDefinedRuntimeAttributes>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~0.04BNB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="qEk-BR-28I">
                                         <rect key="frame" x="20" y="51.5" width="61.5" height="16.5"/>
                                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                         <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtFee"/>
+                                        </userDefinedRuntimeAttributes>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~$30.33" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="MSr-Ch-ddQ">
                                         <rect key="frame" x="305" y="51.5" width="52" height="16.5"/>
                                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                         <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtDestUsdValue"/>
+                                        </userDefinedRuntimeAttributes>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
