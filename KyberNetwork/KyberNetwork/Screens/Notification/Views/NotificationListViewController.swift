@@ -96,9 +96,7 @@ extension NotificationListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let notiItem = viewModel.notifications[indexPath.row]
     delegate?.onSelectNotification(id: notiItem.id)
-    if !notiItem.url.isEmpty {
-      openURL(notiItem.url)
-    }
+    openNotification(item: notiItem)
   }
   
   func readNotification(id: Int) {
@@ -127,6 +125,12 @@ extension NotificationListViewController: UITableViewDelegate {
       viewModel.notifications.forEach { $0.isRead = true }
     }
     reloadUI()
+  }
+  
+  func openNotification(item: NotificationItemViewModel) {
+    let vc = NotificationDetailViewController.instantiateFromNib()
+    vc.viewModel = item
+    navigationController?.pushViewController(vc, animated: true)
   }
   
 }

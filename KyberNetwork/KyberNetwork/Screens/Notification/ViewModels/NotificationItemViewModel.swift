@@ -36,7 +36,7 @@ class NotificationItemViewModel {
     if dayInterval == 2 {
       return String(format: Strings.xDaysAgo, dayInterval)
     } else if dayInterval == 1 {
-      return Strings.oneDayAgo
+      return Strings.yesterday
     } else {
       return DateFormatterUtil.shared.todayTimeFormatter.string(from: updateDate)
     }
