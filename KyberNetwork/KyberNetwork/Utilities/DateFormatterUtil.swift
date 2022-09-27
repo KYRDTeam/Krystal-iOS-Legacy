@@ -83,6 +83,7 @@ class DateFormatterUtil {
   lazy var notificationV2DateFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z"
+    formatter.timeZone = TimeZone(identifier: "GMT")
     return formatter
   }()
   
@@ -96,6 +97,7 @@ class DateFormatterUtil {
   lazy var todayTimeFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.timeStyle = .short
+    formatter.locale = .current
     formatter.dateFormat = "HH:mm"
     return formatter
   }()
