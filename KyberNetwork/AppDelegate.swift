@@ -233,7 +233,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         self.coordinator.overviewTabCoordinator?.navigationController.present(errorVC, animated: false)
       }
         
-    } else if components.path == "/notifications" && !KNGeneralProvider.shared.isBrowsingMode && FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.notiV2) {
+    } else if components.path == "/notifications" && self.coordinator.session != nil && !KNGeneralProvider.shared.isBrowsingMode && FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.notiV2) {
       self.coordinator.overviewTabCoordinator?.navigationController.tabBarController?.selectedIndex = 0
       self.coordinator.overviewTabCoordinator?.navigationController.popToRootViewController(animated: false)
       let vc = NotificationV2ViewController.instantiateFromNib()
