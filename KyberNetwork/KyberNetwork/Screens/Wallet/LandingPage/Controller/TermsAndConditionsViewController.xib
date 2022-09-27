@@ -45,6 +45,9 @@
                             </constraints>
                             <color key="tintColor" red="0.13725490200000001" green="0.65490196079999996" blue="0.70980392160000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <state key="normal" image="filter_check_icon"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="cbTerm"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="checkBoxButtonTapped:" destination="-1" eventType="touchUpInside" id="rG4-Sv-1SM"/>
                             </connections>
