@@ -428,7 +428,6 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   
   @objc override func onAppSwitchChain() {
     super.onAppSwitchChain()
-    
     guard self.isViewLoaded else {
       return
     }
@@ -445,7 +444,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     if self.viewModel.currentChain != .all {
       self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
     }
-    
+    getNotificationBadgeNumber()
     guard self.isViewLoaded else { return }
     calculatingQueue.async {
       self.viewModel.reloadAllData()

@@ -34,6 +34,12 @@ class NotificationService {
 
   func getNotificationBadgeNumber(userAddress: String, completion: @escaping (Int) -> ()) {
     guard userAddress.has0xPrefix else { return }
+    guard UserDefaults.standard.getAuthToken(address: userAddress) != nil else {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        self.getNotificationBadgeNumber(userAddress: userAddress, completion: completion)
+      }
+      return
+    }
     provider.requestWithFilter(.unread(userAddress: userAddress)) { result in
       switch result {
       case .success(let response):
