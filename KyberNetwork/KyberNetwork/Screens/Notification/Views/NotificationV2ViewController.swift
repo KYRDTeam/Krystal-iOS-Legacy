@@ -44,6 +44,8 @@ class NotificationV2ViewController: UIViewController {
   var controllers: [NotificationListViewController] = []
   var selectingFilterTagIndex: Int = 0
   
+  override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
