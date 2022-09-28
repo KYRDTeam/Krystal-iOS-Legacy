@@ -38,6 +38,8 @@ class InvestViewController: InAppBrowsingViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    tabBarItem.accessibilityIdentifier = "menuExplore"
+    
     self.setupCollectionView()
     self.bindViewModel()
     self.viewModel.onViewLoaded()

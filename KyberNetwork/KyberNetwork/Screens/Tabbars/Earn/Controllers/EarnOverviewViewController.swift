@@ -36,6 +36,9 @@ class EarnOverviewViewController: InAppBrowsingViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    tabBarItem.accessibilityIdentifier = "menuEarn"
+    
     self.exploreButton.rounded(radius: 16)
     self.addChild(self.depositViewController)
     self.contentView.addSubview(self.depositViewController.view)

@@ -75,6 +75,9 @@
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="normalTextColor"/>
                                             <nil key="highlightedColor"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtSrcBalanceSwap"/>
+                                            </userDefinedRuntimeAttributes>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9sq-Cf-NGm">
                                             <rect key="frame" x="24" y="45.5" width="77" height="24"/>
@@ -102,6 +105,9 @@
                                                 <constraint firstAttribute="trailing" secondItem="yeq-Jn-0uL" secondAttribute="trailing" constant="2" id="qV9-Ij-F8u"/>
                                                 <constraint firstAttribute="height" constant="24" id="xI3-D1-THD"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="srcToken"/>
+                                            </userDefinedRuntimeAttributes>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UKE-N9-q1M">
                                             <rect key="frame" x="293" y="43.5" width="41" height="28"/>
@@ -111,6 +117,9 @@
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="24"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtSrcAmountSwap"/>
+                                            </userDefinedRuntimeAttributes>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" name="innerContainerBgColor"/>
@@ -149,6 +158,9 @@
                                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtDestBalanceSwap"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8FS-8S-fG0">
                                                     <rect key="frame" x="24" y="45.5" width="79.5" height="24"/>
@@ -176,6 +188,9 @@
                                                         <constraint firstItem="Vph-r5-1b4" firstAttribute="centerY" secondItem="8FS-8S-fG0" secondAttribute="centerY" id="NCx-hl-ZAl"/>
                                                         <constraint firstItem="E3e-ek-Edn" firstAttribute="centerY" secondItem="Vph-r5-1b4" secondAttribute="centerY" id="lJz-wE-QTR"/>
                                                     </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="destToken"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2,418.930406" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a8J-md-c5k">
                                                     <rect key="frame" x="190.5" y="43.5" width="143.5" height="28"/>
@@ -185,6 +200,9 @@
                                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="24"/>
                                                     <color key="textColor" name="textWhiteColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtDestAmountSwap"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" name="innerContainerBgColor"/>
@@ -236,6 +254,9 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="00b-us-gPB"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtPlatform"/>
+                                            </userDefinedRuntimeAttributes>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Lw-nD-i04" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="32" width="358" height="28"/>
@@ -243,6 +264,9 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="ioz-I1-4ff"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtRate"/>
+                                            </userDefinedRuntimeAttributes>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iny-JF-87S" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="64" width="358" height="28"/>
@@ -250,6 +274,9 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="E3f-36-2IK"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtSlippage"/>
+                                            </userDefinedRuntimeAttributes>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i0b-VC-AP5" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="96" width="358" height="28"/>
@@ -257,6 +284,9 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="O6x-GV-Q07"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtMinReceive"/>
+                                            </userDefinedRuntimeAttributes>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DkY-dj-91F" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="128" width="358" height="28"/>
@@ -264,6 +294,9 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="Em2-o2-L2N"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtFee"/>
+                                            </userDefinedRuntimeAttributes>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VAg-jY-Adp" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="160" width="358" height="28"/>
@@ -271,6 +304,9 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="U5H-4l-k3Q"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtMaxFee"/>
+                                            </userDefinedRuntimeAttributes>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XkL-q0-opE" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="192" width="358" height="28"/>
@@ -278,6 +314,9 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="GZS-2I-ez3"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtPriceImpact"/>
+                                            </userDefinedRuntimeAttributes>
                                         </view>
                                     </subviews>
                                 </stackView>
@@ -498,6 +537,9 @@
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtChain"/>
+                            </userDefinedRuntimeAttributes>
                         </label>
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>

@@ -50,6 +50,8 @@ class KNSettingsTabViewController: InAppBrowsingViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    tabBarItem.accessibilityIdentifier = "menuSetting"
+    
     self.fingerprintSwitch.isOn = UserDefaults.standard.object(forKey: "bio-auth") as? Bool ?? true
     
     if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {

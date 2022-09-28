@@ -669,6 +669,8 @@
 		A6945A9528913BAB0041FE2E /* ScannerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6945A9428913BAB0041FE2E /* ScannerUtils.swift */; };
 		A6977DEE289BA01C00B2B6BD /* ScannerUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6977DED289BA01C00B2B6BD /* ScannerUtilsTests.swift */; };
 		A6977DF1289BD08A00B2B6BD /* SwapRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6977DF0289BD08A00B2B6BD /* SwapRepository.swift */; };
+		A69813E428E1BC230054F3E5 /* NotificationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69813E228E1BC230054F3E5 /* NotificationDetailViewController.swift */; };
+		A69813E528E1BC230054F3E5 /* NotificationDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69813E328E1BC230054F3E5 /* NotificationDetailViewController.xib */; };
 		A69C5BCB28D1B25D000DE825 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BCA28D1B25D000DE825 /* NotificationService.swift */; };
 		A69C5BCE28D1B342000DE825 /* NotificationEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BCD28D1B342000DE825 /* NotificationEndpoint.swift */; };
 		A69C5BD028D1B5CC000DE825 /* NotificationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BCF28D1B5CC000DE825 /* NotificationResponse.swift */; };
@@ -1899,6 +1901,8 @@
 		A6945A9428913BAB0041FE2E /* ScannerUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerUtils.swift; sourceTree = "<group>"; };
 		A6977DED289BA01C00B2B6BD /* ScannerUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerUtilsTests.swift; sourceTree = "<group>"; };
 		A6977DF0289BD08A00B2B6BD /* SwapRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapRepository.swift; sourceTree = "<group>"; };
+		A69813E228E1BC230054F3E5 /* NotificationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDetailViewController.swift; sourceTree = "<group>"; };
+		A69813E328E1BC230054F3E5 /* NotificationDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationDetailViewController.xib; sourceTree = "<group>"; };
 		A69C5BCA28D1B25D000DE825 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		A69C5BCD28D1B342000DE825 /* NotificationEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEndpoint.swift; sourceTree = "<group>"; };
 		A69C5BCF28D1B5CC000DE825 /* NotificationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponse.swift; sourceTree = "<group>"; };
@@ -5199,6 +5203,8 @@
 				A69C5BE328D1C45A000DE825 /* NotificationFilterTagCell.xib */,
 				A69C5BE828D1E07D000DE825 /* ListEmptyView.swift */,
 				A69C5BEA28D1E088000DE825 /* ListEmptyView.xib */,
+				A69813E228E1BC230054F3E5 /* NotificationDetailViewController.swift */,
+				A69813E328E1BC230054F3E5 /* NotificationDetailViewController.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -6735,6 +6741,7 @@
 				2542605021218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib in Resources */,
 				A66EC31B287D258100D15FE0 /* TxListHeaderCell.xib in Resources */,
 				250EE8E32221A40800121138 /* KNShowBackUpDataViewController.xib in Resources */,
+				A69813E528E1BC230054F3E5 /* NotificationDetailViewController.xib in Resources */,
 				C322EB0C25B1A3D8009746FB /* CreateWalletMenuViewController.xib in Resources */,
 				25073D1B211AF20D00833C92 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
 				7E1EBE462834F82A00793B6D /* BridgeSendToCell.xib in Resources */,
@@ -8062,6 +8069,7 @@
 				C3299D5F27730B9D00D1065A /* BrowserViewController.swift in Sources */,
 				A685D496284877EA0066E177 /* EthGasCalculator.swift in Sources */,
 				C35136E626CCE53D006A55F4 /* OverviewNFTTableViewCell.swift in Sources */,
+				A69813E428E1BC230054F3E5 /* NotificationDetailViewController.swift in Sources */,
 				7E8C62D8271D319200A6C9DB /* ClaimRewardsController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

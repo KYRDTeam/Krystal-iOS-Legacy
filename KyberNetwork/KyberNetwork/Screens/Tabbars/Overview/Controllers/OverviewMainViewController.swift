@@ -76,6 +76,9 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     super.viewDidLoad()
 //    let isAdvancedSearchEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.advancedSearch)
 //    self.searchButton.isHidden = !isAdvancedSearchEnabled
+    
+    tabBarItem.accessibilityIdentifier = "menuHome"
+    
     let nib = UINib(nibName: OverviewMainViewCell.className, bundle: nil)
     self.tableView.register(
       nib,
@@ -430,7 +433,6 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   
   @objc override func onAppSwitchChain() {
     super.onAppSwitchChain()
-    
     guard self.isViewLoaded else {
       return
     }
@@ -447,7 +449,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     if self.viewModel.currentChain != .all {
       self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
     }
-    
+    getNotificationBadgeNumber()
     guard self.isViewLoaded else { return }
     calculatingQueue.async {
       self.viewModel.reloadAllData()

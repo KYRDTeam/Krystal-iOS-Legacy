@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -288,17 +288,6 @@
                     <color key="textColor" name="buttonBackgroundColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NUf-Jh-lB1">
-                    <rect key="frame" x="325" y="44" width="32" height="32"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="32" id="eyv-3C-Glh"/>
-                        <constraint firstAttribute="height" constant="32" id="nOX-qy-k2U"/>
-                    </constraints>
-                    <state key="normal" image="noti_overview_icon"/>
-                    <connections>
-                        <action selector="notificationsButtonTapped:" destination="-1" eventType="touchUpInside" id="UsT-GA-ktB"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tSk-4z-D4v">
                     <rect key="frame" x="367" y="44" width="32" height="32"/>
                     <constraints>
@@ -324,7 +313,6 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
-                <constraint firstItem="tSk-4z-D4v" firstAttribute="centerY" secondItem="NUf-Jh-lB1" secondAttribute="centerY" id="01E-aQ-51W"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="O0b-rd-AXT" secondAttribute="trailing" id="0DA-BV-31T"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="DIV-Dc-0el" secondAttribute="trailing" constant="12" id="3NH-aJ-iEb"/>
                 <constraint firstItem="JID-8y-daS" firstAttribute="top" secondItem="DIV-Dc-0el" secondAttribute="bottom" constant="14" id="8e3-tT-IYa"/>
@@ -338,7 +326,6 @@
                 <constraint firstItem="9E1-Yn-R0d" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="22" id="RiY-X9-mHd"/>
                 <constraint firstItem="cV7-3q-o6A" firstAttribute="centerY" secondItem="iX2-qR-9wU" secondAttribute="centerY" id="SF7-fI-Hy3"/>
                 <constraint firstItem="JID-8y-daS" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="12" id="Tnf-Rg-IRx"/>
-                <constraint firstItem="tSk-4z-D4v" firstAttribute="leading" secondItem="NUf-Jh-lB1" secondAttribute="trailing" constant="10" id="U78-zO-WoH"/>
                 <constraint firstItem="DIV-Dc-0el" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="89" id="UEr-02-PVy"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="JID-8y-daS" secondAttribute="trailing" constant="12" id="UH6-C0-RoJ"/>
                 <constraint firstItem="O0b-rd-AXT" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="XcF-ax-FVr"/>
@@ -356,7 +343,6 @@
         <image name="arrow_down_icon_white" width="10" height="6"/>
         <image name="chain_eth_square" width="32" height="32"/>
         <image name="icon-plus-square" width="16" height="16"/>
-        <image name="noti_overview_icon" width="18" height="21"/>
         <image name="search_overview_icon" width="33" height="33"/>
         <image name="sort_down_icon" width="16" height="16"/>
         <image name="sort_none_icon" width="16" height="16"/>
