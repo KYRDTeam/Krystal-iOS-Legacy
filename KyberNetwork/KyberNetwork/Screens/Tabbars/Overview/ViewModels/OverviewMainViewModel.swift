@@ -925,10 +925,8 @@ class OverviewMainViewModel {
     guard let total = currentChainViewModel?.value else {
       return self.defaultDisplayTotalValue
     }
-    
-//    let hideAndDeleteTotal = KNSupportedTokenStorage.shared.getHideAndDeleteTokensBalanceUSD(self.currencyMode, chainType: KNGeneralProvider.shared.currentChain)
-    let displayValue = BigInt(total * pow(10.0, 18.0)) //- hideAndDeleteTotal
-    return self.currencyMode.symbol() + displayValue.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
+    let displayValue = BigInt(total * pow(10.0, 18.0))
+    return self.currencyMode.symbol() + NumberFormatUtils.valueFormat(value: displayValue, decimals: 18, currencyMode: self.currencyMode) + self.currencyMode.suffixSymbol()
   }
   
   var defaultDisplayTotalValue: String {
@@ -947,10 +945,9 @@ class OverviewMainViewModel {
     self.summaryDataSource.value.forEach { data in
       total += data.value
     }
+    let displayValue = BigInt(total * pow(10.0, 18.0))
+    return self.currencyMode.symbol() + NumberFormatUtils.valueFormat(value: displayValue, decimals: 18, currencyMode: self.currencyMode) + self.currencyMode.suffixSymbol()
     
-//    let hideAndDeleteTotal = KNSupportedTokenStorage.shared.getAllChainHideAndDeleteTokensBalanceUSD(self.currencyMode)
-    let displayValue = BigInt(total * pow(10.0, 18.0)) //- hideAndDeleteTotal
-    return self.currencyMode.symbol() + displayValue.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
   }
   
   var displayHideBalanceImage: UIImage {

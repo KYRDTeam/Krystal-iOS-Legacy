@@ -137,12 +137,12 @@ class OverviewMainCellViewModel {
       }
       switch mode {
       case .value:
-        let valueString = StringFormatter.currencyString(value: quote.value, symbol: self.currency.toString())
+        let valueString = NumberFormatUtils.valueFormat(value: quote.value.amountBigInt(decimals: 18) ?? BigInt(0), decimals: 18, currencyMode: self.currency)
         return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
       case .ch24:
         return String(format: "%.2f", quote.priceChange24hPercentage) + "%"
       case .lastPrice:
-        let valueString = StringFormatter.currencyString(value: quote.price, symbol: self.currency.toString())
+        let valueString = NumberFormatUtils.valueFormat(value: quote.price.amountBigInt(decimals: 18) ?? BigInt(0), decimals: 18, currencyMode: self.currency)
         return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
       }
     case .supply(balance: let balance):

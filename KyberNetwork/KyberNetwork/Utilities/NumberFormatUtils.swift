@@ -168,6 +168,8 @@ class NumberFormatUtils {
         maxDecimal = 6
       } else if KNGeneralProvider.shared.currentChain == .avalanche {
         maxDecimal = 5
+      } else if KNGeneralProvider.shared.currentChain == .eth {
+        maxDecimal = 7
       }
       return format(value: value, decimals: decimals, maxDecimalMeaningDigits: nil, maxDecimalDigits: maxDecimal)
     }
