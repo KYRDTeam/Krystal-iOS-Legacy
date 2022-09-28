@@ -54,17 +54,8 @@ class KNSearchTokenTableViewCell: UITableViewCell {
       self.tickIcon.isHidden = false
       self.tickIcon.image = image
     }
-    
-    let balText: String = {
-      let value = token.getBalanceBigInt().string(
-        decimals: token.decimals,
-        minFractionDigits: 0,
-        maxFractionDigits: min(token.decimals, 6)
-      )
-      if let double = Double(value.removeGroupSeparator()), double == 0 { return "0" }
-      return value ?? ""
-    }()
-    self.balanceLabel.text = "\(balText.prefix(15))"
+
+    self.balanceLabel.text = NumberFormatUtils.balanceFormat(value: token.getBalanceBigInt(), decimals: token.decimals)
     self.balanceLabel.addLetterSpacing()
     self.balanceLabel.isHidden = !isExistToken
     self.addButton.isHidden = isExistToken

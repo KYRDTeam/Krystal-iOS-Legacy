@@ -176,9 +176,17 @@ class NumberFormatUtils {
   
   static func allTimeHighAndLowFormat(number: Double) -> String {
     if number < 1 {
-      return format(value: BigInt(number * pow(10.0, 18.0)), decimals: 18, maxDecimalMeaningDigits: 3, maxDecimalDigits: 8)
+      return format(value: BigInt(number * pow(10.0, 18.0)), decimals: 18, maxDecimalMeaningDigits: 4, maxDecimalDigits: 8)
     } else {
       return format(value: BigInt(number * pow(10.0, 18.0)), decimals: 18, maxDecimalMeaningDigits: nil, maxDecimalDigits: 2)
+    }
+  }
+  
+  static func gasFeeFormat(number: BigInt) -> String {
+    if number < BigInt(1 *  pow(10.0, 18.0)) {
+      return format(value: number, decimals: 18, maxDecimalMeaningDigits: 4, maxDecimalDigits: nil)
+    } else {
+      return format(value: number, decimals: 18, maxDecimalMeaningDigits: nil, maxDecimalDigits: 2)
     }
   }
 }

@@ -57,8 +57,7 @@ class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
 
   func getFeeString() -> String {
     let fee = self.getFee()
-    let feeString: String = fee.displayRate(decimals: 18)
-    return "\(feeString) \(KNGeneralProvider.shared.quoteToken)"
+    return "\(NumberFormatUtils.gasFeeFormat(number: fee)) \(KNGeneralProvider.shared.quoteToken)"
   }
 
   func getFeeUSDString() -> String {
