@@ -230,15 +230,14 @@ class EthereumWeb3Service {
     let defaultGasLimit: BigInt = {
       KNGasConfiguration.calculateDefaultGasLimitTransfer(token: transferTransaction.transferType.tokenObject())
     }()
-    self.requestDataForTokenTransfer(address: address, transaction: transferTransaction) { [weak self] result in
-      guard let `self` = self else { return }
+    self.requestDataForTokenTransfer(address: address, transaction: transferTransaction) { result in
       switch result {
       case .success(let data):
         KNExternalProvider.estimateGasLimit(
           from: address,
-          to: self.addressToSend(transferTransaction),
+          to: transferTransaction.addressToSend(),
           gasPrice: transferTransaction.gasPrice ?? KNGasConfiguration.gasPriceDefault,
-          value: self.valueToSend(transferTransaction),
+          value: transferTransaction.valueToSend(),
           data: data,
           defaultGasLimit: defaultGasLimit,
           isSwap: false,

@@ -56,4 +56,17 @@ struct UnconfirmedTransaction {
       reservedGasLimit: self.gasLimit?.hexEncoded.hexSigned2Complement ?? ""
     )
   }
+  
+  func valueToSend() -> BigInt {
+    return transferType.isETHTransfer() ? value : .zero
+  }
+  
+  func addressToSend() -> String? {
+    switch transferType {
+    case .ether:
+      return to
+    case .token(let token):
+      return token.contract
+    }
+  }
 }
