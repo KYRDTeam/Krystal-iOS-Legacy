@@ -76,6 +76,7 @@ class BridgeViewModel {
   var isValidSourceAmount: Bool = false
   var isValidDestAmount: Bool = false
   var errorMsg: String?
+  var isApproving: Bool = false
   
   var currentAddress: KAddress {
     return AppDelegate.session.address
@@ -342,7 +343,10 @@ class BridgeViewModel {
           return cell
         }
         
-        if self.isNeedApprove || (self.isValidSourceAmount && self.isValidDestAmount && CryptoAddressValidator.isValidAddress(self.currentSendToAddress) && self.currentDestChain != nil) {
+        if isNeedApprove && isApproving {
+          cell.swapButton.isEnabled = false
+          cell.swapButton.setBackgroundColor(UIColor(named: "navButtonBgColor")!, forState: .disabled)
+        } else if self.isNeedApprove || (self.isValidSourceAmount && self.isValidDestAmount && CryptoAddressValidator.isValidAddress(self.currentSendToAddress) && self.currentDestChain != nil) {
           cell.swapButton.isEnabled = true
           cell.swapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
         } else {
@@ -351,7 +355,11 @@ class BridgeViewModel {
         }
         
         if let currentSourceToken = currentSourceToken {
-          cell.swapButton.setTitle(self.isNeedApprove ? "Approve \(currentSourceToken.symbol)" : "Review Transfer", for: .normal)
+          if isNeedApprove {
+            cell.swapButton.setTitle(self.isApproving ? "Approving \(currentSourceToken.symbol)" : "Approve \(currentSourceToken.symbol)", for: .normal)
+          } else {
+            cell.swapButton.setTitle(self.isNeedApprove ? "Approve \(currentSourceToken.symbol)" : "Review Transfer", for: .normal)
+          }
         } else {
           cell.swapButton.setTitle("Review Transfer", for: .normal)
         }
