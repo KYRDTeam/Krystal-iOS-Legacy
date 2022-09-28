@@ -12,10 +12,10 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Italic.ttf">
+        <array key="Karla-Italic-VariableFont_wght.ttf">
             <string>Karla-Italic</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Roboto-Medium.ttf">
@@ -69,6 +69,9 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" secureTextEntry="YES" textContentType="password"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtPassword"/>
+                            </userDefinedRuntimeAttributes>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1UL-D2-Ny2">
                             <rect key="frame" x="268" y="9" width="24" height="24"/>
@@ -113,6 +116,9 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtWalletName"/>
+                            </userDefinedRuntimeAttributes>
                         </textField>
                     </subviews>
                     <color key="backgroundColor" name="innerContainerBgColor"/>
@@ -140,6 +146,9 @@
                     <state key="normal" title="Import Wallet">
                         <color key="titleColor" name="mainViewBgColor"/>
                     </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnImport"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="nextButtonPressed:" destination="-1" eventType="touchUpInside" id="cAa-Pw-2K3"/>
                     </connections>
@@ -165,6 +174,9 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtRefCode"/>
+                            </userDefinedRuntimeAttributes>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XrD-7J-xMy">
                             <rect key="frame" x="267" y="9" width="24" height="24"/>
@@ -173,6 +185,9 @@
                                 <constraint firstAttribute="width" constant="24" id="Wog-hp-sFN"/>
                             </constraints>
                             <state key="normal" image="scan"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnScanRefCode"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="qrCodeButtonTapped:" destination="-1" eventType="touchUpInside" id="52S-ht-rxH"/>
                             </connections>
@@ -190,6 +205,7 @@
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                     <integer key="value" value="3"/>
                                 </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnPaste"/>
                             </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="pasteButtonTapped:" destination="-1" eventType="touchUpInside" id="cdP-js-lVi"/>

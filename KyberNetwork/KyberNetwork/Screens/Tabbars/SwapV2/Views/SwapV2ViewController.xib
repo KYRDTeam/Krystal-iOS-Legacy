@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -13,11 +13,11 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
-            <string>Karla-Regular</string>
-        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -78,7 +78,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9mP-go-K6W">
-                    <rect key="frame" x="0.0" y="47" width="390" height="89"/>
+                    <rect key="frame" x="0.0" y="44" width="390" height="89"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swap" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rLk-W1-0nv">
                             <rect key="frame" x="37" y="24" width="46.666666666666657" height="21.333333333333329"/>
@@ -132,6 +132,7 @@
                                 <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
                                     <real key="value" value="14"/>
                                 </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="switchWallet"/>
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PcT-7U-Xtt" userLabel="Dot View">
@@ -185,6 +186,9 @@
                             <state key="normal" title="Ethereum" image="arrow_down_icon_white">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="switchChain"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="onChainButtonTapped:" destination="-1" eventType="touchUpInside" id="bWQ-iI-R4t"/>
                             </connections>
@@ -259,10 +263,10 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Ge-uB-0EW" userLabel="ComingSoon">
-                    <rect key="frame" x="0.0" y="136" width="390" height="674"/>
+                    <rect key="frame" x="0.0" y="133" width="390" height="677"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="comming_soon" translatesAutoresizingMaskIntoConstraints="NO" id="9Ej-ef-LPN">
-                            <rect key="frame" x="58" y="217" width="274" height="240"/>
+                            <rect key="frame" x="58" y="218.33333333333331" width="274" height="240"/>
                         </imageView>
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
@@ -272,10 +276,10 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xbn-SH-kmh">
-                    <rect key="frame" x="0.0" y="136" width="390" height="674"/>
+                    <rect key="frame" x="0.0" y="133" width="390" height="677"/>
                     <subviews>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HQZ-ae-e1K">
-                            <rect key="frame" x="0.0" y="0.0" width="390" height="674"/>
+                            <rect key="frame" x="0.0" y="0.0" width="390" height="677"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S6A-NR-SWi">
                                     <rect key="frame" x="0.0" y="0.0" width="390" height="928"/>
@@ -306,6 +310,9 @@
                                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                                     <color key="textColor" red="0.1137254902" green="0.91372549020000005" blue="0.71372549019999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier accessibilityIdentifier" value="txtSrcBalance"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="swap_wallet" translatesAutoresizingMaskIntoConstraints="NO" id="e9r-Vv-OQ9">
                                                     <rect key="frame" x="228.33333333333331" y="18.333333333333343" width="16" height="16"/>
@@ -347,6 +354,9 @@
                                                         <constraint firstItem="w46-IH-PmX" firstAttribute="leading" secondItem="r61-Ec-gfY" secondAttribute="leading" id="Pvb-Kc-GwP"/>
                                                         <constraint firstAttribute="bottom" secondItem="w46-IH-PmX" secondAttribute="bottom" id="tjl-zz-GGY"/>
                                                     </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="btnSrcToken"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0.00" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="B1w-Ik-ZYI">
                                                     <rect key="frame" x="133" y="46.666666666666657" width="177" height="32"/>
@@ -356,12 +366,18 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="24"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="decimalPad" returnKeyType="done"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="txtSrcSwap"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~$0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agw-Vs-X9w">
                                                     <rect key="frame" x="285.33333333333331" y="81.666666666666686" width="24.666666666666686" height="16.666666666666671"/>
                                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="txtSrcUsdValue"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="calibratedRGB"/>
@@ -404,6 +420,9 @@
                                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                                             <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtDestBalance"/>
+                                                            </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="swap_wallet" translatesAutoresizingMaskIntoConstraints="NO" id="jCT-pd-J6A">
                                                             <rect key="frame" x="228.33333333333331" y="18.333333333333314" width="16" height="16"/>
@@ -445,6 +464,9 @@
                                                                 <constraint firstAttribute="trailing" secondItem="vXk-E6-QTz" secondAttribute="trailing" id="iRq-81-Zax"/>
                                                                 <constraint firstItem="vXk-E6-QTz" firstAttribute="leading" secondItem="z1d-0B-gOX" secondAttribute="leading" id="lKa-Uc-7EI"/>
                                                             </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnDestToken"/>
+                                                            </userDefinedRuntimeAttributes>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="13u-tV-7BB" customClass="CircularArrowProgressView" customModule="Krystal" customModuleProvider="target">
                                                             <rect key="frame" x="278" y="46.666666666666686" width="32" height="32"/>
@@ -453,6 +475,9 @@
                                                                 <constraint firstAttribute="width" constant="32" id="Q92-Wt-ino"/>
                                                                 <constraint firstAttribute="height" constant="32" id="V4B-BV-Lo0"/>
                                                             </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnFetching"/>
+                                                            </userDefinedRuntimeAttributes>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h5k-VM-pSC" customClass="SRCountdownTimer" customModule="Krystal" customModuleProvider="target">
                                                             <rect key="frame" x="282" y="50.666666666666686" width="24" height="24"/>
@@ -583,6 +608,9 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="28" id="E76-nQ-ESE"/>
                                                     </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtSlippage"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nnl-CE-rqV" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="64" width="334" height="28"/>
@@ -590,6 +618,9 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="28" id="eI3-Qw-yKc"/>
                                                     </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtMinReceive"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2FU-38-AjM" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="96" width="334" height="28"/>
@@ -597,6 +628,9 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="28" id="vTd-36-Cn6"/>
                                                     </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtEstFee"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yq6-eX-uWR" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="128" width="334" height="28"/>
@@ -604,6 +638,9 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="28" id="d31-zw-TAz"/>
                                                     </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtMaxFee"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1LR-C5-k87" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="160" width="334" height="28"/>
@@ -611,6 +648,9 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="28" id="3su-hr-MRA"/>
                                                     </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtPriceImpact"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aTl-kC-ce3" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="190" width="334" height="20"/>
@@ -834,9 +874,6 @@
             <point key="canvasLocation" x="135.38461538461539" y="83.175355450236964"/>
         </view>
     </objects>
-    <designables>
-        <designable name="nzk-yc-rhc"/>
-    </designables>
     <resources>
         <image name="arrow_down_icon_white" width="10" height="6"/>
         <image name="arrow_down_template" width="24" height="24"/>

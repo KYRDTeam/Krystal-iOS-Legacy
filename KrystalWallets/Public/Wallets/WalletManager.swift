@@ -16,12 +16,10 @@ public class WalletManager {
   let keyManager: KeyManager
   
   private init() {
-    realm = try! Realm()
     keystore = try! KeyStore(keyDirectory: keyDirectory)
     keyManager = KeyManager()
   }
   
-  let realm: Realm
   let keystore: KeyStore
   
   var supportedAddressTypes: [KAddressType] = [.evm, .solana]
@@ -31,6 +29,7 @@ public class WalletManager {
 public extension WalletManager {
   
   func getAddress(id: String) -> KAddress? {
+    let realm = try! Realm()
     return realm.objects(AddressObject.self)
       .filter("%K = %@", "id", id)
       .first?.toAddress()
@@ -49,38 +48,45 @@ public extension WalletManager {
   }
   
   func getAllWallets() -> [KWallet] {
+    let realm = try! Realm()
     return realm.objects(WalletObject.self).map { $0.toWallet() }
   }
   
   func getAllAddresses() -> [KAddress] {
+    let realm = try! Realm()
     return realm.objects(AddressObject.self).map { $0.toAddress() }
   }
   
   func getAllAddresses(addressType: KAddressType) -> [KAddress] {
+    let realm = try! Realm()
     return realm.objects(AddressObject.self)
       .filter("%K = %@", "addressType", addressType.rawValue)
       .map { $0.toAddress() }
   }
   
   func getAllAddresses(walletID: String) -> [KAddress] {
+    let realm = try! Realm()
     return realm.objects(AddressObject.self)
       .filter("%K = %@", "walletID", walletID)
       .map { $0.toAddress() }
   }
   
   func getAllAddresses(walletID: String, addressType: KAddressType) -> [KAddress] {
+    let realm = try! Realm()
     return realm.objects(AddressObject.self)
       .filter("%K = %@ and %K = %@", "walletID", walletID, "addressType", addressType.rawValue)
       .map { $0.toAddress() }
   }
   
   func getAllAddresses(addresses: [String]) -> [KAddress] {
+    let realm = try! Realm()
     return realm.objects(AddressObject.self)
       .filter("%K IN %@", "address", addresses)
       .map { $0.toAddress() }
   }
   
   func wallet(forAddress address: KAddress) -> KWallet? {
+    let realm = try! Realm()
     return realm.objects(WalletObject.self)
       .filter("%K = %@", "id", address.walletID)
       .map { $0.toWallet() }
@@ -89,16 +95,16 @@ public extension WalletManager {
   
   //Quickfix crash
   func getWalletWithLocalRealm(forAddress address: KAddress) -> KWallet? {
-    let localRealm = try! Realm()
-    return localRealm.objects(WalletObject.self)
+    let realm = try! Realm()
+    return realm.objects(WalletObject.self)
       .filter("%K = %@", "id", address.walletID)
       .map { $0.toWallet() }
       .first
   }
   
   func getAllAddressesWithLocalRealm(walletID: String, addressType: KAddressType) -> [KAddress] {
-    let localRealm = try! Realm()
-    return localRealm.objects(AddressObject.self)
+    let realm = try! Realm()
+    return realm.objects(AddressObject.self)
       .filter("%K = %@ and %K = %@", "walletID", walletID, "addressType", addressType.rawValue)
       .map { $0.toAddress() }
   }
@@ -115,6 +121,7 @@ public extension WalletManager {
         let address = getAddress(privateKey: privateKey, addressType: addressType)
         return AddressObject(walletID: walletObject.id, addressType: addressType, address: address, name: name)
       }
+      let realm = try! Realm()
       try realm.write {
         realm.add(walletObject)
         realm.add(addresses)
@@ -144,7 +151,7 @@ public extension WalletManager {
       guard existedAddresses.isEmpty else {
         throw WalletManagerError.duplicatedWallet
       }
-      
+      let realm = try! Realm()
       try realm.write {
         realm.add(wallet)
         realm.add(address)
@@ -173,7 +180,7 @@ public extension WalletManager {
       guard existedAddresses.isEmpty else {
         throw WalletManagerError.duplicatedWallet
       }
-      
+      let realm = try! Realm()
       try realm.write {
         realm.add(wallet)
         realm.add(addressObject)
@@ -201,7 +208,7 @@ public extension WalletManager {
       guard existedAddresses.isEmpty else {
         throw WalletManagerError.duplicatedWallet
       }
-      
+      let realm = try! Realm()
       try realm.write {
         realm.add(walletObject)
         realm.add(addresses)
@@ -229,6 +236,7 @@ public extension WalletManager {
     }
     
     do {
+      let realm = try! Realm()
       try realm.write {
         realm.add(addressObject)
       }
@@ -239,6 +247,7 @@ public extension WalletManager {
   }
   
   func exportMnemonic(walletID: String) throws -> String {
+    let realm = try! Realm()
     guard let wallet = realm.object(ofType: WalletObject.self, forPrimaryKey: walletID)?.toWallet() else {
       throw WalletManagerError.cannotFindWallet
     }
@@ -258,6 +267,7 @@ public extension WalletManager {
   }
   
   func exportPrivateKey(walletID: String, addressType: KAddressType) throws -> String {
+    let realm = try! Realm()
     guard let wallet = realm.object(ofType: WalletObject.self, forPrimaryKey: walletID)?.toWallet() else {
       throw WalletManagerError.cannotFindWallet
     }
@@ -287,6 +297,7 @@ public extension WalletManager {
   
   
   func address(walletID: String, addressType: KAddressType) -> KAddress? {
+    let realm = try! Realm()
     return realm.objects(AddressObject.self)
       .filter("%K = %@ AND %K = %@", "addressType", addressType.rawValue, "walletID", walletID)
       .map { $0.toAddress() }
@@ -294,6 +305,7 @@ public extension WalletManager {
   }
   
   func removeAddress(address: KAddress) throws {
+    let realm = try! Realm()
     let addressObjects = realm.objects(AddressObject.self)
       .filter("%K = %@ AND %K = %@",
               "address", address.addressString,
@@ -309,6 +321,7 @@ public extension WalletManager {
   }
   
   func remove(wallet: KWallet) throws {
+    let realm = try! Realm()
     let walletObjects = realm.objects(WalletObject.self)
       .filter("%K = %@", "id", wallet.id)
     let addressObjects = realm.objects(AddressObject.self)
@@ -331,6 +344,7 @@ public extension WalletManager {
   }
   
   func updateWatchAddress(address: KAddress) throws {
+    let realm = try! Realm()
     let addressObjects = realm.objects(AddressObject.self)
       .filter("%K = %@", "id", address.id)
     
@@ -349,6 +363,7 @@ public extension WalletManager {
   }
   
   func renameWallet(wallet: KWallet, newName: String) throws {
+    let realm = try! Realm()
     let addressObjects = realm.objects(AddressObject.self)
       .filter("%K = %@", "walletID", wallet.id)
     let walletObjects = realm.objects(WalletObject.self)
@@ -368,6 +383,7 @@ public extension WalletManager {
   }
   
   func removeAll() {
+    let realm = try! Realm()
     keystore.wallets.forEach { wallet in
       if let password = keyManager.value(forKey: wallet.identifier) {
         try? keystore.delete(wallet: wallet, password: password)
