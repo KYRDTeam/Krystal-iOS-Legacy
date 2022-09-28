@@ -14,6 +14,7 @@ class NotificationItemViewModel {
   var timeString: String
   var content: String
   var isRead: Bool
+  var url: String
   
   init(notification: NotificationModel) {
     self.id = notification.id
@@ -22,6 +23,7 @@ class NotificationItemViewModel {
     self.content = notification.content
     self.isRead = NotificationStatus(value: notification.status) == .read
     self.timeString = NotificationItemViewModel.getTimeString(time: notification.createdTime)
+    self.url = notification.url
   }
   
   static func getTimeString(time: String) -> String {
@@ -34,7 +36,7 @@ class NotificationItemViewModel {
     if dayInterval == 2 {
       return String(format: Strings.xDaysAgo, dayInterval)
     } else if dayInterval == 1 {
-      return Strings.oneDayAgo
+      return Strings.yesterday
     } else {
       return DateFormatterUtil.shared.todayTimeFormatter.string(from: updateDate)
     }

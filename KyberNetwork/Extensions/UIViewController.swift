@@ -11,7 +11,7 @@ enum ConfirmationError: LocalizedError {
 }
 
 extension UIViewController {
-    
+  
     func openTxHash(txHash: String, chainID: Int) {
       guard let endpoint = ChainType.getChain(id: chainID)?.customRPC().etherScanEndpoint else {
         return

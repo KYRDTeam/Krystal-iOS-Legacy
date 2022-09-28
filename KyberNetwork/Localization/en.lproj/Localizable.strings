@@ -960,7 +960,7 @@
 // Notification
 "all" = "All";
 "unread" = "Unread";
-"one.days.ago" = "1 day ago";
+"yesterday" = "Yesterday";
 "x.days.ago" = "%d days ago";
 "x.hours.ago" = "%d hours ago";
 "x.mins.ago" = "%d minutes ago";

@@ -109,11 +109,6 @@ class OverviewBrowsingViewController: InAppBrowsingViewController {
     }
   }
   
-  @IBAction func notificationsButtonTapped(_ sender: UIButton) {
-    self.delegate?.didSelectNotification(self)
-    MixPanelManager.track("home_noti", properties: ["screenid": "homepage"])
-  }
-  
   @IBAction func searchButtonTapped(_ sender: UIButton) {
     self.delegate?.didSelectSearch(self)
     MixPanelManager.track("home_search", properties: ["screenid": "homepage"])
