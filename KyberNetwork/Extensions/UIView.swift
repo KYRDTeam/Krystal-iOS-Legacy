@@ -3,6 +3,20 @@
 import Foundation
 import UIKit
 
+@IBDesignable
+extension UIView {
+  
+  @IBInspectable var accessibilityID: String? {
+    get {
+      accessibilityIdentifier
+    }
+    set {
+      accessibilityIdentifier = newValue
+    }
+  }
+  
+}
+
 extension UIView {
     func anchor(to view: UIView, margin: CGFloat = 0) {
         NSLayoutConstraint.activate([
