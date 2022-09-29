@@ -246,6 +246,7 @@ lane :build_debug do
     export_method: "development",
     export_team_id: team_id,
     export_options: {
+      compileBitcode: false,
       provisioningProfiles: { 
         bundle_id => ad_hoc_profile,
         @tid => ext_ad_hoc_profile
