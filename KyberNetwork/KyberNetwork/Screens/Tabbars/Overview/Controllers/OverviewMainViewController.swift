@@ -10,6 +10,7 @@ import BigInt
 import SwipeCellKit
 import MBProgressHUD
 import KrystalWallets
+import SkeletonView
 
 protocol OverviewMainViewControllerDelegate: class {
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent)
@@ -74,56 +75,25 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-//    let isAdvancedSearchEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.advancedSearch)
-//    self.searchButton.isHidden = !isAdvancedSearchEnabled
     
     tabBarItem.accessibilityIdentifier = "menuHome"
     
-    let nib = UINib(nibName: OverviewMainViewCell.className, bundle: nil)
-    self.tableView.register(
-      nib,
-      forCellReuseIdentifier: OverviewMainViewCell.kCellID
-    )
-    
+    self.tableView.registerCellNib(OverviewMainViewCell.self)
     self.tableView.registerCellNib(OverviewAllChainTokenCell.self)
-    
-    let nibSupply = UINib(nibName: OverviewDepositTableViewCell.className, bundle: nil)
-    self.tableView.register(
-      nibSupply,
-      forCellReuseIdentifier: OverviewDepositTableViewCell.kCellID
-    )
-    
-    let nibLiquidityPool = UINib(nibName: OverviewLiquidityPoolCell.className, bundle: nil)
-    self.tableView.register(
-      nibLiquidityPool,
-      forCellReuseIdentifier: OverviewLiquidityPoolCell.kCellID
-    )
-    
+    self.tableView.registerCellNib(OverviewDepositTableViewCell.self)
+    self.tableView.registerCellNib(OverviewLiquidityPoolCell.self)
     self.tableView.registerCellNib(OverviewMultichainLiquidityPoolCell.self)
+    self.tableView.registerCellNib(OverviewEmptyTableViewCell.self)
+    self.tableView.registerCellNib(OverviewNFTTableViewCell.self)
+    self.tableView.registerCellNib(OverviewSummaryCell.self)
+    self.tableView.registerCellNib(OverviewSkeletonCell.self)
     
-    let nibEmpty = UINib(nibName: OverviewEmptyTableViewCell.className, bundle: nil)
-    self.tableView.register(
-      nibEmpty,
-      forCellReuseIdentifier: OverviewEmptyTableViewCell.kCellID
-    )
-    
-    let nibNFT = UINib(nibName: OverviewNFTTableViewCell.className, bundle: nil)
-    self.tableView.register(
-      nibNFT,
-      forCellReuseIdentifier: OverviewNFTTableViewCell.kCellID
-    )
-    
-    let nibSummary = UINib(nibName: OverviewSummaryCell.className, bundle: nil)
-    self.tableView.register(
-      nibSummary,
-      forCellReuseIdentifier: OverviewSummaryCell.kCellID
-    )
-    
-    let infoNib = UINib(nibName: OverviewTotalInfoCell.className, bundle: nil)
-    self.infoCollectionView.register(infoNib, forCellWithReuseIdentifier: OverviewTotalInfoCell.cellID)
+    self.infoCollectionView.registerCellNib(OverviewTotalInfoCell.self)
     
     self.configPullToRefresh()
     self.configHeaderTapped()
+    self.showLoadingSkeleton()
+    self.view.isUserInteractionDisabledWhenSkeletonIsActive = true
     
     Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.minutes2,
@@ -142,7 +112,6 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     }
     
     self.viewModel.didTapSectionButtonHeader = { sender in
-      print("Button Clicked \(sender.tag)")
       let section = sender.tag
       func indexPathsForSection() -> [IndexPath] {
         var indexPaths = [IndexPath]()
@@ -302,6 +271,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   }
 
   override func onChainSelected(chain: ChainType) {
+    showLoadingSkeleton()
     if chain == .all {
       self.viewModel.currentChain = chain
       self.tableView.reloadData()
@@ -457,6 +427,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
         self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
         self.tableView.reloadData()
         self.infoCollectionView.reloadData()
+        self.showLoadingSkeleton()
       }
     }
   }
@@ -470,11 +441,13 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     self.viewModel.isRefreshingTableView = false
     DispatchQueue.main.async {
       self.refreshControl.endRefreshing()
+      self.view.hideSkeleton()
     }
   }
   
   func coordinatorDidUpdateAllTokenData(models: [ChainBalanceModel]) {
     self.viewModel.assetChainBalanceModels = models
+    self.view.hideSkeleton()
     self.reloadUI()
   }
   
@@ -507,7 +480,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   }
 }
 
-extension OverviewMainViewController: UITableViewDataSource {
+extension OverviewMainViewController {
   func numberOfSections(in tableView: UITableView) -> Int {
     self.viewModel.numberOfSections
   }
@@ -834,4 +807,26 @@ extension OverviewMainViewController: UICollectionViewDataSource {
     
     return cell
   }
+}
+
+extension OverviewMainViewController: SkeletonTableViewDataSource, SkeletonTableViewDelegate {
+  
+  func showLoadingSkeleton() {
+    let gradient = SkeletonGradient(baseColor: UIColor.Kyber.cellBackground)
+    view.showAnimatedGradientSkeleton(usingGradient: gradient)
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+    return OverviewSkeletonCell.className
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UITableView, skeletonCellForRowAt indexPath: IndexPath) -> UITableViewCell? {
+    let cell = skeletonView.dequeueReusableCell(OverviewSkeletonCell.self, indexPath: indexPath)
+    return cell
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 10
+  }
+  
 }
