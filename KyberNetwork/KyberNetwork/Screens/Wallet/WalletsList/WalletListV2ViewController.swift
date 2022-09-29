@@ -207,10 +207,11 @@ extension WalletListV2ViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     if section == 1 {
-      let view = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 45))
+      let screenWidth = UIScreen.main.bounds.size.width
+      let view = UIView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 45))
       view.backgroundColor = UIColor.Kyber.popupBackgroundColor
       
-      let seperatorView = UIView(frame: CGRect(x: 32, y: 0, width: UIScreen.main.bounds.size.width - 64, height: 1))
+      let seperatorView = UIView(frame: CGRect(x: 32, y: 0, width: screenWidth - 64, height: 1))
       seperatorView.backgroundColor = UIColor.Kyber.grayBackgroundColor
       view.addSubview(seperatorView)
       
@@ -219,6 +220,10 @@ extension WalletListV2ViewController: UITableViewDelegate {
       label.textColor = UIColor.Kyber.whiteText
       label.font = UIFont.Kyber.bold(with: 16)
       view.addSubview(label)
+      
+      let plusButton = UIButton(frame: CGRect(x: screenWidth - 32 - 24, y: 0, width: 24, height: 24))
+      plusButton.center.y = label.center.y
+      view.addSubview(plusButton)
       
       return view
     }
