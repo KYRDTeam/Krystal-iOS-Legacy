@@ -14,39 +14,15 @@
 			<key>Key</key>
 			<string>environmentSetting</string>
 			<key>DefaultValue</key>
-			<string>Staging</string>
-			<key>Values</key>
-			<array>
-				<string>Dev</string>
-				<string>Staging</string>
-				<string>Production</string>
-			</array>
-			<key>Titles</key>
-			<array>
-				<string>Dev</string>
-				<string>Staging</string>
-				<string>Production</string>
-			</array>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSMultiValueSpecifier</string>
-			<key>Title</key>
-			<string>API Endpoint</string>
-			<key>Key</key>
-			<string>apiEndpointSetting</string>
-			<key>DefaultValue</key>
 			<string>Dev</string>
-			<key>Titles</key>
-			<array>
-				<string>Dev</string>
-				<string>Staging</string>
-				<string>Production</string>
-			</array>
 			<key>Values</key>
 			<array>
 				<string>Dev</string>
-				<string>Staging</string>
+				<string>Production</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>Dev</string>
 				<string>Production</string>
 			</array>
 		</dict>

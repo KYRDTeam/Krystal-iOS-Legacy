@@ -31,7 +31,7 @@ public struct AllChains {
   public static let ethRoptenPRC = CustomRPC(
     chainID: 3,
     type: "ERC20",
-    name: "Ethereum",
+    name: "Ethereum-Ropsten",
     symbol: "Ropsten",
     endpoint: "https://ropsten.infura.io/v3/" + KNSecret.infuraKey,
     endpointKyber: "https://ropsten.infura.io/v3/" + KNSecret.infuraKey,
@@ -91,7 +91,7 @@ public struct AllChains {
   public static let bscRoptenPRC = CustomRPC(
     chainID: 97,
     type: "BEP20",
-    name: "BNB Smart Chain",
+    name: "BSC-ropsten",
     symbol: "RopstenBSC",
     endpoint: "https://data-seed-prebsc-1-s1.binance.org:8545/",
     endpointKyber: "https://data-seed-prebsc-2-s1.binance.org:8545/",
@@ -131,7 +131,7 @@ public struct AllChains {
   public static let polygonRoptenPRC = CustomRPC(
     chainID: 80001,
     type: "ERC20",
-    name: "Polygon",
+    name: "Polygon-Testnet",
     symbol: "MaticRopsten",
     endpoint: "https://rpc-mumbai.maticvigil.com/",
     endpointKyber: "https://rpc-mumbai.maticvigil.com/",
@@ -151,7 +151,7 @@ public struct AllChains {
   public static let avalancheRoptenPRC = CustomRPC(
     chainID: 43113,
     type: "ARC20",
-    name: "Avalanche",
+    name: "Avalanche-Testnet",
     symbol: "AVAX",
     endpoint: "https://api.avax-test.network/ext/bc/C/rpc",
     endpointKyber: "https://api.avax-test.network/ext/bc/C/rpc",
