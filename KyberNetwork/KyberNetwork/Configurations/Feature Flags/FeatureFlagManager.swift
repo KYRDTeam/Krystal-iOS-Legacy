@@ -8,14 +8,11 @@
 import LaunchDarkly
 
 struct FeatureFlagKeys {
-  static let bifinityIntegration = "bifinity-integration"
   static let promotionCodeIntegration = "promotion-code"
   static let auroraChainIntegration = "aurora-chain"
   static let rewardHunting = "reward-hunting"
   static let solanaChainIntegration = "solana-chain"
   static let klaytnChainIntegration = "klaytn-chain"
-  static let bridgeIntegration = "cross-chain-bridge"
-  static let advancedSearch = "advanced-search"
   static let tokenPool = "token-pool"
   static let tradingView = "trading-view"
   static let scanner = "scanner"
