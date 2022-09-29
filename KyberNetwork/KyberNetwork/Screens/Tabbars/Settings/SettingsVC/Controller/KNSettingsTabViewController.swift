@@ -6,22 +6,15 @@ import KrystalWallets
 
 enum KNSettingsTabViewEvent {
   case manageWallet
-  case manageAlerts
-  case alertMethods
   case contact
   case support
   case changePIN
-  case about
   case community
   case shareWithFriends
   case telegram
-  case github
   case twitter
-  case facebook
   case medium
   case reddit
-  case linkedIn
-  case reportBugs
   case rateOurApp
   case termOfUse
   case privacyPolicy
@@ -117,14 +110,6 @@ class KNSettingsTabViewController: InAppBrowsingViewController {
     MixPanelManager.track("settings_manage_wallets", properties: ["screenid": "settings"])
   }
 
-  @IBAction func manageAlertsButtonPressed(_ sender: Any) {
-    self.delegate?.settingsTabViewController(self, run: .manageAlerts)
-  }
-
-  @IBAction func notificationsButtonPressed(_ sender: Any) {
-    self.delegate?.settingsTabViewController(self, run: .alertMethods)
-  }
-
   @IBAction func contactButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .contact)
     MixPanelManager.track("settings_manage_contacts", properties: ["screenid": "settings"])
@@ -140,10 +125,6 @@ class KNSettingsTabViewController: InAppBrowsingViewController {
     MixPanelManager.track("settings_change_pin", properties: ["screenid": "settings"])
   }
 
-  @IBAction func aboutButtonPressed(_ sender: Any) {
-    self.delegate?.settingsTabViewController(self, run: .about)
-  }
-
   @IBAction func communityButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .community)
   }
@@ -157,28 +138,12 @@ class KNSettingsTabViewController: InAppBrowsingViewController {
     self.delegate?.settingsTabViewController(self, run: .telegram)
   }
 
-  @IBAction func githubButtonPressed(_ sender: Any) {
-    self.delegate?.settingsTabViewController(self, run: .github)
-  }
-
   @IBAction func twitterButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .twitter)
   }
 
-  @IBAction func facebookButtonPressed(_ sender: Any) {
-    self.delegate?.settingsTabViewController(self, run: .facebook)
-  }
-
   @IBAction func mediumButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .medium)
-  }
-
-  @IBAction func linkedInButtonPressed(_ sender: Any) {
-    self.delegate?.settingsTabViewController(self, run: .linkedIn)
-  }
-
-  @IBAction func reportBugsButtonPressed(_ sender: Any) {
-    self.delegate?.settingsTabViewController(self, run: .reportBugs)
   }
 
   @IBAction func rateOurAppButtonPressed(_ sender: Any) {
