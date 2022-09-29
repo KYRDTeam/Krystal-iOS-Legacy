@@ -78,7 +78,7 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   }
 
   func stop() {
-//    self.removeObservers()
+    self.listWalletsCoordinator = nil
     self.navigationController.popToRootViewController(animated: false)
   }
 
@@ -230,6 +230,9 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   func settingsViewControllerWalletsButtonPressed() {
+    guard self.listWalletsCoordinator == nil else {
+      return
+    }
     let coordinator = KNListWalletsCoordinator(
       navigationController: self.navigationController,
       session: self.session,

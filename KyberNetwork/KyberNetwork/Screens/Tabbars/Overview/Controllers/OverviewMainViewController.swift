@@ -34,6 +34,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
   @IBOutlet weak var insestView: UIView!
   @IBOutlet weak var scanButton: UIButton!
+  @IBOutlet weak var badgeNumberLabel: UILabel!
   
   weak var delegate: OverviewMainViewControllerDelegate?
   let refreshControl = UIRefreshControl()
@@ -75,6 +76,9 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     super.viewDidLoad()
 //    let isAdvancedSearchEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.advancedSearch)
 //    self.searchButton.isHidden = !isAdvancedSearchEnabled
+    
+    tabBarItem.accessibilityIdentifier = "menuHome"
+    
     let nib = UINib(nibName: OverviewMainViewCell.className, bundle: nil)
     self.tableView.register(
       nib,
@@ -120,6 +124,16 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     
     self.configPullToRefresh()
     self.configHeaderTapped()
+    
+    Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.minutes2,
+      repeats: true,
+      block: { [weak self] _ in
+        guard let `self` = self else { return }
+        self.getNotificationBadgeNumber()
+      }
+    )
+    updateUIBadgeNotification()
   }
   
   func configHeaderTapped() {
@@ -186,10 +200,34 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     }
   }
   
+  func getNotificationBadgeNumber() {
+    guard FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.notiV2) else {
+      return
+    }
+    delegate?.overviewMainViewController(self, run: .getBadgeNotification)
+  }
+  
+  func updateUIBadgeNotification() {
+    guard isViewLoaded else { return }
+    guard FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.notiV2) else {
+      badgeNumberLabel.isHidden = true
+      return
+    }
+    if viewModel.badgeNumber > 0 {
+      badgeNumberLabel.text = "\(viewModel.badgeNumber)".paddingString()
+      badgeNumberLabel.isHidden = false
+    } else {
+      badgeNumberLabel.text = ""
+      badgeNumberLabel.isHidden = true
+    }
+  }
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.updateUIByFeatureFlags()
     self.delegate?.overviewMainViewController(self, run: .didAppear)
+    self.getNotificationBadgeNumber()
+    
   }
   
   func updateUIByFeatureFlags() {
@@ -322,7 +360,13 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   }
   
   @IBAction func notificationsButtonTapped(_ sender: UIButton) {
-    self.delegate?.overviewMainViewController(self, run: .notifications)
+    if FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.notiV2) {
+      let vc = NotificationV2ViewController.instantiateFromNib()
+      vc.hidesBottomBarWhenPushed = true
+      navigationController?.pushViewController(vc, animated: true)
+    } else {
+      self.delegate?.overviewMainViewController(self, run: .notifications)
+    }
     MixPanelManager.track("home_noti", properties: ["screenid": "homepage"])
   }
   
@@ -389,7 +433,6 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   
   @objc override func onAppSwitchChain() {
     super.onAppSwitchChain()
-    
     guard self.isViewLoaded else {
       return
     }
@@ -406,7 +449,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     if self.viewModel.currentChain != .all {
       self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
     }
-    
+    getNotificationBadgeNumber()
     guard self.isViewLoaded else { return }
     calculatingQueue.async {
       self.viewModel.reloadAllData()
@@ -451,6 +494,11 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     
   }
   
+  func coordinatorDidUpdateNotificationBadgeNumber(number: Int) {
+    viewModel.badgeNumber = number
+    updateUIBadgeNotification()
+  }
+
   static var hasSafeArea: Bool {
     guard #available(iOS 11.0, *), let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top, topPadding > 24 else {
       return false

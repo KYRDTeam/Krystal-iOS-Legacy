@@ -676,6 +676,11 @@ extension KNHistoryViewController {
     self.walletSelectButton.setTitle(viewModel.currentAddressString, for: .normal)
     self.viewModel.update(tokens: EtherscanTransactionStorage.shared.getEtherscanToken())
   }
+  
+  func coordinatorDidUpdateTransaction() {
+    self.viewModel.update(tokens: EtherscanTransactionStorage.shared.getEtherscanToken())
+    self.updateUIWhenDataDidChange()
+  }
 }
 
 extension KNHistoryViewController: UICollectionViewDelegate {

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="NotificationFilterTagCell" customModule="Krystal" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="201" height="82"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="201" height="82"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IVx-Rk-7hU">
+                        <rect key="frame" x="0.0" y="0.0" width="201" height="82"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sT8-kn-cUc">
+                                <rect key="frame" x="0.0" y="0.0" width="201" height="82"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IDK-iF-Q0H">
+                                        <rect key="frame" x="92.5" y="32.5" width="16" height="17"/>
+                                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                        <color key="textColor" name="buttonTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" name="buttonBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="IDK-iF-Q0H" firstAttribute="centerX" secondItem="sT8-kn-cUc" secondAttribute="centerX" id="fOw-Op-QQp"/>
+                                    <constraint firstItem="IDK-iF-Q0H" firstAttribute="centerY" secondItem="sT8-kn-cUc" secondAttribute="centerY" id="qSO-26-qZz"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                        <real key="value" value="12"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="sT8-kn-cUc" secondAttribute="trailing" id="BAX-me-6zF"/>
+                            <constraint firstItem="sT8-kn-cUc" firstAttribute="top" secondItem="IVx-Rk-7hU" secondAttribute="top" id="Hp5-P9-Bwm"/>
+                            <constraint firstItem="sT8-kn-cUc" firstAttribute="leading" secondItem="IVx-Rk-7hU" secondAttribute="leading" id="S5L-KK-jtL"/>
+                            <constraint firstAttribute="bottom" secondItem="sT8-kn-cUc" secondAttribute="bottom" id="eJu-qw-651"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="IVx-Rk-7hU" secondAttribute="bottom" id="Gao-7a-TqN"/>
+                <constraint firstItem="IVx-Rk-7hU" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="RN7-EJ-x2O"/>
+                <constraint firstAttribute="trailing" secondItem="IVx-Rk-7hU" secondAttribute="trailing" id="doU-6r-R80"/>
+                <constraint firstItem="IVx-Rk-7hU" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="voN-Wy-HbI"/>
+            </constraints>
+            <size key="customSize" width="201" height="82"/>
+            <connections>
+                <outlet property="containerView" destination="sT8-kn-cUc" id="eLL-DL-fTT"/>
+                <outlet property="titleLabel" destination="IDK-iF-Q0H" id="y8C-Qx-by6"/>
+            </connections>
+            <point key="canvasLocation" x="247.10144927536234" y="119.19642857142857"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="buttonTextColor">
+            <color red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

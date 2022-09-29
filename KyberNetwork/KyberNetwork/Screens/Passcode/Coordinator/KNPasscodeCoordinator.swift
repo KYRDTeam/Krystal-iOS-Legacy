@@ -104,6 +104,9 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
     KNPasscodeUtil.shared.deleteCurrentMaxAttemptTime()
     KNAppTracker.saveLastTimeAuthenticate()
     self.delegate?.passcodeCoordinatorDidEvaluatePIN()
+    if AppDelegate.shared.coordinator.tabbarController != nil {
+      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
+    }
   }
   
   fileprivate func didFinishEnterPasscode(_ passcode: String) {
@@ -122,6 +125,9 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
         KNPasscodeUtil.shared.recordNewMaxAttemptTime()
       }
       self.passcodeViewController.userDidTypeWrongPasscode()
+    }
+    if AppDelegate.shared.coordinator.tabbarController != nil {
+      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
     }
   }
   

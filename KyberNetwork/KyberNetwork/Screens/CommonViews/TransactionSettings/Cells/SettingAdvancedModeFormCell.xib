@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -27,16 +27,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current base fee" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iKp-MM-H3J">
-                                <rect key="frame" x="25" y="10.5" width="134" height="21"/>
+                                <rect key="frame" x="25" y="10.5" width="134.5" height="21.5"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <color key="textColor" name="textWhiteColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="50 GWEI" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hCT-j5-cx7">
-                                <rect key="frame" x="239.5" y="13" width="55.5" height="16.5"/>
+                                <rect key="frame" x="242" y="13" width="53" height="16.5"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                 <color key="textColor" name="textWhiteColor"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtBaseFee"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -48,13 +51,16 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Standard: 50 GWEI ~ 45s" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EwI-aK-hh4">
-                        <rect key="frame" x="158.5" y="64.5" width="136.5" height="14"/>
+                        <rect key="frame" x="161.5" y="64.5" width="133.5" height="14.5"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                         <color key="textColor" name="normalTextColor"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtDefaultPriorityFee"/>
+                        </userDefinedRuntimeAttributes>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Priority Fee" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qbx-hB-4K1">
-                        <rect key="frame" x="25" y="62" width="116.5" height="19"/>
+                        <rect key="frame" x="25" y="62" width="115" height="19"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
@@ -76,6 +82,9 @@
                                 <color key="textColor" name="textWhiteColor"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtPriorityFee"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="calibratedRGB"/>
@@ -95,13 +104,16 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Standard: 50 GWEI ~ 45s" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bZ6-Fe-6Cg">
-                        <rect key="frame" x="158.5" y="155.5" width="136.5" height="14"/>
+                        <rect key="frame" x="161.5" y="155.5" width="133.5" height="14.5"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                         <color key="textColor" name="normalTextColor"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtDefaultMaxFee"/>
+                        </userDefinedRuntimeAttributes>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Fee" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XG1-gE-qg0">
-                        <rect key="frame" x="25" y="153" width="62" height="19"/>
+                        <rect key="frame" x="25" y="153" width="59" height="19"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
@@ -123,6 +135,9 @@
                                 <color key="textColor" name="textWhiteColor"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtMaxFee"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.1058823529" green="0.1137254902" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -142,25 +157,28 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gas Limit" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="efp-Jt-3V6">
-                        <rect key="frame" x="25" y="244" width="68" height="19"/>
+                        <rect key="frame" x="25" y="244" width="69.5" height="19"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Custom Nonce" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Syb-4Z-7e5">
-                        <rect key="frame" x="25" y="347" width="108" height="19"/>
+                        <rect key="frame" x="25" y="347" width="107.5" height="19"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VFA-gw-fYq">
-                        <rect key="frame" x="183" y="337.5" width="112" height="38"/>
+                        <rect key="frame" x="182.5" y="337.5" width="112.5" height="38"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="buJ-9E-KPr">
-                                <rect key="frame" x="20" y="0.0" width="72" height="38"/>
+                                <rect key="frame" x="20" y="0.0" width="72.5" height="38"/>
                                 <color key="textColor" name="textWhiteColor"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtNonce"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.1058823529" green="0.1137254902" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -186,59 +204,62 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n3l-87-bID" customClass="DashedLineView" customModule="Krystal" customModuleProvider="target">
-                        <rect key="frame" x="25" y="81" width="116.5" height="1"/>
+                        <rect key="frame" x="25" y="81" width="115" height="1"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="zMb-Gq-dNT"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9CS-h3-JaP" customClass="DashedLineView" customModule="Krystal" customModuleProvider="target">
-                        <rect key="frame" x="25" y="172" width="62" height="1"/>
+                        <rect key="frame" x="25" y="172" width="59" height="1"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="g8P-Oq-cUw"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sYe-t4-AQg" customClass="DashedLineView" customModule="Krystal" customModuleProvider="target">
-                        <rect key="frame" x="25" y="263" width="68" height="1"/>
+                        <rect key="frame" x="25" y="263" width="69.5" height="1"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="IhG-s9-GLU"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KQt-bb-GEI" customClass="DashedLineView" customModule="Krystal" customModuleProvider="target">
-                        <rect key="frame" x="25" y="366" width="108" height="1"/>
+                        <rect key="frame" x="25" y="366" width="107.5" height="1"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="mbJ-aM-SMM"/>
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolosit amet tabdauyb" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1aS-Kp-5zJ">
-                        <rect key="frame" x="25" y="133" width="194" height="14"/>
+                        <rect key="frame" x="25" y="133" width="199.5" height="14"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                         <color key="textColor" name="textRedColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolosit amet tabdauyb" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhy-yD-FTN">
-                        <rect key="frame" x="25" y="224" width="194" height="14"/>
+                        <rect key="frame" x="25" y="224" width="199.5" height="14"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                         <color key="textColor" name="textRedColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Est.gas consumed: 2350" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwe-WA-qEr">
-                        <rect key="frame" x="162" y="246.5" width="133" height="14"/>
+                        <rect key="frame" x="161" y="246.5" width="134" height="14.5"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                         <color key="textColor" name="normalTextColor"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtGasConsumed"/>
+                        </userDefinedRuntimeAttributes>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolosit amet tabdauyb" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6vu-WA-zGp">
-                        <rect key="frame" x="20" y="315" width="194" height="14"/>
+                        <rect key="frame" x="20" y="315" width="199.5" height="14"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                         <color key="textColor" name="textRedColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolosit amet" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1W-J2-rea">
-                        <rect key="frame" x="183" y="375.5" width="112" height="28"/>
+                        <rect key="frame" x="182.5" y="375.5" width="112.5" height="28.5"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                         <color key="textColor" name="textRedColor"/>
                         <nil key="highlightedColor"/>
@@ -251,6 +272,9 @@
                                 <color key="textColor" name="textWhiteColor"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtGasLimit"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.1058823529" green="0.1137254902" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -268,28 +292,28 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n2e-jD-YEx">
-                        <rect key="frame" x="25" y="62" width="116.5" height="19"/>
+                        <rect key="frame" x="25" y="62" width="115" height="19"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <connections>
                             <action selector="titleLabelTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="vwL-Pp-Arp"/>
                         </connections>
                     </button>
                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d4O-vj-zIV">
-                        <rect key="frame" x="25" y="153" width="62" height="19"/>
+                        <rect key="frame" x="25" y="153" width="59" height="19"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <connections>
                             <action selector="titleLabelTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="YT8-KX-6gC"/>
                         </connections>
                     </button>
                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1dd-1u-May">
-                        <rect key="frame" x="25" y="244" width="68" height="19"/>
+                        <rect key="frame" x="25" y="244" width="69.5" height="19"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <connections>
                             <action selector="titleLabelTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="9d4-3S-tcD"/>
                         </connections>
                     </button>
                     <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zub-Yf-R1w">
-                        <rect key="frame" x="25" y="347" width="108" height="19"/>
+                        <rect key="frame" x="25" y="347" width="107.5" height="19"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <connections>
                             <action selector="titleLabelTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="WBu-BT-wKy"/>

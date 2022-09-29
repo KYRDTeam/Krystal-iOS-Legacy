@@ -208,6 +208,9 @@ class KNAppCoordinator: NSObject, Coordinator {
 // Application state
 extension KNAppCoordinator {
   func appDidFinishLaunch() {
+    if let passCode = KNPasscodeUtil.shared.currentPasscode(), !passCode.isEmpty, walletManager.getAllWallets().isNotEmpty {
+      UserDefaults.standard.set(true, forKey: Constants.isCreatedPassCode)
+    }
     self.splashScreenCoordinator.start()
     self.authenticationCoordinator.start()
     KNSession.resumeInternalSession()

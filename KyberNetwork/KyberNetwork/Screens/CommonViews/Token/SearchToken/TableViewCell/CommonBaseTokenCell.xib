@@ -58,6 +58,7 @@
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                 <integer key="value" value="12"/>
                             </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnSuggest"/>
                         </userDefinedRuntimeAttributes>
                     </view>
                 </subviews>

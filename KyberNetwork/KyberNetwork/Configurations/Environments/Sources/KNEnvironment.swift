@@ -146,6 +146,24 @@ enum KNEnvironment: Int {
   var krytalAPIEndPoint: String {
     return KNSecret.devKrytalURL
   }
+  
+  var notificationAPIURL: String {
+    switch KNEnvironment.default {
+    case .production:
+      return KNSecret.prodNotificationApiURL
+    default:
+      return KNSecret.devNotificationApiURL
+    }
+  }
+  
+  var userAPIURL: String {
+    switch KNEnvironment.default {
+    case .production:
+      return KNSecret.prodUserApiURL
+    default:
+      return KNSecret.devUserApiURL
+    }
+  }
 
   var oneSignAppID: String {
     switch KNEnvironment.default {

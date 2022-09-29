@@ -117,6 +117,7 @@ extension KNAppCoordinator {
       selectedImage: nil
     )
     self.overviewTabCoordinator?.navigationController.tabBarItem.tag = 0
+    self.overviewTabCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuHome"
 
     self.exchangeCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: nil,
@@ -124,13 +125,15 @@ extension KNAppCoordinator {
       selectedImage: nil
     )
     self.exchangeCoordinator?.navigationController.tabBarItem.tag = 1
+    self.exchangeCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuSwap"
 
-    self.investCoordinator?.navigationController.tabBarItem.tag = 2
     self.investCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: nil,
       image: UIImage(named: "tabbar_invest_icon"),
       selectedImage: nil
     )
+    self.investCoordinator?.navigationController.tabBarItem.tag = 2
+    self.investCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuExplore"
 
     self.earnCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: nil,
@@ -138,6 +141,7 @@ extension KNAppCoordinator {
       selectedImage: nil
     )
     self.earnCoordinator?.navigationController.tabBarItem.tag = 3
+    self.earnCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuEarn"
 
     self.settingsCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: nil,
@@ -145,6 +149,7 @@ extension KNAppCoordinator {
       selectedImage: nil
     )
     self.settingsCoordinator?.navigationController.tabBarItem.tag = 4
+    self.settingsCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuSetting"
 
     self.navigationController.pushViewController(self.tabbarController, animated: true) {
     }
@@ -157,6 +162,7 @@ extension KNAppCoordinator {
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
 
     self.doLogin { _ in }
+    UserService().connectEVM(address: address) {}
   }
   
   func stopAllSessions() {
@@ -172,6 +178,7 @@ extension KNAppCoordinator {
   }
 
   func restartSession(address: KAddress) {
+    EtherscanTransactionStorage.shared.updateCurrentWallet(address)
     self.session.switchAddress(address: address)
     FeatureFlagManager.shared.configClient(session: self.session)
     self.loadBalanceCoordinator?.shouldFetchAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all
@@ -184,6 +191,7 @@ extension KNAppCoordinator {
     self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     
     self.doLogin { _ in }
+    UserService().connectEVM(address: address) {}
     
     NotificationCenter.default.post(
       name: Notification.Name(kAppDidUpdateNewSession),
