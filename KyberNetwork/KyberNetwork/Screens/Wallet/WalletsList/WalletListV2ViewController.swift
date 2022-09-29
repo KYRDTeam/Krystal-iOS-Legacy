@@ -45,6 +45,7 @@ protocol WalletListV2ViewControllerDelegate: class {
   func didSelectWallet(wallet: KWallet)
   func didSelectWatchWallet(address: KAddress)
   func didSelectAddWallet()
+  func didSelectAddWatchWallet()
 }
 
 class WalletListV2ViewController: KNBaseViewController {
@@ -222,6 +223,10 @@ extension WalletListV2ViewController: UITableViewDelegate {
       view.addSubview(label)
       
       let plusButton = UIButton(frame: CGRect(x: screenWidth - 32 - 24, y: 0, width: 24, height: 24))
+      plusButton.setImage(UIImage(named: "add_circle_grey"), for: .normal)
+      plusButton.addAction(for: .touchUpInside) {
+        self.delegate?.didSelectAddWatchWallet()
+      }
       plusButton.center.y = label.center.y
       view.addSubview(plusButton)
       
