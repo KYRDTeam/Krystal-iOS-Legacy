@@ -668,7 +668,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     }))
       
     let showLPType = mode == .showLiquidityPool ? ActionStyle.selected : ActionStyle.default
-    actionController.addAction(Action(ActionData(title: "Show Liquidity Pool", image: UIImage(named: "show_LP_icon")!), style: showLPType, handler: { _ in
+    actionController.addAction(Action(ActionData(title: "Show Liquidity Pool Tokens", image: UIImage(named: "show_LP_icon")!), style: showLPType, handler: { _ in
       controller.coordinatorDidSelectMode(.showLiquidityPool)
       MixPanelManager.track("token_data_show_liquidity_pool", properties: ["screenid": "token_data_pop_up"])
     }))
