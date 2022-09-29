@@ -74,6 +74,11 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+//    let isAdvancedSearchEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.advancedSearch)
+//    self.searchButton.isHidden = !isAdvancedSearchEnabled
+    
+    tabBarItem.accessibilityIdentifier = "menuHome"
+    
     let nib = UINib(nibName: OverviewMainViewCell.className, bundle: nil)
     self.tableView.register(
       nib,

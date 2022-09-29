@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,7 +17,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSearchTokenViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSearchTokenViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="contentView" destination="pXD-e9-UfM" id="j91-dl-Kai"/>
                 <outlet property="contentViewTopContraint" destination="5Iz-Jp-Efs" id="1OT-13-iep"/>
@@ -81,6 +81,7 @@
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                     <integer key="value" value="16"/>
                                 </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtSearch"/>
                             </userDefinedRuntimeAttributes>
                         </view>
                     </subviews>
@@ -98,6 +99,9 @@
                         <constraint firstItem="puF-0q-Lpg" firstAttribute="leading" secondItem="pXD-e9-UfM" secondAttribute="leading" constant="21" id="kUt-4r-ySb"/>
                         <constraint firstAttribute="bottom" secondItem="tvR-nt-YdR" secondAttribute="bottom" id="rWm-vg-jKO"/>
                     </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="tblTokenList"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="qLD-fQ-fZw" appends="YES" id="ErW-1e-cjW"/>
                     </connections>

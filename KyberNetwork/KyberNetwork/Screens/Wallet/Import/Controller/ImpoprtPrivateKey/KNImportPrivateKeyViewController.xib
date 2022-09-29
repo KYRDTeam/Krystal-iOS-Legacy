@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Italic.ttf">
+        <array key="Karla-Italic-VariableFont_wght.ttf">
             <string>Karla-Italic</string>
         </array>
         <array key="Karla-VariableFont_wght.ttf">
@@ -56,6 +56,9 @@
                     <state key="normal" title="Next">
                         <color key="titleColor" name="mainViewBgColor"/>
                     </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnNext"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="nextButtonPressed:" destination="-1" eventType="touchUpInside" id="Pok-qq-h1z"/>
                     </connections>
@@ -75,6 +78,9 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" returnKeyType="done" secureTextEntry="YES"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtPrivateKey"/>
+                            </userDefinedRuntimeAttributes>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U3Y-4S-pW7">
                             <rect key="frame" x="268" y="9" width="24" height="24"/>
@@ -100,6 +106,7 @@
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                     <integer key="value" value="3"/>
                                 </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnPaste"/>
                             </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="pasteButtonTapped:" destination="-1" eventType="touchUpInside" id="Al9-eQ-drT"/>
@@ -127,6 +134,9 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eMq-0K-qYG">
                     <rect key="frame" x="306" y="57.5" width="32" height="32"/>
                     <state key="normal" image="scan"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnScanPK"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="qrCodeButtonPressed:" destination="-1" eventType="touchUpInside" id="dj0-VP-d07"/>
                     </connections>
@@ -140,6 +150,9 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtWalletName"/>
+                            </userDefinedRuntimeAttributes>
                         </textField>
                     </subviews>
                     <color key="backgroundColor" name="innerContainerBgColor"/>
@@ -183,6 +196,9 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtRefCode"/>
+                            </userDefinedRuntimeAttributes>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aiq-xJ-zas">
                             <rect key="frame" x="267" y="9" width="24" height="24"/>
@@ -191,6 +207,9 @@
                                 <constraint firstAttribute="height" constant="24" id="oaZ-m9-hOK"/>
                             </constraints>
                             <state key="normal" image="scan"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnScanRefCode"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="qrCodeButtonTapped:" destination="-1" eventType="touchUpInside" id="UWC-Ty-Ybc"/>
                             </connections>
@@ -208,6 +227,7 @@
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                     <integer key="value" value="3"/>
                                 </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnPasteRefCode"/>
                             </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="pasteButtonTapped:" destination="-1" eventType="touchUpInside" id="kfH-wo-LyD"/>

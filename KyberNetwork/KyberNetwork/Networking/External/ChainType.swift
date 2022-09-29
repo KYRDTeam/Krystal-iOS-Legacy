@@ -26,22 +26,30 @@ enum ChainType: Codable, CaseIterable {
     case 1:
       self = .eth
     case 2:
-      self = .bsc
+      self = .ropsten
     case 3:
-      self = .polygon
+      self = .bsc
     case 4:
-      self = .avalanche
+      self = .bscTestnet
     case 5:
-      self = .cronos
+      self = .polygon
     case 6:
-      self = .fantom
+      self = .polygonTestnet
     case 7:
-      self = .arbitrum
+      self = .avalanche
     case 8:
-      self = .aurora
+      self = .avalancheTestnet
     case 9:
-      self = .solana
+      self = .cronos
     case 10:
+      self = .fantom
+    case 11:
+      self = .arbitrum
+    case 12:
+      self = .aurora
+    case 13:
+      self = .solana
+    case 14:
       self = .klaytn
     default:
       throw CodingError.unknownValue
@@ -55,24 +63,32 @@ enum ChainType: Codable, CaseIterable {
       try container.encode(0, forKey: .rawValue)
     case .eth:
       try container.encode(1, forKey: .rawValue)
-    case .bsc:
+    case .ropsten:
       try container.encode(2, forKey: .rawValue)
-    case .polygon:
+    case .bsc:
       try container.encode(3, forKey: .rawValue)
-    case .avalanche:
+    case .bscTestnet:
       try container.encode(4, forKey: .rawValue)
-    case .cronos:
+    case .polygon:
       try container.encode(5, forKey: .rawValue)
-    case .fantom:
+    case .polygonTestnet:
       try container.encode(6, forKey: .rawValue)
-    case .arbitrum:
+    case .avalanche:
       try container.encode(7, forKey: .rawValue)
-    case .aurora:
+    case .avalancheTestnet:
       try container.encode(8, forKey: .rawValue)
-    case .solana:
+    case .cronos:
       try container.encode(9, forKey: .rawValue)
-    case .klaytn:
+    case .fantom:
       try container.encode(10, forKey: .rawValue)
+    case .arbitrum:
+      try container.encode(11, forKey: .rawValue)
+    case .aurora:
+      try container.encode(12, forKey: .rawValue)
+    case .solana:
+      try container.encode(13, forKey: .rawValue)
+    case .klaytn:
+      try container.encode(14, forKey: .rawValue)
     }
   }
 
@@ -82,6 +98,11 @@ enum ChainType: Codable, CaseIterable {
   
   static func getAllChain(includeAll: Bool = false) -> [ChainType] {
     var allChains = ChainType.allCases
+    
+    if KNEnvironment.default == .production {
+      allChains = allChains.filter { $0 != .ropsten && $0 != .bscTestnet && $0 != .polygonTestnet && $0 != .avalancheTestnet }
+    }
+    
     let shouldShowAurora = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.auroraChainIntegration)
     if !shouldShowAurora && KNGeneralProvider.shared.currentChain != .aurora {
       allChains = allChains.filter { $0 != .aurora }
@@ -121,27 +142,21 @@ enum ChainType: Codable, CaseIterable {
   func customRPC() -> CustomRPC {
     switch self {
     case .eth:
-      if KNEnvironment.default == .ropsten {
-        return AllChains.ethRoptenPRC
-      } else if KNEnvironment.default == .staging {
-        return AllChains.ethStaggingPRC
-      }
       return AllChains.ethMainnetPRC
+    case .ropsten:
+      return AllChains.ethRoptenPRC
     case .bsc, .all:
-      if KNEnvironment.default == .ropsten {
-        return AllChains.bscRoptenPRC
-      }
       return AllChains.bscMainnetPRC
+    case .bscTestnet:
+      return AllChains.bscRoptenPRC
     case .polygon:
-      if KNEnvironment.default == .ropsten {
-        return AllChains.polygonRoptenPRC
-      }
       return AllChains.polygonMainnetPRC
+    case .polygonTestnet:
+      return AllChains.polygonRoptenPRC
     case .avalanche:
-      if KNEnvironment.default == .ropsten {
-        return AllChains.avalancheRoptenPRC
-      }
       return AllChains.avalancheMainnetPRC
+    case .avalancheTestnet:
+      return AllChains.avalancheRoptenPRC
     case .cronos:
         return AllChains.cronosMainnetRPC
     case .fantom:
@@ -202,11 +217,19 @@ enum ChainType: Codable, CaseIterable {
       return Images.allNetworkSquare
     case .eth:
       return Images.chainEthSquare
+    case .ropsten:
+      return Images.chainEthSquare
     case .bsc:
+      return Images.chainBscSquare
+    case .bscTestnet:
       return Images.chainBscSquare
     case .polygon:
       return Images.chainPolygonSquare
+    case .polygonTestnet:
+      return Images.chainPolygonSquare
     case .avalanche:
+      return Images.chainAvaxSquare
+    case .avalancheTestnet:
       return Images.chainAvaxSquare
     case .cronos:
       return Images.chainCronosSquare
@@ -325,11 +348,19 @@ enum ChainType: Codable, CaseIterable {
     switch self {
     case .eth:
       return KNSupportedTokenStorage.shared.kncToken
+    case .ropsten:
+      return KNSupportedTokenStorage.shared.kncToken
     case .bsc:
+        return KNSupportedTokenStorage.shared.busdToken
+    case .bscTestnet:
         return KNSupportedTokenStorage.shared.busdToken
     case .polygon:
         return KNSupportedTokenStorage.shared.usdcToken
+    case .polygonTestnet:
+        return KNSupportedTokenStorage.shared.usdcToken
     case .avalanche:
+        return KNSupportedTokenStorage.shared.usdceToken
+    case .avalancheTestnet:
         return KNSupportedTokenStorage.shared.usdceToken
     case .cronos:
         return KNSupportedTokenStorage.shared.usdcToken
@@ -409,9 +440,13 @@ enum ChainType: Codable, CaseIterable {
   }
   case all
   case eth
+  case ropsten
   case bsc
+  case bscTestnet
   case polygon
+  case polygonTestnet
   case avalanche
+  case avalancheTestnet
   case cronos
   case fantom
   case arbitrum

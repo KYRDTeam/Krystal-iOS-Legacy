@@ -83,6 +83,9 @@
                             <color key="textColor" name="textWhiteColor"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="password"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtSearch"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="kft-fi-VIz"/>
                             </connections>

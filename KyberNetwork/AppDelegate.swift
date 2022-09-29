@@ -139,15 +139,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   }
   
   fileprivate func setupFirebase() {
-    if KNEnvironment.default == .production {
-      FirebaseApp.configure()
-    } else {
-      let filePath = Bundle.main.path(forResource: "GoogleService-Info-Dev", ofType: "plist")
-      guard let fileopts = FirebaseOptions(contentsOfFile: filePath!) else {
-        return
-      }
-      FirebaseApp.configure(options: fileopts)
+    #if DEBUG
+    let filePath = Bundle.main.path(forResource: "GoogleService-Info-Dev", ofType: "plist")
+    guard let fileopts = FirebaseOptions(contentsOfFile: filePath!) else {
+      return
     }
+    FirebaseApp.configure(options: fileopts)
+    #else
+    FirebaseApp.configure()
+    #endif
   }
   
   func setupKeyboard() {

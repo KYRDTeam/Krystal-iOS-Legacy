@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Italic.ttf">
+        <array key="Karla-Italic-VariableFont_wght.ttf">
             <string>Karla-Italic</string>
         </array>
         <array key="Karla-VariableFont_wght.ttf">
@@ -68,6 +68,9 @@
                             <color key="textColor" name="textWhiteColor"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" textContentType="password"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtSeeds"/>
+                            </userDefinedRuntimeAttributes>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gSr-h0-m7v">
                             <rect key="frame" x="272" y="10" width="20" height="22"/>
@@ -76,6 +79,9 @@
                                 <constraint firstAttribute="width" constant="20" id="vBl-Zx-Ule"/>
                             </constraints>
                             <state key="normal" image="scan"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnScanSeeds"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="qrcodeButtonPressed:" destination="-1" eventType="touchUpInside" id="PuU-iE-VqJ"/>
                             </connections>
@@ -93,6 +99,7 @@
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                     <integer key="value" value="3"/>
                                 </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnPasteSeeds"/>
                             </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="pasteButtonTapped:" destination="-1" eventType="touchUpInside" id="6Nn-qG-l0g"/>
@@ -121,6 +128,9 @@
                             <color key="textColor" name="textWhiteColor"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtWalletName"/>
+                            </userDefinedRuntimeAttributes>
                         </textField>
                     </subviews>
                     <color key="backgroundColor" name="innerContainerBgColor"/>
@@ -143,6 +153,9 @@
                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
                     <color key="textColor" red="0.54117647058823526" green="0.64313725490196072" blue="0.68235294117647061" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtWordCount"/>
+                    </userDefinedRuntimeAttributes>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paste your Referral Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EdX-wY-aLD">
                     <rect key="frame" x="37" y="318" width="301" height="19"/>
@@ -159,6 +172,9 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtRefCode"/>
+                            </userDefinedRuntimeAttributes>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iSc-ay-SCp">
                             <rect key="frame" x="267" y="9" width="24" height="24"/>
@@ -167,6 +183,9 @@
                                 <constraint firstAttribute="height" constant="24" id="vOn-PZ-U8t"/>
                             </constraints>
                             <state key="normal" image="scan"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnScanRefCode"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="qrCodeButtonTapped:" destination="-1" eventType="touchUpInside" id="YFV-2i-oJZ"/>
                             </connections>
@@ -184,6 +203,7 @@
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                     <integer key="value" value="3"/>
                                 </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnPasteRefCode"/>
                             </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="pasteButtonTapped:" destination="-1" eventType="touchUpInside" id="ujE-Xr-TZv"/>
@@ -219,6 +239,9 @@
                     <state key="normal" title="Next">
                         <color key="titleColor" name="mainViewBgColor"/>
                     </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnNext"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="nextButtonPressed:" destination="-1" eventType="touchUpInside" id="9ux-CD-CCU"/>
                     </connections>
