@@ -146,28 +146,10 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     switch event {
     case .manageWallet:
       self.settingsViewControllerWalletsButtonPressed()
-    case .manageAlerts:
-//      if let _ = IEOUserStorage.shared.user {
-//        self.manageAlertCoordinator = KNManageAlertCoordinator(navigationController: self.navigationController)
-//        self.manageAlertCoordinator?.start()
-//      } else {
-//        self.navigationController.showWarningTopBannerMessage(
-//          with: NSLocalizedString("error", value: "Error", comment: ""),
-//          message: NSLocalizedString("You must sign in to use Price Alert feature", comment: ""),
-//          time: 1.5
-//        )
-//      }
-    break
-    case .alertMethods:
-      let coordinator = NotificationCoordinator(navigationController: self.navigationController)
-      coordinator.start()
-      self.notificationCoordinator = coordinator
     case .contact:
       self.navigationController.pushViewController(self.contactVC, animated: true)
     case .support:
       self.openMailSupport()
-    case .about:
-      self.openCommunityURL("https://medium.com/kyberswap/get-started-on-kyberswap-ios-app-942ee1dffdc4")
     case .changePIN:
       self.passcodeCoordinator = KNPasscodeCoordinator(
         navigationController: self.navigationController,
@@ -182,20 +164,12 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.openShareWithFriends()
     case .telegram:
       self.openCommunityURL("https://t.me/KrystalDefi")
-    case .github:
-      self.openCommunityURL("https://github.com/KyberNetwork/KyberSwap-iOS")
     case .twitter:
       self.openCommunityURL("https://twitter.com/KrystalDefi")
-    case .facebook:
-      self.openCommunityURL("https://www.facebook.com/kybernetwork")
     case .medium:
       self.openCommunityURL("https://medium.com/krystaldefi")
     case .reddit:
       self.openCommunityURL("https://www.reddit.com/r/kybernetwork")
-    case .linkedIn:
-      self.openCommunityURL("https://www.linkedin.com/company/kybernetwork")
-    case .reportBugs:
-      self.navigationController.openSafari(with: "https://goo.gl/forms/ZarhiV7MPE0mqr712")
     case .rateOurApp:
       self.navigationController.openSafari(with: "https://apps.apple.com/us/app/id1558105691")
     case .termOfUse:
