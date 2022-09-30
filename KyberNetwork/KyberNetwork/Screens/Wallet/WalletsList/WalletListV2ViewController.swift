@@ -20,7 +20,7 @@ class WalletListV2ViewModel {
   }
   
   func numberOfSection() -> Int {
-    return watchAddresses.isEmpty ? 1 : 2
+    return 2
   }
   
   func numberOfRows(section: Int) -> Int {
@@ -71,6 +71,10 @@ class WalletListV2ViewController: KNBaseViewController {
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
   }
+  
+  deinit {
+    unobserveNotifications()
+  }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -78,6 +82,7 @@ class WalletListV2ViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    observeNotifications()
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
     tapOutSideBackgroundView.addGestureRecognizer(tapGesture)
     walletsTableView.registerCellNib(WalletCell.self)
@@ -86,6 +91,24 @@ class WalletListV2ViewController: KNBaseViewController {
   
   @objc func tapOutside() {
     self.dismiss(animated: true, completion: nil)
+  }
+  
+  func observeNotifications() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(onWalletListUpdated),
+      name: AppEventCenter.shared.kAppDidChangeAddress,
+      object: nil
+    )
+  }
+  
+  func unobserveNotifications() {
+    NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidChangeAddress, object: nil)
+  }
+  
+  @objc func onWalletListUpdated() {
+    viewModel.reloadData()
+    walletsTableView.reloadData()
   }
 
   @IBAction func connectWalletButtonTapped(_ sender: UIButton) {
