@@ -87,7 +87,6 @@ class OverviewLiquidityPoolViewModel {
 }
 
 class OverviewLiquidityPoolCell: UITableViewCell {
-  static let kCellID: String = "OverviewLiquidityPoolCell"
   static let kCellHeight: CGFloat = 85
   @IBOutlet weak var cellBackgroundView: UIView!
   @IBOutlet weak var firstTokenIcon: UIImageView!

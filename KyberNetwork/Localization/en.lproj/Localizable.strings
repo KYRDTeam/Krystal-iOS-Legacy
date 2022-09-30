@@ -816,7 +816,7 @@
 "invalid.ens" = "Invalid address or your ens is not mapped yet";
 "add.watched.wallet" = "Add watched wallet";
 "edit.watched.wallet" = "Edit watched wallet";
-"dont.have.any.liquidity.pool" = "You don't have any liquidity pool";
+"dont.have.any.liquidity.pool" = "You don't have any liquidity pool tokens";
 "not.supply.any.token" = "You've not supplied any token to earn interest";
 "no.favorite.token.yet" = "No Favourite Token yet";
 "token.list.is.empty" = "Your token list is empty";
@@ -960,7 +960,7 @@
 // Notification
 "all" = "All";
 "unread" = "Unread";
-"one.days.ago" = "1 day ago";
+"yesterday" = "Yesterday";
 "x.days.ago" = "%d days ago";
 "x.hours.ago" = "%d hours ago";
 "x.mins.ago" = "%d minutes ago";

@@ -141,14 +141,9 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   }
 
   func appCoordinatorSwitchAddress() {
-    let shouldShowBuyCrypto = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
-    if shouldShowBuyCrypto {
-      self.rootViewController.coordinatorAppSwitchAddress()
-      self.ordersViewController.coordinatorAppSwitchAddress()
-      self.getBifinityOrders()
-    } else {
-      self.rootViewController.navigationController?.popViewController(animated: true)
-    }
+    self.rootViewController.coordinatorAppSwitchAddress()
+    self.ordersViewController.coordinatorAppSwitchAddress()
+    self.getBifinityOrders()
   }
 
   func appCoordinatorPendingTransactionsDidUpdate() {

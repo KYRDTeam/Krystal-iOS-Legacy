@@ -139,15 +139,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   }
   
   fileprivate func setupFirebase() {
-    if KNEnvironment.default == .production {
-      FirebaseApp.configure()
-    } else {
-      let filePath = Bundle.main.path(forResource: "GoogleService-Info-Dev", ofType: "plist")
-      guard let fileopts = FirebaseOptions(contentsOfFile: filePath!) else {
-        return
-      }
-      FirebaseApp.configure(options: fileopts)
+    #if DEBUG
+    let filePath = Bundle.main.path(forResource: "GoogleService-Info-Dev", ofType: "plist")
+    guard let fileopts = FirebaseOptions(contentsOfFile: filePath!) else {
+      return
     }
+    FirebaseApp.configure(options: fileopts)
+    #else
+    FirebaseApp.configure()
+    #endif
   }
   
   func setupKeyboard() {
@@ -233,7 +233,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         self.coordinator.overviewTabCoordinator?.navigationController.present(errorVC, animated: false)
       }
         
-    } else if components.path == "/notifications" && !KNGeneralProvider.shared.isBrowsingMode && FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.notiV2) {
+    } else if components.path == "/notifications" && self.coordinator.session != nil && !KNGeneralProvider.shared.isBrowsingMode && FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.notiV2) {
       self.coordinator.overviewTabCoordinator?.navigationController.tabBarController?.selectedIndex = 0
       self.coordinator.overviewTabCoordinator?.navigationController.popToRootViewController(animated: false)
       let vc = NotificationV2ViewController.instantiateFromNib()

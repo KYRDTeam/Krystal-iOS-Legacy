@@ -89,9 +89,6 @@ enum KNEnvironment: Int {
   }
   
   var krystalEndpoint: String {
-    if let defaultEndpoint = SettingsBundleHelper.defaultAPIEndpoint() {
-      return defaultEndpoint
-    }
     switch self {
     case .production:
       return KNSecret.productionKrytalURL

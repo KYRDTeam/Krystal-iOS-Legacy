@@ -8,8 +8,6 @@
 import Foundation
 class SettingsBundleHelper {
   struct SettingsBundleKeys {
-    static let APIEndpointSetting = "apiEndpointSetting"
-    static let useMainnet = "useMainnet"
     static let environmentSetting = "environmentSetting"
   }
   
@@ -17,25 +15,10 @@ class SettingsBundleHelper {
     if let value = UserDefaults.standard.string(forKey: SettingsBundleKeys.environmentSetting) {
       if value == "Production" {
         return .production
-      } else if  value == "Staging" {
-        return .staging
       } else {
-        return . ropsten
+        return .ropsten
       }
     }
-    return .staging
-  }
-  
-  static func defaultAPIEndpoint() -> String? {
-    if let value = UserDefaults.standard.string(forKey: SettingsBundleKeys.APIEndpointSetting) {
-      if value == "Production" {
-        return KNSecret.productionKrytalURL
-      } else if  value == "Staging" {
-        return KNSecret.staggingKrytalURL
-      } else {
-        return KNSecret.devKrytalURL
-      }
-    }
-    return KNSecret.devKrytalURL
+    return .ropsten
   }
 }

@@ -963,7 +963,7 @@ class OverviewMainViewModel {
     case .supply:
       return "Supply"
     case .showLiquidityPool:
-      return "Liquidity Pool"
+      return "Liquidity Pool Tokens"
     case .favourite:
       return "Favourite"
     case .nft:

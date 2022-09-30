@@ -71,7 +71,6 @@ class OverviewSummaryCellViewModel {
 }
 
 class OverviewSummaryCell: UITableViewCell {
-  static let kCellID: String = "OvereviewSummaryCell"
   @IBOutlet weak var chainIcon: UIImageView!
   @IBOutlet weak var chainValueLabel: UILabel!
   @IBOutlet weak var chainNameLabel: UILabel!
