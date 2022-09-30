@@ -25,7 +25,6 @@ class OverviewNFTCellViewModel {
 }
 
 class OverviewNFTTableViewCell: UITableViewCell {
-  static let kCellID: String = "OverviewNFTTableViewCell"
   static let kCellHeight: CGFloat = 240
   
   @IBOutlet weak var icon1: UIImageView!

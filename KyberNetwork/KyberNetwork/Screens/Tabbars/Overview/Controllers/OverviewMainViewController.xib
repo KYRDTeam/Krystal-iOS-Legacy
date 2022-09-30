@@ -253,6 +253,9 @@
                             <constraint firstItem="g7y-sy-lYU" firstAttribute="top" secondItem="AQD-Qn-mCt" secondAttribute="top" id="tFO-s4-IeB"/>
                         </constraints>
                     </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="pby-Bk-sJS"/>
                         <outlet property="delegate" destination="-1" id="Wg6-1I-2de"/>
@@ -390,6 +393,9 @@
                 <constraint firstItem="EhA-J1-X3N" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ccy-Kk-jV3"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="EhA-J1-X3N" secondAttribute="trailing" id="n9z-2p-2bb"/>
             </constraints>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+            </userDefinedRuntimeAttributes>
             <point key="canvasLocation" x="84" y="91.304347826086968"/>
         </view>
     </objects>

@@ -10,6 +10,7 @@ import BigInt
 import SwipeCellKit
 import MBProgressHUD
 import KrystalWallets
+import SkeletonView
 
 protocol OverviewMainViewControllerDelegate: class {
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent)
@@ -74,56 +75,25 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-//    let isAdvancedSearchEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.advancedSearch)
-//    self.searchButton.isHidden = !isAdvancedSearchEnabled
     
     tabBarItem.accessibilityIdentifier = "menuHome"
     
-    let nib = UINib(nibName: OverviewMainViewCell.className, bundle: nil)
-    self.tableView.register(
-      nib,
-      forCellReuseIdentifier: OverviewMainViewCell.kCellID
-    )
-    
+    self.tableView.registerCellNib(OverviewMainViewCell.self)
     self.tableView.registerCellNib(OverviewAllChainTokenCell.self)
-    
-    let nibSupply = UINib(nibName: OverviewDepositTableViewCell.className, bundle: nil)
-    self.tableView.register(
-      nibSupply,
-      forCellReuseIdentifier: OverviewDepositTableViewCell.kCellID
-    )
-    
-    let nibLiquidityPool = UINib(nibName: OverviewLiquidityPoolCell.className, bundle: nil)
-    self.tableView.register(
-      nibLiquidityPool,
-      forCellReuseIdentifier: OverviewLiquidityPoolCell.kCellID
-    )
-    
+    self.tableView.registerCellNib(OverviewDepositTableViewCell.self)
+    self.tableView.registerCellNib(OverviewLiquidityPoolCell.self)
     self.tableView.registerCellNib(OverviewMultichainLiquidityPoolCell.self)
+    self.tableView.registerCellNib(OverviewEmptyTableViewCell.self)
+    self.tableView.registerCellNib(OverviewNFTTableViewCell.self)
+    self.tableView.registerCellNib(OverviewSummaryCell.self)
+    self.tableView.registerCellNib(OverviewSkeletonCell.self)
     
-    let nibEmpty = UINib(nibName: OverviewEmptyTableViewCell.className, bundle: nil)
-    self.tableView.register(
-      nibEmpty,
-      forCellReuseIdentifier: OverviewEmptyTableViewCell.kCellID
-    )
-    
-    let nibNFT = UINib(nibName: OverviewNFTTableViewCell.className, bundle: nil)
-    self.tableView.register(
-      nibNFT,
-      forCellReuseIdentifier: OverviewNFTTableViewCell.kCellID
-    )
-    
-    let nibSummary = UINib(nibName: OverviewSummaryCell.className, bundle: nil)
-    self.tableView.register(
-      nibSummary,
-      forCellReuseIdentifier: OverviewSummaryCell.kCellID
-    )
-    
-    let infoNib = UINib(nibName: OverviewTotalInfoCell.className, bundle: nil)
-    self.infoCollectionView.register(infoNib, forCellWithReuseIdentifier: OverviewTotalInfoCell.cellID)
+    self.infoCollectionView.registerCellNib(OverviewTotalInfoCell.self)
     
     self.configPullToRefresh()
     self.configHeaderTapped()
+    self.showLoadingSkeleton()
+    self.view.isUserInteractionDisabledWhenSkeletonIsActive = true
     
     Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.minutes2,
@@ -142,7 +112,6 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     }
     
     self.viewModel.didTapSectionButtonHeader = { sender in
-      print("Button Clicked \(sender.tag)")
       let section = sender.tag
       func indexPathsForSection() -> [IndexPath] {
         var indexPaths = [IndexPath]()
@@ -302,6 +271,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   }
 
   override func onChainSelected(chain: ChainType) {
+    showLoadingSkeleton()
     if chain == .all {
       self.viewModel.currentChain = chain
       self.tableView.reloadData()
@@ -457,6 +427,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
         self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
         self.tableView.reloadData()
         self.infoCollectionView.reloadData()
+        self.showLoadingSkeleton()
       }
     }
   }
@@ -470,11 +441,13 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     self.viewModel.isRefreshingTableView = false
     DispatchQueue.main.async {
       self.refreshControl.endRefreshing()
+      self.view.hideSkeleton()
     }
   }
   
   func coordinatorDidUpdateAllTokenData(models: [ChainBalanceModel]) {
     self.viewModel.assetChainBalanceModels = models
+    self.view.hideSkeleton()
     self.reloadUI()
   }
   
@@ -507,7 +480,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   }
 }
 
-extension OverviewMainViewController: UITableViewDataSource {
+extension OverviewMainViewController {
   func numberOfSections(in tableView: UITableView) -> Int {
     self.viewModel.numberOfSections
   }
@@ -529,7 +502,7 @@ extension OverviewMainViewController: UITableViewDataSource {
       cell.action = {
         self.delegate?.overviewMainViewController(self, run: .buyCrypto)
       }
-      cell.button1.isHidden = !FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
+      cell.button1.isHidden = false
       cell.button2.isHidden = true
     case .favourite:
       cell.imageIcon.image = Images.emptyFavToken
@@ -616,11 +589,7 @@ extension OverviewMainViewController: UITableViewDataSource {
   }
   
   func summaryCell(indexPath: IndexPath) -> OverviewSummaryCell {
-    let cell = tableView.dequeueReusableCell(
-      withIdentifier: OverviewSummaryCell.kCellID,
-      for: indexPath
-    ) as! OverviewSummaryCell
-    
+    let cell = tableView.dequeueReusableCell(OverviewSummaryCell.self, indexPath: indexPath)!
     let chainModel = self.viewModel.summaryDataSource.value[indexPath.row]
     chainModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
     cell.updateCell(chainModel)
@@ -642,10 +611,7 @@ extension OverviewMainViewController: UITableViewDataSource {
     case .market, .favourite:
       return tokenInfoCell(indexPath: indexPath)
     case .supply:
-      let cell = tableView.dequeueReusableCell(
-        withIdentifier: OverviewDepositTableViewCell.kCellID,
-        for: indexPath
-      ) as! OverviewDepositTableViewCell
+      let cell = tableView.dequeueReusableCell(OverviewDepositTableViewCell.self, indexPath: indexPath)!
       if let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[safe: indexPath.row] {
         cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
         cell.updateCell(cellModel)
@@ -662,11 +628,7 @@ extension OverviewMainViewController: UITableViewDataSource {
         }
         return cell
       }
-        
-      let cell = tableView.dequeueReusableCell(
-        withIdentifier: OverviewLiquidityPoolCell.kCellID,
-        for: indexPath
-      ) as! OverviewLiquidityPoolCell
+      let cell = tableView.dequeueReusableCell(OverviewLiquidityPoolCell.self, indexPath: indexPath)!
       let key = self.viewModel.displayHeader.value[indexPath.section]
       if let viewModel = self.viewModel.displayLPDataSource.value[key.key]?[indexPath.row] {
         viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
@@ -674,10 +636,7 @@ extension OverviewMainViewController: UITableViewDataSource {
       }
       return cell
     case .nft:
-      let cell = tableView.dequeueReusableCell(
-        withIdentifier: OverviewNFTTableViewCell.kCellID,
-        for: indexPath
-      ) as! OverviewNFTTableViewCell
+      let cell = tableView.dequeueReusableCell(OverviewNFTTableViewCell.self, indexPath: indexPath)!
       if let key = self.viewModel.displayNFTHeader.value[safe: indexPath.section]?.collectibleName {
         if let viewModel = self.viewModel.displayNFTDataSource.value[key]?[indexPath.row] {
           cell.updateCell(viewModel)
@@ -794,11 +753,7 @@ extension OverviewMainViewController: UICollectionViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(
-      withReuseIdentifier: OverviewTotalInfoCell.cellID,
-      for: indexPath
-    ) as! OverviewTotalInfoCell
-    
+    let cell = collectionView.dequeueReusableCell(OverviewTotalInfoCell.self, indexPath: indexPath)!
     var totalValueString = ""
     if indexPath.row == 0 && self.viewModel.currentChain != .all {
       totalValueString = self.viewModel.displayTotalValue
@@ -834,4 +789,26 @@ extension OverviewMainViewController: UICollectionViewDataSource {
     
     return cell
   }
+}
+
+extension OverviewMainViewController: SkeletonTableViewDataSource, SkeletonTableViewDelegate {
+  
+  func showLoadingSkeleton() {
+    let gradient = SkeletonGradient(baseColor: UIColor.Kyber.cellBackground)
+    view.showAnimatedGradientSkeleton(usingGradient: gradient)
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+    return OverviewSkeletonCell.className
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UITableView, skeletonCellForRowAt indexPath: IndexPath) -> UITableViewCell? {
+    let cell = skeletonView.dequeueReusableCell(OverviewSkeletonCell.self, indexPath: indexPath)
+    return cell
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 10
+  }
+  
 }
