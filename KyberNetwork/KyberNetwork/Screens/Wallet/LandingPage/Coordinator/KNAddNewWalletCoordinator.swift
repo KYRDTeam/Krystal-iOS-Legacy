@@ -95,6 +95,15 @@ class KNAddNewWalletCoordinator: Coordinator {
     MixPanelManager.track("add_watch_wallet_pop_up_open", properties: ["screenid": "add_watch_wallet_pop_up"])
   }
   
+  func showCreateWalletWalletPopup(_ address: KAddress? = nil, container: UIViewController) {
+    let viewModel = AddWatchWalletViewModel()
+    viewModel.address = address
+    let controller = AddWatchWalletViewController(viewModel: viewModel)
+    controller.delegate = self
+    container.present(controller, animated: true, completion: nil)
+    MixPanelManager.track("add_watch_wallet_pop_up_open", properties: ["screenid": "add_watch_wallet_pop_up"])
+  }
+  
   func didImportWallet(wallet: KWallet, chain: ChainType) {
     self.newWallet = wallet
     // Check if first wallet

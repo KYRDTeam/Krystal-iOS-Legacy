@@ -214,7 +214,7 @@ class KNListWalletsViewController: KNBaseViewController {
   }
 
   @IBAction func addButtonPressed(_ sender: Any) {
-    self.delegate?.listWalletsViewController(self, run: .addWallet(type: .full))
+    self.delegate?.listWalletsViewController(self, run: .addWallet(type: viewModel.isWatchWalletsTabSelecting ? .watch : .full))
     MixPanelManager.track("manage_wallet_import", properties: ["screenid": "manage_wallet"])
   }
 

@@ -226,6 +226,11 @@ extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
     }
   }
   
+  func didSelectAddWatchWallet() {
+    let container = self.presentedViewController == nil ? self : self.presentedViewController
+    addWalletCoordinator.showCreateWalletWalletPopup(container: container!)
+  }
+  
   func didSelectWallet(wallet: KWallet, isCreatedFromBrowsing: Bool = false) {
     let addresses = WalletManager.shared.getAllAddresses(walletID: wallet.id)
     guard addresses.isNotEmpty else { return }
