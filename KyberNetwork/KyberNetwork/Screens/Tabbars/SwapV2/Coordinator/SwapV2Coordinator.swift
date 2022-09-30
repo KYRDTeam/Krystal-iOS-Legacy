@@ -55,6 +55,15 @@ class SwapV2Coordinator: NSObject, Coordinator {
     self.navigationController = UINavigationController(rootViewController: vc)
   }
   
+  func appCoordinatorShouldOpenExchangeForToken(_ token: Token, isReceived: Bool = false) {
+    self.navigationController.popToRootViewController(animated: true)
+    if isReceived {
+      self.rootViewController.viewModel.updateDestToken(token: token)
+    } else {
+      self.rootViewController.viewModel.updateSourceToken(token: token)
+    }
+  }
+  
   func openSwapConfirm(object: SwapObject) {
     let viewModel = SwapSummaryViewModel(swapObject: object)
     let swapSummaryVC = SwapSummaryViewController(viewModel: viewModel)
