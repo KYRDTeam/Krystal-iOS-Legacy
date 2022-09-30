@@ -589,11 +589,7 @@ extension OverviewMainViewController {
   }
   
   func summaryCell(indexPath: IndexPath) -> OverviewSummaryCell {
-    let cell = tableView.dequeueReusableCell(
-      withIdentifier: OverviewSummaryCell.kCellID,
-      for: indexPath
-    ) as! OverviewSummaryCell
-    
+    let cell = tableView.dequeueReusableCell(OverviewSummaryCell.self, indexPath: indexPath)!
     let chainModel = self.viewModel.summaryDataSource.value[indexPath.row]
     chainModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
     cell.updateCell(chainModel)
@@ -615,10 +611,7 @@ extension OverviewMainViewController {
     case .market, .favourite:
       return tokenInfoCell(indexPath: indexPath)
     case .supply:
-      let cell = tableView.dequeueReusableCell(
-        withIdentifier: OverviewDepositTableViewCell.kCellID,
-        for: indexPath
-      ) as! OverviewDepositTableViewCell
+      let cell = tableView.dequeueReusableCell(OverviewDepositTableViewCell.self, indexPath: indexPath)!
       if let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[safe: indexPath.row] {
         cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
         cell.updateCell(cellModel)
@@ -635,11 +628,7 @@ extension OverviewMainViewController {
         }
         return cell
       }
-        
-      let cell = tableView.dequeueReusableCell(
-        withIdentifier: OverviewLiquidityPoolCell.kCellID,
-        for: indexPath
-      ) as! OverviewLiquidityPoolCell
+      let cell = tableView.dequeueReusableCell(OverviewLiquidityPoolCell.self, indexPath: indexPath)!
       let key = self.viewModel.displayHeader.value[indexPath.section]
       if let viewModel = self.viewModel.displayLPDataSource.value[key.key]?[indexPath.row] {
         viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
@@ -647,10 +636,7 @@ extension OverviewMainViewController {
       }
       return cell
     case .nft:
-      let cell = tableView.dequeueReusableCell(
-        withIdentifier: OverviewNFTTableViewCell.kCellID,
-        for: indexPath
-      ) as! OverviewNFTTableViewCell
+      let cell = tableView.dequeueReusableCell(OverviewNFTTableViewCell.self, indexPath: indexPath)!
       if let key = self.viewModel.displayNFTHeader.value[safe: indexPath.section]?.collectibleName {
         if let viewModel = self.viewModel.displayNFTDataSource.value[key]?[indexPath.row] {
           cell.updateCell(viewModel)
@@ -767,11 +753,7 @@ extension OverviewMainViewController: UICollectionViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(
-      withReuseIdentifier: OverviewTotalInfoCell.cellID,
-      for: indexPath
-    ) as! OverviewTotalInfoCell
-    
+    let cell = collectionView.dequeueReusableCell(OverviewTotalInfoCell.self, indexPath: indexPath)!
     var totalValueString = ""
     if indexPath.row == 0 && self.viewModel.currentChain != .all {
       totalValueString = self.viewModel.displayTotalValue
