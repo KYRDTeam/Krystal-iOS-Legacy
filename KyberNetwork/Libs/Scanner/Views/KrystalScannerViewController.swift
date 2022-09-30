@@ -99,7 +99,7 @@ class KrystalScannerViewController: UIViewController {
   }
   
   @IBAction func closeWasTapped(_ sender: Any) {
-    navigationController?.popViewController(animated: true)
+    dismiss(animated: true)
   }
   
   func setupViews() {
@@ -377,6 +377,7 @@ extension KrystalScannerViewController: AVCaptureVideoDataOutputSampleBufferDele
         if scanMode == .text && (type == .solPrivateKey || type == .solPublicKey || type == .promotionCode) {
           continue
         } else {
+          captureSession.stopRunning()
           handleValidResult(text: ScannerUtils.formattedText(text: text, forType: type), type: type)
           break
         }
@@ -386,11 +387,9 @@ extension KrystalScannerViewController: AVCaptureVideoDataOutputSampleBufferDele
   
   func handleValidResult(text: String, type: ScanResultType) {
     DispatchQueue.main.async {
-      self.captureSession.stopRunning()
-      self.navigationController?.popViewController(animated: true, completion: { [weak self] in
-        self?.onScanSuccess?(text, type)
-      })
-      
+      self.dismiss(animated: true) {
+        self.onScanSuccess?(text, type)
+      }
     }
   }
   

@@ -1111,10 +1111,6 @@ class EarnSwapViewController: InAppBrowsingViewController, AbstractEarnViewContr
     self.navigationDelegate?.viewControllerDidSelectHistory(self)
   }
 
-  @IBAction func walletsButtonTapped(_ sender: UIButton) {
-    self.navigationDelegate?.viewControllerDidSelectWallets(self)
-  }
-
   @IBAction func revertRateButtonTapped(_ sender: UIButton) {
     self.viewModel.showingRevertRate = !self.viewModel.showingRevertRate
     self.updateExchangeRateField()

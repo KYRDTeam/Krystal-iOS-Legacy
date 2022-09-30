@@ -12,7 +12,6 @@ import Result
 
 struct SwapV2ViewModelActions {
   var onSelectSwitchChain: () -> ()
-  var onSelectSwitchWallet: () -> ()
   var onSelectOpenHistory: () -> ()
   var openSwapConfirm: (SwapObject) -> ()
   var openApprove: (_ token: TokenObject, _ amount: BigInt) -> ()
@@ -511,10 +510,6 @@ extension SwapV2ViewModel {
   
   func didTapChainButton() {
     actions.onSelectSwitchChain()
-  }
-  
-  func didTapWalletButton() {
-    actions.onSelectSwitchWallet()
   }
   
   func didTapHistoryButton() {

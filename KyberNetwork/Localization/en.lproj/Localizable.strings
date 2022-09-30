@@ -966,3 +966,14 @@
 "x.mins.ago" = "%d minutes ago";
 "x.seconds.ago" = "%d seconds ago";
 "just.now" = "Just now";
+
+// Wallet Connect
+"wc.connecting.dapp" = "Connecting dApp...";
+"wc.connecting.failed" = "Connection failed";
+"wc.try.again" = "Try Again";
+"wc.connect" = "Connect";
+"wc.cancel" = "Cancel";
+"wc.connect.message" = "%@ is requesting to connect your wallet";
+"wc.disconnect" = "Disconnect";
+"wc.disconnect.confirm" = "Are you sure to disconnect from this dapp?";
+"wc.not.support.watch.wallet" = "You are using watch wallet";

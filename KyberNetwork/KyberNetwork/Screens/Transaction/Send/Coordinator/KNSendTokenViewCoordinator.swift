@@ -262,11 +262,6 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       self.gasPriceSelector = vc
     case .openHistory:
       self.delegate?.sendTokenViewCoordinatorSelectOpenHistoryList()
-    case .openWalletsList:
-      let viewModel = WalletsListViewModel()
-      let walletsList = WalletsListViewController(viewModel: viewModel)
-      walletsList.delegate = self
-      self.navigationController.present(walletsList, animated: true, completion: nil)
     case .sendNFT(item: let item, category: let category, gasPrice: let gasPrice, gasLimit: let gasLimit, to: let to, amount: let amount, ens: let ens, isERC721: let isSupportERC721, advancedGasLimit: let advancedGasLimit, advancedPriorityFee: let advancedPriorityFee, advancedMaxFee: let advancedMaxFee, advancedNonce: let advancedNonce):
       let vm = ConfirmSendNFTViewModel(nftItem: item, nftCategory: category, gasPrice: gasPrice, gasLimit: gasLimit, address: to, ens: ens, amount: amount, supportERC721: isSupportERC721, advancedGasLimit: advancedGasLimit, advancedMaxPriorityFee: advancedPriorityFee, advancedMaxFee: advancedMaxFee, advancedNonce: advancedNonce)
       let vc = ConfirmSendNFTViewController(viewModel: vm)
@@ -689,59 +684,6 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       self.navigationController.showTopBannerView(message: message)
     default:
       break
-    }
-  }
-}
-
-extension KNSendTokenViewCoordinator: WalletsListViewControllerDelegate {
-  func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
-    switch event {
-    case .connectWallet:
-      let qrcode = QRCodeReaderViewController()
-      qrcode.delegate = self
-      self.navigationController.present(qrcode, animated: true, completion: nil)
-    case .manageWallet:
-      self.delegate?.sendTokenCoordinatorDidSelectManageWallet()
-    case .didSelect(let address):
-      return
-    case .addWallet:
-      self.delegate?.sendTokenCoordinatorDidSelectAddWallet()
-    }
-  }
-}
-
-extension KNSendTokenViewCoordinator: QRCodeReaderDelegate {
-  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
-    reader.dismiss(animated: true, completion: nil)
-  }
-
-  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
-    reader.dismiss(animated: true) {
-      guard let url = WCURL(result) else {
-        self.navigationController.showTopBannerView(
-          with: Strings.invalidSession,
-          message: Strings.invalidSessionTryOtherQR,
-          time: 1.5
-        )
-        return
-      }
-
-      do {
-        let privateKey = try WalletManager.shared.exportPrivateKey(address: self.currentAddress)
-        DispatchQueue.main.async {
-          let controller = KNWalletConnectViewController(
-            wcURL: url,
-            pk: privateKey
-          )
-          self.navigationController.present(controller, animated: true, completion: nil)
-        }
-      } catch {
-        self.navigationController.showTopBannerView(
-          with: Strings.privateKeyError,
-          message: Strings.canNotGetPrivateKey,
-          time: 1.5
-        )
-      }
     }
   }
 }

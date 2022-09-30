@@ -121,10 +121,9 @@ class PromoCodeListViewController: KNBaseViewController {
   }
   
   @IBAction func scanWasTapped(_ sender: Any) {
-    guard let nav = self.navigationController else { return }
     ScannerModule.start(
       previousScreen: .explore,
-      navigationController: nav,
+      viewController: self,
       acceptedResultTypes: [.promotionCode],
       scanModes: [.qr]
     ) { [weak self] text, type in

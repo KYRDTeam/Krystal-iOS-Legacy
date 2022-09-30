@@ -147,7 +147,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
       }
     }()
     ScannerModule.start(previousScreen: ScreenName.importWallet,
-                        navigationController: navigation,
+                        viewController: self,
                         acceptedResultTypes: acceptedResultTypes,
                         defaultScanMode: scanModes.contains(.text) ? .text : .qr,
                         scanModes: scanModes) { [weak self] privateKey, _ in

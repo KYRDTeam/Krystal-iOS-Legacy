@@ -595,6 +595,8 @@
 		A63A88AA282D128400C6C373 /* AddWatchWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63A88A9282D128300C6C373 /* AddWatchWalletViewModel.swift */; };
 		A646E86C28E58B59007591FC /* OverviewSkeletonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646E86A28E58B59007591FC /* OverviewSkeletonCell.swift */; };
 		A646E86D28E58B59007591FC /* OverviewSkeletonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A646E86B28E58B59007591FC /* OverviewSkeletonCell.xib */; };
+		A646E87828E5AD87007591FC /* WalletConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646E87628E5AD87007591FC /* WalletConnectViewController.swift */; };
+		A646E87928E5AD87007591FC /* WalletConnectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A646E87728E5AD87007591FC /* WalletConnectViewController.xib */; };
 		A64CC665289405B8006BA1C6 /* Web3Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64CC664289405B8006BA1C6 /* Web3Factory.swift */; };
 		A64E17B5281932C400ED6E6D /* PendingTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B3281932C400ED6E6D /* PendingTransactionListViewController.swift */; };
 		A64E17B6281932C400ED6E6D /* PendingTransactionListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A64E17B4281932C400ED6E6D /* PendingTransactionListViewController.xib */; };
@@ -1818,6 +1820,8 @@
 		A63A88A9282D128300C6C373 /* AddWatchWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWatchWalletViewModel.swift; sourceTree = "<group>"; };
 		A646E86A28E58B59007591FC /* OverviewSkeletonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewSkeletonCell.swift; sourceTree = "<group>"; };
 		A646E86B28E58B59007591FC /* OverviewSkeletonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewSkeletonCell.xib; sourceTree = "<group>"; };
+		A646E87628E5AD87007591FC /* WalletConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectViewController.swift; sourceTree = "<group>"; };
+		A646E87728E5AD87007591FC /* WalletConnectViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletConnectViewController.xib; sourceTree = "<group>"; };
 		A64CC664289405B8006BA1C6 /* Web3Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3Factory.swift; sourceTree = "<group>"; };
 		A64E17B3281932C400ED6E6D /* PendingTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactionListViewController.swift; sourceTree = "<group>"; };
 		A64E17B4281932C400ED6E6D /* PendingTransactionListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PendingTransactionListViewController.xib; sourceTree = "<group>"; };
@@ -6357,6 +6361,8 @@
 			children = (
 				C6FE417F2383A0C10096AAD8 /* KNWalletConnectViewController.swift */,
 				C6FE41802383A0C10096AAD8 /* KNWalletConnectViewController.xib */,
+				A646E87628E5AD87007591FC /* WalletConnectViewController.swift */,
+				A646E87728E5AD87007591FC /* WalletConnectViewController.xib */,
 			);
 			path = WalletConnect;
 			sourceTree = "<group>";
@@ -6747,6 +6753,7 @@
 				2542605021218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib in Resources */,
 				A66EC31B287D258100D15FE0 /* TxListHeaderCell.xib in Resources */,
 				250EE8E32221A40800121138 /* KNShowBackUpDataViewController.xib in Resources */,
+				A646E87928E5AD87007591FC /* WalletConnectViewController.xib in Resources */,
 				A69813E528E1BC230054F3E5 /* NotificationDetailViewController.xib in Resources */,
 				C322EB0C25B1A3D8009746FB /* CreateWalletMenuViewController.xib in Resources */,
 				25073D1B211AF20D00833C92 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
@@ -8020,6 +8027,7 @@
 				A685D4AD2849FC870066E177 /* AppEventCenter.swift in Sources */,
 				7EC4C6EF2716BDB800486C00 /* RewardCoordinator.swift in Sources */,
 				A6CC317E2877F06800891200 /* ScanMode.swift in Sources */,
+				A646E87828E5AD87007591FC /* WalletConnectViewController.swift in Sources */,
 				C337E15827742EC8001C8B03 /* EthTypedData.swift in Sources */,
 				C36C5C7026AEC4BB00A3711C /* Overview.swift in Sources */,
 				2502AC1D20947840007F23CD /* KNWalletStorage.swift in Sources */,

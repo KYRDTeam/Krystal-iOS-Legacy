@@ -11,7 +11,7 @@ import AVFoundation
 class ScannerModule {
   
   static func start(previousScreen: ScreenName,
-                    navigationController: UINavigationController,
+                    viewController: UIViewController,
                     acceptedResultTypes: [ScanResultType] = ScanResultType.allCases,
                     defaultScanMode: ScanMode = .qr,
                     scanModes: [ScanMode] = [.qr, .text],
@@ -33,7 +33,9 @@ class ScannerModule {
       vc.defaultScanMode = defaultScanMode
       vc.availableScanModes = scanModes
       vc.hidesBottomBarWhenPushed = true
-      navigationController.pushViewController(vc, animated: true)
+      vc.modalPresentationStyle = .fullScreen
+      
+      viewController.present(vc, animated: true)
     }
     
     switch AVCaptureDevice.authorizationStatus(for: .video) {
@@ -50,7 +52,7 @@ class ScannerModule {
         }
       }
     case .denied:
-      _ = KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: navigationController)
+      _ = KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: viewController)
     case .restricted:
       return
     }

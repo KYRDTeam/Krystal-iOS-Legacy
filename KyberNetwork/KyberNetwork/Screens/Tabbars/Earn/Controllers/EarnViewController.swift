@@ -708,10 +708,6 @@ class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler
     self.navigationDelegate?.viewControllerDidSelectHistory(self)
   }
   
-  @IBAction func walletsButtonTapped(_ sender: UIButton) {
-    self.navigationDelegate?.viewControllerDidSelectWallets(self)
-  }
-  
   @IBAction func approveButtonTapped(_ sender: UIButton) {
     guard let remain = self.viewModel.remainApprovedAmount else {
       return
