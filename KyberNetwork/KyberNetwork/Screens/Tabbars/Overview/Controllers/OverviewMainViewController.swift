@@ -502,7 +502,7 @@ extension OverviewMainViewController {
       cell.action = {
         self.delegate?.overviewMainViewController(self, run: .buyCrypto)
       }
-      cell.button1.isHidden = !FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
+      cell.button1.isHidden = false
       cell.button2.isHidden = true
     case .favourite:
       cell.imageIcon.image = Images.emptyFavToken
