@@ -278,11 +278,11 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         acceptedResultTypes.append(contentsOf: [.solPublicKey, .solPrivateKey])
         scanModes = [.qr]
       }
-      ScannerModule.start(previousScreen: ScreenName.explore, navigationController: navigationController, acceptedResultTypes: acceptedResultTypes, scanModes: scanModes) { [weak self] text, type in
+      ScannerModule.start(previousScreen: ScreenName.explore, viewController: rootViewController, acceptedResultTypes: acceptedResultTypes, scanModes: scanModes) { [weak self] text, type in
         guard let self = self else { return }
         switch type {
         case .walletConnect:
-          self.handleWalletConnectURI(text)
+          AppEventCenter.shared.didScanWalletConnect(address: self.currentAddress, url: text)
         case .ethPublicKey:
           self.openSendTokenView(recipientAddress: text)
 
@@ -320,33 +320,6 @@ extension InvestCoordinator: InvestViewControllerDelegate {
     MixPanelManager.track("promotion_open", properties: ["screenid": "promotion"])
   }
   
-  func handleWalletConnectURI(_ result: String, disconnectAfterDisappear: Bool = true) {
-    guard let url = WCURL(result) else {
-      self.navigationController.showTopBannerView(
-        with: Strings.invalidSession,
-        message: Strings.invalidSessionTryOtherQR,
-        time: 1.5
-      )
-      return
-    }
-    
-    do {
-      let privateKey = try WalletManager.shared.exportPrivateKey(address: AppDelegate.session.address)
-      DispatchQueue.main.async {
-        let controller = KNWalletConnectViewController(
-          wcURL: url,
-          pk: privateKey
-        )
-        self.navigationController.present(controller, animated: true, completion: nil)
-      }
-    } catch {
-      self.navigationController.showTopBannerView(
-        with: Strings.privateKeyError,
-        message: Strings.canNotGetPrivateKey,
-        time: 1.5
-      )
-    }
-  }
 }
 
 extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {

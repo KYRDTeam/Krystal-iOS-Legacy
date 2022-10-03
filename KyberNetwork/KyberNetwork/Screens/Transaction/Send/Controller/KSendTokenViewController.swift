@@ -21,7 +21,6 @@ enum KSendTokenViewEvent {
   case openContactList
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case openHistory
-  case openWalletsList
   case sendNFT(item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, to: String, amount: Int, ens: String?, isERC721: Bool, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case estimateGasLimitTransferNFT(to: String, item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, amount: Int, isERC721: Bool)
   case openMultiSend
@@ -99,8 +98,10 @@ class KSendTokenViewController: InAppBrowsingViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    
     self.addressTextField.setupCustomDeleteIcon()
     self.amountTextField.setupCustomDeleteIcon()
+    self.setupDelegates()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -129,9 +130,7 @@ class KSendTokenViewController: InAppBrowsingViewController {
     self.view.endEditing(true)
   }
   
-  override func setupDelegates() {
-    super.setupDelegates()
-    
+  func setupDelegates() {
     scanAddressQRDelegate = KQRCodeReaderDelegate(onResult: { result in
       let address: String = {
         if result.count < 42 { return result }

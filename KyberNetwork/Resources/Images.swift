@@ -76,4 +76,8 @@ struct Images {
   static let chainAuroraSquare = UIImage(named: "chain_aurora_square")!
   static let chainSolanaSquare = UIImage(named: "chain_solana_square")!
   static let chainKlaytnSquare = UIImage(named: "chain_klaytn_square")!
+  
+  // Wallet connect
+  static let connectSuccess = UIImage(named: "connect_success")!
+  static let connectFailed = UIImage(named: "connect_fail")!
 }

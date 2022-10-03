@@ -7,7 +7,6 @@
 
 import UIKit
 import KrystalWallets
-import QRCodeReaderViewController
 import WalletConnectSwift
 
 class WalletListV2ViewModel {
@@ -112,9 +111,15 @@ class WalletListV2ViewController: KNBaseViewController {
   }
 
   @IBAction func connectWalletButtonTapped(_ sender: UIButton) {
-    let qrcode = QRCodeReaderViewController()
-    qrcode.delegate = self
-    self.present(qrcode, animated: true, completion: nil)
+    ScannerModule.start(previousScreen: ScreenName.explore, viewController: self, acceptedResultTypes: [.walletConnect], scanModes: [.qr]) { [weak self] text, type in
+      guard let self = self else { return }
+      switch type {
+      case .walletConnect:
+        AppEventCenter.shared.didScanWalletConnect(address: self.currentAddress, url: text)
+      default:
+        return
+      }
+    }
   }
   
   @IBAction func addWalletButtonTapped(_ sender: Any) {
@@ -256,40 +261,5 @@ extension WalletListV2ViewController: UITableViewDelegate {
       return view
     }
     return nil
-  }
-}
-
-extension WalletListV2ViewController: QRCodeReaderDelegate {
-  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
-    reader.dismiss(animated: true, completion: nil)
-  }
-
-  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
-    reader.dismiss(animated: true) {
-      guard let url = WCURL(result) else {
-        self.showTopBannerView(
-          with: Strings.invalidSession,
-          message: Strings.invalidSessionTryOtherQR,
-          time: 1.5
-        )
-        return
-      }
-      do {
-        let privateKey = try WalletManager.shared.exportPrivateKey(address: self.currentAddress)
-        DispatchQueue.main.async {
-          let controller = KNWalletConnectViewController(
-            wcURL: url,
-            pk: privateKey
-          )
-          self.present(controller, animated: true, completion: nil)
-        }
-      } catch {
-        self.showTopBannerView(
-          with: Strings.privateKeyError,
-          message: Strings.canNotGetPrivateKey,
-          time: 1.5
-        )
-      }
-    }
   }
 }
