@@ -33,9 +33,6 @@ class SwapV2Coordinator: NSObject, Coordinator {
         onSelectSwitchChain: {
           self.openSwitchChain()
         },
-        onSelectSwitchWallet: {
-          self.openSwitchWallet()
-        },
         onSelectOpenHistory: {
           self.openTransactionHistory()
         },
@@ -123,70 +120,6 @@ class SwapV2Coordinator: NSObject, Coordinator {
     self.rootViewController.present(popup, animated: true, completion: nil)
   }
   
-  func openSwitchWallet() {
-    let viewModel = WalletsListViewModel()
-    let walletsList = WalletsListViewController(viewModel: viewModel)
-    walletsList.delegate = self
-    self.navigationController.present(walletsList, animated: true, completion: nil)
-  }
-  
-  func openWalletConnect() {
-    let qrcode = QRCodeReaderViewController()
-    qrcode.delegate = self
-    self.navigationController.present(qrcode, animated: true, completion: nil)
-  }
-  
-}
-
-extension SwapV2Coordinator: WalletsListViewControllerDelegate {
-  func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
-    switch event {
-    case .connectWallet:
-      self.openWalletConnect()
-    case .manageWallet:
-      self.delegate?.swapV2CoordinatorDidSelectManageWallets()
-    case .didSelect:
-      return
-    case .addWallet:
-      self.delegate?.swapV2CoordinatorDidSelectAddWallet()
-    }
-  }
-}
-
-extension SwapV2Coordinator: QRCodeReaderDelegate {
-  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
-    reader.dismiss(animated: true, completion: nil)
-  }
-
-  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
-    reader.dismiss(animated: true) {
-      guard let url = WCURL(result) else {
-        self.navigationController.showTopBannerView(
-          with: Strings.invalidSession,
-          message: Strings.invalidSessionTryOtherQR,
-          time: 1.5
-        )
-        return
-      }
-      do {
-        let currentAddress = self.rootViewController.viewModel.currentAddress.value
-        let privateKey = try WalletManager.shared.exportPrivateKey(address: currentAddress)
-        DispatchQueue.main.async {
-          let controller = KNWalletConnectViewController(
-            wcURL: url,
-            pk: privateKey
-          )
-          self.navigationController.present(controller, animated: true, completion: nil)
-        }
-      } catch {
-        self.navigationController.showTopBannerView(
-          with: Strings.privateKeyError,
-          message: Strings.canNotGetPrivateKey,
-          time: 1.5
-        )
-      }
-    }
-  }
 }
 
 extension SwapV2Coordinator: KNHistoryCoordinatorDelegate {
