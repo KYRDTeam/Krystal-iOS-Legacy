@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class SearchTokenViewController: KNBaseViewController {
 
@@ -38,7 +39,6 @@ class SearchTokenViewController: KNBaseViewController {
     self.viewModel = viewModel
     super.init(nibName: SearchTokenViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
-    self.viewModel.controller = self
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -51,16 +51,21 @@ class SearchTokenViewController: KNBaseViewController {
     self.viewModel.getCommonBaseToken {
       self.collectionView.reloadData()
     }
-    
-    self.viewModel.fetchDataFromAPI(query: "", orderBy: self.orderBy) {
-      self.reloadUI()
+    self.showLoading()
+    self.viewModel.fetchDataFromAPI(query: "", orderBy: self.orderBy) { [weak self] in
+      self?.hideLoading()
+      self?.reloadUI()
     }
     MixPanelManager.track("search_open", properties: ["screenid": "search"])
   }
   
   func setupUI() {
-    self.searchField.setPlaceholder(text: Strings.findTokenByNameSymbolAddress, color: UIColor(named: "normalTextColor")!)
+    self.view.isUserInteractionDisabledWhenSkeletonIsActive = false
+    self.searchField.setPlaceholder(text: Strings.findTokenByNameSymbolAddress, color: .Kyber.normalText)
     self.tableView.registerCellNib(SearchTokenViewCell.self)
+    self.tableView.registerCellNib(OverviewSkeletonCell.self)
+    self.tableView.tableHeaderView = .init(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
+    self.tableView.sectionHeaderHeight = 0
     self.collectionView.registerCellNib(CommonBaseTokenCell.self)
     self.collectionViewHeight.constant = 40 * 2 + 16
   }
@@ -102,8 +107,10 @@ class SearchTokenViewController: KNBaseViewController {
   @IBAction func onSearchButtonTapped(_ sender: Any) {
     if self.topView.isHidden {
       searchField.text = ""
-      self.viewModel.fetchDataFromAPI(query: "", orderBy: self.orderBy) {
-        self.reloadUI()
+      self.showLoading()
+      self.viewModel.fetchDataFromAPI(query: "", orderBy: self.orderBy) { [weak self] in
+        self?.hideLoading()
+        self?.reloadUI()
       }
     } else {
       self.updateUIStartSearchingMode()
@@ -117,8 +124,10 @@ class SearchTokenViewController: KNBaseViewController {
   func disableSearch() {
     searchField.text = ""
     updateUIEndSearchingMode()
-    self.viewModel.fetchDataFromAPI(query: "", orderBy: self.orderBy) {
-      self.reloadUI()
+    showLoading()
+    self.viewModel.fetchDataFromAPI(query: "", orderBy: self.orderBy) { [weak self] in
+      self?.hideLoading()
+      self?.reloadUI()
     }
   }
 }
@@ -142,14 +151,17 @@ extension SearchTokenViewController: UITextFieldDelegate {
   
   @objc func doSearch() {
     if let text = self.searchField.text {
+      self.showLoading()
       self.viewModel.fetchDataFromAPI(query: text, orderBy: self.orderBy) {
+        self.hideLoading()
         self.reloadUI()
       }
     }
   }
 }
 
-extension SearchTokenViewController: UITableViewDataSource {
+extension SearchTokenViewController {
+  
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self.viewModel.numberOfSearchTokens()
   }
@@ -217,4 +229,30 @@ extension SearchTokenViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
       return collectionViewCellPadding
   }
+}
+
+extension SearchTokenViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
+  
+  func showLoading() {
+    let gradient = SkeletonGradient(baseColor: UIColor.Kyber.cellBackground)
+    view.showAnimatedGradientSkeleton(usingGradient: gradient)
+  }
+  
+  func hideLoading() {
+    view.hideSkeleton()
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 10
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UITableView, skeletonCellForRowAt indexPath: IndexPath) -> UITableViewCell? {
+    let cell = skeletonView.dequeueReusableCell(OverviewSkeletonCell.self, indexPath: indexPath)!
+    return cell
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+    return OverviewSkeletonCell.className
+  }
+  
 }
