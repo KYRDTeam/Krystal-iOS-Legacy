@@ -88,7 +88,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
     super.viewDidLoad()
     
     tabBarItem.accessibilityIdentifier = "menuSwap"
-    
+    viewModel.appDidSwitchChain()
     configureViews()
     resetViews()
     bindViewModel()
@@ -108,7 +108,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
     timer?.invalidate()
     timer = nil
   }
-  
+
   func configureViews() {
     setupButtons()
     setupAnimation()
