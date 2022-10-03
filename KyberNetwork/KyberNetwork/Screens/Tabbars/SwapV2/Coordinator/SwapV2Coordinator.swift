@@ -24,7 +24,7 @@ class SwapV2Coordinator: NSObject, Coordinator {
   var navigationController: UINavigationController!
   weak var delegate: SwapV2CoordinatorDelegate?
   var historyCoordinator: Coordinator?
-  
+  private let swapRepository = SwapRepository()
   func start() {
     let vc = SwapV2ViewController.instantiateFromNib()
     let viewModel = SwapV2ViewModel(
@@ -297,13 +297,52 @@ extension SwapV2Coordinator {
       // there are no new address then show swap screen
       self.updateToken(sourceToken: fromToken.toToken(), destToken: toToken.toToken())
     } else if isFromDeepLink {
-      self.navigationController.popToRootViewController(animated: false)
+      self.getTokenDetailInfo(sourceAddress: srcTokenAddress, destAddress: destTokenAddress) { sourceToken, destToken in
+        self.updateToken(sourceToken: sourceToken, destToken: destToken)
+      }
     }
   }
   
-  func updateToken(sourceToken: Token, destToken: Token) {
-    self.rootViewController.viewModel.updateSourceToken(token: sourceToken)
-    self.rootViewController.viewModel.updateDestToken(token: destToken)
+  func updateToken(sourceToken: Token?, destToken: Token?) {
+    if let sourceToken = sourceToken {
+      self.rootViewController.viewModel.updateSourceToken(token: sourceToken)
+    }
+    if let destToken = destToken {
+      self.rootViewController.viewModel.updateDestToken(token: destToken)
+    }
   }
 
+  func getTokenDetailInfo(sourceAddress: String?, destAddress: String?, completion: @escaping (_ sourceToken: Token?, _ destToken: Token?) -> Void) {
+    var sourceToken: Token?
+    var destToken: Token?
+    
+    let group = DispatchGroup()
+    self.rootViewController.showLoadingHUD()
+    if let sourceAddress = sourceAddress {
+      group.enter()
+      self.swapRepository.getTokenDetail(tokenAddress: sourceAddress) { token in
+        group.leave()
+        if let token = token {
+          sourceToken = Token(name: token.name, symbol: token.symbol, address: token.address, decimals: token.decimals, logo: token.logo)
+        }
+      }
+    }
+    
+    if let destAddress = destAddress {
+      group.enter()
+      self.swapRepository.getTokenDetail(tokenAddress: destAddress) { token in
+        group.leave()
+        if let token = token {
+          destToken = Token(name: token.name, symbol: token.symbol, address: token.address, decimals: token.decimals, logo: token.logo)
+        }
+      }
+    }
+    
+    group.notify(queue: .main) {
+      DispatchQueue.main.async {
+        self.rootViewController.hideLoading()
+      }
+      completion(sourceToken, destToken)
+    }
+  }
 }
