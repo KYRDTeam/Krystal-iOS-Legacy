@@ -23,7 +23,6 @@ class SwapV2Coordinator: NSObject, Coordinator {
   var rootViewController: SwapV2ViewController!
   var navigationController: UINavigationController!
   weak var delegate: SwapV2CoordinatorDelegate?
-  
   var historyCoordinator: Coordinator?
   
   func start() {
@@ -241,4 +240,70 @@ extension SwapV2Coordinator: ApproveTokenViewControllerDelegate {
     
   }
   
+}
+
+extension SwapV2Coordinator {
+  func appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: String?, destTokenAddress: String?, chainIdString: String?) {
+    // default swap screen
+    self.navigationController.tabBarController?.selectedIndex = 1
+    self.navigationController.popToRootViewController(animated: false)
+    guard let chainIdString = chainIdString else {
+      return
+    }
+
+    let chainId = Int(chainIdString) ?? AllChains.ethMainnetPRC.chainID
+    //switch chain if need
+    if KNGeneralProvider.shared.customRPC.chainID != chainId {
+      let chain = ChainType.make(chainID: chainId) ?? .eth
+      self.rootViewController.showSwitchChainAlert(chain, "Please switch to \(chain.chainName()) to swap".toBeLocalised()) {
+        self.prepareTokensForSwap(srcTokenAddress: srcTokenAddress, destTokenAddress: destTokenAddress, chainId: chainId, isFromDeepLink: true)
+      }
+    } else {
+      self.prepareTokensForSwap(srcTokenAddress: srcTokenAddress, destTokenAddress: destTokenAddress, chainId: chainId, isFromDeepLink: true)
+    }
+  }
+
+  func prepareTokensForSwap(srcTokenAddress: String?, destTokenAddress: String?, chainId: Int, isFromDeepLink: Bool = false) {
+    // default token
+    var fromToken = KNGeneralProvider.shared.currentChain.quoteTokenObject()
+    var toToken = KNGeneralProvider.shared.currentChain.defaultToSwapToken()
+
+    var newAddress: [String] = []
+    guard let srcTokenAddress = srcTokenAddress, let destTokenAddress = destTokenAddress else {
+      self.updateToken(sourceToken: fromToken.toToken(), destToken: toToken.toToken())
+      return
+    }
+
+    let isValidSrcAddress = KNGeneralProvider.shared.isAddressValid(address: srcTokenAddress)
+    let isValidDestTokenAddress = KNGeneralProvider.shared.isAddressValid(address: destTokenAddress)
+    
+    guard isValidSrcAddress, isValidDestTokenAddress else {
+      self.updateToken(sourceToken: fromToken.toToken(), destToken: toToken.toToken())
+      return
+    }
+    // in case can get token with given address
+    if let token = KNSupportedTokenStorage.shared.get(forPrimaryKey: srcTokenAddress) {
+       fromToken = token
+    } else {
+       newAddress.append(srcTokenAddress)
+    }
+
+    if let token = KNSupportedTokenStorage.shared.get(forPrimaryKey: destTokenAddress) {
+      toToken = token
+    } else {
+      newAddress.append(destTokenAddress)
+    }
+    if newAddress.isEmpty {
+      // there are no new address then show swap screen
+      self.updateToken(sourceToken: fromToken.toToken(), destToken: toToken.toToken())
+    } else if isFromDeepLink {
+      self.navigationController.popToRootViewController(animated: false)
+    }
+  }
+  
+  func updateToken(sourceToken: Token, destToken: Token) {
+    self.rootViewController.viewModel.updateSourceToken(token: sourceToken)
+    self.rootViewController.viewModel.updateDestToken(token: destToken)
+  }
+
 }
