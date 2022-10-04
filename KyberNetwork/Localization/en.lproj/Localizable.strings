@@ -816,7 +816,7 @@
 "invalid.ens" = "Invalid address or your ens is not mapped yet";
 "add.watched.wallet" = "Add watched wallet";
 "edit.watched.wallet" = "Edit watched wallet";
-"dont.have.any.liquidity.pool" = "You don't have any liquidity pool tokens";
+"dont.have.any.liquidity.pool" = "You don’t own any liquidity pool tokens yet";
 "not.supply.any.token" = "You've not supplied any token to earn interest";
 "no.favorite.token.yet" = "No Favourite Token yet";
 "token.list.is.empty" = "Your token list is empty";
@@ -966,3 +966,14 @@
 "x.mins.ago" = "%d minutes ago";
 "x.seconds.ago" = "%d seconds ago";
 "just.now" = "Just now";
+
+// Wallet Connect
+"wc.connecting.dapp" = "Connecting dApp...";
+"wc.connecting.failed" = "Connection failed";
+"wc.try.again" = "Try Again";
+"wc.connect" = "Connect";
+"wc.cancel" = "Cancel";
+"wc.connect.message" = "%@ is requesting to connect your wallet";
+"wc.disconnect" = "Disconnect";
+"wc.disconnect.confirm" = "Are you sure to disconnect from this dapp?";
+"wc.not.support.watch.wallet" = "You are using watch wallet";

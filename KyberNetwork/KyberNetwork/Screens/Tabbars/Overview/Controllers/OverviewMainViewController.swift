@@ -346,8 +346,6 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   }
   
   @IBAction func scanWasTapped(_ sender: Any) {
-    guard let nav = self.navigationController else { return }
-    
     var acceptedResultTypes: [ScanResultType] = [.promotionCode]
     var scanModes: [ScanMode] = [.qr, .text]
     if KNGeneralProvider.shared.currentChain.isEVM {
@@ -357,7 +355,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
       acceptedResultTypes.append(contentsOf: [.solPublicKey, .solPrivateKey])
       scanModes = [.qr]
     }
-    ScannerModule.start(previousScreen: ScreenName.explore, navigationController: nav, acceptedResultTypes: acceptedResultTypes, scanModes: scanModes) { [weak self] text, type in
+    ScannerModule.start(previousScreen: ScreenName.explore, viewController: self, acceptedResultTypes: acceptedResultTypes, scanModes: scanModes) { [weak self] text, type in
       guard let self = self else { return }
       switch type {
       case .walletConnect:

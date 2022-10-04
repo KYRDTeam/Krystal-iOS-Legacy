@@ -18,7 +18,6 @@ import KrystalWallets
 //swiftlint:disable file_length
 protocol NavigationBarDelegate: class {
   func viewControllerDidSelectHistory(_ controller: KNBaseViewController)
-  func viewControllerDidSelectWallets(_ controller: KNBaseViewController)
 }
 
 protocol EarnCoordinatorDelegate: class {
@@ -1001,66 +1000,6 @@ extension EarnCoordinator: KNSearchTokenViewControllerDelegate {
 extension EarnCoordinator: NavigationBarDelegate {
   func viewControllerDidSelectHistory(_ controller: KNBaseViewController) {
     self.openHistoryScreen()
-  }
-  
-  func viewControllerDidSelectWallets(_ controller: KNBaseViewController) {
-    let viewModel = WalletsListViewModel()
-    let walletsList = WalletsListViewController(viewModel: viewModel)
-    walletsList.delegate = self
-    self.navigationController.present(walletsList, animated: true, completion: nil)
-  }
-}
-
-extension EarnCoordinator: WalletsListViewControllerDelegate {
-  func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
-    switch event {
-    case .connectWallet:
-      let qrcode = QRCodeReaderViewController()
-      qrcode.delegate = self
-      self.navigationController.present(qrcode, animated: true, completion: nil)
-    case .manageWallet:
-      self.delegate?.earnCoordinatorDidSelectManageWallet()
-    case .didSelect(let address):
-      return
-    case .addWallet:
-      self.delegate?.earnCoordinatorDidSelectAddWallet()
-    }
-  }
-}
-
-extension EarnCoordinator: QRCodeReaderDelegate {
-  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
-    reader.dismiss(animated: true, completion: nil)
-  }
-
-  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
-    reader.dismiss(animated: true) {
-      guard let url = WCURL(result) else {
-        self.navigationController.showTopBannerView(
-          with: Strings.invalidSession,
-          message: Strings.invalidSessionTryOtherQR,
-          time: 1.5
-        )
-        return
-      }
-
-      do {
-        let privateKey = try WalletManager.shared.exportPrivateKey(address: self.currentAddress)
-        DispatchQueue.main.async {
-          let controller = KNWalletConnectViewController(
-            wcURL: url,
-            pk: privateKey
-          )
-          self.navigationController.present(controller, animated: true, completion: nil)
-        }
-      } catch {
-        self.navigationController.showTopBannerView(
-          with: Strings.privateKeyError,
-          message: Strings.canNotGetPrivateKey,
-          time: 1.5
-        )
-      }
-    }
   }
 }
 

@@ -7,6 +7,7 @@
 
 import Foundation
 import KrystalWallets
+import WalletConnectSwift
 
 class AppEventCenter {
   
@@ -40,6 +41,19 @@ class AppEventCenter {
     notificationCenter.post(
       Notification(name: kAppDidChangeCurrentAddressData)
     )
+  }
+  
+  func didScanWalletConnect(address: KAddress, url: String) {
+    guard let wcURL = WCURL(url) else { return }
+    if address.isWatchWallet {
+      UIApplication.shared.topMostViewController()?.showTopBannerView(message: Strings.wcNotSupportWatchWallet)
+    } else {
+      let vc = WalletConnectViewController.instantiateFromNib()
+      vc.address = address
+      vc.url = wcURL
+      vc.modalPresentationStyle = .fullScreen
+      UIApplication.shared.topMostViewController()?.present(vc, animated: true)
+    }
   }
   
 }
