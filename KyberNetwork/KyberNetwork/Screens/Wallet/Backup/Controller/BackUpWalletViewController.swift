@@ -77,6 +77,7 @@ class BackUpWalletViewController: KNBaseViewController {
     revealView.isHidden = true
     seedView.isHidden = false
     continueButton.isHidden = false
+    MixPanelManager.track("backup_show", properties: ["screenid": "backup_paper"])
   }
 
   @IBAction func backButtonTapped(_ sender: Any) {
@@ -88,6 +89,7 @@ class BackUpWalletViewController: KNBaseViewController {
   @IBAction func copyButtonTapped(_ sender: Any) {
     UIPasteboard.general.string = viewModel.seeds.joined(separator: " ")
     self.showMessageWithInterval(message: Strings.copied)
+    MixPanelManager.track("backup_copy", properties: ["screenid": "backup_paper_show"])
   }
 
   @IBAction func continueButtonTapped(_ sender: Any) {
@@ -96,6 +98,7 @@ class BackUpWalletViewController: KNBaseViewController {
     confirmVC.seedStrings = viewModel.seeds
     confirmVC.walletId = viewModel.walletId
     self.show(confirmVC, sender: nil)
+    MixPanelManager.track("backup_continue", properties: ["screenid": "backup_paper_show"])
   }
 }
 

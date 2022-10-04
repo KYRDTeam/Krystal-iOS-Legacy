@@ -88,6 +88,11 @@ class InvestViewController: InAppBrowsingViewController {
     collectionView.reloadSections(.init(arrayLiteral: index))
   }
   
+  override func openWalletList() {
+    super.openWalletList()
+    MixPanelManager.track("xplore_select_wallet", properties: ["screenid": "explore"])
+  }
+  
   func coordinatorDidUpdateMarketingAssets(_ assets: [Asset]) {
     self.viewModel.partners.value = assets.filter { $0.type == .partner }
     self.viewModel.banners.value = assets.filter { $0.type == .banner }

@@ -61,9 +61,11 @@ class FinishCreateWalletViewController: KNBaseViewController {
 
   @IBAction func onContinueButtonTapped(_ sender: Any) {
     self.delegate?.finishCreateWalletViewController(self, run: .continueUseApp)
+    MixPanelManager.track("create_done_continue", properties: ["screenid": "create_wallet_done"])
   }
 
   @IBAction func onBackupWalletButtonTapped(_ sender: Any) {
     self.delegate?.finishCreateWalletViewController(self, run: .backup)
+    MixPanelManager.track("create_done_back_up_wallet", properties: ["screenid": "create_wallet_done"])
   }
 }
