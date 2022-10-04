@@ -129,10 +129,12 @@ extension KNBaseViewController {
 }
 
 extension UIViewController {
-  func showSwitchChainAlert(_ chain: ChainType, completion: @escaping () -> Void = {}) {
+  func showSwitchChainAlert(_ chain: ChainType,_ message: String? = nil, completion: @escaping () -> Void = {}) {
+    let msg = message ?? "Please switch to \(chain.chainName()) to continue".toBeLocalised()
+    
     let alertController = KNPrettyAlertController(
       title: "",
-      message: "Please switch to \(chain.chainName()) to continue".toBeLocalised(),
+      message: msg,
       secondButtonTitle: Strings.ok,
       firstButtonTitle: Strings.cancel,
       secondButtonAction: {

@@ -217,13 +217,13 @@ class ChartViewModel {
     ]
     var titleString = ""
     if let detailInfo = self.detailInfo {
-      titleString = "\(detailInfo.symbol.uppercased())"
+      titleString = detailInfo.symbol.isEmpty ? "\(self.token.symbol.uppercased())" : "\(detailInfo.symbol.uppercased())"
     } else {
       titleString = "\(self.token.symbol.uppercased())"
     }
     var subTitleString = ""
     if let detailInfo = self.detailInfo {
-      subTitleString = "\(detailInfo.name.uppercased())"
+      subTitleString = detailInfo.name.isEmpty ? "\(self.token.name.uppercased())" : "\(detailInfo.name.uppercased())"
     } else {
       subTitleString = "\(self.token.name.uppercased())"
     }
