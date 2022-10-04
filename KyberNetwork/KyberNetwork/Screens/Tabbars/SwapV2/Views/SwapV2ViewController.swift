@@ -88,7 +88,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
     super.viewDidLoad()
     
     tabBarItem.accessibilityIdentifier = "menuSwap"
-    
+    viewModel.appDidSwitchChain()
     configureViews()
     resetViews()
     bindViewModel()
@@ -108,7 +108,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
     timer?.invalidate()
     timer = nil
   }
-  
+
   func configureViews() {
     setupButtons()
     setupAnimation()
@@ -248,7 +248,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
         self?.sourceTextField.text = nil
         if let token = token {
           self?.sourceTokenIcon.isHidden = false
-          self?.sourceTokenIcon.setSymbolImage(symbol: token.symbol)
+          self?.sourceTokenIcon.setImage(urlString: token.logo, symbol: token.symbol)
         } else {
           self?.sourceTokenIcon.isHidden = true
           self?.sourceTokenLabel.text = Strings.selectToken
@@ -261,7 +261,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
         self?.destTokenLabel.text = token?.symbol
         if let token = token {
           self?.destTokenIcon.isHidden = false
-          self?.destTokenIcon.setSymbolImage(symbol: token.symbol)
+          self?.destTokenIcon.setImage(urlString: token.logo, symbol: token.symbol)
         } else {
           self?.destTokenIcon.isHidden = true
           self?.destTokenLabel.text = Strings.selectToken
