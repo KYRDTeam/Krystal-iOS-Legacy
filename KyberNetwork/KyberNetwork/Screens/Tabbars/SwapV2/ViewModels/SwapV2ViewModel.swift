@@ -153,6 +153,8 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     swapRepository.getTokenDetail(tokenAddress: sourceToken.address) { [weak self] token in
       if token?.address == sourceToken.address { // Needed to handle case swap pair
         self?.sourceTokenPrice.value = token?.markets["usd"]?.price
+      } else {
+        self?.sourceTokenPrice.value = nil
       }
     }
   }
