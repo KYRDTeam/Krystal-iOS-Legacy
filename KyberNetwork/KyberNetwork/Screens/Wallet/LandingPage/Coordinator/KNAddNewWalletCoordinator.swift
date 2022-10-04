@@ -232,7 +232,17 @@ extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
   }
 
   fileprivate func importNewWatchWallet(address: String, name: String?, isAdd: Bool = true) {
-    let currentChain = KNGeneralProvider.shared.currentChain
+    var currentChain = KNGeneralProvider.shared.currentChain
+    if KNGeneralProvider.shared.currentChain == .solana {
+      if address.has0xPrefix {
+        currentChain = .eth
+      }
+    } else {
+      if !address.has0xPrefix {
+        currentChain = .solana
+      }
+    }
+    
     do {
       let watchAddress = try WalletManager.shared.addWatchWallet(address: address, addressType: currentChain.addressType, name: name.whenNilOrEmpty(Strings.imported))
       if isAdd {
