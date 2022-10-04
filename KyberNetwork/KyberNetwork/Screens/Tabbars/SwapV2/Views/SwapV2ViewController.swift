@@ -276,7 +276,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
       let soureSymbol = sourceToken.symbol
       let decimals = sourceToken.decimals
       DispatchQueue.main.async {
-        self.sourceBalanceLabel.text = "\(NumberFormatUtils.amount(value: amount, decimals: decimals)) \(soureSymbol)"
+        self.sourceBalanceLabel.text = "\(NumberFormatUtils.balanceFormat(value: amount, decimals: decimals)) \(soureSymbol)"
       }
     }
     
@@ -287,7 +287,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
       let decimals = destToken.decimals
       let amount = balance ?? .zero
       DispatchQueue.main.async {
-        self.destBalanceLabel.text = "\(NumberFormatUtils.amount(value: amount, decimals: decimals)) \(destSymbol)"
+        self.destBalanceLabel.text = "\(NumberFormatUtils.balanceFormat(value: amount, decimals: decimals)) \(destSymbol)"
       }
     }
     

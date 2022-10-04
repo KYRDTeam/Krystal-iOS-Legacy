@@ -218,16 +218,14 @@ extension SlippageRateCell: UITextFieldDelegate {
     let shouldFocus = !text.isEmpty
     self.updateFocusForView(view: textField, isFocus: shouldFocus)
     let maxMinRatePercent: Double = 50.0
-    let stringFormatter = StringFormatter()
-    let value = stringFormatter.decimal(with: text)?.doubleValue
     
-    if let val = value {
-      self.cellModel.updateCurrentMinRate(val)
-      self.cellModel.updateMinRateType(.custom(value: val))
-      self.configSlippageUIByType(.custom(value: val))
-      textField.text = text + "%"
-      updateSlippageHintLabel()
-      self.cellModel.slippageChangedEvent(val)
-    }
+    let val = text.doubleValue
+    self.cellModel.updateCurrentMinRate(val)
+    self.cellModel.updateMinRateType(.custom(value: val))
+    self.configSlippageUIByType(.custom(value: val))
+    textField.text = text + "%"
+    updateSlippageHintLabel()
+    self.cellModel.slippageChangedEvent(val)
+    
   }
 }

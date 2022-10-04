@@ -82,7 +82,7 @@ class SwapSummaryViewController: KNBaseViewController {
     }
     sourceTokenValueLabel.text = viewModel.getSourceAmountUsdString()
     sourceTokenSymbolLabel.text = viewModel.swapObject.sourceToken.symbol
-    sourceTokenBalanceLabel.text = viewModel.swapObject.sourceAmount.shortString(decimals: viewModel.swapObject.sourceToken.decimals)
+    sourceTokenBalanceLabel.text = NumberFormatUtils.balanceFormat(value: viewModel.swapObject.sourceAmount, decimals: viewModel.swapObject.sourceToken.decimals)
     
     if let url = URL(string: viewModel.swapObject.destToken.logo) {
       destTokenLogo.setImage(with: url, placeholder: UIImage(named: "default_token")!)

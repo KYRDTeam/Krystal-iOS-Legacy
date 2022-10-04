@@ -80,11 +80,11 @@ class OverviewMainCellViewModel {
       }
       if let lendingBalance = balance as? LendingBalance {
         let balanceBigInt = BigInt(lendingBalance.supplyBalance) ?? BigInt(0)
-        let balanceString = balanceBigInt.string(decimals: lendingBalance.decimals, minFractionDigits: 0, maxFractionDigits: 5)
+        let balanceString = NumberFormatUtils.balanceFormat(value: balanceBigInt, decimals: lendingBalance.decimals)
         return "\(balanceString) \(lendingBalance.symbol)"
       } else if let distributionBalance = balance as? LendingDistributionBalance {
         let balanceBigInt = BigInt(distributionBalance.unclaimed) ?? BigInt(0)
-        let balanceString = balanceBigInt.string(decimals: distributionBalance.decimal, minFractionDigits: 0, maxFractionDigits: 5)
+        let balanceString = NumberFormatUtils.balanceFormat(value: balanceBigInt, decimals: distributionBalance.decimal)
         return "\(balanceString) \(distributionBalance.symbol)"
       } else {
         return ""
@@ -99,13 +99,13 @@ class OverviewMainCellViewModel {
     switch self.mode {
     case .market(token: let token, rightMode: let mode):
       let vol = token.getVol(self.currency)
-      return "Vol: " + self.formatPoints(vol)
+      return "Vol: " + NumberFormatUtils.volFormat(number: vol)
     case .asset(token: let token, rightMode: let mode):
       guard !self.hideBalanceStatus else {
         return "********"
       }
       let balanceBigInt = self.balance.bigInt ?? BigInt(0)
-      return balanceBigInt.string(decimals: token.decimals, minFractionDigits: 0, maxFractionDigits: min(token.decimals, 5))
+      return NumberFormatUtils.balanceFormat(value: balanceBigInt, decimals: token.decimals)
     case .supply(balance: let balance):
       if let lendingBalance = balance as? LendingBalance {
         let rateString = String(format: "%.2f", lendingBalance.supplyRate * 100)
@@ -125,8 +125,9 @@ class OverviewMainCellViewModel {
     case .market(token: let token, rightMode: let mode):
       let price = token.getTokenLastPrice(self.currency)
       let priceBigInt = BigInt(price * pow(10.0, 18.0))
-        let valueString = priceBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).displayRate(meaningNumber: 2)
+      let valueString = NumberFormatUtils.valueFormat(value: priceBigInt, decimals: 18, currencyMode: self.currency)
       return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
+
     case .asset(token: _, rightMode: let mode):
       guard !self.hideBalanceStatus else {
         return "********"
@@ -136,12 +137,12 @@ class OverviewMainCellViewModel {
       }
       switch mode {
       case .value:
-        let valueString = StringFormatter.currencyString(value: quote.value, symbol: self.currency.toString())
+        let valueString = NumberFormatUtils.valueFormat(value: quote.value.amountBigInt(decimals: 18) ?? BigInt(0), decimals: 18, currencyMode: self.currency)
         return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
       case .ch24:
         return String(format: "%.2f", quote.priceChange24hPercentage) + "%"
       case .lastPrice:
-        let valueString = StringFormatter.currencyString(value: quote.price, symbol: self.currency.toString())
+        let valueString = NumberFormatUtils.valueFormat(value: quote.price.amountBigInt(decimals: 18) ?? BigInt(0), decimals: 18, currencyMode: self.currency)
         return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
       }
     case .supply(balance: let balance):
@@ -173,7 +174,7 @@ class OverviewMainCellViewModel {
     switch self.mode {
     case .market(token: let token, rightMode: let mode):
       let vol = token.getVol(self.currency)
-      return "Vol: " + self.formatPoints(vol)
+      return "Vol: " + NumberFormatUtils.volFormat(number: vol)
     case .asset(token: let token, rightMode: let mode):
       guard !self.hideBalanceStatus else {
         return "********"
@@ -254,7 +255,7 @@ class OverviewMainCellViewModel {
         if mc == 0 {
           return "---"
         }
-        return self.currency.symbol() + self.formatPoints(mc)
+        return self.currency.symbol() + NumberFormatUtils.volFormat(number: mc)
       }
     case .search(token: let token):
       let change24 = token.getTokenChange24(self.currency)
@@ -268,23 +269,7 @@ class OverviewMainCellViewModel {
     guard let tag = self.tag else { return nil }
     return UIImage.imageWithTag(tag: tag)
   }
-  
-  func formatPoints(_ number: Double) -> String {
-    let thousand = number / 1000
-    let million = number / 1000000
-    let billion = number / 1000000000
-    
-    if billion >= 1.0 {
-      return "\(round(billion*10)/10)B"
-    } else if million >= 1.0 {
-      return "\(round(million*10)/10)M"
-    } else if thousand >= 1.0 {
-      return ("\(round(thousand*10/10))K")
-    } else {
-      return "\(Int(number))"
-    }
-  }
-  
+
   var supplyValueBigInt: BigInt {
     switch mode {
     case .supply(let balance):
