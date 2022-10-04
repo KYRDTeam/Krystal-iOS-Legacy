@@ -12,7 +12,6 @@ import Result
 
 struct SwapV2ViewModelActions {
   var onSelectSwitchChain: () -> ()
-  var onSelectSwitchWallet: () -> ()
   var onSelectOpenHistory: () -> ()
   var openSwapConfirm: (SwapObject) -> ()
   var openApprove: (_ token: TokenObject, _ amount: BigInt) -> ()
@@ -163,6 +162,8 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     swapRepository.getTokenDetail(tokenAddress: destToken.address) { [weak self] token in
       if token?.address == destToken.address { // Needed to handle case swap pair
         self?.destTokenPrice.value = token?.markets["usd"]?.price
+      } else {
+        self?.destTokenPrice.value = nil
       }
     }
   }
@@ -511,10 +512,6 @@ extension SwapV2ViewModel {
   
   func didTapChainButton() {
     actions.onSelectSwitchChain()
-  }
-  
-  func didTapWalletButton() {
-    actions.onSelectSwitchWallet()
   }
   
   func didTapHistoryButton() {

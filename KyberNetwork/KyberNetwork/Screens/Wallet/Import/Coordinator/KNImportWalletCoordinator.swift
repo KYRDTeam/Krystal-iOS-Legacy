@@ -178,7 +178,7 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
   private func onImportWalletSuccess(wallet: KWallet, chain: ChainType) {
     showImportSuccessMessage()
     addToContacts(wallet: wallet)
-    sendRefCode(refCode: refCode, wallet: wallet)
+    sendRefCode(refCode, wallet: wallet)
     delegate?.importWalletCoordinatorDidImport(wallet: wallet, chain: chain)
   }
   
@@ -200,12 +200,6 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
     }
     
     KNContactStorage.shared.update(contacts: contacts)
-  }
-  
-  private func sendRefCode(refCode: String, wallet: KWallet) {
-    guard !refCode.isEmpty else { return }
-    
-    sendRefCode(refCode: refCode, wallet: wallet)
   }
 }
 

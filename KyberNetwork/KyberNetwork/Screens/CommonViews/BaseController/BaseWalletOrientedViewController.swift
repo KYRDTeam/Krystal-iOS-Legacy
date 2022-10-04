@@ -16,9 +16,7 @@ class BaseWalletOrientedViewController: KNBaseViewController {
   @IBOutlet weak var chainIcon: UIImageView?
   @IBOutlet weak var chainButton: UIButton?
   @IBOutlet weak var walletView: UIView?
-  
-  var walletConnectQRReaderDelegate: KQRCodeReaderDelegate?
-  
+
   lazy var addWalletCoordinator: KNAddNewWalletCoordinator = {
     let coordinator = KNAddNewWalletCoordinator()
     coordinator.delegate = self
@@ -46,7 +44,6 @@ class BaseWalletOrientedViewController: KNBaseViewController {
     observeNotifications()
     reloadWallet()
     reloadChain()
-    setupDelegates()
   }
   
   func setupGestures() {
@@ -54,39 +51,6 @@ class BaseWalletOrientedViewController: KNBaseViewController {
     let gesture = UITapGestureRecognizer(target: self, action: #selector(onWalletButtonTapped))
     gesture.cancelsTouchesInView = false
     walletView?.addGestureRecognizer(gesture)
-  }
-  
-  func setupDelegates() {
-    walletConnectQRReaderDelegate = KQRCodeReaderDelegate(onResult: { result in
-      self.handleWalletConnectQRCode(result: result)
-    })
-  }
-  
-  func handleWalletConnectQRCode(result: String) {
-    guard let url = WCURL(result) else {
-      self.showTopBannerView(
-        with: Strings.invalidSession,
-        message: Strings.invalidSessionTryOtherQR,
-        time: 1.5
-      )
-      return
-    }
-    do {
-      let privateKey = try WalletManager.shared.exportPrivateKey(address: self.currentAddress)
-      DispatchQueue.main.async {
-        let controller = KNWalletConnectViewController(
-          wcURL: url,
-          pk: privateKey
-        )
-        self.present(controller, animated: true, completion: nil)
-      }
-    } catch {
-      self.showTopBannerView(
-        with: Strings.privateKeyError,
-        message: Strings.canNotGetPrivateKey,
-        time: 1.5
-      )
-    }
   }
   
   deinit {
@@ -151,9 +115,15 @@ class BaseWalletOrientedViewController: KNBaseViewController {
   }
   
   func openWalletConnect() {
-    let qrcode = QRCodeReaderViewController()
-    qrcode.delegate = walletConnectQRReaderDelegate
-    present(qrcode, animated: true, completion: nil)
+    ScannerModule.start(previousScreen: ScreenName.explore, viewController: self, acceptedResultTypes: [.walletConnect], scanModes: [.qr]) { [weak self] text, type in
+      guard let self = self else { return }
+      switch type {
+      case .walletConnect:
+        AppEventCenter.shared.didScanWalletConnect(address: self.currentAddress, url: text)
+      default:
+        return
+      }
+    }
   }
   
   func openWalletList() {
@@ -219,11 +189,15 @@ extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
     didSelectWallet(wallet: wallet, isCreatedFromBrowsing: false)
   }
   
-  
   func didSelectAddWallet() {
     present(addWalletCoordinator.navigationController, animated: false) {
       self.addWalletCoordinator.start(type: .full)
     }
+  }
+  
+  func didSelectAddWatchWallet() {
+    let container = self.presentedViewController == nil ? self : self.presentedViewController
+    addWalletCoordinator.showCreateWalletWalletPopup(container: container!)
   }
   
   func didSelectWallet(wallet: KWallet, isCreatedFromBrowsing: Bool = false) {
