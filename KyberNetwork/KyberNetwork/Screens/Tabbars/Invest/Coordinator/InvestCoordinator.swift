@@ -452,9 +452,5 @@ extension InvestCoordinator: KNImportWalletCoordinatorDelegate {
   func importWalletCoordinatorDidClose() {
     importWalletCoordinator = nil
   }
-  
-  func importWalletCoordinatorDidSendRefCode(_ code: String) {
-    
-  }
 
 }

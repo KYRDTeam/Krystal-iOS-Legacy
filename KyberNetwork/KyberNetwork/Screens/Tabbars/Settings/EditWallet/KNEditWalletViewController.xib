@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -20,7 +20,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNEditWalletViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNEditWalletViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="deleteButton" destination="QwY-eC-zbg" id="sJ8-Tm-J1L"/>
                 <outlet property="doneButton" destination="Wgn-HA-Ifn" id="h7w-g7-sqr"/>

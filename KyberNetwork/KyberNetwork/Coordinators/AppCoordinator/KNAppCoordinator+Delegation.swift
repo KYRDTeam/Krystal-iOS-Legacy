@@ -310,32 +310,6 @@ extension KNAppCoordinator: KNTransactionStatusCoordinatorDelegate {
   }
 }
 
-// MARK: Add wallet coordinator delegate
-extension KNAppCoordinator: KNAddNewWalletCoordinatorDelegate {
-  
-  func addNewWalletCoordinator(didAdd wallet: KWallet, chain: ChainType) {
-    switchWallet(wallet: wallet, chain: chain)
-    if AppDelegate.shared.coordinator.tabbarController != nil {
-      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-    }
-  }
-  
-  func addNewWalletCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {
-    switchToWatchAddress(address: watchAddress, chain: chain)
-    if AppDelegate.shared.coordinator.tabbarController != nil {
-      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-    }
-  }
-  
-  func addNewWalletCoordinatorDidSendRefCode(_ code: String) {
-    self.sendRefCode(code.uppercased())
-  }
-
-  func addNewWalletCoordinator(remove wallet: KWallet) {
-
-  }
-}
-
 extension KNAppCoordinator: KNPromoCodeCoordinatorDelegate {
   func promoCodeCoordinatorDidCreate(_ address: KAddress, expiredDate: TimeInterval, destinationToken: String?, destAddress: String?, name: String?) {
     self.navigationController.popViewController(animated: true) {
@@ -352,13 +326,13 @@ extension KNAppCoordinator: KNPromoCodeCoordinatorDelegate {
 
 // MARK: Passcode coordinator delegate
 extension KNAppCoordinator: KNPasscodeCoordinatorDelegate {
-  func passcodeCoordinatorDidCancel() {
+  func passcodeCoordinatorDidCancel(coordinator: KNPasscodeCoordinator) {
     self.authenticationCoordinator.stop {}
   }
-  func passcodeCoordinatorDidEvaluatePIN() {
+  func passcodeCoordinatorDidEvaluatePIN(coordinator: KNPasscodeCoordinator) {
     self.authenticationCoordinator.stop {}
   }
-  func passcodeCoordinatorDidCreatePasscode() {
+  func passcodeCoordinatorDidCreatePasscode(coordinator: KNPasscodeCoordinator) {
     self.authenticationCoordinator.stop {}
   }
 }

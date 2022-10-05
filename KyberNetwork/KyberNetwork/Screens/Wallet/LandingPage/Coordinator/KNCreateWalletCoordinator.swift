@@ -49,9 +49,6 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
       let createWalletVC = CreateWalletViewController()
       createWalletVC.hidesBottomBarWhenPushed = true
       createWalletVC.delegate = self
-      if AppDelegate.shared.coordinator.tabbarController != nil {
-        AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = true
-      }
       self.navigationController.pushViewController(createWalletVC, animated: true)
       self.createWalletController = createWalletVC
     }
@@ -120,9 +117,6 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
 
 extension KNCreateWalletCoordinator: BackUpWalletViewControllerDelegate {
   func didFinishBackup(_ controller: BackUpWalletViewController) {
-    if AppDelegate.shared.coordinator.tabbarController != nil {
-      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-    }
     guard let wallet = self.newWallet else { return }
     self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, chain: targetChain)
   }
@@ -168,9 +162,6 @@ extension KNCreateWalletCoordinator: FinishCreateWalletViewControllerDelegate {
   func finishCreateWalletViewController(_ controller: FinishCreateWalletViewController, run event: FinishCreateWalletViewControllerEvent) {
     switch event {
     case .continueUseApp:
-      if AppDelegate.shared.coordinator.tabbarController != nil {
-        AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-      }
       guard let wallet = self.newWallet else { return }
       self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, chain: targetChain)
     case .backup:

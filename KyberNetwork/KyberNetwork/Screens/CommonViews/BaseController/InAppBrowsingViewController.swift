@@ -77,7 +77,7 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
   }
   
   @IBAction func onAddWalletButtonTapped(_ sender: Any) {
-    present(addWalletCoordinator.navigationController, animated: false) {
+    tabBarController?.present(addWalletCoordinator.navigationController, animated: false) {
       self.addWalletCoordinator.start(type: .full)
     }
     
@@ -121,9 +121,6 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
     AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
     AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
     browsingView?.isHidden = !KNGeneralProvider.shared.isBrowsingMode
-    if AppDelegate.shared.coordinator.tabbarController != nil {
-      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-    }
   }
   
   override func addNewWallet(watchAddress: KAddress, chain: ChainType) {
@@ -135,9 +132,5 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
     KrystalService().sendRefCode(address: currentAddress, code.uppercased()) { _, message in
       AppDelegate.shared.coordinator.tabbarController.showTopBannerView(message: message)
     }
-  }
-
-  override func removeWallet(wallet: KWallet) {
-
   }
 }

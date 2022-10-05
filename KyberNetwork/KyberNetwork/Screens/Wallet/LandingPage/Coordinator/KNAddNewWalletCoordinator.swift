@@ -5,13 +5,6 @@ import TrustKeystore
 import BigInt
 import KrystalWallets
 
-protocol KNAddNewWalletCoordinatorDelegate: class {
-  func addNewWalletCoordinator(didAdd wallet: KWallet, chain: ChainType)
-  func addNewWalletCoordinator(didAdd watchAddress: KAddress, chain: ChainType)
-  func addNewWalletCoordinator(remove wallet: KWallet)
-  func addNewWalletCoordinatorDidSendRefCode(_ code: String)
-}
-
 enum AddNewWalletType {
   case full
   case onlyReal
@@ -21,8 +14,8 @@ enum AddNewWalletType {
 
 class KNAddNewWalletCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
-  let navigationController: UINavigationController  
-  weak var delegate: KNAddNewWalletCoordinatorDelegate?
+  let parentViewController: UIViewController
+  let navigationController: UINavigationController
   var createWalletCoordinator: KNCreateWalletCoordinator?
   private var newWallet: KWallet?
   lazy var importWalletCoordinator: KNImportWalletCoordinator = {
@@ -42,7 +35,8 @@ class KNAddNewWalletCoordinator: Coordinator {
     return coordinator
   }()
 
-  init(navigationController: UINavigationController = UINavigationController()) {
+  init(parentViewController: UIViewController, navigationController: UINavigationController = UINavigationController()) {
+    self.parentViewController = parentViewController
     self.navigationController = navigationController
     self.navigationController.setNavigationBarHidden(true, animated: false)
     let rootViewController = UIViewController()
@@ -57,14 +51,18 @@ class KNAddNewWalletCoordinator: Coordinator {
   }
   
   func start(type: AddNewWalletType, address: KAddress? = nil) {
+    let presenter = self.parentViewController.tabBarController ?? parentViewController
     self.navigationController.popToRootViewController(animated: false)
     switch type {
     case .full, .onlyReal:
       let popup = AddWalletViewController()
       popup.delegate = self
-      self.navigationController.pushViewController(popup, animated: true)
+      presenter.present(self.navigationController, animated: false) {
+        self.navigationController.pushViewController(popup, animated: true)
+      }
     case .watch:
-      self.createWatchWallet(address)
+      let coordinator = AddWatchWalletCoordinator(parentViewController: presenter, editingAddress: nil)
+      coordinator.start()
     case .chain(let chainType):
       let coordinator = CreateChainWalletMenuCoordinator(parentViewController: navigationController, chainType: chainType, delegate: self)
       coordinate(coordinator: coordinator)
@@ -86,24 +84,6 @@ class KNAddNewWalletCoordinator: Coordinator {
     self.importWalletCoordinator.start()
   }
 
-  fileprivate func createWatchWallet(_ address: KAddress? = nil) {
-    let viewModel = AddWatchWalletViewModel()
-    viewModel.address = address
-    let controller = AddWatchWalletViewController(viewModel: viewModel)
-    controller.delegate = self
-    self.navigationController.present(controller, animated: true, completion: nil)
-    MixPanelManager.track("add_watch_wallet_pop_up_open", properties: ["screenid": "add_watch_wallet_pop_up"])
-  }
-  
-  func showCreateWalletWalletPopup(_ address: KAddress? = nil, container: UIViewController) {
-    let viewModel = AddWatchWalletViewModel()
-    viewModel.address = address
-    let controller = AddWatchWalletViewController(viewModel: viewModel)
-    controller.delegate = self
-    container.present(controller, animated: true, completion: nil)
-    MixPanelManager.track("add_watch_wallet_pop_up_open", properties: ["screenid": "add_watch_wallet_pop_up"])
-  }
-  
   func didImportWallet(wallet: KWallet, chain: ChainType) {
     self.newWallet = wallet
     // Check if first wallet
@@ -112,40 +92,41 @@ class KNAddNewWalletCoordinator: Coordinator {
       self.passcodeCoordinator.start()
     } else {
       navigationController.dismiss(animated: true) {
-        self.delegate?.addNewWalletCoordinator(didAdd: wallet, chain: chain)
+        AppDelegate.shared.coordinator.switchWallet(wallet: wallet, chain: chain)
       }
     }
   }
+  
+  func sendRefCode(address: KAddress, code: String) {
+    KrystalService().sendRefCode(address: address, code) { _, message in
+      AppDelegate.shared.coordinator.tabbarController.showTopBannerView(message: message)
+    }
+  }
+  
 }
 
 extension KNAddNewWalletCoordinator: KNPasscodeCoordinatorDelegate {
-  func passcodeCoordinatorDidCancel() {
+  func passcodeCoordinatorDidCancel(coordinator: KNPasscodeCoordinator) {
     self.passcodeCoordinator.stop { }
   }
 
-  func passcodeCoordinatorDidEvaluatePIN() {
+  func passcodeCoordinatorDidEvaluatePIN(coordinator: KNPasscodeCoordinator) {
     self.passcodeCoordinator.stop { }
   }
 
-  func passcodeCoordinatorDidCreatePasscode() {
+  func passcodeCoordinatorDidCreatePasscode(coordinator: KNPasscodeCoordinator) {
     guard let wallet = self.newWallet else {
       return
     }
-//    guard let address = WalletManager.shared.address(forWalletID: wallet.id) else {
-//      return
-//    }
-//    guard let chain = ChainType.allCases.first(where: { $0.addressType == address.addressType }) else {
-//      return
-//    }
     navigationController.dismiss(animated: true) {
-      self.delegate?.addNewWalletCoordinator(didAdd: wallet, chain: KNGeneralProvider.shared.currentChain)
+      AppDelegate.shared.coordinator.switchWallet(wallet: wallet, chain: KNGeneralProvider.shared.currentChain)
     }
   }
 }
 
 extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
   func createWalletCoordinatorDidSendRefCode(_ code: String) {
-    self.delegate?.addNewWalletCoordinatorDidSendRefCode(code)
+    sendRefCode(address: AppDelegate.session.address, code: code)
   }
   
   func createWalletCoordinatorDidCreateWallet(_ wallet: KWallet?, name: String?, chain: ChainType) {
@@ -160,15 +141,11 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
 extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
   
   func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType) {
-    delegate?.addNewWalletCoordinator(didAdd: watchAddress, chain: chain)
+    AppDelegate.shared.coordinator.switchToWatchAddress(address: watchAddress, chain: chain)
   }
   
   func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
     didImportWallet(wallet: wallet, chain: chain)
-  }
-  
-  func importWalletCoordinatorDidSendRefCode(_ code: String) {
-    self.delegate?.addNewWalletCoordinatorDidSendRefCode(code)
   }
   
   func importWalletCoordinatorDidClose() {
@@ -183,101 +160,12 @@ extension KNAddNewWalletCoordinator: AddWalletViewControllerDelegate {
     case .importWallet:
       self.importAWallet()
     case .importWatchWallet:
-      self.createWatchWallet()
+      navigationController.dismiss(animated: true) {
+        let coordinator = AddWatchWalletCoordinator(parentViewController: self.navigationController, editingAddress: nil)
+        coordinator.start()
+      }
     case .close:
-      self.navigationController.dismiss(animated: false) {
-        DispatchQueue.main.async {
-          if AppDelegate.shared.coordinator.tabbarController != nil {
-            AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-          }
-        }
-      }
-    }
-  }
-}
-
-extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
-  func addWatchWalletViewControllerDidEdit(_ controller: AddWatchWalletViewController, address: KAddress, addressString: String, name: String?) {
-    if address.addressString == addressString {
-      var address = address
-      address.addressString = addressString
-      address.name = name.whenNilOrEmpty(Strings.imported)
-      
-      try? WalletManager.shared.updateWatchAddress(address: address)
-      
-      if let contact = KNContactStorage.shared.get(forPrimaryKey: addressString) {
-        let newContact = contact.clone()
-        newContact.name = name.whenNilOrEmpty(Strings.imported)
-        KNContactStorage.shared.update(contacts: [newContact])
-        self.navigationController.showSuccessTopBannerMessage(
-          with: "",
-          message: Strings.editWalletSuccess,
-          time: 1
-        )
-      }
-      delegate?.addNewWalletCoordinator(didAdd: address, chain: KNGeneralProvider.shared.currentChain)
-      self.navigationController.dismiss(animated: true, completion: nil)
-    } else {
-      try? WalletManager.shared.removeAddress(address: address)
-      self.importNewWatchWallet(address: addressString, name: name, isAdd: false)
-    }
-  }
-  
-  func addWatchWalletViewController(_ controller: AddWatchWalletViewController, didAddAddress address: String, name: String?) {
-    self.importNewWatchWallet(address: address, name: name)
-  }
-
-  func addWatchWalletViewControllerDidClose(_ controller: AddWatchWalletViewController) {
-    self.navigationController.dismiss(animated: true, completion: nil)
-  }
-
-  fileprivate func importNewWatchWallet(address: String, name: String?, isAdd: Bool = true) {
-    var currentChain = KNGeneralProvider.shared.currentChain
-    if KNGeneralProvider.shared.currentChain == .solana {
-      if address.has0xPrefix {
-        currentChain = .eth
-      }
-    } else {
-      if !address.has0xPrefix {
-        currentChain = .solana
-      }
-    }
-    
-    do {
-      let watchAddress = try WalletManager.shared.addWatchWallet(address: address, addressType: currentChain.addressType, name: name.whenNilOrEmpty(Strings.imported))
-      if isAdd {
-        self.navigationController.showSuccessTopBannerMessage(
-          with: "",
-          message: Strings.addWatchWalletSuccess,
-          time: 1
-        )
-      } else {
-        self.navigationController.showSuccessTopBannerMessage(
-          with: "",
-          message: Strings.editWatchWalletSuccess,
-          time: 1
-        )
-      }
-      let contact = KNContact(
-        address: address,
-        name: name.whenNilOrEmpty(Strings.untitled),
-        chainType: watchAddress.addressType.importChainType.rawValue
-      )
-      KNContactStorage.shared.update(contacts: [contact])
-      delegate?.addNewWalletCoordinator(didAdd: watchAddress, chain: currentChain)
-      self.navigationController.dismiss(animated: true, completion: nil)
-    } catch {
-      guard let error = error as? WalletManagerError else {
-        self.navigationController.showErrorTopBannerMessage(message: error.localizedDescription)
-        return
-      }
-      switch error {
-      case .duplicatedWallet:
-        self.navigationController.showErrorTopBannerMessage(message: Strings.addressExisted)
-      default:
-        self.navigationController.showErrorTopBannerMessage(message: error.localizedDescription)
-      }
-      self.navigationController.dismiss(animated: true, completion: nil)
+      self.navigationController.dismiss(animated: false)
     }
   }
 }

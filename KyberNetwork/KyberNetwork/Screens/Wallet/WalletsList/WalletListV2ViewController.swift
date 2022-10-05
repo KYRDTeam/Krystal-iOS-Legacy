@@ -145,12 +145,12 @@ class WalletListV2ViewController: KNBaseViewController {
 }
 
 extension WalletListV2ViewController: KNPasscodeCoordinatorDelegate {
-  func passcodeCoordinatorDidCreatePasscode() {
+  func passcodeCoordinatorDidCreatePasscode(coordinator: KNPasscodeCoordinator) {
     self.passcodeCoordinator?.stop(completion: {
     })
   }
 
-  func passcodeCoordinatorDidEvaluatePIN() {
+  func passcodeCoordinatorDidEvaluatePIN(coordinator: KNPasscodeCoordinator) {
     self.passcodeCoordinator?.stop {
       if let currentWalletId = self.currentWalletId {
         do {
@@ -170,7 +170,7 @@ extension WalletListV2ViewController: KNPasscodeCoordinatorDelegate {
     }
   }
 
-  func passcodeCoordinatorDidCancel() {
+  func passcodeCoordinatorDidCancel(coordinator: KNPasscodeCoordinator) {
     self.passcodeCoordinator?.stop {
     }
   }

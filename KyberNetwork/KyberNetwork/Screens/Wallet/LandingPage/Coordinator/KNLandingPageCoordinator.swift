@@ -197,25 +197,21 @@ extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
   func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
     didImportWallet(wallet: wallet, chain: chain)
   }
-  
-  func importWalletCoordinatorDidSendRefCode(_ code: String) {
-    self.delegate?.landingPageCoordinatorDidSendRefCode(code.uppercased())
-  }
 
   func importWalletCoordinatorDidClose() {
   }
 }
 
 extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
-  func passcodeCoordinatorDidCancel() {
+  func passcodeCoordinatorDidCancel(coordinator: KNPasscodeCoordinator) {
     self.passcodeCoordinator.stop { }
   }
 
-  func passcodeCoordinatorDidEvaluatePIN() {
+  func passcodeCoordinatorDidEvaluatePIN(coordinator: KNPasscodeCoordinator) {
     self.passcodeCoordinator.stop { }
   }
 
-  func passcodeCoordinatorDidCreatePasscode() {
+  func passcodeCoordinatorDidCreatePasscode(coordinator: KNPasscodeCoordinator) {
     guard let wallet = self.newWallet else {
       return
     }

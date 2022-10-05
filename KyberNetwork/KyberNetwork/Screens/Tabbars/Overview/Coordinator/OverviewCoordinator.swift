@@ -666,14 +666,43 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       controller.present(activityViewController, animated: true, completion: nil)
     }))
     actionController.addAction(Action(ActionData(title: "Rename Wallet", image: UIImage(named: "rename_actionsheet_icon")!), style: .default, handler: { _ in
-      self.delegate?.overviewCoordinatorDidSelectRenameWallet()
+      if self.currentAddress.isWatchWallet {
+        let coordinator = AddWatchWalletCoordinator(parentViewController: self.navigationController, editingAddress: self.currentAddress)
+        coordinator.onCompleted = { [weak self] in
+          self?.removeCoordinator(coordinator)
+        }
+        self.coordinate(coordinator: coordinator)
+      } else {
+        guard let wallet = WalletManager.shared.getWallet(id: self.currentAddress.walletID) else {
+          return
+        }
+        let coordinator = EditWalletCoordinator(
+          navigationController: self.navigationController,
+          wallet: wallet,
+          addressType: KNGeneralProvider.shared.currentChain.addressType
+        )
+        coordinator.onCompleted = { [weak self] _ in
+          self?.removeCoordinator(coordinator)
+        }
+        self.coordinate(coordinator: coordinator)
+      }
     }))
     actionController.addAction(Action(ActionData(title: "Show History", image: UIImage(named: "history_actionsheet_icon")!), style: .default, handler: { _ in
       self.openHistoryScreen()
     }))
-    actionController.addAction(Action(ActionData(title: "Export Wallet", image: UIImage(named: "export_actionsheet_icon")!), style: .default, handler: { _ in
-      self.delegate?.overviewCoordinatorDidSelectExportWallet()
-    }))
+    if !currentAddress.isWatchWallet {
+      actionController.addAction(Action(ActionData(title: "Export Wallet", image: UIImage(named: "export_actionsheet_icon")!), style: .default, handler: { _ in
+        guard let wallet = WalletManager.shared.getWallet(id: self.currentAddress.walletID) else {
+          return
+        }
+        let coordinator = ExportWalletCoordinator(
+          navigationController: self.navigationController,
+          wallet: wallet,
+          addressType: KNGeneralProvider.shared.currentChain.addressType
+        )
+        coordinator.coordinate(coordinator: coordinator)
+      }))
+    }
     actionController.addAction(Action(ActionData(title: "DELETE", image: UIImage(named: "delete_actionsheet_icon")!), style: .destructive, handler: { _ in
       self.delegate?.overviewCoordinatorDidSelectDeleteWallet()
     }))
@@ -846,10 +875,6 @@ extension OverviewCoordinator: KNImportWalletCoordinatorDelegate {
   }
   
   func importWalletCoordinatorDidClose() {
-    
-  }
-  
-  func importWalletCoordinatorDidSendRefCode(_ code: String) {
     
   }
 

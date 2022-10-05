@@ -9,7 +9,6 @@ protocol KNImportWalletCoordinatorDelegate: class {
   func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType)
   func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType)
   func importWalletCoordinatorDidClose()
-  func importWalletCoordinatorDidSendRefCode(_ code: String)
 }
 
 class KNImportWalletCoordinator: Coordinator {
