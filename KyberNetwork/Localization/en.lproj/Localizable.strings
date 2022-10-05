@@ -823,6 +823,8 @@
 "not.have.any.nft" = "You have not any NFT";
 "add.nft" = "Add NFT";
 "supply.tokens.to.earn.interest" = "Supply tokens to earn interest";
+"add.watched.wallet.success" = "Watched wallet is successful added";
+"edit.watched.wallet.success" = "Watched wallet is successful edited";
 
 "reward" = "Reward";
 "referral" = "Referral";
