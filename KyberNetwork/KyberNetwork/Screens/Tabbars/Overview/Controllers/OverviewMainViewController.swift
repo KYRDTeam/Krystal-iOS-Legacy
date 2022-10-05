@@ -417,6 +417,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     if self.viewModel.currentChain != .all {
       self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
     }
+    viewModel.badgeNumber = 0
     getNotificationBadgeNumber()
     guard self.isViewLoaded else { return }
     calculatingQueue.async {
@@ -426,6 +427,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
         self.tableView.reloadData()
         self.infoCollectionView.reloadData()
         self.showLoadingSkeleton()
+        self.updateUIBadgeNotification()
       }
     }
   }
