@@ -2982,6 +2982,7 @@
 			isa = PBXGroup;
 			children = (
 				A610B2DE28ED7A6000456965 /* Coordinators */,
+				A610B2DE28ED7A6000456965 /* AddWatchWallet */,
 				C3A241982567ABBE0073703C /* WalletsList */,
 				C6FE417E2383A0AB0096AAD8 /* WalletConnect */,
 				253F50E321E5B4E70068813D /* PromoCode */,
@@ -4844,6 +4845,14 @@
 				A6F6292C28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift */,
 			);
 			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		A610B2DE28ED7A6000456965 /* AddWatchWallet */ = {
+			isa = PBXGroup;
+			children = (
+				A6F1AF1A28ED7AB500E951C0 /* AddWatchWalletCoordinator.swift */,
+			);
+			path = AddWatchWallet;
 			sourceTree = "<group>";
 		};
 		A6156B4F28856C4400276120 /* CustomSegmentView */ = {

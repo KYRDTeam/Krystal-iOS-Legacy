@@ -10,14 +10,17 @@ import KrystalWallets
 import QRCodeReaderViewController
 import WalletConnectSwift
 
-class BaseWalletOrientedViewController: KNBaseViewController, Coordinator {
+class BaseWalletOrientedViewController: KNBaseViewController {
   @IBOutlet weak var walletButton: UIButton?
   @IBOutlet weak var backupIcon: UIImageView?
   @IBOutlet weak var chainIcon: UIImageView?
   @IBOutlet weak var chainButton: UIButton?
   @IBOutlet weak var walletView: UIView?
-  
-  var coordinators: [Coordinator] = []
+
+  lazy var addWalletCoordinator: KNAddNewWalletCoordinator = {
+    let coordinator = KNAddNewWalletCoordinator(parentViewController: navigationController!)
+    return coordinator
+  }()
   
   var supportAllChainOption: Bool {
     return false
@@ -110,10 +113,6 @@ class BaseWalletOrientedViewController: KNBaseViewController, Coordinator {
     reloadWallet()
   }
   
-  func start() {
-    fatalError("Do not call start function on this")
-  }
-  
   func openWalletConnect() {
     ScannerModule.start(previousScreen: ScreenName.explore, viewController: self, acceptedResultTypes: [.walletConnect], scanModes: [.qr]) { [weak self] text, type in
       guard let self = self else { return }
@@ -178,16 +177,14 @@ class BaseWalletOrientedViewController: KNBaseViewController, Coordinator {
 }
 
 extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
-  
   func didSelectWallet(wallet: KWallet) {
     didSelectWallet(wallet: wallet, isCreatedFromBrowsing: false)
   }
   
   func didSelectAddWallet() {
-    guard let parent = navigationController?.tabBarController else { return }
-    let coordinator = KNAddNewWalletCoordinator(parentViewController: parent)
-    coordinator.start(type: .full)
-    addCoordinator(coordinator)
+    tabBarController?.present(addWalletCoordinator.navigationController, animated: false) {
+      self.addWalletCoordinator.start(type: .full)
+    }
   }
   
   func didSelectAddWatchWallet() {
@@ -195,8 +192,8 @@ extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
       return
     }
     tabBarController.dismiss(animated: true) {
-        let coordinator = AddWatchWalletCoordinator(parentViewController: tabBarController, editingAddress: nil)
-        self.coordinate(coordinator: coordinator)
+      let coordinator = AddWatchWalletCoordinator(parentViewController: tabBarController, editingAddress: nil)
+      coordinator.start()
     }
   }
   

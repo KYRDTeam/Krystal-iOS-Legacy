@@ -99,7 +99,6 @@ extension EditWalletCoordinator: KNPasscodeCoordinatorDelegate {
         try? WalletManager.shared.remove(wallet: self.wallet)
         self.navigationController.popViewController(animated: true, completion: nil)
         self.onCompleted?(true)
-        AppDelegate.shared.coordinator.onRemoveWallet(wallet: self.wallet) 
       default:
         return
       }

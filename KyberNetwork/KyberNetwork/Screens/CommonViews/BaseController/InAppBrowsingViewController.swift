@@ -77,10 +77,9 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
   }
   
   @IBAction func onAddWalletButtonTapped(_ sender: Any) {
-    guard let parent = navigationController?.tabBarController else { return }
-    let coordinator = KNAddNewWalletCoordinator(parentViewController: parent)
-    coordinator.start(type: .full)
-    addCoordinator(coordinator)
+    tabBarController?.present(addWalletCoordinator.navigationController, animated: false) {
+      self.addWalletCoordinator.start(type: .full)
+    }
     
     if self.isKind(of: OverviewBrowsingViewController.self) {
       MixPanelManager.track("home_connect_wallet", properties: ["screenid": "homepage"])
