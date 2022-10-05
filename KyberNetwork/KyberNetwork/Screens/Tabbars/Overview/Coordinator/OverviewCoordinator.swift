@@ -370,7 +370,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
         alertController.popupHeight = 300
         self.navigationController.present(alertController, animated: true, completion: nil)
       } else {
-        self.openSwapView(token: token, isBuy: true)
+        self.openSwapView(token: token, isBuy: false)
       }
     case .invest(token: let token):
       self.delegate?.overviewCoordinatorDidSelectDepositMore(tokenAddress: token.address)
