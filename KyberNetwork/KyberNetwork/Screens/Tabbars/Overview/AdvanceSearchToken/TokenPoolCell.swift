@@ -42,9 +42,9 @@ class TokenPoolCell: UITableViewCell {
     self.pairNameLabelWidth.constant = "\(baseToken.symbol)/\(otherToken.symbol)".width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 18))
     self.fullNameLabel.text = poolDetail.name
     self.chainIcon.image = ChainType.make(chainID: poolDetail.chainId)?.chainIcon()
-    self.addressLabel.text = "\(poolDetail.address.prefix(7))...\(poolDetail.address.suffix(4))"
+    self.addressLabel.text = poolDetail.address.shortTypeAddress
     
-    let totalValueString = currencyMode.symbol() + "\(String.formatBigNumberCurrency(poolDetail.tvl))" + currencyMode.suffixSymbol()
+    let totalValueString = currencyMode.symbol() + NumberFormatUtils.volFormat(number: poolDetail.tvl) + currencyMode.suffixSymbol()
     self.totalValueLabel.text = totalValueString
   }
 }

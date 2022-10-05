@@ -126,7 +126,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   private func calculateMinReceiveString(rate: Rate) -> String {
     let amount = BigInt(rate.amount) ?? BigInt(0)
     let minReceivingAmount = amount * BigInt(10000.0 - minRatePercent * 100.0) / BigInt(10000.0)
-    return "\(NumberFormatUtils.amount(value: minReceivingAmount, decimals: self.swapObject.destToken.decimals)) \(self.swapObject.destToken.symbol)"
+    return "\(NumberFormatUtils.balanceFormat(value: minReceivingAmount, decimals: self.swapObject.destToken.decimals)) \(self.swapObject.destToken.symbol)"
   }
 
   func getSourceAmountUsdString() -> String {
@@ -137,7 +137,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   
   func getDestAmountString() -> String {
     let receivingAmount = BigInt(swapObject.rate.amount) ?? BigInt(0)
-    return NumberFormatUtils.amount(value: receivingAmount, decimals: swapObject.destToken.decimals)
+    return NumberFormatUtils.balanceFormat(value: receivingAmount, decimals: swapObject.destToken.decimals)
   }
   
   func getDestAmountUsdString() -> String {

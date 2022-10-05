@@ -123,8 +123,7 @@ class MultiSendApproveViewModel {
       return self.gasPrice * self.gasLimit
     }()
     let total = fee * BigInt(self.estNoTx)
-    let feeString: String = total.displayRate(decimals: 18)
-    return "\(feeString) \(KNGeneralProvider.shared.quoteToken)"
+    return "\(NumberFormatUtils.gasFeeFormat(number: total)) \(KNGeneralProvider.shared.quoteToken)"
   }
 
   var transactionFeeUSDString: String {

@@ -63,19 +63,7 @@ struct KConfirmSendViewModel {
   }
 
   var totalAmountString: String {
-    switch currentChain {
-    case .solana:
-      let string = transaction.value.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: self.token.decimals)
-      return "\(string.prefix(15)) \(self.token.symbol)"
-    default:
-      let string = self.transaction.value.string(
-        decimals: self.token.decimals,
-        minFractionDigits: 0,
-        maxFractionDigits: min(self.token.decimals, 6)
-      )
-      return "\(string.prefix(15)) \(self.token.symbol)"
-    }
-    
+    return "\(NumberFormatUtils.balanceFormat(value: self.transaction.value, decimals: self.token.decimals)) \(self.token.symbol)"
   }
 
   var usdValueString: String {
@@ -98,13 +86,17 @@ struct KConfirmSendViewModel {
     switch currentChain {
     case .solana:
       let fee = transaction.estimatedFee ?? BigInt(0)
-      return fee.string(decimals: 9, minFractionDigits: 0, maxFractionDigits: 9) + " \(KNGeneralProvider.shared.quoteToken)"
+      return NumberFormatUtils.balanceFormat(value: fee, decimals: 9) + " \(KNGeneralProvider.shared.quoteToken)"
     default:
       let fee: BigInt? = {
         guard let gasPrice = self.transaction.gasPrice, let gasLimit = self.transaction.gasLimit else { return nil }
         return gasPrice * gasLimit
       }()
-      let feeString: String = fee?.displayRate(decimals: 18) ?? "---"
+      var feeString = "---"
+      if let fee = fee {
+        feeString = NumberFormatUtils.balanceFormat(value: fee, decimals: 18)
+      }
+        
       return "\(feeString) \(KNGeneralProvider.shared.quoteToken)"
     }
   }
