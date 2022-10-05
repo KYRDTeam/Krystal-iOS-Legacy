@@ -203,7 +203,7 @@ extension SwapV2Coordinator {
 
     var newAddress: [String] = []
     guard let srcTokenAddress = srcTokenAddress, let destTokenAddress = destTokenAddress else {
-      self.updateToken(sourceToken: fromToken.toToken(), destToken: toToken.toToken())
+      self.rootViewController.viewModel.loadBaseToken()
       return
     }
 
@@ -211,7 +211,7 @@ extension SwapV2Coordinator {
     let isValidDestTokenAddress = KNGeneralProvider.shared.isAddressValid(address: destTokenAddress)
     
     guard isValidSrcAddress, isValidDestTokenAddress else {
-      self.updateToken(sourceToken: fromToken.toToken(), destToken: toToken.toToken())
+      self.rootViewController.viewModel.loadBaseToken()
       return
     }
     // in case can get token with given address
