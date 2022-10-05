@@ -88,7 +88,15 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
     } else if self.isKind(of: KSendTokenViewController.self) {
       MixPanelManager.track("transfer_connect_wallet", properties: ["screenid": "transfer"])
     } else if self.isKind(of: EarnViewController.self) {
-      
+      MixPanelManager.track("earn_connect_wallet", properties: ["screenid": "earn"])
+    } else if self.isKind(of: InvestViewController.self) {
+      MixPanelManager.track("explore_connect_wallet", properties: ["screenid": "explore"])
+    } else if self.isKind(of: KNSettingsTabViewController.self) {
+      MixPanelManager.track("settings_connect_wallet", properties: ["screenid": "settings"])
+    } else if self.isKind(of: BridgeViewController.self) {
+      MixPanelManager.track("bridge_connect_wallet", properties: ["screenid": "bridge"])
+    } else if self.isKind(of: EarnMenuViewController.self) {
+      MixPanelManager.track("earn_pre_connect_wallet", properties: ["screenid": "earn_explore"])
     }
   }
   
