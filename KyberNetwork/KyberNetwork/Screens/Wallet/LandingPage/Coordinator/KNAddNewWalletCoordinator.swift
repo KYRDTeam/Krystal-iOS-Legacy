@@ -247,14 +247,14 @@ extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
       let watchAddress = try WalletManager.shared.addWatchWallet(address: address, addressType: currentChain.addressType, name: name.whenNilOrEmpty(Strings.imported))
       if isAdd {
         self.navigationController.showSuccessTopBannerMessage(
-          with: Strings.walletImported,
-          message: Strings.importWalletSuccess,
+          with: "",
+          message: Strings.addWatchWalletSuccess,
           time: 1
         )
       } else {
         self.navigationController.showSuccessTopBannerMessage(
           with: "",
-          message: Strings.editWalletSuccess,
+          message: Strings.editWatchWalletSuccess,
           time: 1
         )
       }

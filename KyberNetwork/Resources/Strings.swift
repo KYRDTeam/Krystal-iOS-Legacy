@@ -164,6 +164,8 @@ struct Strings {
   static let createWallet = "create.wallet".toBeLocalised()
   static let importWallet = "import.wallet".toBeLocalised()
   static let getStarted = "get.started".toBeLocalised()
+  static let addWatchWalletSuccess = "add.watched.wallet.success".toBeLocalised()
+  static let editWatchWalletSuccess = "edit.watched.wallet.success".toBeLocalised()
   
   // Rewards
   static let switchToBSCToClaimRewards = "switch.to.bsc.to.claim.rewards".toBeLocalised()
