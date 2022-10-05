@@ -11,7 +11,9 @@ import UIKit
 import UIKit
 
 class SegmentedControl: UISegmentedControl {
-  func removeBorder(){
+  var isSetupHighlight = false
+
+  func removeBorder() {
     let background = UIImage.getSegRect(color: UIColor.clear.cgColor, andSize: self.bounds.size) // segment background color and size
     self.setBackgroundImage(background, for: .normal, barMetrics: .default)
     self.setBackgroundImage(background, for: .selected, barMetrics: .default)
@@ -24,6 +26,7 @@ class SegmentedControl: UISegmentedControl {
   }
   
   func highlightSelectedSegment() {
+    guard !isSetupHighlight else { return }
     removeBorder()
     let lineWidth: CGFloat = self.frame.size.width / CGFloat(self.numberOfSegments)
     let lineHeight: CGFloat = 2.0
@@ -34,6 +37,7 @@ class SegmentedControl: UISegmentedControl {
     underLine.backgroundColor = UIColor(named: "buttonBackgroundColor")
     underLine.tag = 1
     self.addSubview(underLine)
+    isSetupHighlight = true
   }
   
   func underlinePosition() {
