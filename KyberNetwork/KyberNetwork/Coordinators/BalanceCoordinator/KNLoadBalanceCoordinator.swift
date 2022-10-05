@@ -301,7 +301,9 @@ class KNLoadBalanceCoordinator {
         var summaryChains: [KNSummaryChainModel] = []
         for item in balances {
           let summaryChainModel = KNSummaryChainModel(json: item)
-          summaryChains.append(summaryChainModel)
+          if ChainType.getAllChainID().contains(summaryChainModel.chainId) {
+            summaryChains.append(summaryChainModel)
+          }
         }
         BalanceStorage.shared.saveSummaryChainModels(summaryChains)
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
