@@ -163,6 +163,7 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
   }
 
   func overviewCoordinatorDidSelectDepositMore(tokenAddress: String) {
+    self.earnCoordinator?.navigationController.popToRootViewController(animated: false)
     self.tabbarController.selectedIndex = 3
     self.earnCoordinator?.appCoodinatorDidOpenEarnView(tokenAddress: tokenAddress)
   }

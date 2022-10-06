@@ -206,6 +206,7 @@ extension WalletListV2ViewController: UITableViewDataSource {
       cellModel = RealWalletCellModel(wallet: wallet)
       cell.didSelectBackup = {
         self.showBackupWallet(walletId: wallet.id)
+        MixPanelManager.track("wallet_pop_up_backup", properties: ["screenid": "wallet_pop_up"])
       }
     } else {
       let kAddress = viewModel.watchAddresses[indexPath.row]
@@ -254,6 +255,7 @@ extension WalletListV2ViewController: UITableViewDelegate {
       plusButton.setImage(UIImage(named: "add_circle_grey"), for: .normal)
       plusButton.addAction(for: .touchUpInside) {
         self.delegate?.didSelectAddWatchWallet()
+        MixPanelManager.track("wallet_pop_up_add_watchlist", properties: ["screenid": "wallet_pop_up"])
       }
       plusButton.center.y = label.center.y
       view.addSubview(plusButton)
