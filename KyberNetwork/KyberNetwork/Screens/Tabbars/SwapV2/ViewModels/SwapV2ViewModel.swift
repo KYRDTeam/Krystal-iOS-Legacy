@@ -206,6 +206,8 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
         if let oldName = oldPlatformName, let newName = newPlatformName {
           self.error.value = .rateHasBeenChanged(oldRate: oldName, newRate: newName)
         }
+      } else {
+        self.selectedPlatformHint = rates.first(where: { $0.hint == self.selectedPlatformHint })?.hint
       }
       self.platformRatesViewModels.value = self.createPlatformRatesViewModels(sortedRates: sortedRates)
       if sortedRates.isEmpty {
