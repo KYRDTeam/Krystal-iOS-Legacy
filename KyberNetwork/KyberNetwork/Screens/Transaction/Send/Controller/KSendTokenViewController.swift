@@ -146,6 +146,16 @@ class KSendTokenViewController: InAppBrowsingViewController {
     })
   }
 
+  override func openWalletList() {
+    super.openWalletList()
+    MixPanelManager.track("transfer_select_wallet", properties: ["screenid": "transfer"])
+  }
+  
+  override func openSwitchChain() {
+    super.openSwitchChain()
+    MixPanelManager.track("transfer_select_chain", properties: ["screenid": "transfer"])
+  }
+
   fileprivate func setupUI() {
     self.setupNavigationView()
     self.setupTokenView()
@@ -291,6 +301,7 @@ class KSendTokenViewController: InAppBrowsingViewController {
 
   @IBAction func historyButtonTapped(_ sender: UIButton) {
     self.delegate?.kSendTokenViewController(self, run: .openHistory)
+    MixPanelManager.track("transfer_history", properties: ["screenid": "transfer"])
   }
 
   fileprivate func updateAmountFieldUIForTransferAllIfNeeded() {

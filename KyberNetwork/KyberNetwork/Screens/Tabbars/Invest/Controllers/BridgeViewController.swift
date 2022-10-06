@@ -81,6 +81,16 @@ class BridgeViewController: InAppBrowsingViewController {
     self.delegate?.bridgeViewControllerController(self, run: .checkAllowance(token: currentSourceToken))
   }
   
+  override func openWalletList() {
+    super.openWalletList()
+    MixPanelManager.track("bridge_select_wallet", properties: ["screenid": "bridge"])
+  }
+  
+  override func openSwitchChain() {
+    super.openSwitchChain()
+    MixPanelManager.track("bridge_select_chain", properties: ["screenid": "bridge"])
+  }
+  
   func setupUI() {
     self.tableView.registerCellNib(SelectChainCell.self)
     self.tableView.registerCellNib(SelectTokenCell.self)
@@ -278,6 +288,7 @@ class BridgeViewController: InAppBrowsingViewController {
 
   @IBAction func showHistoryButtonTapped(_ sender: Any) {
     self.delegate?.bridgeViewControllerController(self, run: .openHistory)
+    MixPanelManager.track("bridge_history", properties: ["screenid": "bridge"])
   }
 }
 

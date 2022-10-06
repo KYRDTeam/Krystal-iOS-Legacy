@@ -94,6 +94,16 @@ class SwapV2ViewController: InAppBrowsingViewController {
     bindViewModel()
   }
   
+  override func openWalletList() {
+    super.openWalletList()
+    MixPanelManager.track("swap_select_wallet", properties: ["screenid": "swap"])
+  }
+  
+  override func openSwitchChain() {
+    super.openSwitchChain()
+    MixPanelManager.track("swap_select_chain", properties: ["screenid": "swap"])
+  }
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     if KNGeneralProvider.shared.isBrowsingMode {
@@ -531,6 +541,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
   
   @IBAction func historyButtonWasTapped(_ sender: Any) {
     viewModel.didTapHistoryButton()
+    MixPanelManager.track("swap_history", properties: ["screenid": "swap"])
   }
   
   @objc override func onAppSwitchChain() {

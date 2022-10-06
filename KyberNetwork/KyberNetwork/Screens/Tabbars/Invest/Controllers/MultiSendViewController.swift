@@ -188,6 +188,7 @@ class MultiSendViewController: InAppBrowsingViewController {
 
   @IBAction func historyButtonTapped(_ sender: UIButton) {
     self.delegate?.multiSendViewController(self, run: .openHistory)
+    MixPanelManager.track("multisend_history", properties: ["screenid": "multi_send"])
   }
   
   fileprivate func updateUIInputTableView() {
@@ -199,6 +200,7 @@ class MultiSendViewController: InAppBrowsingViewController {
     self.delegate?.multiSendViewController(self, run: .useLastMultisend)
     self.viewModel.reloadPreviousForm()
     self.updateUIInputTableView()
+    MixPanelManager.track("multisend_last", properties: ["screenid": "multi_send"])
   }
   
   
@@ -212,6 +214,16 @@ class MultiSendViewController: InAppBrowsingViewController {
     guard self.isViewLoaded else { return }
     self.viewModel.resetDataSource()
     self.updateUIInputTableView()
+  }
+  
+  override func openWalletList() {
+    super.openWalletList()
+    MixPanelManager.track("multisend_select_wallet", properties: ["screenid": "multi_send"])
+  }
+  
+  override func openSwitchChain() {
+    super.openSwitchChain()
+    MixPanelManager.track("multisend_select_chain", properties: ["screenid": "multi_send"])
   }
   
   override func reloadChain() {
