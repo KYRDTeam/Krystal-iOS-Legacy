@@ -253,10 +253,16 @@ class ClaimRewardsController: InAppBrowsingViewController {
       case .success(let balance):
         if balance.value > self.viewModel.transactionFee {
           self.delegate?.didClaimRewards(self, txObject: self.viewModel.buildSumitTxObj())
+        } else {
+          let errMsg = String(format: Strings.insufficientXForTransaction.toBeLocalised(), KNGeneralProvider.shared.quoteToken)
+          self.showErrorTopBannerMessage(message: errMsg)
         }
       case .failure:
         if KNGeneralProvider.shared.quoteTokenObject.toToken().getBalanceBigInt() > self.viewModel.transactionFee {
           self.delegate?.didClaimRewards(self, txObject: self.viewModel.buildSumitTxObj())
+        } else {
+          let errMsg = String(format: Strings.insufficientXForTransaction.toBeLocalised(), KNGeneralProvider.shared.quoteToken)
+          self.showErrorTopBannerMessage(message: errMsg)
         }
       }
     }
