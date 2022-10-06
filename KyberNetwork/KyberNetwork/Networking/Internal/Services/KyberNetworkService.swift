@@ -1326,6 +1326,9 @@ extension KrytalService: TargetType {
         "address": address.joined(separator: ","),
         "forceSync": forceSync
       ]
+      if let chains = chains {
+        json["chains"] = chains
+      }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getGasPriceV2:
       return .requestPlain
