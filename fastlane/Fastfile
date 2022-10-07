@@ -233,7 +233,7 @@ lane :build do
 end
 
 lane :build_debug do
-  xcversion(version: "14.0.1")
+  xcversion(version: "13.4")
   # build app
   @tid = bundle_id + ".KrystalNotificationServiceExtension" 
   build_app(
