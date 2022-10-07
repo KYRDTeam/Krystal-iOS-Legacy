@@ -10,7 +10,6 @@ import KrystalWallets
 
 protocol EarnMenuViewControllerDelegate: class {
   func earnMenuViewControllerDidSelectToken(controller: EarnMenuViewController, token: TokenData)
-  func earnMenuViewControllerDidSelectAddChainWallet(controller: EarnMenuViewController, chainType: ChainType)
 }
 
 class EarnMenuViewModel {

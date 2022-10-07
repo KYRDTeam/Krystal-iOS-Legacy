@@ -94,7 +94,7 @@ extension AddWatchWalletCoordinator: AddWatchWalletViewControllerDelegate {
         chainType: watchAddress.addressType.importChainType.rawValue
       )
       KNContactStorage.shared.update(contacts: [contact])
-      AppDelegate.shared.coordinator.switchToWatchAddress(address: watchAddress, chain: currentChain)
+      AppDelegate.shared.coordinator.onAddWatchAddress(address: watchAddress, chain: currentChain)
       self.parentViewController.dismiss(animated: true, completion: nil)
       self.onCompleted?()
     } catch {

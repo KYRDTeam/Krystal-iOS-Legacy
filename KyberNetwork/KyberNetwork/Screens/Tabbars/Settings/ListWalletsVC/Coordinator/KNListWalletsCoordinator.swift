@@ -5,10 +5,7 @@ import KrystalWallets
 
 protocol KNListWalletsCoordinatorDelegate: class {
   func listWalletsCoordinatorDidClickBack()
-  func listWalletsCoordinatorDidSelectRemoveWallet(_ wallet: KWallet)
-  func listWalletsCoordinatorDidRemoveWatchAddress(_ address: KAddress)
   func listWalletsCoordinatorShouldBackUpWallet(_ wallet: KWallet, addressType: KAddressType)
-  func listWalletsCoordinatorDidSelectAddWallet(type: AddNewWalletType)
 }
 
 class KNListWalletsCoordinator: Coordinator {
@@ -90,6 +87,7 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
       self.showDeleteWalletAlert {
         try? WalletManager.shared.removeAddress(address: address)
         self.rootViewController.reloadData()
+        AppDelegate.shared.coordinator.onRemoveWatchAddress(address: address)
       }
     case .editWatchAddress(let address):
       let coordinator = AddWatchWalletCoordinator(parentViewController: navigationController, editingAddress: address)
@@ -121,25 +119,6 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
     self.delegate?.listWalletsCoordinatorDidClickBack()
   }
 
-  fileprivate func listWalletsViewControllerDidSelectRemoveWallet(_ wallet: KWallet) {
-    let alertController = KNPrettyAlertController(
-      title: Strings.delete,
-      message: Strings.deleteWalletConfirmMessage,
-      secondButtonTitle: Strings.ok,
-      firstButtonTitle: Strings.cancel,
-      secondButtonAction: {
-        if self.navigationController.topViewController is KNEditWalletViewController {
-          self.navigationController.popViewController(animated: true, completion: {
-            self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wallet)
-          })
-        } else {
-          self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wallet)
-        }
-      },
-      firstButtonAction: nil
-    )
-    self.navigationController.topViewController?.present(alertController, animated: true, completion: nil)
-  }
 }
 
 extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
@@ -200,6 +179,7 @@ extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
       secondButtonAction: {
         try? WalletManager.shared.remove(wallet: wallet)
         self.rootViewController.reloadData()
+        AppDelegate.shared.coordinator.onRemoveWallet(wallet: wallet)
         return
       },
       firstButtonAction: nil
@@ -258,9 +238,11 @@ extension KNListWalletsCoordinator: KNPasscodeCoordinatorDelegate {
       case .deleteWallet(let wallet):
         try? WalletManager.shared.remove(wallet: wallet)
         self.rootViewController.reloadData()
+        AppDelegate.shared.coordinator.onRemoveWallet(wallet: wallet)
       case .deleteAddress(let address):
         try? WalletManager.shared.removeAddress(address: address)
         self.rootViewController.reloadData()
+        AppDelegate.shared.coordinator.onRemoveWatchAddress(address: address)
       default:
         return
       }

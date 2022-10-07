@@ -10,17 +10,14 @@ import KrystalWallets
 import QRCodeReaderViewController
 import WalletConnectSwift
 
-class BaseWalletOrientedViewController: KNBaseViewController {
+class BaseWalletOrientedViewController: KNBaseViewController, Coordinator {
   @IBOutlet weak var walletButton: UIButton?
   @IBOutlet weak var backupIcon: UIImageView?
   @IBOutlet weak var chainIcon: UIImageView?
   @IBOutlet weak var chainButton: UIButton?
   @IBOutlet weak var walletView: UIView?
-
-  lazy var addWalletCoordinator: KNAddNewWalletCoordinator = {
-    let coordinator = KNAddNewWalletCoordinator(parentViewController: navigationController!)
-    return coordinator
-  }()
+  
+  var coordinators: [Coordinator] = []
   
   var supportAllChainOption: Bool {
     return false
@@ -113,6 +110,10 @@ class BaseWalletOrientedViewController: KNBaseViewController {
     reloadWallet()
   }
   
+  func start() {
+    fatalError("Do not call start function on this")
+  }
+  
   func openWalletConnect() {
     ScannerModule.start(previousScreen: ScreenName.explore, viewController: self, acceptedResultTypes: [.walletConnect], scanModes: [.qr]) { [weak self] text, type in
       guard let self = self else { return }
@@ -177,14 +178,16 @@ class BaseWalletOrientedViewController: KNBaseViewController {
 }
 
 extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
+  
   func didSelectWallet(wallet: KWallet) {
     didSelectWallet(wallet: wallet, isCreatedFromBrowsing: false)
   }
   
   func didSelectAddWallet() {
-    tabBarController?.present(addWalletCoordinator.navigationController, animated: false) {
-      self.addWalletCoordinator.start(type: .full)
-    }
+    guard let parent = navigationController?.tabBarController else { return }
+    let coordinator = KNAddNewWalletCoordinator(parentViewController: parent)
+    coordinator.start(type: .full)
+    addCoordinator(coordinator)
   }
   
   func didSelectAddWatchWallet() {

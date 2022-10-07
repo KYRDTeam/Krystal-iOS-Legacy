@@ -11,10 +11,7 @@ import KrystalWallets
 
 protocol KNHistoryCoordinatorDelegate: class {
   func historyCoordinatorDidClose()
-  func historyCoordinatorDidSelectManageWallet()
-  func historyCoordinatorDidSelectAddWallet()
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject)
-  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType)
 }
 
 class KNHistoryCoordinator: NSObject, Coordinator {
@@ -454,9 +451,6 @@ extension KNHistoryCoordinator: QRCodeReaderDelegate {
 }
 
 extension KNHistoryCoordinator: KNSendTokenViewCoordinatorDelegate {
-  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.historyCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
   
   func sendTokenCoordinatorDidClose() {
     self.sendCoordinator = nil
@@ -468,14 +462,6 @@ extension KNHistoryCoordinator: KNSendTokenViewCoordinatorDelegate {
   
   func sendTokenViewCoordinatorSelectOpenHistoryList() {
     self.navigationController.popViewController(animated: true)
-  }
-  
-  func sendTokenCoordinatorDidSelectManageWallet() {
-    self.delegate?.historyCoordinatorDidSelectManageWallet()
-  }
-  
-  func sendTokenCoordinatorDidSelectAddWallet() {
-    self.delegate?.historyCoordinatorDidSelectAddWallet()
   }
 }
 

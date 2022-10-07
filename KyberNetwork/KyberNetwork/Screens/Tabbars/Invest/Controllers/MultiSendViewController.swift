@@ -22,9 +22,7 @@ enum MultiSendViewControllerEvent {
   case checkApproval(items: [MultiSendItem])
   case confirm(items: [MultiSendItem])
   case openHistory
-  case openWalletsList
   case useLastMultisend
-  case addChainWallet(chainType: ChainType)
 }
 
 protocol MultiSendViewControllerDelegate: class {

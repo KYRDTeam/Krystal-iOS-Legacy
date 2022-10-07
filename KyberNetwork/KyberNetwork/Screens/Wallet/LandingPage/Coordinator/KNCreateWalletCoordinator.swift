@@ -7,9 +7,8 @@ import Moya
 import KrystalWallets
 
 protocol KNCreateWalletCoordinatorDelegate: class {
-  func createWalletCoordinatorDidCreateWallet(_ wallet: KWallet?, name: String?, chain: ChainType)
-  func createWalletCoordinatorDidClose()
-  func createWalletCoordinatorDidSendRefCode(_ code: String)
+  func createWalletCoordinatorDidCreateWallet(coordinator: KNCreateWalletCoordinator, _ wallet: KWallet?, name: String?, chain: ChainType)
+  func createWalletCoordinatorDidClose(coordinator: KNCreateWalletCoordinator)
 }
 
 class KNCreateWalletCoordinator: NSObject, Coordinator {
@@ -23,6 +22,8 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
   weak var delegate: KNCreateWalletCoordinatorDelegate?
   var createWalletController: CreateWalletViewController?
   var targetChain: ChainType
+  var finishWalletController: FinishCreateWalletViewController?
+  var backupViewController: BackUpWalletViewController?
   
   let walletManager = WalletManager.shared
 
@@ -64,6 +65,7 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
     let viewModel = FinishCreateWalletViewModel(wallet: wallet)
     let finishVC = FinishCreateWalletViewController(viewModel: viewModel)
     finishVC.delegate = self
+    self.finishWalletController = finishVC
     self.navigationController.show(finishVC, sender: nil)
   }
 
@@ -81,9 +83,10 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
       let viewModel = BackUpWalletViewModel(seeds: seeds, walletId: wallet.id)
       let backUpVC = BackUpWalletViewController(viewModel: viewModel)
       backUpVC.delegate = self
+      backupViewController = backUpVC
       self.navigationController.pushViewController(backUpVC, animated: true)
     } catch {
-      self.delegate?.createWalletCoordinatorDidCreateWallet(self.newWallet, name: name, chain: self.targetChain)
+      self.delegate?.createWalletCoordinatorDidCreateWallet(coordinator: self, self.newWallet, name: name, chain: self.targetChain)
       print("Can not get seeds from account")
     }
   }
@@ -118,7 +121,8 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
 extension KNCreateWalletCoordinator: BackUpWalletViewControllerDelegate {
   func didFinishBackup(_ controller: BackUpWalletViewController) {
     guard let wallet = self.newWallet else { return }
-    self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, chain: targetChain)
+    backupViewController = nil
+    self.delegate?.createWalletCoordinatorDidCreateWallet(coordinator: self, wallet, name: self.name, chain: targetChain)
   }
 }
 
@@ -127,7 +131,7 @@ extension KNCreateWalletCoordinator: CreateWalletViewControllerDelegate {
     switch event {
     case .back:
       self.navigationController.popViewController(animated: true) {
-        self.delegate?.createWalletCoordinatorDidClose()
+        self.delegate?.createWalletCoordinatorDidClose(coordinator: self)
       }
     case .next(let name):
       self.navigationController.displayLoading(text: Strings.creating, animated: true)
@@ -163,7 +167,8 @@ extension KNCreateWalletCoordinator: FinishCreateWalletViewControllerDelegate {
     switch event {
     case .continueUseApp:
       guard let wallet = self.newWallet else { return }
-      self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, chain: targetChain)
+      self.finishWalletController = nil
+      self.delegate?.createWalletCoordinatorDidCreateWallet(coordinator: self, wallet, name: self.name, chain: targetChain)
     case .backup:
       guard let wallet = self.newWallet else { return }
       self.openBackUpWallet(wallet, name: self.name)

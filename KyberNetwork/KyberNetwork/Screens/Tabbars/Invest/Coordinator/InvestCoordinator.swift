@@ -12,8 +12,6 @@ import WalletConnectSwift
 import KrystalWallets
 
 protocol InvestCoordinatorDelegate: class {
-  func investCoordinatorDidSelectManageWallet()
-  func investCoordinatorDidSelectAddWallet()
   func investCoordinatorDidSelectAddToken(_ token: TokenObject)
   func investCoordinatorDidSelectAddChainWallet(chainType: ChainType)
   func investCoordinator(didAdd wallet: KWallet, chain: ChainType)
@@ -266,8 +264,6 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         return
       }
       self.openBridgeView()
-    case .addChainWallet(let chainType):
-      delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
     case .scanner:
       var acceptedResultTypes: [ScanResultType] = [.promotionCode]
       var scanModes: [ScanMode] = [.qr, .text]
@@ -323,9 +319,6 @@ extension InvestCoordinator: InvestViewControllerDelegate {
 }
 
 extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
-  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
   
   func sendTokenCoordinatorDidClose() {
     self.sendCoordinator = nil
@@ -339,19 +332,9 @@ extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
     self.openHistoryScreen()
   }
   
-  func sendTokenCoordinatorDidSelectManageWallet() {
-    self.delegate?.investCoordinatorDidSelectManageWallet()
-  }
-  
-  func sendTokenCoordinatorDidSelectAddWallet() {
-    self.delegate?.investCoordinatorDidSelectAddWallet()
-  }
 }
 
 extension InvestCoordinator: KNHistoryCoordinatorDelegate {
-  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
   
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.investCoordinatorDidSelectAddToken(token)
@@ -360,23 +343,17 @@ extension InvestCoordinator: KNHistoryCoordinatorDelegate {
   func historyCoordinatorDidClose() {
     self.historyCoordinator = nil
   }
-  
-  func historyCoordinatorDidSelectManageWallet() {
-    self.delegate?.investCoordinatorDidSelectManageWallet()
-  }
-  
-  func historyCoordinatorDidSelectAddWallet() {
-    self.delegate?.investCoordinatorDidSelectAddWallet()
-  }
 }
 
 extension InvestCoordinator: KrytalCoordinatorDelegate {
   func krytalCoordinatorDidSelectAddWallet() {
-    self.delegate?.investCoordinatorDidSelectAddWallet()
+//    self.delegate?.investCoordinatorDidSelectAddWallet()
+    // TODO: remove this delegate
   }
   
   func krytalCoordinatorDidSelectManageWallet() {
-    self.delegate?.investCoordinatorDidSelectManageWallet()
+//    self.delegate?.investCoordinatorDidSelectManageWallet()
+    // TODO: remove this delegate
   }
 }
 
@@ -386,11 +363,13 @@ extension InvestCoordinator: BuyCryptoCoordinatorDelegate {
   }
   
   func buyCryptoCoordinatorDidSelectAddWallet() {
-    self.delegate?.investCoordinatorDidSelectAddWallet()
+    // self.delegate?.investCoordinatorDidSelectAddWallet()
+    // TODO: remove this delegate
   }
   
   func buyCryptoCoordinatorDidSelectManageWallet() {
-    self.delegate?.investCoordinatorDidSelectManageWallet()
+//    self.delegate?.investCoordinatorDidSelectManageWallet()
+    // TODO: remove this delegate
   }
   
   func buyCryptoCoordinatorOpenHistory() {
@@ -400,11 +379,11 @@ extension InvestCoordinator: BuyCryptoCoordinatorDelegate {
 
 extension InvestCoordinator: DappCoordinatorDelegate {
   func dAppCoordinatorDidSelectAddWallet() {
-    self.delegate?.investCoordinatorDidSelectAddWallet()
+//    self.delegate?.investCoordinatorDidSelectAddWallet()
   }
   
   func dAppCoordinatorDidSelectManageWallet() {
-    self.delegate?.investCoordinatorDidSelectManageWallet()
+//    self.delegate?.investCoordinatorDidSelectManageWallet()
   }
   
   func dAppCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
@@ -415,14 +394,6 @@ extension InvestCoordinator: DappCoordinatorDelegate {
 extension InvestCoordinator: BridgeCoordinatorDelegate {
   func didSelectAddChainWallet(chainType: ChainType) {
     self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
-  
-  func didSelectAddWallet() {
-    self.delegate?.investCoordinatorDidSelectAddWallet()
-  }
-
-  func didSelectManageWallet() {
-    self.delegate?.investCoordinatorDidSelectManageWallet()
   }
   
   func didSelectOpenHistoryList() {

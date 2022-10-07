@@ -12,26 +12,17 @@ import WalletConnectSwift
 import KrystalWallets
 import BigInt
 
-protocol SwapV2CoordinatorDelegate: AnyObject {
-  func swapV2CoordinatorDidSelectManageWallets()
-  func swapV2CoordinatorDidSelectAddWallet()
-  func swapV2CoordinatorDidSelectAddWalletForChain(chain: ChainType)
-}
-
 class SwapV2Coordinator: NSObject, Coordinator {
   var coordinators: [Coordinator] = []
   var rootViewController: SwapV2ViewController!
   var navigationController: UINavigationController!
-  weak var delegate: SwapV2CoordinatorDelegate?
+  
   var historyCoordinator: Coordinator?
   private let swapRepository = SwapRepository()
   func start() {
     let vc = SwapV2ViewController.instantiateFromNib()
     let viewModel = SwapV2ViewModel(
       actions: SwapV2ViewModelActions(
-        onSelectSwitchChain: {
-          self.openSwitchChain()
-        },
         onSelectOpenHistory: {
           self.openTransactionHistory()
         },
@@ -112,41 +103,12 @@ class SwapV2Coordinator: NSObject, Coordinator {
       coordinate(coordinator: coordinator)
     }
   }
-  
-  func openSwitchChain() {
-    let popup = SwitchChainViewController()
-    popup.completionHandler = { [weak self] selectedChain in
-      let addresses = WalletManager.shared.getAllAddresses(addressType: selectedChain.addressType)
-      if addresses.isEmpty {
-        self?.delegate?.swapV2CoordinatorDidSelectAddWalletForChain(chain: selectedChain)
-        return
-      } else {
-        let viewModel = SwitchChainWalletsListViewModel(selected: selectedChain)
-        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-        self?.rootViewController.present(secondPopup, animated: true, completion: nil)
-      }
-    }
-    self.rootViewController.present(popup, animated: true, completion: nil)
-  }
-  
 }
 
 extension SwapV2Coordinator: KNHistoryCoordinatorDelegate {
   
-  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.swapV2CoordinatorDidSelectAddWalletForChain(chain: chainType)
-  }
-  
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
     // No need to handle
-  }
-  
-  func historyCoordinatorDidSelectAddWallet() {
-    self.delegate?.swapV2CoordinatorDidSelectAddWallet()
-  }
-
-  func historyCoordinatorDidSelectManageWallet() {
-    self.delegate?.swapV2CoordinatorDidSelectManageWallets()
   }
 
   func historyCoordinatorDidClose() {

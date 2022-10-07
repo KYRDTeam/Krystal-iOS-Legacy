@@ -14,12 +14,9 @@ import JSONRPCKit
 import KrystalWallets
 
 protocol WithdrawCoordinatorDelegate: class {
-  func withdrawCoordinatorDidSelectAddWallet()
-  func withdrawCoordinatorDidSelectManageWallet()
   func withdrawCoordinatorDidSelectHistory()
   func withdrawCoordinatorDidSelectEarnMore(balance: LendingBalance)
   func withdrawCoordinatorDidSelectAddToken(_ token: TokenObject)
-  func withdrawCoordinatorDidSelectAddChainWallet(chainType: ChainType)
 }
 
 class WithdrawCoordinator: NSObject, Coordinator {
@@ -740,9 +737,6 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
 }
 
 extension WithdrawCoordinator: KNSendTokenViewCoordinatorDelegate {
-  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.withdrawCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
   
   func sendTokenCoordinatorDidClose() {
     
@@ -754,14 +748,6 @@ extension WithdrawCoordinator: KNSendTokenViewCoordinatorDelegate {
   
   func sendTokenViewCoordinatorSelectOpenHistoryList() {
     self.delegate?.withdrawCoordinatorDidSelectHistory()
-  }
-  
-  func sendTokenCoordinatorDidSelectManageWallet() {
-    self.delegate?.withdrawCoordinatorDidSelectManageWallet()
-  }
-  
-  func sendTokenCoordinatorDidSelectAddWallet() {
-    self.delegate?.withdrawCoordinatorDidSelectAddWallet()
   }
   
 }

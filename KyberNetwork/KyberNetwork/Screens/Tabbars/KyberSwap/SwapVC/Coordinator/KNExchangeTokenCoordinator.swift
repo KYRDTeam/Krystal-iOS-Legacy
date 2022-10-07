@@ -1317,9 +1317,6 @@ extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
 }
 
 extension KNExchangeTokenCoordinator: KNSendTokenViewCoordinatorDelegate {
-  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
   
   func sendTokenCoordinatorDidClose() {
     self.sendTokenCoordinator = nil

@@ -167,6 +167,7 @@ extension KNAppCoordinator {
   
   func stopAllSessions() {
     self.walletManager.removeAll()
+    self.walletCache.lastUsedAddress = nil
     self.session.stopSession()
     self.session.address = self.walletManager.createEmptyAddress()
     self.exchangeCoordinator?.stop()
@@ -224,6 +225,20 @@ extension KNAppCoordinator {
     } else {
       stopAllSessions()
     }
+  }
+  
+  func onAddWallet(wallet: KWallet, chain: ChainType) {
+    let shouldRestartSession = WalletCache.shared.lastUsedAddress == nil || WalletCache.shared.lastUsedAddress?.addressString == ""
+    self.switchWallet(wallet: wallet, chain: chain)
+    if shouldRestartSession {
+      AppDelegate.shared.coordinator.overviewTabCoordinator?.stop()
+      AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
+      AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
+    }
+  }
+  
+  func onAddWatchAddress(address: KAddress, chain: ChainType) {
+    switchToWatchAddress(address: address, chain: chain)
   }
   
   func onRemoveWallet(wallet: KWallet) {

@@ -11,7 +11,6 @@ import KrystalWallets
 
 enum BridgeEvent {
   case openHistory
-  case openWalletsList
   case addChainWallet(chainType: ChainType)
   case selectSourceToken
   case willSelectDestChain
@@ -274,16 +273,8 @@ class BridgeViewController: InAppBrowsingViewController {
     self.present(popup, animated: true, completion: nil)
   }
 
-  @IBAction func switchWalletButtonTapped(_ sender: Any) {
-    self.delegate?.bridgeViewControllerController(self, run: .openWalletsList)
-  }
-
   @IBAction func backButtonTapped(_ sender: Any) {
     self.navigationController?.popViewController(animated: true)
-  }
-
-  @IBAction func switchChainButtonTapped(_ sender: Any) {
-    self.openSwitchChainPopup()
   }
 
   @IBAction func showHistoryButtonTapped(_ sender: Any) {

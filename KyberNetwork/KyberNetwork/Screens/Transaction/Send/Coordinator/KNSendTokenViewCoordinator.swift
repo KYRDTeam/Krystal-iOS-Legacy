@@ -15,11 +15,8 @@ import KrystalWallets
 
 protocol KNSendTokenViewCoordinatorDelegate: class {
   func sendTokenViewCoordinatorSelectOpenHistoryList()
-  func sendTokenCoordinatorDidSelectManageWallet()
-  func sendTokenCoordinatorDidSelectAddWallet()
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject)
   func sendTokenCoordinatorDidClose()
-  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType)
 }
 
 class KNSendTokenViewCoordinator: NSObject, Coordinator {
@@ -282,8 +279,6 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     case .openMultiSend:
       self.multiSendCoordinator.start()
       Tracker.track(event: .transferClickMultipleTransfer)
-    case .addChainWallet(let chainType):
-      self.delegate?.sendTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
     }
   }
 
