@@ -210,11 +210,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
         self.selectedPlatformHint = rates.first(where: { $0.hint == self.selectedPlatformHint })?.hint
       }
       self.platformRatesViewModels.value = self.createPlatformRatesViewModels(sortedRates: sortedRates)
-      if sortedRates.isEmpty {
-        self.state.value = .rateNotFound
-      } else {
-        self.updateState()
-      }
+      self.updateState()
     }
     sourceToken.observe(on: self) { [weak self] token in
       if token?.address.lowercased() == self?.destToken.value?.address.lowercased() {
@@ -233,8 +229,9 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       self.state.value = .emptyAmount
       return
     }
-    
-    if self.currentAddress.value.isWatchWallet {
+    if platformRatesViewModels.value.isEmpty {
+      self.state.value = .rateNotFound
+    } else if self.currentAddress.value.isWatchWallet {
       self.state.value = .notConnected
     } else if self.sourceAmount.value ?? .zero <= self.maxAvailableSourceTokenAmount {
       self.checkAllowance()
