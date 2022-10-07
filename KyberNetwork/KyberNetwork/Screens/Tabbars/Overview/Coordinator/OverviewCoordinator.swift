@@ -361,7 +361,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
           firstButtonTitle: Strings.Cancel,
           secondButtonAction: {
             self.handleSwitchChain(controller) {
-              self.openSwapView(token: token, isBuy: true)
+              self.openSwapView(token: token, isBuy: false)
               self.pendingAction = nil
             }
           },
