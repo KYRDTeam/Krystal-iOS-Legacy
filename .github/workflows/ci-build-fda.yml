@@ -232,7 +232,7 @@ jobs:
         shell: bash
         run: .github/failure
 
-      - name: Debug: cat /Users/runner/Library/Logs/gym/Krystal-KyberNetwork.log file
+      - name: Debug | cat /Users/runner/Library/Logs/gym/Krystal-KyberNetwork.log file
         if: failure()
         shell: bash
         run: |
