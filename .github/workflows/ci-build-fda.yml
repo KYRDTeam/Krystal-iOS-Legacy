@@ -232,6 +232,12 @@ jobs:
         shell: bash
         run: .github/failure
 
+      - name: Debug | cat /Users/runner/Library/Logs/gym/Krystal-KyberNetwork.log file
+        if: failure()
+        shell: bash
+        run: |
+          cat /Users/runner/Library/Logs/gym/Krystal-KyberNetwork.log
+
   notify-staging:
     needs:
       - prepare
