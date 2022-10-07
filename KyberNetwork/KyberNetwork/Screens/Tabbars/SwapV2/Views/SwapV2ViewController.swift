@@ -644,6 +644,7 @@ extension SwapV2ViewController {
     timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { [weak self] _ in
       self?.onTimerTick()
     })
+    RunLoop.main.add(timer!, forMode: .default)
     rateLoadingView.isUserInteractionEnabled = true
     let reloadRateGesture = UITapGestureRecognizer(target: self, action: #selector(onTapReloadRate))
     rateLoadingView.addGestureRecognizer(reloadRateGesture)
