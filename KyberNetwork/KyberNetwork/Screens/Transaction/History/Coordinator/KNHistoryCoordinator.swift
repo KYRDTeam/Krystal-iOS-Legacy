@@ -304,11 +304,6 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       self.rootViewController.openSafari(with: urlString)
     case .openKyberWalletPage:
     break
-    case .openWalletsListPopup:
-      let viewModel = WalletsListViewModel()
-      let walletsList = WalletsListViewController(viewModel: viewModel)
-      walletsList.delegate = self
-      self.navigationController.present(walletsList, animated: true, completion: nil)
     case .selectPendingTransaction(transaction: let transaction):
       switch transaction.type {
       case .bridge:
@@ -419,23 +414,6 @@ extension KNHistoryCoordinator: KNTransactionStatusPopUpDelegate {
       break
     }
     self.transactionStatusVC = nil
-  }
-}
-
-extension KNHistoryCoordinator: WalletsListViewControllerDelegate {
-  func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
-    switch event {
-    case .connectWallet:
-      let qrcode = QRCodeReaderViewController()
-      qrcode.delegate = self
-      self.navigationController.present(qrcode, animated: true, completion: nil)
-    case .manageWallet:
-      self.delegate?.historyCoordinatorDidSelectManageWallet()
-    case .didSelect(let address):
-      return
-    case .addWallet:
-      self.delegate?.historyCoordinatorDidSelectAddWallet()
-    }
   }
 }
 

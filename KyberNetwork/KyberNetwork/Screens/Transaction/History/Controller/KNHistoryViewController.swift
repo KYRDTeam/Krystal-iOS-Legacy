@@ -15,7 +15,6 @@ enum KNHistoryViewEvent {
   case quickTutorial(pointsAndRadius: [(CGPoint, CGFloat)])
   case openEtherScanWalletPage
   case openKyberWalletPage
-  case openWalletsListPopup
   case swap
   case reloadAllData
 }
@@ -415,7 +414,7 @@ struct KNHistoryViewModel {
   }
 }
 
-class KNHistoryViewController: KNBaseViewController {
+class KNHistoryViewController: BaseWalletOrientedViewController {
 
   weak var delegate: KNHistoryViewControllerDelegate?
   fileprivate var viewModel: KNHistoryViewModel
@@ -431,7 +430,6 @@ class KNHistoryViewController: KNBaseViewController {
   var animatingCell: UICollectionViewCell?
 //  @IBOutlet weak var segmentedControl: BetterSegmentedControl!
   @IBOutlet weak var filterButton: UIButton!
-  @IBOutlet weak var walletSelectButton: UIButton!
   @IBOutlet weak var swapNowButton: UIButton!
   @IBOutlet weak var segmentedControl: SegmentedControl!
   private let refreshControl = UIRefreshControl()
@@ -485,8 +483,6 @@ class KNHistoryViewController: KNBaseViewController {
     self.setupNavigationBar()
     self.setupCollectionView()
     self.filterButton.rounded(radius: 10)
-    self.walletSelectButton.rounded(radius: self.walletSelectButton.frame.size.height / 2)
-    self.walletSelectButton.setTitle(viewModel.currentAddressString, for: .normal)
     self.swapNowButton.rounded(color: UIColor(named: "buttonBackgroundColor")!, width: 1, radius: self.swapNowButton.frame.size.height / 2)
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
     segmentedControl.selectedSegmentIndex = self.viewModel.isShowingPending ? 1 : 0
@@ -628,11 +624,7 @@ class KNHistoryViewController: KNBaseViewController {
     self.viewModel.updateIsShowingPending(sender.selectedSegmentIndex == 1)
     self.updateUIWhenDataDidChange()
   }
-  
-  @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
-    self.delegate?.historyViewController(self, run: KNHistoryViewEvent.openWalletsListPopup)
-  }
-  
+
   @objc private func refreshData(_ sender: Any) {
     guard !self.viewModel.isShowingPending else {
       self.refreshControl.endRefreshing()
@@ -672,8 +664,6 @@ extension KNHistoryViewController {
   }
   
   func coordinatorAppSwitchAddress() {
-//    self.viewModel.updateCurrentWallet(wallet)
-    self.walletSelectButton.setTitle(viewModel.currentAddressString, for: .normal)
     self.viewModel.update(tokens: EtherscanTransactionStorage.shared.getEtherscanToken())
   }
   
