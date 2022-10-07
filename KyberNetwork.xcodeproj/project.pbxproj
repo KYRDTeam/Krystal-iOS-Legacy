@@ -4851,8 +4851,10 @@
 			isa = PBXGroup;
 			children = (
 				A6F1AF1A28ED7AB500E951C0 /* AddWatchWalletCoordinator.swift */,
+				A6E754B128EEAF93008B6535 /* AddRealWalletCoordinator.swift */,
+				A6E754B328EECBB0008B6535 /* FinishWalletCoordinator.swift */,
 			);
-			path = AddWatchWallet;
+			path = Coordinators;
 			sourceTree = "<group>";
 		};
 		A6156B4F28856C4400276120 /* CustomSegmentView */ = {

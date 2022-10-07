@@ -21,8 +21,6 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidSelectDepositMore(tokenAddress: String)
   func overviewCoordinatorDidSelectAddToken(_ token: TokenObject)
   func overviewCoordinatorDidChangeHideBalanceStatus(_ status: Bool)
-  func overviewCoordinatorDidSelectRenameWallet()
-  func overviewCoordinatorDidSelectExportWallet()
   func overviewCoordinatorDidSelectDeleteWallet()
   func overviewCoordinatorDidStart()
   func overviewCoordinatorDidPullToRefresh(mode: ViewMode, overviewMode: OverviewMode)
@@ -250,6 +248,23 @@ class OverviewCoordinator: NSObject, Coordinator {
       self.historyCoordinator?.start()
     }
   }
+  
+  func openAddChainWalletMenu(chain: ChainType) {
+    let coordinator = CreateChainWalletMenuCoordinator(parentViewController: navigationController, chainType: chain, delegate: self)
+    coordinate(coordinator: coordinator)
+  }
+}
+
+extension OverviewCoordinator: CreateChainWalletMenuCoordinatorDelegate {
+  
+  func onSelectCreateNewWallet(chain: ChainType) {
+    
+  }
+  
+  func onSelectImportWallet() {
+    
+  }
+  
 }
 
 extension OverviewCoordinator: ChartViewControllerDelegate {
@@ -505,10 +520,7 @@ extension OverviewCoordinator: OverviewDepositViewControllerDelegate {
 }
 
 extension OverviewCoordinator: KNSendTokenViewCoordinatorDelegate {
-  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chainType)
-  }
-  
+
   func sendTokenCoordinatorDidClose() {
     self.sendCoordinator = nil
   }
@@ -519,14 +531,6 @@ extension OverviewCoordinator: KNSendTokenViewCoordinatorDelegate {
   
   func sendTokenViewCoordinatorSelectOpenHistoryList() {
     self.openHistoryScreen()
-  }
-
-  func sendTokenCoordinatorDidSelectManageWallet() {
-    self.delegate?.overviewCoordinatorDidSelectManageWallet()
-  }
-  
-  func sendTokenCoordinatorDidSelectAddWallet() {
-    self.delegate?.overviewCoordinatorDidSelectAddWallet()
   }
 }
 
@@ -850,7 +854,6 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     case .importWallet(let privateKey, let chain):
       let coordinator = KNImportWalletCoordinator(navigationController: navigationController)
       self.importWalletCoordinator = coordinator
-      coordinator.delegate = self
       coordinator.startImportFlow(privateKey: privateKey, chain: chain)
     case .openPromotion(let code):
       delegate?.overviewCoordinatorOpenPromotion(code: code)
@@ -863,20 +866,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
   }
 }
 
-extension OverviewCoordinator: KNImportWalletCoordinatorDelegate {
-  
-  func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
-    delegate?.overviewCoordinatorDidImportWallet(wallet: wallet, chainType: chain)
-    navigationController.popViewController(animated: true, completion: nil)
-  }
-  
-  func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType) {
-    
-  }
-  
-  func importWalletCoordinatorDidClose() {
-    
-  }
+extension OverviewCoordinator {
 
   func loadMultichainAssetsData(completion: @escaping ([ChainBalanceModel]) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
