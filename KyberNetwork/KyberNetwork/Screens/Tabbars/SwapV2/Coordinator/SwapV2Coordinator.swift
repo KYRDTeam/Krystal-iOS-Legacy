@@ -53,6 +53,7 @@ class SwapV2Coordinator: NSObject, Coordinator {
   
   func appCoordinatorShouldOpenExchangeForToken(_ token: Token, isReceived: Bool = false) {
     self.navigationController.popToRootViewController(animated: true)
+    self.rootViewController.viewModel.currentChain.value = KNGeneralProvider.shared.currentChain
     if isReceived {
       self.rootViewController.viewModel.updateDestToken(token: token)
     } else {
