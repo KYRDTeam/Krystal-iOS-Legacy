@@ -111,7 +111,7 @@ class ChartViewModel {
 
   var display24hVol: String {
     let volume24H = self.detailInfo?.markets[self.currency]?.volume24H ?? 0
-    return self.currencyMode.symbol() + "\(self.formatPoints(volume24H))" + self.currencyMode.suffixSymbol()
+    return self.currencyMode.symbol() + NumberFormatUtils.volFormat(number: volume24H) + self.currencyMode.suffixSymbol()
   }
 
   var diffPercent: Double {
@@ -146,11 +146,10 @@ class ChartViewModel {
       return "********"
     }
     guard let balance = BalanceStorage.shared.balanceForAddress(self.token.address), let balanceBigInt = BigInt(balance.balance) else { return "---" }
-    let balanceString = balanceBigInt.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 4))
-    let shortTypeBalance = String.formatBigNumberCurrency(balanceString.doubleValue)
-    return shortTypeBalance + " \(self.token.symbol.uppercased())"
+    let balanceString = NumberFormatUtils.balanceFormat(value: balanceBigInt, decimals: self.token.decimals)
+    return balanceString + " \(self.token.symbol.uppercased())"
   }
-  
+
   var displayUSDBalance: String {
     guard let balance = BalanceStorage.shared.balanceForAddress(self.token.address),
           let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.token.address),
@@ -170,17 +169,17 @@ class ChartViewModel {
   }
   
   var displayMarketCap: String {
-    return self.currencyMode.symbol() + "\(self.formatPoints(self.marketCap))" + self.currencyMode.suffixSymbol()
+    return self.currencyMode.symbol() + NumberFormatUtils.volFormat(number: self.marketCap) + self.currencyMode.suffixSymbol()
   }
   
   var displayAllTimeHigh: String {
     let ath = self.detailInfo?.markets[self.currency]?.ath ?? 0
-    return self.currencyMode.symbol() + "\(self.formatPoints(ath))" + self.currencyMode.suffixSymbol()
+    return self.currencyMode.symbol() + NumberFormatUtils.allTimeHighAndLowFormat(number: ath) + self.currencyMode.suffixSymbol()
   }
 
   var displayAllTimeLow: String {
     let atl = self.detailInfo?.markets[self.currency]?.atl ?? 0
-    return self.currencyMode.symbol() + "\(self.formatPoints(atl))" + self.currencyMode.suffixSymbol()
+    return self.currencyMode.symbol() + NumberFormatUtils.allTimeHighAndLowFormat(number: atl) + self.currencyMode.suffixSymbol()
   }
 
   var displayDescription: String {
@@ -218,13 +217,13 @@ class ChartViewModel {
     ]
     var titleString = ""
     if let detailInfo = self.detailInfo {
-      titleString = "\(detailInfo.symbol.uppercased())"
+      titleString = detailInfo.symbol.isEmpty ? "\(self.token.symbol.uppercased())" : "\(detailInfo.symbol.uppercased())"
     } else {
       titleString = "\(self.token.symbol.uppercased())"
     }
     var subTitleString = ""
     if let detailInfo = self.detailInfo {
-      subTitleString = "\(detailInfo.name.uppercased())"
+      subTitleString = detailInfo.name.isEmpty ? "\(self.token.name.uppercased())" : "\(detailInfo.name.uppercased())"
     } else {
       subTitleString = "\(self.token.name.uppercased())"
     }
@@ -261,10 +260,6 @@ class ChartViewModel {
      return ""
   }
 
-  func formatPoints(_ number: Double) -> String {
-    return String.formatBigNumberCurrency(number).displayRate()
-  }
-  
   func displayChartDetaiInfoAt(x: Double, y: Double) -> NSAttributedString {
     let price = y
     let timestamp = x
@@ -723,13 +718,13 @@ class ChartViewController: KNBaseViewController {
       self.tagLabel.text = self.viewModel.tagLabel
       self.tagLabelWidth.constant = self.viewModel.tagLabel.width(withConstrainedHeight: 28, font: UIFont.Kyber.regular(with: 12))
       self.addressToSuperViewLeading.isActive = false
-      self.addressToSuperViewTrailing.constant = 20
+      self.addressToSuperViewTrailing.constant = 100
       self.addressLeading.isActive = true
       self.tagView.isHidden = false
     } else {
       self.tagView.isHidden = true
       self.addressToSuperViewLeading.isActive = true
-      let addressViewWidth = self.viewModel.token.address.width(withConstrainedHeight: 28, font: UIFont.Kyber.regular(with: 12)) + 43
+      let addressViewWidth = self.viewModel.token.address.shortTypeAddress.width(withConstrainedHeight: 28, font: UIFont.Kyber.regular(with: 12)) + 43
       let padding = (UIScreen.main.bounds.size.width - addressViewWidth) / 2
       self.addressToSuperViewLeading.constant = CGFloat(padding)
       self.addressToSuperViewTrailing.constant = CGFloat(padding)
@@ -742,7 +737,7 @@ class ChartViewController: KNBaseViewController {
       self.chainIcon.image = KNGeneralProvider.shared.chainIconImage
     }
 
-    self.chainAddressLabel.text = self.viewModel.token.address
+    self.chainAddressLabel.text = self.viewModel.token.address.shortTypeAddress
   }
   
   func loadTokenChartData() {

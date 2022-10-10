@@ -72,19 +72,19 @@ extension KNAppCoordinator {
     self.settingsCoordinator?.start()
     
     if FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.swapV2) {
-      let swapV2Coordinator = SwapV2Coordinator()
-      swapV2Coordinator.delegate = self
-      swapV2Coordinator.start()
-      swapV2Coordinator.navigationController.tabBarItem = UITabBarItem(
+      self.swapV2Coordinator = SwapV2Coordinator()
+      self.swapV2Coordinator?.delegate = self
+      self.swapV2Coordinator?.start()
+      self.swapV2Coordinator?.navigationController.tabBarItem = UITabBarItem(
         title: nil,
         image: UIImage(named: "tabbar_swap_icon"),
         selectedImage: nil
       )
-      swapV2Coordinator.navigationController.tabBarItem.tag = 1
+      self.swapV2Coordinator?.navigationController.tabBarItem.tag = 1
 
       self.tabbarController.viewControllers = [
         self.overviewTabCoordinator!.navigationController,
-        swapV2Coordinator.navigationController,
+        self.swapV2Coordinator!.navigationController,
         self.investCoordinator!.navigationController,
         self.earnCoordinator!.navigationController,
         self.settingsCoordinator!.navigationController,
@@ -182,7 +182,6 @@ extension KNAppCoordinator {
     self.session.switchAddress(address: address)
     FeatureFlagManager.shared.configClient(session: self.session)
     self.loadBalanceCoordinator?.shouldFetchAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all
-    self.navigationController.showLoadingHUD()
     self.loadBalanceCoordinator?.restartNewSession(self.session)
     self.investCoordinator?.appCoordinatorSwitchAddress()
     

@@ -56,7 +56,8 @@ class OverviewLiquidityPoolViewModel {
       return ""
     }
     let tokenModel = pairTokens[0]
-    return tokenModel.getBalanceBigInt().string(decimals: tokenModel.token.decimals, minFractionDigits: 0, maxFractionDigits: min(tokenModel.token.decimals, 5)) + " " + firstTokenSymbol()
+    
+    return NumberFormatUtils.balanceFormat(value: tokenModel.getBalanceBigInt(), decimals: tokenModel.token.decimals) + " " + firstTokenSymbol()
   }
   
   func secondTokenValue() -> String {
@@ -67,7 +68,8 @@ class OverviewLiquidityPoolViewModel {
       return ""
     }
     let tokenModel = pairTokens[1]
-    return tokenModel.getBalanceBigInt().string(decimals: tokenModel.token.decimals, minFractionDigits: 0, maxFractionDigits: min(tokenModel.token.decimals, 5)) + " " + secondTokenSymbol()
+    
+    return NumberFormatUtils.balanceFormat(value: tokenModel.getBalanceBigInt(), decimals: tokenModel.token.decimals) + " " + firstTokenSymbol()
   }
   
   func balanceValue() -> String {
@@ -85,7 +87,6 @@ class OverviewLiquidityPoolViewModel {
 }
 
 class OverviewLiquidityPoolCell: UITableViewCell {
-  static let kCellID: String = "OverviewLiquidityPoolCell"
   static let kCellHeight: CGFloat = 85
   @IBOutlet weak var cellBackgroundView: UIView!
   @IBOutlet weak var firstTokenIcon: UIImageView!

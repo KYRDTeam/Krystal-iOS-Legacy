@@ -7,10 +7,10 @@
 
 import Foundation
 import Moya
-import QRCodeReaderViewController
 import MBProgressHUD
 import WalletConnectSwift
 import KrystalWallets
+import UIKit
 
 protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidImportWallet(wallet: KWallet, chainType: ChainType)
@@ -104,10 +104,6 @@ class OverviewCoordinator: NSObject, Coordinator {
     controller.delegate = self
     return controller
   }()
-  
-//  fileprivate var currentWallet: KNWalletObject {
-//    return self.session.currentWalletObject
-//  }
   
   var currentAddress: KAddress {
     return AppDelegate.session.address
@@ -225,7 +221,7 @@ class OverviewCoordinator: NSObject, Coordinator {
     if self.navigationController.tabBarController?.selectedIndex != 0 {
       self.navigationController.tabBarController?.selectedIndex = 0
     }
-    self.handleWalletConnectURI(uri, disconnectAfterDisappear: false)
+    AppEventCenter.shared.didScanWalletConnect(address: currentAddress, url: uri)
   }
 
   func appCoordinatorPullToRefreshDone() {
@@ -365,7 +361,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
           firstButtonTitle: Strings.Cancel,
           secondButtonAction: {
             self.handleSwitchChain(controller) {
-              self.openSwapView(token: token, isBuy: true)
+              self.openSwapView(token: token, isBuy: false)
               self.pendingAction = nil
             }
           },
@@ -374,7 +370,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
         alertController.popupHeight = 300
         self.navigationController.present(alertController, animated: true, completion: nil)
       } else {
-        self.openSwapView(token: token, isBuy: true)
+        self.openSwapView(token: token, isBuy: false)
       }
     case .invest(token: let token):
       self.delegate?.overviewCoordinatorDidSelectDepositMore(tokenAddress: token.address)
@@ -460,67 +456,6 @@ extension OverviewCoordinator: NavigationBarDelegate {
     actionController.addAction(Action(ActionData(title: "Cancel", image: UIImage(named: "knc")!), style: .destructive, handler: nil))
     
     self.navigationController.present(actionController, animated: true, completion: nil)
-    
-    
-  }
-}
-
-extension OverviewCoordinator: WalletsListViewControllerDelegate {
-  func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
-    switch event {
-    case .connectWallet:
-      let qrcode = QRCodeReaderViewController()
-      qrcode.delegate = self
-      self.navigationController.present(qrcode, animated: true, completion: nil)
-    case .manageWallet:
-      self.delegate?.overviewCoordinatorDidSelectManageWallet()
-    case .didSelect(let address):
-      self.rootViewController.viewModel.clearCache()
-      return
-    case .addWallet:
-      self.delegate?.overviewCoordinatorDidSelectAddWallet()
-      MixPanelManager.track("import_option_popup_open", properties: ["screenid": "import_option_popup"])
-    }
-  }
-}
-
-extension OverviewCoordinator: QRCodeReaderDelegate {
-  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
-    reader.dismiss(animated: true, completion: nil)
-  }
-
-  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
-    reader.dismiss(animated: true) {
-      self.handleWalletConnectURI(result)
-    }
-  }
-  
-  func handleWalletConnectURI(_ result: String, disconnectAfterDisappear: Bool = true) {
-    guard let url = WCURL(result) else {
-      self.navigationController.showTopBannerView(
-        with: Strings.invalidSession,
-        message: Strings.invalidSessionTryOtherQR,
-        time: 1.5
-      )
-      return
-    }
-
-    do {
-      let privateKey = try WalletManager.shared.exportPrivateKey(address: AppDelegate.session.address)
-      DispatchQueue.main.async {
-        let controller = KNWalletConnectViewController(
-          wcURL: url,
-          pk: privateKey
-        )
-        self.navigationController.present(controller, animated: true, completion: nil)
-      }
-    } catch {
-      self.navigationController.showTopBannerView(
-        with: Strings.privateKeyError,
-        message: Strings.canNotGetPrivateKey,
-        time: 1.5
-      )
-    }
   }
 }
 
@@ -668,7 +603,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     }))
       
     let showLPType = mode == .showLiquidityPool ? ActionStyle.selected : ActionStyle.default
-    actionController.addAction(Action(ActionData(title: "Show Liquidity Pool", image: UIImage(named: "show_LP_icon")!), style: showLPType, handler: { _ in
+    actionController.addAction(Action(ActionData(title: "Show Liquidity Pool Tokens", image: UIImage(named: "show_LP_icon")!), style: showLPType, handler: { _ in
       controller.coordinatorDidSelectMode(.showLiquidityPool)
       MixPanelManager.track("token_data_show_liquidity_pool", properties: ["screenid": "token_data_pop_up"])
     }))
@@ -877,7 +812,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     case .addChainWallet(let chain):
       self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chain)
     case .scannedWalletConnect(let url):
-      self.handleWalletConnectURI(url)
+      AppEventCenter.shared.didScanWalletConnect(address: currentAddress, url: url)
     case .selectAllChain:
       self.delegate?.overviewCoordinatorDidSelectAllChain()
       self.loadMultichainAssetsData { chainBalanceModels in

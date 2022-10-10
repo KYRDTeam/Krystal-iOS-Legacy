@@ -7,7 +7,6 @@
 
 import UIKit
 import KrystalWallets
-import QRCodeReaderViewController
 import WalletConnectSwift
 
 class WalletListV2ViewModel {
@@ -20,7 +19,7 @@ class WalletListV2ViewModel {
   }
   
   func numberOfSection() -> Int {
-    return watchAddresses.isEmpty ? 1 : 2
+    return 2
   }
   
   func numberOfRows(section: Int) -> Int {
@@ -45,6 +44,7 @@ protocol WalletListV2ViewControllerDelegate: class {
   func didSelectWallet(wallet: KWallet)
   func didSelectWatchWallet(address: KAddress)
   func didSelectAddWallet()
+  func didSelectAddWatchWallet()
 }
 
 class WalletListV2ViewController: KNBaseViewController {
@@ -70,6 +70,10 @@ class WalletListV2ViewController: KNBaseViewController {
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
   }
+  
+  deinit {
+    unobserveNotifications()
+  }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -77,6 +81,7 @@ class WalletListV2ViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    observeNotifications()
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
     tapOutSideBackgroundView.addGestureRecognizer(tapGesture)
     walletsTableView.registerCellNib(WalletCell.self)
@@ -86,11 +91,35 @@ class WalletListV2ViewController: KNBaseViewController {
   @objc func tapOutside() {
     self.dismiss(animated: true, completion: nil)
   }
+  
+  func observeNotifications() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(onWalletListUpdated),
+      name: AppEventCenter.shared.kAppDidChangeAddress,
+      object: nil
+    )
+  }
+  
+  func unobserveNotifications() {
+    NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidChangeAddress, object: nil)
+  }
+  
+  @objc func onWalletListUpdated() {
+    viewModel.reloadData()
+    walletsTableView.reloadData()
+  }
 
   @IBAction func connectWalletButtonTapped(_ sender: UIButton) {
-    let qrcode = QRCodeReaderViewController()
-    qrcode.delegate = self
-    self.present(qrcode, animated: true, completion: nil)
+    ScannerModule.start(previousScreen: ScreenName.explore, viewController: self, acceptedResultTypes: [.walletConnect], scanModes: [.qr]) { [weak self] text, type in
+      guard let self = self else { return }
+      switch type {
+      case .walletConnect:
+        AppEventCenter.shared.didScanWalletConnect(address: self.currentAddress, url: text)
+      default:
+        return
+      }
+    }
   }
   
   @IBAction func addWalletButtonTapped(_ sender: Any) {
@@ -177,6 +206,7 @@ extension WalletListV2ViewController: UITableViewDataSource {
       cellModel = RealWalletCellModel(wallet: wallet)
       cell.didSelectBackup = {
         self.showBackupWallet(walletId: wallet.id)
+        MixPanelManager.track("wallet_pop_up_backup", properties: ["screenid": "wallet_pop_up"])
       }
     } else {
       let kAddress = viewModel.watchAddresses[indexPath.row]
@@ -207,10 +237,11 @@ extension WalletListV2ViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     if section == 1 {
-      let view = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 45))
+      let screenWidth = UIScreen.main.bounds.size.width
+      let view = UIView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 45))
       view.backgroundColor = UIColor.Kyber.popupBackgroundColor
       
-      let seperatorView = UIView(frame: CGRect(x: 32, y: 0, width: UIScreen.main.bounds.size.width - 64, height: 1))
+      let seperatorView = UIView(frame: CGRect(x: 32, y: 0, width: screenWidth - 64, height: 1))
       seperatorView.backgroundColor = UIColor.Kyber.grayBackgroundColor
       view.addSubview(seperatorView)
       
@@ -220,43 +251,17 @@ extension WalletListV2ViewController: UITableViewDelegate {
       label.font = UIFont.Kyber.bold(with: 16)
       view.addSubview(label)
       
+      let plusButton = UIButton(frame: CGRect(x: screenWidth - 32 - 24, y: 0, width: 24, height: 24))
+      plusButton.setImage(UIImage(named: "add_circle_grey"), for: .normal)
+      plusButton.addAction(for: .touchUpInside) {
+        self.delegate?.didSelectAddWatchWallet()
+        MixPanelManager.track("wallet_pop_up_add_watchlist", properties: ["screenid": "wallet_pop_up"])
+      }
+      plusButton.center.y = label.center.y
+      view.addSubview(plusButton)
+      
       return view
     }
     return nil
-  }
-}
-
-extension WalletListV2ViewController: QRCodeReaderDelegate {
-  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
-    reader.dismiss(animated: true, completion: nil)
-  }
-
-  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
-    reader.dismiss(animated: true) {
-      guard let url = WCURL(result) else {
-        self.showTopBannerView(
-          with: Strings.invalidSession,
-          message: Strings.invalidSessionTryOtherQR,
-          time: 1.5
-        )
-        return
-      }
-      do {
-        let privateKey = try WalletManager.shared.exportPrivateKey(address: self.currentAddress)
-        DispatchQueue.main.async {
-          let controller = KNWalletConnectViewController(
-            wcURL: url,
-            pk: privateKey
-          )
-          self.present(controller, animated: true, completion: nil)
-        }
-      } catch {
-        self.showTopBannerView(
-          with: Strings.privateKeyError,
-          message: Strings.canNotGetPrivateKey,
-          time: 1.5
-        )
-      }
-    }
   }
 }

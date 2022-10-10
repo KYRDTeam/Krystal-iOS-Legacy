@@ -84,14 +84,14 @@ protocol KrytalViewControllerDelegate: class {
   func krytalViewController(_ controller: KrytalViewController, run event: KrytalViewEvent)
 }
 
-class KrytalViewController: KNBaseViewController {
+class KrytalViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var totalRewardLabel: UILabel!
   @IBOutlet weak var referralCodeTableView: UITableView!
   @IBOutlet weak var introLabel: UILabel!
   @IBOutlet weak var bonusVolLabel: UILabel!
   @IBOutlet weak var totalConfirmedVolLabel: UILabel!
   @IBOutlet weak var confirmVolTitleLabel: UILabel!
-  @IBOutlet weak var walletListButton: UIButton!
+  
   @IBOutlet weak var nextRewardLabel: UILabel!
   @IBOutlet weak var bonusVolumeHeight: NSLayoutConstraint!
   @IBOutlet weak var bonusVolTitle: UILabel!
@@ -112,7 +112,6 @@ class KrytalViewController: KNBaseViewController {
   }
 
   fileprivate func updateUI() {
-    self.walletListButton.setTitle(self.viewModel.displayWalletString, for: .normal)
     self.totalRewardLabel.text = self.viewModel.displayTotalReward
     self.introLabel.attributedText = self.viewModel.displayIntroAttributedString
     self.bonusVolLabel.text = self.viewModel.bonusVol

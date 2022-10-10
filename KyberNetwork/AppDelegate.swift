@@ -139,15 +139,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   }
   
   fileprivate func setupFirebase() {
-    if KNEnvironment.default == .production {
-      FirebaseApp.configure()
-    } else {
-      let filePath = Bundle.main.path(forResource: "GoogleService-Info-Dev", ofType: "plist")
-      guard let fileopts = FirebaseOptions(contentsOfFile: filePath!) else {
-        return
-      }
-      FirebaseApp.configure(options: fileopts)
+    #if DEBUG
+    let filePath = Bundle.main.path(forResource: "GoogleService-Info-Dev", ofType: "plist")
+    guard let fileopts = FirebaseOptions(contentsOfFile: filePath!) else {
+      return
     }
+    FirebaseApp.configure(options: fileopts)
+    #else
+    FirebaseApp.configure()
+    #endif
   }
   
   func setupKeyboard() {
@@ -220,7 +220,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     })
     
     if components.path == "/swap" {
-      self.coordinator.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+      
+      if FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.swapV2) {
+        self.coordinator.swapV2Coordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+      } else {
+        self.coordinator.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+      }
     } else if components.path == "/token" {
       self.coordinator.overviewTabCoordinator?.navigationController.tabBarController?.selectedIndex = 0
       self.coordinator.overviewTabCoordinator?.navigationController.popToRootViewController(animated: false)

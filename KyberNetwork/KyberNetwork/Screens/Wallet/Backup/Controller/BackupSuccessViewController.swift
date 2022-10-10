@@ -20,5 +20,6 @@ class BackupSuccessViewController: KNBaseViewController {
   @IBAction func continueButtonTapped(_ sender: Any) {
     AppEventCenter.shared.walletListHasUpdate()
     self.delegate?.didFinishBackup(self)
+    MixPanelManager.track("backup_finish", properties: ["screenid": "backup_done"])
   }
 }

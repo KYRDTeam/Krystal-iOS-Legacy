@@ -157,7 +157,7 @@ class KNSendTokenViewModel: NSObject {
   fileprivate func formatFeeStringFor(gasPrice: BigInt) -> String {
     let sourceToken = KNGeneralProvider.shared.quoteToken
     let fee = gasPrice * self.gasLimit
-    let feeString: String = fee.displayRate(decimals: 18)
+    let feeString: String = NumberFormatUtils.gasFeeFormat(number: fee)
     var typeString = ""
     switch self.selectedGasPriceType {
     case .superFast:
@@ -198,13 +198,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var displayBalance: String {
-    let string = self.from.getBalanceBigInt().string(
-      decimals: self.from.decimals,
-      minFractionDigits: 0,
-      maxFractionDigits: min(self.from.decimals, 5)
-    )
-    if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
-    return "\(string.prefix(15))"
+    return NumberFormatUtils.balanceFormat(value: self.from.getBalanceBigInt(), decimals: self.from.decimals)
   }
 
   var totalBalanceText: String {
@@ -475,7 +469,7 @@ class KNSendTokenViewModel: NSObject {
     let baseFee = KNGasCoordinator.shared.baseFee ?? BigInt(0)
     let fee = (baseFee + self.selectedPriorityFee) * self.gasLimit
     let sourceToken = KNGeneralProvider.shared.quoteToken
-    let feeString: String = fee.displayRate(decimals: 18)
+    let feeString: String = NumberFormatUtils.gasFeeFormat(number: fee)
     return "\(feeString) \(sourceToken) "
   }
   

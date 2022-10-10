@@ -164,6 +164,8 @@ struct Strings {
   static let createWallet = "create.wallet".toBeLocalised()
   static let importWallet = "import.wallet".toBeLocalised()
   static let getStarted = "get.started".toBeLocalised()
+  static let addWatchWalletSuccess = "add.watched.wallet.success".toBeLocalised()
+  static let editWatchWalletSuccess = "edit.watched.wallet.success".toBeLocalised()
   
   // Rewards
   static let switchToBSCToClaimRewards = "switch.to.bsc.to.claim.rewards".toBeLocalised()
@@ -272,5 +274,15 @@ struct Strings {
   static let xMinsAgo = "x.mins.ago".toBeLocalised()
   static let xSecondsAgo = "x.seconds.ago".toBeLocalised()
   static let justNow = "just.now".toBeLocalised()
-
+  
+  // Wallet connect
+  static let wcConnectingDapp = "wc.connecting.dapp".toBeLocalised()
+  static let wcConnectingFailed = "wc.connecting.failed".toBeLocalised()
+  static let wcTryAgain = "wc.try.again".toBeLocalised()
+  static let wcConnect = "wc.connect".toBeLocalised()
+  static let wcConnectMessage = "wc.connect.message".toBeLocalised()
+  static let wcDisconnect = "wc.disconnect".toBeLocalised()
+  static let wcDisconnectConfirm = "wc.disconnect.confirm".toBeLocalised()
+  static let wcCancel = "wc.cancel".toBeLocalised()
+  static let wcNotSupportWatchWallet = "wc.not.support.watch.wallet".toBeLocalised()
 }

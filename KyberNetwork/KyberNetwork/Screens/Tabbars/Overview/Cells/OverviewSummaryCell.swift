@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import BigInt
 
 class OverviewSummaryCellViewModel {
   var currency: CurrencyMode
@@ -39,7 +40,9 @@ class OverviewSummaryCellViewModel {
     let hideAndDeleteValue = hideAndDeleteBigInt.doubleUSDValue(currencyDecimal: self.currency.decimalNumber())
     let chainBalanceValue = self.value - hideAndDeleteValue
 
-    return self.currency.symbol() + currencyFormatter.currencyString(value: chainBalanceValue, decimals: self.currency.decimalNumber())
+    return self.currency.symbol() + NumberFormatUtils.valueFormat(value: chainBalanceValue.amountBigInt(decimals: 18) ?? BigInt(0), decimals: 18, currencyMode: self.currency) + self.currency.suffixSymbol()
+    
+    
   }
 
   func percentString() -> String {
@@ -68,7 +71,6 @@ class OverviewSummaryCellViewModel {
 }
 
 class OverviewSummaryCell: UITableViewCell {
-  static let kCellID: String = "OvereviewSummaryCell"
   @IBOutlet weak var chainIcon: UIImageView!
   @IBOutlet weak var chainValueLabel: UILabel!
   @IBOutlet weak var chainNameLabel: UILabel!

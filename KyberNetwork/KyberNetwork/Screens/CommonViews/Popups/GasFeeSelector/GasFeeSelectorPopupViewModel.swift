@@ -246,7 +246,9 @@ class GasFeeSelectorPopupViewModel {
   fileprivate func formatFeeStringFor(gasPrice: BigInt, gasLimit: BigInt? = nil) -> String {
     let currentGasLimit = gasLimit ?? self.gasLimit
     let fee = gasPrice * currentGasLimit
-    let feeString: String = fee.displayRate(decimals: 18)
+    let feeString: String = NumberFormatUtils.gasFeeFormat(number: fee)
+    
+    
     let quoteToken = KNGeneralProvider.shared.quoteToken
     return "~ \(feeString) \(quoteToken)"
   }
@@ -488,7 +490,7 @@ class GasFeeSelectorPopupViewModel {
 
   var displayEquivalentMaxETHFee: String {
     let value = self.maxGasFeeBigInt * self.advancedGasLimitBigInt
-    return value.displayRate(decimals: 18) + " \(KNGeneralProvider.shared.quoteToken)"
+    return NumberFormatUtils.gasFeeFormat(number: value) + " \(KNGeneralProvider.shared.quoteToken)"
   }
   
   var advancedGasLimitErrorStatus: AdvancedInputError {

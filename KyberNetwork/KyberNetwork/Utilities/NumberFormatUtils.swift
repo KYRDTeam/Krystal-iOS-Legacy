@@ -8,6 +8,10 @@
 import Foundation
 import BigInt
 
+public struct FormatDecimal {
+  public static let balanceDecimals = 6
+}
+
 class NumberFormatUtils {
   
   static let withSeparator: NumberFormatter = {
@@ -119,5 +123,72 @@ class NumberFormatUtils {
     
     return stringValue
   }
+
+  static func balanceFormat(value: BigInt, decimals: Int) -> String {
+    return NumberFormatUtils.format(value: value, decimals: decimals, maxDecimalMeaningDigits: FormatDecimal.balanceDecimals, maxDecimalDigits: FormatDecimal.balanceDecimals)
+  }
   
+  static func volFormat(number: Double) -> String {
+    let thousand = number / 1000
+    let million = number / 1000000
+    let billion = number / 1000000000
+    
+    let trillion = number / 1000000000000
+    let quadrillion = number / 1000000000000000
+    let quintillion = number / 1000000000000000000
+    
+    if quintillion >= 1.0 {
+      return "\(round(quintillion*10)/10)Q"
+    } else if quadrillion >= 1.0 {
+      return "\(round(quadrillion*10)/10)q"
+    } else if trillion >= 1.0 {
+      return ("\(round(trillion*10/10))t")
+    } else if billion >= 1.0 {
+      return "\(round(billion*10)/10)B"
+    } else if million >= 1.0 {
+      return "\(round(million*10)/10)M"
+    } else if thousand >= 1.0 {
+      return ("\(round(thousand*10/10))K")
+    } else {
+      return "\(Int(number))"
+    }
+  }
+  
+  static func valueFormat(value: BigInt, decimals: Int, currencyMode: CurrencyMode) -> String {
+    switch currencyMode {
+    case .usd:
+      return format(value: value, decimals: decimals, maxDecimalMeaningDigits: nil, maxDecimalDigits: 2)
+    case .eth:
+      return format(value: value, decimals: decimals, maxDecimalMeaningDigits: nil, maxDecimalDigits: 7)
+    case .btc:
+      return format(value: value, decimals: decimals, maxDecimalMeaningDigits: nil, maxDecimalDigits: 8)
+    case .quote:
+      var maxDecimal = 3
+      if KNGeneralProvider.shared.currentChain == .bsc {
+        maxDecimal = 6
+      } else if KNGeneralProvider.shared.currentChain == .avalanche {
+        maxDecimal = 5
+      } else if KNGeneralProvider.shared.currentChain == .eth {
+        maxDecimal = 7
+      }
+      return format(value: value, decimals: decimals, maxDecimalMeaningDigits: nil, maxDecimalDigits: maxDecimal)
+    }
+    
+  }
+  
+  static func allTimeHighAndLowFormat(number: Double) -> String {
+    if number < 1 {
+      return format(value: BigInt(number * pow(10.0, 18.0)), decimals: 18, maxDecimalMeaningDigits: 4, maxDecimalDigits: 8)
+    } else {
+      return format(value: BigInt(number * pow(10.0, 18.0)), decimals: 18, maxDecimalMeaningDigits: nil, maxDecimalDigits: 2)
+    }
+  }
+  
+  static func gasFeeFormat(number: BigInt) -> String {
+    if number < BigInt(1 *  pow(10.0, 18.0)) {
+      return format(value: number, decimals: 18, maxDecimalMeaningDigits: 4, maxDecimalDigits: nil)
+    } else {
+      return format(value: number, decimals: 18, maxDecimalMeaningDigits: nil, maxDecimalDigits: 2)
+    }
+  }
 }

@@ -248,9 +248,23 @@ class ClaimRewardsController: InAppBrowsingViewController {
 
   @IBAction func claimButtonTapped(_ sender: Any) {
     //check if balance > fee
-    guard let quoteToken = KNSupportedTokenStorage.shared.getTokenWith(symbol: KNGeneralProvider.shared.quoteToken) else {return}
-    if quoteToken.getBalanceBigInt() > self.viewModel.transactionFee {
-      self.delegate?.didClaimRewards(self, txObject: self.viewModel.buildSumitTxObj())
+    KNGeneralProvider.shared.getETHBalanace(for: KNGeneralProvider.shared.currentWalletAddress) { result in
+      switch result {
+      case .success(let balance):
+        if balance.value > self.viewModel.transactionFee {
+          self.delegate?.didClaimRewards(self, txObject: self.viewModel.buildSumitTxObj())
+        } else {
+          let errMsg = String(format: Strings.insufficientXForTransaction.toBeLocalised(), KNGeneralProvider.shared.quoteToken)
+          self.showErrorTopBannerMessage(message: errMsg)
+        }
+      case .failure:
+        if KNGeneralProvider.shared.quoteTokenObject.toToken().getBalanceBigInt() > self.viewModel.transactionFee {
+          self.delegate?.didClaimRewards(self, txObject: self.viewModel.buildSumitTxObj())
+        } else {
+          let errMsg = String(format: Strings.insufficientXForTransaction.toBeLocalised(), KNGeneralProvider.shared.quoteToken)
+          self.showErrorTopBannerMessage(message: errMsg)
+        }
+      }
     }
   }
 

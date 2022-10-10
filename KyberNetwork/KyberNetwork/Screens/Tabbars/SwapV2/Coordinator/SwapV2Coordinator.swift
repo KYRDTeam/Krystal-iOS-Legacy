@@ -23,18 +23,14 @@ class SwapV2Coordinator: NSObject, Coordinator {
   var rootViewController: SwapV2ViewController!
   var navigationController: UINavigationController!
   weak var delegate: SwapV2CoordinatorDelegate?
-  
   var historyCoordinator: Coordinator?
-  
+  private let swapRepository = SwapRepository()
   func start() {
     let vc = SwapV2ViewController.instantiateFromNib()
     let viewModel = SwapV2ViewModel(
       actions: SwapV2ViewModelActions(
         onSelectSwitchChain: {
           self.openSwitchChain()
-        },
-        onSelectSwitchWallet: {
-          self.openSwitchWallet()
         },
         onSelectOpenHistory: {
           self.openTransactionHistory()
@@ -53,6 +49,16 @@ class SwapV2Coordinator: NSObject, Coordinator {
     vc.viewModel = viewModel
     self.rootViewController = vc
     self.navigationController = UINavigationController(rootViewController: vc)
+  }
+  
+  func appCoordinatorShouldOpenExchangeForToken(_ token: Token, isReceived: Bool = false) {
+    self.navigationController.popToRootViewController(animated: true)
+    self.rootViewController.viewModel.currentChain.value = KNGeneralProvider.shared.currentChain
+    if isReceived {
+      self.rootViewController.viewModel.updateDestToken(token: token)
+    } else {
+      self.rootViewController.viewModel.updateSourceToken(token: token)
+    }
   }
   
   func openSwapConfirm(object: SwapObject) {
@@ -123,70 +129,6 @@ class SwapV2Coordinator: NSObject, Coordinator {
     self.rootViewController.present(popup, animated: true, completion: nil)
   }
   
-  func openSwitchWallet() {
-    let viewModel = WalletsListViewModel()
-    let walletsList = WalletsListViewController(viewModel: viewModel)
-    walletsList.delegate = self
-    self.navigationController.present(walletsList, animated: true, completion: nil)
-  }
-  
-  func openWalletConnect() {
-    let qrcode = QRCodeReaderViewController()
-    qrcode.delegate = self
-    self.navigationController.present(qrcode, animated: true, completion: nil)
-  }
-  
-}
-
-extension SwapV2Coordinator: WalletsListViewControllerDelegate {
-  func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
-    switch event {
-    case .connectWallet:
-      self.openWalletConnect()
-    case .manageWallet:
-      self.delegate?.swapV2CoordinatorDidSelectManageWallets()
-    case .didSelect:
-      return
-    case .addWallet:
-      self.delegate?.swapV2CoordinatorDidSelectAddWallet()
-    }
-  }
-}
-
-extension SwapV2Coordinator: QRCodeReaderDelegate {
-  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
-    reader.dismiss(animated: true, completion: nil)
-  }
-
-  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
-    reader.dismiss(animated: true) {
-      guard let url = WCURL(result) else {
-        self.navigationController.showTopBannerView(
-          with: Strings.invalidSession,
-          message: Strings.invalidSessionTryOtherQR,
-          time: 1.5
-        )
-        return
-      }
-      do {
-        let currentAddress = self.rootViewController.viewModel.currentAddress.value
-        let privateKey = try WalletManager.shared.exportPrivateKey(address: currentAddress)
-        DispatchQueue.main.async {
-          let controller = KNWalletConnectViewController(
-            wcURL: url,
-            pk: privateKey
-          )
-          self.navigationController.present(controller, animated: true, completion: nil)
-        }
-      } catch {
-        self.navigationController.showTopBannerView(
-          with: Strings.privateKeyError,
-          message: Strings.canNotGetPrivateKey,
-          time: 1.5
-        )
-      }
-    }
-  }
 }
 
 extension SwapV2Coordinator: KNHistoryCoordinatorDelegate {
@@ -232,4 +174,109 @@ extension SwapV2Coordinator: ApproveTokenViewControllerDelegate {
     
   }
   
+}
+
+extension SwapV2Coordinator {
+  func appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: String?, destTokenAddress: String?, chainIdString: String?) {
+    // default swap screen
+    self.navigationController.tabBarController?.selectedIndex = 1
+    self.navigationController.popToRootViewController(animated: false)
+    guard let chainIdString = chainIdString else {
+      return
+    }
+
+    let chainId = Int(chainIdString) ?? AllChains.ethMainnetPRC.chainID
+    //switch chain if need
+    if KNGeneralProvider.shared.customRPC.chainID != chainId {
+      let chain = ChainType.make(chainID: chainId) ?? .eth
+      self.rootViewController.showSwitchChainAlert(chain, "Please switch to \(chain.chainName()) to swap".toBeLocalised()) {
+        self.prepareTokensForSwap(srcTokenAddress: srcTokenAddress, destTokenAddress: destTokenAddress, chainId: chainId, isFromDeepLink: true)
+      }
+    } else {
+      self.prepareTokensForSwap(srcTokenAddress: srcTokenAddress, destTokenAddress: destTokenAddress, chainId: chainId, isFromDeepLink: true)
+    }
+  }
+
+  func prepareTokensForSwap(srcTokenAddress: String?, destTokenAddress: String?, chainId: Int, isFromDeepLink: Bool = false) {
+    // default token
+    var fromToken = KNGeneralProvider.shared.currentChain.quoteTokenObject()
+    var toToken = KNGeneralProvider.shared.currentChain.defaultToSwapToken()
+
+    var newAddress: [String] = []
+    guard let srcTokenAddress = srcTokenAddress, let destTokenAddress = destTokenAddress else {
+      self.rootViewController.viewModel.loadBaseToken()
+      return
+    }
+
+    let isValidSrcAddress = KNGeneralProvider.shared.isAddressValid(address: srcTokenAddress)
+    let isValidDestTokenAddress = KNGeneralProvider.shared.isAddressValid(address: destTokenAddress)
+    
+    guard isValidSrcAddress, isValidDestTokenAddress else {
+      self.rootViewController.viewModel.loadBaseToken()
+      return
+    }
+    // in case can get token with given address
+    if let token = KNSupportedTokenStorage.shared.get(forPrimaryKey: srcTokenAddress) {
+       fromToken = token
+    } else {
+       newAddress.append(srcTokenAddress)
+    }
+
+    if let token = KNSupportedTokenStorage.shared.get(forPrimaryKey: destTokenAddress) {
+      toToken = token
+    } else {
+      newAddress.append(destTokenAddress)
+    }
+    if newAddress.isEmpty {
+      // there are no new address then show swap screen
+      self.updateToken(sourceToken: fromToken.toToken(), destToken: toToken.toToken())
+    } else if isFromDeepLink {
+      self.getTokenDetailInfo(sourceAddress: srcTokenAddress, destAddress: destTokenAddress) { sourceToken, destToken in
+        self.updateToken(sourceToken: sourceToken, destToken: destToken)
+      }
+    }
+  }
+  
+  func updateToken(sourceToken: Token?, destToken: Token?) {
+    if let sourceToken = sourceToken {
+      self.rootViewController.viewModel.updateSourceToken(token: sourceToken)
+    }
+    if let destToken = destToken {
+      self.rootViewController.viewModel.updateDestToken(token: destToken)
+    }
+  }
+
+  func getTokenDetailInfo(sourceAddress: String?, destAddress: String?, completion: @escaping (_ sourceToken: Token?, _ destToken: Token?) -> Void) {
+    var sourceToken: Token?
+    var destToken: Token?
+    
+    let group = DispatchGroup()
+    self.rootViewController.showLoadingHUD()
+    if let sourceAddress = sourceAddress {
+      group.enter()
+      self.swapRepository.getTokenDetail(tokenAddress: sourceAddress) { token in
+        group.leave()
+        if let token = token {
+          sourceToken = Token(name: token.name, symbol: token.symbol, address: token.address, decimals: token.decimals, logo: token.logo)
+        }
+      }
+    }
+    
+    if let destAddress = destAddress {
+      group.enter()
+      self.swapRepository.getTokenDetail(tokenAddress: destAddress) { token in
+        group.leave()
+        if let token = token {
+          destToken = Token(name: token.name, symbol: token.symbol, address: token.address, decimals: token.decimals, logo: token.logo)
+        }
+      }
+    }
+    
+    group.notify(queue: .main) {
+      DispatchQueue.main.async {
+        self.rootViewController.hideLoading()
+      }
+      completion(sourceToken, destToken)
+    }
+  }
 }

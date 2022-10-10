@@ -81,6 +81,16 @@ class BridgeViewController: InAppBrowsingViewController {
     self.delegate?.bridgeViewControllerController(self, run: .checkAllowance(token: currentSourceToken))
   }
   
+  override func openWalletList() {
+    super.openWalletList()
+    MixPanelManager.track("bridge_select_wallet", properties: ["screenid": "bridge"])
+  }
+  
+  override func openSwitchChain() {
+    super.openSwitchChain()
+    MixPanelManager.track("bridge_select_chain", properties: ["screenid": "bridge"])
+  }
+  
   func setupUI() {
     self.tableView.registerCellNib(SelectChainCell.self)
     self.tableView.registerCellNib(SelectTokenCell.self)
@@ -140,7 +150,9 @@ class BridgeViewController: InAppBrowsingViewController {
         guard let remain = self.viewModel.remainApprovedAmount else {
           return
         }
+        self.viewModel.isApproving = true
         self.delegate?.bridgeViewControllerController(self, run: .sendApprove(token: remain.0, remain: remain.1, value: BigInt(self.viewModel.sourceAmount * pow(10, Double(self.viewModel.currentSourceToken?.decimals ?? 18)))))
+        self.tableView.reloadData()
       } else {
         self.delegate?.bridgeViewControllerController(self, run: .selectSwap)
         MixPanelManager.track("kbridge_review_transfer", properties: [
@@ -166,7 +178,6 @@ class BridgeViewController: InAppBrowsingViewController {
   }
   
   func updateUISwitchChain() {
-    let icon = KNGeneralProvider.shared.chainIconImage
     self.tableView.reloadData()
   }
   
@@ -188,12 +199,14 @@ class BridgeViewController: InAppBrowsingViewController {
   func coordinatorDidSuccessApprove(state: InternalTransactionState) {
     self.hideLoading()
     self.viewModel.isNeedApprove = state != .done
+    self.viewModel.isApproving = state != .done
     self.tableView.reloadData()
   }
   
   func coordinatorDidUpdateAllowance(token: TokenObject, allowance: BigInt) {
     guard let currentSourceToken = self.viewModel.currentSourceToken else { return }
     
+    self.viewModel.isApproving = false
     guard !currentSourceToken.isQuoteToken else {
       self.viewModel.isNeedApprove = false
       self.tableView.reloadData()
@@ -221,7 +234,8 @@ class BridgeViewController: InAppBrowsingViewController {
   }
   
   func coordinatorStartApprove(token: TokenObject) {
-    self.showLoadingHUD()
+    self.viewModel.isApproving = true
+    self.tableView.reloadData()
   }
 
   func coordinatorFailApprove(token: TokenObject) {
@@ -231,6 +245,7 @@ class BridgeViewController: InAppBrowsingViewController {
       time: 2.0
     )
     self.viewModel.isNeedApprove = true
+    self.viewModel.isApproving = false
     self.tableView.reloadData()
   }
   
@@ -273,6 +288,7 @@ class BridgeViewController: InAppBrowsingViewController {
 
   @IBAction func showHistoryButtonTapped(_ sender: Any) {
     self.delegate?.bridgeViewControllerController(self, run: .openHistory)
+    MixPanelManager.track("bridge_history", properties: ["screenid": "bridge"])
   }
 }
 

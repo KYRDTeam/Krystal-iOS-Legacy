@@ -58,6 +58,8 @@ class CreateWalletViewController: KNBaseViewController {
     let wallets = WalletManager.shared.getAllWallets()
     let name = self.walletNameTextField.text ?? "Wallet \(wallets.count + 1)"
     self.delegate?.createWalletViewController(self, run: .next(name: name))
+    MixPanelManager.track("create_wallet", properties: ["screenid": "create_wallet"])
+
   }
   
   @IBAction func pasteButtonTapped(_ sender: Any) {

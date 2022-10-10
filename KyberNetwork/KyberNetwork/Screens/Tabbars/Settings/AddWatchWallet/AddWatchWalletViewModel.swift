@@ -39,8 +39,7 @@ class AddWatchWalletViewModel {
 
   var isAddressValid: Bool {
     guard !self.addressString.isEmpty else { return false }
-    let addressType = KNGeneralProvider.shared.currentChain.addressType
-    return WalletManager.shared.validateAddress(address: addressString, forAddressType: addressType)
+    return WalletManager.shared.validateAddress(address: addressString, forAddressType: .evm) || WalletManager.shared.validateAddress(address: addressString, forAddressType: .solana)
   }
   
   var displayAddress: String? {

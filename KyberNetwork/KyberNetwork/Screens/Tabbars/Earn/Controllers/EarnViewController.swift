@@ -94,13 +94,7 @@ class EarnViewModel {
   }
   
   var displayBalance: String {
-    let string = self.tokenData.getBalanceBigInt().string(
-      decimals: self.tokenData.decimals,
-      minFractionDigits: 0,
-      maxFractionDigits: min(self.tokenData.decimals, 5)
-    )
-    if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
-    return "\(string.prefix(15))"
+    return NumberFormatUtils.balanceFormat(value: self.tokenData.getBalanceBigInt(), decimals: self.tokenData.decimals)
   }
 
   var totalBalanceText: String {
@@ -184,7 +178,7 @@ class EarnViewModel {
   
   fileprivate func formatFeeStringFor(gasPrice: BigInt) -> String {
     let fee = gasPrice * self.gasLimit
-    let feeString: String = fee.displayRate(decimals: 18)
+    let feeString: String = NumberFormatUtils.gasFeeFormat(number: fee)
     var typeString = ""
     switch self.selectedGasPriceType {
     case .superFast:
@@ -706,10 +700,6 @@ class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler
   
   @IBAction func historyButtonTapped(_ sender: UIButton) {
     self.navigationDelegate?.viewControllerDidSelectHistory(self)
-  }
-  
-  @IBAction func walletsButtonTapped(_ sender: UIButton) {
-    self.navigationDelegate?.viewControllerDidSelectWallets(self)
   }
   
   @IBAction func approveButtonTapped(_ sender: UIButton) {

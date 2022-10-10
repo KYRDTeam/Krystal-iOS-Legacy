@@ -145,8 +145,7 @@ class EthereumTransactionProcessor: TransactionProcessor {
   
   func sendApproveERCTokenAddress(owner: KAddress, tokenAddress: String, value: BigInt, gasPrice: BigInt, gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault, toAddress: String? = nil, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     let nonce = NonceCache.shared.getCachingNonce(address: owner.addressString, chain: self.chain)
-    self.approve(owner: owner, tokenAddress: tokenAddress, currentNonce: nonce, networkAddress: toAddress ?? self.chain.proxyAddress(), gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
-      guard let `self` = self else { return }
+    self.approve(owner: owner, tokenAddress: tokenAddress, currentNonce: nonce, networkAddress: toAddress ?? self.chain.proxyAddress(), gasPrice: gasPrice, gasLimit: gasLimit) { result in
       switch result {
       case .success(let txCount):
         NonceCache.shared.updateNonce(address: owner.addressString, chain: self.chain, nonce: txCount)

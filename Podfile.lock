@@ -3,9 +3,9 @@ PODS:
   - APIKit (3.2.1):
     - Result (~> 3.0)
   - BigInt (4.0.0)
-  - Charts (4.0.3):
-    - Charts/Core (= 4.0.3)
-  - Charts/Core (4.0.3):
+  - Charts (4.1.0):
+    - Charts/Core (= 4.1.0)
+  - Charts/Core (4.1.0):
     - SwiftAlgorithms (~> 1.0)
   - CryptoSwift (1.4.3)
   - Eureka (5.3.5)
@@ -386,7 +386,7 @@ SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   APIKit: a39ff72ac44efc15513fd1b98800f63c525be61b
   BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
-  Charts: d959d6723c8eedfdd0735dfc28cb0a71762ac4d9
+  Charts: 354f86803d11d9c35de280587fef50d1af063978
   CryptoSwift: a0799ee936271bd2253a006f1e4523df21845000
   Eureka: 7b39a479d074620d43028a0e2bfc3e0d667724df
   Firebase: 7e8fe528c161b9271d365217a74c16aaf834578e

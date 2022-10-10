@@ -59,6 +59,13 @@ extension UIViewController {
     present(alert, animated: true, completion: nil)
   }
   
+  func showConfirmAlert(title: String, message: String, confirmAction: @escaping () -> () = {}) {
+    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: Strings.ok, style: .default, handler: {_ in confirmAction() }))
+    alert.addAction(UIAlertAction(title: Strings.cancel, style: .cancel, handler: nil))
+    present(alert, animated: true, completion: nil)
+  }
+  
   func showMessage(text: String) {
     let hud = MBProgressHUD.showAdded(to: view, animated: true)
     hud.mode = .text

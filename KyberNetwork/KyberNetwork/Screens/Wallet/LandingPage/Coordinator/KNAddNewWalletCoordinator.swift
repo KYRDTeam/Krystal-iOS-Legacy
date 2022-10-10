@@ -95,6 +95,15 @@ class KNAddNewWalletCoordinator: Coordinator {
     MixPanelManager.track("add_watch_wallet_pop_up_open", properties: ["screenid": "add_watch_wallet_pop_up"])
   }
   
+  func showCreateWalletWalletPopup(_ address: KAddress? = nil, container: UIViewController) {
+    let viewModel = AddWatchWalletViewModel()
+    viewModel.address = address
+    let controller = AddWatchWalletViewController(viewModel: viewModel)
+    controller.delegate = self
+    container.present(controller, animated: true, completion: nil)
+    MixPanelManager.track("add_watch_wallet_pop_up_open", properties: ["screenid": "add_watch_wallet_pop_up"])
+  }
+  
   func didImportWallet(wallet: KWallet, chain: ChainType) {
     self.newWallet = wallet
     // Check if first wallet
@@ -223,19 +232,29 @@ extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
   }
 
   fileprivate func importNewWatchWallet(address: String, name: String?, isAdd: Bool = true) {
-    let currentChain = KNGeneralProvider.shared.currentChain
+    var currentChain = KNGeneralProvider.shared.currentChain
+    if KNGeneralProvider.shared.currentChain == .solana {
+      if address.has0xPrefix {
+        currentChain = .eth
+      }
+    } else {
+      if !address.has0xPrefix {
+        currentChain = .solana
+      }
+    }
+    
     do {
       let watchAddress = try WalletManager.shared.addWatchWallet(address: address, addressType: currentChain.addressType, name: name.whenNilOrEmpty(Strings.imported))
       if isAdd {
         self.navigationController.showSuccessTopBannerMessage(
-          with: Strings.walletImported,
-          message: Strings.importWalletSuccess,
+          with: "",
+          message: Strings.addWatchWalletSuccess,
           time: 1
         )
       } else {
         self.navigationController.showSuccessTopBannerMessage(
           with: "",
-          message: Strings.editWalletSuccess,
+          message: Strings.editWatchWalletSuccess,
           time: 1
         )
       }

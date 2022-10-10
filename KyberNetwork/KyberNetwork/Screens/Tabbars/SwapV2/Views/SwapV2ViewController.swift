@@ -88,10 +88,20 @@ class SwapV2ViewController: InAppBrowsingViewController {
     super.viewDidLoad()
     
     tabBarItem.accessibilityIdentifier = "menuSwap"
-    
+    viewModel.appDidSwitchChain()
     configureViews()
     resetViews()
     bindViewModel()
+  }
+  
+  override func openWalletList() {
+    super.openWalletList()
+    MixPanelManager.track("swap_select_wallet", properties: ["screenid": "swap"])
+  }
+  
+  override func openSwitchChain() {
+    super.openSwitchChain()
+    MixPanelManager.track("swap_select_chain", properties: ["screenid": "swap"])
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -108,7 +118,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
     timer?.invalidate()
     timer = nil
   }
-  
+
   func configureViews() {
     setupButtons()
     setupAnimation()
@@ -248,7 +258,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
         self?.sourceTextField.text = nil
         if let token = token {
           self?.sourceTokenIcon.isHidden = false
-          self?.sourceTokenIcon.setSymbolImage(symbol: token.symbol)
+          self?.sourceTokenIcon.setImage(urlString: token.logo, symbol: token.symbol)
         } else {
           self?.sourceTokenIcon.isHidden = true
           self?.sourceTokenLabel.text = Strings.selectToken
@@ -261,7 +271,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
         self?.destTokenLabel.text = token?.symbol
         if let token = token {
           self?.destTokenIcon.isHidden = false
-          self?.destTokenIcon.setSymbolImage(symbol: token.symbol)
+          self?.destTokenIcon.setImage(urlString: token.logo, symbol: token.symbol)
         } else {
           self?.destTokenIcon.isHidden = true
           self?.destTokenLabel.text = Strings.selectToken
@@ -276,7 +286,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
       let soureSymbol = sourceToken.symbol
       let decimals = sourceToken.decimals
       DispatchQueue.main.async {
-        self.sourceBalanceLabel.text = "\(NumberFormatUtils.amount(value: amount, decimals: decimals)) \(soureSymbol)"
+        self.sourceBalanceLabel.text = "\(NumberFormatUtils.balanceFormat(value: amount, decimals: decimals)) \(soureSymbol)"
       }
     }
     
@@ -287,7 +297,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
       let decimals = destToken.decimals
       let amount = balance ?? .zero
       DispatchQueue.main.async {
-        self.destBalanceLabel.text = "\(NumberFormatUtils.amount(value: amount, decimals: decimals)) \(destSymbol)"
+        self.destBalanceLabel.text = "\(NumberFormatUtils.balanceFormat(value: amount, decimals: decimals)) \(destSymbol)"
       }
     }
     
@@ -531,6 +541,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
   
   @IBAction func historyButtonWasTapped(_ sender: Any) {
     viewModel.didTapHistoryButton()
+    MixPanelManager.track("swap_history", properties: ["screenid": "swap"])
   }
   
   @objc override func onAppSwitchChain() {
@@ -633,6 +644,7 @@ extension SwapV2ViewController {
     timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { [weak self] _ in
       self?.onTimerTick()
     })
+    RunLoop.main.add(timer!, forMode: .default)
     rateLoadingView.isUserInteractionEnabled = true
     let reloadRateGesture = UITapGestureRecognizer(target: self, action: #selector(onTapReloadRate))
     rateLoadingView.addGestureRecognizer(reloadRateGesture)

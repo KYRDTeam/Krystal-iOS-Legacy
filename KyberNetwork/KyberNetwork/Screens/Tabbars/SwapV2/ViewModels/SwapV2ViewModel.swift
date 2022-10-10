@@ -12,7 +12,6 @@ import Result
 
 struct SwapV2ViewModelActions {
   var onSelectSwitchChain: () -> ()
-  var onSelectSwitchWallet: () -> ()
   var onSelectOpenHistory: () -> ()
   var openSwapConfirm: (SwapObject) -> ()
   var openApprove: (_ token: TokenObject, _ amount: BigInt) -> ()
@@ -154,6 +153,8 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     swapRepository.getTokenDetail(tokenAddress: sourceToken.address) { [weak self] token in
       if token?.address == sourceToken.address { // Needed to handle case swap pair
         self?.sourceTokenPrice.value = token?.markets["usd"]?.price
+      } else {
+        self?.sourceTokenPrice.value = nil
       }
     }
   }
@@ -163,6 +164,8 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     swapRepository.getTokenDetail(tokenAddress: destToken.address) { [weak self] token in
       if token?.address == destToken.address { // Needed to handle case swap pair
         self?.destTokenPrice.value = token?.markets["usd"]?.price
+      } else {
+        self?.destTokenPrice.value = nil
       }
     }
   }
@@ -203,13 +206,11 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
         if let oldName = oldPlatformName, let newName = newPlatformName {
           self.error.value = .rateHasBeenChanged(oldRate: oldName, newRate: newName)
         }
+      } else {
+        self.selectedPlatformHint = rates.first(where: { $0.hint == self.selectedPlatformHint })?.hint
       }
       self.platformRatesViewModels.value = self.createPlatformRatesViewModels(sortedRates: sortedRates)
-      if sortedRates.isEmpty {
-        self.state.value = .rateNotFound
-      } else {
-        self.updateState()
-      }
+      self.updateState()
     }
     sourceToken.observe(on: self) { [weak self] token in
       if token?.address.lowercased() == self?.destToken.value?.address.lowercased() {
@@ -228,8 +229,9 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       self.state.value = .emptyAmount
       return
     }
-    
-    if self.currentAddress.value.isWatchWallet {
+    if platformRatesViewModels.value.isEmpty {
+      self.state.value = .rateNotFound
+    } else if self.currentAddress.value.isWatchWallet {
       self.state.value = .notConnected
     } else if self.sourceAmount.value ?? .zero <= self.maxAvailableSourceTokenAmount {
       self.checkAllowance()
@@ -511,10 +513,6 @@ extension SwapV2ViewModel {
   
   func didTapChainButton() {
     actions.onSelectSwitchChain()
-  }
-  
-  func didTapWalletButton() {
-    actions.onSelectSwitchWallet()
   }
   
   func didTapHistoryButton() {
