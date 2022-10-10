@@ -38,7 +38,12 @@ class KNPasscodeCoordinator: Coordinator {
   
   func start() {
     let wallets = WalletManager.shared.getAllWallets()
-    if wallets.isEmpty || KNPasscodeUtil.shared.currentPasscode() == nil, case .authenticate = self.type { return }
+    if wallets.isEmpty || KNPasscodeUtil.shared.currentPasscode() == nil, case .authenticate = self.type {
+      if AppDelegate.shared.coordinator.tabbarController != nil {
+        AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
+      }
+      return
+    }
     self.passcodeViewController.resetUI()
     if case .authenticate(let isUpdating) = self.type {
       if isUpdating {
