@@ -103,6 +103,8 @@ class KSwapViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    tabBarItem.accessibilityIdentifier = "menuSwap"
+    
     self.viewModel.resetDefaultTokensPair()
     self.fromAmountTextField.setupCustomDeleteIcon()
     self.toAmountTextField.setupCustomDeleteIcon()
