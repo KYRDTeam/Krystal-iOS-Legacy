@@ -444,6 +444,8 @@
 		7E16B8D02769CF5F00F9A234 /* ReferralTiersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E16B8CE2769CF5F00F9A234 /* ReferralTiersViewController.xib */; };
 		7E16B8D32769DB3300F9A234 /* ReferralTiersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */; };
 		7E16B8D42769DB3300F9A234 /* ReferralTiersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E16B8D22769DB3300F9A234 /* ReferralTiersCell.xib */; };
+		7E19AF4928F5818600A2CBFD /* EarnPoolViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E19AF4728F5818600A2CBFD /* EarnPoolViewController.swift */; };
+		7E19AF4A28F5818600A2CBFD /* EarnPoolViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E19AF4828F5818600A2CBFD /* EarnPoolViewController.xib */; };
 		7E1EBE322834C7E900793B6D /* BridgeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1EBE312834C7E900793B6D /* BridgeCoordinator.swift */; };
 		7E1EBE352834C9C900793B6D /* BridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1EBE332834C9C900793B6D /* BridgeViewController.swift */; };
 		7E1EBE362834C9C900793B6D /* BridgeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E1EBE342834C9C900793B6D /* BridgeViewController.xib */; };
@@ -496,6 +498,8 @@
 		7E72917927F193FC00ADF721 /* SwitchChainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E72917727F193FC00ADF721 /* SwitchChainCell.swift */; };
 		7E72917A27F193FC00ADF721 /* SwitchChainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E72917827F193FC00ADF721 /* SwitchChainCell.xib */; };
 		7E72917C27F1B36100ADF721 /* ChainType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E72917B27F1B36100ADF721 /* ChainType.swift */; };
+		7E79FB5228F5624400306FC0 /* EarnOverviewV2Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E79FB5028F5624400306FC0 /* EarnOverviewV2Controller.swift */; };
+		7E79FB5328F5624400306FC0 /* EarnOverviewV2Controller.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E79FB5128F5624400306FC0 /* EarnOverviewV2Controller.xib */; };
 		7E7ACD1128373E3100E78499 /* BridgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7ACD1028373E3100E78499 /* BridgeViewModel.swift */; };
 		7E7C074928A36887002E8068 /* SwapSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7C074828A36887002E8068 /* SwapSummaryViewModel.swift */; };
 		7E8C62D8271D319200A6C9DB /* ClaimRewardsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C62D6271D319200A6C9DB /* ClaimRewardsController.swift */; };
@@ -1672,6 +1676,8 @@
 		7E16B8CE2769CF5F00F9A234 /* ReferralTiersViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReferralTiersViewController.xib; sourceTree = "<group>"; };
 		7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralTiersCell.swift; sourceTree = "<group>"; };
 		7E16B8D22769DB3300F9A234 /* ReferralTiersCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReferralTiersCell.xib; sourceTree = "<group>"; };
+		7E19AF4728F5818600A2CBFD /* EarnPoolViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnPoolViewController.swift; sourceTree = "<group>"; };
+		7E19AF4828F5818600A2CBFD /* EarnPoolViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnPoolViewController.xib; sourceTree = "<group>"; };
 		7E1EBE312834C7E900793B6D /* BridgeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeCoordinator.swift; sourceTree = "<group>"; };
 		7E1EBE332834C9C900793B6D /* BridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeViewController.swift; sourceTree = "<group>"; };
 		7E1EBE342834C9C900793B6D /* BridgeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BridgeViewController.xib; sourceTree = "<group>"; };
@@ -1724,6 +1730,8 @@
 		7E72917727F193FC00ADF721 /* SwitchChainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchChainCell.swift; sourceTree = "<group>"; };
 		7E72917827F193FC00ADF721 /* SwitchChainCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchChainCell.xib; sourceTree = "<group>"; };
 		7E72917B27F1B36100ADF721 /* ChainType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainType.swift; sourceTree = "<group>"; };
+		7E79FB5028F5624400306FC0 /* EarnOverviewV2Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnOverviewV2Controller.swift; sourceTree = "<group>"; };
+		7E79FB5128F5624400306FC0 /* EarnOverviewV2Controller.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnOverviewV2Controller.xib; sourceTree = "<group>"; };
 		7E7ACD1028373E3100E78499 /* BridgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeViewModel.swift; sourceTree = "<group>"; };
 		7E7C074828A36887002E8068 /* SwapSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapSummaryViewModel.swift; sourceTree = "<group>"; };
 		7E8C62D6271D319200A6C9DB /* ClaimRewardsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimRewardsController.swift; sourceTree = "<group>"; };
@@ -4713,6 +4721,17 @@
 			path = LottieJSON;
 			sourceTree = "<group>";
 		};
+		7E79FB4F28F5620100306FC0 /* ControllersV2 */ = {
+			isa = PBXGroup;
+			children = (
+				7E79FB5028F5624400306FC0 /* EarnOverviewV2Controller.swift */,
+				7E79FB5128F5624400306FC0 /* EarnOverviewV2Controller.xib */,
+				7E19AF4728F5818600A2CBFD /* EarnPoolViewController.swift */,
+				7E19AF4828F5818600A2CBFD /* EarnPoolViewController.xib */,
+			);
+			path = ControllersV2;
+			sourceTree = "<group>";
+		};
 		7E95D6152806E5920006E694 /* SelectChain */ = {
 			isa = PBXGroup;
 			children = (
@@ -6059,6 +6078,7 @@
 		C347DA2D25C0298F000D6E81 /* Earn */ = {
 			isa = PBXGroup;
 			children = (
+				7E79FB4F28F5620100306FC0 /* ControllersV2 */,
 				C347DA3C25C030E4000D6E81 /* Cells */,
 				C347DA2F25C02A08000D6E81 /* Controllers */,
 				C347DA2E25C0299E000D6E81 /* Coordinator */,
@@ -6826,6 +6846,7 @@
 				255709C020DCB50800B5BC9E /* KNNewContactViewController.xib in Resources */,
 				25073D24211AF20D00833C92 /* Montserrat-Thin.ttf in Resources */,
 				C3018DCC265793E1003C8114 /* SwitchChainViewController.xib in Resources */,
+				7E19AF4A28F5818600A2CBFD /* EarnPoolViewController.xib in Resources */,
 				25073D1D211AF20D00833C92 /* Montserrat-MediumItalic.ttf in Resources */,
 				25073D1C211AF20D00833C92 /* Montserrat-SemiBoldItalic.ttf in Resources */,
 				C33BF86B26D77E5C00D9F621 /* SendNFTViewController.xib in Resources */,
@@ -6894,6 +6915,7 @@
 				251C29C1232A59F000E1FB6B /* KNPDPAUpdateInfoPopUp.xib in Resources */,
 				C3F71C8B2618A57B00285935 /* ClaimHistoryTableViewCell.xib in Resources */,
 				C3233EFB2807DAEC0086C2BC /* CopyAddressViewController.xib in Resources */,
+				7E79FB5328F5624400306FC0 /* EarnOverviewV2Controller.xib in Resources */,
 				7E62A41B28AB764C00319436 /* FinishCreateWalletViewController.xib in Resources */,
 				7E448D052808064E00C1617F /* SelectChainViewController.xib in Resources */,
 				A651944C28361AE3008F4AEB /* TransactionTypeInfoCell.xib in Resources */,
@@ -7700,6 +7722,7 @@
 				A6F5DCAC28572EDE00FD02C9 /* EthereumEIP1559TransactionProcessor.swift in Sources */,
 				25C45AC320AC3D9F00CDA1FF /* KNLandingPageViewController.swift in Sources */,
 				A651943A2835F13D008F4AEB /* TransactionDetailPresenter.swift in Sources */,
+				7E19AF4928F5818600A2CBFD /* EarnPoolViewController.swift in Sources */,
 				C3299D672773415000D1065A /* WKWebViewConfiguration.swift in Sources */,
 				73D26837202E827E009777A1 /* DecimalFormatter.swift in Sources */,
 				2996F14D1F6CA743005C33AE /* UIViewController.swift in Sources */,
@@ -7918,6 +7941,7 @@
 				A64E17BD2819484700ED6E6D /* GasFeePopupDelegateCoordinator.swift in Sources */,
 				A6B3CD572811C07C005D0D66 /* CompletedKrystalHistoryTransactionViewModel.swift in Sources */,
 				C65D31E821D4CF27005D0B04 /* UILabel+Kyber.swift in Sources */,
+				7E79FB5228F5624400306FC0 /* EarnOverviewV2Controller.swift in Sources */,
 				25968731211DEC1D0080A33F /* KConfirmSwapViewController.swift in Sources */,
 				775C00B520195BFB001B5EBC /* BrowserAction.swift in Sources */,
 				A6D9BE682829238A0009EEB4 /* CreateChainWalletMenuViewController.swift in Sources */,

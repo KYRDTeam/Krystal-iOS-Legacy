@@ -50,12 +50,13 @@ class EarnCoordinator: NSObject, Coordinator {
     return controller
   }()
   
-  lazy var menuViewController: EarnMenuViewController = {
-    let viewModel = EarnMenuViewModel()
-    let viewController = EarnMenuViewController(viewModel: viewModel)
-    viewController.delegate = self
-    viewController.navigationDelegate = self
-    return viewController
+  lazy var menuViewController: EarnOverviewV2Controller = {
+//    let viewModel = EarnMenuViewModel()
+//    let viewController = EarnMenuViewController(viewModel: viewModel)
+//    viewController.delegate = self
+//    viewController.navigationDelegate = self
+//    return viewController
+    return EarnOverviewV2Controller()
   }()
   
   lazy var depositViewController: OverviewDepositViewController = {
@@ -131,7 +132,7 @@ class EarnCoordinator: NSObject, Coordinator {
             lendingTokensData.append(tokenData)
           }
           self.lendingTokens = lendingTokensData
-          self.menuViewController.coordinatorDidUpdateLendingToken(self.lendingTokens)
+//          self.menuViewController.coordinatorDidUpdateLendingToken(self.lendingTokens)
           Storage.store(self.lendingTokens, as: KNEnvironment.default.envPrefix + Constants.lendingTokensStoreFileName)
         } else {
           self.loadCachedLendingTokens()
@@ -159,7 +160,7 @@ class EarnCoordinator: NSObject, Coordinator {
   
   @objc func appDidSwitchAddress() {
     self.rootViewController.coordinatorAppSwitchAddress()
-    self.menuViewController.coordinatorAppSwitchAddress()
+//    self.menuViewController.coordinatorAppSwitchAddress()
     self.earnViewController?.coordinatorAppSwitchAddress()
     self.earnSwapViewController?.coordinatorAppSwitchAddress()
     self.balances = [:]
@@ -169,7 +170,7 @@ class EarnCoordinator: NSObject, Coordinator {
   func loadCachedLendingTokens() {
     let tokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.lendingTokensStoreFileName, as: [TokenData].self) ?? []
     self.lendingTokens = tokens
-    self.menuViewController.coordinatorDidUpdateLendingToken(self.lendingTokens)
+//    self.menuViewController.coordinatorDidUpdateLendingToken(self.lendingTokens)
   }
   
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {
@@ -200,7 +201,7 @@ class EarnCoordinator: NSObject, Coordinator {
     self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate()
     self.earnViewController?.coordinatorDidUpdatePendingTx()
     self.earnSwapViewController?.coordinatorDidUpdatePendingTx()
-    self.menuViewController.coordinatorDidUpdatePendingTx()
+//    self.menuViewController.coordinatorDidUpdatePendingTx()
     self.rootViewController.coordinatorDidUpdatePendingTx()
     self.depositViewController.coordinatorDidUpdateDidUpdateTokenList()
     self.withdrawCoordinator?.coordinatorDidUpdatePendingTx()
