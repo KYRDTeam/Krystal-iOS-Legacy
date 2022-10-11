@@ -108,10 +108,6 @@ extension KNAppCoordinator: EarnCoordinatorDelegate {
 
 extension KNAppCoordinator: OverviewCoordinatorDelegate {
   
-  func overviewCoordinatorDidSelectDeleteWallet() {
-    // TODO: Delete wallet
-  }
-  
   func overviewCoordinatorOpenPromotion(code: String) {
     self.tabbarController.selectedIndex = 2
     self.investCoordinator?.openPromotion(withCode: code)

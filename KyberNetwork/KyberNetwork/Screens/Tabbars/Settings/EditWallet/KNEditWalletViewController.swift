@@ -10,10 +10,6 @@ enum KNEditWalletViewEvent {
   case delete(wallet: KWallet)
 }
 
-protocol KNEditWalletViewControllerDelegate: class {
-  func editWalletViewController(_ controller: KNEditWalletViewController, run event: KNEditWalletViewEvent)
-}
-
 struct KNEditWalletViewModel {
   
   let wallet: KWallet
@@ -46,7 +42,6 @@ class KNEditWalletViewController: KNBaseViewController {
   @IBOutlet weak var doneButton: UIButton!
   
   fileprivate let viewModel: KNEditWalletViewModel
-  weak var delegate: KNEditWalletViewControllerDelegate?
 
   init(viewModel: KNEditWalletViewModel) {
     self.viewModel = viewModel

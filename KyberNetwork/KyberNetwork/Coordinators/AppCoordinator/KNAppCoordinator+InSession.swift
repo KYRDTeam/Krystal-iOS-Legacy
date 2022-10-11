@@ -174,7 +174,7 @@ extension KNAppCoordinator {
     self.settingsCoordinator?.stop()
     self.overviewTabCoordinator?.stop()
     self.overviewTabCoordinator?.start()
-    self.tabbarController.selectedIndex = 0
+//    self.tabbarController.selectedIndex = 0
   }
 
   func restartSession(address: KAddress) {
