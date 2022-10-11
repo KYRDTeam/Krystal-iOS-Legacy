@@ -73,7 +73,6 @@ extension KNAppCoordinator {
     
     if FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.swapV2) {
       self.swapV2Coordinator = SwapV2Coordinator()
-      self.swapV2Coordinator?.delegate = self
       self.swapV2Coordinator?.start()
       self.swapV2Coordinator?.navigationController.tabBarItem = UITabBarItem(
         title: nil,
