@@ -2,6 +2,18 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Services/Services.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Dependencies/Dependencies.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:EarnModule/EarnModule.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:AppState/AppState.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:KyberNetwork.xcodeproj">
    </FileRef>
    <FileRef
