@@ -21,7 +21,6 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidSelectDepositMore(tokenAddress: String)
   func overviewCoordinatorDidSelectAddToken(_ token: TokenObject)
   func overviewCoordinatorDidChangeHideBalanceStatus(_ status: Bool)
-  func overviewCoordinatorDidSelectDeleteWallet()
   func overviewCoordinatorDidStart()
   func overviewCoordinatorDidPullToRefresh(mode: ViewMode, overviewMode: OverviewMode)
   func overviewCoordinatorBuyCrypto()
@@ -708,7 +707,22 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       }))
     }
     actionController.addAction(Action(ActionData(title: "DELETE", image: UIImage(named: "delete_actionsheet_icon")!), style: .destructive, handler: { _ in
-      self.delegate?.overviewCoordinatorDidSelectDeleteWallet()
+      guard let wallet = WalletManager.shared.getWallet(id: self.currentAddress.walletID) else {
+        return
+      }
+      let alertController = KNPrettyAlertController(
+        title: Strings.delete,
+        message: Strings.deleteWalletConfirmMessage,
+        secondButtonTitle: Strings.ok,
+        firstButtonTitle: Strings.cancel,
+        secondButtonAction: {
+          try? WalletManager.shared.remove(wallet: wallet)
+          AppDelegate.shared.coordinator.onRemoveWallet(wallet: wallet)
+          return
+        },
+        firstButtonAction: nil
+      )
+      self.navigationController.present(alertController, animated: true, completion: nil)
     }))
     actionController.addAction(Action(ActionData(title: KNGeneralProvider.shared.currentChain.blockExploreName(), image: UIImage(named: "etherscan_actionsheet_icon")!), style: .default, handler: { _ in
       let url = "\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(self.currentAddress.addressString)"

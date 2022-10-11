@@ -125,7 +125,7 @@ extension KNAddNewWalletCoordinator: KNPasscodeCoordinatorDelegate {
       return
     }
     navigationController.dismiss(animated: true) {
-      AppDelegate.shared.coordinator.switchWallet(wallet: wallet, chain: KNGeneralProvider.shared.currentChain)
+      AppDelegate.shared.coordinator.onAddWallet(wallet: wallet, chain: KNGeneralProvider.shared.currentChain)
     }
   }
 }
