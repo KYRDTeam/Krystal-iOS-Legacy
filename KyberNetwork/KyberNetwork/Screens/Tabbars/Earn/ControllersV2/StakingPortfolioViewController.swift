@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StakingPortfolioViewController: UIViewController {
+class StakingPortfolioViewController: InAppBrowsingViewController {
   @IBOutlet weak var portfolioTableView: UITableView!
   
   override func viewDidLoad() {
