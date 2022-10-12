@@ -1051,6 +1051,10 @@
 		C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */; };
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
 		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
+		C39D311428F5645800EC26ED /* StakingPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D311228F5645800EC26ED /* StakingPortfolioViewController.swift */; };
+		C39D311528F5645800EC26ED /* StakingPortfolioViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C39D311328F5645800EC26ED /* StakingPortfolioViewController.xib */; };
+		C39D311928F5679700EC26ED /* StakingPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D311728F5679700EC26ED /* StakingPortfolioCell.swift */; };
+		C39D311A28F5679700EC26ED /* StakingPortfolioCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C39D311828F5679700EC26ED /* StakingPortfolioCell.xib */; };
 		C39D3FE126FB33610021DF8A /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D3FE026FB33610021DF8A /* History.swift */; };
 		C39E5FBB27F1A23600DDBF59 /* GoogleService-Info-Dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = C39E5FBA27F1A23600DDBF59 /* GoogleService-Info-Dev.plist */; };
 		C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241992567AD610073703C /* WalletsListViewController.swift */; };
@@ -2299,6 +2303,10 @@
 		C38E5D7825F63FC000E5FC48 /* TransactionHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistory.swift; sourceTree = "<group>"; };
 		C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTutorialPagerCell.swift; sourceTree = "<group>"; };
 		C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTutorialPagerCell.xib; sourceTree = "<group>"; };
+		C39D311228F5645800EC26ED /* StakingPortfolioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingPortfolioViewController.swift; sourceTree = "<group>"; };
+		C39D311328F5645800EC26ED /* StakingPortfolioViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingPortfolioViewController.xib; sourceTree = "<group>"; };
+		C39D311728F5679700EC26ED /* StakingPortfolioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingPortfolioCell.swift; sourceTree = "<group>"; };
+		C39D311828F5679700EC26ED /* StakingPortfolioCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingPortfolioCell.xib; sourceTree = "<group>"; };
 		C39D3FE026FB33610021DF8A /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		C39E5FBA27F1A23600DDBF59 /* GoogleService-Info-Dev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Dev.plist"; sourceTree = "<group>"; };
 		C3A241992567AD610073703C /* WalletsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletsListViewController.swift; sourceTree = "<group>"; };
@@ -4724,6 +4732,8 @@
 		7E79FB4F28F5620100306FC0 /* ControllersV2 */ = {
 			isa = PBXGroup;
 			children = (
+				C39D311228F5645800EC26ED /* StakingPortfolioViewController.swift */,
+				C39D311328F5645800EC26ED /* StakingPortfolioViewController.xib */,
 				7E79FB5028F5624400306FC0 /* EarnOverviewV2Controller.swift */,
 				7E79FB5128F5624400306FC0 /* EarnOverviewV2Controller.xib */,
 				7E19AF4728F5818600A2CBFD /* EarnPoolViewController.swift */,
@@ -6118,6 +6128,8 @@
 		C347DA3C25C030E4000D6E81 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				C39D311728F5679700EC26ED /* StakingPortfolioCell.swift */,
+				C39D311828F5679700EC26ED /* StakingPortfolioCell.xib */,
 				C347DA3D25C03144000D6E81 /* EarnMenuTableViewCell.swift */,
 				C347DA3E25C03144000D6E81 /* EarnMenuTableViewCell.xib */,
 				C3F367BC25C3F63E003207B7 /* EarnSelectTableViewCell.swift */,
@@ -6925,6 +6937,7 @@
 				A6D38BF028990593003579F2 /* SwapInfoView.xib in Resources */,
 				255F6F2420BBC6B500EF808F /* KNWalletQRCodeViewController.xib in Resources */,
 				C37CC095245803CA0081FB32 /* Roboto-MediumItalic.ttf in Resources */,
+				C39D311528F5645800EC26ED /* StakingPortfolioViewController.xib in Resources */,
 				25C45ACE20AC475700CDA1FF /* KNImportWalletViewController.xib in Resources */,
 				25929C5C20DA5C760045CFA3 /* SF-Pro-Text-LightItalic.otf in Resources */,
 				A655619B283503A900944624 /* BridgeSubTransactionCell.xib in Resources */,
@@ -7005,6 +7018,7 @@
 				C37AF0C825CCFB29006FB880 /* EarnSwapViewController.xib in Resources */,
 				C3ED1DCE2616F0090024970C /* NotificationsViewController.xib in Resources */,
 				254BB359211D9F1400B8E75D /* KConfirmSendViewController.xib in Resources */,
+				C39D311A28F5679700EC26ED /* StakingPortfolioCell.xib in Resources */,
 				C3A6E02228A103730079926E /* TransactionSettingsViewController.xib in Resources */,
 				7E1EBE4A283500A800793B6D /* BridgeReminderCell.xib in Resources */,
 				C3A6911C25638DE700F57756 /* Lato-ThinItalic.ttf in Resources */,
@@ -7494,6 +7508,7 @@
 				7E1EBE49283500A800793B6D /* BridgeReminderCell.swift in Sources */,
 				29AD8A041F93D6CD008E10E7 /* Constants.swift in Sources */,
 				7EFE441127167F2A006CF502 /* RewardDetailCell.swift in Sources */,
+				C39D311928F5679700EC26ED /* StakingPortfolioCell.swift in Sources */,
 				254BB353211D9A5500B8E75D /* KConfirmSendViewModel.swift in Sources */,
 				29FF12FE1F75EA3F00AFD326 /* Keystore.swift in Sources */,
 				2561454B20C64B1900FB00CF /* KNContactTableView.swift in Sources */,
@@ -7830,6 +7845,7 @@
 				A6BB10B828AB8A2C00AA6FB2 /* SwapError.swift in Sources */,
 				25CC0A8E2057D0410009D0D5 /* KNSession.swift in Sources */,
 				29FA00CC201CA63C002F7DC5 /* Method.swift in Sources */,
+				C39D311428F5645800EC26ED /* StakingPortfolioViewController.swift in Sources */,
 				257A37A0205CFEF300E86794 /* KNTransactionReceipt.swift in Sources */,
 				2963A28A1FC402940095447D /* LocalizedOperationObject.swift in Sources */,
 				A6E754B428EECBB0008B6535 /* FinishWalletCoordinator.swift in Sources */,
