@@ -979,3 +979,4 @@
 "wc.disconnect" = "Disconnect";
 "wc.disconnect.confirm" = "Are you sure to disconnect from this dapp?";
 "wc.not.support.watch.wallet" = "You are using watch wallet";
+"search.pools" = "Search pools";

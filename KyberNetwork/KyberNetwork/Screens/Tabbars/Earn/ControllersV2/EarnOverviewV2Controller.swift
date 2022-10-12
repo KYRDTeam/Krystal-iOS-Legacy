@@ -25,7 +25,7 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   }
   
   func initChildViewControllers() {
-    let earnPoolVC = InAppBrowsingViewController()
+    let earnPoolVC = EarnListViewController.instantiateFromNib()
     let portfolioVC = InAppBrowsingViewController()
     childListViewControllers = [earnPoolVC, portfolioVC]
   }
