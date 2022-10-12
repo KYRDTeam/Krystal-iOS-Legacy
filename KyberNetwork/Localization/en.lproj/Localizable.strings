@@ -983,3 +983,5 @@
 // Wallet list
 "backup.wallet.warning.message" = "NEVER share Keystore/Private Key/Mnemonic with anyone (including Krystal). These data grant access to all your funds and they may get stolen";
 "backup.wallet.title" = "Export at your own risk!";
+
+"search.pools" = "Search pools";
