@@ -1,0 +1,62 @@
+//
+//  KNBaseViewController.swift
+//  BaseModule
+//
+//  Created by Tung Nguyen on 12/10/2022.
+//
+
+import UIKit
+import Utilities
+import DesignSystem
+
+class KNBaseViewController: UIViewController, UIGestureRecognizerDelegate {
+
+  @IBOutlet weak var topBarHeight: NSLayoutConstraint?
+  let titleHeight: CGFloat = 24
+  let titleVerticalPadding: CGFloat = 26
+  
+  override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    topBarHeight?.constant = UIScreen.statusBarHeight + titleHeight + titleVerticalPadding * 2
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    self.dismissTutorialOverlayer()
+  }
+  
+  var isVisible: Bool {
+    return self.viewIfLoaded?.window != nil
+  }
+}
+
+class KNTabBarController: UITabBarController {
+  override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+
+  override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+      tabBar.tintColor = Theme.current.mainButtonBackgroundColor
+  }
+}
+
+class KNNavigationController: UINavigationController {
+  override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+}
+
+extension KNBaseViewController {
+  @objc func dismissTutorialOverlayer() {
+    if let view = self.tabBarController?.view.viewWithTag(1000) {
+      view.removeFromSuperview()
+    }
+  }
+
+  @objc func quickTutorialNextAction() {}
+
+  @objc func quickTutorialContentLabelTapped() {}
+}

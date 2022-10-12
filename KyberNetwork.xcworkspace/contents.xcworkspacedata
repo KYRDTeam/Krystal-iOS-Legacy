@@ -2,10 +2,16 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:BaseModule/BaseModule.xcodeproj">
+      location = "group:KyberNetwork.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:KyberNetwork.xcodeproj">
+      location = "group:SwapModule/SwapModule.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:DesignSystem/DesignSystem.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:BaseModule/BaseModule.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:BaseWallet/BaseWallet.xcodeproj">

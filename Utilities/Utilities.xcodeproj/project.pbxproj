@@ -7,10 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A6B1FD0828F69EC500894DCB /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FD0728F69EC500894DCB /* Storage.swift */; };
+		A6B1FD1728F6B40800894DCB /* UIScreen+statusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FD1628F6B40800894DCB /* UIScreen+statusBar.swift */; };
 		A6E433C428F54F6F00782F7D /* Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = A6E433C328F54F6F00782F7D /* Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A6B1FD0728F69EC500894DCB /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		A6B1FD1628F6B40800894DCB /* UIScreen+statusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+statusBar.swift"; sourceTree = "<group>"; };
 		A6E433C028F54F6F00782F7D /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6E433C328F54F6F00782F7D /* Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -26,6 +30,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A6B1FD0628F69EBB00894DCB /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				A6B1FD0728F69EC500894DCB /* Storage.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		A6B1FD1528F6B3F100894DCB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A6B1FD1628F6B40800894DCB /* UIScreen+statusBar.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		A6E433B628F54F6F00782F7D = {
 			isa = PBXGroup;
 			children = (
@@ -45,6 +65,8 @@
 		A6E433C228F54F6F00782F7D /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				A6B1FD1528F6B3F100894DCB /* Extensions */,
+				A6B1FD0628F69EBB00894DCB /* Helpers */,
 				A6E433C328F54F6F00782F7D /* Utilities.h */,
 			);
 			path = Utilities;
@@ -93,6 +115,7 @@
 				TargetAttributes = {
 					A6E433BF28F54F6F00782F7D = {
 						CreatedOnToolsVersion = 13.4;
+						LastSwiftMigration = 1340;
 					};
 				};
 			};
@@ -129,6 +152,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6B1FD0828F69EC500894DCB /* Storage.swift in Sources */,
+				A6B1FD1728F6B40800894DCB /* UIScreen+statusBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,6 +283,7 @@
 		A6E433C828F54F6F00782F7D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -280,6 +306,7 @@
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -288,6 +315,7 @@
 		A6E433C928F54F6F00782F7D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
