@@ -17,12 +17,12 @@ class EarnPoolViewCellViewModel {
   }
   
   func height() -> CGFloat {
-    return isExpanse ? 241 : 58
+    return isExpanse ? 330 : 58
   }
 }
 
 class EarnPoolViewCell: UITableViewCell {
-
+  @IBOutlet weak var dashView: DashedLineView!
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet weak var tvlValueLabel: UILabel!
@@ -51,9 +51,9 @@ class EarnPoolViewCell: UITableViewCell {
   }
     
   func updateUIExpanse(viewModel: EarnPoolViewCellViewModel) {
-    tableViewHeightConstraint.constant = viewModel.isExpanse ? 150 : 0
+    tableViewHeightConstraint.constant = viewModel.isExpanse ? 246 : 0
     tableView.isHidden = !viewModel.isExpanse
-    
+    dashView.isHidden = !viewModel.isExpanse
     tvlValueLabel.isHidden = viewModel.isExpanse
     apyValueLabel.isHidden = viewModel.isExpanse
     tvlLabel.isHidden = viewModel.isExpanse
@@ -76,5 +76,7 @@ extension EarnPoolViewCell: UITableViewDataSource {
 }
 
 extension EarnPoolViewCell: UITableViewDelegate {
-  
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 74.0
+  }
 }
