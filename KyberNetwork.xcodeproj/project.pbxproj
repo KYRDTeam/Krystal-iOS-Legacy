@@ -467,6 +467,8 @@
 		7E2A2EA628F66E4E00AB9A77 /* EarnListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E2A2EA428F66E4E00AB9A77 /* EarnListViewController.xib */; };
 		7E2A2EAA28F697FD00AB9A77 /* EarnPoolViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2A2EA828F697FD00AB9A77 /* EarnPoolViewCell.swift */; };
 		7E2A2EAB28F697FD00AB9A77 /* EarnPoolViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E2A2EA928F697FD00AB9A77 /* EarnPoolViewCell.xib */; };
+		7E38C6EC28F6CD8700866390 /* EarnPoolPlatformCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E38C6EA28F6CD8700866390 /* EarnPoolPlatformCell.swift */; };
+		7E38C6ED28F6CD8700866390 /* EarnPoolPlatformCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E38C6EB28F6CD8700866390 /* EarnPoolPlatformCell.xib */; };
 		7E3FCF0E28574DB9009DD914 /* AdvanceSearchTokenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3FCF0828574DB9009DD914 /* AdvanceSearchTokenPresenter.swift */; };
 		7E3FCF0F28574DB9009DD914 /* AdvanceSearchTokenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3FCF0928574DB9009DD914 /* AdvanceSearchTokenRouter.swift */; };
 		7E3FCF1128574DB9009DD914 /* AdvanceSearchTokenProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3FCF0B28574DB9009DD914 /* AdvanceSearchTokenProtocols.swift */; };
@@ -1696,6 +1698,8 @@
 		7E2A2EA428F66E4E00AB9A77 /* EarnListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnListViewController.xib; sourceTree = "<group>"; };
 		7E2A2EA828F697FD00AB9A77 /* EarnPoolViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnPoolViewCell.swift; sourceTree = "<group>"; };
 		7E2A2EA928F697FD00AB9A77 /* EarnPoolViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnPoolViewCell.xib; sourceTree = "<group>"; };
+		7E38C6EA28F6CD8700866390 /* EarnPoolPlatformCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnPoolPlatformCell.swift; sourceTree = "<group>"; };
+		7E38C6EB28F6CD8700866390 /* EarnPoolPlatformCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnPoolPlatformCell.xib; sourceTree = "<group>"; };
 		7E3FCF0828574DB9009DD914 /* AdvanceSearchTokenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchTokenPresenter.swift; sourceTree = "<group>"; };
 		7E3FCF0928574DB9009DD914 /* AdvanceSearchTokenRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchTokenRouter.swift; sourceTree = "<group>"; };
 		7E3FCF0B28574DB9009DD914 /* AdvanceSearchTokenProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchTokenProtocols.swift; sourceTree = "<group>"; };
@@ -4654,6 +4658,8 @@
 			children = (
 				7E2A2EA828F697FD00AB9A77 /* EarnPoolViewCell.swift */,
 				7E2A2EA928F697FD00AB9A77 /* EarnPoolViewCell.xib */,
+				7E38C6EA28F6CD8700866390 /* EarnPoolPlatformCell.swift */,
+				7E38C6EB28F6CD8700866390 /* EarnPoolPlatformCell.xib */,
 			);
 			path = CellsV2;
 			sourceTree = "<group>";
@@ -6969,6 +6975,7 @@
 				251ABCB220578F6E0069687F /* config_env_production.json in Resources */,
 				25929C5D20DA5C760045CFA3 /* SF-Pro-Display-Black.otf in Resources */,
 				A65C7A7A2818E877000FA9CE /* WebViewController.xib in Resources */,
+				7E38C6ED28F6CD8700866390 /* EarnPoolPlatformCell.xib in Resources */,
 				255A70EB214F9ECE005D7A6A /* KNSettingsTabViewController.xib in Resources */,
 				C3EE06BA267A15E50090B432 /* Karla-Italic-VariableFont_wght.ttf in Resources */,
 				7EB47FF527C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib in Resources */,
@@ -8016,6 +8023,7 @@
 				251ABCBD205790210069687F /* KNCustomRPC.swift in Sources */,
 				C3F71C9A261B27BB00285935 /* EarnTutorialCell.swift in Sources */,
 				A65C7A802818EF75000FA9CE /* URL+.swift in Sources */,
+				7E38C6EC28F6CD8700866390 /* EarnPoolPlatformCell.swift in Sources */,
 				C337E15A27743118001C8B03 /* DappCommand.swift in Sources */,
 				29BB94951F6FC54C009B09CC /* EthereumUnit.swift in Sources */,
 				29C70C712016C7780072E454 /* SentTransaction.swift in Sources */,
