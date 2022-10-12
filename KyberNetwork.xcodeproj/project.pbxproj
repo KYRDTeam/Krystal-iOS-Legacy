@@ -463,6 +463,10 @@
 		7E1EBE4E283507E200793B6D /* BridgeSwapButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E1EBE4C283507E200793B6D /* BridgeSwapButtonCell.xib */; };
 		7E29FEE7289B8693008D01BD /* CommonBaseTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E29FEE5289B8693008D01BD /* CommonBaseTokenCell.swift */; };
 		7E29FEE8289B8693008D01BD /* CommonBaseTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E29FEE6289B8693008D01BD /* CommonBaseTokenCell.xib */; };
+		7E2A2EA528F66E4E00AB9A77 /* EarnListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2A2EA328F66E4E00AB9A77 /* EarnListViewController.swift */; };
+		7E2A2EA628F66E4E00AB9A77 /* EarnListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E2A2EA428F66E4E00AB9A77 /* EarnListViewController.xib */; };
+		7E2A2EAA28F697FD00AB9A77 /* EarnPoolViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2A2EA828F697FD00AB9A77 /* EarnPoolViewCell.swift */; };
+		7E2A2EAB28F697FD00AB9A77 /* EarnPoolViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E2A2EA928F697FD00AB9A77 /* EarnPoolViewCell.xib */; };
 		7E3FCF0E28574DB9009DD914 /* AdvanceSearchTokenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3FCF0828574DB9009DD914 /* AdvanceSearchTokenPresenter.swift */; };
 		7E3FCF0F28574DB9009DD914 /* AdvanceSearchTokenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3FCF0928574DB9009DD914 /* AdvanceSearchTokenRouter.swift */; };
 		7E3FCF1128574DB9009DD914 /* AdvanceSearchTokenProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3FCF0B28574DB9009DD914 /* AdvanceSearchTokenProtocols.swift */; };
@@ -1688,6 +1692,10 @@
 		7E1EBE4C283507E200793B6D /* BridgeSwapButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BridgeSwapButtonCell.xib; sourceTree = "<group>"; };
 		7E29FEE5289B8693008D01BD /* CommonBaseTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonBaseTokenCell.swift; sourceTree = "<group>"; };
 		7E29FEE6289B8693008D01BD /* CommonBaseTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommonBaseTokenCell.xib; sourceTree = "<group>"; };
+		7E2A2EA328F66E4E00AB9A77 /* EarnListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnListViewController.swift; sourceTree = "<group>"; };
+		7E2A2EA428F66E4E00AB9A77 /* EarnListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnListViewController.xib; sourceTree = "<group>"; };
+		7E2A2EA828F697FD00AB9A77 /* EarnPoolViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnPoolViewCell.swift; sourceTree = "<group>"; };
+		7E2A2EA928F697FD00AB9A77 /* EarnPoolViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnPoolViewCell.xib; sourceTree = "<group>"; };
 		7E3FCF0828574DB9009DD914 /* AdvanceSearchTokenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchTokenPresenter.swift; sourceTree = "<group>"; };
 		7E3FCF0928574DB9009DD914 /* AdvanceSearchTokenRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchTokenRouter.swift; sourceTree = "<group>"; };
 		7E3FCF0B28574DB9009DD914 /* AdvanceSearchTokenProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchTokenProtocols.swift; sourceTree = "<group>"; };
@@ -4641,6 +4649,15 @@
 			path = RateTransactionPopup;
 			sourceTree = "<group>";
 		};
+		7E2A2EA728F697CD00AB9A77 /* CellsV2 */ = {
+			isa = PBXGroup;
+			children = (
+				7E2A2EA828F697FD00AB9A77 /* EarnPoolViewCell.swift */,
+				7E2A2EA928F697FD00AB9A77 /* EarnPoolViewCell.xib */,
+			);
+			path = CellsV2;
+			sourceTree = "<group>";
+		};
 		7E3FCF0728574D82009DD914 /* AdvanceSearchToken */ = {
 			isa = PBXGroup;
 			children = (
@@ -4710,6 +4727,8 @@
 				7E79FB5128F5624400306FC0 /* EarnOverviewV2Controller.xib */,
 				7E19AF4728F5818600A2CBFD /* EarnPoolViewController.swift */,
 				7E19AF4828F5818600A2CBFD /* EarnPoolViewController.xib */,
+				7E2A2EA328F66E4E00AB9A77 /* EarnListViewController.swift */,
+				7E2A2EA428F66E4E00AB9A77 /* EarnListViewController.xib */,
 			);
 			path = ControllersV2;
 			sourceTree = "<group>";
@@ -6033,6 +6052,7 @@
 		C347DA2D25C0298F000D6E81 /* Earn */ = {
 			isa = PBXGroup;
 			children = (
+				7E2A2EA728F697CD00AB9A77 /* CellsV2 */,
 				7E79FB4F28F5620100306FC0 /* ControllersV2 */,
 				C347DA3C25C030E4000D6E81 /* Cells */,
 				C347DA2F25C02A08000D6E81 /* Controllers */,
@@ -6756,6 +6776,7 @@
 				C3714E6828A63C900027A89D /* ExpertModeWarningViewController.xib in Resources */,
 				25BA01D020BFEBB500053863 /* KNTransactionStatusView.xib in Resources */,
 				25929C8A20DA5CC10045CFA3 /* SFCompactText-LightItalic.otf in Resources */,
+				7E2A2EA628F66E4E00AB9A77 /* EarnListViewController.xib in Resources */,
 				C37CC094245803CA0081FB32 /* Roboto-Regular.ttf in Resources */,
 				C3EE06C1267A15E50090B432 /* Karla-ExtraBoldItalic.ttf in Resources */,
 				C3409E1B25AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib in Resources */,
@@ -6944,6 +6965,7 @@
 				7E16B8D02769CF5F00F9A234 /* ReferralTiersViewController.xib in Resources */,
 				C30568AC2670B87700F331CE /* OverviewMainViewController.xib in Resources */,
 				C32D6E022784620A002886F1 /* KrystalWallet-min.js in Resources */,
+				7E2A2EAB28F697FD00AB9A77 /* EarnPoolViewCell.xib in Resources */,
 				251ABCB220578F6E0069687F /* config_env_production.json in Resources */,
 				25929C5D20DA5C760045CFA3 /* SF-Pro-Display-Black.otf in Resources */,
 				A65C7A7A2818E877000FA9CE /* WebViewController.xib in Resources */,
@@ -7453,6 +7475,7 @@
 				29FF12FE1F75EA3F00AFD326 /* Keystore.swift in Sources */,
 				2561454B20C64B1900FB00CF /* KNContactTableView.swift in Sources */,
 				7EB2199627C5DD1500CF243C /* BuyCryptoViewController.swift in Sources */,
+				7E2A2EAA28F697FD00AB9A77 /* EarnPoolViewCell.swift in Sources */,
 				A6977DF1289BD08A00B2B6BD /* SwapRepository.swift in Sources */,
 				A65194392835F13D008F4AEB /* TransactionDetailModule.swift in Sources */,
 				C680C1202382958700A621CB /* KNVersionControlManager.swift in Sources */,
@@ -8025,6 +8048,7 @@
 				7EB47FFB27D077DF00FB28D9 /* SearchFiatCryptoViewController.swift in Sources */,
 				257B84A62074C2B9003DD40E /* KNDebugMenuViewController.swift in Sources */,
 				A6BA4CA428A24F5D002E2B30 /* PriceImpactState.swift in Sources */,
+				7E2A2EA528F66E4E00AB9A77 /* EarnListViewController.swift in Sources */,
 				C3F71CA0261C084C00285935 /* EarnTutorialViewController.swift in Sources */,
 				A6E6C9CD28170D4B00EEB2E6 /* DefaultTransactionRepository.swift in Sources */,
 				291794FB1F95DC2200539A30 /* Web3Swift.swift in Sources */,
