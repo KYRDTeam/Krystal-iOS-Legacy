@@ -10,6 +10,7 @@ import UIKit
 class EarnOverviewV2Controller: InAppBrowsingViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
   @IBOutlet weak var pageContainer: UIView!
+  var selectedPageIndex = 0
   let pageViewController: UIPageViewController = {
     let pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
     return pageVC
@@ -27,7 +28,7 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   func initChildViewControllers() {
     let earnPoolVC = EarnListViewController.instantiateFromNib()
     let portfolioVC = StakingPortfolioViewController.instantiateFromNib()
-    childListViewControllers = [earnPoolVC, portfolioVC]
+    childListViewControllers = [earnPoolVC, portfolioVC, InAppBrowsingViewController()]
   }
 
   func setupUI() {
@@ -39,18 +40,22 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   }
   
   func setupPageViewController() {
-    let defaultPageIndex = 0
     pageViewController.view.frame = self.pageContainer.bounds
-    pageViewController.setViewControllers([childListViewControllers[defaultPageIndex]], direction: .forward, animated: true)
+    pageViewController.setViewControllers([childListViewControllers[selectedPageIndex]], direction: .forward, animated: true)
     pageViewController.dataSource = self
+    pageViewController.delegate = self
     pageContainer.addSubview(pageViewController.view)
     addChild(pageViewController)
     pageViewController.didMove(toParent: self)
-//    removeSwipeGesture()
   }
   
   @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
     segmentedControl.underlineCenterPosition()
+    if sender.selectedSegmentIndex != selectedPageIndex {
+      let direction: UIPageViewController.NavigationDirection = sender.selectedSegmentIndex < selectedPageIndex ? .reverse : .forward
+      selectedPageIndex = sender.selectedSegmentIndex
+      pageViewController.setViewControllers([childListViewControllers[sender.selectedSegmentIndex]], direction: direction, animated: true)
+    }
   }
 }
 
@@ -71,5 +76,20 @@ extension EarnOverviewV2Controller: UIPageViewControllerDataSource {
       }
     }
     return nil
+  }
+}
+
+extension EarnOverviewV2Controller: UIPageViewControllerDelegate {
+  func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+    var newIndex = 2
+    if pageViewController.viewControllers?.first is EarnListViewController {
+      newIndex = 0
+    } else if pageViewController.viewControllers?.first is StakingPortfolioViewController {
+      newIndex = 1
+    }
+  
+    segmentedControl.selectedSegmentIndex = newIndex
+    selectedPageIndex = newIndex
+    segmentedControl.underlineCenterPosition()
   }
 }
