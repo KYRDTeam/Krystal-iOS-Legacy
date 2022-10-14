@@ -10,21 +10,40 @@ import StackViewController
 
 class StakingPortfolioViewModel {
   var portfolio: PortfolioStaking?
+  let apiService = KrystalService()
+  var currentAddress = AppDelegate.session.address
   
-  var dataSource: [StakingPortfolioCellModel] = []
+  var dataSource: Observable<[StakingPortfolioCellModel]> = .init([])
+  var error: Observable<Error?> = .init(nil)
+  var isLoading: Observable<Bool> = .init(false)
   
   func reloadDataSource() {
-    dataSource.removeAll()
+    dataSource.value.removeAll()
     guard let data = portfolio else {
       return
     }
+    var output: [StakingPortfolioCellModel] = []
     data.pendingUnstakes?.forEach({ item in
-      dataSource.append(StakingPortfolioCellModel(pendingUnstake: item))
+      output.append(StakingPortfolioCellModel(pendingUnstake: item))
     })
     data.earningBalances.forEach { item in
-      dataSource.append(StakingPortfolioCellModel(earnBalance: item))
+      output.append(StakingPortfolioCellModel(earnBalance: item))
     }
-    
+    dataSource.value = output
+  }
+  
+  func requestData() {
+    isLoading.value = true
+    apiService.getStakingPortfolio(address: currentAddress.addressString) { result in
+      self.isLoading.value = false
+      switch result {
+      case .success(let portfolio):
+        self.portfolio = portfolio
+        self.reloadDataSource()
+      case .failure(let error):
+        self.error.value = error
+      }
+    }
   }
 }
 
@@ -36,6 +55,17 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     registerCell()
+    viewModel.dataSource.observeAndFire(on: self) { _ in
+      self.portfolioTableView.reloadData()
+    }
+    viewModel.isLoading.observeAndFire(on: self) { status in
+      if status {
+        self.showLoadingHUD()
+      } else {
+        self.hideLoading()
+      }
+    }
+    viewModel.requestData()
   }
   
   private func registerCell() {
@@ -46,12 +76,12 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
 
 extension StakingPortfolioViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return viewModel.dataSource.count
+    return viewModel.dataSource.value.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(StakingPortfolioCell.self, indexPath: indexPath)!
-    let cm = viewModel.dataSource[indexPath.row]
+    let cm = viewModel.dataSource.value[indexPath.row]
     cell.updateCellModel(cm)
     return cell
   }
