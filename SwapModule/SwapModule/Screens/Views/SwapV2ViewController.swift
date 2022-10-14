@@ -101,12 +101,12 @@ class SwapV2ViewController: InAppBrowsingViewController {
     
     override func openWalletList() {
         super.openWalletList()
-        Dependencies.tracker.track("swap_select_wallet", properties: ["screenid": "swap"])
+        AppDependencies.tracker.track("swap_select_wallet", properties: ["screenid": "swap"])
     }
     
     override func openSwitchChain() {
         super.openSwitchChain()
-        Dependencies.tracker.track("swap_select_chain", properties: ["screenid": "swap"])
+        AppDependencies.tracker.track("swap_select_chain", properties: ["screenid": "swap"])
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -116,7 +116,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
             self.viewModel.appDidSwitchChain()
         }
         navigationController?.setNavigationBarHidden(true, animated: true)
-        Dependencies.tracker.track("swap_open", properties: ["screenid": "swap"])
+        AppDependencies.tracker.track("swap_open", properties: ["screenid": "swap"])
     }
     
     deinit {
@@ -546,7 +546,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
     
     @IBAction func historyButtonWasTapped(_ sender: Any) {
         viewModel.didTapHistoryButton()
-        Dependencies.tracker.track("swap_history", properties: ["screenid": "swap"])
+        AppDependencies.tracker.track("swap_history", properties: ["screenid": "swap"])
     }
     
     @objc override func onAppSwitchChain() {
@@ -705,7 +705,7 @@ extension SwapV2ViewController {
         } else {
             viewModel.sourceAmount.value = amountToChange
         }
-        Dependencies.tracker.track("swap_enter_amount", properties: ["screenid": "swap"])
+        AppDependencies.tracker.track("swap_enter_amount", properties: ["screenid": "swap"])
     }
     
     func onSelectPlatformRateAt(index: Int) {

@@ -100,11 +100,11 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
     }
     
     open func openWalletList() {
-        Dependencies.router.openWalletList()
+        AppDependencies.router.openWalletList()
     }
     
     open func openSwitchChain() {
-        Dependencies.router.openChainList()
+        AppDependencies.router.openChainList()
     }
     
 }

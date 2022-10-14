@@ -31,14 +31,14 @@ extension SwapInfoViewModelProtocol {
         } else if let rate = selectedRate {
             return BigInt(rate.estimatedGas)
         } else {
-            return Dependencies.gasConfig.defaultExchangeGasLimit
+            return AppDependencies.gasConfig.defaultExchangeGasLimit
         }
     }
     
     var gasPrice: BigInt {
         if let basic = settings.basic {
             if isEIP1559 {
-                let baseFee = Dependencies.gasConfig.baseFee
+                let baseFee = AppDependencies.gasConfig.baseFee
                 let priorityFee = self.getPriorityFee(forType: basic.gasPriceType) ?? .zero
                 return baseFee + priorityFee
             } else {
@@ -51,36 +51,36 @@ extension SwapInfoViewModelProtocol {
                 return advanced.maxFee
             }
         }
-        return Dependencies.gasConfig.standardGas
+        return AppDependencies.gasConfig.standardGas
     }
     
     func getGasPrice(forType type: KNSelectedGasPriceType) -> BigInt {
         switch type {
         case .fast:
-            return Dependencies.gasConfig.fastGas
+            return AppDependencies.gasConfig.fastGas
         case .medium:
-            return Dependencies.gasConfig.standardGas
+            return AppDependencies.gasConfig.standardGas
         case .slow:
-            return Dependencies.gasConfig.lowGas
+            return AppDependencies.gasConfig.lowGas
         case .superFast:
-            return Dependencies.gasConfig.superFastGas
+            return AppDependencies.gasConfig.superFastGas
         default: // No need to handle case .custom
-            return Dependencies.gasConfig.standardGas
+            return AppDependencies.gasConfig.standardGas
         }
     }
     
     func getPriorityFee(forType type: KNSelectedGasPriceType) -> BigInt? {
         switch type {
         case .fast:
-            return Dependencies.gasConfig.fastPriorityFee
+            return AppDependencies.gasConfig.fastPriorityFee
         case .medium:
-            return Dependencies.gasConfig.standardPriorityFee
+            return AppDependencies.gasConfig.standardPriorityFee
         case .slow:
-            return Dependencies.gasConfig.lowPriorityFee
+            return AppDependencies.gasConfig.lowPriorityFee
         case .superFast:
-            return Dependencies.gasConfig.superFastPriorityFee
+            return AppDependencies.gasConfig.superFastPriorityFee
         default: // No need to handle case .custom
-            return Dependencies.gasConfig.standardPriorityFee
+            return AppDependencies.gasConfig.standardPriorityFee
         }
     }
     
@@ -130,9 +130,9 @@ extension SwapInfoViewModelProtocol {
     }
     
     func getGasFeeUSD(estGas: BigInt, gasPrice: BigInt) -> BigInt {
-        let quoteToken = Dependencies.tokenStorage.quoteToken(forChain: AppState.shared.currentChain)
+        let quoteToken = AppDependencies.tokenStorage.quoteToken(forChain: AppState.shared.currentChain)
         let decimals = quoteToken.decimals
-        let rateUSDDouble = Dependencies.priceStorage.price(tokenAddress: quoteToken.address, chain: AppState.shared.currentChain)?.usd ?? 0
+        let rateUSDDouble = AppDependencies.priceStorage.price(tokenAddress: quoteToken.address, chain: AppState.shared.currentChain)?.usd ?? 0
         let rateBigInt = BigInt(rateUSDDouble * pow(10.0, Double(decimals)))
         let feeUSD = (estGas * gasPrice * rateBigInt) / BigInt(10).power(decimals)
         return feeUSD

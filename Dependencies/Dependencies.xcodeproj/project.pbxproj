@@ -12,7 +12,7 @@
 		A64C2E3928F7BAA1002FD64C /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3828F7BAA1002FD64C /* Dependencies.swift */; };
 		A64C2E6A28F880EA002FD64C /* GasConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E6928F880EA002FD64C /* GasConfig.swift */; };
 		A64C2E6C28F90AAB002FD64C /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E6B28F90AAB002FD64C /* ErrorTracker.swift */; };
-		A64C2E7128F90FB3002FD64C /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E7028F90FB3002FD64C /* AppRouter.swift */; };
+		A64C2E7128F90FB3002FD64C /* AppRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E7028F90FB3002FD64C /* AppRouterProtocol.swift */; };
 		A64C2E8128F9131E002FD64C /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E8028F9131E002FD64C /* TokenStorage.swift */; };
 		A64C2ED328F9220F002FD64C /* NonceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2ED228F9220F002FD64C /* NonceStorage.swift */; };
 		A64C2EF028F944BF002FD64C /* PriceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EEF28F944BF002FD64C /* PriceStorage.swift */; };
@@ -27,7 +27,7 @@
 		A64C2E3828F7BAA1002FD64C /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
 		A64C2E6928F880EA002FD64C /* GasConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasConfig.swift; sourceTree = "<group>"; };
 		A64C2E6B28F90AAB002FD64C /* ErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
-		A64C2E7028F90FB3002FD64C /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		A64C2E7028F90FB3002FD64C /* AppRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouterProtocol.swift; sourceTree = "<group>"; };
 		A64C2E8028F9131E002FD64C /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
 		A64C2E8728F91471002FD64C /* BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A64C2ED228F9220F002FD64C /* NonceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonceStorage.swift; sourceTree = "<group>"; };
@@ -64,7 +64,7 @@
 				A64C2E3628F7BA12002FD64C /* Tracker.swift */,
 				A64C2E6928F880EA002FD64C /* GasConfig.swift */,
 				A64C2E6B28F90AAB002FD64C /* ErrorTracker.swift */,
-				A64C2E7028F90FB3002FD64C /* AppRouter.swift */,
+				A64C2E7028F90FB3002FD64C /* AppRouterProtocol.swift */,
 				A64C2E8028F9131E002FD64C /* TokenStorage.swift */,
 				A64C2ED228F9220F002FD64C /* NonceStorage.swift */,
 				A64C2EEF28F944BF002FD64C /* PriceStorage.swift */,
@@ -221,7 +221,7 @@
 				A64C2E3728F7BA12002FD64C /* Tracker.swift in Sources */,
 				A64C2E6A28F880EA002FD64C /* GasConfig.swift in Sources */,
 				A64C2EF028F944BF002FD64C /* PriceStorage.swift in Sources */,
-				A64C2E7128F90FB3002FD64C /* AppRouter.swift in Sources */,
+				A64C2E7128F90FB3002FD64C /* AppRouterProtocol.swift in Sources */,
 				A64C2E6C28F90AAB002FD64C /* ErrorTracker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

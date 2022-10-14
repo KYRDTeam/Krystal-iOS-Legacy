@@ -600,6 +600,10 @@
 		A646E86D28E58B59007591FC /* OverviewSkeletonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A646E86B28E58B59007591FC /* OverviewSkeletonCell.xib */; };
 		A646E87828E5AD87007591FC /* WalletConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646E87628E5AD87007591FC /* WalletConnectViewController.swift */; };
 		A646E87928E5AD87007591FC /* WalletConnectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A646E87728E5AD87007591FC /* WalletConnectViewController.xib */; };
+		A64C2EF528F94FC4002FD64C /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EF428F94FC4002FD64C /* AppRouter.swift */; };
+		A64C2EF728F95001002FD64C /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EF628F95001002FD64C /* Dependencies.framework */; };
+		A64C2EF828F95001002FD64C /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EF628F95001002FD64C /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A64C2EFA28F95226002FD64C /* DependenciesRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EF928F95226002FD64C /* DependenciesRegister.swift */; };
 		A64CC665289405B8006BA1C6 /* Web3Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64CC664289405B8006BA1C6 /* Web3Factory.swift */; };
 		A64E17B5281932C400ED6E6D /* PendingTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B3281932C400ED6E6D /* PendingTransactionListViewController.swift */; };
 		A64E17B6281932C400ED6E6D /* PendingTransactionListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A64E17B4281932C400ED6E6D /* PendingTransactionListViewController.xib */; };
@@ -1046,7 +1050,7 @@
 		C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38E5D7825F63FC000E5FC48 /* TransactionHistory.swift */; };
 		C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */; };
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
-		C39A7EED24778B03003EA57D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		C39D3FE126FB33610021DF8A /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D3FE026FB33610021DF8A /* History.swift */; };
 		C39E5FBB27F1A23600DDBF59 /* GoogleService-Info-Dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = C39E5FBA27F1A23600DDBF59 /* GoogleService-Info-Dev.plist */; };
 		C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241992567AD610073703C /* WalletsListViewController.swift */; };
@@ -1201,6 +1205,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				A6B067272859CF1900DEBAE8 /* KrystalWallets.framework in Embed Frameworks */,
+				A64C2EF828F95001002FD64C /* Dependencies.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1832,6 +1837,9 @@
 		A646E86B28E58B59007591FC /* OverviewSkeletonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewSkeletonCell.xib; sourceTree = "<group>"; };
 		A646E87628E5AD87007591FC /* WalletConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectViewController.swift; sourceTree = "<group>"; };
 		A646E87728E5AD87007591FC /* WalletConnectViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletConnectViewController.xib; sourceTree = "<group>"; };
+		A64C2EF428F94FC4002FD64C /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		A64C2EF628F95001002FD64C /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A64C2EF928F95226002FD64C /* DependenciesRegister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependenciesRegister.swift; sourceTree = "<group>"; };
 		A64CC664289405B8006BA1C6 /* Web3Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3Factory.swift; sourceTree = "<group>"; };
 		A64E17B3281932C400ED6E6D /* PendingTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactionListViewController.swift; sourceTree = "<group>"; };
 		A64E17B4281932C400ED6E6D /* PendingTransactionListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PendingTransactionListViewController.xib; sourceTree = "<group>"; };
@@ -2409,6 +2417,7 @@
 				A6B067262859CF1900DEBAE8 /* KrystalWallets.framework in Frameworks */,
 				8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */,
 				C626BEDC238D870F00C96410 /* AdSupport.framework in Frameworks */,
+				A64C2EF728F95001002FD64C /* Dependencies.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4070,6 +4079,7 @@
 			isa = PBXGroup;
 			children = (
 				C344E91A2621715C00524B8D /* KyberSwap - Crypto ExchangeDebug.entitlements */,
+				A64C2EF328F94FB6002FD64C /* Dependencies */,
 				251ABC9F20578D980069687F /* KyberNetwork */,
 				29E6E0681FE897BB0079265A /* Browser */,
 				29AD8A0A1F93FBB7008E10E7 /* Foundation */,
@@ -4923,6 +4933,15 @@
 			children = (
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		A64C2EF328F94FB6002FD64C /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				A64C2EF428F94FC4002FD64C /* AppRouter.swift */,
+				A64C2EF928F95226002FD64C /* DependenciesRegister.swift */,
+			);
+			path = Dependencies;
 			sourceTree = "<group>";
 		};
 		A64E17BB281947F400ED6E6D /* Common */ = {
@@ -6426,6 +6445,7 @@
 		FAD3F374A5C639BD900944DB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A64C2EF628F95001002FD64C /* Dependencies.framework */,
 				C3D9517925FB97EC00DE3C05 /* CloudKit.framework */,
 				C626BEDD238D871700C96410 /* iAd.framework */,
 				C626BEDB238D870E00C96410 /* AdSupport.framework */,
@@ -7495,7 +7515,7 @@
 				7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */,
 				7EE92A0F286307E10050DC8D /* ShowAllCell.swift in Sources */,
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
-				C39A7EED24778B03003EA57D /* BuildFile in Sources */,
+				C39A7EED24778B03003EA57D /* (null) in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				C3233EFE2807DF4D0086C2BC /* CopyAddressCell.swift in Sources */,
 				A69C5BCE28D1B342000DE825 /* NotificationEndpoint.swift in Sources */,
@@ -7852,6 +7872,7 @@
 				7E66A69C2865723C007DF078 /* ErrorViewController.swift in Sources */,
 				2963A2881FC401490095447D /* LocalizedOperation.swift in Sources */,
 				29C80D371FB2CD230037B1E0 /* PendingTransaction.swift in Sources */,
+				A64C2EFA28F95226002FD64C /* DependenciesRegister.swift in Sources */,
 				7E1EBE352834C9C900793B6D /* BridgeViewController.swift in Sources */,
 				251ABCA620578E630069687F /* KNNotificationUtil.swift in Sources */,
 				7EB2199927C6177300CF243C /* BuyCryptoCoordinator.swift in Sources */,
@@ -8124,6 +8145,7 @@
 				C365811E25E1132400A6DA4B /* Storage.swift in Sources */,
 				A685D494284877DF0066E177 /* SolanaGasCalculator.swift in Sources */,
 				C3A241A42567BEB50073703C /* WalletListTableViewCell.swift in Sources */,
+				A64C2EF528F94FC4002FD64C /* AppRouter.swift in Sources */,
 				A6E6C9EC2818056800EEB2E6 /* SolanaTransactionObject.swift in Sources */,
 				A6664D23285986A700CCAB1F /* SolanaSerumService.swift in Sources */,
 				A687B19B28D9B41200895337 /* RedeemStatus.swift in Sources */,

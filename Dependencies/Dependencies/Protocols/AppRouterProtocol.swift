@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import UIKit
 
-public protocol AppRouter {
+public protocol AppRouterProtocol {
     func openWalletList()
     func openChainList()
+    func createSwapViewController() -> UIViewController
 }

@@ -108,8 +108,8 @@ class EthereumWeb3Service {
         Session.send(request) { result in
             switch result {
             case .success(let count):
-                let currentNonce = Dependencies.nonceStorage.currentNonce(chain: self.chain, address: address)
-                Dependencies.nonceStorage.increaseNonce(chain: self.chain, address: address, value: max(count, currentNonce))
+                let currentNonce = AppDependencies.nonceStorage.currentNonce(chain: self.chain, address: address)
+                AppDependencies.nonceStorage.increaseNonce(chain: self.chain, address: address, value: max(count, currentNonce))
                 completion(.success(count))
             case .failure(let error):
                 completion(.failure(AnyError(error)))
@@ -166,7 +166,7 @@ class EthereumWeb3Service {
                     gasPrice: gasPrice,
                     value: BigInt(0),
                     data: data,
-                    defaultGasLimit: Dependencies.gasConfig.defaultTransferGasLimit,
+                    defaultGasLimit: AppDependencies.gasConfig.defaultTransferGasLimit,
                     isSwap: false,
                     completion: completion
                 )

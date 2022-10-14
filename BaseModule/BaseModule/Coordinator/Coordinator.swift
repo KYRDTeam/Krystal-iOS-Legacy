@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import UIKit
 
-public protocol Coordinator: class {
+public protocol Coordinator: AnyObject {
     var coordinators: [Coordinator] { get set }
     
     func start()
