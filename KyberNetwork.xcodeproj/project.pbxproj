@@ -948,6 +948,7 @@
 		C333A6CA27BA5123003A6C6B /* ApproveTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C333A6C827BA5123003A6C6B /* ApproveTokenCell.xib */; };
 		C334A865283354C3006B3D55 /* KeyboardTypingUltil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C334A864283354C3006B3D55 /* KeyboardTypingUltil.swift */; };
 		C3357DB524768C400028F4A9 /* CustomFCTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3357DB424768C400028F4A9 /* CustomFCTheme.plist */; };
+		C3358CCF28F7E82600F075BC /* PortfolioStaking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3358CCE28F7E82600F075BC /* PortfolioStaking.swift */; };
 		C335C21F26672E8E00AD7E20 /* SwitchChainWalletsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C335C21D26672E8E00AD7E20 /* SwitchChainWalletsListViewController.swift */; };
 		C335C22026672E8E00AD7E20 /* SwitchChainWalletsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C335C21E26672E8E00AD7E20 /* SwitchChainWalletsListViewController.xib */; };
 		C335FC71257F90990015CC27 /* RectangularDashedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C335FC70257F90990015CC27 /* RectangularDashedView.swift */; };
@@ -2196,6 +2197,7 @@
 		C333A6C827BA5123003A6C6B /* ApproveTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApproveTokenCell.xib; sourceTree = "<group>"; };
 		C334A864283354C3006B3D55 /* KeyboardTypingUltil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardTypingUltil.swift; sourceTree = "<group>"; };
 		C3357DB424768C400028F4A9 /* CustomFCTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CustomFCTheme.plist; sourceTree = "<group>"; };
+		C3358CCE28F7E82600F075BC /* PortfolioStaking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioStaking.swift; sourceTree = "<group>"; };
 		C335C21D26672E8E00AD7E20 /* SwitchChainWalletsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchChainWalletsListViewController.swift; sourceTree = "<group>"; };
 		C335C21E26672E8E00AD7E20 /* SwitchChainWalletsListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchChainWalletsListViewController.xib; sourceTree = "<group>"; };
 		C335FC70257F90990015CC27 /* RectangularDashedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularDashedView.swift; sourceTree = "<group>"; };
@@ -4273,6 +4275,7 @@
 				C39D3FE026FB33610021DF8A /* History.swift */,
 				C30F78E5271414AD00E3233D /* EIP1559Transaction.swift */,
 				C3BA31FC27184367008E8DF6 /* GasPrice.swift */,
+				C3358CCE28F7E82600F075BC /* PortfolioStaking.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -8000,6 +8003,7 @@
 				296AF9A91F737F6F0058AF78 /* SendRawTransactionRequest.swift in Sources */,
 				258C47EF2081F29D00BD4068 /* NSObject+Kyber.swift in Sources */,
 				25C45ADD20AD5EF900CDA1FF /* KNImportWalletCoordinator.swift in Sources */,
+				C3358CCF28F7E82600F075BC /* PortfolioStaking.swift in Sources */,
 				C33DDBB228AE4C3C00D3041A /* BigInt+SwapSettings.swift in Sources */,
 				7E44DBEA2849BA3100E4AD26 /* BridgeTransactionStatusPopup.swift in Sources */,
 				C3B1FF0F28AFAAD7004CB9EF /* WalletCell.swift in Sources */,
