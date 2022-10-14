@@ -188,6 +188,7 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
       message: Strings.importWalletSuccess,
       time: 1
     )
+    MixPanelManager.track("import_done_pop_up_open", properties: ["screenid": "import_done_pop_up"])
   }
   
   private func addToContacts(wallet: KWallet) {
