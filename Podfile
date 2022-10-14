@@ -1,6 +1,8 @@
 platform :ios, '12.0'
 inhibit_all_warnings!
 
+workspace 'KyberNetwork.xcworkspace'
+
 source 'https://github.com/CocoaPods/Specs.git'
 # source 'https://cdn.cocoapods.org/'
 # tmp fix the CDN outage: https://github.com/CocoaPods/CocoaPods/issues/10078#issuecomment-696481185
@@ -66,6 +68,63 @@ def utilitiesPods
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.2.8'
   pod 'Lokalise', '~> 0.8.1'
   pod 'GoogleMLKit/TextRecognition', '2.2.0'
+end
+
+def swapDependencies
+  pod 'BigInt'
+  pod 'Moya'
+  pod 'JSONRPCKit'
+  pod 'APIKit'
+  pod 'lottie-ios'
+end
+
+def servicesDependencies
+  pod 'Moya'
+  pod 'BigInt'
+end
+
+def designSystemDependencies
+  pod 'SwiftMessages'
+end
+
+def dependenciesDependencies
+  pod 'BigInt'
+end
+
+target 'Dependencies' do
+  project 'Dependencies/Dependencies.xcodeproj'
+  use_frameworks!
+  
+  dependenciesDependencies
+end
+
+target 'DesignSystem' do
+  project 'DesignSystem/DesignSystem.xcodeproj'
+  use_frameworks!
+  
+  designSystemDependencies
+end
+
+target 'Services' do
+  project 'Services/Services.xcodeproj'
+  use_frameworks!
+  
+  servicesDependencies
+end
+
+target 'SwapModule' do
+  project 'SwapModule/SwapModule.xcodeproj'
+  use_frameworks!
+  
+  swapDependencies
+end
+
+target 'Utilities' do
+  project 'Utilities/Utilities.xcodeproj'
+  use_frameworks!
+  
+  pod 'BigInt'
+  pod 'Kingfisher'
 end
 
 target 'KyberNetwork' do

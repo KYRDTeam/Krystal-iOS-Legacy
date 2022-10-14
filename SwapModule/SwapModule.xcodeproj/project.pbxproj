@@ -7,12 +7,101 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A64C2DE728F6D5B1002FD64C /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DE628F6D5B1002FD64C /* Utilities.framework */; };
+		A64C2DE828F6D5B1002FD64C /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DE628F6D5B1002FD64C /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A64C2DEB28F6D5B5002FD64C /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DEA28F6D5B5002FD64C /* AppState.framework */; };
+		A64C2DEC28F6D5B5002FD64C /* AppState.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DEA28F6D5B5002FD64C /* AppState.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A64C2DEE28F6D5B8002FD64C /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DED28F6D5B8002FD64C /* BaseModule.framework */; };
+		A64C2DEF28F6D5B8002FD64C /* BaseModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DED28F6D5B8002FD64C /* BaseModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A64C2DF128F6D5C1002FD64C /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DF028F6D5C1002FD64C /* KrystalWallets.framework */; };
+		A64C2DF228F6D5C1002FD64C /* KrystalWallets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DF028F6D5C1002FD64C /* KrystalWallets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A64C2DF428F6D5C5002FD64C /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DF328F6D5C5002FD64C /* DesignSystem.framework */; };
+		A64C2DF528F6D5C5002FD64C /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DF328F6D5C5002FD64C /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A64C2E3128F7B8AE002FD64C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A64C2E3028F7B8AE002FD64C /* Localizable.strings */; };
+		A64C2E3328F7B8D3002FD64C /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3228F7B8D3002FD64C /* Strings.swift */; };
+		A64C2E3528F7B8F7002FD64C /* SwapModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3428F7B8F7002FD64C /* SwapModule.swift */; };
+		A64C2E3C28F7BDEE002FD64C /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2E3B28F7BDEE002FD64C /* Services.framework */; };
+		A64C2E3D28F7BDEE002FD64C /* Services.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2E3B28F7BDEE002FD64C /* Services.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A64C2E4E28F7FEBC002FD64C /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2E4D28F7FEBC002FD64C /* Dependencies.framework */; };
+		A64C2E4F28F7FEBD002FD64C /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2E4D28F7FEBC002FD64C /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A64C2E5128F7FF55002FD64C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E5028F7FF55002FD64C /* Constants.swift */; };
+		A64C2E5528F812A5002FD64C /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E5428F812A5002FD64C /* Images.swift */; };
+		A64C2E5728F8132C002FD64C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A64C2E5628F8132C002FD64C /* Assets.xcassets */; };
 		A6512F2428F6CBDB00A84BC2 /* SwapModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A6512F2328F6CBDB00A84BC2 /* SwapModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A6512F5128F6D1C900A84BC2 /* SwapState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3628F6D1C900A84BC2 /* SwapState.swift */; };
+		A6512F5228F6D1C900A84BC2 /* PriceImpactState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3728F6D1C900A84BC2 /* PriceImpactState.swift */; };
+		A6512F5328F6D1C900A84BC2 /* SwapError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3828F6D1C900A84BC2 /* SwapError.swift */; };
+		A6512F5428F6D1C900A84BC2 /* SwapTransactionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3928F6D1C900A84BC2 /* SwapTransactionSettings.swift */; };
+		A6512F5528F6D1C900A84BC2 /* SwapRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3B28F6D1C900A84BC2 /* SwapRepository.swift */; };
+		A6512F5628F6D1C900A84BC2 /* SwapPlatformItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3D28F6D1C900A84BC2 /* SwapPlatformItemViewModel.swift */; };
+		A6512F5728F6D1C900A84BC2 /* SwapInfoViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3E28F6D1C900A84BC2 /* SwapInfoViewModelProtocol.swift */; };
+		A6512F5828F6D1C900A84BC2 /* SwapV2ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3F28F6D1C900A84BC2 /* SwapV2ViewModel.swift */; };
+		A6512F5B28F6D1C900A84BC2 /* SwapV2PlatformCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6512F4328F6D1C900A84BC2 /* SwapV2PlatformCell.xib */; };
+		A6512F5C28F6D1C900A84BC2 /* SwapV2PlatformCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F4428F6D1C900A84BC2 /* SwapV2PlatformCell.swift */; };
+		A6512F5F28F6D1C900A84BC2 /* SwapV2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F4728F6D1C900A84BC2 /* SwapV2ViewController.swift */; };
+		A6512F6028F6D1C900A84BC2 /* SwapV2ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6512F4828F6D1C900A84BC2 /* SwapV2ViewController.xib */; };
+		A6512F6128F6D1C900A84BC2 /* SwapInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6512F4928F6D1C900A84BC2 /* SwapInfoView.xib */; };
+		A6512F6428F6D1C900A84BC2 /* SwapInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F4C28F6D1C900A84BC2 /* SwapInfoView.swift */; };
+		A6512F6628F6D1C900A84BC2 /* SwapV2Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F4F28F6D1C900A84BC2 /* SwapV2Coordinator.swift */; };
+		A6512F6728F6D1C900A84BC2 /* SwapObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F5028F6D1C900A84BC2 /* SwapObject.swift */; };
+		A915E2B24411BEFE1D1E6646 /* Pods_SwapModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CADA989BD9B33A878DEA071 /* Pods_SwapModule.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		A64C2DE928F6D5B1002FD64C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A64C2DEC28F6D5B5002FD64C /* AppState.framework in Embed Frameworks */,
+				A64C2DEF28F6D5B8002FD64C /* BaseModule.framework in Embed Frameworks */,
+				A64C2E4F28F7FEBD002FD64C /* Dependencies.framework in Embed Frameworks */,
+				A64C2DF528F6D5C5002FD64C /* DesignSystem.framework in Embed Frameworks */,
+				A64C2DF228F6D5C1002FD64C /* KrystalWallets.framework in Embed Frameworks */,
+				A64C2E3D28F7BDEE002FD64C /* Services.framework in Embed Frameworks */,
+				A64C2DE828F6D5B1002FD64C /* Utilities.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		0950F0FA5699EA3AAEFBDE5C /* Pods-SwapModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwapModule.debug.xcconfig"; path = "Target Support Files/Pods-SwapModule/Pods-SwapModule.debug.xcconfig"; sourceTree = "<group>"; };
+		6CADA989BD9B33A878DEA071 /* Pods_SwapModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwapModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0D57B2E226149205007B764 /* Pods-SwapModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwapModule.release.xcconfig"; path = "Target Support Files/Pods-SwapModule/Pods-SwapModule.release.xcconfig"; sourceTree = "<group>"; };
+		A64C2DE628F6D5B1002FD64C /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A64C2DEA28F6D5B5002FD64C /* AppState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A64C2DED28F6D5B8002FD64C /* BaseModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A64C2DF028F6D5C1002FD64C /* KrystalWallets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KrystalWallets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A64C2DF328F6D5C5002FD64C /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A64C2E3028F7B8AE002FD64C /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		A64C2E3228F7B8D3002FD64C /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		A64C2E3428F7B8F7002FD64C /* SwapModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapModule.swift; sourceTree = "<group>"; };
+		A64C2E3B28F7BDEE002FD64C /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A64C2E4D28F7FEBC002FD64C /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A64C2E5028F7FF55002FD64C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A64C2E5428F812A5002FD64C /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		A64C2E5628F8132C002FD64C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A6512F2028F6CBDB00A84BC2 /* SwapModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwapModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6512F2328F6CBDB00A84BC2 /* SwapModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwapModule.h; sourceTree = "<group>"; };
+		A6512F3628F6D1C900A84BC2 /* SwapState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapState.swift; sourceTree = "<group>"; };
+		A6512F3728F6D1C900A84BC2 /* PriceImpactState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PriceImpactState.swift; sourceTree = "<group>"; };
+		A6512F3828F6D1C900A84BC2 /* SwapError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapError.swift; sourceTree = "<group>"; };
+		A6512F3928F6D1C900A84BC2 /* SwapTransactionSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapTransactionSettings.swift; sourceTree = "<group>"; };
+		A6512F3B28F6D1C900A84BC2 /* SwapRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapRepository.swift; sourceTree = "<group>"; };
+		A6512F3D28F6D1C900A84BC2 /* SwapPlatformItemViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapPlatformItemViewModel.swift; sourceTree = "<group>"; };
+		A6512F3E28F6D1C900A84BC2 /* SwapInfoViewModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapInfoViewModelProtocol.swift; sourceTree = "<group>"; };
+		A6512F3F28F6D1C900A84BC2 /* SwapV2ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapV2ViewModel.swift; sourceTree = "<group>"; };
+		A6512F4328F6D1C900A84BC2 /* SwapV2PlatformCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwapV2PlatformCell.xib; sourceTree = "<group>"; };
+		A6512F4428F6D1C900A84BC2 /* SwapV2PlatformCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapV2PlatformCell.swift; sourceTree = "<group>"; };
+		A6512F4728F6D1C900A84BC2 /* SwapV2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapV2ViewController.swift; sourceTree = "<group>"; };
+		A6512F4828F6D1C900A84BC2 /* SwapV2ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwapV2ViewController.xib; sourceTree = "<group>"; };
+		A6512F4928F6D1C900A84BC2 /* SwapInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwapInfoView.xib; sourceTree = "<group>"; };
+		A6512F4C28F6D1C900A84BC2 /* SwapInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapInfoView.swift; sourceTree = "<group>"; };
+		A6512F4F28F6D1C900A84BC2 /* SwapV2Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapV2Coordinator.swift; sourceTree = "<group>"; };
+		A6512F5028F6D1C900A84BC2 /* SwapObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapObject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -20,17 +109,55 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A64C2E3C28F7BDEE002FD64C /* Services.framework in Frameworks */,
+				A64C2E4E28F7FEBC002FD64C /* Dependencies.framework in Frameworks */,
+				A915E2B24411BEFE1D1E6646 /* Pods_SwapModule.framework in Frameworks */,
+				A64C2DEE28F6D5B8002FD64C /* BaseModule.framework in Frameworks */,
+				A64C2DF128F6D5C1002FD64C /* KrystalWallets.framework in Frameworks */,
+				A64C2DF428F6D5C5002FD64C /* DesignSystem.framework in Frameworks */,
+				A64C2DE728F6D5B1002FD64C /* Utilities.framework in Frameworks */,
+				A64C2DEB28F6D5B5002FD64C /* AppState.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		351CC470B9FADAD8F77E8D17 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A64C2E4D28F7FEBC002FD64C /* Dependencies.framework */,
+				A64C2E3B28F7BDEE002FD64C /* Services.framework */,
+				A64C2DF328F6D5C5002FD64C /* DesignSystem.framework */,
+				A64C2DF028F6D5C1002FD64C /* KrystalWallets.framework */,
+				A64C2DED28F6D5B8002FD64C /* BaseModule.framework */,
+				A64C2DEA28F6D5B5002FD64C /* AppState.framework */,
+				A64C2DE628F6D5B1002FD64C /* Utilities.framework */,
+				6CADA989BD9B33A878DEA071 /* Pods_SwapModule.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A64C2E2D28F7B86B002FD64C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A64C2E3028F7B8AE002FD64C /* Localizable.strings */,
+				A64C2E3228F7B8D3002FD64C /* Strings.swift */,
+				A64C2E3428F7B8F7002FD64C /* SwapModule.swift */,
+				A64C2E5028F7FF55002FD64C /* Constants.swift */,
+				A64C2E5428F812A5002FD64C /* Images.swift */,
+				A64C2E5628F8132C002FD64C /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		A6512F1628F6CBDB00A84BC2 = {
 			isa = PBXGroup;
 			children = (
 				A6512F2228F6CBDB00A84BC2 /* SwapModule */,
 				A6512F2128F6CBDB00A84BC2 /* Products */,
+				D181F20A1A85AF76EEB45DA0 /* Pods */,
+				351CC470B9FADAD8F77E8D17 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -45,9 +172,81 @@
 		A6512F2228F6CBDB00A84BC2 /* SwapModule */ = {
 			isa = PBXGroup;
 			children = (
+				A64C2E2D28F7B86B002FD64C /* Resources */,
+				A6512F4E28F6D1C900A84BC2 /* Coordinator */,
+				A6512F3528F6D1C900A84BC2 /* Models */,
+				A6512F3A28F6D1C900A84BC2 /* Repository */,
+				A6512F3C28F6D1C900A84BC2 /* ViewModels */,
+				A6512F4128F6D1C900A84BC2 /* Views */,
 				A6512F2328F6CBDB00A84BC2 /* SwapModule.h */,
 			);
 			path = SwapModule;
+			sourceTree = "<group>";
+		};
+		A6512F3528F6D1C900A84BC2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A6512F3628F6D1C900A84BC2 /* SwapState.swift */,
+				A6512F3728F6D1C900A84BC2 /* PriceImpactState.swift */,
+				A6512F3828F6D1C900A84BC2 /* SwapError.swift */,
+				A6512F3928F6D1C900A84BC2 /* SwapTransactionSettings.swift */,
+			);
+			name = Models;
+			path = Screens/Models;
+			sourceTree = "<group>";
+		};
+		A6512F3A28F6D1C900A84BC2 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				A6512F3B28F6D1C900A84BC2 /* SwapRepository.swift */,
+			);
+			name = Repository;
+			path = Screens/Repository;
+			sourceTree = "<group>";
+		};
+		A6512F3C28F6D1C900A84BC2 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A6512F3D28F6D1C900A84BC2 /* SwapPlatformItemViewModel.swift */,
+				A6512F3E28F6D1C900A84BC2 /* SwapInfoViewModelProtocol.swift */,
+				A6512F3F28F6D1C900A84BC2 /* SwapV2ViewModel.swift */,
+			);
+			name = ViewModels;
+			path = Screens/ViewModels;
+			sourceTree = "<group>";
+		};
+		A6512F4128F6D1C900A84BC2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A6512F4328F6D1C900A84BC2 /* SwapV2PlatformCell.xib */,
+				A6512F4428F6D1C900A84BC2 /* SwapV2PlatformCell.swift */,
+				A6512F4728F6D1C900A84BC2 /* SwapV2ViewController.swift */,
+				A6512F4828F6D1C900A84BC2 /* SwapV2ViewController.xib */,
+				A6512F4928F6D1C900A84BC2 /* SwapInfoView.xib */,
+				A6512F4C28F6D1C900A84BC2 /* SwapInfoView.swift */,
+			);
+			name = Views;
+			path = Screens/Views;
+			sourceTree = "<group>";
+		};
+		A6512F4E28F6D1C900A84BC2 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				A6512F4F28F6D1C900A84BC2 /* SwapV2Coordinator.swift */,
+				A6512F5028F6D1C900A84BC2 /* SwapObject.swift */,
+			);
+			name = Coordinator;
+			path = Screens/Coordinator;
+			sourceTree = "<group>";
+		};
+		D181F20A1A85AF76EEB45DA0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0950F0FA5699EA3AAEFBDE5C /* Pods-SwapModule.debug.xcconfig */,
+				A0D57B2E226149205007B764 /* Pods-SwapModule.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -68,10 +267,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A6512F2728F6CBDB00A84BC2 /* Build configuration list for PBXNativeTarget "SwapModule" */;
 			buildPhases = (
+				0B2B72081557B32A5F4CECCE /* [CP] Check Pods Manifest.lock */,
 				A6512F1B28F6CBDB00A84BC2 /* Headers */,
 				A6512F1C28F6CBDB00A84BC2 /* Sources */,
 				A6512F1D28F6CBDB00A84BC2 /* Frameworks */,
 				A6512F1E28F6CBDB00A84BC2 /* Resources */,
+				A64C2DE928F6D5B1002FD64C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -119,16 +320,63 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6512F6128F6D1C900A84BC2 /* SwapInfoView.xib in Resources */,
+				A64C2E3128F7B8AE002FD64C /* Localizable.strings in Resources */,
+				A6512F5B28F6D1C900A84BC2 /* SwapV2PlatformCell.xib in Resources */,
+				A6512F6028F6D1C900A84BC2 /* SwapV2ViewController.xib in Resources */,
+				A64C2E5728F8132C002FD64C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0B2B72081557B32A5F4CECCE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SwapModule-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A6512F1C28F6CBDB00A84BC2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6512F5128F6D1C900A84BC2 /* SwapState.swift in Sources */,
+				A6512F6628F6D1C900A84BC2 /* SwapV2Coordinator.swift in Sources */,
+				A6512F5628F6D1C900A84BC2 /* SwapPlatformItemViewModel.swift in Sources */,
+				A64C2E5528F812A5002FD64C /* Images.swift in Sources */,
+				A6512F5528F6D1C900A84BC2 /* SwapRepository.swift in Sources */,
+				A6512F5228F6D1C900A84BC2 /* PriceImpactState.swift in Sources */,
+				A6512F5428F6D1C900A84BC2 /* SwapTransactionSettings.swift in Sources */,
+				A64C2E3328F7B8D3002FD64C /* Strings.swift in Sources */,
+				A64C2E5128F7FF55002FD64C /* Constants.swift in Sources */,
+				A6512F5F28F6D1C900A84BC2 /* SwapV2ViewController.swift in Sources */,
+				A6512F5328F6D1C900A84BC2 /* SwapError.swift in Sources */,
+				A6512F5728F6D1C900A84BC2 /* SwapInfoViewModelProtocol.swift in Sources */,
+				A6512F6428F6D1C900A84BC2 /* SwapInfoView.swift in Sources */,
+				A6512F6728F6D1C900A84BC2 /* SwapObject.swift in Sources */,
+				A6512F5828F6D1C900A84BC2 /* SwapV2ViewModel.swift in Sources */,
+				A64C2E3528F7B8F7002FD64C /* SwapModule.swift in Sources */,
+				A6512F5C28F6D1C900A84BC2 /* SwapV2PlatformCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,6 +505,7 @@
 		};
 		A6512F2828F6CBDB00A84BC2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0950F0FA5699EA3AAEFBDE5C /* Pods-SwapModule.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -280,13 +529,14 @@
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		A6512F2928F6CBDB00A84BC2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A0D57B2E226149205007B764 /* Pods-SwapModule.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -310,8 +560,8 @@
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

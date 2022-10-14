@@ -7,10 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A64C2E0A28F6F204002FD64C /* Rate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E0928F6F204002FD64C /* Rate.swift */; };
+		A64C2E0C28F6F248002FD64C /* SwapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E0B28F6F248002FD64C /* SwapService.swift */; };
+		A64C2E0E28F6F27D002FD64C /* SwapEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E0D28F6F27D002FD64C /* SwapEndpoint.swift */; };
+		A64C2E1128F6F32A002FD64C /* SwapServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E1028F6F32A002FD64C /* SwapServiceError.swift */; };
+		A64C2E1328F6F335002FD64C /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E1228F6F335002FD64C /* NetworkError.swift */; };
+		A64C2E4028F7C101002FD64C /* ServiceConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3F28F7C101002FD64C /* ServiceConfig.swift */; };
+		A64C2E5B28F87765002FD64C /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E5A28F87765002FD64C /* Token.swift */; };
 		A66FC42328F4F56600E49E86 /* Services.h in Headers */ = {isa = PBXBuildFile; fileRef = A66FC42228F4F56600E49E86 /* Services.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DFBC1392A80048AF5E1D8B55 /* Pods_Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 577F9B8B04D43859B76C1799 /* Pods_Services.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		26F29B442B1AF328B11DD1F1 /* Pods-Services.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Services.debug.xcconfig"; path = "Target Support Files/Pods-Services/Pods-Services.debug.xcconfig"; sourceTree = "<group>"; };
+		2949152F770004D4AD791ED6 /* Pods-Services.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Services.release.xcconfig"; path = "Target Support Files/Pods-Services/Pods-Services.release.xcconfig"; sourceTree = "<group>"; };
+		577F9B8B04D43859B76C1799 /* Pods_Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A64C2E0928F6F204002FD64C /* Rate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rate.swift; sourceTree = "<group>"; };
+		A64C2E0B28F6F248002FD64C /* SwapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapService.swift; sourceTree = "<group>"; };
+		A64C2E0D28F6F27D002FD64C /* SwapEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapEndpoint.swift; sourceTree = "<group>"; };
+		A64C2E1028F6F32A002FD64C /* SwapServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapServiceError.swift; sourceTree = "<group>"; };
+		A64C2E1228F6F335002FD64C /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		A64C2E3F28F7C101002FD64C /* ServiceConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceConfig.swift; sourceTree = "<group>"; };
+		A64C2E5A28F87765002FD64C /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		A66FC41F28F4F56600E49E86 /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66FC42228F4F56600E49E86 /* Services.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Services.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -20,17 +38,80 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DFBC1392A80048AF5E1D8B55 /* Pods_Services.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		518C82D1BF178221512112F5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				577F9B8B04D43859B76C1799 /* Pods_Services.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9B95AD29A2C25D0486CE2D7D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				26F29B442B1AF328B11DD1F1 /* Pods-Services.debug.xcconfig */,
+				2949152F770004D4AD791ED6 /* Pods-Services.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		A64C2E0628F6F1F1002FD64C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A64C2E0928F6F204002FD64C /* Rate.swift */,
+				A64C2E5A28F87765002FD64C /* Token.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A64C2E0728F6F1F6002FD64C /* Endpoints */ = {
+			isa = PBXGroup;
+			children = (
+				A64C2E0D28F6F27D002FD64C /* SwapEndpoint.swift */,
+			);
+			path = Endpoints;
+			sourceTree = "<group>";
+		};
+		A64C2E0828F6F1FC002FD64C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A64C2E0B28F6F248002FD64C /* SwapService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A64C2E0F28F6F321002FD64C /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				A64C2E1028F6F32A002FD64C /* SwapServiceError.swift */,
+				A64C2E1228F6F335002FD64C /* NetworkError.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
+		A64C2E3E28F7C0F6002FD64C /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				A64C2E3F28F7C101002FD64C /* ServiceConfig.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
 		A66FC41528F4F56600E49E86 = {
 			isa = PBXGroup;
 			children = (
 				A66FC42128F4F56600E49E86 /* Services */,
 				A66FC42028F4F56600E49E86 /* Products */,
+				9B95AD29A2C25D0486CE2D7D /* Pods */,
+				518C82D1BF178221512112F5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -45,6 +126,11 @@
 		A66FC42128F4F56600E49E86 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				A64C2E3E28F7C0F6002FD64C /* Config */,
+				A64C2E0F28F6F321002FD64C /* Errors */,
+				A64C2E0828F6F1FC002FD64C /* Services */,
+				A64C2E0728F6F1F6002FD64C /* Endpoints */,
+				A64C2E0628F6F1F1002FD64C /* Models */,
 				A66FC42228F4F56600E49E86 /* Services.h */,
 			);
 			path = Services;
@@ -68,6 +154,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A66FC42628F4F56600E49E86 /* Build configuration list for PBXNativeTarget "Services" */;
 			buildPhases = (
+				558DD00D1605F26FECE68A71 /* [CP] Check Pods Manifest.lock */,
 				A66FC41A28F4F56600E49E86 /* Headers */,
 				A66FC41B28F4F56600E49E86 /* Sources */,
 				A66FC41C28F4F56600E49E86 /* Frameworks */,
@@ -93,6 +180,7 @@
 				TargetAttributes = {
 					A66FC41E28F4F56600E49E86 = {
 						CreatedOnToolsVersion = 13.4;
+						LastSwiftMigration = 1340;
 					};
 				};
 			};
@@ -124,11 +212,43 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		558DD00D1605F26FECE68A71 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Services-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A66FC41B28F4F56600E49E86 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A64C2E0A28F6F204002FD64C /* Rate.swift in Sources */,
+				A64C2E5B28F87765002FD64C /* Token.swift in Sources */,
+				A64C2E4028F7C101002FD64C /* ServiceConfig.swift in Sources */,
+				A64C2E0E28F6F27D002FD64C /* SwapEndpoint.swift in Sources */,
+				A64C2E0C28F6F248002FD64C /* SwapService.swift in Sources */,
+				A64C2E1128F6F32A002FD64C /* SwapServiceError.swift in Sources */,
+				A64C2E1328F6F335002FD64C /* NetworkError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,7 +377,9 @@
 		};
 		A66FC42728F4F56600E49E86 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 26F29B442B1AF328B11DD1F1 /* Pods-Services.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -280,14 +402,17 @@
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		A66FC42828F4F56600E49E86 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2949152F770004D4AD791ED6 /* Pods-Services.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -310,7 +435,7 @@
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

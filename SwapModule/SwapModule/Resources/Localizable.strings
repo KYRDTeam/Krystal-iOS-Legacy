@@ -1,0 +1,63 @@
+/* 
+  Localizable.strings
+  SwapModule
+
+  Created by Tung Nguyen on 13/10/2022.
+  
+*/
+
+"fast" = "Fast";
+"slow" = "Slow";
+"super.fast" = "Super Fast";
+"standard" = "Standard";
+"custom" = "Custom";
+"advanced" = "Advanced";
+"regular" = "Regular";
+
+"swap.network.fee" = "Network Fee ~$%@";
+"swap.saved.amount" = "Save $%@";
+"swap.warn_price_impact_1" = "Price Impact is High";
+"swap.warn_price_impact_2" = "Price Impact is Very High. Please turn on Expert Mode for high slippage trades";
+"swap.warn_price_impact_3" = "Price Impact is Very High";
+"swap.warn_price_impact_4" = "We couldn't calculate Price Impact. Please turn on Expert Mode for this trade.";
+"swap.warn_price_impact_5" = "We couldn't calculate Price Impact, please trade with caution.";
+"swap.warn_approve" = "Allow Krystal smart contracts permission to use your %@";
+"swap.rate_not_found" = "Sorry, we couldn’t find any rate for this pair";
+"swap.small_amount_of_quote_token_will_be_used" = "A small amount of %@ will be used for transaction fee";
+"swap.slippage_i" = "Your transaction will revert if the price changes unfavorably by more than this percentage.";
+"swap.min_received_i" = "Minimum amount you will receive or the transaction will revert.";
+"swap.txn_fee_i" = "The estimated fee paid to miners who process your transaction.";
+"swap.txn_fee_max_i" = "Maximum fee you will pay for your transaction.";
+"swap.price_impact_i" = "Estimated change in price due to the size of your transaction.";
+"advanced.mode.warning.text" = "Expert Mode allows high slippage trades, which often result in bad rates and lost funds.\n\nPlease type `Confirm` below to enable Expert Mode.";
+"gas_price_i" = "Price per unit of gas as the fee to the miners.";
+"gas_limit_i" = "The maximum amount of gas to use for your transaction.";
+"nonce_i" = "A specific number that is tagged in your transcation.";
+"priority_fee_i" = "The fee goes directly to miners as an incentive to prioritize your transaction.";
+"max_fee_i" = "The highest gas price that might be applied for your transaction. It's sum of base fee and priority fee.";
+"expert_i" = "Allow high slippage trades. Use at your own risk.";
+"gas.price.low.warning" = "Gas price is low for current network conditions";
+"gas.price.high.warning" = "Gas price is higher than necessary";
+"gas.limit.low.warning" = "Gas limit can not be smaller than the estimated gas consumed";
+"priority.fee.low.warning" = "The standard priority fee now is %@ Gwei";
+
+"max.fee.low.warning" = "Max fee cannot be lower than max priority + base fee";
+"max.fee.high.warning" = "The standard fee now is %@ Gwei";
+"nonce.low.warning" = "Nonce is too low";
+"swap.best" = "Best";
+"swap.alert_platform_change_could_not_update" = "Couldn't update %@ rate, %@ will be used instead.";
+"swap.alert_platform_change" = "Rate has been changed!";
+"max.slippage" = "Max Slippage";
+"min.received" = "Min. Received";
+"est.network.fee" = "Network Fee (est)";
+"max.network.fee" = "Max Network Fee";
+"price.impact" = "Price Impact";
+"route" = "Route";
+"enter.an.amount" = "Enter an amount";
+"fetching.best.rates" = "Fetching the best rates";
+"connect.wallet" = "Connect Wallet";
+"review.swap" = "Review Swap";
+"insufficient.token.balance" = "Insufficient %@ Balance";
+"checking.allowance" = "Checking Allowance";
+"approve.token" = "Approve %@";
+"approving.token" = "Approving %@";

@@ -189,7 +189,7 @@ public class SRCountdownTimer: UIView {
         currentCounterValue = beginingValue
 
         timer?.invalidate()
-        timer = Timer(timeInterval: fireInterval, target: self, selector: #selector(SRCountdownTimer.timerFired(_:)), userInfo: nil, repeats: true)
+        timer = Timer(timeInterval: fireInterval, target: self, selector: #selector(CountdownTimer.timerFired(_:)), userInfo: nil, repeats: true)
 
         RunLoop.main.add(timer!, forMode: .common)
 

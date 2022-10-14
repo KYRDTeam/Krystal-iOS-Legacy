@@ -22,7 +22,7 @@ public class AppEventManager {
     /// Change the current app selecting address
     /// - Parameter address: The address switch to
     public func switchAddress(address: KAddress) {
-        NotificationCenter.default.post(name: .addressChanged, object: nil)
+        NotificationCenter.default.post(name: .appAddressChanged, object: nil)
     }
     
 }

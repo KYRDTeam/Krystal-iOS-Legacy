@@ -20,4 +20,8 @@ struct KrystalTheme: ThemeProtocol {
     var cancelButtonBackgroundColor: UIColor = #colorLiteral(red: 0.2941176471, green: 0.3098039216, blue: 0.3058823529, alpha: 0.5)
     var cancelButtonTextColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.95)
     var popupBackgroundColor: UIColor = #colorLiteral(red: 0.1607843137, green: 0.1764705882, blue: 0.1725490196, alpha: 0.95)
+    var separatorColor: UIColor = #colorLiteral(red: 0.1607843137, green: 0.1764705882, blue: 0.1725490196, alpha: 1)
+    var errorTextColor: UIColor = #colorLiteral(red: 0.9803921569, green: 0.3960784314, blue: 0.4, alpha: 1)
+    var warningTextColor: UIColor = #colorLiteral(red: 0.9490196078, green: 0.7450980392, blue: 0.2156862745, alpha: 1)
+    var infoTextColor: UIColor = #colorLiteral(red: 0.04705882353, green: 0.7843137255, blue: 0.9450980392, alpha: 1)
 }

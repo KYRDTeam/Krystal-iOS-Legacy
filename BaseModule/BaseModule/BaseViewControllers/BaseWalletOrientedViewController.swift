@@ -10,7 +10,7 @@ import BaseWallet
 import AppState
 import KrystalWallets
 
-class BaseWalletOrientedViewController: KNBaseViewController {
+open class BaseWalletOrientedViewController: KNBaseViewController {
     @IBOutlet weak var walletButton: UIButton?
     @IBOutlet weak var backupIcon: UIImageView?
     @IBOutlet weak var chainIcon: UIImageView?
@@ -21,7 +21,7 @@ class BaseWalletOrientedViewController: KNBaseViewController {
         return AppState.shared.currentAddress
     }
     
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         setupGestures()
@@ -68,21 +68,21 @@ class BaseWalletOrientedViewController: KNBaseViewController {
         NotificationCenter.default.removeObserver(self, name: .appWalletsListHasUpdate, object: nil)
     }
     
-    func reloadWallet() {
+    open func reloadWallet() {
         walletButton?.setTitle(currentAddress.name, for: .normal)
         backupIcon?.isHidden = currentAddress.walletID.isEmpty || AppState.shared.isWalletBackedUp(walletID: currentAddress.walletID)
     }
     
-    func reloadChain() {
+    open func reloadChain() {
         //    chainIcon?.image = KNGeneralProvider.shared.currentChain.squareIcon()
         //    chainButton?.setTitle(KNGeneralProvider.shared.currentChain.chainName(), for: .normal)
     }
     
-    @objc func onWalletListUpdated() {
+    @objc open func onWalletListUpdated() {
         reloadWallet()
     }
     
-    @objc func onWalletButtonTapped() {
+    @objc open func onWalletButtonTapped() {
         
     }
     
@@ -90,11 +90,11 @@ class BaseWalletOrientedViewController: KNBaseViewController {
         
     }
     
-    @objc func onAppSwitchChain() {
+    @objc open func onAppSwitchChain() {
         reloadChain()
     }
     
-    @objc func onAppSwitchAddress() {
+    @objc open func onAppSwitchAddress() {
         reloadWallet()
     }
     

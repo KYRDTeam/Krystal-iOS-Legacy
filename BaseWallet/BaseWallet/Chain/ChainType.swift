@@ -107,3 +107,72 @@ public enum ChainType: Codable {
         }
     }
 }
+
+public extension ChainType {
+    
+    func isSupportedEIP1559() -> Bool {
+        switch self {
+        case .eth, .avalanche, .polygon:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    func customRPC() -> CustomRPC {
+        switch self {
+        case .eth:
+            return AllChains.ethMainnetPRC
+        case .ropsten:
+            return AllChains.ethRoptenPRC
+        case .bsc, .all:
+            return AllChains.bscMainnetPRC
+        case .bscTestnet:
+            return AllChains.bscRoptenPRC
+        case .polygon:
+            return AllChains.polygonMainnetPRC
+        case .polygonTestnet:
+            return AllChains.polygonRoptenPRC
+        case .avalanche:
+            return AllChains.avalancheMainnetPRC
+        case .avalancheTestnet:
+            return AllChains.avalancheRoptenPRC
+        case .cronos:
+            return AllChains.cronosMainnetRPC
+        case .fantom:
+            return AllChains.fantomMainnetRPC
+        case .arbitrum:
+            return AllChains.arbitrumMainnetRPC
+        case .aurora:
+            return AllChains.auroraMainnetRPC
+        case .solana:
+            return AllChains.solana
+        case .klaytn:
+            return AllChains.klaytnMainnetRPC
+        }
+    }
+    
+    func apiChainPath() -> String {
+        return self.customRPC().apiChainPath
+    }
+    
+    func chainPath() -> String {
+        return "/\(self.apiChainPath())"
+    }
+    
+    func proxyAddress() -> String {
+        return self.customRPC().proxyAddress.lowercased()
+    }
+    
+    func getChainId() -> Int {
+        return self.customRPC().chainID
+    }
+    
+    func chainName() -> String {
+        if self == .all {
+            return "All Networks"
+        }
+        return self.customRPC().name
+    }
+    
+}

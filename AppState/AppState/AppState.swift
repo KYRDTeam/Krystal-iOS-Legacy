@@ -23,6 +23,10 @@ public class AppState {
     @AppStateUserDefault(key: "LAST_USED_WALLET", defaultValue: WalletManager.shared.createEmptyAddress())
     public private(set) var currentAddress: KAddress
     
+    public var isBrowsingMode: Bool {
+        return currentAddress.addressString.isEmpty
+    }
+    
     public func isWalletBackedUp(walletID: String) -> Bool {
         if let wallet = WalletManager.shared.getWallet(id: walletID), wallet.importType != .mnemonic {
             return true
