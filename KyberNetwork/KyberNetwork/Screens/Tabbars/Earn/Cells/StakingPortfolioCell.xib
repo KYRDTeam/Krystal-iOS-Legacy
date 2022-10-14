@@ -95,7 +95,7 @@
                                 <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsx-eU-gTH">
+                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="jsx-eU-gTH">
                                 <rect key="frame" x="18.5" y="95" width="23.5" height="21"/>
                                 <gestureRecognizers/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
@@ -108,7 +108,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="1000 KNC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKf-x6-MMw">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="1000 KNC" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKf-x6-MMw">
                                 <rect key="frame" x="68" y="95" width="77" height="21"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -149,12 +149,15 @@
                             <constraint firstItem="NfX-1O-HwC" firstAttribute="top" secondItem="6ac-VO-zvs" secondAttribute="bottom" constant="17" id="3mY-hj-dcL"/>
                             <constraint firstItem="eIu-Zq-CW8" firstAttribute="centerY" secondItem="Ymx-a2-Paf" secondAttribute="centerY" id="7HN-Ka-Ahm"/>
                             <constraint firstItem="gKf-x6-MMw" firstAttribute="leading" secondItem="XvN-zC-v4i" secondAttribute="leading" id="D7U-Dt-dw3"/>
+                            <constraint firstItem="jsx-eU-gTH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Da2-Ys-JAC" secondAttribute="leading" constant="5" id="DDi-dW-JgU"/>
+                            <constraint firstItem="Ymx-a2-Paf" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gKf-x6-MMw" secondAttribute="trailing" constant="5" id="GuQ-ia-yhZ"/>
                             <constraint firstItem="Hlv-a0-Xuq" firstAttribute="leading" secondItem="Da2-Ys-JAC" secondAttribute="leading" constant="18" id="JSU-yb-VAv"/>
                             <constraint firstItem="jsx-eU-gTH" firstAttribute="centerX" secondItem="5kV-Di-ra3" secondAttribute="centerX" id="KED-fe-9Ay"/>
                             <constraint firstItem="XvN-zC-v4i" firstAttribute="leading" secondItem="5kV-Di-ra3" secondAttribute="trailing" constant="26" id="MDA-vE-bV8"/>
                             <constraint firstItem="Hlv-a0-Xuq" firstAttribute="top" secondItem="Da2-Ys-JAC" secondAttribute="top" constant="15" id="PZ4-2p-TUa"/>
                             <constraint firstItem="5kV-Di-ra3" firstAttribute="centerX" secondItem="Hlv-a0-Xuq" secondAttribute="centerX" id="Qb9-cc-0RZ"/>
                             <constraint firstItem="gKf-x6-MMw" firstAttribute="centerY" secondItem="jsx-eU-gTH" secondAttribute="centerY" id="Qx9-Fy-bgd"/>
+                            <constraint firstItem="gKf-x6-MMw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jsx-eU-gTH" secondAttribute="trailing" constant="5" id="TPG-X0-ssD"/>
                             <constraint firstItem="qhW-5t-zCx" firstAttribute="leading" secondItem="NfX-1O-HwC" secondAttribute="leading" id="Xen-5P-eNw"/>
                             <constraint firstItem="NfX-1O-HwC" firstAttribute="leading" secondItem="Hlv-a0-Xuq" secondAttribute="leading" id="Y21-at-LQF"/>
                             <constraint firstItem="6ac-VO-zvs" firstAttribute="trailing" secondItem="Hlv-a0-Xuq" secondAttribute="trailing" constant="2" id="YPW-4n-idl"/>

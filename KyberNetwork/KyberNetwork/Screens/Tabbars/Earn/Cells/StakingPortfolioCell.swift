@@ -26,11 +26,11 @@ struct StakingPortfolioCellModel {
     self.tokenLogo = earnBalance.toUnderlyingToken.logo
     self.chainLogo = ChainType.make(chainID: earnBalance.chainID)?.chainIcon()
     self.platformLogo = earnBalance.platform.logo
-    self.displayAPYValue = StringFormatter.percentString(value: earnBalance.apy) + "%"
+    self.displayAPYValue = StringFormatter.percentString(value: earnBalance.apy)
     self.displayDepositedValue = (BigInt(earnBalance.toUnderlyingToken.balance)?.shortString(decimals: earnBalance.toUnderlyingToken.decimals) ?? "---") + " " + earnBalance.toUnderlyingToken.symbol
     self.displayType = "| " + earnBalance.platform.type.capitalized
     self.displayTokenName = earnBalance.toUnderlyingToken.symbol
-    self.displayPlatformName = earnBalance.platform.name
+    self.displayPlatformName = earnBalance.platform.name + " "
   }
   
   init(pendingUnstake: StakingBalance) {
@@ -43,7 +43,7 @@ struct StakingPortfolioCellModel {
     
     self.displayType = "| Stake"
     self.displayTokenName = pendingUnstake.symbol
-    self.displayPlatformName = pendingUnstake.platform?.name ?? ""
+    self.displayPlatformName = (pendingUnstake.platform?.name ?? "") + " "
   }
 }
 
@@ -76,5 +76,6 @@ class StakingPortfolioCell: UITableViewCell {
     platformTypeLabel.text = model.displayType
     apyValueLabel.text = model.displayAPYValue
     depositedValueLabel.text = model.displayDepositedValue
+    processingStatusLabel.isHidden = !model.isInProcess
   }
 }
