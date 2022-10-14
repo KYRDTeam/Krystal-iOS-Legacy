@@ -83,6 +83,7 @@ extension StakingPortfolioViewController: UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(StakingPortfolioCell.self, indexPath: indexPath)!
     let cm = viewModel.dataSource.value[indexPath.row]
     cell.updateCellModel(cm)
+    
     return cell
   }
 }
@@ -94,5 +95,11 @@ extension StakingPortfolioViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
+  }
+}
+
+extension StakingPortfolioViewController: StakingPortfolioCellDelegate {
+  func warningButtonTapped() {
+    self.showBottomBannerView(message: "It takes about x days to unstake. After that you can claim your rewards.")
   }
 }
