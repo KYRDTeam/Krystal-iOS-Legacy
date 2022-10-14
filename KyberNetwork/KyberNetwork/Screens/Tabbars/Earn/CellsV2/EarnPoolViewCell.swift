@@ -17,7 +17,7 @@ class EarnPoolViewCellViewModel {
   }
   
   func height() -> CGFloat {
-    return isExpanse ? 330 : 58
+    return isExpanse ? 330 : 66
   }
 }
 

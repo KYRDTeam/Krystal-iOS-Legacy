@@ -28,15 +28,14 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   func initChildViewControllers() {
     let earnPoolVC = EarnListViewController.instantiateFromNib()
     let portfolioVC = StakingPortfolioViewController.instantiateFromNib()
-    childListViewControllers = [earnPoolVC, portfolioVC, InAppBrowsingViewController()]
+    childListViewControllers = [earnPoolVC, portfolioVC]
   }
 
   func setupUI() {
-    segmentedControl.highlightSelectedSegment(width: 32)
+    segmentedControl.highlightSelectedSegment(width: 100)
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
-    segmentedControl.setWidth(UIScreen.main.bounds.size.width / 3, forSegmentAt: 0)
-    segmentedControl.setWidth(UIScreen.main.bounds.size.width / 3, forSegmentAt: 1)
-    segmentedControl.setWidth(UIScreen.main.bounds.size.width / 3, forSegmentAt: 2)
+    segmentedControl.setWidth(segmentedControl.frame.size.width / 2, forSegmentAt: 0)
+    segmentedControl.setWidth(segmentedControl.frame.size.width / 2, forSegmentAt: 1)
   }
   
   func setupPageViewController() {
@@ -81,10 +80,8 @@ extension EarnOverviewV2Controller: UIPageViewControllerDataSource {
 
 extension EarnOverviewV2Controller: UIPageViewControllerDelegate {
   func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-    var newIndex = 2
-    if pageViewController.viewControllers?.first is EarnListViewController {
-      newIndex = 0
-    } else if pageViewController.viewControllers?.first is StakingPortfolioViewController {
+    var newIndex = 0
+    if pageViewController.viewControllers?.first is StakingPortfolioViewController {
       newIndex = 1
     }
   
