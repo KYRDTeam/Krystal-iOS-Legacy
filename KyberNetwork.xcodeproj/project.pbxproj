@@ -529,6 +529,8 @@
 		7EA694DC2839D5EB0033E5D2 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA694DA2839D5EB0033E5D2 /* TextFieldCell.xib */; };
 		7EA95E8628BF137100DDF3CB /* AddWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA95E8428BF137100DDF3CB /* AddWalletViewController.swift */; };
 		7EA95E8728BF137100DDF3CB /* AddWalletViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA95E8528BF137100DDF3CB /* AddWalletViewController.xib */; };
+		7EAD2B1728F93B60001FC888 /* EarnServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAD2B1628F93B60001FC888 /* EarnServices.swift */; };
+		7EAD2B1A28F94ABD001FC888 /* EarnPoolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAD2B1928F94ABD001FC888 /* EarnPoolModel.swift */; };
 		7EB2199627C5DD1500CF243C /* BuyCryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */; };
 		7EB2199727C5DD1500CF243C /* BuyCryptoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */; };
 		7EB2199927C6177300CF243C /* BuyCryptoCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */; };
@@ -1770,6 +1772,8 @@
 		7EA694DA2839D5EB0033E5D2 /* TextFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldCell.xib; sourceTree = "<group>"; };
 		7EA95E8428BF137100DDF3CB /* AddWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWalletViewController.swift; sourceTree = "<group>"; };
 		7EA95E8528BF137100DDF3CB /* AddWalletViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddWalletViewController.xib; sourceTree = "<group>"; };
+		7EAD2B1628F93B60001FC888 /* EarnServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnServices.swift; sourceTree = "<group>"; };
+		7EAD2B1928F94ABD001FC888 /* EarnPoolModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnPoolModel.swift; sourceTree = "<group>"; };
 		7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyCryptoViewController.swift; sourceTree = "<group>"; };
 		7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BuyCryptoViewController.xib; sourceTree = "<group>"; };
 		7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyCryptoCoordinator.swift; sourceTree = "<group>"; };
@@ -4773,6 +4777,22 @@
 			path = SelectChain;
 			sourceTree = "<group>";
 		};
+		7EAD2B1528F9391C001FC888 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				7EAD2B1628F93B60001FC888 /* EarnServices.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		7EAD2B1828F94A7E001FC888 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7EAD2B1928F94ABD001FC888 /* EarnPoolModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		7EB47FF627CCDD2B00FB28D9 /* Feature Flags */ = {
 			isa = PBXGroup;
 			children = (
@@ -6110,6 +6130,8 @@
 		C347DA2D25C0298F000D6E81 /* Earn */ = {
 			isa = PBXGroup;
 			children = (
+				7EAD2B1828F94A7E001FC888 /* Models */,
+				7EAD2B1528F9391C001FC888 /* Services */,
 				7E2A2EA728F697CD00AB9A77 /* CellsV2 */,
 				7E79FB4F28F5620100306FC0 /* ControllersV2 */,
 				C347DA3C25C030E4000D6E81 /* Cells */,
@@ -7648,6 +7670,7 @@
 				C3409E1A25AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift in Sources */,
 				255C40EB2092D64F00475871 /* KNTokenStorage.swift in Sources */,
 				C3EEA45B2671EF840011DB97 /* OverviewMainViewCell.swift in Sources */,
+				7EAD2B1728F93B60001FC888 /* EarnServices.swift in Sources */,
 				A6F6B95428DB1C4C000CB82C /* UserService.swift in Sources */,
 				C347DA3825C02BE3000D6E81 /* EarnMenuViewController.swift in Sources */,
 				C37AF0BF25CA5639006FB880 /* EarnConfirmViewController.swift in Sources */,
@@ -7961,6 +7984,7 @@
 				A6E754B228EEAF93008B6535 /* AddRealWalletCoordinator.swift in Sources */,
 				29EB102A1F6CBD23000907A4 /* UIAlertController.swift in Sources */,
 				C32656AE266F546100C69561 /* Action.swift in Sources */,
+				7EAD2B1A28F94ABD001FC888 /* EarnPoolModel.swift in Sources */,
 				A6E6C9E02817A3DA00EEB2E6 /* TransactionListEmptyCell.swift in Sources */,
 				A6B3CD5E2811C3E5005D0D66 /* ViewModelAssembly.swift in Sources */,
 				257740C720579457003323EB /* KNSplashScreenViewController.swift in Sources */,

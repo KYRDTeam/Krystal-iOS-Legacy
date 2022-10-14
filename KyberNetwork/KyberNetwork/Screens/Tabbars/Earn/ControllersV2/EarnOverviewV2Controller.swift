@@ -21,6 +21,7 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     initChildViewControllers()
+    
     setupUI()
     setupPageViewController()
   }
@@ -37,7 +38,7 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
     segmentedControl.setWidth(segmentedControl.frame.size.width / 2, forSegmentAt: 0)
     segmentedControl.setWidth(segmentedControl.frame.size.width / 2, forSegmentAt: 1)
   }
-  
+
   func setupPageViewController() {
     pageViewController.view.frame = self.pageContainer.bounds
     pageViewController.setViewControllers([childListViewControllers[selectedPageIndex]], direction: .forward, animated: true)

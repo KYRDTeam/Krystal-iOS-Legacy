@@ -9,15 +9,27 @@ import UIKit
 
 class EarnPoolViewCellViewModel {
   var isExpanse: Bool
-  var numberOfPlatForm: Int
-  
-  init(isExpanse: Bool, numberOfPlatForm: Int) {
-    self.isExpanse = isExpanse
-    self.numberOfPlatForm = numberOfPlatForm
+  var earnPoolModel: EarnPoolModel
+ 
+  init(earnPool: EarnPoolModel) {
+    self.isExpanse = false
+    self.earnPoolModel = earnPool
   }
   
   func height() -> CGFloat {
-    return isExpanse ? 330 : 66
+    return CGFloat(isExpanse ? 66 + 74 * earnPoolModel.platforms.count + 30 : 66)
+  }
+  
+  func apyString() -> String {
+    return NumberFormatUtils.percent(value: earnPoolModel.apy)
+  }
+
+  func tvlString() -> String {
+    return "$" + NumberFormatUtils.volFormat(number: earnPoolModel.tvl)
+  }
+  
+  func platFormDataSource() -> [EarnPlatform] {
+    return earnPoolModel.platforms
   }
 }
 
@@ -33,6 +45,9 @@ class EarnPoolViewCell: UITableViewCell {
   @IBOutlet weak var tvlLabel: UILabel!
   @IBOutlet weak var apyLabel: UILabel!
   @IBOutlet weak var arrowUpImage: UIImageView!
+  
+  var viewModel: EarnPoolViewCellViewModel?
+  
   override func awakeFromNib() {
     super.awakeFromNib()
     tableViewHeightConstraint.constant = 0
@@ -47,7 +62,13 @@ class EarnPoolViewCell: UITableViewCell {
   }
   
   func updateUI(viewModel: EarnPoolViewCellViewModel) {
-    
+    self.viewModel = viewModel
+    self.tokenLabel.text = viewModel.earnPoolModel.token.symbol
+    self.tokenImage.setImage(urlString: viewModel.earnPoolModel.token.logo, symbol: viewModel.earnPoolModel.token.symbol)
+    self.chainImage.setImage(urlString: viewModel.earnPoolModel.chainLogo, symbol: "")
+    self.apyValueLabel.text = viewModel.apyString()
+    self.tvlValueLabel.text = viewModel.tvlString()
+    self.tableView.reloadData()
   }
     
   func updateUIExpanse(viewModel: EarnPoolViewCellViewModel) {
@@ -65,12 +86,14 @@ class EarnPoolViewCell: UITableViewCell {
 extension EarnPoolViewCell: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 3
+    return self.viewModel?.platFormDataSource().count ?? 0
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(EarnPoolPlatformCell.self, indexPath: indexPath)!
-
+    if let earnPlatform = self.viewModel?.platFormDataSource()[indexPath.row] {
+      cell.updateUI(platform: earnPlatform)
+    }
     return cell
   }
 }
