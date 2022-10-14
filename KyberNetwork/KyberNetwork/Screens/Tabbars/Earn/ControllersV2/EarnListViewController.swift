@@ -18,18 +18,25 @@ class EarnListViewController: InAppBrowsingViewController {
   var timer: Timer?
   override func viewDidLoad() {
     super.viewDidLoad()
+    initializeData()
     setupUI()
   }
 
   func setupUI() {
     self.searchTextField.setPlaceholder(text: Strings.searchPools, color: .Kyber.normalText)
     self.tableView.registerCellNib(EarnPoolViewCell.self)
-    
-    for index in 1 ..< 5 {
-      dataSource.append(EarnPoolViewCellViewModel(isExpanse: false, numberOfPlatForm: min(3, index)))
+  }
+  
+  func initializeData() {
+    let service = EarnServices()
+    service.getEarnListData { listData in
+      var data: [EarnPoolViewCellViewModel] = []
+      listData.forEach { earnPoolModel in
+        data.append(EarnPoolViewCellViewModel(earnPool: earnPoolModel))
+      }
+      self.dataSource = data
+      self.tableView.reloadData()
     }
-          
-    
   }
   
   func updateUIStartSearchingMode() {
