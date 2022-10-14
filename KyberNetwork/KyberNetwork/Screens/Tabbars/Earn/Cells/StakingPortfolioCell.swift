@@ -27,7 +27,7 @@ struct StakingPortfolioCellModel {
     self.chainLogo = ChainType.make(chainID: earnBalance.chainID)?.chainIcon()
     self.platformLogo = earnBalance.platform.logo
     self.displayAPYValue = StringFormatter.percentString(value: earnBalance.apy)
-    self.displayDepositedValue = (BigInt(earnBalance.toUnderlyingToken.balance)?.shortString(decimals: earnBalance.toUnderlyingToken.decimals) ?? "---") + " " + earnBalance.toUnderlyingToken.symbol
+    self.displayDepositedValue = (BigInt(earnBalance.stakingToken.balance)?.shortString(decimals: earnBalance.stakingToken.decimals) ?? "---") + " " + earnBalance.stakingToken.symbol
     self.displayType = "| " + earnBalance.platform.type.capitalized
     self.displayTokenName = earnBalance.toUnderlyingToken.symbol
     self.displayPlatformName = earnBalance.platform.name + " "
@@ -47,6 +47,10 @@ struct StakingPortfolioCellModel {
   }
 }
 
+protocol StakingPortfolioCellDelegate: class {
+  func warningButtonTapped()
+}
+
 class StakingPortfolioCell: UITableViewCell {
   @IBOutlet weak var tokenImageView: UIImageView!
   @IBOutlet weak var chainImageView: UIImageView!
@@ -59,6 +63,10 @@ class StakingPortfolioCell: UITableViewCell {
   @IBOutlet weak var depositedValueLabel: UILabel!
   
   @IBOutlet weak var processingStatusLabel: UILabel!
+  @IBOutlet weak var warningIcon: UIImageView!
+  @IBOutlet weak var warningButton: UIButton!
+  weak var delegate: StakingPortfolioCellDelegate?
+  
   
   func updateCellModel(_ model: StakingPortfolioCellModel) {
     if let url = URL(string: model.tokenLogo) {
@@ -77,5 +85,11 @@ class StakingPortfolioCell: UITableViewCell {
     apyValueLabel.text = model.displayAPYValue
     depositedValueLabel.text = model.displayDepositedValue
     processingStatusLabel.isHidden = !model.isInProcess
+    warningIcon.isHidden = !model.isInProcess
+    warningButton.isHidden = !model.isInProcess
+  }
+  
+  @IBAction func inProcessButtonTapped(_ sender: UIButton) {
+    delegate?.warningButtonTapped()
   }
 }
