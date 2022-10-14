@@ -8,9 +8,15 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StakingPortfolioViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
+                <outlet property="emptyViewContainer" destination="72k-Xu-RIT" id="hdF-wD-0bx"/>
                 <outlet property="portfolioTableView" destination="Jh9-lx-at7" id="HXv-ra-WXz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -28,19 +34,46 @@
                         <outlet property="delegate" destination="-1" id="lse-th-c23"/>
                     </connections>
                 </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="72k-Xu-RIT">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="deposit_empty_icon" translatesAutoresizingMaskIntoConstraints="NO" id="4dq-y8-ZfK">
+                            <rect key="frame" x="142.5" y="280" width="90" height="107"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No tokens deposited yet." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNb-7G-c5u">
+                            <rect key="frame" x="20" y="410" width="335" height="19"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <color key="textColor" red="0.54117647059999996" green="0.64313725489999995" blue="0.68235294120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="gNb-7G-c5u" secondAttribute="trailing" constant="20" id="SmU-96-Ipw"/>
+                        <constraint firstItem="4dq-y8-ZfK" firstAttribute="centerX" secondItem="72k-Xu-RIT" secondAttribute="centerX" id="Ua2-Jf-Cct"/>
+                        <constraint firstItem="gNb-7G-c5u" firstAttribute="top" secondItem="4dq-y8-ZfK" secondAttribute="bottom" constant="23" id="jRt-0l-ohb"/>
+                        <constraint firstItem="gNb-7G-c5u" firstAttribute="leading" secondItem="72k-Xu-RIT" secondAttribute="leading" constant="20" id="kyO-qU-O5w"/>
+                        <constraint firstItem="4dq-y8-ZfK" firstAttribute="centerY" secondItem="72k-Xu-RIT" secondAttribute="centerY" id="pyo-dF-CFW"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
+                <constraint firstItem="72k-Xu-RIT" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="2dt-7T-cKh"/>
+                <constraint firstItem="72k-Xu-RIT" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="7c8-Vk-OJD"/>
                 <constraint firstAttribute="bottom" secondItem="Jh9-lx-at7" secondAttribute="bottom" id="J98-cn-fjl"/>
                 <constraint firstItem="Jh9-lx-at7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="MK5-P3-Dex"/>
                 <constraint firstItem="Jh9-lx-at7" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Sav-zL-yAM"/>
+                <constraint firstItem="72k-Xu-RIT" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Sv5-Ue-sVU"/>
                 <constraint firstAttribute="trailing" secondItem="Jh9-lx-at7" secondAttribute="trailing" id="hFn-6Q-cZy"/>
+                <constraint firstItem="72k-Xu-RIT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="wZG-10-cQ5"/>
             </constraints>
             <point key="canvasLocation" x="138.40000000000001" y="120.98950524737631"/>
         </view>
     </objects>
     <resources>
+        <image name="deposit_empty_icon" width="90" height="107"/>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

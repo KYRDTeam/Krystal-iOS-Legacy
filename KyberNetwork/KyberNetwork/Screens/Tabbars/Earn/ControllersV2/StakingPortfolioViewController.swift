@@ -49,6 +49,7 @@ class StakingPortfolioViewModel {
 
 class StakingPortfolioViewController: InAppBrowsingViewController {
   @IBOutlet weak var portfolioTableView: UITableView!
+  @IBOutlet weak var emptyViewContainer: UIView!
   
   let viewModel: StakingPortfolioViewModel = StakingPortfolioViewModel()
   
@@ -57,6 +58,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     registerCell()
     viewModel.dataSource.observeAndFire(on: self) { _ in
       self.portfolioTableView.reloadData()
+      self.updateUIEmptyView()
     }
     viewModel.isLoading.observeAndFire(on: self) { status in
       if status {
@@ -72,6 +74,9 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     portfolioTableView.registerCellNib(StakingPortfolioCell.self)
   }
   
+  private func updateUIEmptyView() {
+    emptyViewContainer.isHidden = viewModel.dataSource.value.isNotEmpty
+  }
 }
 
 extension StakingPortfolioViewController: UITableViewDataSource {
