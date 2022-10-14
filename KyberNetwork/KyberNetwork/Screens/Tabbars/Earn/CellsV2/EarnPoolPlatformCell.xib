@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -127,7 +127,12 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="apyValueLabel" destination="Z5T-5U-FyF" id="WSv-ed-kIz"/>
                 <outlet property="dashView" destination="ZHK-Oq-l8H" id="BWq-uZ-viJ"/>
+                <outlet property="nameLabel" destination="4Vp-qt-l8J" id="ZJ1-Ti-nIh"/>
+                <outlet property="platformIcon" destination="krA-XX-RNd" id="fnh-fj-Jm7"/>
+                <outlet property="tvlValueLabel" destination="w8h-4v-VAS" id="Dgz-Xw-VJv"/>
+                <outlet property="typeLabel" destination="2dT-C1-cno" id="gIT-Rc-k0u"/>
             </connections>
             <point key="canvasLocation" x="117.69230769230769" y="28.080568720379144"/>
         </tableViewCell>
