@@ -550,7 +550,7 @@ extension WithdrawViewController: UITextFieldDelegate {
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    MixPanelManager.track("enter_withdraw_amount", properties: ["screenid": "earn_withdraw_pop_up"])
+    MixPanelManager.track("enter_withdraw_amount", properties: ["screenid": "earn_withdraw_pop_up", "withdraw_amount": viewModel.amount, "withdraw_token": viewModel.balance.symbol])
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {

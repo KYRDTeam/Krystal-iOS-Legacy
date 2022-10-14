@@ -130,6 +130,7 @@ class SwapProcessPopup: KNBaseViewController {
       self.sourceTokenInfoContainerView.rounded(color: UIColor.Kyber.buttonBg, width: 1, radius: 16)
       self.destTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
       self.processStatusLabel.text = "Processing Transaction"
+      MixPanelManager.track("swap_pending_pop_up_open", properties: ["screenid": "swap_pending_pop_up"])
     case .success:
       self.loadingIndicatorView.isHidden = true
       self.transactionStateIcon.isHidden = false
