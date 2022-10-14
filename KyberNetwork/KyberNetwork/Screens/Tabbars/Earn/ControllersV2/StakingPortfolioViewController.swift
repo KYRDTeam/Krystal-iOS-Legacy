@@ -6,9 +6,32 @@
 //
 
 import UIKit
+import StackViewController
+
+class StakingPortfolioViewModel {
+  var portfolio: PortfolioStaking?
+  
+  var dataSource: [StakingPortfolioCellModel] = []
+  
+  func reloadDataSource() {
+    dataSource.removeAll()
+    guard let data = portfolio else {
+      return
+    }
+    data.pendingUnstakes?.forEach({ item in
+      dataSource.append(StakingPortfolioCellModel(pendingUnstake: item))
+    })
+    data.earningBalances.forEach { item in
+      dataSource.append(StakingPortfolioCellModel(earnBalance: item))
+    }
+    
+  }
+}
 
 class StakingPortfolioViewController: InAppBrowsingViewController {
   @IBOutlet weak var portfolioTableView: UITableView!
+  
+  let viewModel: StakingPortfolioViewModel = StakingPortfolioViewModel()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -23,12 +46,13 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
 
 extension StakingPortfolioViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 9
+    return viewModel.dataSource.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(StakingPortfolioCell.self, indexPath: indexPath)!
-    
+    let cm = viewModel.dataSource[indexPath.row]
+    cell.updateCellModel(cm)
     return cell
   }
 }

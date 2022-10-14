@@ -51,7 +51,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="|  Stake" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4B0-G3-L0Z">
-                                        <rect key="frame" x="77.5" y="9" width="40.5" height="14.5"/>
+                                        <rect key="frame" x="77.5" y="9" width="40.5" height="14"/>
                                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                         <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -109,7 +109,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="1000 KNC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKf-x6-MMw">
-                                <rect key="frame" x="68" y="94.5" width="77" height="22"/>
+                                <rect key="frame" x="68" y="95" width="77" height="21"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -133,7 +133,7 @@
                                 <state key="normal" image="minus_icon"/>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="   Unstaking in process   " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qhW-5t-zCx">
-                                <rect key="frame" x="18" y="124.5" width="134" height="22"/>
+                                <rect key="frame" x="18" y="124" width="133" height="22"/>
                                 <color key="backgroundColor" red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="Kgk-h4-Ydo"/>
@@ -182,6 +182,17 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="apyValueLabel" destination="jsx-eU-gTH" id="JyP-TX-EfY"/>
+                <outlet property="chainImageView" destination="6ac-VO-zvs" id="q1f-2v-U2j"/>
+                <outlet property="depositedValueLabel" destination="gKf-x6-MMw" id="eCG-Jo-Urf"/>
+                <outlet property="platformImageView" destination="cdz-dR-XeM" id="5kN-8J-p8d"/>
+                <outlet property="platformNameLabel" destination="XDs-Rc-4De" id="sWy-iO-qXa"/>
+                <outlet property="platformTypeLabel" destination="4B0-G3-L0Z" id="hOx-u0-akv"/>
+                <outlet property="processingStatusLabel" destination="qhW-5t-zCx" id="oYf-F6-tb8"/>
+                <outlet property="tokenImageView" destination="Hlv-a0-Xuq" id="jue-fl-geL"/>
+                <outlet property="tokenNameLabel" destination="hO3-YX-7pJ" id="RWK-VA-gbb"/>
+            </connections>
             <point key="canvasLocation" x="137.68115942028987" y="127.23214285714285"/>
         </tableViewCell>
     </objects>

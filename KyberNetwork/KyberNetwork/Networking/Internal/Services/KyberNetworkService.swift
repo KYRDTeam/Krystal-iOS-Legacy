@@ -906,6 +906,7 @@ enum KrytalService {
   case getAllLendingDistributionBalance(lendingPlatforms: [String], address: String, chains: [String], quotes: [String])
   case getCommonBaseToken
   case getSearchToken(address: String, query: String, orderBy: String)
+  case getStakingPortfolio(address: String)
 }
 
 extension KrytalService: TargetType {
@@ -924,12 +925,10 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance, .getAllLendingBalance, .getAllLendingDistributionBalance, .getMultichainBalance, .getLiquidityPool:
+    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance, .getAllLendingBalance, .getAllLendingDistributionBalance, .getMultichainBalance, .getLiquidityPool, .getStakingPortfolio:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     case .getChartData(chainPath: let chainPath, address: _, quote: _, from: _), .getTokenDetail(chainPath: let chainPath, address: _):
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
-    case .registerNFTFavorite:
-      return URL(string: KNEnvironment.default.krystalEndpoint)!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -1054,6 +1053,8 @@ extension KrytalService: TargetType {
       return "/v1/token/commonBase"
     case .getSearchToken:
       return "/v1/token/search"
+    case .getStakingPortfolio(address: let address):
+      return "/v1/earning/portfolio"
     }
   }
 
@@ -1505,6 +1506,11 @@ extension KrytalService: TargetType {
       if !address.isEmpty {
         json["address"] = address
       }
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getStakingPortfolio(address: let address):
+      var json: JSONDictionary = [
+        "userAddress": address
+      ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
   }
