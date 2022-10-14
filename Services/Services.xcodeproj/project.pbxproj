@@ -13,10 +13,65 @@
 		A64C2E1128F6F32A002FD64C /* SwapServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E1028F6F32A002FD64C /* SwapServiceError.swift */; };
 		A64C2E1328F6F335002FD64C /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E1228F6F335002FD64C /* NetworkError.swift */; };
 		A64C2E4028F7C101002FD64C /* ServiceConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3F28F7C101002FD64C /* ServiceConfig.swift */; };
-		A64C2E5B28F87765002FD64C /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E5A28F87765002FD64C /* Token.swift */; };
+		A64C2E6F28F90B00002FD64C /* MoyaProvider+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E6E28F90B00002FD64C /* MoyaProvider+.swift */; };
+		A64C2E7F28F9129A002FD64C /* Error+pretty.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E7E28F9129A002FD64C /* Error+pretty.swift */; };
+		A64C2E9328F919F3002FD64C /* EthereumWeb3Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E9228F919F3002FD64C /* EthereumWeb3Service.swift */; };
+		A64C2E9928F91ADA002FD64C /* EthereumNodeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E9828F91ADA002FD64C /* EthereumNodeRequest.swift */; };
+		A64C2E9B28F91B2B002FD64C /* RPCServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E9A28F91B2B002FD64C /* RPCServer.swift */; };
+		A64C2E9D28F91B3A002FD64C /* RPCConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E9C28F91B3A002FD64C /* RPCConfig.swift */; };
+		A64C2EA628F91BF1002FD64C /* KNEstimateGasLimitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E9F28F91BF1002FD64C /* KNEstimateGasLimitRequest.swift */; };
+		A64C2EA728F91BF1002FD64C /* KNGetExpectedRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EA028F91BF1002FD64C /* KNGetExpectedRate.swift */; };
+		A64C2EA828F91BF1002FD64C /* KNGetAddressFromResolverRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EA128F91BF1002FD64C /* KNGetAddressFromResolverRequest.swift */; };
+		A64C2EA928F91BF1002FD64C /* KNGetTokenAllowance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EA228F91BF1002FD64C /* KNGetTokenAllowance.swift */; };
+		A64C2EAA28F91BF1002FD64C /* KNGetResolverRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EA328F91BF1002FD64C /* KNGetResolverRequest.swift */; };
+		A64C2EAB28F91BF1002FD64C /* KNExchangeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EA428F91BF1002FD64C /* KNExchangeRequest.swift */; };
+		A64C2EAC28F91BF1002FD64C /* KNGetUserCapInWei.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EA528F91BF1002FD64C /* KNGetUserCapInWei.swift */; };
+		A64C2EAE28F91C13002FD64C /* Web3Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EAD28F91C13002FD64C /* Web3Request.swift */; };
+		A64C2EB628F91CAA002FD64C /* GetDecimals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EB028F91CA9002FD64C /* GetDecimals.swift */; };
+		A64C2EB728F91CAA002FD64C /* GetERC20Balance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EB128F91CA9002FD64C /* GetERC20Balance.swift */; };
+		A64C2EB828F91CAA002FD64C /* GetSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EB228F91CA9002FD64C /* GetSymbol.swift */; };
+		A64C2EB928F91CAA002FD64C /* ContractERC20Transfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EB328F91CA9002FD64C /* ContractERC20Transfer.swift */; };
+		A64C2EBA28F91CAA002FD64C /* GetBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EB428F91CA9002FD64C /* GetBalance.swift */; };
+		A64C2EBB28F91CAA002FD64C /* ApproveERC20.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EB528F91CA9002FD64C /* ApproveERC20.swift */; };
+		A64C2EBD28F91CDE002FD64C /* Web3Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EBC28F91CDE002FD64C /* Web3Swift.swift */; };
+		A64C2EC428F91DF9002FD64C /* SendRawTransactionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EBE28F91DF9002FD64C /* SendRawTransactionRequest.swift */; };
+		A64C2EC528F91DF9002FD64C /* GasPriceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EBF28F91DF9002FD64C /* GasPriceRequest.swift */; };
+		A64C2EC628F91DF9002FD64C /* EstimateGasRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EC028F91DF9002FD64C /* EstimateGasRequest.swift */; };
+		A64C2EC728F91DF9002FD64C /* BlockNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EC128F91DF9002FD64C /* BlockNumber.swift */; };
+		A64C2EC828F91DF9002FD64C /* BalanceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EC228F91DF9002FD64C /* BalanceRequest.swift */; };
+		A64C2EC928F91DF9002FD64C /* GetTransactionCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EC328F91DF9002FD64C /* GetTransactionCountRequest.swift */; };
+		A64C2ECB28F91E51002FD64C /* CastError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2ECA28F91E51002FD64C /* CastError.swift */; };
+		A64C2ECD28F91F14002FD64C /* Balance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2ECC28F91F14002FD64C /* Balance.swift */; };
+		A64C2ECF28F91F88002FD64C /* CallRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2ECE28F91F88002FD64C /* CallRequest.swift */; };
+		A64C2ED128F9202A002FD64C /* Web3Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2ED028F9202A002FD64C /* Web3Factory.swift */; };
+		A64C2ED528F923BC002FD64C /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2ED428F923BC002FD64C /* Utilities.framework */; };
+		A64C2ED628F923BC002FD64C /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2ED428F923BC002FD64C /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A64C2ED928F92408002FD64C /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2ED828F92408002FD64C /* BaseWallet.framework */; };
+		A64C2EDA28F92408002FD64C /* BaseWallet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2ED828F92408002FD64C /* BaseWallet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A64C2EDC28F92418002FD64C /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EDB28F92418002FD64C /* Dependencies.framework */; };
+		A64C2EDD28F92418002FD64C /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EDB28F92418002FD64C /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A64C2EEA28F93741002FD64C /* TokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EE928F93741002FD64C /* TokenService.swift */; };
+		A64C2EEC28F9374A002FD64C /* TokenEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EEB28F9374A002FD64C /* TokenEndpoint.swift */; };
+		A64C2EEE28F93C4F002FD64C /* TokenDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EED28F93C4F002FD64C /* TokenDetail.swift */; };
 		A66FC42328F4F56600E49E86 /* Services.h in Headers */ = {isa = PBXBuildFile; fileRef = A66FC42228F4F56600E49E86 /* Services.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DFBC1392A80048AF5E1D8B55 /* Pods_Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 577F9B8B04D43859B76C1799 /* Pods_Services.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A64C2ED728F923BC002FD64C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A64C2EDA28F92408002FD64C /* BaseWallet.framework in Embed Frameworks */,
+				A64C2ED628F923BC002FD64C /* Utilities.framework in Embed Frameworks */,
+				A64C2EDD28F92418002FD64C /* Dependencies.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		26F29B442B1AF328B11DD1F1 /* Pods-Services.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Services.debug.xcconfig"; path = "Target Support Files/Pods-Services/Pods-Services.debug.xcconfig"; sourceTree = "<group>"; };
@@ -28,7 +83,43 @@
 		A64C2E1028F6F32A002FD64C /* SwapServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapServiceError.swift; sourceTree = "<group>"; };
 		A64C2E1228F6F335002FD64C /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		A64C2E3F28F7C101002FD64C /* ServiceConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceConfig.swift; sourceTree = "<group>"; };
-		A64C2E5A28F87765002FD64C /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		A64C2E6E28F90B00002FD64C /* MoyaProvider+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoyaProvider+.swift"; sourceTree = "<group>"; };
+		A64C2E7E28F9129A002FD64C /* Error+pretty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+pretty.swift"; sourceTree = "<group>"; };
+		A64C2E9228F919F3002FD64C /* EthereumWeb3Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumWeb3Service.swift; sourceTree = "<group>"; };
+		A64C2E9828F91ADA002FD64C /* EthereumNodeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumNodeRequest.swift; sourceTree = "<group>"; };
+		A64C2E9A28F91B2B002FD64C /* RPCServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPCServer.swift; sourceTree = "<group>"; };
+		A64C2E9C28F91B3A002FD64C /* RPCConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPCConfig.swift; sourceTree = "<group>"; };
+		A64C2E9F28F91BF1002FD64C /* KNEstimateGasLimitRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNEstimateGasLimitRequest.swift; sourceTree = "<group>"; };
+		A64C2EA028F91BF1002FD64C /* KNGetExpectedRate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNGetExpectedRate.swift; sourceTree = "<group>"; };
+		A64C2EA128F91BF1002FD64C /* KNGetAddressFromResolverRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNGetAddressFromResolverRequest.swift; sourceTree = "<group>"; };
+		A64C2EA228F91BF1002FD64C /* KNGetTokenAllowance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNGetTokenAllowance.swift; sourceTree = "<group>"; };
+		A64C2EA328F91BF1002FD64C /* KNGetResolverRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNGetResolverRequest.swift; sourceTree = "<group>"; };
+		A64C2EA428F91BF1002FD64C /* KNExchangeRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNExchangeRequest.swift; sourceTree = "<group>"; };
+		A64C2EA528F91BF1002FD64C /* KNGetUserCapInWei.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNGetUserCapInWei.swift; sourceTree = "<group>"; };
+		A64C2EAD28F91C13002FD64C /* Web3Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3Request.swift; sourceTree = "<group>"; };
+		A64C2EB028F91CA9002FD64C /* GetDecimals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetDecimals.swift; sourceTree = "<group>"; };
+		A64C2EB128F91CA9002FD64C /* GetERC20Balance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetERC20Balance.swift; sourceTree = "<group>"; };
+		A64C2EB228F91CA9002FD64C /* GetSymbol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetSymbol.swift; sourceTree = "<group>"; };
+		A64C2EB328F91CA9002FD64C /* ContractERC20Transfer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContractERC20Transfer.swift; sourceTree = "<group>"; };
+		A64C2EB428F91CA9002FD64C /* GetBalance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetBalance.swift; sourceTree = "<group>"; };
+		A64C2EB528F91CA9002FD64C /* ApproveERC20.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApproveERC20.swift; sourceTree = "<group>"; };
+		A64C2EBC28F91CDE002FD64C /* Web3Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3Swift.swift; sourceTree = "<group>"; };
+		A64C2EBE28F91DF9002FD64C /* SendRawTransactionRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendRawTransactionRequest.swift; sourceTree = "<group>"; };
+		A64C2EBF28F91DF9002FD64C /* GasPriceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GasPriceRequest.swift; sourceTree = "<group>"; };
+		A64C2EC028F91DF9002FD64C /* EstimateGasRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EstimateGasRequest.swift; sourceTree = "<group>"; };
+		A64C2EC128F91DF9002FD64C /* BlockNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockNumber.swift; sourceTree = "<group>"; };
+		A64C2EC228F91DF9002FD64C /* BalanceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalanceRequest.swift; sourceTree = "<group>"; };
+		A64C2EC328F91DF9002FD64C /* GetTransactionCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetTransactionCountRequest.swift; sourceTree = "<group>"; };
+		A64C2ECA28F91E51002FD64C /* CastError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastError.swift; sourceTree = "<group>"; };
+		A64C2ECC28F91F14002FD64C /* Balance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Balance.swift; sourceTree = "<group>"; };
+		A64C2ECE28F91F88002FD64C /* CallRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallRequest.swift; sourceTree = "<group>"; };
+		A64C2ED028F9202A002FD64C /* Web3Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3Factory.swift; sourceTree = "<group>"; };
+		A64C2ED428F923BC002FD64C /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A64C2ED828F92408002FD64C /* BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A64C2EDB28F92418002FD64C /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A64C2EE928F93741002FD64C /* TokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenService.swift; sourceTree = "<group>"; };
+		A64C2EEB28F9374A002FD64C /* TokenEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenEndpoint.swift; sourceTree = "<group>"; };
+		A64C2EED28F93C4F002FD64C /* TokenDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetail.swift; sourceTree = "<group>"; };
 		A66FC41F28F4F56600E49E86 /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66FC42228F4F56600E49E86 /* Services.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Services.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -39,6 +130,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				DFBC1392A80048AF5E1D8B55 /* Pods_Services.framework in Frameworks */,
+				A64C2EDC28F92418002FD64C /* Dependencies.framework in Frameworks */,
+				A64C2ED528F923BC002FD64C /* Utilities.framework in Frameworks */,
+				A64C2ED928F92408002FD64C /* BaseWallet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,6 +142,9 @@
 		518C82D1BF178221512112F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A64C2EDB28F92418002FD64C /* Dependencies.framework */,
+				A64C2ED828F92408002FD64C /* BaseWallet.framework */,
+				A64C2ED428F923BC002FD64C /* Utilities.framework */,
 				577F9B8B04D43859B76C1799 /* Pods_Services.framework */,
 			);
 			name = Frameworks;
@@ -67,7 +164,8 @@
 			isa = PBXGroup;
 			children = (
 				A64C2E0928F6F204002FD64C /* Rate.swift */,
-				A64C2E5A28F87765002FD64C /* Token.swift */,
+				A64C2ECC28F91F14002FD64C /* Balance.swift */,
+				A64C2EED28F93C4F002FD64C /* TokenDetail.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -76,16 +174,19 @@
 			isa = PBXGroup;
 			children = (
 				A64C2E0D28F6F27D002FD64C /* SwapEndpoint.swift */,
+				A64C2EEB28F9374A002FD64C /* TokenEndpoint.swift */,
 			);
 			path = Endpoints;
 			sourceTree = "<group>";
 		};
-		A64C2E0828F6F1FC002FD64C /* Services */ = {
+		A64C2E0828F6F1FC002FD64C /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				A64C2E0B28F6F248002FD64C /* SwapService.swift */,
+				A64C2EE828F93739002FD64C /* Token */,
+				A64C2E9728F91AB9002FD64C /* Swap */,
+				A64C2E9628F91AB3002FD64C /* Node */,
 			);
-			path = Services;
+			path = Core;
 			sourceTree = "<group>";
 		};
 		A64C2E0F28F6F321002FD64C /* Errors */ = {
@@ -93,16 +194,92 @@
 			children = (
 				A64C2E1028F6F32A002FD64C /* SwapServiceError.swift */,
 				A64C2E1228F6F335002FD64C /* NetworkError.swift */,
+				A64C2ECA28F91E51002FD64C /* CastError.swift */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
 		};
-		A64C2E3E28F7C0F6002FD64C /* Config */ = {
+		A64C2E3E28F7C0F6002FD64C /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
 				A64C2E3F28F7C101002FD64C /* ServiceConfig.swift */,
 			);
-			path = Config;
+			path = Dependencies;
+			sourceTree = "<group>";
+		};
+		A64C2E6D28F90AF7002FD64C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A64C2E6E28F90B00002FD64C /* MoyaProvider+.swift */,
+				A64C2E7E28F9129A002FD64C /* Error+pretty.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A64C2E9628F91AB3002FD64C /* Node */ = {
+			isa = PBXGroup;
+			children = (
+				A64C2EAF28F91C9F002FD64C /* Command */,
+				A64C2E9E28F91BE6002FD64C /* Request */,
+				A64C2E9228F919F3002FD64C /* EthereumWeb3Service.swift */,
+				A64C2E9A28F91B2B002FD64C /* RPCServer.swift */,
+				A64C2E9C28F91B3A002FD64C /* RPCConfig.swift */,
+				A64C2EBC28F91CDE002FD64C /* Web3Swift.swift */,
+				A64C2ED028F9202A002FD64C /* Web3Factory.swift */,
+			);
+			path = Node;
+			sourceTree = "<group>";
+		};
+		A64C2E9728F91AB9002FD64C /* Swap */ = {
+			isa = PBXGroup;
+			children = (
+				A64C2E0B28F6F248002FD64C /* SwapService.swift */,
+			);
+			path = Swap;
+			sourceTree = "<group>";
+		};
+		A64C2E9E28F91BE6002FD64C /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				A64C2ECE28F91F88002FD64C /* CallRequest.swift */,
+				A64C2EC228F91DF9002FD64C /* BalanceRequest.swift */,
+				A64C2EC128F91DF9002FD64C /* BlockNumber.swift */,
+				A64C2EC028F91DF9002FD64C /* EstimateGasRequest.swift */,
+				A64C2EBF28F91DF9002FD64C /* GasPriceRequest.swift */,
+				A64C2EC328F91DF9002FD64C /* GetTransactionCountRequest.swift */,
+				A64C2EBE28F91DF9002FD64C /* SendRawTransactionRequest.swift */,
+				A64C2E9F28F91BF1002FD64C /* KNEstimateGasLimitRequest.swift */,
+				A64C2EA428F91BF1002FD64C /* KNExchangeRequest.swift */,
+				A64C2EA128F91BF1002FD64C /* KNGetAddressFromResolverRequest.swift */,
+				A64C2EA028F91BF1002FD64C /* KNGetExpectedRate.swift */,
+				A64C2EA328F91BF1002FD64C /* KNGetResolverRequest.swift */,
+				A64C2EA228F91BF1002FD64C /* KNGetTokenAllowance.swift */,
+				A64C2E9828F91ADA002FD64C /* EthereumNodeRequest.swift */,
+				A64C2EA528F91BF1002FD64C /* KNGetUserCapInWei.swift */,
+				A64C2EAD28F91C13002FD64C /* Web3Request.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		A64C2EAF28F91C9F002FD64C /* Command */ = {
+			isa = PBXGroup;
+			children = (
+				A64C2EB528F91CA9002FD64C /* ApproveERC20.swift */,
+				A64C2EB328F91CA9002FD64C /* ContractERC20Transfer.swift */,
+				A64C2EB428F91CA9002FD64C /* GetBalance.swift */,
+				A64C2EB028F91CA9002FD64C /* GetDecimals.swift */,
+				A64C2EB128F91CA9002FD64C /* GetERC20Balance.swift */,
+				A64C2EB228F91CA9002FD64C /* GetSymbol.swift */,
+			);
+			path = Command;
+			sourceTree = "<group>";
+		};
+		A64C2EE828F93739002FD64C /* Token */ = {
+			isa = PBXGroup;
+			children = (
+				A64C2EE928F93741002FD64C /* TokenService.swift */,
+			);
+			path = Token;
 			sourceTree = "<group>";
 		};
 		A66FC41528F4F56600E49E86 = {
@@ -126,9 +303,10 @@
 		A66FC42128F4F56600E49E86 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				A64C2E3E28F7C0F6002FD64C /* Config */,
+				A64C2E6D28F90AF7002FD64C /* Extensions */,
+				A64C2E3E28F7C0F6002FD64C /* Dependencies */,
 				A64C2E0F28F6F321002FD64C /* Errors */,
-				A64C2E0828F6F1FC002FD64C /* Services */,
+				A64C2E0828F6F1FC002FD64C /* Core */,
 				A64C2E0728F6F1F6002FD64C /* Endpoints */,
 				A64C2E0628F6F1F1002FD64C /* Models */,
 				A66FC42228F4F56600E49E86 /* Services.h */,
@@ -159,6 +337,7 @@
 				A66FC41B28F4F56600E49E86 /* Sources */,
 				A66FC41C28F4F56600E49E86 /* Frameworks */,
 				A66FC41D28F4F56600E49E86 /* Resources */,
+				A64C2ED728F923BC002FD64C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -242,13 +421,46 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A64C2EB628F91CAA002FD64C /* GetDecimals.swift in Sources */,
+				A64C2EA628F91BF1002FD64C /* KNEstimateGasLimitRequest.swift in Sources */,
+				A64C2E9B28F91B2B002FD64C /* RPCServer.swift in Sources */,
+				A64C2EAE28F91C13002FD64C /* Web3Request.swift in Sources */,
 				A64C2E0A28F6F204002FD64C /* Rate.swift in Sources */,
-				A64C2E5B28F87765002FD64C /* Token.swift in Sources */,
+				A64C2EBD28F91CDE002FD64C /* Web3Swift.swift in Sources */,
+				A64C2E9328F919F3002FD64C /* EthereumWeb3Service.swift in Sources */,
+				A64C2EA928F91BF1002FD64C /* KNGetTokenAllowance.swift in Sources */,
+				A64C2EB828F91CAA002FD64C /* GetSymbol.swift in Sources */,
+				A64C2EAC28F91BF1002FD64C /* KNGetUserCapInWei.swift in Sources */,
+				A64C2E6F28F90B00002FD64C /* MoyaProvider+.swift in Sources */,
 				A64C2E4028F7C101002FD64C /* ServiceConfig.swift in Sources */,
+				A64C2E9D28F91B3A002FD64C /* RPCConfig.swift in Sources */,
+				A64C2EC428F91DF9002FD64C /* SendRawTransactionRequest.swift in Sources */,
+				A64C2ED128F9202A002FD64C /* Web3Factory.swift in Sources */,
 				A64C2E0E28F6F27D002FD64C /* SwapEndpoint.swift in Sources */,
+				A64C2EEE28F93C4F002FD64C /* TokenDetail.swift in Sources */,
+				A64C2EB928F91CAA002FD64C /* ContractERC20Transfer.swift in Sources */,
+				A64C2EC928F91DF9002FD64C /* GetTransactionCountRequest.swift in Sources */,
+				A64C2ECF28F91F88002FD64C /* CallRequest.swift in Sources */,
+				A64C2EAB28F91BF1002FD64C /* KNExchangeRequest.swift in Sources */,
+				A64C2EBA28F91CAA002FD64C /* GetBalance.swift in Sources */,
+				A64C2ECB28F91E51002FD64C /* CastError.swift in Sources */,
+				A64C2EBB28F91CAA002FD64C /* ApproveERC20.swift in Sources */,
 				A64C2E0C28F6F248002FD64C /* SwapService.swift in Sources */,
+				A64C2E7F28F9129A002FD64C /* Error+pretty.swift in Sources */,
 				A64C2E1128F6F32A002FD64C /* SwapServiceError.swift in Sources */,
+				A64C2EB728F91CAA002FD64C /* GetERC20Balance.swift in Sources */,
+				A64C2EAA28F91BF1002FD64C /* KNGetResolverRequest.swift in Sources */,
+				A64C2ECD28F91F14002FD64C /* Balance.swift in Sources */,
+				A64C2EEA28F93741002FD64C /* TokenService.swift in Sources */,
+				A64C2EC728F91DF9002FD64C /* BlockNumber.swift in Sources */,
+				A64C2EA728F91BF1002FD64C /* KNGetExpectedRate.swift in Sources */,
+				A64C2EC628F91DF9002FD64C /* EstimateGasRequest.swift in Sources */,
+				A64C2EEC28F9374A002FD64C /* TokenEndpoint.swift in Sources */,
+				A64C2EC528F91DF9002FD64C /* GasPriceRequest.swift in Sources */,
+				A64C2E9928F91ADA002FD64C /* EthereumNodeRequest.swift in Sources */,
 				A64C2E1328F6F335002FD64C /* NetworkError.swift in Sources */,
+				A64C2EC828F91DF9002FD64C /* BalanceRequest.swift in Sources */,
+				A64C2EA828F91BF1002FD64C /* KNGetAddressFromResolverRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

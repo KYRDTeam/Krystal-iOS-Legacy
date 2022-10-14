@@ -175,4 +175,48 @@ public extension ChainType {
         return self.customRPC().name
     }
     
+    var supportMultisend: Bool {
+        switch self {
+        case .solana:
+            return false
+        default:
+            return true
+        }
+    }
+    
+    func isSupportSwap() -> Bool {
+        switch self {
+        case .solana:
+            return false
+        default:
+            return true
+        }
+    }
+    
+    func isSupportedHistoryAPI() -> Bool {
+        switch self {
+        case .cronos:
+            return false
+        default:
+            return true
+        }
+    }
+    
+    func isSupportedBridge() -> Bool {
+        switch self {
+        case .solana:
+            return false
+        default:
+            return true
+        }
+    }
+    
+    var isEVM: Bool {
+        switch self {
+        case .solana:
+            return false
+        default:
+            return true
+        }
+    }
 }

@@ -7,6 +7,6 @@
 
 import Foundation
 
-public protocol TrackingDelegate {
+public protocol Tracker {
     func track(_ eventName: String, properties: [String: Any])
 }

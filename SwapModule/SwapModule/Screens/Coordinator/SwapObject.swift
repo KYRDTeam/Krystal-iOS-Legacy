@@ -8,6 +8,7 @@
 import Foundation
 import BigInt
 import Services
+import BaseWallet
 
 struct SwapObject {
   var sourceToken: Token

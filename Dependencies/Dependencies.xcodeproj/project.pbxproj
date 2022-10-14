@@ -8,9 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		0DEA8C01D840AF55B630B4FD /* Pods_Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A564EBBC2D3B1EF3B4D97A /* Pods_Dependencies.framework */; };
-		A64C2E3728F7BA12002FD64C /* TrackingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3628F7BA12002FD64C /* TrackingDelegate.swift */; };
+		A64C2E3728F7BA12002FD64C /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3628F7BA12002FD64C /* Tracker.swift */; };
 		A64C2E3928F7BAA1002FD64C /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3828F7BAA1002FD64C /* Dependencies.swift */; };
 		A64C2E6A28F880EA002FD64C /* GasConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E6928F880EA002FD64C /* GasConfig.swift */; };
+		A64C2E6C28F90AAB002FD64C /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E6B28F90AAB002FD64C /* ErrorTracker.swift */; };
+		A64C2E7128F90FB3002FD64C /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E7028F90FB3002FD64C /* AppRouter.swift */; };
+		A64C2E8128F9131E002FD64C /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E8028F9131E002FD64C /* TokenStorage.swift */; };
+		A64C2ED328F9220F002FD64C /* NonceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2ED228F9220F002FD64C /* NonceStorage.swift */; };
+		A64C2EF028F944BF002FD64C /* PriceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EEF28F944BF002FD64C /* PriceStorage.swift */; };
 		A66FC40F28F4F55500E49E86 /* Dependencies.h in Headers */ = {isa = PBXBuildFile; fileRef = A66FC40E28F4F55500E49E86 /* Dependencies.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -18,9 +23,15 @@
 		49F3A3EBEEF754D1B5309B6E /* Pods-Dependencies.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dependencies.debug.xcconfig"; path = "Target Support Files/Pods-Dependencies/Pods-Dependencies.debug.xcconfig"; sourceTree = "<group>"; };
 		85A564EBBC2D3B1EF3B4D97A /* Pods_Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C8188FBE862AEFAB5B20DD9 /* Pods-Dependencies.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dependencies.release.xcconfig"; path = "Target Support Files/Pods-Dependencies/Pods-Dependencies.release.xcconfig"; sourceTree = "<group>"; };
-		A64C2E3628F7BA12002FD64C /* TrackingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingDelegate.swift; sourceTree = "<group>"; };
+		A64C2E3628F7BA12002FD64C /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		A64C2E3828F7BAA1002FD64C /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
 		A64C2E6928F880EA002FD64C /* GasConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasConfig.swift; sourceTree = "<group>"; };
+		A64C2E6B28F90AAB002FD64C /* ErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
+		A64C2E7028F90FB3002FD64C /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		A64C2E8028F9131E002FD64C /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
+		A64C2E8728F91471002FD64C /* BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A64C2ED228F9220F002FD64C /* NonceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonceStorage.swift; sourceTree = "<group>"; };
+		A64C2EEF28F944BF002FD64C /* PriceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceStorage.swift; sourceTree = "<group>"; };
 		A66FC40B28F4F55500E49E86 /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66FC40E28F4F55500E49E86 /* Dependencies.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dependencies.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -47,11 +58,18 @@
 			path = ../Pods;
 			sourceTree = "<group>";
 		};
-		A64C2E3A28F7BD37002FD64C /* Models */ = {
+		A64C2E8328F913B6002FD64C /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				A64C2E3628F7BA12002FD64C /* Tracker.swift */,
+				A64C2E6928F880EA002FD64C /* GasConfig.swift */,
+				A64C2E6B28F90AAB002FD64C /* ErrorTracker.swift */,
+				A64C2E7028F90FB3002FD64C /* AppRouter.swift */,
+				A64C2E8028F9131E002FD64C /* TokenStorage.swift */,
+				A64C2ED228F9220F002FD64C /* NonceStorage.swift */,
+				A64C2EEF28F944BF002FD64C /* PriceStorage.swift */,
 			);
-			path = Models;
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		A66FC40128F4F55500E49E86 = {
@@ -75,11 +93,9 @@
 		A66FC40D28F4F55500E49E86 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				A64C2E3A28F7BD37002FD64C /* Models */,
+				A64C2E8328F913B6002FD64C /* Protocols */,
 				A66FC40E28F4F55500E49E86 /* Dependencies.h */,
-				A64C2E3628F7BA12002FD64C /* TrackingDelegate.swift */,
 				A64C2E3828F7BAA1002FD64C /* Dependencies.swift */,
-				A64C2E6928F880EA002FD64C /* GasConfig.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -87,6 +103,7 @@
 		CC2F0839792808FD74BCF38B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A64C2E8728F91471002FD64C /* BaseWallet.framework */,
 				85A564EBBC2D3B1EF3B4D97A /* Pods_Dependencies.framework */,
 			);
 			name = Frameworks;
@@ -199,8 +216,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A64C2E3928F7BAA1002FD64C /* Dependencies.swift in Sources */,
-				A64C2E3728F7BA12002FD64C /* TrackingDelegate.swift in Sources */,
+				A64C2E8128F9131E002FD64C /* TokenStorage.swift in Sources */,
+				A64C2ED328F9220F002FD64C /* NonceStorage.swift in Sources */,
+				A64C2E3728F7BA12002FD64C /* Tracker.swift in Sources */,
 				A64C2E6A28F880EA002FD64C /* GasConfig.swift in Sources */,
+				A64C2EF028F944BF002FD64C /* PriceStorage.swift in Sources */,
+				A64C2E7128F90FB3002FD64C /* AppRouter.swift in Sources */,
+				A64C2E6C28F90AAB002FD64C /* ErrorTracker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

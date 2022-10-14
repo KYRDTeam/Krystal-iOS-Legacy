@@ -17,7 +17,7 @@ enum SwapEndpoint {
 extension SwapEndpoint: TargetType {
     
     var baseURL: URL {
-        return URL(string: "")!
+        return URL(string: ServiceConfig.baseAPIURL)!
     }
     
     var path: String {
@@ -94,6 +94,5 @@ extension SwapEndpoint: TargetType {
     var headers: [String : String]? {
         return [:]
     }
-    
     
 }

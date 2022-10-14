@@ -9,6 +9,7 @@ import UIKit
 import BaseWallet
 import AppState
 import KrystalWallets
+import Dependencies
 
 open class BaseWalletOrientedViewController: KNBaseViewController {
     @IBOutlet weak var walletButton: UIButton?
@@ -96,6 +97,14 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
     
     @objc open func onAppSwitchAddress() {
         reloadWallet()
+    }
+    
+    open func openWalletList() {
+        Dependencies.router.openWalletList()
+    }
+    
+    open func openSwitchChain() {
+        Dependencies.router.openChainList()
     }
     
 }

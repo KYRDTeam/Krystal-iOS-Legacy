@@ -19,7 +19,7 @@ struct SwapV2ViewModelActions {
     var onSelectSwitchChain: () -> ()
     var onSelectOpenHistory: () -> ()
     var openSwapConfirm: (SwapObject) -> ()
-    var openApprove: (_ token: TokenObject, _ amount: BigInt) -> ()
+    var openApprove: (_ token: Token, _ amount: BigInt) -> ()
     var openSettings: (_ gasLimit: BigInt,_ rate: Rate?,_ settings: SwapTransactionSettings) -> ()
 }
 
@@ -82,7 +82,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
     
     var isSourceTokenQuote: Bool {
-        return sourceToken.value?.address.lowercased() == currentChain.value.quoteTokenObject().address.lowercased()
+        return sourceToken.value?.address.lowercased() == Dependencies.tokenStorage.quoteToken(forChain: AppState.shared.currentChain).address.lowercased()
     }
     
     var maxAvailableSourceTokenAmount: BigInt {
@@ -112,7 +112,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     
     var currentAddress: Observable<KAddress> = .init(AppState.shared.currentAddress)
     var currentChain: Observable<ChainType> = .init(AppState.shared.currentChain)
-    var sourceToken: Observable<Token?> = .init(AppState.shared.currentChain.quoteTokenObject.toData())
+    var sourceToken: Observable<Token?> = .init(Dependencies.tokenStorage.quoteToken(forChain: AppState.shared.currentChain))
     var destToken: Observable<Token?> = .init(nil)
     var platformRatesViewModels: Observable<[SwapPlatformItemViewModel]> = .init([])
     var sourceBalance: Observable<BigInt?> = .init(nil)
@@ -140,6 +140,8 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     var settingsObservable: Observable<SwapTransactionSettings> = .init(SwapTransactionSettings.getDefaultSettings())
     
     private let swapRepository = SwapRepository()
+    private let swapService = SwapService()
+    private let tokenService = TokenService()
     
     init(actions: SwapV2ViewModelActions) {
         slippageString.value = NumberFormatUtils.percent(value: self.settingsObservable.value.slippage)
@@ -155,7 +157,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     
     func loadSourceTokenPrice() {
         guard let sourceToken = sourceToken.value else { return }
-        swapRepository.getTokenDetail(tokenAddress: sourceToken.address) { [weak self] token in
+        tokenService.getTokenDetail(address: sourceToken.address, chainPath: AppState.shared.currentChain.apiChainPath()) { [weak self] token in
             if token?.address == sourceToken.address { // Needed to handle case swap pair
                 self?.sourceTokenPrice.value = token?.markets["usd"]?.price
             } else {
@@ -166,7 +168,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     
     func loadDestTokenPrice() {
         guard let destToken = destToken.value else { return }
-        swapRepository.getTokenDetail(tokenAddress: destToken.address) { [weak self] token in
+        tokenService.getTokenDetail(address: destToken.address, chainPath: AppState.shared.currentChain.apiChainPath()) { [weak self] token in
             if token?.address == destToken.address { // Needed to handle case swap pair
                 self?.destTokenPrice.value = token?.markets["usd"]?.price
             } else {
@@ -176,7 +178,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
     
     func loadBaseToken() {
-        swapRepository.getCommonBaseTokens { [weak self] tokens in
+        tokenService.getCommonBaseTokens { [weak self] tokens in
             self?.destToken.value = tokens.first
             self?.loadDestTokenPrice()
             self?.reloadDestBalance()
@@ -246,7 +248,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
     
     func approve(_ amount: BigInt) {
-        guard let sourceTokenObject = sourceToken.value?.toObject() else {
+        guard let sourceTokenObject = sourceToken.value else {
             return
         }
         actions.openApprove(sourceTokenObject, amount)
@@ -281,7 +283,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
             self.priceImpactState.value = .normal
         }
         self.state.value = isRefresh ? .refreshingRates : .fetchingRates
-        self.swapRepository.getAllRates(address: addressString, srcTokenContract: sourceToken.address, destTokenContract: destToken.address, amount: amount, focusSrc: true) { [weak self] rates in
+        self.swapService.getAllRates(address: addressString, srcTokenContract: sourceToken.address, destTokenContract: destToken.address, amount: amount, focusSrc: true) { [weak self] rates in
             self?.platformRates.value = rates
         }
     }
@@ -379,11 +381,12 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
     
     func isApproving() -> Bool {
-        let allTransactions = EtherscanTransactionStorage.shared.getInternalHistoryTransaction()
-        let pendingApproveTxs = allTransactions.filter { tx in
-            return tx.transactionDetailDescription.lowercased() == sourceToken.value?.address.lowercased() && tx.type == .allowance
-        }
-        return !pendingApproveTxs.isEmpty
+//        let allTransactions = EtherscanTransactionStorage.shared.getInternalHistoryTransaction()
+//        let pendingApproveTxs = allTransactions.filter { tx in
+//            return tx.transactionDetailDescription.lowercased() == sourceToken.value?.address.lowercased() && tx.type == .allowance
+//        }
+//        return !pendingApproveTxs.isEmpty
+        return false
     }
     
     private func getSortedRates(rates: [Rate], sortBySelected: Bool) -> [Rate] {
@@ -412,7 +415,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
         return sortedRates.enumerated().map { index, rate in
             return SwapPlatformItemViewModel(platformRate: rate,
                                              isSelected: rate.hint == selectedPlatformHint,
-                                             quoteToken: currentChain.value.quoteTokenObject(),
                                              destToken: destToken,
                                              destTokenPrice: destTokenPrice.value,
                                              gasFeeUsd: self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed ?? 0), gasPrice: self.gasPrice),
@@ -451,12 +453,12 @@ extension SwapV2ViewModel {
             name: .appAddressChanged,
             object: nil
         )
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(self.transactionStateDidUpdate),
-//            name: Notification.Name(kTransactionDidUpdateNotificationKey),
-//            object: nil
-//        )
+        //        NotificationCenter.default.addObserver(
+        //            self,
+        //            selector: #selector(self.transactionStateDidUpdate),
+        //            name: Notification.Name(kTransactionDidUpdateNotificationKey),
+        //            object: nil
+        //        )
     }
     
     @objc func appDidSwitchChain() {
@@ -464,7 +466,7 @@ extension SwapV2ViewModel {
             checkPendingTx()
             settingsObservable.value = SwapTransactionSettings.getDefaultSettings()
             currentChain.value = AppState.shared.currentChain
-            sourceToken.value = KNGeneralProvider.shared.quoteTokenObject.toData()
+            sourceToken.value = Dependencies.tokenStorage.quoteToken(forChain: AppState.shared.currentChain)
             sourceTokenPrice.value = nil
             destTokenPrice.value = nil
             state.value = .emptyAmount
@@ -498,10 +500,10 @@ extension SwapV2ViewModel {
     }
     
     func checkPendingTx() {
-//        let pendingTransaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().first { transaction in
-//            transaction.state == .pending
-//        }
-//        hasPendingTransaction.value = pendingTransaction != nil
+        //        let pendingTransaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().first { transaction in
+        //            transaction.state == .pending
+        //        }
+        //        hasPendingTransaction.value = pendingTransaction != nil
     }
     
     func scheduleFetchingBalance() {
@@ -543,7 +545,7 @@ extension SwapV2ViewModel {
                                         destTokenPrice: self.destTokenPrice.value ?? 0,
                                         swapSetting: self.settings)
             actions.openSwapConfirm(swapObject)
-            Dependencies.tracking.track("swap_swap_now", properties: [
+            Dependencies.tracker.track("swap_swap_now", properties: [
                 "screenid": "swap",
                 "source_amount": sourceAmount.shortString(decimals: sourceToken.decimals),
                 "source_token": sourceToken.symbol,
@@ -596,19 +598,42 @@ extension SwapV2ViewModel {
         self.updateInfo()
         self.reloadPlatformRatesViewModels()
         if let basic = settings.basic {
-            Dependencies.tracking.track("txn_setting_basic_save", properties: [
+            Dependencies.tracker.track("txn_setting_basic_save", properties: [
                 "screenid": "swap_txn_setting_pop_up",
                 "gas_fee": basic.gasPriceType.getGasValueString(),
                 "slippage": settings.slippage
             ])
         } else if let advancedSettings = settings.advanced {
-            Dependencies.tracking.track("txn_setting_advanced_save", properties: [
+            Dependencies.tracker.track("txn_setting_advanced_save", properties: [
                 "screenid": "swap_txn_setting_pop_up",
                 "gas_limit": advancedSettings.gasLimit.description,
                 "max_fee": advancedSettings.maxFee.description,
                 "custom_nonce": advancedSettings.nonce,
                 "slippage": settings.slippage
             ])
+        }
+    }
+    
+}
+
+fileprivate extension KNSelectedGasPriceType {
+    
+    func getGasValueString() -> String {
+        return self.getGasValue().string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 0, maxFractionDigits: 2)
+    }
+    
+    func getGasValue() -> BigInt {
+        switch self {
+        case .fast:
+            return Dependencies.gasConfig.fastGas
+        case .medium:
+            return Dependencies.gasConfig.standardGas
+        case .slow:
+            return Dependencies.gasConfig.lowGas
+        case .superFast:
+            return Dependencies.gasConfig.superFastGas
+        case .custom:
+            return .zero
         }
     }
     

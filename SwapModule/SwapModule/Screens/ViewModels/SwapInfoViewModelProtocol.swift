@@ -31,14 +31,14 @@ extension SwapInfoViewModelProtocol {
         } else if let rate = selectedRate {
             return BigInt(rate.estimatedGas)
         } else {
-            return KNGasConfiguration.exchangeTokensGasLimitDefault
+            return Dependencies.gasConfig.defaultExchangeGasLimit
         }
     }
     
     var gasPrice: BigInt {
         if let basic = settings.basic {
             if isEIP1559 {
-                let baseFee = KNGasCoordinator.shared.baseFee ?? .zero
+                let baseFee = Dependencies.gasConfig.baseFee
                 let priorityFee = self.getPriorityFee(forType: basic.gasPriceType) ?? .zero
                 return baseFee + priorityFee
             } else {
@@ -130,8 +130,9 @@ extension SwapInfoViewModelProtocol {
     }
     
     func getGasFeeUSD(estGas: BigInt, gasPrice: BigInt) -> BigInt {
-        let decimals = KNGeneralProvider.shared.quoteTokenObject.decimals
-        let rateUSDDouble = KNGeneralProvider.shared.quoteTokenPrice?.usd ?? 0
+        let quoteToken = Dependencies.tokenStorage.quoteToken(forChain: AppState.shared.currentChain)
+        let decimals = quoteToken.decimals
+        let rateUSDDouble = Dependencies.priceStorage.price(tokenAddress: quoteToken.address, chain: AppState.shared.currentChain)?.usd ?? 0
         let rateBigInt = BigInt(rateUSDDouble * pow(10.0, Double(decimals)))
         let feeUSD = (estGas * gasPrice * rateBigInt) / BigInt(10).power(decimals)
         return feeUSD

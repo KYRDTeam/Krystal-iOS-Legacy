@@ -16,6 +16,13 @@ extension String {
 }
 
 struct Strings {
+    static let invalidInput = "invalid.input".toBeLocalised()
+    static let unsupported = "unsupported".toBeLocalised()
+    static let amountTooBig = "amount.too.big".toBeLocalised()
+    static let invalidAmount = "invalid.amount".toBeLocalised()
+    static let rateMightChange = "rate.might.change".toBeLocalised()
+    static let toSwap = "to swap".toBeLocalised()
+    
     static let superFast = "super.fast".toBeLocalised()
     static let fast = "fast".toBeLocalised()
     static let regular = "regular".toBeLocalised()
@@ -59,4 +66,17 @@ struct Strings {
     static let approveToken = "approve.token".toBeLocalised()
     static let approvingToken = "approving.token".toBeLocalised()
     
+    static let canNotSwapSameToken = "can.not.swap.same.token".toBeLocalised()
+    static let pleaseEnterAmountToContinue = "please.enter.an.amount.to.continue".toBeLocalised()
+    static let canNotFindExchangeRate = "can.not.find.exchange.rate".toBeLocalised()
+    static let balanceNotEnoughToMakeTransaction = "balance.not.enough.to.make.transaction".toBeLocalised()
+    static let amountTooSmallToSwap = "amount.too.small.to.perform.swap".toBeLocalised()
+    static let depositMoreXOrClickAdvancedToLowerGasFee = "deposit.more.x.or.click.advanced.to.lower.gas.fee".toBeLocalised()
+    static let insufficientXForTransaction = "insufficient.x.for.transaction".toBeLocalised()
+    static let pleaseWaitForExpectedRateUpdate = "please.wait.for.expected.rate.updated".toBeLocalised()
+    static let amountToSendGreaterThanZero = "amount.to.send.greater.than.zero".toBeLocalised()
+    static let selectToken = "select.token".toBeLocalised()
+    static let selectPlatformToSupply = "select.platform.to.supply.x".toBeLocalised()
+    
+    static let transactionFailed = "transaction.failed".toBeLocalised()
 }

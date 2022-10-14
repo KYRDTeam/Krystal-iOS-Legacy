@@ -81,6 +81,10 @@ end
 def servicesDependencies
   pod 'Moya'
   pod 'BigInt'
+  pod 'JSONRPCKit'
+  pod 'APIKit'
+  pod 'Web3'
+  pod 'JavaScriptKit', '~> 1.0.0'
 end
 
 def designSystemDependencies

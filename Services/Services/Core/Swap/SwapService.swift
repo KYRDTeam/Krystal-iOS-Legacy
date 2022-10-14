@@ -13,7 +13,11 @@ public class SwapService {
     
     let provider = MoyaProvider<SwapEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
     
-    func getAllRates(address: String, srcTokenContract: String, destTokenContract: String,
+    public init() {
+        
+    }
+    
+    public func getAllRates(address: String, srcTokenContract: String, destTokenContract: String,
                      amount: BigInt, focusSrc: Bool, completion: @escaping ([Rate]) -> ()) {
         provider.request(.getAllRates(src: srcTokenContract.lowercased(), dst: destTokenContract.lowercased(),
                                       amount: amount.description, focusSrc: focusSrc, userAddress: address)) { result in

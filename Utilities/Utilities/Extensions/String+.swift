@@ -19,3 +19,15 @@ public extension String {
     }
     
 }
+
+
+public extension Optional where Wrapped == String {
+  
+  func whenNilOrEmpty(_ value: String) -> String {
+    if let unwrapped = self, !unwrapped.isEmpty {
+      return unwrapped
+    }
+    return value
+  }
+  
+}

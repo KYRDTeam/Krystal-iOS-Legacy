@@ -61,3 +61,26 @@
 "checking.allowance" = "Checking Allowance";
 "approve.token" = "Approve %@";
 "approving.token" = "Approving %@";
+
+"rate.might.change" = "Rate might change";
+"invalid.input" = "Invalid Input";
+"unsupported" = "Unsupported";
+"amount.too.big" = "Amount too big";
+"invalid.amount" = "Invalid amount";
+"rate.might.change" = "Rate might change";
+"to swap" = "to swap";
+
+"can.not.swap.same.token" = "Can not swap the same token";
+"please.enter.an.amount.to.continue" = "Please enter an amount to continue";
+"can.not.find.exchange.rate" = "Can not find the exchange rate";
+"balance.not.enough.to.make.transaction" = "Balance is not enough to make the transaction.";
+"deposit.more.x.or.click.advanced.to.lower.gas.fee" = "Deposit more %@ or click Advanced to lower GAS fee";
+"insufficient.x.for.transaction" = "Insufficient %@ for transaction";
+"please.wait.for.expected.rate.updated" = "Please wait for expected rate to be updated";
+"amount.to.send.greater.than.zero" = "Amount to transfer should be greater than zero";
+"select.token" = "Select Token";
+"select.platform.to.supply.x" = "Select the platform to supply %@";
+
+"transaction.being.mined" = "Transaction being mined";
+"transaction.failed" = "Transaction failed";
+"transaction.success" = "Transaction success";
