@@ -250,6 +250,9 @@ class OverviewCoordinator: NSObject, Coordinator {
   
   func openAddChainWalletMenu(chain: ChainType) {
     let coordinator = CreateChainWalletMenuCoordinator(parentViewController: navigationController, chainType: chain, delegate: self)
+    coordinator.onCompleted = { [weak self] in
+      self?.coordinate(coordinator: coordinator)
+    }
     coordinate(coordinator: coordinator)
   }
 }

@@ -21,6 +21,8 @@ class CreateChainWalletMenuCoordinator: Coordinator {
   weak var delegate: CreateChainWalletMenuCoordinatorDelegate?
   var transitionDelegate = TransitionDelegate()
   
+  var onCompleted: (() -> ())?
+  
   init(parentViewController: UIViewController, chainType: ChainType, delegate: CreateChainWalletMenuCoordinatorDelegate?) {
     self.parentViewController = parentViewController
     self.chainType = chainType
@@ -56,12 +58,14 @@ class CreateChainWalletMenuCoordinator: Coordinator {
     parentViewController.dismiss(animated: true) { [weak self] in
       guard let self = self else { return }
       self.delegate?.onSelectCreateNewWallet(chain: self.chainType)
+      self.onCompleted?()
     }
   }
   
   func selectImportWallet() {
     parentViewController.dismiss(animated: true) { [weak self] in
       self?.delegate?.onSelectImportWallet()
+      self?.onCompleted?()
     }
     
   }
