@@ -17,7 +17,7 @@ struct PortfolioStakingResponse: Codable {
 struct PortfolioStaking: Codable {
     let balances: [StakingBalance]
     let earningBalances: [EarningBalance]
-    let pendingUnstakes: [StakingBalance]?
+    let pendingUnstakes: [StakingBalance]
 }
 
 // MARK: - Balance
@@ -29,10 +29,21 @@ struct StakingBalance: Codable {
     let decimals: Int
     let platform: Platform?
     let status: String?
+    let extraData: StakingExtraData?
 
     enum CodingKeys: String, CodingKey {
         case chainID = "chainId"
-        case address, symbol, logo, balance, decimals, platform, status
+        case address, symbol, logo, balance, decimals, platform, status, extraData
+    }
+}
+
+// MARK: - ExtraData
+struct StakingExtraData: Codable {
+    let status, nftID: String?
+
+    enum CodingKeys: String, CodingKey {
+        case status
+        case nftID = "nftId"
     }
 }
 
