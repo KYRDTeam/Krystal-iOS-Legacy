@@ -20,6 +20,7 @@ struct StakingPortfolioCellModel {
   let displayPlatformName: String
   
   let isInProcess: Bool
+  let isClaimable: Bool
   
   init(earnBalance: EarningBalance) {
     self.isInProcess = false
@@ -31,6 +32,7 @@ struct StakingPortfolioCellModel {
     self.displayType = "| " + earnBalance.platform.type.capitalized
     self.displayTokenName = earnBalance.toUnderlyingToken.symbol
     self.displayPlatformName = earnBalance.platform.name + " "
+    self.isClaimable = false
   }
   
   init(pendingUnstake: StakingBalance) {
@@ -44,6 +46,7 @@ struct StakingPortfolioCellModel {
     self.displayType = "| Stake"
     self.displayTokenName = pendingUnstake.symbol
     self.displayPlatformName = (pendingUnstake.platform?.name ?? "") + " "
+    self.isClaimable = pendingUnstake.extraData?.status == "claimable"
   }
 }
 
@@ -65,8 +68,12 @@ class StakingPortfolioCell: UITableViewCell {
   @IBOutlet weak var processingStatusLabel: UILabel!
   @IBOutlet weak var warningIcon: UIImageView!
   @IBOutlet weak var warningButton: UIButton!
-  weak var delegate: StakingPortfolioCellDelegate?
+  @IBOutlet weak var addButton: UIButton!
+  @IBOutlet weak var minusButton: UIButton!
+  @IBOutlet weak var warningLabelContainerView: UIView!
+  @IBOutlet weak var claimButton: UIButton!
   
+  weak var delegate: StakingPortfolioCellDelegate?
   
   func updateCellModel(_ model: StakingPortfolioCellModel) {
     if let url = URL(string: model.tokenLogo) {
@@ -84,12 +91,19 @@ class StakingPortfolioCell: UITableViewCell {
     platformTypeLabel.text = model.displayType
     apyValueLabel.text = model.displayAPYValue
     depositedValueLabel.text = model.displayDepositedValue
-    processingStatusLabel.isHidden = !model.isInProcess
-    warningIcon.isHidden = !model.isInProcess
-    warningButton.isHidden = !model.isInProcess
+    
+    warningLabelContainerView.isHidden = !model.isInProcess || model.isClaimable
+    claimButton.isHidden = !model.isClaimable
+    
+    addButton.isHidden = model.isInProcess
+    minusButton.isHidden = model.isInProcess
   }
   
   @IBAction func inProcessButtonTapped(_ sender: UIButton) {
     delegate?.warningButtonTapped()
+  }
+  
+  @IBAction func claimButtonTapped(_ sender: UIButton) {
+    //TODO: process next sprint
   }
 }
