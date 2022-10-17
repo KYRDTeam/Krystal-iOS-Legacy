@@ -647,6 +647,10 @@
 		A65CC8F128695D6A008620E2 /* ChartLoadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F028695D6A008620E2 /* ChartLoadRequest.swift */; };
 		A65CC8F328698C11008620E2 /* ChartType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F228698C11008620E2 /* ChartType.swift */; };
 		A65CC8F528698C1F008620E2 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F428698C1F008620E2 /* Period.swift */; };
+		A65D14DB28FD05DC00B12E84 /* SwapModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A65D14DA28FD05DC00B12E84 /* SwapModule.framework */; };
+		A65D14DC28FD05DC00B12E84 /* SwapModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A65D14DA28FD05DC00B12E84 /* SwapModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A65D14DE28FD0B6000B12E84 /* AppTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65D14DD28FD0B6000B12E84 /* AppTracker.swift */; };
+		A65D14E028FD0CFE00B12E84 /* AppErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65D14DF28FD0CFE00B12E84 /* AppErrorTracker.swift */; };
 		A661070528ACE94900425D67 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661070428ACE94900425D67 /* AsyncOperation.swift */; };
 		A661070728ACE96800425D67 /* MigratingWalletOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661070628ACE96800425D67 /* MigratingWalletOperation.swift */; };
 		A6664D1F2858878800CCAB1F /* TransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D1E2858878800CCAB1F /* TransactionProcessor.swift */; };
@@ -831,6 +835,7 @@
 		A6F5DCAE28572FF200FD02C9 /* NonceCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCAD28572FF200FD02C9 /* NonceCache.swift */; };
 		A6F5DCB02857367100FD02C9 /* TransferTransactionResultData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCAF2857367100FD02C9 /* TransferTransactionResultData.swift */; };
 		A6F6292D28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6292C28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift */; };
+		A6F6292028FD3E3A0085AE67 /* AppGasConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6291F28FD3E3A0085AE67 /* AppGasConfig.swift */; };
 		A6F6B95228DB1969000CB82C /* UserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6B95128DB1969000CB82C /* UserEndpoint.swift */; };
 		A6F6B95428DB1C4C000CB82C /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6B95328DB1C4C000CB82C /* UserService.swift */; };
 		A6F6B95628DB1D06000CB82C /* ConnectEVMResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6B95528DB1D06000CB82C /* ConnectEVMResponse.swift */; };
@@ -1205,6 +1210,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				A6B067272859CF1900DEBAE8 /* KrystalWallets.framework in Embed Frameworks */,
+				A65D14DC28FD05DC00B12E84 /* SwapModule.framework in Embed Frameworks */,
 				A64C2EF828F95001002FD64C /* Dependencies.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -1883,6 +1889,9 @@
 		A65CC8F028695D6A008620E2 /* ChartLoadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLoadRequest.swift; sourceTree = "<group>"; };
 		A65CC8F228698C11008620E2 /* ChartType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartType.swift; sourceTree = "<group>"; };
 		A65CC8F428698C1F008620E2 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
+		A65D14DA28FD05DC00B12E84 /* SwapModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwapModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A65D14DD28FD0B6000B12E84 /* AppTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTracker.swift; sourceTree = "<group>"; };
+		A65D14DF28FD0CFE00B12E84 /* AppErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppErrorTracker.swift; sourceTree = "<group>"; };
 		A661070428ACE94900425D67 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		A661070628ACE96800425D67 /* MigratingWalletOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratingWalletOperation.swift; sourceTree = "<group>"; };
 		A6664D1E2858878800CCAB1F /* TransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionProcessor.swift; sourceTree = "<group>"; };
@@ -2070,6 +2079,7 @@
 		A6F5DCAD28572FF200FD02C9 /* NonceCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonceCache.swift; sourceTree = "<group>"; };
 		A6F5DCAF2857367100FD02C9 /* TransferTransactionResultData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferTransactionResultData.swift; sourceTree = "<group>"; };
 		A6F6292C28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteWalletCoordinator.swift; sourceTree = "<group>"; };
+		A6F6291F28FD3E3A0085AE67 /* AppGasConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGasConfig.swift; sourceTree = "<group>"; };
 		A6F6B95128DB1969000CB82C /* UserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEndpoint.swift; sourceTree = "<group>"; };
 		A6F6B95328DB1C4C000CB82C /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		A6F6B95528DB1D06000CB82C /* ConnectEVMResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectEVMResponse.swift; sourceTree = "<group>"; };
@@ -2418,6 +2428,7 @@
 				8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */,
 				C626BEDC238D870F00C96410 /* AdSupport.framework in Frameworks */,
 				A64C2EF728F95001002FD64C /* Dependencies.framework in Frameworks */,
+				A65D14DB28FD05DC00B12E84 /* SwapModule.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4939,6 +4950,9 @@
 			isa = PBXGroup;
 			children = (
 				A64C2EF428F94FC4002FD64C /* AppRouter.swift */,
+				A65D14DD28FD0B6000B12E84 /* AppTracker.swift */,
+				A65D14DF28FD0CFE00B12E84 /* AppErrorTracker.swift */,
+				A6F6291F28FD3E3A0085AE67 /* AppGasConfig.swift */,
 				A64C2EF928F95226002FD64C /* DependenciesRegister.swift */,
 			);
 			path = Dependencies;
@@ -6445,6 +6459,7 @@
 		FAD3F374A5C639BD900944DB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A65D14DA28FD05DC00B12E84 /* SwapModule.framework */,
 				A64C2EF628F95001002FD64C /* Dependencies.framework */,
 				C3D9517925FB97EC00DE3C05 /* CloudKit.framework */,
 				C626BEDD238D871700C96410 /* iAd.framework */,
@@ -7560,6 +7575,7 @@
 				7E16B8CF2769CF5F00F9A234 /* ReferralTiersViewController.swift in Sources */,
 				7E6F510B2733CA69002DA0B2 /* KNSummaryChainModel.swift in Sources */,
 				C338B234287824E600756E99 /* ErrorResponse.swift in Sources */,
+				A65D14E028FD0CFE00B12E84 /* AppErrorTracker.swift in Sources */,
 				7EFE440527156622006CF502 /* RewardTableViewCell.swift in Sources */,
 				C315AD5E240F845200620096 /* CustomAxisValueFormatter.swift in Sources */,
 				253F50E221E5B40E0068813D /* KNPromoCodeCoordinator.swift in Sources */,
@@ -7948,6 +7964,7 @@
 				7EEA4D7728AA3A4500C56EE3 /* DinoChatCustomView.swift in Sources */,
 				7EA34EB32886ACB7001D1DE6 /* OverviewAllChainTokenCell.swift in Sources */,
 				A693AFED2819057E00880503 /* RewardHuntingViewModel.swift in Sources */,
+				A6F6292028FD3E3A0085AE67 /* AppGasConfig.swift in Sources */,
 				C34A2265277AE64300F240B8 /* BrowserOptionsViewController.swift in Sources */,
 				A693AFE82819017500880503 /* ClosureSleeve.swift in Sources */,
 				A6E6C9E62817FE0B00EEB2E6 /* KyberNetworkService.swift in Sources */,
@@ -8151,6 +8168,7 @@
 				A687B19B28D9B41200895337 /* RedeemStatus.swift in Sources */,
 				A6E6C9D6281796C000EEB2E6 /* SolanaTransactionStorage.swift in Sources */,
 				25759623216D8E0D00AC490D /* Locale+Kyber.swift in Sources */,
+				A65D14DE28FD0B6000B12E84 /* AppTracker.swift in Sources */,
 				C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */,
 				2502AC18209475BE007F23CD /* KNListWalletsTableViewCell.swift in Sources */,
 				A6390B1228ACADF40083EF4C /* MigratingViewController.swift in Sources */,

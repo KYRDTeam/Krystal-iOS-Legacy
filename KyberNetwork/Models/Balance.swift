@@ -2,6 +2,7 @@
 
 import BigInt
 import Foundation
+import Utilities
 
 struct Balance: BalanceProtocol {
 

@@ -8,6 +8,7 @@
 import UIKit
 import QRCodeReaderViewController
 import BigInt
+import Utilities
 
 class SendNFTViewModel {
   private(set) var inputString: String = ""

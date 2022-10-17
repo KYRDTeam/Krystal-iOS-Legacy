@@ -1,8 +1,8 @@
 //
 //  Token.swift
-//  BaseWallet
+//  Services
 //
-//  Created by Tung Nguyen on 14/10/2022.
+//  Created by Tung Nguyen on 17/10/2022.
 //
 
 import Foundation

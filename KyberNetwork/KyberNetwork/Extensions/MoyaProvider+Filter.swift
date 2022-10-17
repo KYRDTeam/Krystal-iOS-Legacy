@@ -24,12 +24,12 @@ extension MoyaProvider {
                         let data = try decoder.decode(ErrorResponse.self, from: response.data)
                         let err = NetworkError.backendError(reponse: data)
                         completion(.failure(err))
-                        Dependencies.errorTracker.track(error: err.toNSError())
+                        SentrySDK.capture(error: err.toNSError())
                         
                     } catch let error {
                         let err = NetworkError.unknow(description: "Decode Error: \(error.localizedDescription)")
                         completion(.failure(err))
-                        Dependencies.errorTracker.track(error: err.toNSError())
+                        SentrySDK.capture(error: err.toNSError())
                     }
                     return
                 }

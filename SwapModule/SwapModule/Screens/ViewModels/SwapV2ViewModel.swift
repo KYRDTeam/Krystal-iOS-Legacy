@@ -112,7 +112,8 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     
     var currentAddress: Observable<KAddress> = .init(AppState.shared.currentAddress)
     var currentChain: Observable<ChainType> = .init(AppState.shared.currentChain)
-    var sourceToken: Observable<Token?> = .init(AppDependencies.tokenStorage.quoteToken(forChain: AppState.shared.currentChain))
+//    var sourceToken: Observable<Token?> = .init(AppDependencies.tokenStorage.quoteToken(forChain: AppState.shared.currentChain))
+    var sourceToken: Observable<Token?> = .init(nil)
     var destToken: Observable<Token?> = .init(nil)
     var platformRatesViewModels: Observable<[SwapPlatformItemViewModel]> = .init([])
     var sourceBalance: Observable<BigInt?> = .init(nil)

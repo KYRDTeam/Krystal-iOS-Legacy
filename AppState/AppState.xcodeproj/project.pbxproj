@@ -18,6 +18,7 @@
 		A6B1FD1128F69F3000894DCB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FD1028F69F3000894DCB /* Constants.swift */; };
 		A6B1FD1328F69FB600894DCB /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B1FD1228F69FB600894DCB /* BaseWallet.framework */; };
 		A6B1FD1428F69FB600894DCB /* BaseWallet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B1FD1228F69FB600894DCB /* BaseWallet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A6F6291E28FD3AE20085AE67 /* KAddress+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6291D28FD3AE20085AE67 /* KAddress+Codable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +47,7 @@
 		A6B1FD0A28F69EF300894DCB /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B1FD1028F69F3000894DCB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A6B1FD1228F69FB600894DCB /* BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6F6291D28FD3AE20085AE67 /* KAddress+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KAddress+Codable.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				A6512F3228F6CEB900A84BC2 /* UserDefault.swift */,
+				A6F6291D28FD3AE20085AE67 /* KAddress+Codable.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -199,6 +202,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6512F3328F6CEB900A84BC2 /* UserDefault.swift in Sources */,
+				A6F6291E28FD3AE20085AE67 /* KAddress+Codable.swift in Sources */,
 				A6B1FD0528F69D9D00894DCB /* AppState.swift in Sources */,
 				A6512F1528F6C68600A84BC2 /* AppEvent.swift in Sources */,
 				A6B1FD1128F69F3000894DCB /* Constants.swift in Sources */,

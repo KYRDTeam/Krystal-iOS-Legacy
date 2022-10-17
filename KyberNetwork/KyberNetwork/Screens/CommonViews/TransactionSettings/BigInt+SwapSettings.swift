@@ -7,6 +7,7 @@
 
 import Foundation
 import BigInt
+import Utilities
 
 extension BigInt {
   func displayGWEI() -> String {

@@ -25,4 +25,8 @@ public class AppEventManager {
         NotificationCenter.default.post(name: .appAddressChanged, object: nil)
     }
     
+    public func switchChain(chain: ChainType) {
+        NotificationCenter.default.post(name: .appChainChanged, object: nil)
+    }
+    
 }

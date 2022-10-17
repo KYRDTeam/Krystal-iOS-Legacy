@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import Utilities
 
 struct ConfirmBridgeViewModel {
   let fromChain: ChainType?

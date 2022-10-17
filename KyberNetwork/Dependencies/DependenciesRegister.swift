@@ -7,11 +7,18 @@
 
 import Foundation
 import Dependencies
+import Services
+import AppState
 
 class DependenciesRegister {
     
     static func register() {
         AppDependencies.router = AppRouter()
+        AppDependencies.tracker = AppTracker()
+        AppDependencies.gasConfig = AppGasConfig()
+        
+        ServiceConfig.baseAPIURL = KNEnvironment.default.krystalEndpoint
+        ServiceConfig.errorTracker = AppErrorTracker()
     }
     
 }

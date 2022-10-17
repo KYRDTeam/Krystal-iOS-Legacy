@@ -26,10 +26,10 @@ final public class EtherNumberFormatter {
     var maximumFractionDigits = Int.max
     
     /// Decimal point.
-    var decimalSeparator = "."
+    public var decimalSeparator = "."
     
     /// Thousands separator.
-    var groupingSeparator = ","
+    public var groupingSeparator = ","
     
     /// Initializes a `EtherNumberFormatter` with a `Locale`.
     init(locale: Locale = .current) {

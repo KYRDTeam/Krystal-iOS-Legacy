@@ -16,6 +16,7 @@ struct Constants {
     
     struct UserDefaultKeys {
         static let kIsWalletBackedUp = "IS_BACKED_UP_"
+        static let kLastUsedAddress = "LAST_USED_WALLET"
     }
     
     static let defaultChain: ChainType = .eth

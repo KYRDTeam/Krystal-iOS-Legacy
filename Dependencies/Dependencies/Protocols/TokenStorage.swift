@@ -7,6 +7,7 @@
 
 import Foundation
 import BaseWallet
+import Services
 
 public protocol TokenStorage {
     func getAllSupportedTokens() -> [Token]

@@ -3,6 +3,8 @@
 import UIKit
 import OneSignal
 import KrystalWallets
+import Dependencies
+import AppState
 
 // MARK: This file for handling in session
 extension KNAppCoordinator {
@@ -10,6 +12,9 @@ extension KNAppCoordinator {
   func startNewSession(address: KAddress) {
     self.walletCache.lastUsedAddress = address
     self.currentAddress = address
+    
+    AppState.shared.updateAddress(address: address)
+      
     OneSignal.setExternalUserId(address.addressString)
     Tracker.updateUserID(address.addressString)
     self.session = KNSession(address: address)
@@ -72,18 +77,21 @@ extension KNAppCoordinator {
     self.settingsCoordinator?.start()
     
     if FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.swapV2) {
-      self.swapV2Coordinator = SwapV2Coordinator()
-      self.swapV2Coordinator?.start()
-      self.swapV2Coordinator?.navigationController.tabBarItem = UITabBarItem(
-        title: nil,
-        image: UIImage(named: "tabbar_swap_icon"),
-        selectedImage: nil
-      )
-      self.swapV2Coordinator?.navigationController.tabBarItem.tag = 1
+        let vc = AppDependencies.router.createSwapViewController()
+//      self.swapV2Coordinator = SwapV2Coordinator()
+//      self.swapV2Coordinator?.delegate = self
+//      self.swapV2Coordinator?.start()
+        let swapNav = UINavigationController(rootViewController: vc)
+        swapNav.tabBarItem = UITabBarItem(
+            title: nil,
+            image: UIImage(named: "tabbar_swap_icon"),
+            selectedImage: nil
+        )
+        swapNav.tabBarItem.tag = 1
 
       self.tabbarController.viewControllers = [
         self.overviewTabCoordinator!.navigationController,
-        self.swapV2Coordinator!.navigationController,
+        swapNav,
         self.investCoordinator!.navigationController,
         self.earnCoordinator!.navigationController,
         self.settingsCoordinator!.navigationController,

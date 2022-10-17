@@ -7,6 +7,7 @@ import JSONRPCKit
 import APIKit
 import BigInt
 import TrustKeystore
+import Utilities
 
 class KNGasCoordinator {
 

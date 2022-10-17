@@ -24,7 +24,9 @@ public class CircularArrowProgressView: BaseXibView {
     }
     
     public func setRemainingTime(seconds: Int) {
-        timeLabel.text = "\(seconds)"
+        DispatchQueue.main.async {
+            self.timeLabel.text = "\(seconds)"
+        }
     }
     
 }

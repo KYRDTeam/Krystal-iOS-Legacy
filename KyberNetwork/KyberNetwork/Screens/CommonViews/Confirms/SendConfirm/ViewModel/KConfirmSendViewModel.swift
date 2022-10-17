@@ -3,6 +3,7 @@
 import UIKit
 import BigInt
 import JdenticonSwift
+import Utilities
 
 struct KConfirmSendViewModel {
   let transaction: UnconfirmedTransaction

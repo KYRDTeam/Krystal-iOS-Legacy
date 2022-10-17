@@ -12,7 +12,6 @@ import APIKit
 import JSONRPCKit
 import Web3
 import BaseWallet
-import Dependencies
 
 class EthereumWeb3Service {
     
@@ -108,8 +107,6 @@ class EthereumWeb3Service {
         Session.send(request) { result in
             switch result {
             case .success(let count):
-                let currentNonce = AppDependencies.nonceStorage.currentNonce(chain: self.chain, address: address)
-                AppDependencies.nonceStorage.increaseNonce(chain: self.chain, address: address, value: max(count, currentNonce))
                 completion(.success(count))
             case .failure(let error):
                 completion(.failure(AnyError(error)))
@@ -117,7 +114,7 @@ class EthereumWeb3Service {
         }
     }
     
-    func estimateGasLimit(from: String, to: String?, gasPrice: BigInt, value: BigInt, data: Data, defaultGasLimit: BigInt, isSwap: Bool, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    func estimateGasLimit(from: String, to: String?, gasPrice: BigInt, value: BigInt, data: Data, isSwap: Bool, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
         let request = KNEstimateGasLimitRequest(
             from: from,
             to: to,
@@ -166,7 +163,6 @@ class EthereumWeb3Service {
                     gasPrice: gasPrice,
                     value: BigInt(0),
                     data: data,
-                    defaultGasLimit: AppDependencies.gasConfig.defaultTransferGasLimit,
                     isSwap: false,
                     completion: completion
                 )

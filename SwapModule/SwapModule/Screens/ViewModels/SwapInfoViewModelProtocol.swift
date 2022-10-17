@@ -38,7 +38,7 @@ extension SwapInfoViewModelProtocol {
     var gasPrice: BigInt {
         if let basic = settings.basic {
             if isEIP1559 {
-                let baseFee = AppDependencies.gasConfig.baseFee
+                let baseFee = AppDependencies.gasConfig.baseFee ?? .zero
                 let priorityFee = self.getPriorityFee(forType: basic.gasPriceType) ?? .zero
                 return baseFee + priorityFee
             } else {

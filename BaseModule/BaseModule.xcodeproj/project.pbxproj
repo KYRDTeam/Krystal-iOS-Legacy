@@ -23,6 +23,10 @@
 		A6B1FD3928F6C2D500894DCB /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B1FD3828F6C2D500894DCB /* DesignSystem.framework */; };
 		A6B1FD3A28F6C2D500894DCB /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B1FD3828F6C2D500894DCB /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A6E433DC28F552A700782F7D /* BaseModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A6E433DB28F552A700782F7D /* BaseModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A6F6291A28FD303F0085AE67 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6291928FD303F0085AE67 /* UIImage.swift */; };
+		A6F6291C28FD30480085AE67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6F6291B28FD30480085AE67 /* Assets.xcassets */; };
+		A6F6292928FD4A2E0085AE67 /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6F6292828FD4A2E0085AE67 /* Dependencies.framework */; };
+		A6F6292A28FD4A2E0085AE67 /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6F6292828FD4A2E0085AE67 /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,6 +41,7 @@
 				A6B1FD1A28F6B43100894DCB /* Utilities.framework in Embed Frameworks */,
 				A6512F2C28F6CDF800A84BC2 /* AppState.framework in Embed Frameworks */,
 				A6B1FCFA28F69CCE00894DCB /* BaseWallet.framework in Embed Frameworks */,
+				A6F6292A28FD4A2E0085AE67 /* Dependencies.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -56,6 +61,9 @@
 		A6B1FD3828F6C2D500894DCB /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6E433D828F552A700782F7D /* BaseModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BaseModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6E433DB28F552A700782F7D /* BaseModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseModule.h; sourceTree = "<group>"; };
+		A6F6291928FD303F0085AE67 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		A6F6291B28FD30480085AE67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A6F6292828FD4A2E0085AE67 /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +76,7 @@
 				A6B1FD1928F6B43100894DCB /* Utilities.framework in Frameworks */,
 				A6512F2B28F6CDF800A84BC2 /* AppState.framework in Frameworks */,
 				A6B1FCF928F69CCE00894DCB /* BaseWallet.framework in Frameworks */,
+				A6F6292928FD4A2E0085AE67 /* Dependencies.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +95,7 @@
 		A6B1FCF728F69CCE00894DCB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6F6292828FD4A2E0085AE67 /* Dependencies.framework */,
 				A6512F2A28F6CDF800A84BC2 /* AppState.framework */,
 				A6B1FD3828F6C2D500894DCB /* DesignSystem.framework */,
 				A6B1FD1828F6B43100894DCB /* Utilities.framework */,
@@ -125,11 +135,21 @@
 		A6E433DA28F552A700782F7D /* BaseModule */ = {
 			isa = PBXGroup;
 			children = (
+				A6F6291828FD30330085AE67 /* Resources */,
 				A64C2DFB28F6D7D2002FD64C /* Coordinator */,
 				A6B1FCFC28F69CD400894DCB /* BaseViewControllers */,
 				A6E433DB28F552A700782F7D /* BaseModule.h */,
 			);
 			path = BaseModule;
+			sourceTree = "<group>";
+		};
+		A6F6291828FD30330085AE67 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A6F6291928FD303F0085AE67 /* UIImage.swift */,
+				A6F6291B28FD30480085AE67 /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -203,6 +223,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6F6291C28FD30480085AE67 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,6 +237,7 @@
 				A64C2DFF28F6D7E3002FD64C /* Coordinator.swift in Sources */,
 				A6B1FD0328F69D5700894DCB /* KNBaseViewController.swift in Sources */,
 				A64C2DFD28F6D7DB002FD64C /* BaseCoordinator.swift in Sources */,
+				A6F6291A28FD303F0085AE67 /* UIImage.swift in Sources */,
 				A6B1FD0128F69D3000894DCB /* BaseWalletOrientedViewController.swift in Sources */,
 				A64C2E6328F87973002FD64C /* InAppBrowsingViewController.swift in Sources */,
 			);

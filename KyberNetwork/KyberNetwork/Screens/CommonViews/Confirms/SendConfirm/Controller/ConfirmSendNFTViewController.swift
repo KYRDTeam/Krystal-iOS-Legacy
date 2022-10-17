@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import Utilities
 
 class ConfirmSendNFTViewModel {
   let nftItem: NFTItem

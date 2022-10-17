@@ -9,6 +9,7 @@ import UIKit
 import Moya
 import BigInt
 import KrystalWallets
+import Utilities
 
 class ClaimRewardsViewModel {
   var totalTokenBalance: Double

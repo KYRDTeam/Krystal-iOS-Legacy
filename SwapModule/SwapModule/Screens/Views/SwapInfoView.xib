@@ -8,12 +8,12 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SwapInfoView" customModule="SwapModule" customModuleProvider="target">
             <connections>
                 <outlet property="iconImageView" destination="j1n-fn-l6g" id="Lvj-Ad-HkX"/>
                 <outlet property="leftValueIcon" destination="VtA-LG-L7G" id="Nlx-IP-6Am"/>
@@ -36,7 +36,7 @@
                             <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NTv-cN-Lag" customClass="DashedLineView" customModule="Krystal" customModuleProvider="target">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NTv-cN-Lag" customClass="DashedLineView" customModule="DesignSystem">
                             <rect key="frame" x="0.0" y="80" width="28" height="1"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>

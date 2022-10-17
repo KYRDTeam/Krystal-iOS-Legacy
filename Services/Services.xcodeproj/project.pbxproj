@@ -46,14 +46,12 @@
 		A64C2ED128F9202A002FD64C /* Web3Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2ED028F9202A002FD64C /* Web3Factory.swift */; };
 		A64C2ED528F923BC002FD64C /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2ED428F923BC002FD64C /* Utilities.framework */; };
 		A64C2ED628F923BC002FD64C /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2ED428F923BC002FD64C /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A64C2ED928F92408002FD64C /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2ED828F92408002FD64C /* BaseWallet.framework */; };
-		A64C2EDA28F92408002FD64C /* BaseWallet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2ED828F92408002FD64C /* BaseWallet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A64C2EDC28F92418002FD64C /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EDB28F92418002FD64C /* Dependencies.framework */; };
-		A64C2EDD28F92418002FD64C /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EDB28F92418002FD64C /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A64C2EEA28F93741002FD64C /* TokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EE928F93741002FD64C /* TokenService.swift */; };
 		A64C2EEC28F9374A002FD64C /* TokenEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EEB28F9374A002FD64C /* TokenEndpoint.swift */; };
 		A64C2EEE28F93C4F002FD64C /* TokenDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EED28F93C4F002FD64C /* TokenDetail.swift */; };
 		A66FC42328F4F56600E49E86 /* Services.h in Headers */ = {isa = PBXBuildFile; fileRef = A66FC42228F4F56600E49E86 /* Services.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A6F6292228FD455E0085AE67 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6292128FD455E0085AE67 /* Token.swift */; };
+		A6F6292728FD49030085AE67 /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6292628FD49030085AE67 /* ErrorTracker.swift */; };
 		DFBC1392A80048AF5E1D8B55 /* Pods_Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 577F9B8B04D43859B76C1799 /* Pods_Services.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,9 +62,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A64C2EDA28F92408002FD64C /* BaseWallet.framework in Embed Frameworks */,
 				A64C2ED628F923BC002FD64C /* Utilities.framework in Embed Frameworks */,
-				A64C2EDD28F92418002FD64C /* Dependencies.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -122,6 +118,8 @@
 		A64C2EED28F93C4F002FD64C /* TokenDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetail.swift; sourceTree = "<group>"; };
 		A66FC41F28F4F56600E49E86 /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66FC42228F4F56600E49E86 /* Services.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Services.h; sourceTree = "<group>"; };
+		A6F6292128FD455E0085AE67 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		A6F6292628FD49030085AE67 /* ErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,9 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DFBC1392A80048AF5E1D8B55 /* Pods_Services.framework in Frameworks */,
-				A64C2EDC28F92418002FD64C /* Dependencies.framework in Frameworks */,
 				A64C2ED528F923BC002FD64C /* Utilities.framework in Frameworks */,
-				A64C2ED928F92408002FD64C /* BaseWallet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,6 +162,7 @@
 				A64C2E0928F6F204002FD64C /* Rate.swift */,
 				A64C2ECC28F91F14002FD64C /* Balance.swift */,
 				A64C2EED28F93C4F002FD64C /* TokenDetail.swift */,
+				A6F6292128FD455E0085AE67 /* Token.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -203,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				A64C2E3F28F7C101002FD64C /* ServiceConfig.swift */,
+				A6F6292628FD49030085AE67 /* ErrorTracker.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -428,6 +426,7 @@
 				A64C2E0A28F6F204002FD64C /* Rate.swift in Sources */,
 				A64C2EBD28F91CDE002FD64C /* Web3Swift.swift in Sources */,
 				A64C2E9328F919F3002FD64C /* EthereumWeb3Service.swift in Sources */,
+				A6F6292728FD49030085AE67 /* ErrorTracker.swift in Sources */,
 				A64C2EA928F91BF1002FD64C /* KNGetTokenAllowance.swift in Sources */,
 				A64C2EB828F91CAA002FD64C /* GetSymbol.swift in Sources */,
 				A64C2EAC28F91BF1002FD64C /* KNGetUserCapInWei.swift in Sources */,
@@ -442,6 +441,7 @@
 				A64C2EC928F91DF9002FD64C /* GetTransactionCountRequest.swift in Sources */,
 				A64C2ECF28F91F88002FD64C /* CallRequest.swift in Sources */,
 				A64C2EAB28F91BF1002FD64C /* KNExchangeRequest.swift in Sources */,
+				A6F6292228FD455E0085AE67 /* Token.swift in Sources */,
 				A64C2EBA28F91CAA002FD64C /* GetBalance.swift in Sources */,
 				A64C2ECB28F91E51002FD64C /* CastError.swift in Sources */,
 				A64C2EBB28F91CAA002FD64C /* ApproveERC20.swift in Sources */,

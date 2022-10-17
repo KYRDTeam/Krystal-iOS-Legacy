@@ -8,6 +8,7 @@
 import Foundation
 import SwapModule
 import Dependencies
+import UIKit
 
 class AppRouter: AppRouterProtocol {
     

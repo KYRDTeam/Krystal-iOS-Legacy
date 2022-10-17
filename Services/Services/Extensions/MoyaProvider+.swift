@@ -7,7 +7,6 @@
 
 import Foundation
 import Moya
-import Dependencies
 
 typealias WrappedCompletion = (_ result: Result<Moya.Response, NetworkError>) -> Void
 
@@ -22,12 +21,12 @@ extension MoyaProvider {
                         let data = try decoder.decode(ErrorResponse.self, from: response.data)
                         let err = NetworkError.backendError(reponse: data)
                         completion(.failure(err))
-                        AppDependencies.errorTracker.track(error: err.toNSError())
+                        ServiceConfig.errorTracker.track(error: err.toNSError())
                         
                     } catch let error {
                         let err = NetworkError.unknow(description: "Decode Error: \(error.localizedDescription)")
                         completion(.failure(err))
-                        AppDependencies.errorTracker.track(error: err.toNSError())
+                        ServiceConfig.errorTracker.track(error: err.toNSError())
                     }
                     return
                 }
@@ -35,7 +34,7 @@ extension MoyaProvider {
             case .failure(let error):
                 let err = NetworkError.unknow(description: error.localizedDescription)
                 completion(.failure(err))
-                AppDependencies.errorTracker.track(error: err.toNSError())
+                ServiceConfig.errorTracker.track(error: err.toNSError())
             }
         }
     }

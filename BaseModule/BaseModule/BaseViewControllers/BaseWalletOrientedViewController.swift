@@ -75,8 +75,8 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
     }
     
     open func reloadChain() {
-        //    chainIcon?.image = KNGeneralProvider.shared.currentChain.squareIcon()
-        //    chainButton?.setTitle(KNGeneralProvider.shared.currentChain.chainName(), for: .normal)
+        chainIcon?.image = AppState.shared.currentChain.squareIcon()
+        chainButton?.setTitle(AppState.shared.currentChain.chainName(), for: .normal)
     }
     
     @objc open func onWalletListUpdated() {
@@ -105,6 +105,45 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
     
     open func openSwitchChain() {
         AppDependencies.router.openChainList()
+    }
+    
+}
+
+extension ChainType {
+    
+    func squareIcon() -> UIImage {
+        switch self {
+        case .all:
+            return .allNetworkSquare
+        case .eth:
+            return .chainEthSquare
+        case .ropsten:
+            return .chainEthSquare
+        case .bsc:
+            return .chainBscSquare
+        case .bscTestnet:
+            return .chainBscSquare
+        case .polygon:
+            return .chainPolygonSquare
+        case .polygonTestnet:
+            return .chainPolygonSquare
+        case .avalanche:
+            return .chainAvaxSquare
+        case .avalancheTestnet:
+            return .chainAvaxSquare
+        case .cronos:
+            return .chainCronosSquare
+        case .fantom:
+            return .chainFantomSquare
+        case .arbitrum:
+            return .chainArbitrumSquare
+        case .aurora:
+            return .chainAuroraSquare
+        case .solana:
+            return .chainSolanaSquare
+        case .klaytn:
+            return .chainKlaytnSquare
+        }
     }
     
 }

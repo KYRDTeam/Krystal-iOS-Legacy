@@ -13,15 +13,40 @@ import KrystalWallets
 public class AppState {
     
     public static let shared = AppState()
+    let encoder = JSONEncoder()
+    let decoder = JSONDecoder()
     
     public private(set) var currentChain: ChainType = Storage.retrieve(Constants.StorageKeys.currentChain, as: ChainType.self) ?? Constants.defaultChain {
         didSet {
             Storage.store(self.currentChain, as: Constants.StorageKeys.currentChain)
+            
         }
     }
     
-    @AppStateUserDefault(key: "LAST_USED_WALLET", defaultValue: WalletManager.shared.createEmptyAddress())
-    public private(set) var currentAddress: KAddress
+    public private(set) var currentAddress: KAddress {
+        get {
+            guard let data = UserDefaults.standard.data(forKey: Constants.UserDefaultKeys.kLastUsedAddress) else {
+                return WalletManager.shared.createEmptyAddress()
+            }
+            return (try? decoder.decode(KAddress.self, from: data)) ?? WalletManager.shared.createEmptyAddress()
+        }
+        set {
+            guard let data = try? encoder.encode(newValue) else {
+                return
+            }
+            UserDefaults.standard.set(data, forKey: Constants.UserDefaultKeys.kLastUsedAddress)
+        }
+    }
+    
+    public func updateChain(chain: ChainType) {
+        currentChain = chain
+        AppEventManager.shared.switchChain(chain: chain)
+    }
+    
+    public func updateAddress(address: KAddress) {
+        currentAddress = address
+        AppEventManager.shared.switchAddress(address: address)
+    }
     
     public var isBrowsingMode: Bool {
         return currentAddress.addressString.isEmpty
