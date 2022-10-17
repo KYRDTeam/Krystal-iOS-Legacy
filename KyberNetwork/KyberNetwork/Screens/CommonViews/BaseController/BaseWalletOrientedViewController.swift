@@ -195,8 +195,8 @@ extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
       return
     }
     tabBarController.dismiss(animated: true) {
-      let coordinator = AddWatchWalletCoordinator(parentViewController: tabBarController, editingAddress: nil)
-      coordinator.start()
+        let coordinator = AddWatchWalletCoordinator(parentViewController: tabBarController, editingAddress: nil)
+        self.coordinate(coordinator: coordinator)
     }
   }
   

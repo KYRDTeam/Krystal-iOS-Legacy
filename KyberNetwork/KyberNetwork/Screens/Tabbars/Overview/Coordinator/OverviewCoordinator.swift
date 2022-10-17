@@ -257,7 +257,7 @@ class OverviewCoordinator: NSObject, Coordinator {
 extension OverviewCoordinator: CreateChainWalletMenuCoordinatorDelegate {
   
   func onSelectCreateNewWallet(chain: ChainType) {
-    
+
   }
   
   func onSelectImportWallet() {
@@ -710,19 +710,11 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       guard let wallet = WalletManager.shared.getWallet(id: self.currentAddress.walletID) else {
         return
       }
-      let alertController = KNPrettyAlertController(
-        title: Strings.delete,
-        message: Strings.deleteWalletConfirmMessage,
-        secondButtonTitle: Strings.ok,
-        firstButtonTitle: Strings.cancel,
-        secondButtonAction: {
-          try? WalletManager.shared.remove(wallet: wallet)
-          AppDelegate.shared.coordinator.onRemoveWallet(wallet: wallet)
-          return
-        },
-        firstButtonAction: nil
-      )
-      self.navigationController.present(alertController, animated: true, completion: nil)
+      let coordinator = DeleteWalletCoordinator(navigationController: self.navigationController, wallet: wallet)
+      coordinator.onCompleted = { [weak self] in
+        self?.removeCoordinator(coordinator)
+      }
+      self.coordinate(coordinator: coordinator)
     }))
     actionController.addAction(Action(ActionData(title: KNGeneralProvider.shared.currentChain.blockExploreName(), image: UIImage(named: "etherscan_actionsheet_icon")!), style: .default, handler: { _ in
       let url = "\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(self.currentAddress.addressString)"
