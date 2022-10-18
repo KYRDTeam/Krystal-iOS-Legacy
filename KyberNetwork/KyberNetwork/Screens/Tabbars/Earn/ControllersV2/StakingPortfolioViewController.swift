@@ -12,7 +12,6 @@ import SkeletonView
 class StakingPortfolioViewModel {
   var portfolio: PortfolioStaking?
   let apiService = KrystalService()
-  var currentAddress = AppDelegate.session.address
   
   var dataSource: Observable<([StakingPortfolioCellModel], [StakingPortfolioCellModel])> = .init(([], []))
   var error: Observable<Error?> = .init(nil)
@@ -45,7 +44,7 @@ class StakingPortfolioViewModel {
   
   func requestData() {
     isLoading.value = true
-    apiService.getStakingPortfolio(address: currentAddress.addressString) { result in
+    apiService.getStakingPortfolio(address: AppDelegate.session.address.addressString) { result in
       self.isLoading.value = false
       switch result {
       case .success(let portfolio):
@@ -105,6 +104,11 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   
   func hideLoadingSkeleton() {
     view.hideSkeleton()
+  }
+  
+  override func reloadWallet() {
+    super.reloadWallet()
+    viewModel.requestData()
   }
 }
 
