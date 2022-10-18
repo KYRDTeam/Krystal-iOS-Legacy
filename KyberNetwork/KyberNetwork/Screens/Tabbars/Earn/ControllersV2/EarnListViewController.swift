@@ -13,12 +13,13 @@ class EarnListViewController: InAppBrowsingViewController {
   @IBOutlet weak var searchFieldActionButton: UIButton!
   @IBOutlet weak var searchViewRightConstraint: NSLayoutConstraint!
   @IBOutlet weak var cancelButton: UIButton!
-  
+  @IBOutlet weak var emptyView: UIView!
   var dataSource: [EarnPoolViewCellViewModel] = []
+  var displayDataSource: [EarnPoolViewCellViewModel] = []
   var timer: Timer?
   override func viewDidLoad() {
     super.viewDidLoad()
-    initializeData()
+    fetchData()
     setupUI()
   }
 
@@ -27,15 +28,21 @@ class EarnListViewController: InAppBrowsingViewController {
     self.tableView.registerCellNib(EarnPoolViewCell.self)
   }
   
-  func initializeData() {
+  func reloadUI() {
+    self.emptyView.isHidden = !self.displayDataSource.isEmpty
+    self.tableView.reloadData()
+  }
+  
+  func fetchData(chainId: Int = KNGeneralProvider.shared.currentChain.getChainId()) {
     let service = EarnServices()
-    service.getEarnListData { listData in
+    service.getEarnListData(chainId: nil) { listData in
       var data: [EarnPoolViewCellViewModel] = []
       listData.forEach { earnPoolModel in
         data.append(EarnPoolViewCellViewModel(earnPool: earnPoolModel))
       }
       self.dataSource = data
-      self.tableView.reloadData()
+      self.displayDataSource = data
+      self.reloadUI()
     }
   }
   
@@ -61,17 +68,12 @@ class EarnListViewController: InAppBrowsingViewController {
   }
   
   @IBAction func onSearchButtonTapped(_ sender: Any) {
-    self.updateUIStartSearchingMode()
-//    if self.topView.isHidden {
-//      searchField.text = ""
-//      self.showLoading()
-//      self.viewModel.fetchDataFromAPI(query: "", orderBy: self.orderBy) { [weak self] in
-//        self?.hideLoading()
-//        self?.reloadUI()
-//      }
-//    } else {
-//      self.updateUIStartSearchingMode()
-//    }
+    if !self.cancelButton.isHidden {
+      searchTextField.text = ""
+      self.fetchData()
+    } else {
+      self.updateUIStartSearchingMode()
+    }
   }
   
   @IBAction func cancelButtonTapped(_ sender: Any) {
@@ -83,12 +85,12 @@ class EarnListViewController: InAppBrowsingViewController {
 extension EarnListViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return dataSource.count
+    return displayDataSource.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(EarnPoolViewCell.self, indexPath: indexPath)!
-    let viewModel = dataSource[indexPath.row]
+    let viewModel = displayDataSource[indexPath.row]
     cell.updateUI(viewModel: viewModel)
     return cell
   }
@@ -96,7 +98,7 @@ extension EarnListViewController: UITableViewDataSource {
 
 extension EarnListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    var cellViewModel = dataSource[indexPath.row]
+    var cellViewModel = displayDataSource[indexPath.row]
     cellViewModel.isExpanse = !cellViewModel.isExpanse
     self.tableView.beginUpdates()
     if let cell = self.tableView.cellForRow(at: indexPath) as? EarnPoolViewCell {
@@ -106,7 +108,7 @@ extension EarnListViewController: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    let cellViewModel = dataSource[indexPath.row]
+    let cellViewModel = displayDataSource[indexPath.row]
     return cellViewModel.height()
   }
   
@@ -140,12 +142,13 @@ extension EarnListViewController: UITextFieldDelegate {
   }
   
   @objc func doSearch() {
-    if let text = self.searchTextField.text {
-//      self.showLoading()
-//      self.viewModel.fetchDataFromAPI(query: text, orderBy: self.orderBy) {
-//        self.hideLoading()
-//        self.reloadUI()
-//      }
+    if let text = self.searchTextField.text, !text.isEmpty {
+      self.displayDataSource = self.dataSource.filter({ viewModel in
+        return viewModel.earnPoolModel.token.symbol.lowercased().contains(text.lowercased())
+      })
+      self.reloadUI()
+    } else {
+      self.fetchData()
     }
   }
 }
