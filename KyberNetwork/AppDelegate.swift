@@ -24,8 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   }
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-      DependenciesRegister.register()
-      
+    Dependencies.register()
+    
     window = UIWindow(frame: UIScreen.main.bounds)
     setupImageProcessor()
     setupKeyboard()

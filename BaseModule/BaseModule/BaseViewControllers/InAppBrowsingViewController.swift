@@ -31,7 +31,7 @@ open class InAppBrowsingViewController: BaseWalletOrientedViewController {
         unobserveNotifications()
     }
     
-    override func observeNotifications() {
+  open override func observeNotifications() {
         super.observeNotifications()
         NotificationCenter.default.addObserver(
             self,
@@ -48,7 +48,7 @@ open class InAppBrowsingViewController: BaseWalletOrientedViewController {
         //    )
     }
     
-    override func unobserveNotifications() {
+  open override func unobserveNotifications() {
         super.unobserveNotifications()
         NotificationCenter.default.removeObserver(self, name: .appChainChanged, object: nil)
         
@@ -60,24 +60,24 @@ open class InAppBrowsingViewController: BaseWalletOrientedViewController {
 //        )
     }
     
-    @objc func onAppBrowsingSwitchChain() {
+    @objc open func onAppBrowsingSwitchChain() {
         reloadChainUI()
     }
     
-    @objc func tokenObjectListDidUpdate(_ sender: Any?) {
+    @objc open func tokenObjectListDidUpdate(_ sender: Any?) {
         reloadChainData()
     }
     
-    func updateChainInfo() {
+    open func updateChainInfo() {
 //        chainIcon?.image = KNGeneralProvider.shared.currentChain.squareIcon()
 //        chainLabel?.text = KNGeneralProvider.shared.currentChain.chainName()
     }
     
-    func reloadChainUI() {
+    open func reloadChainUI() {
         updateChainInfo()
     }
     
-    func reloadChainData() {
+    open func reloadChainData() {
         
     }
     
@@ -109,7 +109,7 @@ open class InAppBrowsingViewController: BaseWalletOrientedViewController {
         openBrowsingSwitchChain()
     }
     
-    func openBrowsingSwitchChain() {
+    open func openBrowsingSwitchChain() {
         //    let popup = SwitchChainViewController(selected: currentChain)
         //    popup.dataSource = ChainType.getAllChain()
         //    popup.completionHandler = { [weak self] selectedChain in
@@ -118,31 +118,31 @@ open class InAppBrowsingViewController: BaseWalletOrientedViewController {
         //    present(popup, animated: true, completion: nil)
     }
     
-//    override func addNewWallet(wallet: KWallet, chain: ChainType) {
-        //    AppDelegate.shared.setupMixPanel()
-        //    onChainSelected(chain: chain)
-        //    didSelectWallet(wallet: wallet, isCreatedFromBrowsing: true)
-        //    AppDelegate.shared.coordinator.overviewTabCoordinator?.stop()
-        //    AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
-        //    AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
-        //    browsingView?.isHidden = !KNGeneralProvider.shared.isBrowsingMode
-        //    if AppDelegate.shared.coordinator.tabbarController != nil {
-        //      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-        //    }
-//    }
+    open func addNewWallet(wallet: KWallet, chain: ChainType) {
+//            AppDelegate.shared.setupMixPanel()
+//            onChainSelected(chain: chain)
+//            didSelectWallet(wallet: wallet, isCreatedFromBrowsing: true)
+//            AppDelegate.shared.coordinator.overviewTabCoordinator?.stop()
+//            AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
+//            AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
+//            browsingView?.isHidden = !KNGeneralProvider.shared.isBrowsingMode
+//            if AppDelegate.shared.coordinator.tabbarController != nil {
+//              AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
+//            }
+    }
     
-//    override func addNewWallet(watchAddress: KAddress, chain: ChainType) {
+    open func addNewWallet(watchAddress: KAddress, chain: ChainType) {
 //        onChainSelected(chain: chain)
 //        didSelectWatchWallet(address: watchAddress)
-//    }
+    }
     
-//    override func addNewWalletDidSendRefCode(_ code: String) {
+    open func addNewWalletDidSendRefCode(_ code: String) {
 //        KrystalService().sendRefCode(address: currentAddress, code.uppercased()) { _, message in
 //            AppDelegate.shared.coordinator.tabbarController.showTopBannerView(message: message)
 //        }
-//    }
+    }
     
-//    override func removeWallet(wallet: KWallet) {
-//
-//    }
+    open func removeWallet(wallet: KWallet) {
+
+    }
 }

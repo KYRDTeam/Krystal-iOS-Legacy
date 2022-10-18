@@ -4,6 +4,7 @@ import UIKit
 import BigInt
 import Moya
 import KrystalWallets
+import AppState
 
 class KNAppCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
@@ -105,9 +106,10 @@ class KNAppCoordinator: NSObject, Coordinator {
     KNGeneralProvider.shared.currentChain = chain
     switchAddress(address: address)
     AppEventCenter.shared.switchChain(chain: chain)
+    AppState.shared.updateChain(chain: chain)
   }
   
-  func switchAddress(address: KAddress, isCreatedFromBrowsing: Bool = false) {
+  func switchAddress(address: KAddress) {
     WalletCache.shared.lastUsedAddress = address
     KNAppTracker.updateAllTransactionLastBlockLoad(0, for: address.addressString)
     if self.tabbarController == nil {

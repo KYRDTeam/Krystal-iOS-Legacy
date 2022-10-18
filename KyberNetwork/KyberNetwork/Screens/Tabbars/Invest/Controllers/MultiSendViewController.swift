@@ -10,6 +10,7 @@ import SwipeCellKit
 import QRCodeReaderViewController
 import BigInt
 import KrystalWallets
+import BaseModule
 
 typealias MultiSendItem = (String, BigInt, Token)
 typealias ApproveMultiSendItem = (BigInt, Token)
@@ -214,13 +215,13 @@ class MultiSendViewController: InAppBrowsingViewController {
     self.updateUIInputTableView()
   }
   
-  override func openWalletList() {
-    super.openWalletList()
+  override func handleWalletButtonTapped() {
+    super.handleWalletButtonTapped()
     MixPanelManager.track("multisend_select_wallet", properties: ["screenid": "multi_send"])
   }
   
-  override func openSwitchChain() {
-    super.openSwitchChain()
+  override func handleChainButtonTapped() {
+    super.handleChainButtonTapped()
     MixPanelManager.track("multisend_select_chain", properties: ["screenid": "multi_send"])
   }
   

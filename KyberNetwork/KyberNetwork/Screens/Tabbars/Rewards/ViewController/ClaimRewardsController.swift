@@ -10,6 +10,7 @@ import Moya
 import BigInt
 import KrystalWallets
 import Utilities
+import BaseModule
 
 class ClaimRewardsViewModel {
   var totalTokenBalance: Double

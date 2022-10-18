@@ -99,13 +99,13 @@ class SwapV2ViewController: InAppBrowsingViewController {
         bindViewModel()
     }
     
-    override func openWalletList() {
-        super.openWalletList()
+    override func handleWalletButtonTapped() {
+        super.handleWalletButtonTapped()
         AppDependencies.tracker.track("swap_select_wallet", properties: ["screenid": "swap"])
     }
     
-    override func openSwitchChain() {
-        super.openSwitchChain()
+    override func handleChainButtonTapped() {
+        super.handleChainButtonTapped()
         AppDependencies.tracker.track("swap_select_chain", properties: ["screenid": "swap"])
     }
     

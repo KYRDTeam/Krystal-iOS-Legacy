@@ -221,7 +221,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
             self.updateState()
         }
         sourceToken.observe(on: self) { [weak self] token in
-            if token?.address.lowercased() == self?.destToken.value?.address.lowercased() {
+            if self?.destToken.value != nil && (token?.address.lowercased() == self?.destToken.value?.address.lowercased()) {
                 self?.error.value = .sameSourceDestToken
             }
         }
@@ -467,7 +467,7 @@ extension SwapV2ViewModel {
             checkPendingTx()
             settingsObservable.value = SwapTransactionSettings.getDefaultSettings()
             currentChain.value = AppState.shared.currentChain
-            sourceToken.value = AppDependencies.tokenStorage.quoteToken(forChain: AppState.shared.currentChain)
+            sourceToken.value = nil // TODO: AppDependencies.tokenStorage.quoteToken(forChain: AppState.shared.currentChain)
             sourceTokenPrice.value = nil
             destTokenPrice.value = nil
             state.value = .emptyAmount

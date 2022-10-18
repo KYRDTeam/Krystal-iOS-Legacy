@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import KrystalWallets
 
-public enum ChainType: Codable {
+public enum ChainType: Codable, CaseIterable {
     case all
     case eth
     case ropsten
@@ -219,4 +220,17 @@ public extension ChainType {
             return true
         }
     }
+}
+
+public extension ChainType {
+  
+  var addressType: KAddressType {
+    switch self {
+    case .solana:
+      return .solana
+    default:
+      return .evm
+    }
+  }
+  
 }

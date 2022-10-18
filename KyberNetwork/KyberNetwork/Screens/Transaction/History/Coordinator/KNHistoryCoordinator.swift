@@ -8,6 +8,7 @@ import MBProgressHUD
 import QRCodeReaderViewController
 import WalletConnectSwift
 import KrystalWallets
+import BaseModule
 
 protocol KNHistoryCoordinatorDelegate: class {
   func historyCoordinatorDidClose()

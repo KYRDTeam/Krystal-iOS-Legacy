@@ -13,7 +13,7 @@ extension KNAppCoordinator {
     self.walletCache.lastUsedAddress = address
     self.currentAddress = address
     
-    AppState.shared.updateAddress(address: address)
+    AppState.shared.updateAddress(address: address, targetChain: AppState.shared.currentChain)
       
     OneSignal.setExternalUserId(address.addressString)
     Tracker.updateUserID(address.addressString)

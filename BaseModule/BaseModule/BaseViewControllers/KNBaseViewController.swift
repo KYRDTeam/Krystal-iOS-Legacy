@@ -11,7 +11,7 @@ import DesignSystem
 
 open class KNBaseViewController: UIViewController, UIGestureRecognizerDelegate {
 
-  @IBOutlet weak var topBarHeight: NSLayoutConstraint?
+  @IBOutlet public weak var topBarHeight: NSLayoutConstraint?
   let titleHeight: CGFloat = 24
   let titleVerticalPadding: CGFloat = 26
   
@@ -50,13 +50,13 @@ class KNNavigationController: UINavigationController {
 }
 
 extension KNBaseViewController {
-  @objc func dismissTutorialOverlayer() {
+  @objc open func dismissTutorialOverlayer() {
     if let view = self.tabBarController?.view.viewWithTag(1000) {
       view.removeFromSuperview()
     }
   }
 
-  @objc func quickTutorialNextAction() {}
+  @objc open func quickTutorialNextAction() {}
 
-  @objc func quickTutorialContentLabelTapped() {}
+  @objc open func quickTutorialContentLabelTapped() {}
 }

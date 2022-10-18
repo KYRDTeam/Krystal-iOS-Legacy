@@ -9,6 +9,7 @@ import UIKit
 import BigInt
 import KrystalWallets
 import Utilities
+import BaseModule
 
 //swiftlint:disable file_length
 class EarnSwapViewModel {

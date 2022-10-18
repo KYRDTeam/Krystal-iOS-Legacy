@@ -10,6 +10,7 @@ import Moya
 import BigInt
 import WalletConnectSwift
 import KrystalWallets
+import BaseModule
 
 protocol InvestCoordinatorDelegate: class {
   func investCoordinatorDidSelectManageWallet()

@@ -579,6 +579,18 @@
 		7EFFAB8528AE4F5B007CFE7D /* SeedStringCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EFFAB8328AE4F5B007CFE7D /* SeedStringCell.xib */; };
 		8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
 		938288E2ED2CF2CECDBAEA28 /* Pods_KyberNetworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */; };
+		A6042C6528FD67C8001F4C40 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6428FD67C8001F4C40 /* AppState.framework */; };
+		A6042C6628FD67C8001F4C40 /* AppState.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6428FD67C8001F4C40 /* AppState.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A6042C6828FD6820001F4C40 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6728FD6820001F4C40 /* Services.framework */; };
+		A6042C6928FD6820001F4C40 /* Services.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6728FD6820001F4C40 /* Services.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A6042C6B28FD6899001F4C40 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; };
+		A6042C6C28FD6899001F4C40 /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A6042C6E28FD6930001F4C40 /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6D28FD6930001F4C40 /* BaseWallet.framework */; };
+		A6042C6F28FD6930001F4C40 /* BaseWallet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6D28FD6930001F4C40 /* BaseWallet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A6042C7128FD69B0001F4C40 /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7028FD69B0001F4C40 /* BaseModule.framework */; };
+		A6042C7228FD69B0001F4C40 /* BaseModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7028FD69B0001F4C40 /* BaseModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A6042C7428FD6A05001F4C40 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7328FD6A05001F4C40 /* DesignSystem.framework */; };
+		A6042C7528FD6A06001F4C40 /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7328FD6A05001F4C40 /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A608C45228B726A600B0B867 /* KQRCodeReaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A608C45128B726A600B0B867 /* KQRCodeReaderDelegate.swift */; };
 		A610B2D728ED5BAD00456965 /* EditWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A610B2D628ED5BAD00456965 /* EditWalletCoordinator.swift */; };
 		A610B2DA28ED66E800456965 /* WalletBackupableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A610B2D928ED66E800456965 /* WalletBackupableProtocol.swift */; };
@@ -663,6 +675,7 @@
 		A66EC317287D20D400D15FE0 /* TxApplicationInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66EC315287D20D400D15FE0 /* TxApplicationInfoCell.xib */; };
 		A66EC31A287D258100D15FE0 /* TxListHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66EC318287D258100D15FE0 /* TxListHeaderCell.swift */; };
 		A66EC31B287D258100D15FE0 /* TxListHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66EC319287D258100D15FE0 /* TxListHeaderCell.xib */; };
+		A673A68B28FEA6B600270DA7 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = A673A68A28FEA6B600270DA7 /* TypeAliases.swift */; };
 		A6790C2D2844858D007CE0CD /* TransactionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6790C2C2844858D007CE0CD /* TransactionViewControllerTests.swift */; };
 		A6790C2F284485E0007CE0CD /* MockTransactionDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6790C2E284485E0007CE0CD /* MockTransactionDetailPresenter.swift */; };
 		A685D4912848766A0066E177 /* GasCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4902848766A0066E177 /* GasCalculator.swift */; };
@@ -834,8 +847,8 @@
 		A6F5DCAC28572EDE00FD02C9 /* EthereumEIP1559TransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCAB28572EDE00FD02C9 /* EthereumEIP1559TransactionProcessor.swift */; };
 		A6F5DCAE28572FF200FD02C9 /* NonceCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCAD28572FF200FD02C9 /* NonceCache.swift */; };
 		A6F5DCB02857367100FD02C9 /* TransferTransactionResultData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCAF2857367100FD02C9 /* TransferTransactionResultData.swift */; };
-		A6F6292D28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6292C28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift */; };
 		A6F6292028FD3E3A0085AE67 /* AppGasConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6291F28FD3E3A0085AE67 /* AppGasConfig.swift */; };
+		A6F6292D28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6292C28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift */; };
 		A6F6B95228DB1969000CB82C /* UserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6B95128DB1969000CB82C /* UserEndpoint.swift */; };
 		A6F6B95428DB1C4C000CB82C /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6B95328DB1C4C000CB82C /* UserService.swift */; };
 		A6F6B95628DB1D06000CB82C /* ConnectEVMResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6B95528DB1D06000CB82C /* ConnectEVMResponse.swift */; };
@@ -1209,8 +1222,14 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A6042C6628FD67C8001F4C40 /* AppState.framework in Embed Frameworks */,
+				A6042C7228FD69B0001F4C40 /* BaseModule.framework in Embed Frameworks */,
+				A6042C6C28FD6899001F4C40 /* Utilities.framework in Embed Frameworks */,
+				A6042C7528FD6A06001F4C40 /* DesignSystem.framework in Embed Frameworks */,
 				A6B067272859CF1900DEBAE8 /* KrystalWallets.framework in Embed Frameworks */,
+				A6042C6F28FD6930001F4C40 /* BaseWallet.framework in Embed Frameworks */,
 				A65D14DC28FD05DC00B12E84 /* SwapModule.framework in Embed Frameworks */,
+				A6042C6928FD6820001F4C40 /* Services.framework in Embed Frameworks */,
 				A64C2EF828F95001002FD64C /* Dependencies.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -1821,6 +1840,12 @@
 		97C64E77FB15CCDC5F0BA6B5 /* Pods_KrystalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KrystalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3B747245A27436E621E7E41 /* Pods-TrustUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrustUITests/Pods-TrustUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A48A17FC2CC895AF2BB871D0 /* Pods_TrustTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrustTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6042C6428FD67C8001F4C40 /* AppState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6042C6728FD6820001F4C40 /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6042C6A28FD6899001F4C40 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6042C6D28FD6930001F4C40 /* BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6042C7028FD69B0001F4C40 /* BaseModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6042C7328FD6A05001F4C40 /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A608C45128B726A600B0B867 /* KQRCodeReaderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KQRCodeReaderDelegate.swift; sourceTree = "<group>"; };
 		A610B2D628ED5BAD00456965 /* EditWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWalletCoordinator.swift; sourceTree = "<group>"; };
 		A610B2D928ED66E800456965 /* WalletBackupableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletBackupableProtocol.swift; sourceTree = "<group>"; };
@@ -1904,6 +1929,7 @@
 		A66EC315287D20D400D15FE0 /* TxApplicationInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxApplicationInfoCell.xib; sourceTree = "<group>"; };
 		A66EC318287D258100D15FE0 /* TxListHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxListHeaderCell.swift; sourceTree = "<group>"; };
 		A66EC319287D258100D15FE0 /* TxListHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxListHeaderCell.xib; sourceTree = "<group>"; };
+		A673A68A28FEA6B600270DA7 /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
 		A6790C2C2844858D007CE0CD /* TransactionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewControllerTests.swift; sourceTree = "<group>"; };
 		A6790C2E284485E0007CE0CD /* MockTransactionDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionDetailPresenter.swift; sourceTree = "<group>"; };
 		A6790C3B28476E3C007CE0CD /* KrystalWalletManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KrystalWalletManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2078,8 +2104,8 @@
 		A6F5DCAB28572EDE00FD02C9 /* EthereumEIP1559TransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumEIP1559TransactionProcessor.swift; sourceTree = "<group>"; };
 		A6F5DCAD28572FF200FD02C9 /* NonceCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonceCache.swift; sourceTree = "<group>"; };
 		A6F5DCAF2857367100FD02C9 /* TransferTransactionResultData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferTransactionResultData.swift; sourceTree = "<group>"; };
-		A6F6292C28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteWalletCoordinator.swift; sourceTree = "<group>"; };
 		A6F6291F28FD3E3A0085AE67 /* AppGasConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGasConfig.swift; sourceTree = "<group>"; };
+		A6F6292C28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteWalletCoordinator.swift; sourceTree = "<group>"; };
 		A6F6B95128DB1969000CB82C /* UserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEndpoint.swift; sourceTree = "<group>"; };
 		A6F6B95328DB1C4C000CB82C /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		A6F6B95528DB1D06000CB82C /* ConnectEVMResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectEVMResponse.swift; sourceTree = "<group>"; };
@@ -2422,9 +2448,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6042C6528FD67C8001F4C40 /* AppState.framework in Frameworks */,
+				A6042C7128FD69B0001F4C40 /* BaseModule.framework in Frameworks */,
+				A6042C6828FD6820001F4C40 /* Services.framework in Frameworks */,
+				A6042C6E28FD6930001F4C40 /* BaseWallet.framework in Frameworks */,
 				C626BEDE238D871700C96410 /* iAd.framework in Frameworks */,
+				A6042C7428FD6A05001F4C40 /* DesignSystem.framework in Frameworks */,
 				C3D9517A25FB97EC00DE3C05 /* CloudKit.framework in Frameworks */,
 				A6B067262859CF1900DEBAE8 /* KrystalWallets.framework in Frameworks */,
+				A6042C6B28FD6899001F4C40 /* Utilities.framework in Frameworks */,
 				8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */,
 				C626BEDC238D870F00C96410 /* AdSupport.framework in Frameworks */,
 				A64C2EF728F95001002FD64C /* Dependencies.framework in Frameworks */,
@@ -4954,6 +4986,7 @@
 				A65D14DF28FD0CFE00B12E84 /* AppErrorTracker.swift */,
 				A6F6291F28FD3E3A0085AE67 /* AppGasConfig.swift */,
 				A64C2EF928F95226002FD64C /* DependenciesRegister.swift */,
+				A673A68A28FEA6B600270DA7 /* TypeAliases.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -6459,6 +6492,12 @@
 		FAD3F374A5C639BD900944DB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6042C7328FD6A05001F4C40 /* DesignSystem.framework */,
+				A6042C7028FD69B0001F4C40 /* BaseModule.framework */,
+				A6042C6D28FD6930001F4C40 /* BaseWallet.framework */,
+				A6042C6A28FD6899001F4C40 /* Utilities.framework */,
+				A6042C6728FD6820001F4C40 /* Services.framework */,
+				A6042C6428FD67C8001F4C40 /* AppState.framework */,
 				A65D14DA28FD05DC00B12E84 /* SwapModule.framework */,
 				A64C2EF628F95001002FD64C /* Dependencies.framework */,
 				C3D9517925FB97EC00DE3C05 /* CloudKit.framework */,
@@ -7916,6 +7955,7 @@
 				A693AFEB2819054300880503 /* RewardHuntingCoordinator.swift in Sources */,
 				7E7ACD1128373E3100E78499 /* BridgeViewModel.swift in Sources */,
 				7EC892D327DCE7A9000C5980 /* BifinityOrderViewController.swift in Sources */,
+				A673A68B28FEA6B600270DA7 /* TypeAliases.swift in Sources */,
 				7E72917927F193FC00ADF721 /* SwitchChainCell.swift in Sources */,
 				C3554D89280E5E3F0043BC1B /* SolanaUtil.swift in Sources */,
 				7EFE71492817DC2E00476184 /* SolFeeCoordinator.swift in Sources */,

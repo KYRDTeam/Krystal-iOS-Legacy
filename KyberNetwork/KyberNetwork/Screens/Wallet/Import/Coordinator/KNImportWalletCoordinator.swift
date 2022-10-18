@@ -4,6 +4,7 @@ import UIKit
 import Moya
 import TrustKeystore
 import KrystalWallets
+import Utilities
 
 protocol KNImportWalletCoordinatorDelegate: class {
   func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType)
