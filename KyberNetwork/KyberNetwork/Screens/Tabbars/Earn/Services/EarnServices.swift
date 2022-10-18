@@ -8,9 +8,8 @@
 import Foundation
 import Moya
 
-
 enum EarnEndpoint {
-  case listOption
+  case listOption(chainId: String?)
 }
 
 extension EarnEndpoint: TargetType {
@@ -20,8 +19,8 @@ extension EarnEndpoint: TargetType {
   
   var path: String {
     switch self {
-      case .listOption:
-        return "v1/earning/options"
+    case .listOption:
+      return "v1/earning/options"
     }
   }
   
@@ -35,8 +34,12 @@ extension EarnEndpoint: TargetType {
   
   var task: Moya.Task {
     switch self {
-      case .listOption:
-        return .requestPlain
+    case .listOption(let chainId):
+      var json: JSONDictionary = [:]
+      if let chainId = chainId {
+        json["chainID"] = chainId
+      }
+      return json.isEmpty ? .requestPlain : .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
   }
   
@@ -44,20 +47,17 @@ extension EarnEndpoint: TargetType {
     var json: [String: String] = ["client": "com.kyrd.krystal.ios"]
     return json
   }
-  
-  
 }
-
 
 class EarnServices {
   let provider = MoyaProvider<EarnEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
   var currentProcess: Cancellable?
 
-  func getEarnListData(completion: @escaping ([EarnPoolModel]) -> ()) {
+  func getEarnListData(chainId: String?, completion: @escaping ([EarnPoolModel]) -> ()) {
     if let currentProcess = currentProcess {
       currentProcess.cancel()
     }
-    self.currentProcess = provider.requestWithFilter(.listOption) { result in
+    self.currentProcess = provider.requestWithFilter(.listOption(chainId: chainId)) { result in
       switch result {
       case .success(let response):
         if let json = try? response.mapJSON() as? JSONDictionary ?? [:], let jsonResults = json["result"] as? [JSONDictionary] {

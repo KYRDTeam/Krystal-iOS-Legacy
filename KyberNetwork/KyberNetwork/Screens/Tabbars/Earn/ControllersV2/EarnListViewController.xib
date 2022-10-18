@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -17,6 +17,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EarnListViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="WXG-o1-h3V" id="pjc-MS-hHn"/>
+                <outlet property="emptyView" destination="6pn-P7-ddG" id="Uug-gv-7xX"/>
                 <outlet property="searchFieldActionButton" destination="aH0-WD-QWD" id="EwC-TA-c5R"/>
                 <outlet property="searchTextField" destination="8s1-Cs-wqj" id="hgC-lh-NP1"/>
                 <outlet property="searchViewRightConstraint" destination="Ymz-7m-sYO" id="Nks-Cn-Gt3"/>
@@ -95,85 +96,59 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="fhY-Ha-Geh">
-                            <rect key="frame" x="0.0" y="131" width="390" height="713"/>
+                            <rect key="frame" x="0.0" y="84" width="390" height="760"/>
                             <color key="backgroundColor" name="innerContainerBgColor"/>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="l8D-29-hDU"/>
                                 <outlet property="delegate" destination="-1" id="iEW-xV-wN6"/>
                             </connections>
                         </tableView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pit-Nz-Zbg">
-                            <rect key="frame" x="17" y="84" width="104" height="32"/>
-                            <color key="backgroundColor" name="investButtonBgColor"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6pn-P7-ddG">
+                            <rect key="frame" x="0.0" y="84" width="390" height="760"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_earn_icon" translatesAutoresizingMaskIntoConstraints="NO" id="stn-86-osd">
+                                    <rect key="frame" x="131" y="54" width="128" height="137"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="137" id="ATk-Te-Tbn"/>
+                                        <constraint firstAttribute="width" constant="128" id="UaC-CA-fIi"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Earn is currently not supported on this chain yet." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nYF-qt-fMk">
+                                    <rect key="frame" x="42" y="209" width="306" height="50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="50" id="uFb-qu-0CV"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                    <color key="textColor" name="normalTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" name="innerContainerBgColor"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="32" id="BEA-Ky-efW"/>
-                                <constraint firstAttribute="width" constant="104" id="dnr-B6-ajZ"/>
+                                <constraint firstItem="nYF-qt-fMk" firstAttribute="leading" secondItem="6pn-P7-ddG" secondAttribute="leading" constant="42" id="BbS-aY-Qcm"/>
+                                <constraint firstAttribute="trailing" secondItem="nYF-qt-fMk" secondAttribute="trailing" constant="42" id="GFK-JO-8WJ"/>
+                                <constraint firstItem="nYF-qt-fMk" firstAttribute="centerX" secondItem="6pn-P7-ddG" secondAttribute="centerX" id="dap-9W-CFp"/>
+                                <constraint firstItem="stn-86-osd" firstAttribute="centerX" secondItem="6pn-P7-ddG" secondAttribute="centerX" id="eTZ-Fy-4ob"/>
+                                <constraint firstItem="nYF-qt-fMk" firstAttribute="top" secondItem="stn-86-osd" secondAttribute="bottom" constant="18" id="ewq-5b-pFF"/>
+                                <constraint firstItem="stn-86-osd" firstAttribute="top" secondItem="6pn-P7-ddG" secondAttribute="top" constant="54" id="gjc-GJ-E91"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
-                            <state key="normal" title="Krystal Pool">
-                                <color key="titleColor" name="normalTextColor"/>
-                            </state>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="16"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2dg-GI-7M7">
-                            <rect key="frame" x="136" y="84" width="72" height="32"/>
-                            <color key="backgroundColor" name="investButtonBgColor"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="32" id="FxP-mv-39B"/>
-                                <constraint firstAttribute="width" constant="72" id="knO-da-9jo"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
-                            <state key="normal" title="Stake">
-                                <color key="titleColor" name="normalTextColor"/>
-                            </state>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="16"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LCO-tG-SfK">
-                            <rect key="frame" x="223" y="84" width="72" height="32"/>
-                            <color key="backgroundColor" red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="72" id="c2Y-VL-NZs"/>
-                                <constraint firstAttribute="height" constant="32" id="jnu-QE-dO9"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
-                            <state key="normal" title="Lend">
-                                <color key="titleColor" name="normalTextColor"/>
-                            </state>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="16"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                        </button>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" name="innerContainerBgColor"/>
                     <constraints>
+                        <constraint firstItem="fhY-Ha-Geh" firstAttribute="top" secondItem="vlg-vF-1w7" secondAttribute="bottom" constant="15" id="5c0-Fd-u1X"/>
                         <constraint firstAttribute="trailing" secondItem="fhY-Ha-Geh" secondAttribute="trailing" id="6mQ-tH-lOn"/>
+                        <constraint firstItem="6pn-P7-ddG" firstAttribute="top" secondItem="vlg-vF-1w7" secondAttribute="bottom" constant="15" id="82Z-0c-rWh"/>
+                        <constraint firstAttribute="bottom" secondItem="6pn-P7-ddG" secondAttribute="bottom" id="9uQ-dg-w8b"/>
                         <constraint firstAttribute="bottom" secondItem="fhY-Ha-Geh" secondAttribute="bottom" id="BBt-7a-UhA"/>
                         <constraint firstItem="fhY-Ha-Geh" firstAttribute="leading" secondItem="gGa-hf-pnH" secondAttribute="leading" id="BGx-cJ-4xn"/>
-                        <constraint firstItem="LCO-tG-SfK" firstAttribute="leading" secondItem="2dg-GI-7M7" secondAttribute="trailing" constant="15" id="E5p-Jw-gQv"/>
-                        <constraint firstItem="LCO-tG-SfK" firstAttribute="centerY" secondItem="2dg-GI-7M7" secondAttribute="centerY" id="FJO-A3-a27"/>
                         <constraint firstItem="WXG-o1-h3V" firstAttribute="height" secondItem="vlg-vF-1w7" secondAttribute="height" id="FOY-Kw-Qbe"/>
-                        <constraint firstItem="2dg-GI-7M7" firstAttribute="centerY" secondItem="Pit-Nz-Zbg" secondAttribute="centerY" id="GiL-oL-fvd"/>
                         <constraint firstAttribute="trailing" secondItem="WXG-o1-h3V" secondAttribute="trailing" constant="18" id="INs-dm-F8f"/>
                         <constraint firstItem="vlg-vF-1w7" firstAttribute="top" secondItem="gGa-hf-pnH" secondAttribute="top" constant="27" id="KjT-hv-0bn"/>
-                        <constraint firstItem="Pit-Nz-Zbg" firstAttribute="leading" secondItem="gGa-hf-pnH" secondAttribute="leading" constant="17" id="RFU-OX-jRk"/>
-                        <constraint firstItem="fhY-Ha-Geh" firstAttribute="top" secondItem="Pit-Nz-Zbg" secondAttribute="bottom" constant="15" id="TOh-zv-vr5"/>
                         <constraint firstItem="vlg-vF-1w7" firstAttribute="leading" secondItem="gGa-hf-pnH" secondAttribute="leading" constant="18" id="Vca-DW-zcb"/>
                         <constraint firstAttribute="trailing" secondItem="vlg-vF-1w7" secondAttribute="trailing" constant="18" id="Ymz-7m-sYO"/>
-                        <constraint firstItem="Pit-Nz-Zbg" firstAttribute="top" secondItem="vlg-vF-1w7" secondAttribute="bottom" constant="15" id="lYe-ST-KTw"/>
-                        <constraint firstItem="2dg-GI-7M7" firstAttribute="leading" secondItem="Pit-Nz-Zbg" secondAttribute="trailing" constant="15" id="rO0-pZ-ycP"/>
+                        <constraint firstItem="6pn-P7-ddG" firstAttribute="leading" secondItem="gGa-hf-pnH" secondAttribute="leading" id="qv9-EY-eSK"/>
+                        <constraint firstAttribute="trailing" secondItem="6pn-P7-ddG" secondAttribute="trailing" id="vy3-zM-XXS"/>
                         <constraint firstItem="WXG-o1-h3V" firstAttribute="centerY" secondItem="vlg-vF-1w7" secondAttribute="centerY" id="zGc-oE-HGI"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
@@ -192,19 +167,17 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="gGa-hf-pnH" secondAttribute="trailing" id="gfP-iv-pwx"/>
                 <constraint firstItem="gGa-hf-pnH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="rOX-v5-Yri"/>
             </constraints>
-            <point key="canvasLocation" x="132" y="-11"/>
+            <point key="canvasLocation" x="130.76923076923077" y="-11.374407582938389"/>
         </view>
     </objects>
     <resources>
+        <image name="empty_earn_icon" width="92" height="125"/>
         <image name="search_blue_icon" width="16" height="16"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="innerContainerBgColor">
             <color red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="investButtonBgColor">
-            <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
