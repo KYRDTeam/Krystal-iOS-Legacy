@@ -12,7 +12,7 @@
         <array key="Karla-Medium.ttf">
             <string>Karla-Medium</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -96,7 +96,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5kV-Di-ra3">
-                                <rect key="frame" x="18.5" y="73" width="23.5" height="17"/>
+                                <rect key="frame" x="18" y="73" width="24" height="17"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -232,11 +232,22 @@
                                     <action selector="claimButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="rlt-0J-GTD"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1000 KNC" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tAY-MC-bzV">
+                                <rect key="frame" x="68" y="116" width="77" height="21"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
+                                <color key="textColor" name="normalTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="NfX-1O-HwC" firstAttribute="top" secondItem="6ac-VO-zvs" secondAttribute="bottom" constant="17" id="3mY-hj-dcL"/>
+                            <constraint firstItem="tAY-MC-bzV" firstAttribute="top" secondItem="gKf-x6-MMw" secondAttribute="bottom" id="45l-kX-woB"/>
                             <constraint firstItem="eIu-Zq-CW8" firstAttribute="centerY" secondItem="Ymx-a2-Paf" secondAttribute="centerY" id="7HN-Ka-Ahm"/>
+                            <constraint firstItem="tAY-MC-bzV" firstAttribute="leading" secondItem="gKf-x6-MMw" secondAttribute="leading" id="ATO-25-kEQ"/>
                             <constraint firstAttribute="trailing" secondItem="CU8-Nm-UDM" secondAttribute="trailing" constant="16" id="Cdo-zA-gv6"/>
                             <constraint firstItem="gKf-x6-MMw" firstAttribute="leading" secondItem="XvN-zC-v4i" secondAttribute="leading" id="D7U-Dt-dw3"/>
                             <constraint firstItem="jsx-eU-gTH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Da2-Ys-JAC" secondAttribute="leading" constant="5" id="DDi-dW-JgU"/>
@@ -245,6 +256,7 @@
                             <constraint firstItem="Hlv-a0-Xuq" firstAttribute="leading" secondItem="Da2-Ys-JAC" secondAttribute="leading" constant="18" id="JSU-yb-VAv"/>
                             <constraint firstItem="jsx-eU-gTH" firstAttribute="centerX" secondItem="5kV-Di-ra3" secondAttribute="centerX" id="KED-fe-9Ay"/>
                             <constraint firstItem="XvN-zC-v4i" firstAttribute="leading" secondItem="5kV-Di-ra3" secondAttribute="trailing" constant="26" id="MDA-vE-bV8"/>
+                            <constraint firstItem="XvN-zC-v4i" firstAttribute="leading" secondItem="Da2-Ys-JAC" secondAttribute="leading" priority="250" constant="21" id="OVS-Y5-pYr"/>
                             <constraint firstItem="Hlv-a0-Xuq" firstAttribute="top" secondItem="Da2-Ys-JAC" secondAttribute="top" constant="15" id="PZ4-2p-TUa"/>
                             <constraint firstItem="5kV-Di-ra3" firstAttribute="centerX" secondItem="Hlv-a0-Xuq" secondAttribute="centerX" id="Qb9-cc-0RZ"/>
                             <constraint firstItem="gKf-x6-MMw" firstAttribute="centerY" secondItem="jsx-eU-gTH" secondAttribute="centerY" id="Qx9-Fy-bgd"/>
@@ -292,10 +304,14 @@
             </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="addButton" destination="Ymx-a2-Paf" id="1VS-Ka-rr9"/>
+                <outlet property="apyTitleLabel" destination="5kV-Di-ra3" id="LU2-iX-i4z"/>
                 <outlet property="apyValueLabel" destination="jsx-eU-gTH" id="JyP-TX-EfY"/>
                 <outlet property="chainImageView" destination="6ac-VO-zvs" id="q1f-2v-U2j"/>
                 <outlet property="claimButton" destination="CU8-Nm-UDM" id="rym-Tt-Xod"/>
+                <outlet property="depositTitleLabelContraintWithAPYTitle" destination="MDA-vE-bV8" id="4lW-54-TdV"/>
+                <outlet property="deposited2ValueLabel" destination="tAY-MC-bzV" id="8jf-qH-mw1"/>
                 <outlet property="depositedValueLabel" destination="gKf-x6-MMw" id="eCG-Jo-Urf"/>
+                <outlet property="depostTitleLabelLeadingContraintWithSuperView" destination="OVS-Y5-pYr" id="qgE-gK-irV"/>
                 <outlet property="minusButton" destination="eIu-Zq-CW8" id="tEp-DK-HEi"/>
                 <outlet property="platformImageView" destination="cdz-dR-XeM" id="5kN-8J-p8d"/>
                 <outlet property="platformNameLabel" destination="XDs-Rc-4De" id="sWy-iO-qXa"/>
@@ -318,6 +334,9 @@
         <image name="plus_icon" width="24" height="24"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
