@@ -107,11 +107,14 @@ extension EarnListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     var cellViewModel = displayDataSource[indexPath.row]
     cellViewModel.isExpanse = !cellViewModel.isExpanse
-    self.tableView.beginUpdates()
-    if let cell = self.tableView.cellForRow(at: indexPath) as? EarnPoolViewCell {
-      animateCellHeight(cell: cell, viewModel: cellViewModel)
+    DispatchQueue.main.async {
+      self.tableView.beginUpdates()
+      if let cell = self.tableView.cellForRow(at: indexPath) as? EarnPoolViewCell {
+        self.animateCellHeight(cell: cell, viewModel: cellViewModel)
+      }
+      self.tableView.endUpdates()
     }
-    self.tableView.endUpdates()
+    
   }
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -178,7 +181,9 @@ extension EarnListViewController: UITextFieldDelegate {
   @objc func doSearch() {
     if let text = self.searchTextField.text, !text.isEmpty {
       self.displayDataSource = self.dataSource.filter({ viewModel in
-        return viewModel.earnPoolModel.token.symbol.lowercased().contains(text.lowercased())
+        let containSymbol = viewModel.earnPoolModel.token.symbol.lowercased().contains(text.lowercased())
+        let containName = viewModel.earnPoolModel.token.name.lowercased().contains(text.lowercased())
+        return containSymbol || containName
       })
       self.reloadUI()
     } else {
