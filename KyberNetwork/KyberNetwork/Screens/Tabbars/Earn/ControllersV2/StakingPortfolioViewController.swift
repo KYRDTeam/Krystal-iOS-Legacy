@@ -12,6 +12,7 @@ import SkeletonView
 class StakingPortfolioViewModel {
   var portfolio: PortfolioStaking?
   let apiService = KrystalService()
+  var searchText = ""
   
   var dataSource: Observable<([StakingPortfolioCellModel], [StakingPortfolioCellModel])> = .init(([], []))
   var error: Observable<Error?> = .init(nil)
@@ -33,10 +34,24 @@ class StakingPortfolioViewModel {
     }
     var output: [StakingPortfolioCellModel] = []
     var pending: [StakingPortfolioCellModel] = []
-    data.pendingUnstakes.forEach({ item in
+    
+    var pendingUnstakeData = data.pendingUnstakes
+    var earningBalanceData = data.earningBalances
+    
+    if !searchText.isEmpty {
+      pendingUnstakeData = pendingUnstakeData.filter({ item in
+        return item.symbol.lowercased().contains(searchText)
+      })
+      
+      earningBalanceData = earningBalanceData.filter({ item in
+        return item.stakingToken.symbol.lowercased().contains(searchText) || item.toUnderlyingToken.symbol.lowercased().contains(searchText)
+      })
+    }
+    
+    pendingUnstakeData.forEach({ item in
       pending.append(StakingPortfolioCellModel(pendingUnstake: item))
     })
-    data.earningBalances.forEach { item in
+    earningBalanceData.forEach { item in
       output.append(StakingPortfolioCellModel(earnBalance: item))
     }
     dataSource.value = (output, pending)
@@ -61,11 +76,18 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   @IBOutlet weak var portfolioTableView: UITableView!
   @IBOutlet weak var emptyViewContainer: UIView!
   
+  @IBOutlet weak var searchFieldActionButton: UIButton!
+  @IBOutlet weak var searchViewRightConstraint: NSLayoutConstraint!
+  @IBOutlet weak var cancelButton: UIButton!
+  @IBOutlet weak var searchTextField: UITextField!
+  
   let viewModel: StakingPortfolioViewModel = StakingPortfolioViewModel()
+  var timer: Timer?
   
   override func viewDidLoad() {
     super.viewDidLoad()
     registerCell()
+    searchTextField.setPlaceholder(text: Strings.searchPools, color: .Kyber.normalText)
     viewModel.dataSource.observeAndFire(on: self) { _ in
       self.portfolioTableView.reloadData()
       
@@ -109,6 +131,46 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   override func reloadWallet() {
     super.reloadWallet()
     viewModel.requestData()
+  }
+  
+  func updateUIStartSearchingMode() {
+    self.view.layoutIfNeeded()
+    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+      self.searchViewRightConstraint.constant = 77
+      self.cancelButton.isHidden = false
+      self.searchFieldActionButton.setImage(UIImage(named: "close-search-icon"), for: .normal)
+      self.view.layoutIfNeeded()
+    }
+  }
+  
+  func updateUIEndSearchingMode() {
+    self.view.layoutIfNeeded()
+    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+      self.searchViewRightConstraint.constant = 18
+      self.cancelButton.isHidden = true
+      self.searchFieldActionButton.setImage(UIImage(named: "search_blue_icon"), for: .normal)
+      self.view.endEditing(true)
+      self.view.layoutIfNeeded()
+    }
+  }
+  
+  @IBAction func onSearchButtonTapped(_ sender: Any) {
+    if !self.cancelButton.isHidden {
+      searchTextField.text = ""
+      viewModel.searchText = ""
+      reloadUI()
+    } else {
+      self.updateUIStartSearchingMode()
+    }
+  }
+  
+  @IBAction func cancelButtonTapped(_ sender: Any) {
+    self.updateUIEndSearchingMode()
+  }
+  
+  func reloadUI() {
+    viewModel.reloadDataSource()
+    portfolioTableView.reloadData()
   }
 }
 
@@ -174,5 +236,31 @@ extension StakingPortfolioViewController: SkeletonTableViewDelegate {
 extension StakingPortfolioViewController: StakingPortfolioCellDelegate {
   func warningButtonTapped() {
     self.showBottomBannerView(message: "It takes about x days to unstake. After that you can claim your rewards.")
+  }
+}
+
+extension StakingPortfolioViewController: UITextFieldDelegate {
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    self.updateUIStartSearchingMode()
+    return true
+  }
+  
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    self.updateUIEndSearchingMode()
+  }
+  
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    timer?.invalidate()
+    timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(doSearch), userInfo: nil, repeats: false)
+    return true
+  }
+  
+  @objc func doSearch() {
+    if let text = self.searchTextField.text, !text.isEmpty {
+      viewModel.searchText = text.lowercased()
+    } else {
+      viewModel.searchText = ""
+    }
+    reloadUI()
   }
 }
