@@ -229,7 +229,7 @@ extension StakingPortfolioViewController: SkeletonTableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return 140
+    return indexPath.section == 0 ? 162 : 146
   }
 }
 

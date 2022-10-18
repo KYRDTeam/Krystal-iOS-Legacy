@@ -15,6 +15,7 @@ struct StakingPortfolioCellModel {
   
   let displayAPYValue: String
   let displayDepositedValue: String
+  let displayDeposited2Value: String
   let displayType: String
   let displayTokenName: String
   let displayPlatformName: String
@@ -29,6 +30,7 @@ struct StakingPortfolioCellModel {
     self.platformLogo = earnBalance.platform.logo
     self.displayAPYValue = StringFormatter.percentString(value: earnBalance.apy)
     self.displayDepositedValue = (BigInt(earnBalance.stakingToken.balance)?.shortString(decimals: earnBalance.stakingToken.decimals) ?? "---") + " " + earnBalance.stakingToken.symbol
+    self.displayDeposited2Value = (BigInt(earnBalance.toUnderlyingToken.balance)?.shortString(decimals: earnBalance.toUnderlyingToken.decimals) ?? "---") + " " + earnBalance.toUnderlyingToken.symbol
     self.displayType = "| " + earnBalance.platform.type.capitalized
     self.displayTokenName = earnBalance.toUnderlyingToken.symbol
     self.displayPlatformName = earnBalance.platform.name + " "
@@ -42,7 +44,7 @@ struct StakingPortfolioCellModel {
     self.platformLogo = pendingUnstake.platform?.logo ?? ""
     self.displayAPYValue = "---"
     self.displayDepositedValue = (BigInt(pendingUnstake.balance)?.shortString(decimals: pendingUnstake.decimals) ?? "---") + " " + pendingUnstake.symbol
-    
+    self.displayDeposited2Value = ""
     self.displayType = "| Stake"
     self.displayTokenName = pendingUnstake.symbol
     self.displayPlatformName = (pendingUnstake.platform?.name ?? "") + " "
@@ -64,6 +66,7 @@ class StakingPortfolioCell: UITableViewCell {
   @IBOutlet weak var platformTypeLabel: UILabel!
   @IBOutlet weak var apyValueLabel: UILabel!
   @IBOutlet weak var depositedValueLabel: UILabel!
+  @IBOutlet weak var deposited2ValueLabel: UILabel!
   
   @IBOutlet weak var processingStatusLabel: UILabel!
   @IBOutlet weak var warningIcon: UIImageView!
@@ -72,6 +75,9 @@ class StakingPortfolioCell: UITableViewCell {
   @IBOutlet weak var minusButton: UIButton!
   @IBOutlet weak var warningLabelContainerView: UIView!
   @IBOutlet weak var claimButton: UIButton!
+  @IBOutlet weak var depostTitleLabelLeadingContraintWithSuperView: NSLayoutConstraint!
+  @IBOutlet weak var depositTitleLabelContraintWithAPYTitle: NSLayoutConstraint!
+  @IBOutlet weak var apyTitleLabel: UILabel!
   
   weak var delegate: StakingPortfolioCellDelegate?
   
@@ -97,6 +103,13 @@ class StakingPortfolioCell: UITableViewCell {
     
     addButton.isHidden = model.isInProcess
     minusButton.isHidden = model.isInProcess
+    deposited2ValueLabel.text = model.displayDeposited2Value
+    
+    apyTitleLabel.isHidden = model.isInProcess
+    apyValueLabel.isHidden = model.isInProcess
+    
+    depositTitleLabelContraintWithAPYTitle.priority = model.isInProcess ? UILayoutPriority(250) : UILayoutPriority(1000)
+    depostTitleLabelLeadingContraintWithSuperView.priority = model.isInProcess ? UILayoutPriority(1000) : UILayoutPriority(250)
   }
   
   @IBAction func inProcessButtonTapped(_ sender: UIButton) {
