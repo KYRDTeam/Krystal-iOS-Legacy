@@ -12,6 +12,18 @@ protocol CreateChainWalletMenuCoordinatorDelegate: AnyObject {
   func onSelectImportWallet()
 }
 
+extension CreateChainWalletMenuCoordinatorDelegate {
+  
+  func onSelectCreateNewWallet(chain: ChainType) {
+    
+  }
+  
+  func onSelectImportWallet() {
+    
+  }
+  
+}
+
 class CreateChainWalletMenuCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
   

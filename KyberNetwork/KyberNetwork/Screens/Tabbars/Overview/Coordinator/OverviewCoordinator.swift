@@ -257,17 +257,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
 }
 
-extension OverviewCoordinator: CreateChainWalletMenuCoordinatorDelegate {
-  
-  func onSelectCreateNewWallet(chain: ChainType) {
-
-  }
-  
-  func onSelectImportWallet() {
-    
-  }
-  
-}
+extension OverviewCoordinator: CreateChainWalletMenuCoordinatorDelegate { }
 
 extension OverviewCoordinator: ChartViewControllerDelegate {
   func chartViewController(_ controller: ChartViewController, run event: ChartViewEvent) {
