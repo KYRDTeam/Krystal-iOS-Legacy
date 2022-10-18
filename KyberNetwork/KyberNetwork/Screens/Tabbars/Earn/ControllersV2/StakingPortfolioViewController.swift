@@ -7,6 +7,7 @@
 
 import UIKit
 import StackViewController
+import SkeletonView
 
 class StakingPortfolioViewModel {
   var portfolio: PortfolioStaking?
@@ -15,7 +16,7 @@ class StakingPortfolioViewModel {
   
   var dataSource: Observable<([StakingPortfolioCellModel], [StakingPortfolioCellModel])> = .init(([], []))
   var error: Observable<Error?> = .init(nil)
-  var isLoading: Observable<Bool> = .init(false)
+  var isLoading: Observable<Bool> = .init(true)
   
   fileprivate func cleanAllData() {
     dataSource.value.0.removeAll()
@@ -68,13 +69,14 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     registerCell()
     viewModel.dataSource.observeAndFire(on: self) { _ in
       self.portfolioTableView.reloadData()
-      self.updateUIEmptyView()
+      
     }
     viewModel.isLoading.observeAndFire(on: self) { status in
       if status {
-        self.showLoadingHUD()
+        self.showLoadingSkeleton()
       } else {
-        self.hideLoading()
+        self.hideLoadingSkeleton()
+        self.updateUIEmptyView()
       }
     }
     viewModel.requestData()
@@ -82,21 +84,31 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    if viewModel.isEmpty() {
+    if viewModel.isEmpty() && viewModel.isLoading.value == false {
       viewModel.requestData()
     }
   }
   
   private func registerCell() {
     portfolioTableView.registerCellNib(StakingPortfolioCell.self)
+    portfolioTableView.registerCellNib(OverviewSkeletonCell.self)
   }
   
   private func updateUIEmptyView() {
     emptyViewContainer.isHidden = !viewModel.isEmpty()
   }
+  
+  func showLoadingSkeleton() {
+    let gradient = SkeletonGradient(baseColor: UIColor.Kyber.cellBackground)
+    view.showAnimatedGradientSkeleton(usingGradient: gradient)
+  }
+  
+  func hideLoadingSkeleton() {
+    view.hideSkeleton()
+  }
 }
 
-extension StakingPortfolioViewController: UITableViewDataSource {
+extension StakingPortfolioViewController: SkeletonTableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
     return viewModel.dataSource.value.1.isEmpty ? 1 : 2
   }
@@ -113,16 +125,33 @@ extension StakingPortfolioViewController: UITableViewDataSource {
     cell.delegate = self
     return cell
   }
+  
+  // MARK: - Skeleton dataSource
+  func collectionSkeletonView(_ skeletonView: UITableView, skeletonCellForRowAt indexPath: IndexPath) -> UITableViewCell? {
+    let cell = skeletonView.dequeueReusableCell(OverviewSkeletonCell.self, indexPath: indexPath)!
+    return cell
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+    return OverviewSkeletonCell.className
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UITableView, prepareCellForSkeleton cell: UITableViewCell, at indexPath: IndexPath) {
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 10
+  }
 }
 
-extension StakingPortfolioViewController: UITableViewDelegate {
+extension StakingPortfolioViewController: SkeletonTableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
   }
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
-    view.backgroundColor = .clear
+    view.backgroundColor = UIColor(hex: "1B1D1C")
     let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: 100, height: 40))
     titleLabel.center.y = view.center.y
     titleLabel.text = section == 0 ? "STAKING" : "UNSTAKING"
