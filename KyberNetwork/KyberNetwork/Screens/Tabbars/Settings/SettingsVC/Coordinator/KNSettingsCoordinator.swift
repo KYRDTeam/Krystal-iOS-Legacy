@@ -6,14 +6,7 @@ import KrystalWallets
 
 protocol KNSettingsCoordinatorDelegate: class {
   func settingsCoordinatorUserDidSelectExit()
-  func settingsCoordinatorUserDidRemoveWallet(_ wallet: KWallet)
-  func settingsCoordinatorUserDidRemoveWatchAddress(_ address: KAddress)
-  func settingsCoordinatorUserDidSelectRemoveCurrentWallet()
-  func settingsCoordinatorUserDidSelectAddWallet(type: AddNewWalletType)
-  func settingsCoordinatorDidSelectAddWallet()
-  func settingsCoordinatorDidSelectManageWallet()
   func settingsCoordinatorDidImportDeepLinkTokens(srcToken: TokenObject?, destToken: TokenObject?)
-  func settingsCoordinatorDidSelectAddChainWallet(chainType: ChainType)
 }
 
 class KNSettingsCoordinator: NSObject, Coordinator {
@@ -38,8 +31,6 @@ class KNSettingsCoordinator: NSObject, Coordinator {
     return controller
   }()
 
-  var listWalletsCoordinator: KNListWalletsCoordinator?
-
   lazy var contactVC: KNListContactViewController = {
     let controller = KNListContactViewController()
     controller.loadViewIfNeeded()
@@ -57,7 +48,6 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   }()
 
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
-//  fileprivate var manageAlertCoordinator: KNManageAlertCoordinator?
 
   var currentAddress: KAddress {
     return AppDelegate.session.address
@@ -78,7 +68,6 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   }
 
   func stop() {
-    self.listWalletsCoordinator = nil
     self.navigationController.popToRootViewController(animated: false)
   }
 
@@ -100,7 +89,7 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   }
   
   @objc func appDidSwitchAddress() {
-    self.listWalletsCoordinator?.appDidSwitchAddress()
+//    self.listWalletsCoordinator?.appDidSwitchAddress()
     self.rootViewController.coordinatorAppSwitchAddress()
   }
 
@@ -120,7 +109,6 @@ class KNSettingsCoordinator: NSObject, Coordinator {
 
   func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
     return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) ?? false
-    self.sendTokenCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
   }
   
   func openHistoryScreen() {
@@ -139,13 +127,21 @@ class KNSettingsCoordinator: NSObject, Coordinator {
       self.historyCoordinator?.start()
     }
   }
+  
+  func openWalletList() {
+    let coordinator = KNListWalletsCoordinator(navigationController: navigationController)
+    coordinator.onCompleted = { [weak self] in
+      self?.removeCoordinator(coordinator)
+    }
+    coordinate(coordinator: coordinator)
+  }
 }
 
 extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   func settingsTabViewController(_ controller: KNSettingsTabViewController, run event: KNSettingsTabViewEvent) {
     switch event {
     case .manageWallet:
-      self.settingsViewControllerWalletsButtonPressed()
+      self.openWalletList()
     case .contact:
       self.navigationController.pushViewController(self.contactVC, animated: true)
     case .support:
@@ -202,18 +198,9 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   func settingsViewControllerDidClickExit() {
     self.delegate?.settingsCoordinatorUserDidSelectExit()
   }
-
+  
   func settingsViewControllerWalletsButtonPressed() {
-    guard self.listWalletsCoordinator == nil else {
-      return
-    }
-    let coordinator = KNListWalletsCoordinator(
-      navigationController: self.navigationController,
-      session: self.session,
-      delegate: self
-    )
-    coordinator.start()
-    self.listWalletsCoordinator = coordinator
+    openWalletList()
   }
 
   func settingsViewControllerPasscodeDidChange(_ isOn: Bool) {
@@ -245,142 +232,10 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     self.navigationController.present(debugVC, animated: true, completion: nil)
   }
 
-  func settingsViewControllerBackUpButtonPressed(wallet: KWallet, addressType: KAddressType) {
-    let alertController = KNPrettyAlertController(
-      title: "Export at your own risk!",
-      isWarning: true,
-      message: "NEVER share Keystore/Private Key/Mnemonic with anyone (including Krystal). These data grant access to all your funds and they may get stolen".toBeLocalised(),
-      secondButtonTitle: NSLocalizedString("continue", value: "Continue", comment: ""),
-      firstButtonTitle: NSLocalizedString("cancel", value: "Cancel", comment: ""),
-      secondButtonAction: {
-        self.selectedWallet = wallet
-        self.selectedAddressType = addressType
-        self.showAuthPasscode()
-      }, firstButtonAction: {
-      }
-    )
-    self.navigationController.present(alertController, animated: true, completion: nil)
-    MixPanelManager.track("export_wallet_warning_pop_up_open", properties: ["screenid": "export_wallet_warning_pop_up"])
-  }
-
-  fileprivate func showActionSheetBackupPhrase(wallet: KWallet, addressType: KAddressType) {
-    self.navigationController.displayLoading()
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
-      var action = [UIAlertAction]()
-      
-      switch wallet.importType {
-      case .mnemonic:
-        action.append(UIAlertAction(
-          title: Strings.backupMnemonic,
-          style: .default,
-          handler: { _ in
-            self.backupMnemonic(wallet: wallet)
-            MixPanelManager.track("edit_wallet_export_options", properties: ["screenid": "export_wallet_pop_up", "option": "export_seeds"])
-          }
-        ))
-      case .privateKey:
-        break
-      }
-      if addressType.canExportKeystore {
-        action.append(UIAlertAction(
-          title: Strings.backupKeystore,
-          style: .default,
-          handler: { _ in
-            self.backupKeystore(wallet: wallet, addressType: addressType)
-            MixPanelManager.track("edit_wallet_export_options", properties: ["screenid": "export_wallet_pop_up", "option": "export_json"])
-          }
-        ))
-      }
-      action.append(UIAlertAction(
-        title: Strings.backupPrivateKey,
-        style: .default,
-        handler: { _ in
-          self.backupPrivateKey(wallet: wallet, addressType: addressType)
-          MixPanelManager.track("edit_wallet_export_options", properties: ["screenid": "export_wallet_pop_up", "option": "export_key"])
-        }
-      ))
-      
-      guard !action.isEmpty else { return }
-      
-      action.append(UIAlertAction(
-        title: Strings.cancel,
-        style: .cancel,
-        handler: nil)
-      )
-      
-      let alertController = KNActionSheetAlertViewController(title: "", actions: action)
-      self.navigationController.hideLoading()
-      self.navigationController.topViewController?.present(alertController, animated: true, completion: nil)
-      MixPanelManager.track("export_wallet_pop_up_open", properties: ["screenid": "export_wallet_pop_up"])
-    }
-  }
-
   fileprivate func showAuthPasscode() {
     self.passcodeCoordinator = KNPasscodeCoordinator(navigationController: self.navigationController, type: .verifyPasscode)
     self.passcodeCoordinator.delegate = self
     self.passcodeCoordinator.start()
-  }
-
-  fileprivate func backupKeystore(wallet: KWallet, addressType: KAddressType) {
-    let createPassword = KNCreatePasswordViewController(wallet: wallet, delegate: self)
-    createPassword.modalPresentationStyle = .overCurrentContext
-    createPassword.modalTransitionStyle = .crossDissolve
-    self.selectedAddressType = addressType
-    self.navigationController.topViewController?.present(createPassword, animated: true, completion: nil)
-    MixPanelManager.track("export_keystore_pop_up_open", properties: ["screenid": "export_keystore_pop_up"])
-
-  }
-
-  fileprivate func backupPrivateKey(wallet: KWallet, addressType: KAddressType) {
-    do {
-      let privateKey = try WalletManager.shared.exportPrivateKey(walletID: wallet.id, addressType: addressType)
-      MixPanelManager.track("export_private_key_open", properties: ["screenid": "export_private_key"])
-      self.openShowBackUpView(data: privateKey, wallet: wallet)
-    } catch {
-      self.navigationController.topViewController?.displayError(error: error)
-    }
-  }
-
-  fileprivate func backupMnemonic(wallet: KWallet) {
-    do {
-      let mnemonic = try WalletManager.shared.exportMnemonic(walletID: wallet.id)
-      self.openShowBackUpView(data: mnemonic, wallet: wallet)
-      MixPanelManager.track("export_mnemonic_open", properties: ["screenid": "export_mnemonic"])
-    } catch {
-      self.navigationController.topViewController?.displayError(error: error)
-    }
-  }
-
-  fileprivate func openShowBackUpView(data: String, wallet: KWallet) {
-    guard let address = WalletManager.shared.getAllAddresses(walletID: wallet.id).first?.addressString else {
-      return
-    }
-    let showBackUpVC = KNShowBackUpDataViewController(
-      address: address,
-      backupData: data
-    )
-    showBackUpVC.loadViewIfNeeded()
-    self.navigationController.pushViewController(showBackUpVC, animated: true)
-  }
-  
-  fileprivate func exportDataString(_ value: String, address: KAddress) {
-    let fileName = "krystal_backup_\(address.addressString)_\(DateFormatterUtil.shared.backupDateFormatter.string(from: Date())).json"
-    let url = URL(fileURLWithPath: NSTemporaryDirectory().appending(fileName))
-    do {
-      try value.data(using: .utf8)!.write(to: url)
-    } catch { return }
-
-    let activityViewController = UIActivityViewController(
-      activityItems: [url],
-      applicationActivities: nil
-    )
-    activityViewController.completionWithItemsHandler = { _, result, _, error in
-      do { try FileManager.default.removeItem(at: url)
-      } catch { }
-    }
-    activityViewController.popoverPresentationController?.sourceView = navigationController.view
-    activityViewController.popoverPresentationController?.sourceRect = navigationController.view.centerRect
-    self.navigationController.topViewController?.present(activityViewController, animated: true, completion: nil)
   }
 
   func appCoordinatorPendingTransactionsDidUpdate() {
@@ -397,51 +252,6 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
 
   func appCoordinatorDidUpdateChain() {
     self.sendTokenCoordinator?.appCoordinatorDidUpdateChain()
-  }
-  
-  func appCoordinatorDidSelectRenameWallet() {
-    self.listWalletsCoordinator?.startEditWallet()
-  }
-  
-  func appCoordinatorDidSelectExportWallet() {
-    if currentAddress.isWatchWallet {
-      return
-    }
-    guard let wallet = WalletManager.shared.wallet(forAddress: currentAddress) else {
-      return
-    }
-    self.settingsViewControllerBackUpButtonPressed(wallet: wallet, addressType: currentAddress.addressType)
-  }
-  
-  func appCoordinatorDidSelectDeleteWallet() {
-    let alert = UIAlertController(title: "", message: NSLocalizedString("do.you.want.to.remove.this.wallet", value: "Do you want to remove this wallet?", comment: ""), preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cacnel", comment: ""), style: .cancel, handler: nil))
-    alert.addAction(UIAlertAction(title: NSLocalizedString("remove", value: "Remove", comment: ""), style: .destructive, handler: { _ in
-      self.delegate?.settingsCoordinatorUserDidSelectRemoveCurrentWallet()
-    }))
-    self.navigationController.present(alert, animated: true, completion: nil)
-  }
-}
-
-extension KNSettingsCoordinator: KNCreatePasswordViewControllerDelegate {
-  func createPasswordUserDidFinish(_ password: String, wallet: KWallet) {
-    guard let keystoreAddressType = self.selectedAddressType else {
-      return
-    }
-    guard let address = WalletManager.shared.address(walletID: wallet.id, addressType: keystoreAddressType) else {
-      return
-    }
-    do {
-      let key = try WalletManager.shared.exportKeystore(address: address, password: password)
-      self.exportDataString(key, address: address)
-    } catch {
-      self.navigationController.topViewController?.displayError(error: error)
-    }
-    self.selectedAddressType = nil
-  }
-
-  func createPasswordDidCancel(sender: KNCreatePasswordViewController) {
-    sender.dismiss(animated: true, completion: nil)
   }
 }
 
@@ -489,7 +299,7 @@ extension KNSettingsCoordinator: KNNewContactViewControllerDelegate {
 }
 
 extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
-  func passcodeCoordinatorDidCreatePasscode() {
+  func passcodeCoordinatorDidCreatePasscode(coordinator: KNPasscodeCoordinator) {
     self.passcodeCoordinator.stop {
       self.navigationController.showSuccessTopBannerMessage(
         with: Strings.success,
@@ -499,62 +309,22 @@ extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
     }
   }
 
-  func passcodeCoordinatorDidEvaluatePIN() {
-    if case .verifyPasscode = self.passcodeCoordinator.type {
-      self.passcodeCoordinator.stop {
-        if let wallet = self.selectedWallet, let selectedAddressType = self.selectedAddressType {
-          self.showActionSheetBackupPhrase(wallet: wallet, addressType: selectedAddressType)
-          self.selectedWallet = nil
-          self.selectedAddressType = nil
-        }
-        if let wallet = self.deleteWallet {
-          try? WalletManager.shared.remove(wallet: wallet)
-          self.delegate?.settingsCoordinatorUserDidRemoveWallet(wallet)
-          self.deleteWallet = nil
-          self.listWalletsCoordinator?.rootViewController.reloadData()
-        }
-      }
-    } else {
-      self.passcodeCoordinator.stop {
-        self.passcodeCoordinator = KNPasscodeCoordinator(
-          navigationController: self.navigationController,
-          type: .setPasscode(cancellable: true)
-        )
-        self.passcodeCoordinator.delegate = self
-        self.passcodeCoordinator.start()
-      }
+  func passcodeCoordinatorDidEvaluatePIN(coordinator: KNPasscodeCoordinator) {
+    self.passcodeCoordinator.stop {
+      self.passcodeCoordinator = KNPasscodeCoordinator(
+        navigationController: self.navigationController,
+        type: .setPasscode(cancellable: true)
+      )
+      self.passcodeCoordinator.delegate = self
+      self.passcodeCoordinator.start()
     }
   }
 
-  func passcodeCoordinatorDidCancel() {
+  func passcodeCoordinatorDidCancel(coordinator: KNPasscodeCoordinator) {
     self.passcodeCoordinator.stop {
       self.selectedWallet = nil
       self.deleteWallet = nil
     }
-  }
-}
-
-extension KNSettingsCoordinator: KNListWalletsCoordinatorDelegate {
-  func listWalletsCoordinatorDidClickBack() {
-    self.listWalletsCoordinator?.stop()
-    self.listWalletsCoordinator = nil
-  }
-
-  func listWalletsCoordinatorDidRemoveWatchAddress(_ address: KAddress) {
-    self.delegate?.settingsCoordinatorUserDidRemoveWatchAddress(address)
-  }
-
-  func listWalletsCoordinatorDidSelectRemoveWallet(_ wallet: KWallet) {
-    self.deleteWallet = wallet
-    self.showAuthPasscode()
-  }
-
-  func listWalletsCoordinatorDidSelectAddWallet(type: AddNewWalletType) {
-    self.delegate?.settingsCoordinatorUserDidSelectAddWallet(type: type)
-  }
-
-  func listWalletsCoordinatorShouldBackUpWallet(_ wallet: KWallet, addressType: KAddressType) {
-    self.settingsViewControllerBackUpButtonPressed(wallet: wallet, addressType: addressType)
   }
 }
 
@@ -565,9 +335,6 @@ extension KNSettingsCoordinator: MFMailComposeViewControllerDelegate {
 }
 
 extension KNSettingsCoordinator: KNSendTokenViewCoordinatorDelegate {
-  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.settingsCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
   
   func sendTokenCoordinatorDidClose() {
     self.sendTokenCoordinator = nil
@@ -580,21 +347,10 @@ extension KNSettingsCoordinator: KNSendTokenViewCoordinatorDelegate {
   func sendTokenViewCoordinatorSelectOpenHistoryList() {
     self.openHistoryScreen()
   }
-  
-  func sendTokenCoordinatorDidSelectManageWallet() {
-    self.delegate?.settingsCoordinatorDidSelectManageWallet()
-  }
-  
-  func sendTokenCoordinatorDidSelectAddWallet() {
-    self.delegate?.settingsCoordinatorDidSelectAddWallet()
-  }
 }
 
 extension KNSettingsCoordinator: KNHistoryCoordinatorDelegate {
-  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.settingsCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
-  
+
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.appCoordinatorDidSelectAddToken(token)
   }
@@ -603,11 +359,4 @@ extension KNSettingsCoordinator: KNHistoryCoordinatorDelegate {
     self.historyCoordinator = nil
   }
   
-  func historyCoordinatorDidSelectManageWallet() {
-    self.delegate?.settingsCoordinatorDidSelectManageWallet()
-  }
-  
-  func historyCoordinatorDidSelectAddWallet() {
-    self.delegate?.settingsCoordinatorDidSelectAddWallet()
-  }
 }

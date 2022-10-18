@@ -77,9 +77,10 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
   }
   
   @IBAction func onAddWalletButtonTapped(_ sender: Any) {
-    present(addWalletCoordinator.navigationController, animated: false) {
-      self.addWalletCoordinator.start(type: .full)
-    }
+    guard let parent = navigationController?.tabBarController else { return }
+    let coordinator = KNAddNewWalletCoordinator(parentViewController: parent)
+    coordinator.start(type: .full)
+    addCoordinator(coordinator)
     
     if self.isKind(of: OverviewBrowsingViewController.self) {
       MixPanelManager.track("home_connect_wallet", properties: ["screenid": "homepage"])
@@ -121,9 +122,6 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
     AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
     AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
     browsingView?.isHidden = !KNGeneralProvider.shared.isBrowsingMode
-    if AppDelegate.shared.coordinator.tabbarController != nil {
-      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-    }
   }
   
   override func addNewWallet(watchAddress: KAddress, chain: ChainType) {
@@ -135,9 +133,5 @@ class InAppBrowsingViewController: BaseWalletOrientedViewController {
     KrystalService().sendRefCode(address: currentAddress, code.uppercased()) { _, message in
       AppDelegate.shared.coordinator.tabbarController.showTopBannerView(message: message)
     }
-  }
-
-  override func removeWallet(wallet: KWallet) {
-
   }
 }

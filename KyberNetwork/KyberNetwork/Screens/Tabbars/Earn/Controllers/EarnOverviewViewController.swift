@@ -11,7 +11,6 @@ import KrystalWallets
 
 protocol EarnOverviewViewControllerDelegate: class {
   func earnOverviewViewControllerDidSelectExplore(_ controller: EarnOverviewViewController)
-  func earnOverviewViewControllerAddChainWallet(_ controller: EarnOverviewViewController, chainType: ChainType)
 }
 
 class EarnOverviewViewController: InAppBrowsingViewController {

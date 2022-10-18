@@ -580,6 +580,9 @@
 		8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
 		938288E2ED2CF2CECDBAEA28 /* Pods_KyberNetworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */; };
 		A608C45228B726A600B0B867 /* KQRCodeReaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A608C45128B726A600B0B867 /* KQRCodeReaderDelegate.swift */; };
+		A610B2D728ED5BAD00456965 /* EditWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A610B2D628ED5BAD00456965 /* EditWalletCoordinator.swift */; };
+		A610B2DA28ED66E800456965 /* WalletBackupableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A610B2D928ED66E800456965 /* WalletBackupableProtocol.swift */; };
+		A610B2DD28ED684400456965 /* ExportWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A610B2DC28ED684400456965 /* ExportWalletCoordinator.swift */; };
 		A6156B4E2885188700276120 /* CameraHoleCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6156B4D2885188700276120 /* CameraHoleCover.swift */; };
 		A6156B5128856E1700276120 /* CustomSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6156B5028856E1700276120 /* CustomSegmentView.swift */; };
 		A6156B5328856E4F00276120 /* CustomSegmentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6156B5228856E4F00276120 /* CustomSegmentView.xib */; };
@@ -814,12 +817,16 @@
 		A6E6C9E62817FE0B00EEB2E6 /* KyberNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9E42817FE0900EEB2E6 /* KyberNetworkService.swift */; };
 		A6E6C9E72817FE0B00EEB2E6 /* KNInternalProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9E52817FE0A00EEB2E6 /* KNInternalProvider.swift */; };
 		A6E6C9EC2818056800EEB2E6 /* SolanaTransactionObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9EB2818056700EEB2E6 /* SolanaTransactionObject.swift */; };
+		A6E754B228EEAF93008B6535 /* AddRealWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E754B128EEAF93008B6535 /* AddRealWalletCoordinator.swift */; };
+		A6E754B428EECBB0008B6535 /* FinishWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E754B328EECBB0008B6535 /* FinishWalletCoordinator.swift */; };
+		A6F1AF1B28ED7AB500E951C0 /* AddWatchWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F1AF1A28ED7AB500E951C0 /* AddWatchWalletCoordinator.swift */; };
 		A6F5DC9F2855D7C000FD02C9 /* KAddress+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DC9E2855D7C000FD02C9 /* KAddress+Equatable.swift */; };
 		A6F5DCA528562E9400FD02C9 /* ChainType+KAddressType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCA428562E9400FD02C9 /* ChainType+KAddressType.swift */; };
 		A6F5DCAA2857129E00FD02C9 /* EthereumWeb3Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCA92857129E00FD02C9 /* EthereumWeb3Service.swift */; };
 		A6F5DCAC28572EDE00FD02C9 /* EthereumEIP1559TransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCAB28572EDE00FD02C9 /* EthereumEIP1559TransactionProcessor.swift */; };
 		A6F5DCAE28572FF200FD02C9 /* NonceCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCAD28572FF200FD02C9 /* NonceCache.swift */; };
 		A6F5DCB02857367100FD02C9 /* TransferTransactionResultData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F5DCAF2857367100FD02C9 /* TransferTransactionResultData.swift */; };
+		A6F6292D28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6292C28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift */; };
 		A6F6B95228DB1969000CB82C /* UserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6B95128DB1969000CB82C /* UserEndpoint.swift */; };
 		A6F6B95428DB1C4C000CB82C /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6B95328DB1C4C000CB82C /* UserService.swift */; };
 		A6F6B95628DB1D06000CB82C /* ConnectEVMResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6B95528DB1D06000CB82C /* ConnectEVMResponse.swift */; };
@@ -1804,6 +1811,9 @@
 		A3B747245A27436E621E7E41 /* Pods-TrustUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrustUITests/Pods-TrustUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A48A17FC2CC895AF2BB871D0 /* Pods_TrustTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrustTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A608C45128B726A600B0B867 /* KQRCodeReaderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KQRCodeReaderDelegate.swift; sourceTree = "<group>"; };
+		A610B2D628ED5BAD00456965 /* EditWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWalletCoordinator.swift; sourceTree = "<group>"; };
+		A610B2D928ED66E800456965 /* WalletBackupableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletBackupableProtocol.swift; sourceTree = "<group>"; };
+		A610B2DC28ED684400456965 /* ExportWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportWalletCoordinator.swift; sourceTree = "<group>"; };
 		A6156B4D2885188700276120 /* CameraHoleCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraHoleCover.swift; sourceTree = "<group>"; };
 		A6156B5028856E1700276120 /* CustomSegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentView.swift; sourceTree = "<group>"; };
 		A6156B5228856E4F00276120 /* CustomSegmentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomSegmentView.xib; sourceTree = "<group>"; };
@@ -2042,12 +2052,16 @@
 		A6E6C9E42817FE0900EEB2E6 /* KyberNetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KyberNetworkService.swift; sourceTree = "<group>"; };
 		A6E6C9E52817FE0A00EEB2E6 /* KNInternalProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNInternalProvider.swift; sourceTree = "<group>"; };
 		A6E6C9EB2818056700EEB2E6 /* SolanaTransactionObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaTransactionObject.swift; sourceTree = "<group>"; };
+		A6E754B128EEAF93008B6535 /* AddRealWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRealWalletCoordinator.swift; sourceTree = "<group>"; };
+		A6E754B328EECBB0008B6535 /* FinishWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishWalletCoordinator.swift; sourceTree = "<group>"; };
+		A6F1AF1A28ED7AB500E951C0 /* AddWatchWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWatchWalletCoordinator.swift; sourceTree = "<group>"; };
 		A6F5DC9E2855D7C000FD02C9 /* KAddress+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KAddress+Equatable.swift"; sourceTree = "<group>"; };
 		A6F5DCA428562E9400FD02C9 /* ChainType+KAddressType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChainType+KAddressType.swift"; sourceTree = "<group>"; };
 		A6F5DCA92857129E00FD02C9 /* EthereumWeb3Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumWeb3Service.swift; sourceTree = "<group>"; };
 		A6F5DCAB28572EDE00FD02C9 /* EthereumEIP1559TransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumEIP1559TransactionProcessor.swift; sourceTree = "<group>"; };
 		A6F5DCAD28572FF200FD02C9 /* NonceCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonceCache.swift; sourceTree = "<group>"; };
 		A6F5DCAF2857367100FD02C9 /* TransferTransactionResultData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferTransactionResultData.swift; sourceTree = "<group>"; };
+		A6F6292C28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteWalletCoordinator.swift; sourceTree = "<group>"; };
 		A6F6B95128DB1969000CB82C /* UserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEndpoint.swift; sourceTree = "<group>"; };
 		A6F6B95328DB1C4C000CB82C /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		A6F6B95528DB1D06000CB82C /* ConnectEVMResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectEVMResponse.swift; sourceTree = "<group>"; };
@@ -2869,6 +2883,7 @@
 			children = (
 				255A70ED214FB908005D7A6A /* KNEditWalletViewController.swift */,
 				255A70EE214FB908005D7A6A /* KNEditWalletViewController.xib */,
+				A610B2D628ED5BAD00456965 /* EditWalletCoordinator.swift */,
 			);
 			path = EditWallet;
 			sourceTree = "<group>";
@@ -2966,6 +2981,7 @@
 		25682B6C20EE0315009738C4 /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
+				A610B2DE28ED7A6000456965 /* Coordinators */,
 				C3A241982567ABBE0073703C /* WalletsList */,
 				C6FE417E2383A0AB0096AAD8 /* WalletConnect */,
 				253F50E321E5B4E70068813D /* PromoCode */,
@@ -3159,6 +3175,7 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				A610B2D828ED66D600456965 /* Protocols */,
 				A69C5BD128D1BA73000DE825 /* Notification */,
 				A6390B0F28ACADC70083EF4C /* Migrating */,
 				A65C7A6D2818E146000FA9CE /* WebView */,
@@ -3324,6 +3341,7 @@
 		257C9FCB2078FB2000EE0128 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				A610B2DB28ED683000456965 /* ExportWallet */,
 				A6D9BE65282923630009EEB4 /* CreateChainWalletMenu */,
 				C322EB0825B1A285009746FB /* CreateWalletMenu */,
 				C31BE89525B044960070A832 /* AddWatchWallet */,
@@ -4799,6 +4817,33 @@
 				DE9ED3278AEF3C5F1C272771 /* Pods-KrystalWallets.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		A610B2D828ED66D600456965 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				A610B2D928ED66E800456965 /* WalletBackupableProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		A610B2DB28ED683000456965 /* ExportWallet */ = {
+			isa = PBXGroup;
+			children = (
+				A610B2DC28ED684400456965 /* ExportWalletCoordinator.swift */,
+			);
+			path = ExportWallet;
+			sourceTree = "<group>";
+		};
+		A610B2DE28ED7A6000456965 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				A6F1AF1A28ED7AB500E951C0 /* AddWatchWalletCoordinator.swift */,
+				A6E754B128EEAF93008B6535 /* AddRealWalletCoordinator.swift */,
+				A6E754B328EECBB0008B6535 /* FinishWalletCoordinator.swift */,
+				A6F6292C28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift */,
+			);
+			path = Coordinators;
 			sourceTree = "<group>";
 		};
 		A6156B4F28856C4400276120 /* CustomSegmentView */ = {
@@ -7574,6 +7619,7 @@
 				C3F367BE25C3F63E003207B7 /* EarnSelectTableViewCell.swift in Sources */,
 				A6C561AE27F4755800E88ED6 /* UICollectionView+register.swift in Sources */,
 				25BA01CE20BFEBA700053863 /* KNTransactionStatusView.swift in Sources */,
+				A6F1AF1B28ED7AB500E951C0 /* AddWatchWalletCoordinator.swift in Sources */,
 				7EC4C6EB27168A7800486C00 /* OverviewMainViewModel.swift in Sources */,
 				2546C6D7221185640076E52B /* TransactionItemState.swift in Sources */,
 				25F96F7B215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.swift in Sources */,
@@ -7675,6 +7721,7 @@
 				25F9C7672213D0D20001064D /* UIColor.swift in Sources */,
 				A655908F28B60CC200925B65 /* BaseWalletOrientedViewController.swift in Sources */,
 				A6B3CD582811C07C005D0D66 /* PendingHistoryTransactonViewModel.swift in Sources */,
+				A6F6292D28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift in Sources */,
 				25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */,
 				A6DA40EF27F6E1450078C58E /* ExploreBannersCell.swift in Sources */,
 				A608C45228B726A600B0B867 /* KQRCodeReaderDelegate.swift in Sources */,
@@ -7721,6 +7768,7 @@
 				A6B0673D2859F43A00DEBAE8 /* KrystalTransactionService.swift in Sources */,
 				C30F78E6271414AD00E3233D /* EIP1559Transaction.swift in Sources */,
 				A6BE04B4288904C900E63714 /* StringUtils.swift in Sources */,
+				A610B2DD28ED684400456965 /* ExportWalletCoordinator.swift in Sources */,
 				251ABCBF205790B10069687F /* KNJSONLoaderUtil.swift in Sources */,
 				7EA10B7C289A7B650036E696 /* SearchTokenViewCell.swift in Sources */,
 				2561454420C6442400FB00CF /* KNContact.swift in Sources */,
@@ -7761,6 +7809,7 @@
 				29FA00CC201CA63C002F7DC5 /* Method.swift in Sources */,
 				257A37A0205CFEF300E86794 /* KNTransactionReceipt.swift in Sources */,
 				2963A28A1FC402940095447D /* LocalizedOperationObject.swift in Sources */,
+				A6E754B428EECBB0008B6535 /* FinishWalletCoordinator.swift in Sources */,
 				257A379B205CDA8100E86794 /* KNTransactionCoordinator.swift in Sources */,
 				A6DA40E527F6DAB30078C58E /* Strings.swift in Sources */,
 				A6DA40E927F6E08F0078C58E /* Dynamic.swift in Sources */,
@@ -7845,6 +7894,7 @@
 				7ED5FA8527D214D000F0CB8E /* SelectNetworkCell.swift in Sources */,
 				25931F1420AEEBF000BAC774 /* KNBackUpWalletViewModel.swift in Sources */,
 				25C45ADA20AD40F400CDA1FF /* KNImportPrivateKeyViewController.swift in Sources */,
+				A6E754B228EEAF93008B6535 /* AddRealWalletCoordinator.swift in Sources */,
 				29EB102A1F6CBD23000907A4 /* UIAlertController.swift in Sources */,
 				C32656AE266F546100C69561 /* Action.swift in Sources */,
 				A6E6C9E02817A3DA00EEB2E6 /* TransactionListEmptyCell.swift in Sources */,
@@ -7963,6 +8013,7 @@
 				C35E9DF327DB56F800E1E7CE /* PromoCodeCell.swift in Sources */,
 				25CC0AAA2058F1A00009D0D5 /* KNGetUserCapInWei.swift in Sources */,
 				291A1B691F980E3400ADEC80 /* StackViewController.swift in Sources */,
+				A610B2D728ED5BAD00456965 /* EditWalletCoordinator.swift in Sources */,
 				7EFE440027144533006CF502 /* RewardsViewController.swift in Sources */,
 				25E9E1FE208F139E00A9090D /* KNPasscodeViewController.swift in Sources */,
 				29B6AED61F7CA4A700EC6DE3 /* TransactionConfiguration.swift in Sources */,
@@ -8058,6 +8109,7 @@
 				257C9FD32078FB5700EE0128 /* KNSettingsCoordinator.swift in Sources */,
 				C31F74BB25DD32A6008B21F7 /* OverviewDepositTableViewCell.swift in Sources */,
 				255F6F2020BBC49800EF808F /* KNWalletQRCodeViewModel.swift in Sources */,
+				A610B2DA28ED66E800456965 /* WalletBackupableProtocol.swift in Sources */,
 				2963B6AF1F9823E6003063C1 /* UnconfirmedTransaction.swift in Sources */,
 				25CC0AA92058F1A00009D0D5 /* KNGetExpectedRate.swift in Sources */,
 				C3F367B925C3CC58003207B7 /* TokenData.swift in Sources */,

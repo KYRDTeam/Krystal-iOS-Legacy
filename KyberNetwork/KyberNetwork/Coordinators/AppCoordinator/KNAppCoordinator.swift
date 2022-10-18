@@ -49,8 +49,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   }()
 
   lazy var addWalletCoordinator: KNAddNewWalletCoordinator = {
-    let coordinator = KNAddNewWalletCoordinator()
-    coordinator.delegate = self
+    let coordinator = KNAddNewWalletCoordinator(parentViewController: navigationController)
     return coordinator
   }()
   

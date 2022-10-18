@@ -941,25 +941,6 @@ extension KNExchangeTokenCoordinator: KNSearchTokenViewControllerDelegate {
   }
 }
 
-// MARK: Add new wallet delegate
-extension KNExchangeTokenCoordinator: KNAddNewWalletCoordinatorDelegate {
-  func addNewWalletCoordinator(didAdd wallet: KWallet, chain: ChainType) {
-    delegate?.exchangeTokenCoordinator(didAdd: wallet, chain: chain)
-  }
-  
-  func addNewWalletCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {
-    delegate?.exchangeTokenCoordinator(didAdd: watchAddress, chain: chain)
-  }
-  
-  func addNewWalletCoordinatorDidSendRefCode(_ code: String) {
-    self.delegate?.exchangeTokenCoodinatorDidSendRefCode(code.uppercased())
-  }
-
-  func addNewWalletCoordinator(remove wallet: KWallet) {
-    self.delegate?.exchangeTokenCoordinatorRemoveWallet(wallet)
-  }
-}
-
 extension KNExchangeTokenCoordinator: KNHistoryCoordinatorDelegate {
   func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
     self.delegate?.exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
@@ -1336,9 +1317,6 @@ extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
 }
 
 extension KNExchangeTokenCoordinator: KNSendTokenViewCoordinatorDelegate {
-  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
   
   func sendTokenCoordinatorDidClose() {
     self.sendTokenCoordinator = nil

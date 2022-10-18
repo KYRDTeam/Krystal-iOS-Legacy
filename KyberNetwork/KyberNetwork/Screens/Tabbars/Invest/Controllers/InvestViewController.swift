@@ -21,7 +21,6 @@ enum InvestViewEvent {
   case buyCrypto
   case rewardHunting
   case bridge
-  case addChainWallet(chainType: ChainType)
   case scanner
 }
 

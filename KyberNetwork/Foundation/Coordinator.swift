@@ -13,6 +13,7 @@ protocol Coordinator: class {
 }
 
 extension Coordinator {
+  
   func addCoordinator(_ coordinator: Coordinator) {
     coordinators.append(coordinator)
   }

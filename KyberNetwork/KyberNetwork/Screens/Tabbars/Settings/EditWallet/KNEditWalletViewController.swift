@@ -10,17 +10,23 @@ enum KNEditWalletViewEvent {
   case delete(wallet: KWallet)
 }
 
-protocol KNEditWalletViewControllerDelegate: class {
-  func editWalletViewController(_ controller: KNEditWalletViewController, run event: KNEditWalletViewEvent)
-}
-
 struct KNEditWalletViewModel {
+  
   let wallet: KWallet
   let addressType: KAddressType
+  var actions: Actions
 
-  init(wallet: KWallet, addressType: KAddressType) {
+  init(wallet: KWallet, addressType: KAddressType, actions: Actions) {
     self.wallet = wallet
     self.addressType = addressType
+    self.actions = actions
+  }
+  
+  struct Actions {
+    var goBack: () -> ()
+    var updateName: (String) -> ()
+    var backup: () -> ()
+    var delete: () -> ()
   }
 }
 
@@ -36,7 +42,6 @@ class KNEditWalletViewController: KNBaseViewController {
   @IBOutlet weak var doneButton: UIButton!
   
   fileprivate let viewModel: KNEditWalletViewModel
-  weak var delegate: KNEditWalletViewControllerDelegate?
 
   init(viewModel: KNEditWalletViewModel) {
     self.viewModel = viewModel
@@ -70,31 +75,31 @@ class KNEditWalletViewController: KNBaseViewController {
 
   @IBAction func backButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
-    self.delegate?.editWalletViewController(self, run: .back)
+    self.viewModel.actions.goBack()
   }
 
   @IBAction func showBackUpPhraseButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
-    self.delegate?.editWalletViewController(self, run: .backup(wallet: self.viewModel.wallet, addressType: viewModel.addressType))
+    self.viewModel.actions.backup()
     MixPanelManager.track("edit_wallet_export", properties: ["screenid": "edit_wallet"])
   }
 
   @IBAction func deleteButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
-    self.delegate?.editWalletViewController(self, run: .delete(wallet: self.viewModel.wallet))
+    self.viewModel.actions.delete()
     MixPanelManager.track("edit_wallet_delete", properties: ["screenid": "edit_wallet"])
   }
 
   @IBAction func saveButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
     let newName = self.walletNameTextField.text ?? Strings.untitled
-    self.delegate?.editWalletViewController(self, run: .update(wallet: self.viewModel.wallet, name: newName))
+    self.viewModel.actions.updateName(newName)
     MixPanelManager.track("edit_wallet_done", properties: ["screenid": "edit_wallet"])
   }
 
   @IBAction func edgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
     if sender.state == .ended {
-      self.delegate?.editWalletViewController(self, run: .back)
+      self.viewModel.actions.goBack()
     }
   }
 }

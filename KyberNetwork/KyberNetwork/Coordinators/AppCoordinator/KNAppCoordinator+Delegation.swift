@@ -104,19 +104,6 @@ extension KNAppCoordinator: EarnCoordinatorDelegate {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.appCoordinatorDidSelectAddToken(token)
   }
-  
-  func earnCoordinatorDidSelectAddWallet() {
-    self.addNewWallet(type: .full)
-  }
-  
-  func earnCoordinatorDidSelectManageWallet() {
-    self.tabbarController.selectedIndex = 4
-    self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
-  }
-  
-  func earnCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.addNewWallet(type: .chain(chainType: chainType))
-  }
 }
 
 extension KNAppCoordinator: OverviewCoordinatorDelegate {
@@ -136,21 +123,6 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
   }
   
   func overviewCoordinatorDidStart() {
-  }
-
-  func overviewCoordinatorDidSelectExportWallet() {
-    self.tabbarController.selectedIndex = 4
-    self.settingsCoordinator?.appCoordinatorDidSelectExportWallet()
-  }
-
-  func overviewCoordinatorDidSelectDeleteWallet() {
-    self.tabbarController.selectedIndex = 4
-    self.settingsCoordinator?.appCoordinatorDidSelectDeleteWallet()
-  }
-
-  func overviewCoordinatorDidSelectRenameWallet() {
-    self.tabbarController.selectedIndex = 4
-    self.settingsCoordinator?.appCoordinatorDidSelectRenameWallet()
   }
 
   func overviewCoordinatorDidChangeHideBalanceStatus(_ status: Bool) {
@@ -177,7 +149,7 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
     }
     self.tabbarController.selectedIndex = 1
   }
-
+  
   func overviewCoordinatorOpenCreateChainWalletMenu(chainType: ChainType) {
     self.addNewWallet(type: .chain(chainType: chainType))
   }
@@ -253,7 +225,7 @@ extension KNAppCoordinator: KNLoadBalanceCoordinatorDelegate {
 
 // MARK: Settings Coordinator Delegate
 extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
-
+  
   func settingsCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
     self.addNewWallet(type: .chain(chainType: chainType))
   }
@@ -310,32 +282,6 @@ extension KNAppCoordinator: KNTransactionStatusCoordinatorDelegate {
   }
 }
 
-// MARK: Add wallet coordinator delegate
-extension KNAppCoordinator: KNAddNewWalletCoordinatorDelegate {
-  
-  func addNewWalletCoordinator(didAdd wallet: KWallet, chain: ChainType) {
-    switchWallet(wallet: wallet, chain: chain)
-    if AppDelegate.shared.coordinator.tabbarController != nil {
-      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-    }
-  }
-  
-  func addNewWalletCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {
-    switchToWatchAddress(address: watchAddress, chain: chain)
-    if AppDelegate.shared.coordinator.tabbarController != nil {
-      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-    }
-  }
-  
-  func addNewWalletCoordinatorDidSendRefCode(_ code: String) {
-    self.sendRefCode(code.uppercased())
-  }
-
-  func addNewWalletCoordinator(remove wallet: KWallet) {
-
-  }
-}
-
 extension KNAppCoordinator: KNPromoCodeCoordinatorDelegate {
   func promoCodeCoordinatorDidCreate(_ address: KAddress, expiredDate: TimeInterval, destinationToken: String?, destAddress: String?, name: String?) {
     self.navigationController.popViewController(animated: true) {
@@ -352,44 +298,15 @@ extension KNAppCoordinator: KNPromoCodeCoordinatorDelegate {
 
 // MARK: Passcode coordinator delegate
 extension KNAppCoordinator: KNPasscodeCoordinatorDelegate {
-  func passcodeCoordinatorDidCancel() {
+  func passcodeCoordinatorDidCancel(coordinator: KNPasscodeCoordinator) {
     self.authenticationCoordinator.stop {}
   }
-  func passcodeCoordinatorDidEvaluatePIN() {
+  func passcodeCoordinatorDidEvaluatePIN(coordinator: KNPasscodeCoordinator) {
     self.authenticationCoordinator.stop {}
   }
-  func passcodeCoordinatorDidCreatePasscode() {
+  func passcodeCoordinatorDidCreatePasscode(coordinator: KNPasscodeCoordinator) {
     self.authenticationCoordinator.stop {}
   }
-}
-
-//extension KNAppCoordinator: KNExploreCoordinatorDelegate {
-//  func exploreCoordinatorOpenManageOrder() {
-////    self.tabbarController.selectedIndex = 2
-////    self.limitOrderCoordinator?.appCoordinatorOpenManageOrder()
-//  }
-//
-//  func exploreCoordinatorOpenSwap(from: String, to: String) {
-//    self.tabbarController.selectedIndex = 1
-//    self.exchangeCoordinator?.appCoordinatorPushNotificationOpenSwap(from: from, to: to)
-//  }
-//}
-
-extension KNAppCoordinator: SwapV2CoordinatorDelegate {
-  
-  func swapV2CoordinatorDidSelectManageWallets() {
-    self.tabbarController.selectedIndex = 4
-    self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
-  }
-  
-  func swapV2CoordinatorDidSelectAddWallet() {
-    self.addNewWallet(type: .full)
-  }
-  
-  func swapV2CoordinatorDidSelectAddWalletForChain(chain: ChainType) {
-    self.addNewWallet(type: .chain(chainType: chain))
-  }
-
 }
 
 extension KNAppCoordinator: UITabBarControllerDelegate {

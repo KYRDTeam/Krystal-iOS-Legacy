@@ -10,18 +10,14 @@ import KrystalWallets
 import QRCodeReaderViewController
 import WalletConnectSwift
 
-class BaseWalletOrientedViewController: KNBaseViewController {
+class BaseWalletOrientedViewController: KNBaseViewController, Coordinator {
   @IBOutlet weak var walletButton: UIButton?
   @IBOutlet weak var backupIcon: UIImageView?
   @IBOutlet weak var chainIcon: UIImageView?
   @IBOutlet weak var chainButton: UIButton?
   @IBOutlet weak var walletView: UIView?
-
-  lazy var addWalletCoordinator: KNAddNewWalletCoordinator = {
-    let coordinator = KNAddNewWalletCoordinator()
-    coordinator.delegate = self
-    return coordinator
-  }()
+  
+  var coordinators: [Coordinator] = []
   
   var supportAllChainOption: Bool {
     return false
@@ -114,6 +110,10 @@ class BaseWalletOrientedViewController: KNBaseViewController {
     reloadWallet()
   }
   
+  func start() {
+    fatalError("Do not call start function on this")
+  }
+  
   func openWalletConnect() {
     ScannerModule.start(previousScreen: ScreenName.explore, viewController: self, acceptedResultTypes: [.walletConnect], scanModes: [.qr]) { [weak self] text, type in
       guard let self = self else { return }
@@ -163,9 +163,6 @@ class BaseWalletOrientedViewController: KNBaseViewController {
     AppDelegate.shared.coordinator.tabbarController.selectedIndex = 0
     onChainSelected(chain: chain)
     didSelectWallet(wallet: wallet)
-    if AppDelegate.shared.coordinator.tabbarController != nil {
-      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-    }
   }
   
   func addNewWallet(watchAddress: KAddress, chain: ChainType) {
@@ -178,26 +175,29 @@ class BaseWalletOrientedViewController: KNBaseViewController {
       AppDelegate.shared.coordinator.tabbarController.showTopBannerView(message: message)
     }
   }
-
-  func removeWallet(wallet: KWallet) {
-
-  }
 }
 
 extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
+  
   func didSelectWallet(wallet: KWallet) {
     didSelectWallet(wallet: wallet, isCreatedFromBrowsing: false)
   }
   
   func didSelectAddWallet() {
-    present(addWalletCoordinator.navigationController, animated: false) {
-      self.addWalletCoordinator.start(type: .full)
-    }
+    guard let parent = navigationController?.tabBarController else { return }
+    let coordinator = KNAddNewWalletCoordinator(parentViewController: parent)
+    coordinator.start(type: .full)
+    addCoordinator(coordinator)
   }
   
   func didSelectAddWatchWallet() {
-    let container = self.presentedViewController == nil ? self : self.presentedViewController
-    addWalletCoordinator.showCreateWalletWalletPopup(container: container!)
+    guard let tabBarController = tabBarController else {
+      return
+    }
+    tabBarController.dismiss(animated: true) {
+        let coordinator = AddWatchWalletCoordinator(parentViewController: tabBarController, editingAddress: nil)
+        self.coordinate(coordinator: coordinator)
+    }
   }
   
   func didSelectWallet(wallet: KWallet, isCreatedFromBrowsing: Bool = false) {
@@ -227,24 +227,6 @@ extension BaseWalletOrientedViewController: WalletListV2ViewControllerDelegate {
       guard let chain = ChainType.allCases.first(where: { $0 != .all && $0.addressType == address.addressType }) else { return }
       AppDelegate.shared.coordinator.switchToWatchAddress(address: address, chain: chain)
     }
-  }
-  
-}
-
-extension BaseWalletOrientedViewController: KNAddNewWalletCoordinatorDelegate {
-  func addNewWalletCoordinator(didAdd wallet: KWallet, chain: ChainType) {
-    addNewWallet(wallet: wallet, chain: chain)
-  }
-  
-  func addNewWalletCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {
-    addNewWallet(watchAddress: watchAddress, chain: chain)  }
-  
-  func addNewWalletCoordinatorDidSendRefCode(_ code: String) {
-    addNewWalletDidSendRefCode(code)
-  }
-
-  func addNewWalletCoordinator(remove wallet: KWallet) {
-    removeWallet(wallet: wallet)
   }
   
 }

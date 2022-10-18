@@ -4,10 +4,10 @@ import UIKit
 import TrustKeystore
 import KrystalWallets
 
-protocol KNCreatePasswordViewControllerDelegate: class {
-  func createPasswordUserDidFinish(_ password: String, wallet: KWallet)
-  func createPasswordDidCancel(sender: KNCreatePasswordViewController)
-}
+//protocol KNCreatePasswordViewControllerDelegate: class {
+//  func createPasswordUserDidFinish(_ password: String, wallet: KWallet)
+//  func createPasswordDidCancel(sender: KNCreatePasswordViewController)
+//}
 
 class KNCreatePasswordViewController: KNBaseViewController {
 
@@ -24,13 +24,12 @@ class KNCreatePasswordViewController: KNBaseViewController {
   @IBOutlet weak var warningMessageLabel: UILabel!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
 
-  fileprivate weak var delegate: KNCreatePasswordViewControllerDelegate?
-  fileprivate let wallet: KWallet
   let transitor = TransitionDelegate()
+  
+  var onCancel: () -> () = {}
+  var onPasswordCreated: (_ password: String) -> () = { _ in }
 
-  init(wallet: KWallet, delegate: KNCreatePasswordViewControllerDelegate) {
-    self.delegate = delegate
-    self.wallet = wallet
+  init() {
     super.init(nibName: "KNCreatePasswordViewController", bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
@@ -87,7 +86,8 @@ class KNCreatePasswordViewController: KNBaseViewController {
       || touchedPoint.x > self.containerView.frame.maxX
       || touchedPoint.y < self.containerView.frame.minY
       || touchedPoint.y > self.containerView.frame.maxY {
-      self.delegate?.createPasswordDidCancel(sender: self)
+      dismiss(animated: true)
+      onCancel()
     }
   }
 
@@ -99,7 +99,7 @@ class KNCreatePasswordViewController: KNBaseViewController {
       return
     }
     self.dismiss(animated: true) {
-      self.delegate?.createPasswordUserDidFinish(password, wallet: self.wallet)
+      self.onPasswordCreated(password)
     }
   }
 }

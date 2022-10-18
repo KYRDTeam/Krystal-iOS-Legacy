@@ -185,11 +185,15 @@ extension KNTransactionHistoryCoordinator: WalletsListViewControllerDelegate {
       qrcode.delegate = self
       self.navigationController.present(qrcode, animated: true, completion: nil)
     case .manageWallet:
-      self.delegate?.historyCoordinatorDidSelectManageWallet()
+//      self.delegate?.historyCoordinatorDidSelectManageWallet()
+      // TODO: New List wallet
+      ()
     case .didSelect(let address):
       return
     case .addWallet:
-      self.delegate?.historyCoordinatorDidSelectAddWallet()
+      // TODO: New List wallet
+//      self.delegate?.historyCoordinatorDidSelectAddWallet()
+      ()
     }
   }
 }

@@ -11,7 +11,6 @@ import UIKit
 enum AddWalletViewControllerEvent {
   case createWallet
   case importWallet
-  case importWatchWallet
   case close
 }
 
@@ -19,15 +18,14 @@ protocol AddWalletViewControllerDelegate: class {
   func addWalletViewController(_ controller: AddWalletViewController, run event: AddWalletViewControllerEvent)
 }
 
-
 class AddWalletViewController: KNBaseViewController {
   weak var delegate: AddWalletViewControllerDelegate?
   var isCloseByGesture: Bool = true
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    if AppDelegate.shared.coordinator.tabbarController != nil {
-      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = true
-    }
+    
+    navigationController?.setNavigationBarHidden(true, animated: true)
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -54,10 +52,8 @@ class AddWalletViewController: KNBaseViewController {
   
   @IBAction func onCloseButtonTapped(_ sender: Any) {
     isCloseByGesture = false
-    self.navigationController?.popViewController(animated: true, completion: {
-      DispatchQueue.main.async {
-        self.delegate?.addWalletViewController(self, run: .close)
-      }
+    self.navigationController?.popViewController(animated: false, completion: {
+      self.delegate?.addWalletViewController(self, run: .close)
     })
   }
 }

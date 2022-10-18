@@ -12,6 +12,18 @@ protocol CreateChainWalletMenuCoordinatorDelegate: AnyObject {
   func onSelectImportWallet()
 }
 
+extension CreateChainWalletMenuCoordinatorDelegate {
+  
+  func onSelectCreateNewWallet(chain: ChainType) {
+    
+  }
+  
+  func onSelectImportWallet() {
+    
+  }
+  
+}
+
 class CreateChainWalletMenuCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
   
@@ -20,6 +32,8 @@ class CreateChainWalletMenuCoordinator: Coordinator {
   var viewController: UIViewController?
   weak var delegate: CreateChainWalletMenuCoordinatorDelegate?
   var transitionDelegate = TransitionDelegate()
+  
+  var onCompleted: (() -> ())?
   
   init(parentViewController: UIViewController, chainType: ChainType, delegate: CreateChainWalletMenuCoordinatorDelegate?) {
     self.parentViewController = parentViewController
@@ -56,12 +70,14 @@ class CreateChainWalletMenuCoordinator: Coordinator {
     parentViewController.dismiss(animated: true) { [weak self] in
       guard let self = self else { return }
       self.delegate?.onSelectCreateNewWallet(chain: self.chainType)
+      self.onCompleted?()
     }
   }
   
   func selectImportWallet() {
     parentViewController.dismiss(animated: true) { [weak self] in
       self?.delegate?.onSelectImportWallet()
+      self?.onCompleted?()
     }
     
   }

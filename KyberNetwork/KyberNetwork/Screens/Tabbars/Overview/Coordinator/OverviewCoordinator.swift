@@ -21,9 +21,6 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidSelectDepositMore(tokenAddress: String)
   func overviewCoordinatorDidSelectAddToken(_ token: TokenObject)
   func overviewCoordinatorDidChangeHideBalanceStatus(_ status: Bool)
-  func overviewCoordinatorDidSelectRenameWallet()
-  func overviewCoordinatorDidSelectExportWallet()
-  func overviewCoordinatorDidSelectDeleteWallet()
   func overviewCoordinatorDidStart()
   func overviewCoordinatorDidPullToRefresh(mode: ViewMode, overviewMode: OverviewMode)
   func overviewCoordinatorBuyCrypto()
@@ -250,7 +247,17 @@ class OverviewCoordinator: NSObject, Coordinator {
       self.historyCoordinator?.start()
     }
   }
+  
+  func openAddChainWalletMenu(chain: ChainType) {
+    let coordinator = CreateChainWalletMenuCoordinator(parentViewController: navigationController, chainType: chain, delegate: self)
+    coordinator.onCompleted = { [weak self] in
+      self?.coordinate(coordinator: coordinator)
+    }
+    coordinate(coordinator: coordinator)
+  }
 }
+
+extension OverviewCoordinator: CreateChainWalletMenuCoordinatorDelegate { }
 
 extension OverviewCoordinator: ChartViewControllerDelegate {
   func chartViewController(_ controller: ChartViewController, run event: ChartViewEvent) {
@@ -505,10 +512,7 @@ extension OverviewCoordinator: OverviewDepositViewControllerDelegate {
 }
 
 extension OverviewCoordinator: KNSendTokenViewCoordinatorDelegate {
-  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chainType)
-  }
-  
+
   func sendTokenCoordinatorDidClose() {
     self.sendCoordinator = nil
   }
@@ -519,14 +523,6 @@ extension OverviewCoordinator: KNSendTokenViewCoordinatorDelegate {
   
   func sendTokenViewCoordinatorSelectOpenHistoryList() {
     self.openHistoryScreen()
-  }
-
-  func sendTokenCoordinatorDidSelectManageWallet() {
-    self.delegate?.overviewCoordinatorDidSelectManageWallet()
-  }
-  
-  func sendTokenCoordinatorDidSelectAddWallet() {
-    self.delegate?.overviewCoordinatorDidSelectAddWallet()
   }
 }
 
@@ -666,16 +662,52 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       controller.present(activityViewController, animated: true, completion: nil)
     }))
     actionController.addAction(Action(ActionData(title: "Rename Wallet", image: UIImage(named: "rename_actionsheet_icon")!), style: .default, handler: { _ in
-      self.delegate?.overviewCoordinatorDidSelectRenameWallet()
+      if self.currentAddress.isWatchWallet {
+        let coordinator = AddWatchWalletCoordinator(parentViewController: self.navigationController, editingAddress: self.currentAddress)
+        coordinator.onCompleted = { [weak self] in
+          self?.removeCoordinator(coordinator)
+        }
+        self.coordinate(coordinator: coordinator)
+      } else {
+        guard let wallet = WalletManager.shared.getWallet(id: self.currentAddress.walletID) else {
+          return
+        }
+        let coordinator = EditWalletCoordinator(
+          navigationController: self.navigationController,
+          wallet: wallet,
+          addressType: KNGeneralProvider.shared.currentChain.addressType
+        )
+        coordinator.onCompleted = { [weak self] _ in
+          self?.removeCoordinator(coordinator)
+        }
+        self.coordinate(coordinator: coordinator)
+      }
     }))
     actionController.addAction(Action(ActionData(title: "Show History", image: UIImage(named: "history_actionsheet_icon")!), style: .default, handler: { _ in
       self.openHistoryScreen()
     }))
-    actionController.addAction(Action(ActionData(title: "Export Wallet", image: UIImage(named: "export_actionsheet_icon")!), style: .default, handler: { _ in
-      self.delegate?.overviewCoordinatorDidSelectExportWallet()
-    }))
+    if !currentAddress.isWatchWallet {
+      actionController.addAction(Action(ActionData(title: "Export Wallet", image: UIImage(named: "export_actionsheet_icon")!), style: .default, handler: { _ in
+        guard let wallet = WalletManager.shared.getWallet(id: self.currentAddress.walletID) else {
+          return
+        }
+        let coordinator = ExportWalletCoordinator(
+          navigationController: self.navigationController,
+          wallet: wallet,
+          addressType: KNGeneralProvider.shared.currentChain.addressType
+        )
+        coordinator.coordinate(coordinator: coordinator)
+      }))
+    }
     actionController.addAction(Action(ActionData(title: "DELETE", image: UIImage(named: "delete_actionsheet_icon")!), style: .destructive, handler: { _ in
-      self.delegate?.overviewCoordinatorDidSelectDeleteWallet()
+      guard let wallet = WalletManager.shared.getWallet(id: self.currentAddress.walletID) else {
+        return
+      }
+      let coordinator = DeleteWalletCoordinator(navigationController: self.navigationController, wallet: wallet)
+      coordinator.onCompleted = { [weak self] in
+        self?.removeCoordinator(coordinator)
+      }
+      self.coordinate(coordinator: coordinator)
     }))
     actionController.addAction(Action(ActionData(title: KNGeneralProvider.shared.currentChain.blockExploreName(), image: UIImage(named: "etherscan_actionsheet_icon")!), style: .default, handler: { _ in
       let url = "\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(self.currentAddress.addressString)"
@@ -821,7 +853,6 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     case .importWallet(let privateKey, let chain):
       let coordinator = KNImportWalletCoordinator(navigationController: navigationController)
       self.importWalletCoordinator = coordinator
-      coordinator.delegate = self
       coordinator.startImportFlow(privateKey: privateKey, chain: chain)
     case .openPromotion(let code):
       delegate?.overviewCoordinatorOpenPromotion(code: code)
@@ -834,24 +865,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
   }
 }
 
-extension OverviewCoordinator: KNImportWalletCoordinatorDelegate {
-  
-  func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
-    delegate?.overviewCoordinatorDidImportWallet(wallet: wallet, chainType: chain)
-    navigationController.popViewController(animated: true, completion: nil)
-  }
-  
-  func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType) {
-    
-  }
-  
-  func importWalletCoordinatorDidClose() {
-    
-  }
-  
-  func importWalletCoordinatorDidSendRefCode(_ code: String) {
-    
-  }
+extension OverviewCoordinator {
 
   func loadMultichainAssetsData(completion: @escaping ([ChainBalanceModel]) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
