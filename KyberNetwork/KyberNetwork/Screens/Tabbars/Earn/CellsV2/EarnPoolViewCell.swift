@@ -72,14 +72,16 @@ class EarnPoolViewCell: UITableViewCell {
   }
     
   func updateUIExpanse(viewModel: EarnPoolViewCellViewModel) {
-    tableViewHeightConstraint.constant = viewModel.isExpanse ? 246 : 0
-    tableView.isHidden = !viewModel.isExpanse
-    dashView.isHidden = !viewModel.isExpanse
-    tvlValueLabel.isHidden = viewModel.isExpanse
-    apyValueLabel.isHidden = viewModel.isExpanse
-    tvlLabel.isHidden = viewModel.isExpanse
-    apyLabel.isHidden = viewModel.isExpanse
-    arrowUpImage.isHidden = !viewModel.isExpanse
+    DispatchQueue.main.async {
+      self.tableViewHeightConstraint.constant = viewModel.isExpanse ? 246 : 0
+      self.tableView.isHidden = !viewModel.isExpanse
+      self.dashView.isHidden = !viewModel.isExpanse
+      self.tvlValueLabel.isHidden = viewModel.isExpanse
+      self.apyValueLabel.isHidden = viewModel.isExpanse
+      self.tvlLabel.isHidden = viewModel.isExpanse
+      self.apyLabel.isHidden = viewModel.isExpanse
+      self.arrowUpImage.isHidden = !viewModel.isExpanse
+    }
   }
 }
 
