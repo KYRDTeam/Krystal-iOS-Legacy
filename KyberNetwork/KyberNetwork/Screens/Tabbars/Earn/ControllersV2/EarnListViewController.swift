@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class EarnListViewController: InAppBrowsingViewController {
   @IBOutlet weak var searchTextField: UITextField!
@@ -22,6 +23,10 @@ class EarnListViewController: InAppBrowsingViewController {
     fetchData()
     setupUI()
   }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+  }
 
   func setupUI() {
     self.searchTextField.setPlaceholder(text: Strings.searchPools, color: .Kyber.normalText)
@@ -35,6 +40,7 @@ class EarnListViewController: InAppBrowsingViewController {
   
   func fetchData(chainId: Int = KNGeneralProvider.shared.currentChain.getChainId()) {
     let service = EarnServices()
+    showLoading()
     service.getEarnListData(chainId: nil) { listData in
       var data: [EarnPoolViewCellViewModel] = []
       listData.forEach { earnPoolModel in
@@ -42,6 +48,7 @@ class EarnListViewController: InAppBrowsingViewController {
       }
       self.dataSource = data
       self.displayDataSource = data
+      self.hideLoading()
       self.reloadUI()
     }
   }
@@ -123,6 +130,33 @@ extension EarnListViewController: UITableViewDelegate {
     }
   }
 }
+
+extension EarnListViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
+
+  func showLoading() {
+    let gradient = SkeletonGradient(baseColor: UIColor.Kyber.cellBackground)
+    view.showAnimatedGradientSkeleton(usingGradient: gradient)
+  }
+
+  func hideLoading() {
+    view.hideSkeleton()
+  }
+
+  func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 10
+  }
+
+  func collectionSkeletonView(_ skeletonView: UITableView, skeletonCellForRowAt indexPath: IndexPath) -> UITableViewCell? {
+    let cell = skeletonView.dequeueReusableCell(EarnPoolViewCell.self, indexPath: indexPath)!
+    return cell
+  }
+
+  func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+    return EarnPoolViewCell.className
+  }
+
+}
+
 
 extension EarnListViewController: UITextFieldDelegate {
   
