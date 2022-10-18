@@ -98,6 +98,9 @@
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="fhY-Ha-Geh">
                             <rect key="frame" x="0.0" y="84" width="390" height="760"/>
                             <color key="backgroundColor" name="innerContainerBgColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="l8D-29-hDU"/>
                                 <outlet property="delegate" destination="-1" id="iEW-xV-wN6"/>
@@ -156,6 +159,7 @@
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                             <integer key="value" value="16"/>
                         </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                     </userDefinedRuntimeAttributes>
                 </view>
             </subviews>
@@ -167,6 +171,9 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="gGa-hf-pnH" secondAttribute="trailing" id="gfP-iv-pwx"/>
                 <constraint firstItem="gGa-hf-pnH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="rOX-v5-Yri"/>
             </constraints>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+            </userDefinedRuntimeAttributes>
             <point key="canvasLocation" x="130.76923076923077" y="-11.374407582938389"/>
         </view>
     </objects>

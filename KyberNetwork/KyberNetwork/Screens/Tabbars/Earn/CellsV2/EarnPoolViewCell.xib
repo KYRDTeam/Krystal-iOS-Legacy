@@ -32,6 +32,9 @@
                                     <constraint firstAttribute="width" constant="24" id="joH-qa-e1n"/>
                                     <constraint firstAttribute="height" constant="24" id="yyu-lp-NN4"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sim-e5-SjW">
                                 <rect key="frame" x="33" y="28" width="14" height="14"/>
@@ -42,6 +45,9 @@
                                             <constraint firstAttribute="width" constant="12" id="gDH-bd-Bqh"/>
                                             <constraint firstAttribute="height" constant="12" id="vxC-8X-a5U"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" name="mainViewBgColor"/>
@@ -58,37 +64,53 @@
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="3"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MATIC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YMp-Iy-D7C">
-                                <rect key="frame" x="55" y="17.666666666666668" width="54" height="21.000000000000004"/>
+                                <rect key="frame" x="55" y="17.666666666666668" width="50" height="21.000000000000004"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dsD-bV-J4V">
-                                <rect key="frame" x="135.33333333333334" y="19.666666666666664" width="27.333333333333343" height="16.666666666666664"/>
+                                <rect key="frame" x="148.66666666666666" y="19.666666666666664" width="23.666666666666657" height="16.666666666666664"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                 <color key="textColor" name="normalTextColor"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5.67%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u3I-aW-w4R">
-                                <rect key="frame" x="167.66666666666666" y="17.666666666666668" width="53.333333333333343" height="21.000000000000004"/>
+                                <rect key="frame" x="177.33333333333334" y="17.666666666666668" width="45.333333333333343" height="21.000000000000004"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <color key="textColor" name="buttonBackgroundColor"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TVL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uOx-64-HRJ">
-                                <rect key="frame" x="243.99999999999997" y="19.666666666666664" width="24.666666666666657" height="16.666666666666664"/>
+                                <rect key="frame" x="245.66666666666666" y="19.666666666666664" width="21.666666666666657" height="16.666666666666664"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                 <color key="textColor" name="normalTextColor"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$30K" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BE0-7W-VuF">
-                                <rect key="frame" x="273.66666666666669" y="17.666666666666668" width="42.333333333333314" height="21.000000000000004"/>
+                                <rect key="frame" x="272.33333333333331" y="17.666666666666668" width="43.666666666666686" height="21.000000000000004"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="zkV-H8-IJj">
                                 <rect key="frame" x="0.0" y="58" width="334" height="150"/>
@@ -147,6 +169,7 @@
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                 <integer key="value" value="16"/>
                             </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </view>
                 </subviews>
@@ -157,8 +180,14 @@
                     <constraint firstAttribute="trailing" secondItem="wNl-t0-sKw" secondAttribute="trailing" constant="18" id="xc4-4g-TWa"/>
                     <constraint firstItem="wNl-t0-sKw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="ysZ-gR-WrJ"/>
                 </constraints>
+                <userDefinedRuntimeAttributes>
+                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                </userDefinedRuntimeAttributes>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="apyLabel" destination="dsD-bV-J4V" id="DVs-pv-5bR"/>
                 <outlet property="apyValueLabel" destination="u3I-aW-w4R" id="drs-h1-sIn"/>
