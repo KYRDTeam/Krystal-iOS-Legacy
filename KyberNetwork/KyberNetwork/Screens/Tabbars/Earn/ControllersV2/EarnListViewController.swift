@@ -107,14 +107,11 @@ extension EarnListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     var cellViewModel = displayDataSource[indexPath.row]
     cellViewModel.isExpanse = !cellViewModel.isExpanse
-    DispatchQueue.main.async {
-      self.tableView.beginUpdates()
-      if let cell = self.tableView.cellForRow(at: indexPath) as? EarnPoolViewCell {
-        self.animateCellHeight(cell: cell, viewModel: cellViewModel)
-      }
-      self.tableView.endUpdates()
+    self.tableView.beginUpdates()
+    if let cell = self.tableView.cellForRow(at: indexPath) as? EarnPoolViewCell {
+      animateCellHeight(cell: cell, viewModel: cellViewModel)
     }
-    
+    self.tableView.endUpdates()
   }
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -123,12 +120,12 @@ extension EarnListViewController: UITableViewDelegate {
   }
   
   func animateCellHeight(cell: EarnPoolViewCell, viewModel: EarnPoolViewCellViewModel) {
+    self.view.layoutIfNeeded()
     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
       var rect = cell.frame
       rect.size.height = viewModel.height()
       cell.frame = rect
       cell.updateUIExpanse(viewModel: viewModel)
-      self.view.endEditing(true)
       self.view.layoutIfNeeded()
     }
   }
