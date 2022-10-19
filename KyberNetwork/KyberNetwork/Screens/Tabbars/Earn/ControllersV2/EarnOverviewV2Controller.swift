@@ -38,6 +38,11 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
     setupPageViewController()
   }
   
+  @objc override func onAppSwitchChain() {
+    super.onAppSwitchChain()
+    viewModel.appDidSwitchChain()
+  }
+  
   func initChildViewControllers() {
     let earnPoolVC = EarnListViewController.instantiateFromNib()
     let portfolioVC = StakingPortfolioViewController.instantiateFromNib()
