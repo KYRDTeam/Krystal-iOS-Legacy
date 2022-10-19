@@ -28,6 +28,10 @@ class EarnListViewController: InAppBrowsingViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
   }
+  
+  override func onAppSwitchChain() {
+    fetchData(chainId: KNGeneralProvider.shared.currentChain.getChainId())
+  }
 
   func setupUI() {
     self.searchTextField.setPlaceholder(text: Strings.searchPools, color: .Kyber.normalText)
@@ -39,10 +43,14 @@ class EarnListViewController: InAppBrowsingViewController {
     self.tableView.reloadData()
   }
   
-  func fetchData(chainId: Int = KNGeneralProvider.shared.currentChain.getChainId()) {
+  func fetchData(chainId: Int? = nil) {
     let service = EarnServices()
     showLoading()
-    service.getEarnListData(chainId: nil) { listData in
+    var chainIdString: String?
+    if let chainId = chainId {
+      chainIdString = "\(chainId)"
+    }
+    service.getEarnListData(chainId:  chainIdString) { listData in
       var data: [EarnPoolViewCellViewModel] = []
       listData.forEach { earnPoolModel in
         data.append(EarnPoolViewCellViewModel(earnPool: earnPoolModel))
@@ -185,7 +193,7 @@ extension EarnListViewController: UITextFieldDelegate {
       })
       self.reloadUI()
     } else {
-      self.fetchData()
+      self.fetchData(chainId: KNGeneralProvider.shared.currentChain.getChainId())
     }
   }
 }

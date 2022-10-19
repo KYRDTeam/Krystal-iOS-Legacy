@@ -46,6 +46,10 @@ extension EarnOverViewModel {
     )
   }
   
+  func appDidSwitchChain() {
+    checkPendingTx()
+  }
+  
   @objc func appDidSwitchAddress() {
     checkPendingTx()
   }
