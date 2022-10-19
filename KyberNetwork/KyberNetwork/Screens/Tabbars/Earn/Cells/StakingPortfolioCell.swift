@@ -33,7 +33,7 @@ struct StakingPortfolioCellModel {
     self.displayDeposited2Value = (BigInt(earnBalance.toUnderlyingToken.balance)?.shortString(decimals: earnBalance.toUnderlyingToken.decimals) ?? "---") + " " + earnBalance.toUnderlyingToken.symbol
     self.displayType = "| " + earnBalance.platform.type.capitalized
     self.displayTokenName = earnBalance.toUnderlyingToken.symbol
-    self.displayPlatformName = earnBalance.platform.name + " "
+    self.displayPlatformName = earnBalance.platform.name.uppercased()
     self.isClaimable = false
   }
   
@@ -47,7 +47,7 @@ struct StakingPortfolioCellModel {
     self.displayDeposited2Value = ""
     self.displayType = "| Stake"
     self.displayTokenName = pendingUnstake.symbol
-    self.displayPlatformName = (pendingUnstake.platform?.name ?? "") + " "
+    self.displayPlatformName = pendingUnstake.platform?.name.uppercased() ?? ""
     self.isClaimable = pendingUnstake.extraData?.status == "claimable"
   }
 }
