@@ -249,7 +249,9 @@ PODS:
     - Web3/Core
 
 DEPENDENCIES:
+  - APIKit
   - APIKit (~> 3.2.1)
+  - BigInt
   - BigInt (~> 4.0)
   - Charts
   - CryptoSwift
@@ -263,15 +265,18 @@ DEPENDENCIES:
   - IQKeyboardManager (~> 6.5)
   - JavaScriptKit (~> 1.0.0)
   - JdenticonSwift (~> 0.0.1)
+  - JSONRPCKit
   - JSONRPCKit (~> 3.0.0)
   - KeychainSwift
   - KeychainSwift (~> 13.0.0)
+  - Kingfisher
   - Kingfisher (~> 7.0)
   - LaunchDarkly (~> 5.4)
   - Lokalise (~> 0.8.1)
   - lottie-ios
   - MBProgressHUD (~> 1.1.0)
   - Mixpanel-swift
+  - Moya
   - Moya (~> 10.0.1)
   - Nimble
   - OneSignal (< 4.0, >= 3.0.0)
@@ -285,6 +290,7 @@ DEPENDENCIES:
   - Starscream (~> 3.1)
   - StatefulViewController (~> 3.0)
   - SwiftLint (~> 0.29.4)
+  - SwiftMessages
   - SwiftMessages (~> 5.0.1)
   - Swinject
   - SwipeCellKit
@@ -455,6 +461,6 @@ SPEC CHECKSUMS:
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: b383dbde9d319a5025689186be19ee11d27b335e
+PODFILE CHECKSUM: 67823778c49b37a4685544041eae29e1c1b9d52b
 
 COCOAPODS: 1.11.3

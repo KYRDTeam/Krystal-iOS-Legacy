@@ -3,6 +3,7 @@
 import UIKit
 import BigInt
 import KrystalWallets
+import Utilities
 
 struct KNTransactionDetailsViewModel {
 

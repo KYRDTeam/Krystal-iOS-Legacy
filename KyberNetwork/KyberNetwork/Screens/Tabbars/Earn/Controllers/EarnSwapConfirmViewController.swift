@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import Utilities
 
 struct EarnSwapConfirmViewModel {
   let platform: LendingPlatformData

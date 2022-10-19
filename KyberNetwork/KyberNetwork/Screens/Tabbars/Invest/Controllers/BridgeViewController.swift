@@ -8,6 +8,8 @@
 import UIKit
 import BigInt
 import KrystalWallets
+import Utilities
+import BaseModule
 
 enum BridgeEvent {
   case openHistory
@@ -80,13 +82,13 @@ class BridgeViewController: InAppBrowsingViewController {
     self.delegate?.bridgeViewControllerController(self, run: .checkAllowance(token: currentSourceToken))
   }
   
-  override func openWalletList() {
-    super.openWalletList()
+  override func handleWalletButtonTapped() {
+    super.handleWalletButtonTapped()
     MixPanelManager.track("bridge_select_wallet", properties: ["screenid": "bridge"])
   }
   
-  override func openSwitchChain() {
-    super.openSwitchChain()
+  override func handleChainButtonTapped() {
+    super.handleChainButtonTapped()
     MixPanelManager.track("bridge_select_chain", properties: ["screenid": "bridge"])
   }
   

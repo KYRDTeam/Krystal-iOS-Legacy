@@ -7,6 +7,7 @@
 
 import UIKit
 import KrystalWallets
+import BaseModule
 
 protocol EarnMenuViewControllerDelegate: class {
   func earnMenuViewControllerDidSelectToken(controller: EarnMenuViewController, token: TokenData)

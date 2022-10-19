@@ -8,6 +8,7 @@
 import UIKit
 import Kingfisher
 import KrystalWallets
+import BaseModule
 
 enum InvestViewEvent {
   case openLink(url: String)
@@ -87,8 +88,8 @@ class InvestViewController: InAppBrowsingViewController {
     collectionView.reloadSections(.init(arrayLiteral: index))
   }
   
-  override func openWalletList() {
-    super.openWalletList()
+  override func handleWalletButtonTapped() {
+    super.handleWalletButtonTapped()
     MixPanelManager.track("xplore_select_wallet", properties: ["screenid": "explore"])
   }
   

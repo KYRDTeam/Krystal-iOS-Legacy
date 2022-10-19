@@ -10,6 +10,7 @@ import JavaScriptKit
 import CryptoSwift
 import UIKit
 import KrystalWallets
+import BaseWallet
 
 protocol GasLimitRequestable {
   func createGasLimitRequest() -> KNEstimateGasLimitRequest

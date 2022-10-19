@@ -7,6 +7,7 @@ import TrustCore
 import Result
 import QRCodeReaderViewController
 import KrystalWallets
+import BaseModule
 
 enum KSendTokenViewEvent {
   case back
@@ -145,13 +146,13 @@ class KSendTokenViewController: InAppBrowsingViewController {
     })
   }
 
-  override func openWalletList() {
-    super.openWalletList()
+  override func handleWalletButtonTapped() {
+    super.handleWalletButtonTapped()
     MixPanelManager.track("transfer_select_wallet", properties: ["screenid": "transfer"])
   }
   
-  override func openSwitchChain() {
-    super.openSwitchChain()
+  override func handleChainButtonTapped() {
+    super.handleChainButtonTapped()
     MixPanelManager.track("transfer_select_chain", properties: ["screenid": "transfer"])
   }
 

@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import BaseModule
 
 protocol SwapSummaryViewControllerDelegate: AnyObject {
   func onSwapSummaryViewClose(selectedPlatformHint: String)

@@ -2,7 +2,7 @@
 
 import UIKit
 import SwipeCellKit
-
+import BaseModule
 
 //swiftlint:disable file_length
 enum KNHistoryViewEvent {

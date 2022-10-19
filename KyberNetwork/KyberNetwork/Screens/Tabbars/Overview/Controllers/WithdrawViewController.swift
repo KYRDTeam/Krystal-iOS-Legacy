@@ -8,6 +8,8 @@
 import UIKit
 import BigInt
 import KrystalWallets
+import Utilities
+import BaseModule
 
 class WithdrawViewModel {
   let platform: String

@@ -8,6 +8,7 @@
 import UIKit
 import BigInt
 import KrystalWallets
+import BaseModule
 
 class EarnViewModel {
   fileprivate var tokenData: TokenData

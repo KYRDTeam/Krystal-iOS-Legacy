@@ -667,9 +667,11 @@ extension KSwapViewController {
   }
 
   fileprivate func updateExchangeRateField() {
-    self.loadingView.end()
-    self.exchangeRateLabel.text = self.viewModel.exchangeRateText
-    self.startRateTimer()
+      DispatchQueue.main.async {
+        self.loadingView.end()
+        self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+        self.startRateTimer()
+      }
   }
 
   fileprivate func updateAllowance() {

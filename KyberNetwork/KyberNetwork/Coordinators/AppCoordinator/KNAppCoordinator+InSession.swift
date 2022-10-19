@@ -3,6 +3,8 @@
 import UIKit
 import OneSignal
 import KrystalWallets
+import Dependencies
+import AppState
 
 // MARK: This file for handling in session
 extension KNAppCoordinator {
@@ -10,6 +12,9 @@ extension KNAppCoordinator {
   func startNewSession(address: KAddress) {
     self.walletCache.lastUsedAddress = address
     self.currentAddress = address
+    
+    AppState.shared.updateAddress(address: address, targetChain: AppState.shared.currentChain)
+      
     OneSignal.setExternalUserId(address.addressString)
     Tracker.updateUserID(address.addressString)
     self.session = KNSession(address: address)
@@ -80,7 +85,6 @@ extension KNAppCoordinator {
         selectedImage: nil
       )
       self.swapV2Coordinator?.navigationController.tabBarItem.tag = 1
-
       self.tabbarController.viewControllers = [
         self.overviewTabCoordinator!.navigationController,
         self.swapV2Coordinator!.navigationController,

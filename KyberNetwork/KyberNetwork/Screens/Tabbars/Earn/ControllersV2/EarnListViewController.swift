@@ -7,6 +7,7 @@
 
 import UIKit
 import SkeletonView
+import BaseModule
 
 class EarnListViewController: InAppBrowsingViewController {
   @IBOutlet weak var searchTextField: UITextField!
