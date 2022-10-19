@@ -21,6 +21,7 @@ struct Images {
   static let exploreRewardHuntingIcon = UIImage(named: "reward_hunting_icon")!
   static let exploreBridgeIcon = UIImage(named: "bridge_icon")!
   static let exploreScannerIcon = UIImage(named: "scan")!
+  static let exploreStakeIcon = UIImage(named: "stake_icon")!
   
   // History
   static let giftIcon = UIImage(named: "gift_icon")!

@@ -20,6 +20,7 @@ struct FeatureFlagKeys {
   static let swapV2 = "swap-v2"
   static let appBrowsing = "app-browsing"
   static let notiV2 = "noti-v2"
+  static let earnV2 = "earn-v2"
 }
 
 class FeatureFlagManager {

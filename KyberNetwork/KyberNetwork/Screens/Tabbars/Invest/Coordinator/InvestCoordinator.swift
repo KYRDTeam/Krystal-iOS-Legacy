@@ -150,6 +150,11 @@ class InvestCoordinator: Coordinator {
     self.bridgeCoordinator = coordinator
   }
   
+  fileprivate func openStakeView() {
+    let viewController = EarnOverviewV2Controller()
+    self.navigationController.pushViewController(viewController, animated: true)
+  }
+  
   func openHistoryScreen() {
     switch KNGeneralProvider.shared.currentChain {
     case .solana:
@@ -301,6 +306,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         }
       }
       MixPanelManager.track("scanner_open", properties: ["screenid": "scanner"])
+    case .stake:
+      self.openStakeView()
     }
   }
   

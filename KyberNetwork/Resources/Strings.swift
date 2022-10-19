@@ -292,4 +292,5 @@ struct Strings {
   static let backupWalletWarningTitle = "backup.wallet.title".toBeLocalised()
   //Staking
   static let searchPools = "search.pools".toBeLocalised()
+  static let Stake = "Stake".toBeLocalised()
 }

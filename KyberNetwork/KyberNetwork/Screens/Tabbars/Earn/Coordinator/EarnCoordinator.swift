@@ -50,13 +50,12 @@ class EarnCoordinator: NSObject, Coordinator {
     return controller
   }()
   
-  lazy var menuViewController: EarnOverviewV2Controller = {
-//    let viewModel = EarnMenuViewModel()
-//    let viewController = EarnMenuViewController(viewModel: viewModel)
-//    viewController.delegate = self
-//    viewController.navigationDelegate = self
-//    return viewController
-    return EarnOverviewV2Controller()
+  lazy var menuViewController: EarnMenuViewController = {
+    let viewModel = EarnMenuViewModel()
+    let viewController = EarnMenuViewController(viewModel: viewModel)
+    viewController.delegate = self
+    viewController.navigationDelegate = self
+    return viewController
   }()
   
   lazy var depositViewController: OverviewDepositViewController = {
