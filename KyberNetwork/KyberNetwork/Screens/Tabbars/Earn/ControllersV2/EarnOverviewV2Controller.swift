@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import BaseModule
 
 class EarnOverviewV2Controller: InAppBrowsingViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!

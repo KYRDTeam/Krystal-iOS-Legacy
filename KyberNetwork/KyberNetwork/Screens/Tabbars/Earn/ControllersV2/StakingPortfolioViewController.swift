@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import BaseModule
 import StackViewController
 import SkeletonView
 

@@ -4,12 +4,12 @@ import UIKit
 import Moya
 import TrustKeystore
 import KrystalWallets
+import Utilities
 
 protocol KNImportWalletCoordinatorDelegate: class {
   func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType)
   func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType)
   func importWalletCoordinatorDidClose()
-  func importWalletCoordinatorDidSendRefCode(_ code: String)
 }
 
 class KNImportWalletCoordinator: Coordinator {
@@ -188,6 +188,7 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
       message: Strings.importWalletSuccess,
       time: 1
     )
+    MixPanelManager.track("import_done_pop_up_open", properties: ["screenid": "import_done_pop_up"])
   }
   
   private func addToContacts(wallet: KWallet) {

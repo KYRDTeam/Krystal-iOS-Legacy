@@ -306,7 +306,7 @@ extension MultiSendCell: UITextFieldDelegate {
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.amountTextField.textColor = UIColor.white
     self.cellModel?.isSendAllBalanace = false
-    MixPanelManager.track("multisend_enter_amount", properties: ["screenid": "multi_send"])
+    MixPanelManager.track("multisend_enter_amount", properties: ["screenid": "multi_send", "amount": cellModel?.amount, "token": cellModel?.from.symbol])
   }
   
   func textFieldDidEndEditing(_ textField: UITextField) {

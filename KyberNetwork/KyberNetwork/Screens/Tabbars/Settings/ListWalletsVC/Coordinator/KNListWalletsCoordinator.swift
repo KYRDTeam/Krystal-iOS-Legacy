@@ -3,23 +3,20 @@
 import UIKit
 import KrystalWallets
 
-protocol KNListWalletsCoordinatorDelegate: class {
-  func listWalletsCoordinatorDidClickBack()
-  func listWalletsCoordinatorDidSelectRemoveWallet(_ wallet: KWallet)
-  func listWalletsCoordinatorDidRemoveWatchAddress(_ address: KAddress)
-  func listWalletsCoordinatorShouldBackUpWallet(_ wallet: KWallet, addressType: KAddressType)
-//  func listWalletsCoordinatorDidUpdateWalletObjects()
-  func listWalletsCoordinatorDidSelectAddWallet(type: AddNewWalletType)
-}
-
 class KNListWalletsCoordinator: Coordinator {
 
   let navigationController: UINavigationController
-  private(set) var session: KNSession
   var coordinators: [Coordinator] = []
   var addWalletCoordinator: KNAddNewWalletCoordinator?
+  
+  var onCompleted: (() -> ())?
+  
+  enum WalletListAction {
+    case deleteWallet(wallet: KWallet)
+    case deleteAddress(address: KAddress)
+  }
 
-  weak var delegate: KNListWalletsCoordinatorDelegate?
+  var currentAction: WalletListAction?
 
   lazy var rootViewController: KNListWalletsViewController = {
     let viewModel = KNListWalletsViewModel()
@@ -29,57 +26,47 @@ class KNListWalletsCoordinator: Coordinator {
     return controller
   }()
 
-  init(
-    navigationController: UINavigationController,
-    session: KNSession,
-    delegate: KNListWalletsCoordinatorDelegate?
-    ) {
+  init(navigationController: UINavigationController) {
     self.navigationController = navigationController
-    self.session = session
-    self.delegate = delegate
   }
 
   func start() {
     MixPanelManager.track("manage_wallet_open", properties: ["screenid": "manage_wallet"])
-    self.navigationController.pushViewController(self.rootViewController, animated: true)
-  }
-  
-  func startEditWallet() {
-    let currentAddress = AppDelegate.session.address
-    if currentAddress.isWatchWallet {
-      let coordinator = KNAddNewWalletCoordinator()
-      coordinator.delegate = self
-      self.navigationController.present(coordinator.navigationController, animated: true) {
-        coordinator.start(type: .watch, address: currentAddress)
-        self.addWalletCoordinator = coordinator
-      }
-    } else {
-      guard let wallet = WalletManager.shared.wallet(forAddress: currentAddress) else {
-        return
-      }
-      let viewModel = KNEditWalletViewModel(wallet: wallet, addressType: KNGeneralProvider.shared.currentChain.addressType)
-      let controller = KNEditWalletViewController(viewModel: viewModel)
-      controller.loadViewIfNeeded()
-      controller.delegate = self
-      self.navigationController.pushViewController(controller, animated: true)
-    }
+    self.observeNotifications()
+    self.navigationController.pushViewController(rootViewController, animated: true)
   }
 
   func stop() {
-    self.navigationController.popViewController(animated: true)
+    self.navigationController.popViewController(animated: true, completion: nil)
   }
 
-  func appDidSwitchAddress() {
+  func observeNotifications() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(appDidSwitchAddress),
+      name: AppEventCenter.shared.kAppDidChangeAddress,
+      object: nil
+    )
+  }
+  
+  @objc func appDidSwitchAddress() {
     self.rootViewController.reloadData()
   }
 
+  func showAuthPasscode(action: WalletListAction) {
+    self.currentAction = action
+    let passcodeCoordinator = KNPasscodeCoordinator(navigationController: self.navigationController, type: .verifyPasscode)
+    passcodeCoordinator.delegate = self
+    coordinate(coordinator: passcodeCoordinator)
+  }
+  
 }
 
 extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
   func listWalletsViewController(_ controller: KNListWalletsViewController, run event: KNListWalletsViewEvent) {
     switch event {
     case .close:
-      self.listWalletsViewControllerDidClickBackButton()
+      stop()
     case .open(let wallet):
       let vm = CopyAddressViewModel(wallet: wallet)
       let vc = CopyAddressViewController(viewModel: vm)
@@ -88,74 +75,47 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
       MixPanelManager.track("multi_chain_wallets_open", properties: ["screenid": "multi_chain_wallets"])
     case .removeWallet(let wallet):
       self.showDeleteWalletAlert {
-        self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wallet)
-        self.rootViewController.reloadData()
+        self.showAuthPasscode(action: .deleteWallet(wallet: wallet))
       }
     case .removeWatchAddress(let address):
       self.showDeleteWalletAlert {
         try? WalletManager.shared.removeAddress(address: address)
-        self.delegate?.listWalletsCoordinatorDidRemoveWatchAddress(address)
         self.rootViewController.reloadData()
+        AppDelegate.shared.coordinator.onRemoveWatchAddress(address: address)
       }
     case .editWatchAddress(let address):
-      let coordinator = KNAddNewWalletCoordinator()
-      coordinator.delegate = self
-      self.navigationController.present(coordinator.navigationController, animated: true) {
-        coordinator.start(type: .watch, address: address)
-        self.addWalletCoordinator = coordinator
+      let coordinator = AddWatchWalletCoordinator(parentViewController: navigationController, editingAddress: address)
+      coordinator.onCompleted = { [weak self] in
+        self?.removeCoordinator(coordinator)
       }
+      coordinate(coordinator: coordinator)
     case .editWallet(let wallet, let addressType):
-//      self.selectedWallet = wallet
-      let viewModel = KNEditWalletViewModel(wallet: wallet, addressType: addressType)
-      let controller = KNEditWalletViewController(viewModel: viewModel)
-      controller.loadViewIfNeeded()
-      controller.delegate = self
-      self.navigationController.pushViewController(controller, animated: true)
+      let coordinator = EditWalletCoordinator(navigationController: navigationController, wallet: wallet, addressType: addressType)
+      coordinate(coordinator: coordinator)
       MixPanelManager.track("edit_wallet_open", properties: ["screenid": "edit_wallet"])
     case .addWallet(let type):
-      self.delegate?.listWalletsCoordinatorDidSelectAddWallet(type: type)
+      switch type {
+      case .watch:
+        let coordinator = AddWatchWalletCoordinator(parentViewController: navigationController, editingAddress: nil)
+        coordinator.onCompleted = { [weak self] in
+          self?.removeCoordinator(coordinator)
+        }
+        coordinate(coordinator: coordinator)
+      default:
+        let coordinator = KNAddNewWalletCoordinator(parentViewController: navigationController)
+        coordinator.start(type: type)
+        addCoordinator(coordinator)
+      }
     }
   }
 
   fileprivate func listWalletsViewControllerDidClickBackButton() {
-    self.delegate?.listWalletsCoordinatorDidClickBack()
+    self.onCompleted?()
   }
 
-  fileprivate func listWalletsViewControllerDidSelectRemoveWallet(_ wallet: KWallet) {
-    let alertController = KNPrettyAlertController(
-      title: Strings.delete,
-      message: Strings.deleteWalletConfirmMessage,
-      secondButtonTitle: Strings.ok,
-      firstButtonTitle: Strings.cancel,
-      secondButtonAction: {
-        if self.navigationController.topViewController is KNEditWalletViewController {
-          self.navigationController.popViewController(animated: true, completion: {
-            self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wallet)
-          })
-        } else {
-          self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wallet)
-        }
-      },
-      firstButtonAction: nil
-    )
-    self.navigationController.topViewController?.present(alertController, animated: true, completion: nil)
-  }
 }
 
-extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
-  func editWalletViewController(_ controller: KNEditWalletViewController, run event: KNEditWalletViewEvent) {
-    switch event {
-    case .back: self.navigationController.popViewController(animated: true)
-    case .update(let wallet, let name):
-      self.navigationController.popViewController(animated: true) {
-        self.updateWallet(wallet: wallet, name: name)
-      }
-    case .backup(let wallet, let addressType):
-      self.showBackUpWallet(wallet, addressType: addressType)
-    case .delete(let wallet):
-      self.showDeleteWallet(wallet)
-    }
-  }
+extension KNListWalletsCoordinator {
 
   fileprivate func updateWallet(wallet: KWallet, name: String) {
     let addresses = WalletManager.shared.getAllAddresses(walletID: wallet.id)
@@ -169,10 +129,6 @@ extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
     if AppDelegate.session.address.walletID == wallet.id {
       AppDelegate.session.refreshCurrentAddressInfo()
     }
-  }
-
-  fileprivate func showBackUpWallet(_ wallet: KWallet, addressType: KAddressType) {
-    self.delegate?.listWalletsCoordinatorShouldBackUpWallet(wallet, addressType: addressType)
   }
   
   fileprivate func showDeleteWalletAlert(onConfirm: @escaping () -> ()) {
@@ -200,6 +156,7 @@ extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
       secondButtonAction: {
         try? WalletManager.shared.remove(wallet: wallet)
         self.rootViewController.reloadData()
+        AppDelegate.shared.coordinator.onRemoveWallet(wallet: wallet)
         return
       },
       firstButtonAction: nil
@@ -208,39 +165,71 @@ extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
   }
 }
 
-extension KNListWalletsCoordinator: KNAddNewWalletCoordinatorDelegate {
-  func addNewWalletCoordinator(didAdd wallet: KWallet, chain: ChainType) {
-    rootViewController.reloadData()
-  }
-  
-  func addNewWalletCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {
-    rootViewController.reloadData()
-  }
-
-  func addNewWalletCoordinator(remove wallet: KWallet) {
-    rootViewController.reloadData()
-  }
-
-  func addNewWalletCoordinatorDidSendRefCode(_ code: String) {
-    
-  }
-}
-
 extension KNListWalletsCoordinator: CopyAddressViewControllerDelegate {
   func copyAddressViewController(_ controller: CopyAddressViewController, didSelect wallet: KWallet, chain: ChainType) {
     self.navigationController.popViewController(animated: true, completion: nil)
     
     var action = [UIAlertAction]()
-    action.append(UIAlertAction(title: Strings.edit, style: .default, handler: { _ in
-      let viewModel = KNEditWalletViewModel(wallet: wallet, addressType: chain.addressType)
-      let controller = KNEditWalletViewController(viewModel: viewModel)
-      controller.loadViewIfNeeded()
-      controller.delegate = self
-      self.navigationController.pushViewController(controller, animated: true)
+    action.append(UIAlertAction(title: Strings.edit, style: .default, handler: { [weak self] _ in
+      self?.openEditWallet(wallet: wallet, chain: chain)
     }))
     action.append(UIAlertAction(title: Strings.cancel, style: .cancel, handler: nil))
 
     let alertController = KNActionSheetAlertViewController(title: "", actions: action)
     self.navigationController.present(alertController, animated: true, completion: nil)
   }
+  
+  func openEditWallet(wallet: KWallet, chain: ChainType) {
+    if let address = WalletManager.shared.address(walletID: wallet.id, addressType: chain.addressType) {
+      if address.isWatchWallet {
+        let coordinator = AddWatchWalletCoordinator(parentViewController: navigationController, editingAddress: address)
+        coordinator.onCompleted = { [weak self] in
+          self?.removeCoordinator(coordinator)
+        }
+        coordinate(coordinator: coordinator)
+      } else {
+        let coordinator = EditWalletCoordinator(navigationController: navigationController, wallet: wallet, addressType: chain.addressType)
+        coordinator.onCompleted = { [weak self] _ in
+          self?.removeCoordinator(coordinator)
+        }
+        coordinate(coordinator: coordinator)
+      }
+    }
+    
+  }
+}
+
+extension KNListWalletsCoordinator: KNPasscodeCoordinatorDelegate {
+  
+  func passcodeCoordinatorDidCancel(coordinator: KNPasscodeCoordinator) {
+    coordinator.stop {
+      self.removeCoordinator(coordinator)
+      self.currentAction = nil
+    }
+  }
+  
+  func passcodeCoordinatorDidEvaluatePIN(coordinator: KNPasscodeCoordinator) {
+    coordinator.stop {
+      self.removeCoordinator(coordinator)
+      switch self.currentAction {
+      case .deleteWallet(let wallet):
+        try? WalletManager.shared.remove(wallet: wallet)
+        self.rootViewController.reloadData()
+        AppDelegate.shared.coordinator.onRemoveWallet(wallet: wallet)
+      case .deleteAddress(let address):
+        try? WalletManager.shared.removeAddress(address: address)
+        self.rootViewController.reloadData()
+        AppDelegate.shared.coordinator.onRemoveWatchAddress(address: address)
+      default:
+        return
+      }
+    }
+  }
+  
+  func passcodeCoordinatorDidCreatePasscode(coordinator: KNPasscodeCoordinator) {
+    coordinator.stop {
+      self.removeCoordinator(coordinator)
+    }
+  }
+  
 }

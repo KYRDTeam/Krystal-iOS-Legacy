@@ -2,36 +2,36 @@
 
 import UIKit
 
-class KNBaseViewController: UIViewController, UIGestureRecognizerDelegate {
-
-  @IBOutlet weak var topBarHeight: NSLayoutConstraint?
-  let titleHeight: CGFloat = 24
-  let titleVerticalPadding: CGFloat = 26
-  
-  override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    
-    topBarHeight?.constant = UIScreen.statusBarHeight + titleHeight + titleVerticalPadding * 2
-  }
-  
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-    NSLog("Did present: \(self.className)")
-  }
-
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-    NSLog("Did dismiss: \(self.className)")
-    self.dismissTutorialOverlayer()
-  }
-  
-  var isVisible: Bool {
-    return self.viewIfLoaded?.window != nil
-  }
-}
+//class KNBaseViewController: UIViewController, UIGestureRecognizerDelegate {
+//
+//  @IBOutlet weak var topBarHeight: NSLayoutConstraint?
+//  let titleHeight: CGFloat = 24
+//  let titleVerticalPadding: CGFloat = 26
+//  
+//  override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+//
+//  override func viewDidLoad() {
+//    super.viewDidLoad()
+//    
+//    topBarHeight?.constant = UIScreen.statusBarHeight + titleHeight + titleVerticalPadding * 2
+//  }
+//  
+//  override func viewDidAppear(_ animated: Bool) {
+//    super.viewDidAppear(animated)
+//    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+//    NSLog("Did present: \(self.className)")
+//  }
+//
+//  override func viewDidDisappear(_ animated: Bool) {
+//    super.viewDidDisappear(animated)
+//    NSLog("Did dismiss: \(self.className)")
+//    self.dismissTutorialOverlayer()
+//  }
+//  
+//  var isVisible: Bool {
+//    return self.viewIfLoaded?.window != nil
+//  }
+//}
 
 class KNTabBarController: UITabBarController {
   override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
@@ -126,30 +126,4 @@ extension KNBaseViewController {
   @objc func quickTutorialNextAction() {}
 
   @objc func quickTutorialContentLabelTapped() {}
-}
-
-extension UIViewController {
-  func showSwitchChainAlert(_ chain: ChainType,_ message: String? = nil, completion: @escaping () -> Void = {}) {
-    let msg = message ?? "Please switch to \(chain.chainName()) to continue".toBeLocalised()
-    
-    let alertController = KNPrettyAlertController(
-      title: "",
-      message: msg,
-      secondButtonTitle: Strings.ok,
-      firstButtonTitle: Strings.cancel,
-      secondButtonAction: {
-        
-        KNGeneralProvider.shared.currentChain = chain
-        KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-          completion()
-        }
-      },
-      firstButtonAction: {
-        
-      }
-    )
-    alertController.popupHeight = 220
-    self.present(alertController, animated: true, completion: nil)
-  }
 }

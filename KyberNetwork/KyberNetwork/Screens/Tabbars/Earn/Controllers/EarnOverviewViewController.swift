@@ -8,10 +8,10 @@
 import UIKit
 import BigInt
 import KrystalWallets
+import BaseModule
 
 protocol EarnOverviewViewControllerDelegate: class {
   func earnOverviewViewControllerDidSelectExplore(_ controller: EarnOverviewViewController)
-  func earnOverviewViewControllerAddChainWallet(_ controller: EarnOverviewViewController, chainType: ChainType)
 }
 
 class EarnOverviewViewController: InAppBrowsingViewController {

@@ -11,6 +11,7 @@ import SwipeCellKit
 import MBProgressHUD
 import KrystalWallets
 import SkeletonView
+import BaseModule
 
 protocol OverviewMainViewControllerDelegate: class {
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent)

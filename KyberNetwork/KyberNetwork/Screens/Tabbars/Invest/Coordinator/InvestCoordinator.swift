@@ -10,6 +10,7 @@ import Moya
 import BigInt
 import WalletConnectSwift
 import KrystalWallets
+import BaseModule
 
 protocol InvestCoordinatorDelegate: class {
   func investCoordinatorDidSelectManageWallet()
@@ -131,7 +132,6 @@ class InvestCoordinator: Coordinator {
   
   fileprivate func openKrytalView() {
     let coordinator = KrytalCoordinator(navigationController: self.navigationController)
-    coordinator.delegate = self
     coordinator.start()
     self.krytalCoordinator = coordinator
   }
@@ -266,8 +266,6 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         return
       }
       self.openBridgeView()
-    case .addChainWallet(let chainType):
-      delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
     case .scanner:
       var acceptedResultTypes: [ScanResultType] = [.promotionCode]
       var scanModes: [ScanMode] = [.qr, .text]
@@ -323,9 +321,6 @@ extension InvestCoordinator: InvestViewControllerDelegate {
 }
 
 extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
-  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
   
   func sendTokenCoordinatorDidClose() {
     self.sendCoordinator = nil
@@ -339,19 +334,9 @@ extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
     self.openHistoryScreen()
   }
   
-  func sendTokenCoordinatorDidSelectManageWallet() {
-    self.delegate?.investCoordinatorDidSelectManageWallet()
-  }
-  
-  func sendTokenCoordinatorDidSelectAddWallet() {
-    self.delegate?.investCoordinatorDidSelectAddWallet()
-  }
 }
 
 extension InvestCoordinator: KNHistoryCoordinatorDelegate {
-  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
   
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.investCoordinatorDidSelectAddToken(token)
@@ -359,24 +344,6 @@ extension InvestCoordinator: KNHistoryCoordinatorDelegate {
   
   func historyCoordinatorDidClose() {
     self.historyCoordinator = nil
-  }
-  
-  func historyCoordinatorDidSelectManageWallet() {
-    self.delegate?.investCoordinatorDidSelectManageWallet()
-  }
-  
-  func historyCoordinatorDidSelectAddWallet() {
-    self.delegate?.investCoordinatorDidSelectAddWallet()
-  }
-}
-
-extension InvestCoordinator: KrytalCoordinatorDelegate {
-  func krytalCoordinatorDidSelectAddWallet() {
-    self.delegate?.investCoordinatorDidSelectAddWallet()
-  }
-  
-  func krytalCoordinatorDidSelectManageWallet() {
-    self.delegate?.investCoordinatorDidSelectManageWallet()
   }
 }
 
@@ -386,7 +353,7 @@ extension InvestCoordinator: BuyCryptoCoordinatorDelegate {
   }
   
   func buyCryptoCoordinatorDidSelectAddWallet() {
-    self.delegate?.investCoordinatorDidSelectAddWallet()
+     self.delegate?.investCoordinatorDidSelectAddWallet()
   }
   
   func buyCryptoCoordinatorDidSelectManageWallet() {
@@ -417,14 +384,6 @@ extension InvestCoordinator: BridgeCoordinatorDelegate {
     self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
   }
   
-  func didSelectAddWallet() {
-    self.delegate?.investCoordinatorDidSelectAddWallet()
-  }
-
-  func didSelectManageWallet() {
-    self.delegate?.investCoordinatorDidSelectManageWallet()
-  }
-  
   func didSelectOpenHistoryList() {
     self.openHistoryScreen()
   }
@@ -451,10 +410,6 @@ extension InvestCoordinator: KNImportWalletCoordinatorDelegate {
   
   func importWalletCoordinatorDidClose() {
     importWalletCoordinator = nil
-  }
-  
-  func importWalletCoordinatorDidSendRefCode(_ code: String) {
-    
   }
 
 }

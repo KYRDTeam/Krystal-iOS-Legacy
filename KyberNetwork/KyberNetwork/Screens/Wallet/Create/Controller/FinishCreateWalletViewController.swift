@@ -53,6 +53,11 @@ class FinishCreateWalletViewController: KNBaseViewController {
     setupUI()
   }
   
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    MixPanelManager.track("create_wallet_done_open", properties: ["screenid": "create_wallet_don"])
+  }
+
   func setupUI() {
     self.dashView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
     self.evmAddressLabel.text = self.viewModel.getEVMAddress()

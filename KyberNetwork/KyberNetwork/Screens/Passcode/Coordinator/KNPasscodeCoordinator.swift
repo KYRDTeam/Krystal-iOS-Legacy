@@ -4,9 +4,9 @@ import UIKit
 import KrystalWallets
 
 protocol KNPasscodeCoordinatorDelegate: class {
-  func passcodeCoordinatorDidCancel()
-  func passcodeCoordinatorDidEvaluatePIN()
-  func passcodeCoordinatorDidCreatePasscode()
+  func passcodeCoordinatorDidCancel(coordinator: KNPasscodeCoordinator)
+  func passcodeCoordinatorDidEvaluatePIN(coordinator: KNPasscodeCoordinator)
+  func passcodeCoordinatorDidCreatePasscode(coordinator: KNPasscodeCoordinator)
 }
 
 class KNPasscodeCoordinator: Coordinator {
@@ -94,7 +94,7 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
   func passcodeViewController(_ controller: KNPasscodeViewController, run event: KNPasscodeViewEvent) {
     switch event {
     case .cancel:
-      self.delegate?.passcodeCoordinatorDidCancel()
+      self.delegate?.passcodeCoordinatorDidCancel(coordinator: self)
     case .evaluatedPolicyWithBio:
       self.didFinishEvaluatingWithBio()
     case .enterPasscode(let passcode):
@@ -108,10 +108,7 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
     KNPasscodeUtil.shared.deleteNumberAttempts()
     KNPasscodeUtil.shared.deleteCurrentMaxAttemptTime()
     KNAppTracker.saveLastTimeAuthenticate()
-    self.delegate?.passcodeCoordinatorDidEvaluatePIN()
-    if AppDelegate.shared.coordinator.tabbarController != nil {
-      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-    }
+    self.delegate?.passcodeCoordinatorDidEvaluatePIN(coordinator: self)
   }
   
   fileprivate func didFinishEnterPasscode(_ passcode: String) {
@@ -123,7 +120,7 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
       KNPasscodeUtil.shared.deleteNumberAttempts()
       KNPasscodeUtil.shared.deleteCurrentMaxAttemptTime()
       KNAppTracker.saveLastTimeAuthenticate()
-      self.delegate?.passcodeCoordinatorDidEvaluatePIN()
+      self.delegate?.passcodeCoordinatorDidEvaluatePIN(coordinator: self)
     } else {
       KNPasscodeUtil.shared.recordNewAttempt()
       if KNPasscodeUtil.shared.numberAttemptsLeft() == 0 {
@@ -131,14 +128,11 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
       }
       self.passcodeViewController.userDidTypeWrongPasscode()
     }
-    if AppDelegate.shared.coordinator.tabbarController != nil {
-      AppDelegate.shared.coordinator.tabbarController.tabBar.isHidden = false
-    }
   }
   
   fileprivate func didCreateNewPasscode(_ passcode: String) {
     KNPasscodeUtil.shared.setNewPasscode(passcode)
     UserDefaults.standard.set(true, forKey: Constants.isCreatedPassCode)
-    self.delegate?.passcodeCoordinatorDidCreatePasscode()
+    self.delegate?.passcodeCoordinatorDidCreatePasscode(coordinator: self)
   }
 }

@@ -2,6 +2,7 @@
 
 import UIKit
 import BigInt
+import Utilities
 
 public struct KNGasConfiguration {
   static let digixGasLimitDefault = BigInt(1_140_000)

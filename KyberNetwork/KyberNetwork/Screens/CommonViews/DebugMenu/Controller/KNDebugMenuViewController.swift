@@ -2,6 +2,7 @@
 
 import UIKit
 import RealmSwift
+import BaseModule
 
 class KNDebugMenuViewController: KNBaseViewController {
 

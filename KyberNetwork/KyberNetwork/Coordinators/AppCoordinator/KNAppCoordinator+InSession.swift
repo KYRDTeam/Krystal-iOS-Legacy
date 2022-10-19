@@ -3,6 +3,8 @@
 import UIKit
 import OneSignal
 import KrystalWallets
+import Dependencies
+import AppState
 
 // MARK: This file for handling in session
 extension KNAppCoordinator {
@@ -10,6 +12,9 @@ extension KNAppCoordinator {
   func startNewSession(address: KAddress) {
     self.walletCache.lastUsedAddress = address
     self.currentAddress = address
+    
+    AppState.shared.updateAddress(address: address, targetChain: AppState.shared.currentChain)
+      
     OneSignal.setExternalUserId(address.addressString)
     Tracker.updateUserID(address.addressString)
     self.session = KNSession(address: address)
@@ -73,7 +78,6 @@ extension KNAppCoordinator {
     
     if FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.swapV2) {
       self.swapV2Coordinator = SwapV2Coordinator()
-      self.swapV2Coordinator?.delegate = self
       self.swapV2Coordinator?.start()
       self.swapV2Coordinator?.navigationController.tabBarItem = UITabBarItem(
         title: nil,
@@ -81,7 +85,6 @@ extension KNAppCoordinator {
         selectedImage: nil
       )
       self.swapV2Coordinator?.navigationController.tabBarItem.tag = 1
-
       self.tabbarController.viewControllers = [
         self.overviewTabCoordinator!.navigationController,
         self.swapV2Coordinator!.navigationController,
@@ -167,6 +170,7 @@ extension KNAppCoordinator {
   
   func stopAllSessions() {
     self.walletManager.removeAll()
+    self.walletCache.lastUsedAddress = nil
     self.session.stopSession()
     self.session.address = self.walletManager.createEmptyAddress()
     self.exchangeCoordinator?.stop()
@@ -174,7 +178,7 @@ extension KNAppCoordinator {
     self.settingsCoordinator?.stop()
     self.overviewTabCoordinator?.stop()
     self.overviewTabCoordinator?.start()
-    self.tabbarController.selectedIndex = 0
+//    self.tabbarController.selectedIndex = 0
   }
 
   func restartSession(address: KAddress) {
@@ -224,6 +228,20 @@ extension KNAppCoordinator {
     } else {
       stopAllSessions()
     }
+  }
+  
+  func onAddWallet(wallet: KWallet, chain: ChainType) {
+    let shouldRestartSession = WalletCache.shared.lastUsedAddress == nil || WalletCache.shared.lastUsedAddress?.addressString == ""
+    self.switchWallet(wallet: wallet, chain: chain)
+    if shouldRestartSession {
+      AppDelegate.shared.coordinator.overviewTabCoordinator?.stop()
+      AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
+      AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
+    }
+  }
+  
+  func onAddWatchAddress(address: KAddress, chain: ChainType) {
+    switchToWatchAddress(address: address, chain: chain)
   }
   
   func onRemoveWallet(wallet: KWallet) {

@@ -103,6 +103,8 @@ class KSwapViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    tabBarItem.accessibilityIdentifier = "menuSwap"
+    
     self.viewModel.resetDefaultTokensPair()
     self.fromAmountTextField.setupCustomDeleteIcon()
     self.toAmountTextField.setupCustomDeleteIcon()
@@ -665,9 +667,11 @@ extension KSwapViewController {
   }
 
   fileprivate func updateExchangeRateField() {
-    self.loadingView.end()
-    self.exchangeRateLabel.text = self.viewModel.exchangeRateText
-    self.startRateTimer()
+      DispatchQueue.main.async {
+        self.loadingView.end()
+        self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+        self.startRateTimer()
+      }
   }
 
   fileprivate func updateAllowance() {

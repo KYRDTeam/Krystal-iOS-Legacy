@@ -8,6 +8,7 @@
 import UIKit
 import KrystalWallets
 import WalletConnectSwift
+import AppState
 
 class WalletListV2ViewModel {
   var wallets: [KWallet] = []
@@ -40,14 +41,7 @@ class WalletListV2ViewModel {
   }
 }
  
-protocol WalletListV2ViewControllerDelegate: class {
-  func didSelectWallet(wallet: KWallet)
-  func didSelectWatchWallet(address: KAddress)
-  func didSelectAddWallet()
-  func didSelectAddWatchWallet()
-}
-
-class WalletListV2ViewController: KNBaseViewController {
+class WalletListV2ViewController: KNBaseViewController, Coordinator {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var walletsTableView: UITableView!
@@ -55,20 +49,35 @@ class WalletListV2ViewController: KNBaseViewController {
   @IBOutlet weak var tapOutSideBackgroundView: UIView!
   @IBOutlet weak var contentViewHeight: NSLayoutConstraint!
   
+  var coordinators: [Coordinator] = []
   var passcodeCoordinator: KNPasscodeCoordinator?
   var currentWalletId: String?
   let transitor = TransitionDelegate()
   let viewModel: WalletListV2ViewModel
-  weak var delegate: WalletListV2ViewControllerDelegate?
+  var allowAllChainOption: Bool = false
+  
+  var onSelectWallet: ((KWallet) -> ())?
+  var onSelectWatchAddress: ((KAddress) -> ())?
+  
+//  weak var delegate: WalletListV2ViewControllerDelegate?
   var currentAddress: KAddress {
     return AppDelegate.session.address
   }
+  
+  var currentChain: ChainType {
+    return AppState.shared.currentChain
+  }
+  
   init() {
     viewModel = WalletListV2ViewModel()
     viewModel.reloadData()
     super.init(nibName: WalletListV2ViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
+  }
+  
+  func start() {
+    fatalError("Do not call this method")
   }
   
   deinit {
@@ -124,7 +133,7 @@ class WalletListV2ViewController: KNBaseViewController {
   
   @IBAction func addWalletButtonTapped(_ sender: Any) {
     self.dismiss(animated: true) {
-      self.delegate?.didSelectAddWallet()
+      self.openAddWallet()
     }
   }
 
@@ -142,15 +151,29 @@ class WalletListV2ViewController: KNBaseViewController {
     }
     self.currentWalletId = walletId
   }
+  
+  func openAddWallet() {
+    guard let parent = UIApplication.shared.topMostViewController() else { return }
+    let coordinator = KNAddNewWalletCoordinator(parentViewController: parent)
+    coordinator.start(type: .full)
+    coordinate(coordinator: coordinator)
+  }
+  
+  func openAddWatchWallet() {
+    guard let parent = UIApplication.shared.topMostViewController() else { return }
+    let coordinator = AddWatchWalletCoordinator(parentViewController: parent, editingAddress: nil)
+    coordinate(coordinator: coordinator)
+  }
+  
 }
 
 extension WalletListV2ViewController: KNPasscodeCoordinatorDelegate {
-  func passcodeCoordinatorDidCreatePasscode() {
+  func passcodeCoordinatorDidCreatePasscode(coordinator: KNPasscodeCoordinator) {
     self.passcodeCoordinator?.stop(completion: {
     })
   }
 
-  func passcodeCoordinatorDidEvaluatePIN() {
+  func passcodeCoordinatorDidEvaluatePIN(coordinator: KNPasscodeCoordinator) {
     self.passcodeCoordinator?.stop {
       if let currentWalletId = self.currentWalletId {
         do {
@@ -170,7 +193,7 @@ extension WalletListV2ViewController: KNPasscodeCoordinatorDelegate {
     }
   }
 
-  func passcodeCoordinatorDidCancel() {
+  func passcodeCoordinatorDidCancel(coordinator: KNPasscodeCoordinator) {
     self.passcodeCoordinator?.stop {
     }
   }
@@ -216,6 +239,7 @@ extension WalletListV2ViewController: UITableViewDataSource {
     cell.updateCell(cellModel)
     return cell
   }
+  
 }
 
 extension WalletListV2ViewController: UITableViewDelegate {
@@ -223,10 +247,10 @@ extension WalletListV2ViewController: UITableViewDelegate {
     self.dismiss(animated: true) {
       if indexPath.section == 0 {
         let wallet = self.viewModel.wallets[indexPath.row]
-        self.delegate?.didSelectWallet(wallet: wallet)
+        self.onSelectWallet?(wallet)
       } else {
         let kAddress = self.viewModel.watchAddresses[indexPath.row]
-        self.delegate?.didSelectWatchWallet(address: kAddress)
+        self.onSelectWatchAddress?(kAddress)
       }
     }
   }
@@ -253,8 +277,10 @@ extension WalletListV2ViewController: UITableViewDelegate {
       
       let plusButton = UIButton(frame: CGRect(x: screenWidth - 32 - 24, y: 0, width: 24, height: 24))
       plusButton.setImage(UIImage(named: "add_circle_grey"), for: .normal)
-      plusButton.addAction(for: .touchUpInside) {
-        self.delegate?.didSelectAddWatchWallet()
+      plusButton.addAction(for: .touchUpInside) { [weak self] in
+        self?.dismiss(animated: true) {
+          self?.openAddWatchWallet()
+        }
         MixPanelManager.track("wallet_pop_up_add_watchlist", properties: ["screenid": "wallet_pop_up"])
       }
       plusButton.center.y = label.center.y

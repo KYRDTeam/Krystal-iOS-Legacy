@@ -8,6 +8,8 @@
 import UIKit
 import BigInt
 import KrystalWallets
+import Utilities
+import BaseModule
 
 //swiftlint:disable file_length
 class EarnSwapViewModel {
@@ -727,7 +729,7 @@ class EarnSwapViewModel {
       guard self.isHavingEnoughETHForFee else {
         let fee = self.gasFeeBigInt
         let title = String(format: Strings.insufficientXForTransaction.toBeLocalised(), KNGeneralProvider.shared.quoteToken)
-        let message = String(format: Strings.depositMoreXOrClickAdvancedToLowerGasFee.toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
+          let message = String(format: Strings.depositMoreXOrClickAdvancedToLowerGasFee.toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
         return .failure(error: (title: title, message: message))
       }
     }
