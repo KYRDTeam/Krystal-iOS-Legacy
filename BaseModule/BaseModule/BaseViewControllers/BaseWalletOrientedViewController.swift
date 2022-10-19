@@ -150,7 +150,9 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
   }
   
   @objc open func handleChainButtonTapped() {
-    AppDependencies.router.openChainList(allowAllChainOption: supportAllChainOption)
+    AppDependencies.router.openChainList(allowAllChainOption: supportAllChainOption) { [weak self] chain in
+      self?.onChainSelected(chain: chain)
+    }
   }
   
 }
