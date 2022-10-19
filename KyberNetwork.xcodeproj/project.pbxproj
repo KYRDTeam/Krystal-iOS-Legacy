@@ -505,6 +505,7 @@
 		7E79FB5328F5624400306FC0 /* EarnOverviewV2Controller.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E79FB5128F5624400306FC0 /* EarnOverviewV2Controller.xib */; };
 		7E7ACD1128373E3100E78499 /* BridgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7ACD1028373E3100E78499 /* BridgeViewModel.swift */; };
 		7E7C074928A36887002E8068 /* SwapSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7C074828A36887002E8068 /* SwapSummaryViewModel.swift */; };
+		7E7EC8F128FFE536005BB579 /* EarnOverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7EC8F028FFE536005BB579 /* EarnOverViewModel.swift */; };
 		7E8C62D8271D319200A6C9DB /* ClaimRewardsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C62D6271D319200A6C9DB /* ClaimRewardsController.swift */; };
 		7E8C62D9271D319200A6C9DB /* ClaimRewardsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E8C62D7271D319200A6C9DB /* ClaimRewardsController.xib */; };
 		7E8F02E927F2DD4200234E22 /* AllChains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8F02E827F2DD4200234E22 /* AllChains.swift */; };
@@ -1776,6 +1777,7 @@
 		7E79FB5128F5624400306FC0 /* EarnOverviewV2Controller.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnOverviewV2Controller.xib; sourceTree = "<group>"; };
 		7E7ACD1028373E3100E78499 /* BridgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeViewModel.swift; sourceTree = "<group>"; };
 		7E7C074828A36887002E8068 /* SwapSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapSummaryViewModel.swift; sourceTree = "<group>"; };
+		7E7EC8F028FFE536005BB579 /* EarnOverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnOverViewModel.swift; sourceTree = "<group>"; };
 		7E8C62D6271D319200A6C9DB /* ClaimRewardsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimRewardsController.swift; sourceTree = "<group>"; };
 		7E8C62D7271D319200A6C9DB /* ClaimRewardsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClaimRewardsController.xib; sourceTree = "<group>"; };
 		7E8F02E827F2DD4200234E22 /* AllChains.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllChains.swift; sourceTree = "<group>"; };
@@ -3060,7 +3062,6 @@
 			isa = PBXGroup;
 			children = (
 				A610B2DE28ED7A6000456965 /* Coordinators */,
-				A610B2DE28ED7A6000456965 /* AddWatchWallet */,
 				C3A241982567ABBE0073703C /* WalletsList */,
 				C6FE417E2383A0AB0096AAD8 /* WalletConnect */,
 				253F50E321E5B4E70068813D /* PromoCode */,
@@ -4816,6 +4817,14 @@
 			path = ControllersV2;
 			sourceTree = "<group>";
 		};
+		7E7EC8EF28FFE4EB005BB579 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				7E7EC8F028FFE536005BB579 /* EarnOverViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		7E95D6152806E5920006E694 /* SelectChain */ = {
 			isa = PBXGroup;
 			children = (
@@ -6191,6 +6200,7 @@
 		C347DA2D25C0298F000D6E81 /* Earn */ = {
 			isa = PBXGroup;
 			children = (
+				7E7EC8EF28FFE4EB005BB579 /* ViewModels */,
 				7EAD2B1828F94A7E001FC888 /* Models */,
 				7EAD2B1528F9391C001FC888 /* Services */,
 				7E2A2EA728F697CD00AB9A77 /* CellsV2 */,
@@ -8116,6 +8126,7 @@
 				7E6F51082733895D002DA0B2 /* OverviewSummaryCell.swift in Sources */,
 				A6E6070E2851A25600387388 /* SignerFactory.swift in Sources */,
 				A6F6B95228DB1969000CB82C /* UserEndpoint.swift in Sources */,
+				7E7EC8F128FFE536005BB579 /* EarnOverViewModel.swift in Sources */,
 				255A70EA214F9ECE005D7A6A /* KNSettingsTabViewController.swift in Sources */,
 				C65D31EA21D4DCD1005D0B04 /* UITextField+Kyber.swift in Sources */,
 				7EC008A2288F957900FCED48 /* OverviewMainCellViewModel.swift in Sources */,
