@@ -23,6 +23,7 @@
                 <outlet property="browsingView" destination="ErS-2L-zWZ" id="7Ut-6x-S3n"/>
                 <outlet property="chainButton" destination="c7c-Vg-CdJ" id="Vzo-2Q-6qe"/>
                 <outlet property="chainIcon" destination="qIT-N6-N4L" id="Flg-Qs-JRW"/>
+                <outlet property="dotView" destination="7Ud-CJ-Y59" id="5gG-g7-NFX"/>
                 <outlet property="pageContainer" destination="Jx6-Kq-DKO" id="FVX-4u-Xvc"/>
                 <outlet property="segmentedControl" destination="Pri-qj-GIm" id="jUj-kE-2Of"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -115,6 +116,9 @@
                                     <integer key="value" value="10"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="historyButtonWasTapped:" destination="-1" eventType="touchUpInside" id="XlB-e4-0s7"/>
+                            </connections>
                         </button>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="qIT-N6-N4L">
                             <rect key="frame" x="37" y="51.333333333333329" width="12" height="12"/>

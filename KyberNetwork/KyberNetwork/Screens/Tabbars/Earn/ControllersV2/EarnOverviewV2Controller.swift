@@ -11,6 +11,7 @@ import BaseModule
 class EarnOverviewV2Controller: InAppBrowsingViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
   @IBOutlet weak var pageContainer: UIView!
+  @IBOutlet weak var dotView: UIView!
   var selectedPageIndex = 0
   let pageViewController: UIPageViewController = {
     let pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
@@ -57,6 +58,11 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
       selectedPageIndex = sender.selectedSegmentIndex
       pageViewController.setViewControllers([childListViewControllers[sender.selectedSegmentIndex]], direction: direction, animated: true)
     }
+  }
+  
+  @IBAction func historyButtonWasTapped(_ sender: Any) {
+//    viewModel.didTapHistoryButton()
+//    MixPanelManager.track("swap_history", properties: ["screenid": "swap"])
   }
 }
 
