@@ -2,6 +2,7 @@
 
 import Foundation
 import BigInt
+import Utilities
 
 public struct GasPriceConfiguration {
     static let `default`: BigInt = EtherNumberFormatter.full.number(from: "24", units: UnitConfiguration.gasPriceUnit)!

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import BaseModule
 
 protocol SearchFiatCryptoViewControllerDelegate: class {
   func didSelectCurrency(currency: FiatModel, type: SearchCurrencyType)

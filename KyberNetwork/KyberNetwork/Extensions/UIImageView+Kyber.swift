@@ -5,13 +5,6 @@ import Kingfisher
 
 extension UIImageView {
   
-  func loadImage(_ urlString: String?) {
-    guard let urlString = urlString, let url = URL(string: urlString) else {
-      return
-    }
-    kf.setImage(with: url)
-  }
-  
   func setImage(with url: URL, placeholder: UIImage?, size: CGSize? = nil, applyNoir: Bool = false, fitSize: CGSize? = nil, failCompletion: (() -> Void)? = nil) {
     if let cachedImg = UIImage.imageCache.object(forKey: url as AnyObject) as? UIImage {
       DispatchQueue.main.async {

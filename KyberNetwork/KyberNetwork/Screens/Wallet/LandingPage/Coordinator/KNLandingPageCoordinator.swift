@@ -141,6 +141,7 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
       Tracker.track(event: .introCreateWallet)
       if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
         self.termViewController.nextAction = {
+          
           self.createWalletCoordinator.updateNewWallet(nil, name: nil)
           self.createWalletCoordinator.start()
         }
@@ -186,6 +187,11 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
     )
     self.navigationController.present(alert, animated: true, completion: nil)
   }
+  
+  func openCreateWallet() {
+    let coordinator = KNCreateWalletCoordinator(navigationController: self.navigationController, newWallet: nil, name: nil)
+    coordinate(coordinator: coordinator)
+  }
 }
 
 extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
@@ -197,25 +203,21 @@ extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
   func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
     didImportWallet(wallet: wallet, chain: chain)
   }
-  
-  func importWalletCoordinatorDidSendRefCode(_ code: String) {
-    self.delegate?.landingPageCoordinatorDidSendRefCode(code.uppercased())
-  }
 
   func importWalletCoordinatorDidClose() {
   }
 }
 
 extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
-  func passcodeCoordinatorDidCancel() {
+  func passcodeCoordinatorDidCancel(coordinator: KNPasscodeCoordinator) {
     self.passcodeCoordinator.stop { }
   }
 
-  func passcodeCoordinatorDidEvaluatePIN() {
+  func passcodeCoordinatorDidEvaluatePIN(coordinator: KNPasscodeCoordinator) {
     self.passcodeCoordinator.stop { }
   }
 
-  func passcodeCoordinatorDidCreatePasscode() {
+  func passcodeCoordinatorDidCreatePasscode(coordinator: KNPasscodeCoordinator) {
     guard let wallet = self.newWallet else {
       return
     }
@@ -231,14 +233,11 @@ extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
 
 extension KNLandingPageCoordinator: KNCreateWalletCoordinatorDelegate {
 
-  func createWalletCoordinatorDidSendRefCode(_ code: String) {
-    self.delegate?.landingPageCoordinatorDidSendRefCode(code.uppercased())
-  }
-  
-  func createWalletCoordinatorDidClose() {
+  func createWalletCoordinatorDidClose(coordinator: KNCreateWalletCoordinator) {
+    removeCoordinator(coordinator)
   }
 
-  func createWalletCoordinatorDidCreateWallet(_ wallet: KWallet?, name: String?, chain: ChainType) {
+  func createWalletCoordinatorDidCreateWallet(coordinator: KNCreateWalletCoordinator, _ wallet: KWallet?, name: String?, chain: ChainType) {
     guard let wallet = wallet else { return }
     didImportWallet(wallet: wallet, chain: chain)
   }

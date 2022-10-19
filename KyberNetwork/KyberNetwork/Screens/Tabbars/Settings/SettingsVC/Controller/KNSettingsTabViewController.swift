@@ -3,6 +3,7 @@
 import UIKit
 import LocalAuthentication
 import KrystalWallets
+import BaseModule
 
 enum KNSettingsTabViewEvent {
   case manageWallet

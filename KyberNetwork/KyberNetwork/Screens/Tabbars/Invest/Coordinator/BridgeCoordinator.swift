@@ -121,8 +121,6 @@ class SourceBridgeToken: Codable {
 
 protocol BridgeCoordinatorDelegate: class {
   func didSelectAddChainWallet(chainType: ChainType)
-  func didSelectAddWallet()
-  func didSelectManageWallet()
   func didSelectOpenHistoryList()
 }
 
@@ -451,11 +449,6 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       self.didSelectDestChain(newChain: newChain)
     case .openHistory:
         self.delegate?.didSelectOpenHistoryList()
-    case .openWalletsList:
-      let viewModel = WalletsListViewModel()
-      let walletsList = WalletsListViewController(viewModel: viewModel)
-      walletsList.delegate = self
-      self.navigationController.present(walletsList, animated: true, completion: nil)
     case .addChainWallet(let chainType):
       self.delegate?.didSelectAddChainWallet(chainType: chainType)
     case .willSelectDestChain:
@@ -990,23 +983,6 @@ extension BridgeCoordinator: KNSearchTokenViewControllerDelegate {
       self.rootViewController.coordinatorDidUpdateData()
     default:
       return
-    }
-  }
-}
-
-extension BridgeCoordinator: WalletsListViewControllerDelegate {
-  func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
-    switch event {
-    case .connectWallet:
-      let qrcode = QRCodeReaderViewController()
-      qrcode.delegate = self
-      self.navigationController.present(qrcode, animated: true, completion: nil)
-    case .manageWallet:
-      self.delegate?.didSelectManageWallet()
-    case .didSelect(let address):
-      return
-    case .addWallet:
-      self.delegate?.didSelectAddWallet()
     }
   }
 }

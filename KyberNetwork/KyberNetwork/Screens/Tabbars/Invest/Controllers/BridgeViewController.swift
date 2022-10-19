@@ -8,10 +8,11 @@
 import UIKit
 import BigInt
 import KrystalWallets
+import Utilities
+import BaseModule
 
 enum BridgeEvent {
   case openHistory
-  case openWalletsList
   case addChainWallet(chainType: ChainType)
   case selectSourceToken
   case willSelectDestChain
@@ -81,13 +82,13 @@ class BridgeViewController: InAppBrowsingViewController {
     self.delegate?.bridgeViewControllerController(self, run: .checkAllowance(token: currentSourceToken))
   }
   
-  override func openWalletList() {
-    super.openWalletList()
+  override func handleWalletButtonTapped() {
+    super.handleWalletButtonTapped()
     MixPanelManager.track("bridge_select_wallet", properties: ["screenid": "bridge"])
   }
   
-  override func openSwitchChain() {
-    super.openSwitchChain()
+  override func handleChainButtonTapped() {
+    super.handleChainButtonTapped()
     MixPanelManager.track("bridge_select_chain", properties: ["screenid": "bridge"])
   }
   
@@ -274,16 +275,8 @@ class BridgeViewController: InAppBrowsingViewController {
     self.present(popup, animated: true, completion: nil)
   }
 
-  @IBAction func switchWalletButtonTapped(_ sender: Any) {
-    self.delegate?.bridgeViewControllerController(self, run: .openWalletsList)
-  }
-
   @IBAction func backButtonTapped(_ sender: Any) {
     self.navigationController?.popViewController(animated: true)
-  }
-
-  @IBAction func switchChainButtonTapped(_ sender: Any) {
-    self.openSwitchChainPopup()
   }
 
   @IBAction func showHistoryButtonTapped(_ sender: Any) {

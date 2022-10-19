@@ -160,15 +160,8 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
       }
     case .openHistory:
       self.delegate?.sendTokenViewCoordinatorSelectOpenHistoryList()
-    case .openWalletsList:
-      let viewModel = WalletsListViewModel()
-      let walletsList = WalletsListViewController(viewModel: viewModel)
-      walletsList.delegate = self
-      self.navigationController.present(walletsList, animated: true, completion: nil)
     case .useLastMultisend:
       break
-    case .addChainWallet(let chainType):
-      delegate?.sendTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
     }
   }
   
@@ -854,58 +847,5 @@ extension MultiSendCoordinator: KNTransactionStatusPopUpDelegate {
     vc.delegate = self
     self.gasPriceSelector = vc
     self.navigationController.present(vc, animated: true, completion: nil)
-  }
-}
-
-extension MultiSendCoordinator: WalletsListViewControllerDelegate {
-  func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
-    switch event {
-    case .connectWallet:
-      let qrcode = QRCodeReaderViewController()
-      qrcode.delegate = self
-      self.navigationController.present(qrcode, animated: true, completion: nil)
-    case .manageWallet:
-      self.delegate?.sendTokenCoordinatorDidSelectManageWallet()
-    case .didSelect(let address):
-      return
-    case .addWallet:
-      self.delegate?.sendTokenCoordinatorDidSelectAddWallet()
-    }
-  }
-}
-
-extension MultiSendCoordinator: QRCodeReaderDelegate {
-  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
-    reader.dismiss(animated: true, completion: nil)
-  }
-  
-  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
-    reader.dismiss(animated: true) {
-      guard let url = WCURL(result) else {
-        self.navigationController.showTopBannerView(
-          with: Strings.invalidSession,
-          message: Strings.invalidSessionTryOtherQR,
-          time: 1.5
-        )
-        return
-      }
-      
-      do {
-        let privateKey = try WalletManager.shared.exportPrivateKey(address: self.currentAddress)
-        DispatchQueue.main.async {
-          let controller = KNWalletConnectViewController(
-            wcURL: url,
-            pk: privateKey
-          )
-          self.navigationController.present(controller, animated: true, completion: nil)
-        }
-      } catch {
-        self.navigationController.showTopBannerView(
-          with: Strings.privateKeyError,
-          message: Strings.canNotGetPrivateKey,
-          time: 1.5
-        )
-      }
-    }
   }
 }

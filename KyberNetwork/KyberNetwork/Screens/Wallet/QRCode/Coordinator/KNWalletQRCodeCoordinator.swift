@@ -3,6 +3,7 @@
 import UIKit
 import MBProgressHUD
 import KrystalWallets
+import BaseModule
 
 class KNWalletQRCodeCoordinator: Coordinator {
 

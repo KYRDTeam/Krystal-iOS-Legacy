@@ -979,4 +979,8 @@
 "wc.disconnect" = "Disconnect";
 "wc.disconnect.confirm" = "Are you sure to disconnect from this dapp?";
 "wc.not.support.watch.wallet" = "You are using watch wallet";
+
+// Wallet list
+"backup.wallet.warning.message" = "NEVER share Keystore/Private Key/Mnemonic with anyone (including Krystal). These data grant access to all your funds and they may get stolen";
 "search.pools" = "Search pools";
+"backup.wallet.title" = "Export at your own risk!";

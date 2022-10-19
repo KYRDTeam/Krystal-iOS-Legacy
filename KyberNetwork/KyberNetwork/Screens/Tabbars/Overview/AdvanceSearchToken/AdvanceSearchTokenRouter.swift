@@ -48,7 +48,7 @@ class AdvanceSearchTokenRouter: AdvanceSearchTokenWireframeProtocol {
     }
     let addresses = WalletManager.shared.getAllAddresses(addressType: newChain.addressType)
     if addresses.isEmpty {
-      self.coordinator?.sendTokenCoordinatorDidSelectAddChainWallet(chainType: newChain)
+      self.coordinator?.openAddChainWalletMenu(chain: newChain)
       self.pendingAction = completion
       return
     }

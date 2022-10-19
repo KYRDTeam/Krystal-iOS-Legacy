@@ -2,7 +2,7 @@
 
 import UIKit
 import SwipeCellKit
-
+import BaseModule
 
 //swiftlint:disable file_length
 enum KNHistoryViewEvent {
@@ -624,7 +624,7 @@ class KNHistoryViewController: BaseWalletOrientedViewController {
     self.viewModel.updateIsShowingPending(sender.selectedSegmentIndex == 1)
     self.updateUIWhenDataDidChange()
   }
-
+  
   @objc private func refreshData(_ sender: Any) {
     guard !self.viewModel.isShowingPending else {
       self.refreshControl.endRefreshing()

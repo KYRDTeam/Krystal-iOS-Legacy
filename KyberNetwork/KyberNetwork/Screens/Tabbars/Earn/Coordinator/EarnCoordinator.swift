@@ -21,10 +21,7 @@ protocol NavigationBarDelegate: class {
 }
 
 protocol EarnCoordinatorDelegate: class {
-  func earnCoordinatorDidSelectAddWallet()
-  func earnCoordinatorDidSelectManageWallet()
   func earnCoordinatorDidSelectAddToken(_ token: TokenObject)
-  func earnCoordinatorDidSelectAddChainWallet(chainType: ChainType)
 }
 //swiftlint:disable function_body_length
 class EarnCoordinator: NSObject, Coordinator {
@@ -249,9 +246,6 @@ class EarnCoordinator: NSObject, Coordinator {
 extension EarnCoordinator: EarnMenuViewControllerDelegate {
   func earnMenuViewControllerDidSelectToken(controller: EarnMenuViewController, token: TokenData) {
     self.openEarnViewController(token: token)
-  }
-  func earnMenuViewControllerDidSelectAddChainWallet(controller: EarnMenuViewController, chainType: ChainType) {
-    delegate?.earnCoordinatorDidSelectAddChainWallet(chainType: chainType)
   }
 }
 
@@ -1005,20 +999,9 @@ extension EarnCoordinator: NavigationBarDelegate {
 }
 
 extension EarnCoordinator: KNHistoryCoordinatorDelegate {
-  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.earnCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
   
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.earnCoordinatorDidSelectAddToken(token)
-  }
-  
-  func historyCoordinatorDidSelectAddWallet() {
-    self.delegate?.earnCoordinatorDidSelectAddWallet()
-  }
-  
-  func historyCoordinatorDidSelectManageWallet() {
-    self.delegate?.earnCoordinatorDidSelectManageWallet()
   }
 
   func historyCoordinatorDidClose() {
@@ -1027,9 +1010,6 @@ extension EarnCoordinator: KNHistoryCoordinatorDelegate {
 }
 
 extension EarnCoordinator: EarnOverviewViewControllerDelegate {
-  func earnOverviewViewControllerAddChainWallet(_ controller: EarnOverviewViewController, chainType: ChainType) {
-    self.delegate?.earnCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
   
   func earnOverviewViewControllerDidSelectExplore(_ controller: EarnOverviewViewController) {
     self.navigationController.pushViewController(self.menuViewController, animated: true)
@@ -1060,9 +1040,6 @@ extension EarnCoordinator: OverviewDepositViewControllerDelegate {
 }
 
 extension EarnCoordinator: KNSendTokenViewCoordinatorDelegate {
-  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.earnCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
   
   func sendTokenCoordinatorDidClose() {
     self.sendCoordinator = nil
@@ -1076,28 +1053,13 @@ extension EarnCoordinator: KNSendTokenViewCoordinatorDelegate {
     self.openHistoryScreen()
   }
   
-  func sendTokenCoordinatorDidSelectManageWallet() {
-    self.delegate?.earnCoordinatorDidSelectManageWallet()
-  }
-  
-  func sendTokenCoordinatorDidSelectAddWallet() {
-    self.delegate?.earnCoordinatorDidSelectAddWallet()
-  }
-  
 }
 
 extension EarnCoordinator: WithdrawCoordinatorDelegate {
-  func withdrawCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.earnCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
   
   func withdrawCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.earnCoordinatorDidSelectAddToken(token)
   }
-  
-  func withdrawCoordinatorDidSelectAddWallet() {}
-
-  func withdrawCoordinatorDidSelectManageWallet() {}
   
   func withdrawCoordinatorDidSelectHistory() {}
   

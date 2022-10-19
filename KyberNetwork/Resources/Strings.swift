@@ -18,6 +18,7 @@ struct Strings {
   static let cancel = "cancel".toBeLocalised()
   static let delete = "delete".toBeLocalised()
   static let next = "Next".toBeLocalised()
+  static let `continue` = "continue".toBeLocalised()
   
   // Actions
   static let add = "add".toBeLocalised()
@@ -286,6 +287,9 @@ struct Strings {
   static let wcCancel = "wc.cancel".toBeLocalised()
   static let wcNotSupportWatchWallet = "wc.not.support.watch.wallet".toBeLocalised()
   
+  // Wallet list
+  static let backupWalletWarningMessage = "backup.wallet.warning.message".toBeLocalised()
+  static let backupWalletWarningTitle = "backup.wallet.title".toBeLocalised()
   //Staking
   static let searchPools = "search.pools".toBeLocalised()
 }
