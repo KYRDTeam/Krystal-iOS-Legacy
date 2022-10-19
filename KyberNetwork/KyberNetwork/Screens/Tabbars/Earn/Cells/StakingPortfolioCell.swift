@@ -78,6 +78,7 @@ class StakingPortfolioCell: UITableViewCell {
   @IBOutlet weak var depostTitleLabelLeadingContraintWithSuperView: NSLayoutConstraint!
   @IBOutlet weak var depositTitleLabelContraintWithAPYTitle: NSLayoutConstraint!
   @IBOutlet weak var apyTitleLabel: UILabel!
+  @IBOutlet weak var balanceTitleLabel: UILabel!
   
   weak var delegate: StakingPortfolioCellDelegate?
   

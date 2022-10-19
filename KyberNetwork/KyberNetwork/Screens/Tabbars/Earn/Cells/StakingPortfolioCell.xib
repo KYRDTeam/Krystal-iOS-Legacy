@@ -103,8 +103,8 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DEPOSITED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XvN-zC-v4i">
-                                <rect key="frame" x="68" y="73" width="70.5" height="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XvN-zC-v4i">
+                                <rect key="frame" x="68" y="73" width="51" height="17"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -305,6 +305,7 @@
                 <outlet property="addButton" destination="Ymx-a2-Paf" id="1VS-Ka-rr9"/>
                 <outlet property="apyTitleLabel" destination="5kV-Di-ra3" id="LU2-iX-i4z"/>
                 <outlet property="apyValueLabel" destination="jsx-eU-gTH" id="JyP-TX-EfY"/>
+                <outlet property="balanceTitleLabel" destination="XvN-zC-v4i" id="BTh-76-RCA"/>
                 <outlet property="chainImageView" destination="6ac-VO-zvs" id="q1f-2v-U2j"/>
                 <outlet property="claimButton" destination="CU8-Nm-UDM" id="rym-Tt-Xod"/>
                 <outlet property="depositTitleLabelContraintWithAPYTitle" destination="MDA-vE-bV8" id="4lW-54-TdV"/>
