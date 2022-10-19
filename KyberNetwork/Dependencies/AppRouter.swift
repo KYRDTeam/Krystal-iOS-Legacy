@@ -22,7 +22,7 @@ class AppRouter: AppRouterProtocol, Coordinator {
   
   func openWalletList(currentChain: ChainType, allowAllChainOption: Bool,
                       onSelectWallet: @escaping (KWallet) -> (),
-                      onSelectWatchAddress: @escaping (KAddress) -> ()) {
+                      onSelectWatchAddress: @escaping (KAddress) -> Void) {
     let walletsList = WalletListV2ViewController()
     walletsList.allowAllChainOption = allowAllChainOption
     walletsList.onSelectWallet = onSelectWallet
@@ -32,7 +32,7 @@ class AppRouter: AppRouterProtocol, Coordinator {
     UIApplication.shared.topMostViewController()?.present(navigation, animated: true, completion: nil)
   }
   
-  func openChainList(allowAllChainOption: Bool) {
+  func openChainList(allowAllChainOption: Bool, onSelectChain: @escaping (ChainType) -> Void) {
     MixPanelManager.track("import_select_chain_open", properties: ["screenid": "import_select_chain"])
     let popup = SwitchChainViewController(selected: AppState.shared.currentChain)
     var chains = WalletManager.shared.getAllAddresses(walletID: AppState.shared.currentAddress.walletID).flatMap { address in
@@ -45,11 +45,15 @@ class AppRouter: AppRouterProtocol, Coordinator {
     }
     popup.dataSource = chains
     popup.completionHandler = { selectedChain in
-      KNGeneralProvider.shared.currentChain = selectedChain
-      AppEventCenter.shared.switchChain(chain: selectedChain)
-      AppState.shared.updateChain(chain: selectedChain)
-      AppDelegate.shared.coordinator.loadBalanceCoordinator?.shouldFetchAllChain = (selectedChain == .all)
-      AppDelegate.shared.coordinator.loadBalanceCoordinator?.resume()
+      if allowAllChainOption && selectedChain == .all {
+        AppDelegate.shared.coordinator.loadBalanceCoordinator?.shouldFetchAllChain = (selectedChain == .all)
+        AppDelegate.shared.coordinator.loadBalanceCoordinator?.resume()
+      } else {
+        KNGeneralProvider.shared.currentChain = selectedChain
+        AppEventCenter.shared.switchChain(chain: selectedChain)
+        AppState.shared.updateChain(chain: selectedChain)
+      }
+      onSelectChain(selectedChain)
     }
     UIApplication.shared.topMostViewController()?.present(popup, animated: true, completion: nil)
   }
