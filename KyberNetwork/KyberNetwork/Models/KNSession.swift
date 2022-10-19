@@ -7,6 +7,7 @@ import TrustKeystore
 import TrustCore
 import RealmSwift
 import KrystalWallets
+import AppState
 
 protocol KNSessionDelegate: class {
   func userDidClickExitSession()
@@ -41,7 +42,7 @@ class KNSession {
     self.address = address
     WalletCache.shared.lastUsedAddress = address
     AppEventCenter.shared.currentAddressUpdated()
-    AppEventCenter.shared.walletListHasUpdate()
+    AppEventManager.shared.postWalletListUpdatedEvent()
   }
   
   func getCurrentWalletAddresses() -> [KAddress] {

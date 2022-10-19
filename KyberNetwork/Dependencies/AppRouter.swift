@@ -20,6 +20,13 @@ class AppRouter: AppRouterProtocol, Coordinator {
     fatalError("Do not use this function")
   }
   
+  func openAddWallet() {
+    guard let parent = UIApplication.shared.topMostViewController() else { return }
+    let coordinator = KNAddNewWalletCoordinator(parentViewController: parent)
+    coordinator.start(type: .full)
+    coordinate(coordinator: coordinator)
+  }
+  
   func openWalletList(currentChain: ChainType, allowAllChainOption: Bool,
                       onSelectWallet: @escaping (KWallet) -> (),
                       onSelectWatchAddress: @escaping (KAddress) -> Void) {

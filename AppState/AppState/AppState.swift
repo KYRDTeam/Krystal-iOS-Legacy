@@ -40,12 +40,12 @@ public class AppState {
   
   public func updateChain(chain: ChainType) {
     currentChain = chain
-    AppEventManager.shared.switchChain(chain: chain)
+    AppEventManager.shared.postSwitchChainEvent(chain: chain)
   }
   
   public func updateAddress(address: KAddress, targetChain: ChainType) {
     currentAddress = address
-    AppEventManager.shared.switchAddress(address: address)
+    AppEventManager.shared.postSwitchAddressEvent(address: address)
     if targetChain != currentChain {
       updateChain(chain: targetChain)
     }
@@ -69,15 +69,6 @@ public class AppState {
   public func unmarkWalletBackedUp(walletID: String) {
     UserDefaults.standard.removeObject(forKey: Constants.UserDefaultKeys.kIsWalletBackedUp + walletID)
   }
-  
-//  private func switchWallet(wallet: KWallet, chain: ChainType) {
-//    if let address = getAddresses(wallet: wallet, chain: chain).first {
-//      switchAddress(address: address)
-//      if chain != currentChain {
-//        updateChain(chain: chain)
-//      }
-//    }
-//  }
   
   private func getAddresses(wallet: KWallet, chain: ChainType) -> [KAddress] {
     let addressType = getAddressType(forChain: chain)

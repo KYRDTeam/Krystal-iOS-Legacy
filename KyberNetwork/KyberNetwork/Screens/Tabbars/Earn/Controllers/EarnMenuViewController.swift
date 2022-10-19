@@ -94,6 +94,11 @@ class EarnMenuViewController: InAppBrowsingViewController {
     )
   }
   
+  override func handleAddWalletTapped() {
+    super.handleAddWalletTapped()
+    MixPanelManager.track("earn_pre_connect_wallet", properties: ["screenid": "earn_explore"])
+  }
+  
   fileprivate func updateUIPendingTxIndicatorView() {
     guard self.isViewLoaded else {
       return

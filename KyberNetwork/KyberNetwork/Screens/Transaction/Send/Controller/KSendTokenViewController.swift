@@ -446,6 +446,11 @@ class KSendTokenViewController: InAppBrowsingViewController {
     self.delegate?.kSendTokenViewController(self, run: .openMultiSend)
   }
   
+  override func handleAddWalletTapped() {
+    super.handleAddWalletTapped()
+    MixPanelManager.track("transfer_connect_wallet", properties: ["screenid": "transfer"])
+  }
+  
 }
 
 // MARK: Update UIs
