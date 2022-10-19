@@ -151,7 +151,8 @@ class InvestCoordinator: Coordinator {
   }
   
   fileprivate func openStakeView() {
-    let viewController = EarnOverviewV2Controller()
+    let viewModel = EarnOverViewModel()
+    let viewController = EarnOverviewV2Controller(viewModel: viewModel)
     self.navigationController.pushViewController(viewController, animated: true)
   }
   

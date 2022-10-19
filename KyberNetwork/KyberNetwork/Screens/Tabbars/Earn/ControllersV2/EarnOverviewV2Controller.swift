@@ -19,7 +19,17 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   }()
   
   var childListViewControllers: [InAppBrowsingViewController] = []
-
+  var viewModel: EarnOverViewModel
+  
+  init(viewModel: EarnOverViewModel) {
+    self.viewModel = viewModel
+    super.init(nibName: EarnOverviewV2Controller.className, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     initChildViewControllers()
@@ -51,6 +61,10 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
     pageViewController.didMove(toParent: self)
   }
   
+  @IBAction func backButtonPressed(_ sender: Any) {
+    self.navigationController?.popViewController(animated: true)
+  }
+  
   @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
     segmentedControl.underlineCenterPosition()
     if sender.selectedSegmentIndex != selectedPageIndex {
@@ -61,8 +75,7 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   }
   
   @IBAction func historyButtonWasTapped(_ sender: Any) {
-//    viewModel.didTapHistoryButton()
-//    MixPanelManager.track("swap_history", properties: ["screenid": "swap"])
+    viewModel.didTapHistoryButton()
   }
 }
 
