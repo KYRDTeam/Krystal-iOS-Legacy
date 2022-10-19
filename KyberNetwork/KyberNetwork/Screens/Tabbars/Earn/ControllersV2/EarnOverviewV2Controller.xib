@@ -12,16 +12,22 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EarnOverviewV2Controller" customModule="Krystal" customModuleProvider="target">
             <connections>
+                <outlet property="backupIcon" destination="qJR-Do-MzV" id="nJQ-D6-Jqs"/>
+                <outlet property="browsingView" destination="ErS-2L-zWZ" id="7Ut-6x-S3n"/>
+                <outlet property="chainButton" destination="c7c-Vg-CdJ" id="Vzo-2Q-6qe"/>
+                <outlet property="chainIcon" destination="qIT-N6-N4L" id="Flg-Qs-JRW"/>
                 <outlet property="pageContainer" destination="Jx6-Kq-DKO" id="FVX-4u-Xvc"/>
                 <outlet property="segmentedControl" destination="Pri-qj-GIm" id="jUj-kE-2Of"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="walletButton" destination="YGL-Ch-f7O" id="f6v-Vu-qyh"/>
+                <outlet property="walletView" destination="a2Z-04-AAJ" id="Wuk-jR-mWb"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -129,6 +135,9 @@
                             <state key="normal" title="Ethereum" image="arrow_down_icon_white">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
+                            <connections>
+                                <action selector="onChainButtonTapped:" destination="-1" eventType="touchUpInside" id="6GS-8I-D5Q"/>
+                            </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ErS-2L-zWZ">
                             <rect key="frame" x="137" y="0.0" width="253" height="89"/>
@@ -155,6 +164,9 @@
                                         <constraint firstAttribute="height" constant="32" id="9G4-Ho-nyb"/>
                                     </constraints>
                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <connections>
+                                        <action selector="onAddWalletButtonTapped:" destination="-1" eventType="touchUpInside" id="R7l-yb-a5p"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" name="mainViewBgColor"/>
