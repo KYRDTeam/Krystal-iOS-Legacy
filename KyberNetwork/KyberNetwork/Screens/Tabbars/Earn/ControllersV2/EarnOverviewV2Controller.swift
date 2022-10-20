@@ -20,7 +20,9 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   
   var childListViewControllers: [InAppBrowsingViewController] = []
   var viewModel: EarnOverViewModel
-  
+  override var supportAllChainOption: Bool {
+    return true
+  }
   init(viewModel: EarnOverViewModel) {
     self.viewModel = viewModel
     super.init(nibName: EarnOverviewV2Controller.className, bundle: nil)
