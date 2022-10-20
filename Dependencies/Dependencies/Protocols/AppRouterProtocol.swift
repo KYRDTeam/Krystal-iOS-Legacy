@@ -18,4 +18,5 @@ public protocol AppRouterProtocol {
                      onSelectChain: @escaping (ChainType) -> ())
   func createSwapViewController() -> UIViewController
   func openAddWallet()
+  func openTransactionHistory()
 }

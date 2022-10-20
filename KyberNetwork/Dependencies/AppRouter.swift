@@ -15,7 +15,7 @@ import AppState
 class AppRouter: AppRouterProtocol, Coordinator {
   
   var coordinators: [Coordinator] = []
-  
+  var historyCoordinator: Coordinator?
   func start() {
     fatalError("Do not use this function")
   }
@@ -66,4 +66,33 @@ class AppRouter: AppRouterProtocol, Coordinator {
   func createSwapViewController() -> UIViewController {
     return SwapModule.createSwapViewController()
   }
+  
+  func openTransactionHistory() {
+    guard let navigation = UIApplication.shared.topMostViewController() as? UINavigationController else { return }
+    switch KNGeneralProvider.shared.currentChain {
+    case .solana:
+      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigation, type: .solana)
+      coordinator.delegate = self
+      self.historyCoordinator = coordinator
+      coordinate(coordinator: coordinator)
+    default:
+      let coordinator = KNHistoryCoordinator(navigationController: navigation)
+      coordinator.delegate = self
+      self.historyCoordinator = coordinator
+      coordinate(coordinator: coordinator)
+    }
+  }
+}
+
+extension AppRouter: KNHistoryCoordinatorDelegate {
+  
+  func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
+    // No need to handle
+  }
+
+  func historyCoordinatorDidClose() {
+    removeCoordinator(historyCoordinator!)
+    historyCoordinator = nil
+  }
+  
 }

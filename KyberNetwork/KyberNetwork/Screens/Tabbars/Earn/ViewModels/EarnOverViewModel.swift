@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Dependencies
 
 class EarnOverViewModel {
   var hasPendingTransaction: Observable<Bool> = .init(false)
@@ -26,7 +27,7 @@ class EarnOverViewModel {
   }
   
   func didTapHistoryButton() {
-//    actions.onSelectOpenHistory()
+    AppDependencies.router.openTransactionHistory()
   }
 }
 
