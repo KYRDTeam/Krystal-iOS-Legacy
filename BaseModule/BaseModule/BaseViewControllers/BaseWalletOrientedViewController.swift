@@ -53,6 +53,12 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
   open func observeNotifications() {
     NotificationCenter.default.addObserver(
       self,
+      selector: #selector(onAppSelectAllChain),
+      name: .appSelectAllChain,
+      object: nil
+    )
+    NotificationCenter.default.addObserver(
+      self,
       selector: #selector(onAppSwitchChain),
       name: .appChainChanged,
       object: nil
@@ -73,7 +79,8 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
   
   open func unobserveNotifications() {
     NotificationCenter.default.removeObserver(self, name: .appAddressChanged, object: nil)
-    NotificationCenter.default.removeObserver(self, name: .appAddressChanged, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .appChainChanged, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .appSelectAllChain, object: nil)
     NotificationCenter.default.removeObserver(self, name: .appWalletsListHasUpdate, object: nil)
   }
   
@@ -85,6 +92,11 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
   open func reloadChain() {
     chainIcon?.image = AppState.shared.currentChain.squareIcon()
     chainButton?.setTitle(AppState.shared.currentChain.chainName(), for: .normal)
+  }
+  
+  open func reloadAllNetworksChain() {
+    chainIcon?.image = ChainType.all.squareIcon()
+    chainButton?.setTitle(ChainType.all.chainName(), for: .normal)
   }
   
   @objc open func onWalletListUpdated() {
@@ -101,6 +113,10 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
   
   @objc open func onAppSwitchChain() {
     reloadChain()
+  }
+  
+  @objc open func onAppSelectAllChain() {
+    reloadAllNetworksChain()
   }
   
   @objc open func onAppSwitchAddress() {
@@ -150,7 +166,7 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
   }
   
   @objc open func handleChainButtonTapped() {
-    AppDependencies.router.openChainList(allowAllChainOption: supportAllChainOption) { [weak self] chain in
+    AppDependencies.router.openChainList(currentChain, allowAllChainOption: supportAllChainOption) { [weak self] chain in
       self?.onChainSelected(chain: chain)
     }
   }

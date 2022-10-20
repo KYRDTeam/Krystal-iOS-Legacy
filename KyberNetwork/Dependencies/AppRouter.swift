@@ -39,9 +39,9 @@ class AppRouter: AppRouterProtocol, Coordinator {
     UIApplication.shared.topMostViewController()?.present(navigation, animated: true, completion: nil)
   }
   
-  func openChainList(allowAllChainOption: Bool, onSelectChain: @escaping (ChainType) -> Void) {
+  func openChainList(_ selectedChain: ChainType, allowAllChainOption: Bool, onSelectChain: @escaping (ChainType) -> Void) {
     MixPanelManager.track("import_select_chain_open", properties: ["screenid": "import_select_chain"])
-    let popup = SwitchChainViewController(selected: AppState.shared.currentChain)
+    let popup = SwitchChainViewController(selected: selectedChain)
     var chains = WalletManager.shared.getAllAddresses(walletID: AppState.shared.currentAddress.walletID).flatMap { address in
       return ChainType.getAllChain().filter { chain in
         return chain != .all && chain.addressType == address.addressType
@@ -55,6 +55,7 @@ class AppRouter: AppRouterProtocol, Coordinator {
       if allowAllChainOption && selectedChain == .all {
         AppDelegate.shared.coordinator.loadBalanceCoordinator?.shouldFetchAllChain = (selectedChain == .all)
         AppDelegate.shared.coordinator.loadBalanceCoordinator?.resume()
+        AppEventManager.shared.postSelectAllChain()
       } else {
         AppState.shared.updateChain(chain: selectedChain)
       }
