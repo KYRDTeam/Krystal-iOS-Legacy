@@ -11,13 +11,13 @@ extension KNAppCoordinator {
   
   func startNewSession(address: KAddress) {
     self.walletCache.lastUsedAddress = address
-    self.currentAddress = address
+//    self.currentAddress = address
     
     AppState.shared.updateAddress(address: address, targetChain: AppState.shared.currentChain)
       
     OneSignal.setExternalUserId(address.addressString)
     Tracker.updateUserID(address.addressString)
-    self.session = KNSession(address: address)
+    self.session = KNSession()
     self.session.startSession()
     
     DispatchQueue.global(qos: .background).async {
@@ -172,7 +172,7 @@ extension KNAppCoordinator {
     self.walletManager.removeAll()
     self.walletCache.lastUsedAddress = nil
     self.session.stopSession()
-    self.session.address = self.walletManager.createEmptyAddress()
+    AppState.shared.updateAddress(address: self.walletManager.createEmptyAddress(), targetChain: AppState.shared.currentChain)
     self.exchangeCoordinator?.stop()
     self.exchangeCoordinator = nil
     self.settingsCoordinator?.stop()

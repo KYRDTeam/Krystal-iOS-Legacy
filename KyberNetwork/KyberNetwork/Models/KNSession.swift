@@ -14,7 +14,9 @@ protocol KNSessionDelegate: class {
 }
 
 class KNSession {
-  var address: KAddress
+  var address: KAddress {
+    return AppState.shared.currentAddress
+  }
   var web3Swift: Web3Swift?
   var realm: Realm!
   var externalProvider: KNExternalProvider?
@@ -26,8 +28,7 @@ class KNSession {
   private(set) var transactionCoordinator: KNTransactionCoordinator?
   var crosschainTxService = CrosschainTransactionService()
 
-  init(address: KAddress) {
-    self.address = address
+  init() {
     self.configureDatabase()
     self.configureWeb3()
     self.configureStorages()
@@ -36,12 +37,11 @@ class KNSession {
   }
   
   func refreshCurrentAddressInfo() {
-    guard let address = WalletManager.shared.getAddress(id: address.id) else {
-      return
-    }
-    self.address = address
-    WalletCache.shared.lastUsedAddress = address
-    AppEventCenter.shared.currentAddressUpdated()
+//    guard let address = WalletManager.shared.getAddress(id: address.id) else {
+//      return
+//    }
+//    WalletCache.shared.lastUsedAddress = address
+//    AppEventCenter.shared.currentAddressUpdated()
     AppEventManager.shared.postWalletListUpdatedEvent()
   }
   
@@ -94,14 +94,13 @@ class KNSession {
   }
   
   func switchAddress(address: KAddress) {
-    self.address = address
+    AppEventCenter.shared.switchAddress(address: address)
     WalletCache.shared.lastUsedAddress = address
     self.configureDatabase()
     self.configureWeb3()
     self.configureProvider()
     self.configureStorages()
     self.resetTransactionCoordinator()
-    AppEventCenter.shared.switchAddress(address: address)
   }
   
   func resetTransactionCoordinator() {

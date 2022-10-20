@@ -5,6 +5,7 @@ import UIKit
 import Result
 import MBProgressHUD
 import SafariServices
+import AppState
 
 enum ConfirmationError: LocalizedError {
     case cancel
@@ -112,8 +113,8 @@ extension UIViewController {
       secondButtonTitle: Strings.ok,
       firstButtonTitle: Strings.cancel,
       secondButtonAction: {
-        
-        KNGeneralProvider.shared.currentChain = chain
+        AppState.shared.updateChain(chain: chain)
+//        KNGeneralProvider.shared.currentChain = chain
         KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
           completion()

@@ -56,8 +56,6 @@ class AppRouter: AppRouterProtocol, Coordinator {
         AppDelegate.shared.coordinator.loadBalanceCoordinator?.shouldFetchAllChain = (selectedChain == .all)
         AppDelegate.shared.coordinator.loadBalanceCoordinator?.resume()
       } else {
-        KNGeneralProvider.shared.currentChain = selectedChain
-        AppEventCenter.shared.switchChain(chain: selectedChain)
         AppState.shared.updateChain(chain: selectedChain)
       }
       onSelectChain(selectedChain)
