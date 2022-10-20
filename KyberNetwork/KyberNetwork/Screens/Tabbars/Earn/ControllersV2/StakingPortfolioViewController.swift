@@ -14,6 +14,7 @@ class StakingPortfolioViewModel {
   var portfolio: PortfolioStaking?
   let apiService = KrystalService()
   var searchText = ""
+  var chainID: Int?
   
   var dataSource: Observable<([StakingPortfolioCellModel], [StakingPortfolioCellModel])> = .init(([], []))
   var error: Observable<Error?> = .init(nil)
@@ -28,7 +29,7 @@ class StakingPortfolioViewModel {
     return dataSource.value.0.isEmpty && dataSource.value.1.isEmpty
   }
   
-  func reloadDataSource(chainID: Int? = nil) {
+  func reloadDataSource() {
     cleanAllData()
     guard let data = portfolio else {
       return
@@ -111,6 +112,8 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         self.updateUIEmptyView()
       }
     }
+    let currentChain = KNGeneralProvider.shared.currentChain
+    viewModel.chainID = currentChain.getChainId()
     viewModel.requestData()
   }
   
@@ -186,8 +189,14 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   
   @objc override func onAppSwitchChain() {
     let currentChain = KNGeneralProvider.shared.currentChain
-    
-    viewModel.reloadDataSource(chainID: currentChain.getChainId())
+    viewModel.chainID = currentChain.getChainId()
+    viewModel.reloadDataSource()
+    portfolioTableView.reloadData()
+  }
+  
+  override func onAppSelectAllChain() {
+    viewModel.chainID = nil
+    viewModel.reloadDataSource()
     portfolioTableView.reloadData()
   }
 }
