@@ -28,7 +28,7 @@ class StakingPortfolioViewModel {
     return dataSource.value.0.isEmpty && dataSource.value.1.isEmpty
   }
   
-  func reloadDataSource() {
+  func reloadDataSource(chainID: Int? = nil) {
     cleanAllData()
     guard let data = portfolio else {
       return
@@ -46,6 +46,16 @@ class StakingPortfolioViewModel {
       
       earningBalanceData = earningBalanceData.filter({ item in
         return item.stakingToken.symbol.lowercased().contains(searchText) || item.toUnderlyingToken.symbol.lowercased().contains(searchText)
+      })
+    }
+    
+    if let unwrap = chainID {
+      pendingUnstakeData = pendingUnstakeData.filter({ item in
+        return item.chainID == unwrap
+      })
+      
+      earningBalanceData = earningBalanceData.filter({ item in
+        return item.chainID == unwrap
       })
     }
     
@@ -171,6 +181,13 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   
   func reloadUI() {
     viewModel.reloadDataSource()
+    portfolioTableView.reloadData()
+  }
+  
+  @objc override func onAppSwitchChain() {
+    let currentChain = KNGeneralProvider.shared.currentChain
+    
+    viewModel.reloadDataSource(chainID: currentChain.getChainId())
     portfolioTableView.reloadData()
   }
 }
