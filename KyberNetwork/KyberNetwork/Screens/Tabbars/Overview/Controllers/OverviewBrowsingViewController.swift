@@ -110,6 +110,11 @@ class OverviewBrowsingViewController: InAppBrowsingViewController {
     }
   }
   
+  override func handleAddWalletTapped() {
+    super.handleAddWalletTapped()
+    MixPanelManager.track("home_connect_wallet", properties: ["screenid": "homepage"])
+  }
+  
   @IBAction func searchButtonTapped(_ sender: UIButton) {
     self.delegate?.didSelectSearch(self)
     MixPanelManager.track("home_search", properties: ["screenid": "homepage"])

@@ -175,6 +175,11 @@ class KNSettingsTabViewController: InAppBrowsingViewController {
     self.delegate?.settingsTabViewController(self, run: .medium)
   }
   
+  override func handleAddWalletTapped() {
+    super.handleAddWalletTapped()
+    MixPanelManager.track("settings_connect_wallet", properties: ["screenid": "settings"])
+  }
+  
   func errorMessageForLAErrorCode(_ errorCode: Int ) -> String? {
     if #available(iOS 11.0, *) {
       switch errorCode {

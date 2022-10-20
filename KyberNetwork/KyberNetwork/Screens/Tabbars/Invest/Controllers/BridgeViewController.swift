@@ -258,6 +258,11 @@ class BridgeViewController: InAppBrowsingViewController {
     )
   }
 
+  override func handleAddWalletTapped() {
+    super.handleAddWalletTapped()
+    MixPanelManager.track("bridge_connect_wallet", properties: ["screenid": "bridge"])
+  }
+
   func openSwitchChainPopup(_ chainTypes: [ChainType] = ChainType.getAllChain(), _ shouldChangeWallet: Bool = true) {
     let popup = SwitchChainViewController()
     popup.dataSource = chainTypes.filter({ $0.isSupportedBridge() })

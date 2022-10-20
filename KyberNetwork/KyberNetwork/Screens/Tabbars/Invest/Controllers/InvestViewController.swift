@@ -64,8 +64,9 @@ class InvestViewController: InAppBrowsingViewController {
     collectionView.dataSource = self
   }
   
-  override func addNewWallet(wallet: KWallet, chain: ChainType) {
-    super.addNewWallet(wallet: wallet, chain: chain)
+  override func reloadWallet() {
+    super.reloadWallet()
+    
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
       self.viewModel.reloadMenuItems()
       self.collectionView.reloadData()
@@ -109,6 +110,12 @@ class InvestViewController: InAppBrowsingViewController {
   func coordinatorDidSwitchAddress() {
     self.viewModel.reloadMenuItems()
   }
+  
+  override func handleAddWalletTapped() {
+    super.handleAddWalletTapped()
+    MixPanelManager.track("explore_connect_wallet", properties: ["screenid": "explore"])
+  }
+  
 }
 
 extension InvestViewController: UICollectionViewDelegateFlowLayout {

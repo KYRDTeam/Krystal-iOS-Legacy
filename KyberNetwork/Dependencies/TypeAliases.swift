@@ -9,3 +9,4 @@ import Foundation
 import BaseModule
 
 typealias KNBaseViewController = BaseModule.KNBaseViewController
+typealias InAppBrowsingViewController = BaseModule.InAppBrowsingViewController

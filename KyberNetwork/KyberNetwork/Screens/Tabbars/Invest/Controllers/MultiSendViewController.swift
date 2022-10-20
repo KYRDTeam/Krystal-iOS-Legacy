@@ -237,8 +237,9 @@ class MultiSendViewController: InAppBrowsingViewController {
     sendButton.setTitle(title, for: .normal)
   }
   
-  override func addNewWallet(wallet: KWallet, chain: ChainType) {
-    super.addNewWallet(wallet: wallet, chain: chain)
+  override func reloadWallet() {
+    super.reloadWallet()
+    
     let title = KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.transfer
     sendButton.setTitle(title, for: .normal)
   }

@@ -95,6 +95,11 @@ class SwapV2ViewController: InAppBrowsingViewController {
     bindViewModel()
   }
   
+  override func handleAddWalletTapped() {
+    super.handleAddWalletTapped()
+    MixPanelManager.track("swap_connect_wallet", properties: ["screenid": "swap"])
+  }
+  
   override func handleWalletButtonTapped() {
     super.handleWalletButtonTapped()
     MixPanelManager.track("swap_select_wallet", properties: ["screenid": "swap"])

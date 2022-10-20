@@ -710,6 +710,11 @@ class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler
     self.delegate?.earnViewController(self, run: .sendApprove(token: remain.0, remain: remain.1))
   }
   
+  override func handleAddWalletTapped() {
+    super.handleAddWalletTapped()
+    MixPanelManager.track("earn_connect_wallet", properties: ["screenid": "earn"])
+  }
+  
   func updateGasLimit() {
     let event = EarnViewEvent.getGasLimit(
       lendingPlatform: self.viewModel.selectedPlatform,
