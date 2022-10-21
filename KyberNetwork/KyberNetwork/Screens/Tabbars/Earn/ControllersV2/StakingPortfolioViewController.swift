@@ -10,6 +10,18 @@ import BaseModule
 import StackViewController
 import SkeletonView
 
+class SkeletonBlankSectionHeader: UITableViewHeaderFooterView {
+  override init(reuseIdentifier: String?) {
+    super.init(reuseIdentifier: reuseIdentifier)
+    self.isSkeletonable = true
+    self.backgroundColor = UIColor(hex: "1B1D1C")
+    
+  }
+  required init(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+}
+
 class StakingPortfolioViewModel {
   var portfolio: PortfolioStaking?
   let apiService = KrystalService()
@@ -127,6 +139,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   private func registerCell() {
     portfolioTableView.registerCellNib(StakingPortfolioCell.self)
     portfolioTableView.registerCellNib(OverviewSkeletonCell.self)
+    portfolioTableView.register(SkeletonBlankSectionHeader.self, forHeaderFooterViewReuseIdentifier: "SectionHeader")
   }
   
   private func updateUIEmptyView() {
@@ -235,6 +248,10 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
   func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return 10
   }
+  
+  func numSections(in collectionSkeletonView: UITableView) -> Int {
+    return 1
+  }
 }
 
 extension StakingPortfolioViewController: SkeletonTableViewDelegate {
@@ -257,6 +274,10 @@ extension StakingPortfolioViewController: SkeletonTableViewDelegate {
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return indexPath.section == 0 ? 162 : 146
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UITableView, identifierForHeaderInSection section: Int) -> ReusableHeaderFooterIdentifier? {
+    return "SectionHeader"
   }
 }
 
