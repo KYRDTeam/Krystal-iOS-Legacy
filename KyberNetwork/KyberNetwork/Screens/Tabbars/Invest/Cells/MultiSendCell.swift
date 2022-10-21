@@ -306,13 +306,13 @@ extension MultiSendCell: UITextFieldDelegate {
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.amountTextField.textColor = UIColor.white
     self.cellModel?.isSendAllBalanace = false
-    MixPanelManager.track("multisend_enter_amount", properties: ["screenid": "multi_send", "amount": cellModel?.amount, "token": cellModel?.from.symbol])
   }
   
   func textFieldDidEndEditing(_ textField: UITextField) {
     self.amountTextField.textColor = self.cellModel?.amountTextColor
     self.cellDelegate?.multiSendCell(self, run: .updateAmount(amount: self.cellModel?.amountBigInt ?? BigInt.zero, selectedToken: self.cellModel?.from ?? KNGeneralProvider.shared.quoteTokenObject.toToken()))
     self.updateUIAddressField()
+    MixPanelManager.track("multisend_enter_amount", properties: ["screenid": "multi_send", "send_amount": (cellModel?.amount ?? "N/a"), "send_token": (cellModel?.from.symbol ?? "N/a")])
   }
   
   @objc func keyboardPauseTyping(timer: Timer) {
