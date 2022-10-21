@@ -96,7 +96,7 @@ class KNAppCoordinator: NSObject, Coordinator {
 //      KNGeneralProvider.shared.currentChain = chain
       self.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
       switchAddress(address: address)
-      AppEventCenter.shared.switchChain(chain: chain)
+      AppState.shared.updateChain(chain: chain)
     }
   }
   

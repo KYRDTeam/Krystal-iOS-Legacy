@@ -36,7 +36,7 @@ class EarnListViewController: InAppBrowsingViewController {
   
   override func onAppSwitchChain() {
     currentSelectedChain = KNGeneralProvider.shared.currentChain
-    fetchData(chainId: currentSelectedChain.getChainId())
+    fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
   }
   
   override func onAppSelectAllChain() {
@@ -55,6 +55,10 @@ class EarnListViewController: InAppBrowsingViewController {
   }
   
   func fetchData(chainId: Int? = nil) {
+    self.displayDataSource.forEach { viewModel in
+      viewModel.isExpanse = false
+    }
+    reloadUI()
     let service = EarnServices()
     showLoading()
     var chainIdString: String?
