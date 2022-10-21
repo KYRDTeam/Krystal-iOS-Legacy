@@ -17,6 +17,7 @@ import WalletConnectSwift
 import BigInt
 import WebKit
 import KrystalWallets
+import AppState
 
 
 protocol DappCoordinatorDelegate: class {
@@ -259,8 +260,9 @@ extension DappCoordinator: BrowserViewControllerDelegate {
             secondButtonTitle: Strings.ok,
             firstButtonTitle: Strings.cancel,
             secondButtonAction: {
-              KNGeneralProvider.shared.currentChain = chainType
-              KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
+              AppState.shared.updateChain(chain: chainType)
+//              KNGeneralProvider.shared.currentChain = chainType
+//              KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
             },
             firstButtonAction: {
               let error = DAppError.cancelled
@@ -286,7 +288,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
             secondButtonTitle: Strings.ok,
             firstButtonTitle: Strings.cancel,
             secondButtonAction: {
-              KNGeneralProvider.shared.currentChain = chainType
+              AppState.shared.updateChain(chain: chainType)
               KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
             },
             firstButtonAction: {

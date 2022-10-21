@@ -2,6 +2,7 @@
 
 import UIKit
 import BigInt
+import Utilities
 
 struct KConfirmSwapViewModel {
 

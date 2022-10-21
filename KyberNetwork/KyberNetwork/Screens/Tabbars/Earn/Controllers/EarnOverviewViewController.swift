@@ -8,6 +8,7 @@
 import UIKit
 import BigInt
 import KrystalWallets
+import BaseModule
 
 protocol EarnOverviewViewControllerDelegate: class {
   func earnOverviewViewControllerDidSelectExplore(_ controller: EarnOverviewViewController)
@@ -71,8 +72,9 @@ class EarnOverviewViewController: InAppBrowsingViewController {
     MixPanelManager.track("earn_open", properties: ["screenid": "earn"])
   }
   
-  override func addNewWallet(wallet: KWallet, chain: ChainType) {
-    super.addNewWallet(wallet: wallet, chain: chain)
+  override func reloadWallet() {
+    super.reloadWallet()
+    
     depositViewController.coordinatorDidUpdateDidUpdateTokenList()
   }
   

@@ -3,6 +3,7 @@
 import UIKit
 import RealmSwift
 import BigInt
+import Utilities
 
 class KNTrackerRate: Object {
   @objc dynamic var timestamp: Double = 0.0

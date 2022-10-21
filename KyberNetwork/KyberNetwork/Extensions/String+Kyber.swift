@@ -4,6 +4,7 @@ import BigInt
 import WalletCore
 import Darwin
 import Foundation
+import Utilities
 
 extension Optional where Wrapped == String {
   

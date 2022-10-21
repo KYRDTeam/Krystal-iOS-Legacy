@@ -13,6 +13,7 @@ import APIKit
 import JSONRPCKit
 import MBProgressHUD
 import KrystalWallets
+import BaseModule
 
 let RETRYMAXCOUNT = 5
 

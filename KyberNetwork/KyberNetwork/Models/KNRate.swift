@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import BigInt
+import Utilities
 
 // All rate should be in ether unit (18 decimals)
 class KNRate: NSObject {

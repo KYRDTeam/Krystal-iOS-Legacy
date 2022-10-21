@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import BigInt
+import Utilities
 
 struct KNTransactionReceipt: Decodable {
   let id: String

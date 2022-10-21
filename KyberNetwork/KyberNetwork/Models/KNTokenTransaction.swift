@@ -2,6 +2,7 @@
 
 import UIKit
 import RealmSwift
+import Utilities
 
 // "ETH, ERC20 Tokens Transfer Events" by Address
 class KNTokenTransaction: Object {

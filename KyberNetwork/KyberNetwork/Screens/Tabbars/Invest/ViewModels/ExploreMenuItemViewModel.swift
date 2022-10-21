@@ -40,6 +40,8 @@ class ExploreMenuItemViewModel {
       return Strings.KrystalBridge
     case .scanner:
       return Strings.scanner
+    case .stake:
+      return Strings.Stake
     }
   }
   
@@ -67,6 +69,8 @@ class ExploreMenuItemViewModel {
       return Images.exploreBridgeIcon
     case .scanner:
       return Images.exploreScannerIcon
+    case .stake:
+      return Images.exploreStakeIcon
     }
   }
   

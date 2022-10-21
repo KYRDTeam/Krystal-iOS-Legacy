@@ -8,6 +8,7 @@
 import UIKit
 import Kingfisher
 import KrystalWallets
+import BaseModule
 
 enum InvestViewEvent {
   case openLink(url: String)
@@ -22,6 +23,7 @@ enum InvestViewEvent {
   case rewardHunting
   case bridge
   case scanner
+  case stake
 }
 
 protocol InvestViewControllerDelegate: class {
@@ -62,8 +64,9 @@ class InvestViewController: InAppBrowsingViewController {
     collectionView.dataSource = self
   }
   
-  override func addNewWallet(wallet: KWallet, chain: ChainType) {
-    super.addNewWallet(wallet: wallet, chain: chain)
+  override func reloadWallet() {
+    super.reloadWallet()
+    
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
       self.viewModel.reloadMenuItems()
       self.collectionView.reloadData()
@@ -87,8 +90,8 @@ class InvestViewController: InAppBrowsingViewController {
     collectionView.reloadSections(.init(arrayLiteral: index))
   }
   
-  override func openWalletList() {
-    super.openWalletList()
+  override func handleWalletButtonTapped() {
+    super.handleWalletButtonTapped()
     MixPanelManager.track("xplore_select_wallet", properties: ["screenid": "explore"])
   }
   
@@ -107,6 +110,12 @@ class InvestViewController: InAppBrowsingViewController {
   func coordinatorDidSwitchAddress() {
     self.viewModel.reloadMenuItems()
   }
+  
+  override func handleAddWalletTapped() {
+    super.handleAddWalletTapped()
+    MixPanelManager.track("explore_connect_wallet", properties: ["screenid": "explore"])
+  }
+  
 }
 
 extension InvestViewController: UICollectionViewDelegateFlowLayout {
@@ -251,6 +260,9 @@ extension InvestViewController: UICollectionViewDelegate {
       case .scanner:
         delegate?.investViewController(self, run: .scanner)
         MixPanelManager.track("Xplore_Scanner", properties: ["screenid": "explore"])
+      case .stake:
+        delegate?.investViewController(self, run: .stake)
+//          MixPanelManager.track("Xplore_Scanner", properties: ["screenid": "explore"])
       }
     case .partners:
       let partner = viewModel.partners.value[indexPath.item]

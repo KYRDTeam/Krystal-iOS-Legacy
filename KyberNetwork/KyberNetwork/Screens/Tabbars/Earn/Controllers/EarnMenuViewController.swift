@@ -7,6 +7,7 @@
 
 import UIKit
 import KrystalWallets
+import BaseModule
 
 protocol EarnMenuViewControllerDelegate: class {
   func earnMenuViewControllerDidSelectToken(controller: EarnMenuViewController, token: TokenData)
@@ -91,6 +92,11 @@ class EarnMenuViewController: InAppBrowsingViewController {
       icon: UIImage(named: "help_icon_large") ?? UIImage(),
       time: 10
     )
+  }
+  
+  override func handleAddWalletTapped() {
+    super.handleAddWalletTapped()
+    MixPanelManager.track("earn_pre_connect_wallet", properties: ["screenid": "earn_explore"])
   }
   
   fileprivate func updateUIPendingTxIndicatorView() {
