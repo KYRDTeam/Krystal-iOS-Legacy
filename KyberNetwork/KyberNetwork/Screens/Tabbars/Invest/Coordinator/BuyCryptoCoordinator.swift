@@ -141,7 +141,6 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   }
 
   func appCoordinatorSwitchAddress() {
-    self.rootViewController.coordinatorAppSwitchAddress()
     self.ordersViewController.coordinatorAppSwitchAddress()
     self.getBifinityOrders()
   }
