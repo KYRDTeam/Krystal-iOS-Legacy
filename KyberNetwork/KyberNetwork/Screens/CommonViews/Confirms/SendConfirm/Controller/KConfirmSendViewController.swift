@@ -2,6 +2,7 @@
 
 import UIKit
 import BigInt
+import BaseModule
 
 enum KConfirmViewEvent {
   case confirm(type: KNTransactionType, historyTransaction: InternalHistoryTransaction)

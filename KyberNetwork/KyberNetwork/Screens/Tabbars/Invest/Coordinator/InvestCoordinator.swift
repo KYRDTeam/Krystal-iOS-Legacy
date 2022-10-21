@@ -10,6 +10,7 @@ import Moya
 import BigInt
 import WalletConnectSwift
 import KrystalWallets
+import BaseModule
 
 protocol InvestCoordinatorDelegate: class {
   func investCoordinatorDidSelectManageWallet()
@@ -147,6 +148,12 @@ class InvestCoordinator: Coordinator {
     coordinator.delegate = self
     coordinator.start()
     self.bridgeCoordinator = coordinator
+  }
+  
+  fileprivate func openStakeView() {
+    let viewModel = EarnOverViewModel()
+    let viewController = EarnOverviewV2Controller(viewModel: viewModel)
+    self.navigationController.pushViewController(viewController, animated: true)
   }
   
   func openHistoryScreen() {
@@ -300,6 +307,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         }
       }
       MixPanelManager.track("scanner_open", properties: ["screenid": "scanner"])
+    case .stake:
+      self.openStakeView()
     }
   }
   

@@ -8,6 +8,7 @@
 import Foundation
 import KrystalWallets
 import Moya
+import Result
 
 class KrystalService {
   
@@ -33,6 +34,23 @@ class KrystalService {
       }
     } catch {
       print("[Send ref code] \(error.localizedDescription)")
+    }
+  }
+  
+  func getStakingPortfolio(address: String, completion: @escaping (Result<PortfolioStaking, AnyError>) -> Void) {
+    provider.requestWithFilter(.getStakingPortfolio(address: address)) { result in
+      switch result {
+      case .success(let response):
+        let decoder = JSONDecoder()
+        do {
+          let decoded = try decoder.decode(PortfolioStakingResponse.self, from: response.data)
+          completion(.success(decoded.portfolio))
+        } catch let error {
+          completion(.failure(AnyError(error)))
+        }
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
     }
   }
   

@@ -7,6 +7,7 @@
 
 import UIKit
 import KrystalWallets
+import BaseModule
 
 class SwitchChainWalletsListViewModel {
   let dataSource: [KNWalletTableCellViewModel]

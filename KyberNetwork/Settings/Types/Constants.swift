@@ -2,6 +2,7 @@
 
 import Foundation
 import BigInt
+import Utilities
 
 enum ValidStatus: Equatable {
   case success

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AppState
 
 protocol BackupSuccessViewControllerDelegate: class {
   func didFinishBackup(_ controller: BackupSuccessViewController)
@@ -18,7 +19,7 @@ class BackupSuccessViewController: KNBaseViewController {
   }
 
   @IBAction func continueButtonTapped(_ sender: Any) {
-    AppEventCenter.shared.walletListHasUpdate()
+    AppEventManager.shared.postWalletListUpdatedEvent()
     self.delegate?.didFinishBackup(self)
     MixPanelManager.track("backup_finish", properties: ["screenid": "backup_done"])
   }

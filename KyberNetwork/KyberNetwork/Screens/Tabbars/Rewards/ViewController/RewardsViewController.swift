@@ -8,6 +8,7 @@
 import UIKit
 import BigInt
 import KrystalWallets
+import AppState
 
 class RewardsViewControllerViewModel {
   
@@ -163,8 +164,8 @@ class RewardsViewController: KNBaseViewController {
     popup.selectedChain = .bsc
     popup.nextButtonTitle = Strings.confirm
     popup.completionHandler = { selected in
-      KNGeneralProvider.shared.currentChain = selected
-      KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
+      AppState.shared.updateChain(chain: selected)
+//      KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
       if selected == .bsc {
         self.claimRewards()
       }

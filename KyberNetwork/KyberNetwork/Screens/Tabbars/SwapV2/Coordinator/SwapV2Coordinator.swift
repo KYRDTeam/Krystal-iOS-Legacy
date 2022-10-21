@@ -11,6 +11,7 @@ import QRCodeReaderViewController
 import WalletConnectSwift
 import KrystalWallets
 import BigInt
+import Utilities
 
 class SwapV2Coordinator: NSObject, Coordinator {
   var coordinators: [Coordinator] = []

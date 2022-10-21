@@ -8,6 +8,7 @@
 import UIKit
 import BigInt
 import KrystalWallets
+import BaseModule
 
 class EarnViewModel {
   fileprivate var tokenData: TokenData
@@ -707,6 +708,11 @@ class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler
       return
     }
     self.delegate?.earnViewController(self, run: .sendApprove(token: remain.0, remain: remain.1))
+  }
+  
+  override func handleAddWalletTapped() {
+    super.handleAddWalletTapped()
+    MixPanelManager.track("earn_connect_wallet", properties: ["screenid": "earn"])
   }
   
   func updateGasLimit() {

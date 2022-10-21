@@ -6,6 +6,7 @@ import Result
 import Moya
 import Kingfisher
 import KrystalWallets
+import AppState
 //swiftlint:disable file_length
 
 enum KSwapViewEvent {
@@ -506,7 +507,8 @@ class KSwapViewController: KNBaseViewController {
       secondButtonTitle: "OK".toBeLocalised(),
       firstButtonTitle: "Cancel".toBeLocalised(),
       secondButtonAction: {
-        KNGeneralProvider.shared.currentChain = chainType
+        AppState.shared.updateChain(chain: chainType)
+//        KNGeneralProvider.shared.currentChain = chainType
         self.viewModel.isFromDeepLink = true
         KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
       },
@@ -667,9 +669,11 @@ extension KSwapViewController {
   }
 
   fileprivate func updateExchangeRateField() {
-    self.loadingView.end()
-    self.exchangeRateLabel.text = self.viewModel.exchangeRateText
-    self.startRateTimer()
+      DispatchQueue.main.async {
+        self.loadingView.end()
+        self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+        self.startRateTimer()
+      }
   }
 
   fileprivate func updateAllowance() {

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import BaseModule
 
 protocol OverviewBrowsingViewControllerDelegate: class {
   func didSelectSearch(_ controller: OverviewBrowsingViewController)
@@ -107,6 +108,11 @@ class OverviewBrowsingViewController: InAppBrowsingViewController {
       self.sortMarketByCh24Button.tag = 5
       self.rightModeSortLabel.text = "Cap"
     }
+  }
+  
+  override func handleAddWalletTapped() {
+    super.handleAddWalletTapped()
+    MixPanelManager.track("home_connect_wallet", properties: ["screenid": "homepage"])
   }
   
   @IBAction func searchButtonTapped(_ sender: UIButton) {
