@@ -36,8 +36,7 @@ class BuyCryptoViewModel {
   
 }
 
-class BuyCryptoViewController: KNBaseViewController {
-  @IBOutlet weak var walletsListButton: UIButton!
+class BuyCryptoViewController: InAppBrowsingViewController {
   @IBOutlet weak var pendingTxIndicatorView: UIView!
   @IBOutlet weak var cryptoButton: UIButton!
   @IBOutlet weak var fiatButton: UIButton!
@@ -80,7 +79,6 @@ class BuyCryptoViewController: KNBaseViewController {
   }
 
   func updateUI() {
-    self.walletsListButton.setTitle(viewModel.currentAddress.addressString, for: .normal)
     self.addressTextField.text = viewModel.currentAddress.addressString
     self.updateUIPendingTxIndicatorView()
   }
@@ -135,8 +133,8 @@ class BuyCryptoViewController: KNBaseViewController {
     return fiatCryptoModel
   }
   
-
-  func coordinatorAppSwitchAddress() {
+  override func reloadWallet() {
+    super.reloadWallet()
     guard self.isViewLoaded else { return }
     self.updateUI()
     self.setDefaultValue()

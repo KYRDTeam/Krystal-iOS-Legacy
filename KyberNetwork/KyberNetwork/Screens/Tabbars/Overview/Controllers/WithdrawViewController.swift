@@ -478,6 +478,7 @@ class WithdrawViewController: InAppBrowsingViewController {
     self.viewModel.amount = self.viewModel.withdrawableAmountString
     self.amountFIeld.text = self.viewModel.withdrawableAmountString
     self.updateGasLimit()
+    MixPanelManager.track("enter_withdraw_amount", properties: ["screenid": "earn_withdraw_pop_up", "withdraw_amount": viewModel.amount, "withdraw_token": viewModel.balance.symbol])
   }
 
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
@@ -552,12 +553,13 @@ extension WithdrawViewController: UITextFieldDelegate {
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    MixPanelManager.track("enter_withdraw_amount", properties: ["screenid": "earn_withdraw_pop_up", "withdraw_amount": viewModel.amount, "withdraw_token": viewModel.balance.symbol])
+    
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
     _ = self.showWarningInvalidAmountDataIfNeeded()
     self.updateGasLimit()
+    MixPanelManager.track("enter_withdraw_amount", properties: ["screenid": "earn_withdraw_pop_up", "withdraw_amount": viewModel.amount, "withdraw_token": viewModel.balance.symbol])
   }
 
   fileprivate func showWarningInvalidAmountDataIfNeeded(isConfirming: Bool = false) -> Bool {
