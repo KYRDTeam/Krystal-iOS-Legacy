@@ -293,5 +293,7 @@ struct Strings {
   //Staking
   static let searchPools = "search.pools".toBeLocalised()
   static let searchToken = "search.token".toBeLocalised()
-  static let Stake = "Stake".toBeLocalised()
+  static let Staking = "Staking".toBeLocalised()
+  static let noRecordFound = "no.record.found".toBeLocalised()
+  static let earnIsCurrentlyNotSupportedOnThisChainYet = "earn.is.currently.not.supported.on.this.chain.yet".toBeLocalised()
 }

@@ -41,7 +41,7 @@ class ExploreMenuItemViewModel {
     case .scanner:
       return Strings.scanner
     case .stake:
-      return Strings.Stake
+      return Strings.Staking
     }
   }
   

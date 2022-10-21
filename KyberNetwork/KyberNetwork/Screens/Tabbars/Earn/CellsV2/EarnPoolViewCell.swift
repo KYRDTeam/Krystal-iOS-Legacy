@@ -63,6 +63,7 @@ class EarnPoolViewCell: UITableViewCell {
   
   func updateUI(viewModel: EarnPoolViewCellViewModel) {
     self.viewModel = viewModel
+    self.updateUIExpanse(viewModel: viewModel)
     self.tokenLabel.text = viewModel.earnPoolModel.token.symbol
     self.tokenImage.setImage(urlString: viewModel.earnPoolModel.token.logo, symbol: viewModel.earnPoolModel.token.symbol)
     self.chainImage.setImage(urlString: viewModel.earnPoolModel.chainLogo, symbol: "")

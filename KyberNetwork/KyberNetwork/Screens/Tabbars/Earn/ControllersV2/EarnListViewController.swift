@@ -17,6 +17,9 @@ class EarnListViewController: InAppBrowsingViewController {
   @IBOutlet weak var searchViewRightConstraint: NSLayoutConstraint!
   @IBOutlet weak var cancelButton: UIButton!
   @IBOutlet weak var emptyView: UIView!
+  
+  @IBOutlet weak var emptyIcon: UIImageView!
+  @IBOutlet weak var emptyLabel: UILabel!
   var dataSource: [EarnPoolViewCellViewModel] = []
   var displayDataSource: [EarnPoolViewCellViewModel] = []
   var timer: Timer?
@@ -33,7 +36,7 @@ class EarnListViewController: InAppBrowsingViewController {
   
   override func onAppSwitchChain() {
     currentSelectedChain = KNGeneralProvider.shared.currentChain
-    fetchData(chainId: currentSelectedChain.getChainId())
+    fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
   }
   
   override func onAppSelectAllChain() {
@@ -52,17 +55,26 @@ class EarnListViewController: InAppBrowsingViewController {
   }
   
   func fetchData(chainId: Int? = nil) {
+    self.displayDataSource.forEach { viewModel in
+      viewModel.isExpanse = false
+    }
+    reloadUI()
     let service = EarnServices()
     showLoading()
     var chainIdString: String?
     if let chainId = chainId {
       chainIdString = "\(chainId)"
     }
-    service.getEarnListData(chainId:  chainIdString) { listData in
+    service.getEarnListData(chainId: chainIdString) { listData in
       var data: [EarnPoolViewCellViewModel] = []
       listData.forEach { earnPoolModel in
         data.append(EarnPoolViewCellViewModel(earnPool: earnPoolModel))
       }
+      if data.isEmpty {
+        self.emptyIcon.image = UIImage(named: "empty_earn_icon")
+        self.emptyLabel.text = Strings.earnIsCurrentlyNotSupportedOnThisChainYet
+      }
+
       self.dataSource = data
       self.displayDataSource = data
       self.hideLoading()
@@ -199,6 +211,10 @@ extension EarnListViewController: UITextFieldDelegate {
         let containName = viewModel.earnPoolModel.token.name.lowercased().contains(text.lowercased())
         return containSymbol || containName
       })
+      if self.displayDataSource.isEmpty {
+        self.emptyIcon.image = UIImage(named: "empty-search-token")
+        self.emptyLabel.text = Strings.noRecordFound
+      }
       self.reloadUI()
     } else {
       self.fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
