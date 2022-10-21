@@ -17,6 +17,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EarnListViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="WXG-o1-h3V" id="pjc-MS-hHn"/>
+                <outlet property="emptyIcon" destination="stn-86-osd" id="Vsg-Xx-Gdb"/>
+                <outlet property="emptyLabel" destination="nYF-qt-fMk" id="p4w-F7-inW"/>
                 <outlet property="emptyView" destination="6pn-P7-ddG" id="Uug-gv-7xX"/>
                 <outlet property="searchFieldActionButton" destination="aH0-WD-QWD" id="EwC-TA-c5R"/>
                 <outlet property="searchTextField" destination="8s1-Cs-wqj" id="hgC-lh-NP1"/>
