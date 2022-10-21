@@ -7,6 +7,7 @@
 
 import UIKit
 import BaseModule
+import Dependencies
 
 class EarnOverviewV2Controller: InAppBrowsingViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
@@ -23,6 +24,8 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   override var supportAllChainOption: Bool {
     return true
   }
+  var currentSelectedChain: ChainType = KNGeneralProvider.shared.currentChain
+  
   init(viewModel: EarnOverViewModel) {
     self.viewModel = viewModel
     super.init(nibName: EarnOverviewV2Controller.className, bundle: nil)
@@ -39,9 +42,21 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
     setupUI()
     setupPageViewController()
   }
+
+  override func onAppSelectAllChain() {
+    currentSelectedChain = .all
+    reloadAllNetworksChain()
+  }
+  
+  override func handleChainButtonTapped() {
+    AppDependencies.router.openChainList(currentSelectedChain, allowAllChainOption: supportAllChainOption) { [weak self] chain in
+      self?.onChainSelected(chain: chain)
+    }
+  }
   
   @objc override func onAppSwitchChain() {
     super.onAppSwitchChain()
+    currentSelectedChain = KNGeneralProvider.shared.currentChain
     viewModel.appDidSwitchChain()
   }
   

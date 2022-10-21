@@ -20,15 +20,9 @@ class EarnListViewController: InAppBrowsingViewController {
   var dataSource: [EarnPoolViewCellViewModel] = []
   var displayDataSource: [EarnPoolViewCellViewModel] = []
   var timer: Timer?
-  
-  override var currentChain: ChainType {
-    return currentSelectedChain
-  }
-  
-  var currentSelectedChain: ChainType = KNGeneralProvider.shared.currentChain
   override func viewDidLoad() {
     super.viewDidLoad()
-    fetchData()
+    fetchData(chainId: KNGeneralProvider.shared.currentChain.getChainId())
     setupUI()
   }
   
@@ -37,19 +31,11 @@ class EarnListViewController: InAppBrowsingViewController {
   }
   
   override func onAppSwitchChain() {
-    currentSelectedChain = KNGeneralProvider.shared.currentChain
     fetchData(chainId: KNGeneralProvider.shared.currentChain.getChainId())
   }
   
   override func onAppSelectAllChain() {
-    currentSelectedChain = .all
     fetchData()
-  }
-  
-  override open func handleChainButtonTapped() {
-    AppDependencies.router.openChainList(currentChain, allowAllChainOption: supportAllChainOption) { [weak self] chain in
-      self?.onChainSelected(chain: chain)
-    }
   }
 
   func setupUI() {
