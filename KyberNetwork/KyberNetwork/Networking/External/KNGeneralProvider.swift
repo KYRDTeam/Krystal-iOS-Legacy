@@ -199,6 +199,10 @@ class KNGeneralProvider {
   }
 
   func getTokenBalance(for address: String, contract: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    guard !address.isEmpty else {
+      completion(.success(BigInt(0)))
+      return
+    }
     self.getTokenBalanceEncodeData(for: address) { [weak self] encodeResult in
       guard let `self` = self else { return }
       switch encodeResult {
