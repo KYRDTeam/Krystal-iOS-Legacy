@@ -7,6 +7,8 @@
 
 import UIKit
 import BigInt
+import Utilities
+import BaseModule
 
 struct ConfirmBridgeViewModel {
   let fromChain: ChainType?

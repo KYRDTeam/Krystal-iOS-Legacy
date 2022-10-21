@@ -5,6 +5,7 @@ import UIKit
 import Result
 import MBProgressHUD
 import SafariServices
+import AppState
 
 enum ConfirmationError: LocalizedError {
     case cancel
@@ -99,5 +100,31 @@ extension UIViewController {
 extension UIApplication {
   func topMostViewController() -> UIViewController? {
     return self.keyWindow?.rootViewController?.topMostViewController()
+  }
+}
+
+extension UIViewController {
+  func showSwitchChainAlert(_ chain: ChainType,_ message: String? = nil, completion: @escaping () -> Void = {}) {
+    let msg = message ?? "Please switch to \(chain.chainName()) to continue".toBeLocalised()
+    
+    let alertController = KNPrettyAlertController(
+      title: "",
+      message: msg,
+      secondButtonTitle: Strings.ok,
+      firstButtonTitle: Strings.cancel,
+      secondButtonAction: {
+        AppState.shared.updateChain(chain: chain)
+//        KNGeneralProvider.shared.currentChain = chain
+        KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+          completion()
+        }
+      },
+      firstButtonAction: {
+        
+      }
+    )
+    alertController.popupHeight = 220
+    self.present(alertController, animated: true, completion: nil)
   }
 }

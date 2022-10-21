@@ -3,6 +3,7 @@
 import UIKit
 import LocalAuthentication
 import KrystalWallets
+import BaseModule
 
 enum KNSettingsTabViewEvent {
   case manageWallet
@@ -172,6 +173,11 @@ class KNSettingsTabViewController: InAppBrowsingViewController {
   
   @IBAction func mediumButtonTapped(_ sender: UIButton) {
     self.delegate?.settingsTabViewController(self, run: .medium)
+  }
+  
+  override func handleAddWalletTapped() {
+    super.handleAddWalletTapped()
+    MixPanelManager.track("settings_connect_wallet", properties: ["screenid": "settings"])
   }
   
   func errorMessageForLAErrorCode(_ errorCode: Int ) -> String? {

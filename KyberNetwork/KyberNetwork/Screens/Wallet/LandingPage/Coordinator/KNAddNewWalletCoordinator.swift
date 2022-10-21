@@ -4,6 +4,7 @@ import UIKit
 import TrustKeystore
 import BigInt
 import KrystalWallets
+import AppState
 
 enum AddNewWalletType {
   case full
@@ -94,7 +95,8 @@ class KNAddNewWalletCoordinator: Coordinator {
     self.newWallet = wallet
     // Check if first wallet
     if !KNGeneralProvider.shared.isCreatedPassCode {
-      KNGeneralProvider.shared.currentChain = chain
+//      KNGeneralProvider.shared.currentChain = chain
+      AppState.shared.updateChain(chain: chain)
       self.passcodeCoordinator.start()
     } else {
       navigationController.dismiss(animated: true) {

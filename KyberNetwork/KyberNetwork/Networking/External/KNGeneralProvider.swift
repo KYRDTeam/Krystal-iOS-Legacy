@@ -10,6 +10,8 @@ import JavaScriptKit
 import CryptoSwift
 import UIKit
 import KrystalWallets
+import BaseWallet
+import AppState
 
 protocol GasLimitRequestable {
   func createGasLimitRequest() -> KNEstimateGasLimitRequest
@@ -26,9 +28,10 @@ class KNGeneralProvider {
   }
 
   var currentChain: ChainType {
-    didSet {
-      Storage.store(self.currentChain, as: Constants.currentChainSaveFileName)
-    }
+    return AppState.shared.currentChain
+//    didSet {
+//      Storage.store(self.currentChain, as: Constants.currentChainSaveFileName)
+//    }
   }
   
   var customRPC: CustomRPC {
@@ -152,13 +155,13 @@ class KNGeneralProvider {
     return UserDefaults.standard.bool(forKey: Constants.isCreatedPassCode)
   }
 
-  init() {
-    if let saved = Storage.retrieve(Constants.currentChainSaveFileName, as: ChainType.self) {
-      self.currentChain = saved
-    } else {
-      self.currentChain = .bsc
-    }
-  }
+//  init() {
+//    if let saved = Storage.retrieve(Constants.currentChainSaveFileName, as: ChainType.self) {
+//      self.currentChain = saved
+//    } else {
+//      self.currentChain = .bsc
+//    }
+//  }
   
   func isAddressValid(address: String) -> Bool {
     return WalletUtilities.isAddressValid(address: address, chainType: currentChain)

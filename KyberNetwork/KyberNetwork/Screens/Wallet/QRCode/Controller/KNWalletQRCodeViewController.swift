@@ -2,6 +2,7 @@
 
 import UIKit
 import MBProgressHUD
+import BaseModule
 
 class KNWalletQRCodeViewController: KNBaseViewController {
 
