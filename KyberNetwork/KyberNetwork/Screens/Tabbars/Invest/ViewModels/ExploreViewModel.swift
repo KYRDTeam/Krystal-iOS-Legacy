@@ -53,7 +53,7 @@ class ExploreViewModel {
     let isPromoCodeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
     let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
     let isScannerEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
-    let isStakeEnabled = true// FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.earnV2)
+    let isStakeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.earnV2)
     let isNotBrowsing = !KNGeneralProvider.shared.isBrowsingMode
     
     var menuItems: [ExploreMenuItem] = []
@@ -68,12 +68,14 @@ class ExploreViewModel {
       if isNotBrowsing {
         menuItems.append(contentsOf: [.reward, .referral])
       }
-      if isStakeEnabled && isNotBrowsing {
-        menuItems.append(.stake)
-      }
+      
       if isPromoCodeEnabled && isNotBrowsing {
         menuItems.append(.promotion)
       }
+    }
+    
+    if isStakeEnabled {
+      menuItems.append(.stake)
     }
     
     if isRewardHuntingEnabled && isNotBrowsing {

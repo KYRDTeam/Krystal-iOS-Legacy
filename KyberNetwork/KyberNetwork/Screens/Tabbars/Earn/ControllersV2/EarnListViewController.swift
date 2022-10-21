@@ -20,9 +20,10 @@ class EarnListViewController: InAppBrowsingViewController {
   var dataSource: [EarnPoolViewCellViewModel] = []
   var displayDataSource: [EarnPoolViewCellViewModel] = []
   var timer: Timer?
+  var currentSelectedChain: ChainType = .all
   override func viewDidLoad() {
     super.viewDidLoad()
-    fetchData(chainId: KNGeneralProvider.shared.currentChain.getChainId())
+    fetchData()
     setupUI()
   }
   
@@ -31,15 +32,17 @@ class EarnListViewController: InAppBrowsingViewController {
   }
   
   override func onAppSwitchChain() {
-    fetchData(chainId: KNGeneralProvider.shared.currentChain.getChainId())
+    currentSelectedChain = KNGeneralProvider.shared.currentChain
+    fetchData(chainId: currentSelectedChain.getChainId())
   }
   
   override func onAppSelectAllChain() {
+    currentSelectedChain = .all
     fetchData()
   }
 
   func setupUI() {
-    self.searchTextField.setPlaceholder(text: Strings.searchPools, color: .Kyber.normalText)
+    self.searchTextField.setPlaceholder(text: Strings.searchToken, color: .Kyber.normalText)
     self.tableView.registerCellNib(EarnPoolViewCell.self)
   }
   
@@ -91,7 +94,7 @@ class EarnListViewController: InAppBrowsingViewController {
   @IBAction func onSearchButtonTapped(_ sender: Any) {
     if !self.cancelButton.isHidden {
       searchTextField.text = ""
-      self.fetchData()
+      self.fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
     } else {
       self.updateUIStartSearchingMode()
     }
@@ -157,7 +160,7 @@ extension EarnListViewController: SkeletonTableViewDelegate, SkeletonTableViewDa
   }
 
   func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 10
+    return 5
   }
 
   func collectionSkeletonView(_ skeletonView: UITableView, skeletonCellForRowAt indexPath: IndexPath) -> UITableViewCell? {
@@ -198,7 +201,7 @@ extension EarnListViewController: UITextFieldDelegate {
       })
       self.reloadUI()
     } else {
-      self.fetchData(chainId: KNGeneralProvider.shared.currentChain.getChainId())
+      self.fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
     }
   }
 }

@@ -24,7 +24,7 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   override var supportAllChainOption: Bool {
     return true
   }
-  var currentSelectedChain: ChainType = KNGeneralProvider.shared.currentChain
+  var currentSelectedChain: ChainType = .all
   
   init(viewModel: EarnOverViewModel) {
     self.viewModel = viewModel
@@ -67,10 +67,12 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   }
 
   func setupUI() {
+    reloadAllNetworksChain()
     segmentedControl.highlightSelectedSegment(width: 100)
-    segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
-    segmentedControl.setWidth(segmentedControl.frame.size.width / 2, forSegmentAt: 0)
-    segmentedControl.setWidth(segmentedControl.frame.size.width / 2, forSegmentAt: 1)
+    let width = UIScreen.main.bounds.size.width - 140
+    segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: width, height: 30)
+    segmentedControl.setWidth(width / 2, forSegmentAt: 0)
+    segmentedControl.setWidth(width / 2, forSegmentAt: 1)
   }
 
   func setupPageViewController() {
