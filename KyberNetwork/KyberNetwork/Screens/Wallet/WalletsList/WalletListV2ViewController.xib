@@ -60,8 +60,8 @@
                                 <action selector="manageWalletButtonTapped:" destination="-1" eventType="touchUpInside" id="n9d-0X-yZO"/>
                             </connections>
                         </button>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="qr_code_blue_icon" translatesAutoresizingMaskIntoConstraints="NO" id="rkB-Xp-bC8">
-                            <rect key="frame" x="323" y="518" width="20" height="20"/>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="scan" translatesAutoresizingMaskIntoConstraints="NO" id="rkB-Xp-bC8">
+                            <rect key="frame" x="311" y="512" width="32" height="32"/>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OB2-sm-rae">
                             <rect key="frame" x="32" y="505" width="311" height="46"/>
@@ -168,7 +168,7 @@
     <resources>
         <image name="add_wallet_icon" width="32" height="32"/>
         <image name="my-wallets-icon" width="20" height="20"/>
-        <image name="qr_code_blue_icon" width="20" height="20"/>
+        <image name="scan" width="32" height="32"/>
         <namedColor name="popupBackgroundColor">
             <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
