@@ -45,7 +45,7 @@ class EarnPoolViewCell: UITableViewCell {
   @IBOutlet weak var tvlLabel: UILabel!
   @IBOutlet weak var apyLabel: UILabel!
   @IBOutlet weak var arrowUpImage: UIImageView!
-  
+  @IBOutlet weak var chainImageContaintView: UIView!
   var viewModel: EarnPoolViewCellViewModel?
   
   override func awakeFromNib() {
@@ -61,8 +61,9 @@ class EarnPoolViewCell: UITableViewCell {
     super.setSelected(selected, animated: animated)
   }
   
-  func updateUI(viewModel: EarnPoolViewCellViewModel) {
+  func updateUI(viewModel: EarnPoolViewCellViewModel, shouldShowChainIcon: Bool) {
     self.viewModel = viewModel
+    self.chainImageContaintView.isHidden = !shouldShowChainIcon
     self.updateUIExpanse(viewModel: viewModel)
     self.tokenLabel.text = viewModel.earnPoolModel.token.symbol
     self.tokenImage.setImage(urlString: viewModel.earnPoolModel.token.logo, symbol: viewModel.earnPoolModel.token.symbol)

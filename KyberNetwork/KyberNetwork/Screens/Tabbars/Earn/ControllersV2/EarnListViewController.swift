@@ -9,6 +9,7 @@ import UIKit
 import SkeletonView
 import BaseModule
 import Dependencies
+import AppState
 
 class EarnListViewController: InAppBrowsingViewController {
   @IBOutlet weak var searchTextField: UITextField!
@@ -23,10 +24,10 @@ class EarnListViewController: InAppBrowsingViewController {
   var dataSource: [EarnPoolViewCellViewModel] = []
   var displayDataSource: [EarnPoolViewCellViewModel] = []
   var timer: Timer?
-  var currentSelectedChain: ChainType = .all
+  var currentSelectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : KNGeneralProvider.shared.currentChain
   override func viewDidLoad() {
     super.viewDidLoad()
-    fetchData()
+    fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
     setupUI()
   }
   
@@ -127,7 +128,7 @@ extension EarnListViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(EarnPoolViewCell.self, indexPath: indexPath)!
     let viewModel = displayDataSource[indexPath.row]
-    cell.updateUI(viewModel: viewModel)
+    cell.updateUI(viewModel: viewModel, shouldShowChainIcon: currentSelectedChain == .all)
     return cell
   }
 }
@@ -183,12 +184,9 @@ extension EarnListViewController: SkeletonTableViewDelegate, SkeletonTableViewDa
   func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
     return EarnPoolViewCell.className
   }
-
 }
 
-
 extension EarnListViewController: UITextFieldDelegate {
-  
   func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
     self.updateUIStartSearchingMode()
     return true

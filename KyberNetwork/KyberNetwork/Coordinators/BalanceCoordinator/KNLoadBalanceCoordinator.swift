@@ -11,6 +11,7 @@ import Sentry
 import FirebasePerformance
 import Firebase
 import KrystalWallets
+import AppState
 
 protocol KNLoadBalanceCoordinatorDelegate: class {
   func loadBalanceCoordinatorDidGetBalance(chainBalances: [ChainBalanceModel])
@@ -31,7 +32,7 @@ class KNLoadBalanceCoordinator {
   fileprivate var isFetchNonSupportedBalance: Bool = false
   weak var delegate: KNLoadBalanceCoordinatorDelegate?
   fileprivate var lastRefreshTime: Date = Date()
-  var shouldFetchAllChain: Bool = false
+//  var shouldFetchAllChain: Bool = false
   var address: KAddress {
     return AppDelegate.session.address
   }
@@ -249,7 +250,7 @@ class KNLoadBalanceCoordinator {
     var quoteSymbols = ["btc","usd"]
     var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
     
-    if self.shouldFetchAllChain {
+    if AppState.shared.isSelectedAllChain {
       chainIds = ChainType.getAllChain().map {
         return "\($0.getChainId())"
       }
@@ -322,7 +323,7 @@ class KNLoadBalanceCoordinator {
     let address = AppDelegate.session.address.addressString
     var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
     
-    if self.shouldFetchAllChain {
+    if AppState.shared.isSelectedAllChain {
       chainIds = ChainType.getAllChain().map {
         return "\($0.getChainId())"
       }
@@ -365,7 +366,7 @@ class KNLoadBalanceCoordinator {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
     
-    if self.shouldFetchAllChain {
+    if AppState.shared.isSelectedAllChain {
       chainIds = ChainType.getAllChain().map {
         return "\($0.getChainId())"
       }
@@ -407,7 +408,7 @@ class KNLoadBalanceCoordinator {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
     
-    if self.shouldFetchAllChain {
+    if AppState.shared.isSelectedAllChain {
       chainIds = ChainType.getAllChain().map {
         return "\($0.getChainId())"
       }
@@ -445,7 +446,7 @@ class KNLoadBalanceCoordinator {
     var quoteSymbols = ["btc","usd"]
     var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
     
-    if self.shouldFetchAllChain {
+    if AppState.shared.isSelectedAllChain {
       quoteSymbols.append("\(KNGeneralProvider.shared.currentChain.quoteToken().lowercased())")
       chainIds = ChainType.getAllChain().map {
         return "\($0.getChainId())"
