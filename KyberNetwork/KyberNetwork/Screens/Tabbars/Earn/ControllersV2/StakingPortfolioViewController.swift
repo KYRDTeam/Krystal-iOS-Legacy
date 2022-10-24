@@ -9,6 +9,7 @@ import UIKit
 import BaseModule
 import StackViewController
 import SkeletonView
+import AppState
 
 class SkeletonBlankSectionHeader: UITableViewHeaderFooterView {
   override init(reuseIdentifier: String?) {
@@ -111,7 +112,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     registerCell()
-    searchTextField.setPlaceholder(text: Strings.searchPools, color: .Kyber.normalText)
+    searchTextField.setPlaceholder(text: Strings.searchToken, color: .Kyber.normalText)
     viewModel.dataSource.observeAndFire(on: self) { _ in
       self.portfolioTableView.reloadData()
       
@@ -125,7 +126,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
       }
     }
     let currentChain = KNGeneralProvider.shared.currentChain
-    viewModel.chainID = currentChain.getChainId()
+    viewModel.chainID = AppState.shared.isSelectedAllChain ? nil : currentChain.getChainId()
     viewModel.requestData()
   }
   
