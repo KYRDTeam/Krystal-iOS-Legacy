@@ -193,6 +193,7 @@
                 <outlet property="apyValueLabel" destination="u3I-aW-w4R" id="drs-h1-sIn"/>
                 <outlet property="arrowUpImage" destination="asH-IT-2CZ" id="eiP-44-ovw"/>
                 <outlet property="chainImage" destination="8aQ-U7-xfU" id="H1W-BT-nBe"/>
+                <outlet property="chainImageContaintView" destination="Sim-e5-SjW" id="8et-uB-oWd"/>
                 <outlet property="dashView" destination="PC5-dI-riD" id="tBs-d9-5bb"/>
                 <outlet property="tableView" destination="zkV-H8-IJj" id="4IH-Ni-fiA"/>
                 <outlet property="tableViewHeightConstraint" destination="sqb-Ud-2Ns" id="SQh-Gl-WdG"/>

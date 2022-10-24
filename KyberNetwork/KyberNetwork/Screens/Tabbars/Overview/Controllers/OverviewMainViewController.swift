@@ -405,11 +405,15 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     guard self.isViewLoaded else {
       return
     }
-    viewModel.currentChain = KNGeneralProvider.shared.currentChain
+    self.onChainSelected(chain: KNGeneralProvider.shared.currentChain)
     if self.viewModel.currencyMode.isQuoteCurrency {
       self.viewModel.currencyMode = KNGeneralProvider.shared.quoteCurrency
     }
     self.reloadUI()
+  }
+  
+  override func onAppSelectAllChain() {
+    self.onChainSelected(chain: .all)
   }
   
   @objc override func onAppSwitchAddress() {

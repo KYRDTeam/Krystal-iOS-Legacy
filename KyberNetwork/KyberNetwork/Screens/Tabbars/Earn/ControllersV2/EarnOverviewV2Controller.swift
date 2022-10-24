@@ -8,6 +8,7 @@
 import UIKit
 import BaseModule
 import Dependencies
+import AppState
 
 class EarnOverviewV2Controller: InAppBrowsingViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
@@ -24,7 +25,7 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   override var supportAllChainOption: Bool {
     return true
   }
-  var currentSelectedChain: ChainType = .all
+  var currentSelectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : KNGeneralProvider.shared.currentChain
   
   init(viewModel: EarnOverViewModel) {
     self.viewModel = viewModel
@@ -67,7 +68,9 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   }
 
   func setupUI() {
-    reloadAllNetworksChain()
+    if currentSelectedChain == . all {
+      reloadAllNetworksChain()
+    }
     segmentedControl.highlightSelectedSegment(width: 100)
     let width = UIScreen.main.bounds.size.width - 140
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: width, height: 30)
