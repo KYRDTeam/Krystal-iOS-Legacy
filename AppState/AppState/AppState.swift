@@ -55,6 +55,8 @@ public class AppState {
     return currentAddress.addressString.isEmpty
   }
   
+  public var isSelectedAllChain: Bool = false
+  
   public func isWalletBackedUp(walletID: String) -> Bool {
     if let wallet = WalletManager.shared.getWallet(id: walletID), wallet.importType != .mnemonic {
       return true

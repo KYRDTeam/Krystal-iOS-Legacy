@@ -8,6 +8,7 @@
 import UIKit
 import BaseModule
 import Dependencies
+import AppState
 
 class EarnOverviewV2Controller: InAppBrowsingViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
@@ -24,7 +25,7 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   override var supportAllChainOption: Bool {
     return true
   }
-  var currentSelectedChain: ChainType = AppDelegate.shared.coordinator.loadBalanceCoordinator?.shouldFetchAllChain == true ? .all : KNGeneralProvider.shared.currentChain
+  var currentSelectedChain: ChainType = AppState.shared.isSelectedAllChain == true ? .all : KNGeneralProvider.shared.currentChain
   
   init(viewModel: EarnOverViewModel) {
     self.viewModel = viewModel

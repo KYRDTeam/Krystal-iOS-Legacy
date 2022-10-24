@@ -40,7 +40,7 @@ extension KNAppCoordinator {
     self.loadBalanceCoordinator = nil
     self.loadBalanceCoordinator = KNLoadBalanceCoordinator()
     self.loadBalanceCoordinator?.delegate = self
-    self.loadBalanceCoordinator?.shouldFetchAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all
+    AppState.shared.isSelectedAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all
     self.loadBalanceCoordinator?.resume()
 
     // KyberSwap Tab
@@ -185,7 +185,7 @@ extension KNAppCoordinator {
     EtherscanTransactionStorage.shared.updateCurrentWallet(address)
     self.session.switchAddress(address: address)
     FeatureFlagManager.shared.configClient(session: self.session)
-    self.loadBalanceCoordinator?.shouldFetchAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all
+    AppState.shared.isSelectedAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all
     self.loadBalanceCoordinator?.restartNewSession(self.session)
     self.investCoordinator?.appCoordinatorSwitchAddress()
     

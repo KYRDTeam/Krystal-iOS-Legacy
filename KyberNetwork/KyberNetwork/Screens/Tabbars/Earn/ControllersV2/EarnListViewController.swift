@@ -9,6 +9,7 @@ import UIKit
 import SkeletonView
 import BaseModule
 import Dependencies
+import AppState
 
 class EarnListViewController: InAppBrowsingViewController {
   @IBOutlet weak var searchTextField: UITextField!
@@ -23,7 +24,7 @@ class EarnListViewController: InAppBrowsingViewController {
   var dataSource: [EarnPoolViewCellViewModel] = []
   var displayDataSource: [EarnPoolViewCellViewModel] = []
   var timer: Timer?
-  var currentSelectedChain: ChainType = AppDelegate.shared.coordinator.loadBalanceCoordinator?.shouldFetchAllChain == true ? .all : KNGeneralProvider.shared.currentChain
+  var currentSelectedChain: ChainType = AppState.shared.isSelectedAllChain == true ? .all : KNGeneralProvider.shared.currentChain
   override func viewDidLoad() {
     super.viewDidLoad()
     fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())

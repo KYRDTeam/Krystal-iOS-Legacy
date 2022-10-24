@@ -2,6 +2,7 @@
 
 import UIKit
 import KrystalWallets
+import AppState
 
 // MARK: Landing Page Coordinator Delegate
 extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
@@ -114,7 +115,7 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
   }
   
   func overviewCoordinatorDidSelectAllChain() {
-    self.loadBalanceCoordinator?.shouldFetchAllChain = true
+    AppState.shared.isSelectedAllChain = true
     self.loadBalanceCoordinator?.resume()
   }
   
