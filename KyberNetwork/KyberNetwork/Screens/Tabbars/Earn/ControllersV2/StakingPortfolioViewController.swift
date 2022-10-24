@@ -9,6 +9,7 @@ import UIKit
 import BaseModule
 import StackViewController
 import SkeletonView
+import AppState
 
 class SkeletonBlankSectionHeader: UITableViewHeaderFooterView {
   override init(reuseIdentifier: String?) {
@@ -125,7 +126,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
       }
     }
     let currentChain = KNGeneralProvider.shared.currentChain
-    viewModel.chainID = currentChain.getChainId()
+    viewModel.chainID = AppState.shared.isSelectedAllChain ? nil : currentChain.getChainId()
     viewModel.requestData()
   }
   
