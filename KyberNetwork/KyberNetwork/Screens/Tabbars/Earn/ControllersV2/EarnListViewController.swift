@@ -23,10 +23,10 @@ class EarnListViewController: InAppBrowsingViewController {
   var dataSource: [EarnPoolViewCellViewModel] = []
   var displayDataSource: [EarnPoolViewCellViewModel] = []
   var timer: Timer?
-  var currentSelectedChain: ChainType = .all
+  var currentSelectedChain: ChainType = AppDelegate.shared.coordinator.loadBalanceCoordinator?.shouldFetchAllChain == true ? .all : KNGeneralProvider.shared.currentChain
   override func viewDidLoad() {
     super.viewDidLoad()
-    fetchData()
+    fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
     setupUI()
   }
   

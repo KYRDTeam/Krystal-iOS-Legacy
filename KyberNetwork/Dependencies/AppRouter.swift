@@ -52,8 +52,9 @@ class AppRouter: AppRouterProtocol, Coordinator {
     }
     popup.dataSource = chains
     popup.completionHandler = { selectedChain in
+      AppDelegate.shared.coordinator.loadBalanceCoordinator?.shouldFetchAllChain = (selectedChain == .all)
       if allowAllChainOption && selectedChain == .all {
-        AppDelegate.shared.coordinator.loadBalanceCoordinator?.shouldFetchAllChain = (selectedChain == .all)
+        AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = .all
         AppDelegate.shared.coordinator.loadBalanceCoordinator?.resume()
         AppEventManager.shared.postSelectAllChain()
       } else {
