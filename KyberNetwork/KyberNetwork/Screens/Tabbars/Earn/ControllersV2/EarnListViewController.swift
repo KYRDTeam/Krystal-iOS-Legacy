@@ -127,7 +127,7 @@ extension EarnListViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(EarnPoolViewCell.self, indexPath: indexPath)!
     let viewModel = displayDataSource[indexPath.row]
-    cell.updateUI(viewModel: viewModel)
+    cell.updateUI(viewModel: viewModel, shouldShowChainIcon: currentSelectedChain == .all)
     return cell
   }
 }
@@ -183,12 +183,9 @@ extension EarnListViewController: SkeletonTableViewDelegate, SkeletonTableViewDa
   func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
     return EarnPoolViewCell.className
   }
-
 }
 
-
 extension EarnListViewController: UITextFieldDelegate {
-  
   func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
     self.updateUIStartSearchingMode()
     return true
