@@ -59,7 +59,7 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet Connect" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aac-I8-PXf">
-                            <rect key="frame" x="135" y="12" width="144" height="24"/>
+                            <rect key="frame" x="135" y="12.5" width="144" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" white="1" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -130,7 +130,7 @@ is requesting to connect your Wallet</string>
                             </userDefinedRuntimeAttributes>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bPi-EQ-HKW">
-                            <rect key="frame" x="40" y="211.5" width="80" height="19"/>
+                            <rect key="frame" x="40" y="211.5" width="79.5" height="19"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -154,7 +154,7 @@ is requesting to connect your Wallet</string>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qKA-MW-ujz">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qKA-MW-ujz">
                             <rect key="frame" x="124" y="280.5" width="250" height="19"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -226,18 +226,25 @@ is requesting to connect your Wallet</string>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0Q-k4-CxE">
-                            <rect key="frame" x="124" y="65" width="250" height="19"/>
-                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I5z-fp-IDw">
-                            <rect key="frame" x="124" y="88" width="250" height="19"/>
-                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                            <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="HQq-fG-sWP">
+                            <rect key="frame" x="124" y="56" width="268.5" height="60.5"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0Q-k4-CxE">
+                                    <rect key="frame" x="0.0" y="0.0" width="268.5" height="37.5"/>
+                                    <string key="text">Krystal Wallet | One Platform, All DeFi
+is requesting to connect your Wallet</string>
+                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I5z-fp-IDw">
+                                    <rect key="frame" x="0.0" y="41.5" width="268.5" height="19"/>
+                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                    <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                        </stackView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3RW-W7-41E">
                             <rect key="frame" x="40" y="142" width="334" height="1"/>
                             <color key="backgroundColor" red="0.1058823529" green="0.1137254902" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -257,14 +264,14 @@ is requesting to connect your Wallet</string>
                             <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sKl-2Q-cSe">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="natural" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sKl-2Q-cSe">
                             <rect key="frame" x="40" y="231" width="334" height="19"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Online" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nk8-nX-Xpo">
-                            <rect key="frame" x="326" y="161" width="48" height="19"/>
+                            <rect key="frame" x="326.5" y="161" width="47.5" height="19"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" name="buttonBackgroundColor"/>
                             <nil key="highlightedColor"/>
@@ -293,12 +300,11 @@ is requesting to connect your Wallet</string>
                     <constraints>
                         <constraint firstItem="FcW-bT-0he" firstAttribute="trailing" secondItem="sKl-2Q-cSe" secondAttribute="trailing" constant="40" id="07f-It-hln"/>
                         <constraint firstItem="jHw-ms-dHV" firstAttribute="top" secondItem="us2-jK-pT6" secondAttribute="bottom" constant="24" id="17w-bA-HWs"/>
-                        <constraint firstItem="FcW-bT-0he" firstAttribute="trailing" secondItem="K0Q-k4-CxE" secondAttribute="trailing" constant="40" id="2O1-sC-APQ"/>
                         <constraint firstItem="nk8-nX-Xpo" firstAttribute="centerY" secondItem="us2-jK-pT6" secondAttribute="centerY" id="46O-mT-g67"/>
                         <constraint firstItem="FcW-bT-0he" firstAttribute="trailing" secondItem="nk8-nX-Xpo" secondAttribute="trailing" constant="40" id="5aU-UN-ImP"/>
                         <constraint firstItem="qut-Tm-7Gq" firstAttribute="leading" secondItem="FcW-bT-0he" secondAttribute="leading" constant="40" id="5yh-bQ-2L8"/>
-                        <constraint firstItem="K0Q-k4-CxE" firstAttribute="bottom" secondItem="qut-Tm-7Gq" secondAttribute="centerY" constant="-2" id="Der-C0-KKZ"/>
                         <constraint firstItem="sKl-2Q-cSe" firstAttribute="leading" secondItem="FcW-bT-0he" secondAttribute="leading" constant="40" id="ECi-Je-vJf"/>
+                        <constraint firstItem="HQq-fG-sWP" firstAttribute="centerY" secondItem="qut-Tm-7Gq" secondAttribute="centerY" id="FJR-Wz-btW"/>
                         <constraint firstItem="sKl-2Q-cSe" firstAttribute="top" secondItem="jHw-ms-dHV" secondAttribute="bottom" constant="8" id="Ibg-X3-gO4"/>
                         <constraint firstItem="us2-jK-pT6" firstAttribute="leading" secondItem="FcW-bT-0he" secondAttribute="leading" constant="40" id="KDV-RY-CsV"/>
                         <constraint firstItem="5Uj-dh-z2Z" firstAttribute="top" secondItem="Hfm-hd-LjM" secondAttribute="bottom" constant="24" id="LHr-ul-Wg2"/>
@@ -308,13 +314,10 @@ is requesting to connect your Wallet</string>
                         <constraint firstItem="5Uj-dh-z2Z" firstAttribute="centerX" secondItem="jxJ-2W-yUg" secondAttribute="centerX" id="Oxp-66-Wzj"/>
                         <constraint firstItem="us2-jK-pT6" firstAttribute="top" secondItem="3RW-W7-41E" secondAttribute="bottom" constant="18" id="PYt-OK-IV1"/>
                         <constraint firstItem="FcW-bT-0he" firstAttribute="trailing" secondItem="3RW-W7-41E" secondAttribute="trailing" constant="40" id="Z7I-AZ-Iwf"/>
+                        <constraint firstItem="HQq-fG-sWP" firstAttribute="leading" secondItem="qut-Tm-7Gq" secondAttribute="trailing" constant="20" id="bCB-CH-cuz"/>
                         <constraint firstItem="3RW-W7-41E" firstAttribute="top" secondItem="qut-Tm-7Gq" secondAttribute="bottom" constant="24" id="fLa-XV-puf"/>
-                        <constraint firstItem="I5z-fp-IDw" firstAttribute="leading" secondItem="qut-Tm-7Gq" secondAttribute="trailing" constant="20" id="gLC-Gb-hVN"/>
-                        <constraint firstItem="FcW-bT-0he" firstAttribute="trailing" secondItem="I5z-fp-IDw" secondAttribute="trailing" constant="40" id="icG-AA-1Xk"/>
                         <constraint firstItem="Hfm-hd-LjM" firstAttribute="top" secondItem="sKl-2Q-cSe" secondAttribute="bottom" constant="24" id="kRZ-Gs-c4l"/>
-                        <constraint firstItem="I5z-fp-IDw" firstAttribute="top" secondItem="K0Q-k4-CxE" secondAttribute="bottom" constant="4" id="lQU-6F-lJe"/>
                         <constraint firstItem="3RW-W7-41E" firstAttribute="leading" secondItem="FcW-bT-0he" secondAttribute="leading" constant="40" id="mU8-c1-UyT"/>
-                        <constraint firstItem="K0Q-k4-CxE" firstAttribute="leading" secondItem="qut-Tm-7Gq" secondAttribute="trailing" constant="20" id="skG-Uh-tqr"/>
                         <constraint firstItem="Hfm-hd-LjM" firstAttribute="leading" secondItem="jxJ-2W-yUg" secondAttribute="leading" constant="40" id="ysr-fb-WPN"/>
                     </constraints>
                 </view>
