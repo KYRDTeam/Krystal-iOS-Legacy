@@ -25,7 +25,7 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   override var supportAllChainOption: Bool {
     return true
   }
-  var currentSelectedChain: ChainType = AppState.shared.isSelectedAllChain == true ? .all : KNGeneralProvider.shared.currentChain
+  var currentSelectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : KNGeneralProvider.shared.currentChain
   
   init(viewModel: EarnOverViewModel) {
     self.viewModel = viewModel
