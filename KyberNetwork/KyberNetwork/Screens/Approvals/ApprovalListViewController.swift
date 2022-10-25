@@ -8,6 +8,7 @@
 import UIKit
 import BaseModule
 import DesignSystem
+import SkeletonView
 
 class ApprovalListViewController: BaseWalletOrientedViewController {
     
@@ -17,10 +18,66 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
     
     var viewModel: ApprovalListViewModel!
     
+    override var supportAllChainOption: Bool {
+        return true
+    }
+    
+    override var currentChain: ChainType {
+        return viewModel.selectedChain
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupViews()
+        bindViewModel()
+        showLoading()
+        viewModel.fetchApprovals()
+    }
+    
+    override func onAppSwitchChain() {
+        viewModel.selectedChain = KNGeneralProvider.shared.currentChain
+        super.onAppSwitchChain()
+        showLoading()
+        viewModel.fetchApprovals()
+    }
+    
+    override func onAppSelectAllChain() {
+        viewModel.selectedChain = .all
+        super.onAppSwitchChain()
+        showLoading()
+        viewModel.fetchApprovals()
+    }
+    
+    override func onAppSwitchAddress() {
+        super.onAppSwitchAddress()
+        
+        showLoading()
+        viewModel.fetchApprovals()
+    }
+    
+    func showLoading() {
+        let gradient = SkeletonGradient(baseColor: UIColor.Kyber.cellBackground)
+        view.showAnimatedGradientSkeleton(usingGradient: gradient)
+    }
+    
+    func hideLoading() {
+        view.hideSkeleton()
+    }
+    
+    func bindViewModel() {
+        viewModel.onFetchApprovals = { [weak self] in
+            DispatchQueue.main.async {
+                self?.hideLoading()
+                self?.tableView.reloadData()
+            }
+        }
+        
+        viewModel.onFilterApprovalsUpdated = { [weak self] in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
     }
     
     func setupViews() {
@@ -39,12 +96,13 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
         tableView.dataSource = self
         tableView.tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
         tableView.registerCellNib(ApprovedTokenCell.self)
+        tableView.registerCellNib(OverviewSkeletonCell.self)
     }
     
     @IBAction func backWasTapped(_ sender: Any) {
         viewModel.onTapBack()
     }
-
+    
 }
 
 extension ApprovalListViewController: UITextFieldDelegate {
@@ -60,12 +118,13 @@ extension ApprovalListViewController: UITextFieldDelegate {
 extension ApprovalListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20 // viewModel.filteredApprovedTokens.count
+        return viewModel.filteredApprovals.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(ApprovedTokenCell.self, indexPath: indexPath)!
         cell.selectionStyle = .none
+        cell.configure(viewModel: viewModel.filteredApprovals[indexPath.row])
         return cell
     }
     
@@ -74,3 +133,16 @@ extension ApprovalListViewController: UITableViewDataSource, UITableViewDelegate
     }
     
 }
+
+extension ApprovalListViewController: SkeletonTableViewDataSource {
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return OverviewSkeletonCell.className
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
+    
+}
+

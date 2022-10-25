@@ -39,7 +39,7 @@
                     <rect key="frame" x="0.0" y="44" width="414" height="81"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rkt-zo-1Ip">
-                            <rect key="frame" x="258" y="24.5" width="92" height="32"/>
+                            <rect key="frame" x="266" y="24.5" width="92" height="32"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="Y7q-q2-ek3">
                                     <rect key="frame" x="12" y="0.0" width="74" height="32"/>
@@ -155,7 +155,7 @@
                         <constraint firstItem="jew-yL-7jY" firstAttribute="leading" secondItem="x7O-xn-JXj" secondAttribute="trailing" constant="4" id="lJQ-Qd-N2W"/>
                         <constraint firstItem="qkr-Jl-VTb" firstAttribute="leading" secondItem="p9q-BS-NPw" secondAttribute="trailing" id="mw0-GI-aSN"/>
                         <constraint firstItem="jew-yL-7jY" firstAttribute="leading" secondItem="x7O-xn-JXj" secondAttribute="trailing" constant="4" id="mx2-9L-rxa"/>
-                        <constraint firstItem="ZjC-Up-Nko" firstAttribute="leading" secondItem="Rkt-zo-1Ip" secondAttribute="trailing" constant="16" id="oHa-a6-LOX"/>
+                        <constraint firstItem="ZjC-Up-Nko" firstAttribute="leading" secondItem="Rkt-zo-1Ip" secondAttribute="trailing" constant="8" id="oHa-a6-LOX"/>
                         <constraint firstItem="qkr-Jl-VTb" firstAttribute="top" secondItem="3XC-bI-RHh" secondAttribute="top" constant="16" id="ojU-XL-Nq4"/>
                         <constraint firstItem="p9q-BS-NPw" firstAttribute="leading" secondItem="3XC-bI-RHh" secondAttribute="leading" constant="16" id="rIw-Db-bhz"/>
                     </constraints>
@@ -189,6 +189,7 @@
                         </imageView>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Symbol, name, address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jdv-oA-X0o">
                             <rect key="frame" x="12" y="0.0" width="318" height="42"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
@@ -212,6 +213,9 @@
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="r29-Ah-6rA">
                     <rect key="frame" x="0.0" y="235" width="414" height="627"/>
                     <color key="backgroundColor" name="mainViewBgColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                 </tableView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
@@ -231,6 +235,9 @@
                 <constraint firstItem="3XC-bI-RHh" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="pvl-zj-yHi"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="4oj-2l-J6E" secondAttribute="trailing" id="yvG-Oz-sfu"/>
             </constraints>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+            </userDefinedRuntimeAttributes>
             <point key="canvasLocation" x="137.68115942028987" y="75.669642857142847"/>
         </view>
     </objects>
