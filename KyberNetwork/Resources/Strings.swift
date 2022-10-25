@@ -302,4 +302,7 @@ struct Strings {
     static let approvalSearchPlaceholder = "approval.search.placeholder".toBeLocalised()
     static let approvalMenuTitle = "approval.menu.title".toBeLocalised()
     static let unlimitedAllowance = "unlimited.allowance".toBeLocalised()
+    static let totalAllowance = "total.allowance".toBeLocalised()
+    static let totalAllowanceFormat = "total.allowance.format".toBeLocalised()
+    static let totalAllowanceDescription = "total.allowance.description".toBeLocalised()
 }

@@ -12,6 +12,7 @@ import SkeletonView
 
 class ApprovalListViewController: BaseWalletOrientedViewController {
     
+    @IBOutlet weak var riskInfoImageView: UIImageView!
     @IBOutlet weak var searchField: UITextField!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var riskAmountLabel: UILabel!
@@ -69,6 +70,7 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
         viewModel.onFetchApprovals = { [weak self] in
             DispatchQueue.main.async {
                 self?.hideLoading()
+                self?.riskAmountLabel.text = self?.viewModel.totalAllowanceString
                 self?.tableView.reloadData()
             }
         }
@@ -81,8 +83,19 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
     }
     
     func setupViews() {
+        view.isUserInteractionDisabledWhenSkeletonIsActive = true
         setupTableView()
         setupSearchField()
+        setupTotalAllowanceView()
+    }
+    
+    func setupTotalAllowanceView() {
+        riskInfoImageView.isUserInteractionEnabled = true
+        riskInfoImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showTotalAllowanceInfo)))
+    }
+    
+    @objc func showTotalAllowanceInfo() {
+        BottomMessagePopup.show(on: self, title: Strings.totalAllowance, message: Strings.totalAllowanceDescription)
     }
     
     func setupSearchField() {
@@ -145,4 +158,3 @@ extension ApprovalListViewController: SkeletonTableViewDataSource {
     }
     
 }
-

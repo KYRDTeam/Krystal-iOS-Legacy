@@ -8,6 +8,7 @@
 import Foundation
 import Services
 import AppState
+import BigInt
 
 class ApprovalListViewModel {
     
@@ -28,13 +29,22 @@ class ApprovalListViewModel {
     }
     
     var actions: Actions
-    var totalAllowance: Double = 0
+    
+    var totalAllowance: Double = 0 {
+        didSet {
+            let bigIntAmount = BigInt(totalAllowance * pow(10, 18))
+            totalAllowanceString = String(format: Strings.totalAllowanceFormat,
+                                          NumberFormatUtils.usdAmount(value: bigIntAmount, decimals: 18))
+        }
+    }
+    
     var approvals: [Approval] = []
     var filteredApprovals: [ApprovedTokenItemViewModel] = []
     let service = ApprovalService()
     var onFetchApprovals: (() -> ())?
     var onFilterApprovalsUpdated: (() -> ())?
     var selectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : AppState.shared.currentChain
+    var totalAllowanceString: String?
     
     init(actions: Actions) {
         self.actions = actions
