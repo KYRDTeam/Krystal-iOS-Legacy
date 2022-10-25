@@ -11,6 +11,7 @@ import MBProgressHUD
 import WalletConnectSwift
 import KrystalWallets
 import UIKit
+import AppState
 
 protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidImportWallet(wallet: KWallet, chainType: ChainType)
@@ -80,7 +81,6 @@ class OverviewCoordinator: NSObject, Coordinator {
   var importWalletCoordinator: KNImportWalletCoordinator?
   var searchRouter = AdvanceSearchTokenRouter()
   var currentCurrencyType: CurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .usd
-  var pendingAction: (() -> Void)?
 
   lazy var rootViewController: OverviewMainViewController = {
     let viewModel = OverviewMainViewModel()
@@ -180,9 +180,6 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.historyCoordinator?.appDidSwitchAddress()
     self.krytalCoordinator?.coordinatorAppSwitchAddress()
     self.searchRouter.appCoordinatorDidUpdateNewSession()
-    if let pendingAction = pendingAction {
-      pendingAction()
-    }
   }
   
   //TODO: coordinator update balance, coordinator change wallet
@@ -344,7 +341,6 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
           secondButtonAction: {
             self.handleSwitchChain(controller) {
               self.openSendTokenView(token)
-              self.pendingAction = nil
             }
           },
           firstButtonAction: nil
@@ -369,7 +365,6 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
           secondButtonAction: {
             self.handleSwitchChain(controller) {
               self.openSwapView(token: token, isBuy: false)
-              self.pendingAction = nil
             }
           },
           firstButtonAction: nil
@@ -397,7 +392,6 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
   }
   
   func handleSwitchChain(_ controller: ChartViewController, completion: @escaping () -> Void) {
-    self.pendingAction = nil
     var newChain = KNGeneralProvider.shared.currentChain
     if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
       newChain = chainType
@@ -405,13 +399,9 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     let addresses = WalletManager.shared.getAllAddresses(addressType: newChain.addressType)
     if addresses.isEmpty {
       self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: newChain)
-      self.pendingAction = completion
-      return
     }
-    let viewModel = SwitchChainWalletsListViewModel(selected: newChain)
-    let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-    self.navigationController.present(secondPopup, animated: true, completion: nil)
-    self.pendingAction = completion
+    AppState.shared.updateChain(chain: newChain)
+    completion()
   }
 
   func openCommunityURL(_ url: String) {
