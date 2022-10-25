@@ -23,6 +23,7 @@
                 <outlet property="chainButton" destination="jew-yL-7jY" id="i9b-Ye-fCW"/>
                 <outlet property="chainIcon" destination="x7O-xn-JXj" id="15h-Rl-XNN"/>
                 <outlet property="riskAmountLabel" destination="jFG-fX-Cvd" id="Uqq-OF-4fE"/>
+                <outlet property="riskInfoImageView" destination="7st-KX-LGm" id="Kbf-Oe-fXI"/>
                 <outlet property="searchField" destination="Jdv-oA-X0o" id="3oD-Zz-Osu"/>
                 <outlet property="tableView" destination="r29-Ah-6rA" id="RVD-97-fPa"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -169,10 +170,20 @@
                             <color key="textColor" red="0.95686274509803915" green="0.33333333333333331" blue="0.19607843137254902" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="warning_red_icon" translatesAutoresizingMaskIntoConstraints="NO" id="7st-KX-LGm">
+                            <rect key="frame" x="123" y="10" width="16" height="16"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="16" id="6F6-Kz-HsI"/>
+                                <constraint firstAttribute="width" constant="16" id="YeH-by-eyE"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" red="1" green="0.43137254901960786" blue="0.25098039215686274" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="jFG-fX-Cvd" firstAttribute="centerY" secondItem="4oj-2l-J6E" secondAttribute="centerY" id="3aQ-1F-zax"/>
+                        <constraint firstItem="7st-KX-LGm" firstAttribute="leading" secondItem="jFG-fX-Cvd" secondAttribute="trailing" constant="8" id="8xh-c0-T15"/>
+                        <constraint firstItem="7st-KX-LGm" firstAttribute="centerY" secondItem="jFG-fX-Cvd" secondAttribute="centerY" id="OuL-Gz-Cg2"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="7st-KX-LGm" secondAttribute="trailing" constant="16" id="Uec-iv-gEF"/>
                         <constraint firstItem="jFG-fX-Cvd" firstAttribute="leading" secondItem="4oj-2l-J6E" secondAttribute="leading" constant="36" id="hiB-V4-cGA"/>
                         <constraint firstAttribute="height" constant="36" id="tIt-zF-mER"/>
                     </constraints>
@@ -249,6 +260,7 @@
         <image name="eth" width="32" height="32"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
         <image name="search_overview_icon" width="33" height="33"/>
+        <image name="warning_red_icon" width="13" height="14"/>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
