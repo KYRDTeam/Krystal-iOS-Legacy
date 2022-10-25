@@ -17,6 +17,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StakingPortfolioViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="BuJ-64-RNu" id="onQ-KD-pUx"/>
+                <outlet property="emptyIcon" destination="4dq-y8-ZfK" id="FYG-h3-EfN"/>
+                <outlet property="emptyLabel" destination="gNb-7G-c5u" id="5Eu-lU-QMN"/>
                 <outlet property="emptyViewContainer" destination="72k-Xu-RIT" id="hdF-wD-0bx"/>
                 <outlet property="portfolioTableView" destination="Jh9-lx-at7" id="HXv-ra-WXz"/>
                 <outlet property="searchFieldActionButton" destination="658-pi-3l3" id="HEt-6G-2bg"/>

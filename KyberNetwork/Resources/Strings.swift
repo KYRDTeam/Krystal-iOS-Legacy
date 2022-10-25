@@ -296,4 +296,5 @@ struct Strings {
   static let Staking = "Staking".toBeLocalised()
   static let noRecordFound = "no.record.found".toBeLocalised()
   static let earnIsCurrentlyNotSupportedOnThisChainYet = "earn.is.currently.not.supported.on.this.chain.yet".toBeLocalised()
+  static let emptyTokenDeposit = "No tokens deposited yet.".toBeLocalised()
 }
