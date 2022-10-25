@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     setupFirebase()
     setupOneSignal(launchOptions)
     Tracker.track(event: .openApp)
+    setupTrackingTools()
     do {
       let keystore = try EtherKeystore()
       migrationManager = AppMigrationManager(keystore: keystore)
@@ -66,9 +67,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
     OneSignal.promptForPushNotifications(userResponse: { accepted in
       print("User accepted notifications: \(accepted)")
-      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        self.requestAcceptTrackingFirebaseIfNeeded()
-      }
     })
   }
   
@@ -105,18 +103,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       options.debug = true // Enabled debug when first installing is always helpful
       options.tracesSampleRate = KNEnvironment.default == .production ? 0.2 : 1.0
       options.environment = KNEnvironment.default.displayName
-    }
-  }
-
-  fileprivate func requestAcceptTrackingFirebaseIfNeeded() {
-    if #available(iOS 14, *) {
-      ATTrackingManager.requestTrackingAuthorization { (status) in
-        if status == .authorized {
-          self.setupTrackingTools()
-        }
-      }
-    } else {
-      self.setupTrackingTools()
     }
   }
   
