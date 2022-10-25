@@ -989,3 +989,7 @@
 "search.token" = "Search token";
 "earn.is.currently.not.supported.on.this.chain.yet" = "Earn is currently not supported on this chain yet.";
 "no.tokens.deposited" = "No tokens deposited yet.";
+
+// Approval
+"approval.search.placeholder" = "Symbol, name, address";
+"approval.menu.title" = "Token Approvals";
