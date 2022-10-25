@@ -100,6 +100,8 @@ class StakingPortfolioViewModel {
 class StakingPortfolioViewController: InAppBrowsingViewController {
   @IBOutlet weak var portfolioTableView: UITableView!
   @IBOutlet weak var emptyViewContainer: UIView!
+  @IBOutlet weak var emptyIcon: UIImageView!
+  @IBOutlet weak var emptyLabel: UILabel!
   
   @IBOutlet weak var searchFieldActionButton: UIButton!
   @IBOutlet weak var searchViewRightConstraint: NSLayoutConstraint!
@@ -144,6 +146,13 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   }
   
   private func updateUIEmptyView() {
+    if viewModel.searchText.isEmpty {
+      emptyIcon.image = Images.emptyDeposit
+      emptyLabel.text = Strings.emptyTokenDeposit
+    } else {
+      self.emptyIcon.image = Images.emptySearch
+      self.emptyLabel.text = Strings.noRecordFound
+    }
     emptyViewContainer.isHidden = !viewModel.isEmpty()
   }
   
@@ -199,19 +208,18 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   func reloadUI() {
     viewModel.reloadDataSource()
     portfolioTableView.reloadData()
+    updateUIEmptyView()
   }
   
   @objc override func onAppSwitchChain() {
     let currentChain = KNGeneralProvider.shared.currentChain
     viewModel.chainID = currentChain.getChainId()
-    viewModel.reloadDataSource()
-    portfolioTableView.reloadData()
+    reloadUI()
   }
   
   override func onAppSelectAllChain() {
     viewModel.chainID = nil
-    viewModel.reloadDataSource()
-    portfolioTableView.reloadData()
+    reloadUI()
   }
 }
 
@@ -230,6 +238,7 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
     let cm = items[indexPath.row]
     cell.updateCellModel(cm)
     cell.delegate = self
+    cell.chainImageView.isHidden = viewModel.chainID != nil
     return cell
   }
   

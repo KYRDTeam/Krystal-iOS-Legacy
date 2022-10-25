@@ -988,3 +988,4 @@
 "Staking" = "Staking";
 "search.token" = "Search token";
 "earn.is.currently.not.supported.on.this.chain.yet" = "Earn is currently not supported on this chain yet.";
+"no.tokens.deposited" = "No tokens deposited yet.";
