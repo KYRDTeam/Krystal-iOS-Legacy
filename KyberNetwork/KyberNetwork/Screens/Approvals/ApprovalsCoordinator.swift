@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import Dependencies
 
 class ApprovalsCoordinator: Coordinator {
     var coordinators: [Coordinator] = []
@@ -22,22 +21,13 @@ class ApprovalsCoordinator: Coordinator {
     func start() {
         let vc = ApprovalListViewController.instantiateFromNib()
         let viewModel = ApprovalListViewModel(
-            actions: .init(
-                onTapBack: {
-                    self.navigationController.popViewController(animated: true, completion: nil)
-                    self.onCompleted?()
-                },
-                onTapHistory: {
-                    self.openHistory()
-                }
-            )
+            actions: .init(onTapBack: {
+                self.navigationController.popViewController(animated: true, completion: nil)
+                self.onCompleted?()
+            })
         )
         vc.viewModel = viewModel
         vc.hidesBottomBarWhenPushed = true
         navigationController.pushViewController(vc, animated: true)
-    }
-    
-    func openHistory() {
-        AppDependencies.router.openTransactionHistory()
     }
 }

@@ -23,14 +23,14 @@ class ApprovedTokenCell: UITableViewCell {
     }
     
     func configure(viewModel: ApprovedTokenItemViewModel) {
-        tokenImageView.setImage(with: viewModel.tokenIcon ?? "", placeholder: UIImage(named: "default_token")!)
+        tokenImageView.loadImage(viewModel.tokenIcon)
         chainImageView.image = viewModel.chainIcon
         tokenSymbolLabel.text = viewModel.symbol
         tokenNameLabel.text = viewModel.tokenName
         verifyIcon.isHidden = !viewModel.isVerified
-        spenderAddressLabel.text = viewModel.spenderAddress
+        spenderAddressLabel.text = viewModel.spenderAddress.shortTypeAddress
         rightTokenSymbolLabel.text = viewModel.symbol
-        amountLabel.text = viewModel.amountString
+        amountLabel.text = viewModel.amount
     }
     
 }
