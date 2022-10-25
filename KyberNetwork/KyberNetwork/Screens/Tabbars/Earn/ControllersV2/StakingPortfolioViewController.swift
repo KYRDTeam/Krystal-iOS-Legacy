@@ -214,16 +214,12 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   @objc override func onAppSwitchChain() {
     let currentChain = KNGeneralProvider.shared.currentChain
     viewModel.chainID = currentChain.getChainId()
-    viewModel.reloadDataSource()
-    portfolioTableView.reloadData()
-    updateUIEmptyView()
+    reloadUI()
   }
   
   override func onAppSelectAllChain() {
     viewModel.chainID = nil
-    viewModel.reloadDataSource()
-    portfolioTableView.reloadData()
-    updateUIEmptyView()
+    reloadUI()
   }
 }
 
