@@ -84,21 +84,6 @@ class KrystalService {
       let uw_pu = pu ?? []
       completion(.success((uw_eb, uw_pu)))
     }
-    
-//    provider.requestWithFilter(.getStakingPortfolio(address: address)) { result in
-//      switch result {
-//      case .success(let response):
-//        let decoder = JSONDecoder()
-//        do {
-//          let decoded = try decoder.decode(PortfolioStakingResponse.self, from: response.data)
-//          completion(.success(decoded.portfolio))
-//        } catch let error {
-//          completion(.failure(AnyError(error)))
-//        }
-//      case .failure(let error):
-//        completion(.failure(AnyError(error)))
-//      }
-//    }
   }
   
 }
