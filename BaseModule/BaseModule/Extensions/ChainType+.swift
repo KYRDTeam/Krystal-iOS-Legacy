@@ -43,6 +43,8 @@ extension ChainType {
       return .chainSolanaSquare
     case .klaytn:
       return .chainKlaytnSquare
+    case .optimism:
+      return .chainOptimismSquare
     }
   }
   

@@ -307,4 +307,24 @@ public struct AllChains {
     quoteToken: "KLAY",
     apiChainPath: "klaytn"
   )
+  
+  public static let optimismMainnetRPC = CustomRPC (
+    chainID: 10,
+    type: "ERC20",
+    name: "Optimism",
+    symbol: "ETH",
+    endpoint: "https://rpc.ankr.com/optimism",
+    endpointKyber: "https://mainnet.optimism.io",
+    endpointAlchemy: "https://rpc.ankr.com/optimism",
+    etherScanEndpoint: "https://optimistic.etherscan.io/",
+    webScanName: "OptimismScan",
+    ensAddress: "",
+    wrappedAddress: "",
+    apiEtherscanEndpoint: "",
+    proxyAddress: "0xf6f2dafa542FefAae22187632Ef30D2dAa252b4e",
+    quoteTokenAddress: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    chainIcon: "chain_optimism_square",
+    quoteToken: "ETH",
+    apiChainPath: "optimism"
+  )
 }
