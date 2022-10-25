@@ -33,7 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     setupFirebase()
     setupOneSignal(launchOptions)
     Tracker.track(event: .openApp)
-    setupTrackingTools()
+    setupMixPanel()
+    setupSentryIfNeeded()
     do {
       let keystore = try EtherKeystore()
       migrationManager = AppMigrationManager(keystore: keystore)
@@ -67,6 +68,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
     OneSignal.promptForPushNotifications(userResponse: { accepted in
       print("User accepted notifications: \(accepted)")
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        self.requestAcceptTrackingIfNeeded()
+      }
     })
   }
   
@@ -97,7 +101,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     OneSignal.setNotificationOpenedHandler(notificationOpenedBlock)
   }
   
-  fileprivate func setupSentry() {
+  fileprivate func setupSentryIfNeeded() {
+    guard !SentrySDK.isEnabled else { return }
     SentrySDK.start { options in
       options.dsn = KNSecret.sentryURL
       options.debug = true // Enabled debug when first installing is always helpful
@@ -105,18 +110,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       options.environment = KNEnvironment.default.displayName
     }
   }
-  
-  fileprivate func setupTrackingTools() {
-    var shouldConfigTrackingTool = true
+
+  fileprivate func requestAcceptTrackingIfNeeded() {
     if #available(iOS 14, *) {
-      let status = ATTrackingManager.trackingAuthorizationStatus
-      shouldConfigTrackingTool = status == .authorized
+      ATTrackingManager.requestTrackingAuthorization { _ in }
     }
-    guard shouldConfigTrackingTool else { return }
-    setupMixPanel()
-    
-    guard !SentrySDK.isEnabled else { return }
-    self.setupSentry()
   }
   
   func setupMixPanel() {
