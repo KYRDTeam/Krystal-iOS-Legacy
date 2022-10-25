@@ -90,9 +90,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             parameters[element.name] = element.value
           })
           if components.path == "/swap" {
-            self.coordinator.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+            self.coordinator?.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
           } else {
-            self.coordinator.overviewTabCoordinator?.navigationController.openSafari(with: url)
+            self.coordinator?.overviewTabCoordinator?.navigationController.openSafari(with: url)
           }
         }
     }
