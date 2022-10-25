@@ -24,7 +24,7 @@ class SkeletonBlankSectionHeader: UITableViewHeaderFooterView {
 }
 
 class StakingPortfolioViewModel {
-  var portfolio: PortfolioStaking?
+  var portfolio: ([EarningBalance], [PendingUnstake])?
   let apiService = KrystalService()
   var searchText = ""
   var chainID: Int?
@@ -50,8 +50,8 @@ class StakingPortfolioViewModel {
     var output: [StakingPortfolioCellModel] = []
     var pending: [StakingPortfolioCellModel] = []
     
-    var pendingUnstakeData = data.pendingUnstakes
-    var earningBalanceData = data.earningBalances
+    var pendingUnstakeData = data.1
+    var earningBalanceData = data.0
     
     if !searchText.isEmpty {
       pendingUnstakeData = pendingUnstakeData.filter({ item in

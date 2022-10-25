@@ -37,21 +37,68 @@ class KrystalService {
     }
   }
   
-  func getStakingPortfolio(address: String, completion: @escaping (Result<PortfolioStaking, AnyError>) -> Void) {
-    provider.requestWithFilter(.getStakingPortfolio(address: address)) { result in
+  func getStakingPortfolio(address: String, completion: @escaping (Result<([EarningBalance], [PendingUnstake]), AnyError>) -> Void) {
+    let group = DispatchGroup()
+    var eb: [EarningBalance]?
+    var pu: [PendingUnstake]?
+    
+    var anyError: AnyError?
+    
+    group.enter()
+    
+    provider.requestWithFilter(.getEarningBalances(address: address)) { result in
       switch result {
       case .success(let response):
         let decoder = JSONDecoder()
         do {
-          let decoded = try decoder.decode(PortfolioStakingResponse.self, from: response.data)
-          completion(.success(decoded.portfolio))
+          let decoded = try decoder.decode(EarningBalancesResponse.self, from: response.data)
+          eb = decoded.earningBalances
         } catch let error {
-          completion(.failure(AnyError(error)))
+          anyError = AnyError(error)
         }
       case .failure(let error):
-        completion(.failure(AnyError(error)))
+        anyError = AnyError(error)
       }
+      group.leave()
     }
+    
+    group.enter()
+    provider.requestWithFilter(.getPendingUnstakes(address: address)) { result in
+      switch result {
+      case .success(let response):
+        let decoder = JSONDecoder()
+        do {
+          let decoded = try decoder.decode(PendingUnstakesResponse.self, from: response.data)
+          pu = decoded.pendingUnstakes
+        } catch let error {
+          anyError = AnyError(error)
+        }
+      case .failure(let error):
+        anyError = AnyError(error)
+      }
+      group.leave()
+    }
+    
+    group.notify(queue: .main) {
+      let uw_eb = eb ?? []
+      let uw_pu = pu ?? []
+      completion(.success((uw_eb, uw_pu)))
+    }
+    
+//    provider.requestWithFilter(.getStakingPortfolio(address: address)) { result in
+//      switch result {
+//      case .success(let response):
+//        let decoder = JSONDecoder()
+//        do {
+//          let decoded = try decoder.decode(PortfolioStakingResponse.self, from: response.data)
+//          completion(.success(decoded.portfolio))
+//        } catch let error {
+//          completion(.failure(AnyError(error)))
+//        }
+//      case .failure(let error):
+//        completion(.failure(AnyError(error)))
+//      }
+//    }
   }
   
 }
