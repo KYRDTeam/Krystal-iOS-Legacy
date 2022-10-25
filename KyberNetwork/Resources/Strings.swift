@@ -297,4 +297,8 @@ struct Strings {
   static let noRecordFound = "no.record.found".toBeLocalised()
   static let earnIsCurrentlyNotSupportedOnThisChainYet = "earn.is.currently.not.supported.on.this.chain.yet".toBeLocalised()
   static let emptyTokenDeposit = "no.tokens.deposited".toBeLocalised()
+    
+    // Approval
+    static let approvalSearchPlaceholder = "approval.search.placeholder".toBeLocalised()
+    static let approvalMenuTitle = "approval.menu.title".toBeLocalised()
 }

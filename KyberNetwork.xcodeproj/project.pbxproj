@@ -610,6 +610,13 @@
 		A6156B5328856E4F00276120 /* CustomSegmentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6156B5228856E4F00276120 /* CustomSegmentView.xib */; };
 		A6156B5528856E6800276120 /* BaseXibView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6156B5428856E6800276120 /* BaseXibView.swift */; };
 		A6156B572885A43400276120 /* CGPoint+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6156B562885A43400276120 /* CGPoint+.swift */; };
+		A63655552907A352003B66F0 /* ApprovalListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63655532907A352003B66F0 /* ApprovalListViewController.swift */; };
+		A63655562907A352003B66F0 /* ApprovalListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63655542907A352003B66F0 /* ApprovalListViewController.xib */; };
+		A63655592907B6BB003B66F0 /* ApprovedTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63655572907B6BB003B66F0 /* ApprovedTokenCell.swift */; };
+		A636555A2907B6BB003B66F0 /* ApprovedTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63655582907B6BB003B66F0 /* ApprovedTokenCell.xib */; };
+		A636555C2907BD7B003B66F0 /* ApprovedTokenItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A636555B2907BD7B003B66F0 /* ApprovedTokenItemViewModel.swift */; };
+		A636555E2907BEAE003B66F0 /* ApprovalListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A636555D2907BEAE003B66F0 /* ApprovalListViewModel.swift */; };
+		A63655602907C426003B66F0 /* ApprovalsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A636555F2907C426003B66F0 /* ApprovalsCoordinator.swift */; };
 		A6390B1228ACADF40083EF4C /* MigratingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6390B1028ACADF40083EF4C /* MigratingViewController.swift */; };
 		A6390B1328ACADF40083EF4C /* MigratingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6390B1128ACADF40083EF4C /* MigratingViewController.xib */; };
 		A6394B542840D51E0084C923 /* MockTransactionDetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6394B532840D51E0084C923 /* MockTransactionDetailInteractor.swift */; };
@@ -1879,6 +1886,13 @@
 		A6156B5228856E4F00276120 /* CustomSegmentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomSegmentView.xib; sourceTree = "<group>"; };
 		A6156B5428856E6800276120 /* BaseXibView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseXibView.swift; sourceTree = "<group>"; };
 		A6156B562885A43400276120 /* CGPoint+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+.swift"; sourceTree = "<group>"; };
+		A63655532907A352003B66F0 /* ApprovalListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovalListViewController.swift; sourceTree = "<group>"; };
+		A63655542907A352003B66F0 /* ApprovalListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApprovalListViewController.xib; sourceTree = "<group>"; };
+		A63655572907B6BB003B66F0 /* ApprovedTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovedTokenCell.swift; sourceTree = "<group>"; };
+		A63655582907B6BB003B66F0 /* ApprovedTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApprovedTokenCell.xib; sourceTree = "<group>"; };
+		A636555B2907BD7B003B66F0 /* ApprovedTokenItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovedTokenItemViewModel.swift; sourceTree = "<group>"; };
+		A636555D2907BEAE003B66F0 /* ApprovalListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovalListViewModel.swift; sourceTree = "<group>"; };
+		A636555F2907C426003B66F0 /* ApprovalsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovalsCoordinator.swift; sourceTree = "<group>"; };
 		A6390B1028ACADF40083EF4C /* MigratingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratingViewController.swift; sourceTree = "<group>"; };
 		A6390B1128ACADF40083EF4C /* MigratingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MigratingViewController.xib; sourceTree = "<group>"; };
 		A6394B452840D4DA0084C923 /* KrystalUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KrystalUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3255,6 +3269,7 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				A63655522907A341003B66F0 /* Approvals */,
 				A610B2D828ED66D600456965 /* Protocols */,
 				A69C5BD128D1BA73000DE825 /* Notification */,
 				A6390B0F28ACADC70083EF4C /* Migrating */,
@@ -4982,6 +4997,20 @@
 				A6156B5428856E6800276120 /* BaseXibView.swift */,
 			);
 			path = CustomSegmentView;
+			sourceTree = "<group>";
+		};
+		A63655522907A341003B66F0 /* Approvals */ = {
+			isa = PBXGroup;
+			children = (
+				A63655532907A352003B66F0 /* ApprovalListViewController.swift */,
+				A63655542907A352003B66F0 /* ApprovalListViewController.xib */,
+				A63655572907B6BB003B66F0 /* ApprovedTokenCell.swift */,
+				A63655582907B6BB003B66F0 /* ApprovedTokenCell.xib */,
+				A636555B2907BD7B003B66F0 /* ApprovedTokenItemViewModel.swift */,
+				A636555D2907BEAE003B66F0 /* ApprovalListViewModel.swift */,
+				A636555F2907C426003B66F0 /* ApprovalsCoordinator.swift */,
+			);
+			path = Approvals;
 			sourceTree = "<group>";
 		};
 		A6390B0F28ACADC70083EF4C /* Migrating */ = {
@@ -6856,6 +6885,7 @@
 				C320D81027B3A7F60001DC71 /* MultiSendCell.xib in Resources */,
 				25929C5520DA5C760045CFA3 /* SF-Pro-Display-RegularItalic.otf in Resources */,
 				25929C9620DA5CC10045CFA3 /* SFCompactDisplay-Semibold.otf in Resources */,
+				A636555A2907B6BB003B66F0 /* ApprovedTokenCell.xib in Resources */,
 				7E913AFA273CF6DA00B6E67C /* intro_reward.json in Resources */,
 				C3EE06BE267A15E50090B432 /* Karla-MediumItalic.ttf in Resources */,
 				7E29FEE8289B8693008D01BD /* CommonBaseTokenCell.xib in Resources */,
@@ -7065,6 +7095,7 @@
 				25C45ACE20AC475700CDA1FF /* KNImportWalletViewController.xib in Resources */,
 				25929C5C20DA5C760045CFA3 /* SF-Pro-Text-LightItalic.otf in Resources */,
 				A655619B283503A900944624 /* BridgeSubTransactionCell.xib in Resources */,
+				A63655562907A352003B66F0 /* ApprovalListViewController.xib in Resources */,
 				C3A6911A25638DE700F57756 /* Lato-BoldItalic.ttf in Resources */,
 				C33C33B825ECC70700F347E5 /* AddTokenViewController.xib in Resources */,
 				25C45AD420AD398C00CDA1FF /* KNImportJSONViewController.xib in Resources */,
@@ -7694,6 +7725,7 @@
 				7E01EFEB2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.swift in Sources */,
 				A6B3CD592811C07C005D0D66 /* PendingInternalHistoryTransactonViewModel.swift in Sources */,
 				7ECCB1FA286170F700499FA0 /* Portfolio.swift in Sources */,
+				A63655552907A352003B66F0 /* ApprovalListViewController.swift in Sources */,
 				C344976328A258CE00028AFB /* SettingBasicModeCell.swift in Sources */,
 				C31371FF260490A1003D432B /* ShareReferralLinkViewController.swift in Sources */,
 				C32656B0266F546100C69561 /* ActionControllerSettings.swift in Sources */,
@@ -7804,6 +7836,7 @@
 				293112371FC9A24600966EEA /* UIGestureRecognizer+Closure.swift in Sources */,
 				29BDF1A11FEE51A80023A45F /* GasLimitConfiguration.swift in Sources */,
 				25696F4E20BD162F002CC53F /* XibViewLoader.swift in Sources */,
+				A63655592907B6BB003B66F0 /* ApprovedTokenCell.swift in Sources */,
 				255C988F2122E22A0087B3E2 /* KSendTokenViewController.swift in Sources */,
 				A6BA4CAD28A37204002E2B30 /* SwapObject.swift in Sources */,
 				7E0AE5C427D86A2A0078D135 /* RateTransactionPopupViewController.swift in Sources */,
@@ -8015,6 +8048,7 @@
 				C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */,
 				7E66A69C2865723C007DF078 /* ErrorViewController.swift in Sources */,
 				2963A2881FC401490095447D /* LocalizedOperation.swift in Sources */,
+				A63655602907C426003B66F0 /* ApprovalsCoordinator.swift in Sources */,
 				29C80D371FB2CD230037B1E0 /* PendingTransaction.swift in Sources */,
 				A64C2EFA28F95226002FD64C /* DependenciesRegister.swift in Sources */,
 				7E1EBE352834C9C900793B6D /* BridgeViewController.swift in Sources */,
@@ -8124,6 +8158,7 @@
 				2542604F21218EF40015ECC7 /* KMinAcceptableRatePopupViewController.swift in Sources */,
 				A6C561B027F4758900E88ED6 /* UIViewController+nib.swift in Sources */,
 				7E6F51082733895D002DA0B2 /* OverviewSummaryCell.swift in Sources */,
+				A636555C2907BD7B003B66F0 /* ApprovedTokenItemViewModel.swift in Sources */,
 				A6E6070E2851A25600387388 /* SignerFactory.swift in Sources */,
 				A6F6B95228DB1969000CB82C /* UserEndpoint.swift in Sources */,
 				7E7EC8F128FFE536005BB579 /* EarnOverViewModel.swift in Sources */,
@@ -8286,6 +8321,7 @@
 				A610B2DA28ED66E800456965 /* WalletBackupableProtocol.swift in Sources */,
 				2963B6AF1F9823E6003063C1 /* UnconfirmedTransaction.swift in Sources */,
 				25CC0AA92058F1A00009D0D5 /* KNGetExpectedRate.swift in Sources */,
+				A636555E2907BEAE003B66F0 /* ApprovalListViewModel.swift in Sources */,
 				C3F367B925C3CC58003207B7 /* TokenData.swift in Sources */,
 				C31371F92603B194003D432B /* KrytalTableViewCell.swift in Sources */,
 				25696F6820BE9EB6002CC53F /* KNSearchTokenViewController.swift in Sources */,

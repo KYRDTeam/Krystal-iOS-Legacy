@@ -8,94 +8,96 @@
 import UIKit
 
 enum ExploreMenuItem: CaseIterable {
-  case swap
-  case transfer
-  case reward
-  case referral
-  case dapps
-  case multisend
-  case buyCrypto
-  case promotion
-  case rewardHunting
-  case bridge
-  case scanner
-  case stake
+    case swap
+    case transfer
+    case reward
+    case referral
+    case dapps
+    case multisend
+    case buyCrypto
+    case promotion
+    case rewardHunting
+    case bridge
+    case scanner
+    case stake
+    case approvals
 }
 
 enum ExploreSection {
-  case banners
-  case menu
-  case partners
+    case banners
+    case menu
+    case partners
 }
 
 class ExploreViewModel {
-  
-  var banners: Dynamic<[Asset]> = .init([])
-  var menuItems: Dynamic<[ExploreMenuItem]> = .init([])
-  var partners: Dynamic<[Asset]> = .init([])
-  
-  var sections: [ExploreSection] = [.banners, .menu, .partners]
-  
-  func onViewLoaded() {
-    observeFeatureFlagChanged()
-  }
-  
-  func observeFeatureFlagChanged() {
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(reloadMenuItems),
-      name: Notification.Name(kUpdateFeatureFlag),
-      object: nil
-    )
-  }
-  
-  @objc func reloadMenuItems() {
-    let isPromoCodeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
-    let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
-    let isScannerEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
-    let isStakeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.earnV2)
-    let isNotBrowsing = !KNGeneralProvider.shared.isBrowsingMode
     
-    var menuItems: [ExploreMenuItem] = []
-    menuItems.append(.swap)
-    menuItems.append(.transfer)
-    menuItems.append(.buyCrypto)
-    menuItems.append(.bridge)
+    var banners: Dynamic<[Asset]> = .init([])
+    var menuItems: Dynamic<[ExploreMenuItem]> = .init([])
+    var partners: Dynamic<[Asset]> = .init([])
     
-    if KNGeneralProvider.shared.currentChain.isSupportSwap() {
-      menuItems.append(contentsOf: [.dapps, .multisend])
-      
-      if isNotBrowsing {
-        menuItems.append(contentsOf: [.reward, .referral])
-      }
-      
-      if isPromoCodeEnabled && isNotBrowsing {
-        menuItems.append(.promotion)
-      }
+    var sections: [ExploreSection] = [.banners, .menu, .partners]
+    
+    func onViewLoaded() {
+        observeFeatureFlagChanged()
     }
     
-    if isStakeEnabled {
-      menuItems.append(.stake)
+    func observeFeatureFlagChanged() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(reloadMenuItems),
+            name: Notification.Name(kUpdateFeatureFlag),
+            object: nil
+        )
     }
     
-    if isRewardHuntingEnabled && isNotBrowsing {
-      menuItems.append(.rewardHunting)
+    @objc func reloadMenuItems() {
+        let isPromoCodeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
+        let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
+        let isScannerEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
+        let isStakeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.earnV2)
+        let isNotBrowsing = !KNGeneralProvider.shared.isBrowsingMode
+        
+        var menuItems: [ExploreMenuItem] = []
+        menuItems.append(.swap)
+        menuItems.append(.transfer)
+        menuItems.append(.buyCrypto)
+        menuItems.append(.bridge)
+        menuItems.append(.approvals)
+        
+        if KNGeneralProvider.shared.currentChain.isSupportSwap() {
+            menuItems.append(contentsOf: [.dapps, .multisend])
+            
+            if isNotBrowsing {
+                menuItems.append(contentsOf: [.reward, .referral])
+            }
+            
+            if isPromoCodeEnabled && isNotBrowsing {
+                menuItems.append(.promotion)
+            }
+        }
+        
+        if isStakeEnabled {
+            menuItems.append(.stake)
+        }
+        
+        if isRewardHuntingEnabled && isNotBrowsing {
+            menuItems.append(.rewardHunting)
+        }
+        
+        if isScannerEnabled && isNotBrowsing {
+            menuItems.append(.scanner)
+        }
+        if self.menuItems.value != menuItems {
+            self.menuItems.value = menuItems
+        }
     }
-
-    if isScannerEnabled && isNotBrowsing {
-      menuItems.append(.scanner)
+    
+    deinit {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: Notification.Name(kUpdateFeatureFlag),
+            object: nil
+        )
     }
-    if self.menuItems.value != menuItems {
-      self.menuItems.value = menuItems
-    }
-  }
-  
-  deinit {
-    NotificationCenter.default.removeObserver(
-      self,
-      name: Notification.Name(kUpdateFeatureFlag),
-      object: nil
-    )
-  }
-  
+    
 }
