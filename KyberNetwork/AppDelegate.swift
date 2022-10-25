@@ -67,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     OneSignal.promptForPushNotifications(userResponse: { accepted in
       print("User accepted notifications: \(accepted)")
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        self.requestAcceptTrackingFirebaseIfNeeded()
+        self.requestAcceptTrackingIfNeeded()
       }
     })
   }
@@ -108,12 +108,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
   }
 
-  fileprivate func requestAcceptTrackingFirebaseIfNeeded() {
+  fileprivate func requestAcceptTrackingIfNeeded() {
     if #available(iOS 14, *) {
-      ATTrackingManager.requestTrackingAuthorization { (status) in
-        if status == .authorized {
+      ATTrackingManager.requestTrackingAuthorization { _ in
           self.setupTrackingTools()
-        }
       }
     } else {
       self.setupTrackingTools()
@@ -121,12 +119,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   }
   
   fileprivate func setupTrackingTools() {
-    var shouldConfigTrackingTool = true
-    if #available(iOS 14, *) {
-      let status = ATTrackingManager.trackingAuthorizationStatus
-      shouldConfigTrackingTool = status == .authorized
-    }
-    guard shouldConfigTrackingTool else { return }
     setupMixPanel()
     
     guard !SentrySDK.isEnabled else { return }
