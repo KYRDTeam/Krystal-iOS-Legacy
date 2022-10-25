@@ -301,4 +301,5 @@ struct Strings {
     // Approval
     static let approvalSearchPlaceholder = "approval.search.placeholder".toBeLocalised()
     static let approvalMenuTitle = "approval.menu.title".toBeLocalised()
+    static let unlimitedAllowance = "unlimited.allowance".toBeLocalised()
 }

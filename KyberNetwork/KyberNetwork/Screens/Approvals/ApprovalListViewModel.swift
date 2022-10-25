@@ -6,31 +6,62 @@
 //
 
 import Foundation
+import Services
+import AppState
 
 class ApprovalListViewModel {
     
     struct Actions {
-        var onTapBack: () -> ()
+        var onTapBack: () -> Void
+    }
+    
+    var address: String {
+        return AppState.shared.currentAddress.addressString
     }
     
     var searchText: String = "" {
         didSet {
-            filteredApprovedTokens = self.getFilteredApprovals(searchText: searchText)
-                .map { token in ApprovedTokenItemViewModel() }
+            filteredApprovals = self.getFilteredApprovals(searchText: searchText)
+                .map { approval in ApprovedTokenItemViewModel(approval: approval) }
+            onFilterApprovalsUpdated?()
         }
     }
     
     var actions: Actions
-    var approvedTokens: [String] = []
-    var filteredApprovedTokens: [ApprovedTokenItemViewModel] = []
+    var totalAllowance: Double = 0
+    var approvals: [Approval] = []
+    var filteredApprovals: [ApprovedTokenItemViewModel] = []
+    let service = ApprovalService()
+    var onFetchApprovals: (() -> ())?
+    var onFilterApprovalsUpdated: (() -> ())?
+    var selectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : AppState.shared.currentChain
     
     init(actions: Actions) {
         self.actions = actions
     }
     
-    func getFilteredApprovals(searchText: String) -> [String] {
-        return approvedTokens.filter { token in
-            return true
+    func fetchApprovals() {
+        let chains: [Int] = selectedChain == .all ? ChainType.allCases.map { $0.customRPC().chainID } : [selectedChain.getChainId()]
+        service.getListApproval(address: address, chainIds: chains) { [weak self] response in
+            self?.approvals = response?.data?.approvals ?? []
+            self?.filteredApprovals = self?.getFilteredApprovals(searchText: self?.searchText ?? "")
+                .map { approval in ApprovedTokenItemViewModel(approval: approval) } ?? []
+            self?.totalAllowance = (response?.data?.atRisk?["usd"] as? Double) ?? 0
+            self?.onFetchApprovals?()
+        }
+    }
+    
+    func getFilteredApprovals(searchText: String) -> [Approval] {
+        let trimmedSearchText = searchText.lowercased().trimmed
+        if trimmedSearchText.isEmpty {
+            return approvals
+        } else {
+            return approvals.filter { approval in
+                return approval.symbol?.lowercased().contains(trimmedSearchText) ?? false
+                || approval.name?.lowercased().contains(trimmedSearchText) ?? false
+                || approval.tokenAddress?.lowercased().contains(trimmedSearchText) ?? false
+                || approval.spenderAddress?.lowercased().contains(trimmedSearchText) ?? false
+            }
         }
     }
     

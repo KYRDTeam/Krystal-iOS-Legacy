@@ -993,3 +993,4 @@
 // Approval
 "approval.search.placeholder" = "Symbol, name, address";
 "approval.menu.title" = "Token Approvals";
+"unlimited.allowance" = "Unlimited";
