@@ -37,18 +37,18 @@ struct StakingPortfolioCellModel {
     self.isClaimable = false
   }
   
-  init(pendingUnstake: StakingBalance) {
+  init(pendingUnstake: PendingUnstake) {
     self.isInProcess = true
     self.tokenLogo = pendingUnstake.logo
     self.chainLogo = ChainType.make(chainID: pendingUnstake.chainID ?? 1)?.chainIcon()
-    self.platformLogo = pendingUnstake.platform?.logo ?? ""
+    self.platformLogo = pendingUnstake.platform.logo
     self.displayAPYValue = "---"
     self.displayDepositedValue = (BigInt(pendingUnstake.balance)?.shortString(decimals: pendingUnstake.decimals) ?? "---") + " " + pendingUnstake.symbol
     self.displayDeposited2Value = ""
-    self.displayType = "| " + (pendingUnstake.platform?.type.capitalized ?? "Stake")
+    self.displayType = "| " + pendingUnstake.platform.type.capitalized
     self.displayTokenName = pendingUnstake.symbol
-    self.displayPlatformName = pendingUnstake.platform?.name.uppercased() ?? ""
-    self.isClaimable = pendingUnstake.extraData?.status == "claimable"
+    self.displayPlatformName = pendingUnstake.platform.name.uppercased()
+    self.isClaimable = pendingUnstake.extraData.status == "claimable"
   }
 }
 
