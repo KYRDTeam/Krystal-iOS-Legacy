@@ -9,6 +9,7 @@ import UIKit
 import BaseModule
 import DesignSystem
 import SkeletonView
+import SwipeCellKit
 
 class ApprovalListViewController: BaseWalletOrientedViewController {
     
@@ -20,6 +21,7 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
     private let refreshControl = UIRefreshControl()
     
     var viewModel: ApprovalListViewModel!
+    var timer: Timer?
     
     override var supportAllChainOption: Bool {
         return true
@@ -35,6 +37,7 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
         setupViews()
         bindViewModel()
         showLoading()
+        scheduleShowSwipeHint()
         viewModel.fetchApprovals()
     }
     
@@ -57,6 +60,24 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
         
         showLoading()
         viewModel.fetchApprovals()
+    }
+    
+    deinit {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    func scheduleShowSwipeHint() {
+        timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true, block: { [weak self] _ in
+            if self?.viewModel.userHasInteractApproval == false {
+                if let cell = self?.tableView.cellForRow(at: IndexPath(item: 0, section: 0)) as? ApprovedTokenCell {
+                    cell.showSwipe(orientation: .right, animated: true)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                        cell.hideSwipe(animated: true)
+                    }
+                }
+            }
+        })
     }
     
     func showLoading() {
@@ -97,7 +118,7 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
     }
     
     func setupRefreshControl() {
-      refreshControl.tintColor = UIColor.white.withAlphaComponent(0.5)
+        refreshControl.tintColor = UIColor.white.withAlphaComponent(0.5)
     }
     
     func setupTotalAllowanceView() {
@@ -115,16 +136,15 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
     }
     
     func setupTableView() {
-        tableView.contentInset = .init(top: -16, left: 0, bottom: 0, right: 0)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
         tableView.registerCellNib(ApprovedTokenCell.self)
         tableView.registerCellNib(OverviewSkeletonCell.self)
         if #available(iOS 10.0, *) {
-          tableView.refreshControl = refreshControl
+            tableView.refreshControl = refreshControl
         } else {
-          tableView.addSubview(refreshControl)
+            tableView.addSubview(refreshControl)
         }
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
     }
@@ -141,6 +161,12 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
     
     @IBAction func historyTapped(_ sender: Any) {
         viewModel.onTapHistory()
+    }
+    
+    func disableHint() {
+        viewModel.userHasInteractApproval = true
+        timer?.invalidate()
+        timer = nil
     }
     
 }
@@ -164,6 +190,7 @@ extension ApprovalListViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(ApprovedTokenCell.self, indexPath: indexPath)!
         cell.selectionStyle = .none
+        cell.delegate = self
         if let approval = viewModel.filteredApprovals[safe: indexPath.row] {
             cell.configure(viewModel: approval)
         }
@@ -174,6 +201,39 @@ extension ApprovalListViewController: UITableViewDataSource, UITableViewDelegate
         return 84
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+}
+
+extension ApprovalListViewController: SwipeTableViewCellDelegate {
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else { return nil }
+        
+        let delete = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
+            // TODO: revoke
+            self?.disableHint()
+        }
+        delete.image = Images.revoke
+        delete.title = Strings.revoke
+        delete.textColor = AppTheme.current.primaryColor
+        delete.font = .karlaReguler(ofSize: 14)
+        delete.backgroundColor = AppTheme.current.primaryColor.withAlphaComponent(0.1)
+        
+        return [delete]
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = .selection
+        options.minimumButtonWidth = 84
+        options.maximumButtonWidth = 84
+        
+        return options
+    }
 }
 
 extension ApprovalListViewController: SkeletonTableViewDataSource {

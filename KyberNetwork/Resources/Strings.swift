@@ -307,4 +307,5 @@ struct Strings {
     static let totalAllowanceDescription = "total.allowance.description".toBeLocalised()
     static let approvalsNoRisk = "approvals.no.risk".toBeLocalised()
     static let aprovalsNoRecords = "approvals.no.records.found".toBeLocalised()
+    static let revoke = "revoke".toBeLocalised()
 }
