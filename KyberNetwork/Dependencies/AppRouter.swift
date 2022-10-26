@@ -7,6 +7,7 @@
 
 import Foundation
 import SwapModule
+import EarnModule
 import Dependencies
 import UIKit
 import KrystalWallets
@@ -67,6 +68,10 @@ class AppRouter: AppRouterProtocol, Coordinator {
   
   func createSwapViewController() -> UIViewController {
     return SwapModule.createSwapViewController()
+  }
+  
+  func createEarnOverViewController() -> UIViewController {
+    return EarnModule.createEarnOverViewController()
   }
   
   func openTransactionHistory() {

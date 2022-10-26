@@ -7,6 +7,7 @@
 
 import Foundation
 import KrystalWallets
+import UIKit
 
 public enum ChainType: Codable, CaseIterable {
     case all
@@ -175,6 +176,13 @@ public extension ChainType {
     func getChainId() -> Int {
         return self.customRPC().chainID
     }
+  
+    func chainIcon() -> UIImage? {
+        if self == .all {
+          return UIImage(named: "chain_all_icon")
+        }
+        return UIImage(named: self.customRPC().chainIcon)
+    }
     
     func chainName() -> String {
         if self == .all {
@@ -218,7 +226,6 @@ public extension ChainType {
             return true
         }
     }
-    
     var isEVM: Bool {
         switch self {
         case .solana:

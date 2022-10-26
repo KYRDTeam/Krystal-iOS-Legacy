@@ -78,6 +78,14 @@ def swapDependencies
   pod 'lottie-ios'
 end
 
+def earnDependencies
+  pod 'BigInt'
+  pod 'Moya'
+  pod 'JSONRPCKit'
+  pod 'APIKit'
+  pod 'lottie-ios'
+end
+
 def servicesDependencies
   pod 'Moya'
   pod 'BigInt'
@@ -121,6 +129,13 @@ target 'SwapModule' do
   use_frameworks!
   
   swapDependencies
+end
+
+target 'EarnModule' do
+  project 'EarnModule/EarnModule.xcodeproj'
+  use_frameworks!
+  uiPods
+  earnDependencies
 end
 
 target 'Utilities' do

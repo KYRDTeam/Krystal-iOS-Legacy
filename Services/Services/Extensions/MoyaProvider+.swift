@@ -8,10 +8,10 @@
 import Foundation
 import Moya
 
-typealias WrappedCompletion = (_ result: Result<Moya.Response, NetworkError>) -> Void
+public typealias WrappedCompletion = (_ result: Result<Moya.Response, NetworkError>) -> Void
 
-extension MoyaProvider {
-    func requestWithFilter(successCodes: ClosedRange<Int> = 200...299, _ target: Target, completion: @escaping WrappedCompletion) {
+public extension MoyaProvider {
+    func requestWithFilters(successCodes: ClosedRange<Int> = 200...299, _ target: Target, completion: @escaping WrappedCompletion) {
         self.request(target) { result in
             switch result {
             case .success(let response):

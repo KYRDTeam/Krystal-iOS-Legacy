@@ -11,6 +11,7 @@ import BigInt
 import WalletConnectSwift
 import KrystalWallets
 import BaseModule
+import Dependencies
 
 protocol InvestCoordinatorDelegate: class {
   func investCoordinatorDidSelectManageWallet()
@@ -151,8 +152,11 @@ class InvestCoordinator: Coordinator {
   }
   
   fileprivate func openStakeView() {
-    let viewModel = EarnOverViewModel()
-    let viewController = EarnOverviewV2Controller(viewModel: viewModel)
+//    let viewModel = EarnOverViewModel()
+//    let viewController = EarnOverviewV2Controller(viewModel: viewModel)
+//    self.navigationController.pushViewController(viewController, animated: true)
+    
+    let viewController = AppDependencies.router.createEarnOverViewController()
     self.navigationController.pushViewController(viewController, animated: true)
   }
   
