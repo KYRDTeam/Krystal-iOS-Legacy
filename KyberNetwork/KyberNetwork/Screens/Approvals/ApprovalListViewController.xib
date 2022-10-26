@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -22,6 +23,7 @@
                 <outlet property="backupIcon" destination="bPd-3b-eP0" id="qVe-ka-0QM"/>
                 <outlet property="chainButton" destination="jew-yL-7jY" id="i9b-Ye-fCW"/>
                 <outlet property="chainIcon" destination="x7O-xn-JXj" id="15h-Rl-XNN"/>
+                <outlet property="emptyView" destination="GQ1-bl-VXB" id="Yt2-9w-ssn"/>
                 <outlet property="riskAmountLabel" destination="jFG-fX-Cvd" id="Uqq-OF-4fE"/>
                 <outlet property="riskInfoImageView" destination="7st-KX-LGm" id="Kbf-Oe-fXI"/>
                 <outlet property="searchField" destination="Jdv-oA-X0o" id="3oD-Zz-Osu"/>
@@ -230,9 +232,13 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GQ1-bl-VXB" customClass="ListEmptyView" customModule="DesignSystem">
+                    <rect key="frame" x="0.0" y="235" width="414" height="627"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="r29-Ah-6rA">
                     <rect key="frame" x="0.0" y="235" width="414" height="627"/>
-                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                     </userDefinedRuntimeAttributes>
@@ -241,19 +247,23 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
+                <constraint firstItem="GQ1-bl-VXB" firstAttribute="trailing" secondItem="r29-Ah-6rA" secondAttribute="trailing" id="1mm-Tt-4n0"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Y5k-N1-K4s" secondAttribute="trailing" constant="18" id="2GE-Yz-yDh"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="r29-Ah-6rA" secondAttribute="bottom" id="37b-76-bgL"/>
                 <constraint firstItem="3XC-bI-RHh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="6t6-Fr-LFS"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="3XC-bI-RHh" secondAttribute="trailing" id="8PB-La-YAX"/>
                 <constraint firstItem="4oj-2l-J6E" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="8ct-rZ-k64"/>
+                <constraint firstItem="GQ1-bl-VXB" firstAttribute="leading" secondItem="r29-Ah-6rA" secondAttribute="leading" id="Fya-B2-sDq"/>
                 <constraint firstItem="Y5k-N1-K4s" firstAttribute="top" secondItem="4oj-2l-J6E" secondAttribute="bottom" constant="16" id="Hz9-yd-QQU"/>
                 <constraint firstItem="Y5k-N1-K4s" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="18" id="JV1-cJ-I3e"/>
                 <constraint firstItem="r29-Ah-6rA" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="NNV-ya-G8Q"/>
                 <constraint firstItem="4oj-2l-J6E" firstAttribute="top" secondItem="3XC-bI-RHh" secondAttribute="bottom" id="TPu-8D-y19"/>
+                <constraint firstItem="GQ1-bl-VXB" firstAttribute="top" secondItem="r29-Ah-6rA" secondAttribute="top" id="VaO-Cq-TMJ"/>
                 <constraint firstItem="r29-Ah-6rA" firstAttribute="top" secondItem="Y5k-N1-K4s" secondAttribute="bottom" constant="16" id="cuX-KA-LSK"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="r29-Ah-6rA" secondAttribute="trailing" id="kXG-dC-rFr"/>
                 <constraint firstItem="3XC-bI-RHh" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="pvl-zj-yHi"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="4oj-2l-J6E" secondAttribute="trailing" id="yvG-Oz-sfu"/>
+                <constraint firstItem="GQ1-bl-VXB" firstAttribute="bottom" secondItem="r29-Ah-6rA" secondAttribute="bottom" id="zeT-EF-cKT"/>
             </constraints>
             <userDefinedRuntimeAttributes>
                 <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
@@ -273,5 +283,8 @@
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

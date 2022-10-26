@@ -12,10 +12,12 @@ import SkeletonView
 
 class ApprovalListViewController: BaseWalletOrientedViewController {
     
+    @IBOutlet weak var emptyView: ListEmptyView!
     @IBOutlet weak var riskInfoImageView: UIImageView!
     @IBOutlet weak var searchField: UITextField!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var riskAmountLabel: UILabel!
+    private let refreshControl = UIRefreshControl()
     
     var viewModel: ApprovalListViewModel!
     
@@ -71,12 +73,16 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
             DispatchQueue.main.async {
                 self?.hideLoading()
                 self?.riskAmountLabel.text = self?.viewModel.totalAllowanceString
+                self?.emptyView.isHidden = self?.viewModel.filteredApprovals.isEmpty == false
+                self?.emptyView.setup(icon: Images.noApprovals, message: Strings.approvalsNoRisk)
                 self?.tableView.reloadData()
             }
         }
         
         viewModel.onFilterApprovalsUpdated = { [weak self] in
             DispatchQueue.main.async {
+                self?.emptyView.isHidden = self?.viewModel.filteredApprovals.isEmpty == false
+                self?.emptyView.setup(icon: Images.noRecords, message: Strings.aprovalsNoRecords)
                 self?.tableView.reloadData()
             }
         }
@@ -87,6 +93,11 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
         setupTableView()
         setupSearchField()
         setupTotalAllowanceView()
+        setupRefreshControl()
+    }
+    
+    func setupRefreshControl() {
+      refreshControl.tintColor = UIColor.white.withAlphaComponent(0.5)
     }
     
     func setupTotalAllowanceView() {
@@ -110,6 +121,18 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
         tableView.tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
         tableView.registerCellNib(ApprovedTokenCell.self)
         tableView.registerCellNib(OverviewSkeletonCell.self)
+        if #available(iOS 10.0, *) {
+          tableView.refreshControl = refreshControl
+        } else {
+          tableView.addSubview(refreshControl)
+        }
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+    }
+    
+    @objc func refreshData() {
+        refreshControl.endRefreshing()
+        showLoading()
+        viewModel.fetchApprovals()
     }
     
     @IBAction func backWasTapped(_ sender: Any) {
