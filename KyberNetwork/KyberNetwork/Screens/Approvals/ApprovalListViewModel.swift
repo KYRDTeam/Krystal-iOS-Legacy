@@ -15,6 +15,7 @@ class ApprovalListViewModel {
     struct Actions {
         var onTapBack: () -> Void
         var onTapHistory: () -> Void
+        var onTapRevoke: (Approval) -> Void
     }
     
     var address: String {
@@ -87,5 +88,15 @@ class ApprovalListViewModel {
     
     func onTapHistory() {
         actions.onTapHistory()
+    }
+    
+    func onTapRevoke(index: Int) {
+        if let approval = filteredApprovals[safe: index]?.approval {
+            actions.onTapRevoke(approval)
+        }
+    }
+    
+    func requestRevoke() {
+        // TODO: Make revoke request here
     }
 }

@@ -687,6 +687,9 @@
 		A6684644290A2DEB006BBE29 /* Services.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6728FD6820001F4C40 /* Services.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A6684645290A2DED006BBE29 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; };
 		A6684646290A2DED006BBE29 /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A668461B29093D17006BBE29 /* RevokeConfirmPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668461929093D17006BBE29 /* RevokeConfirmPopup.swift */; };
+		A668461C29093D17006BBE29 /* RevokeConfirmPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A668461A29093D17006BBE29 /* RevokeConfirmPopup.xib */; };
+		A668461E290946B0006BBE29 /* RevokeConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668461D290946B0006BBE29 /* RevokeConfirmViewModel.swift */; };
 		A66B9C6C280818F6001B7A3D /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B9C6B280818F6001B7A3D /* ValidationResult.swift */; };
 		A66EC312287D176200D15FE0 /* MultiSendSubTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66EC310287D176200D15FE0 /* MultiSendSubTransactionCell.swift */; };
 		A66EC313287D176200D15FE0 /* MultiSendSubTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66EC311287D176200D15FE0 /* MultiSendSubTransactionCell.xib */; };
@@ -1963,6 +1966,9 @@
 		A6664D1E2858878800CCAB1F /* TransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionProcessor.swift; sourceTree = "<group>"; };
 		A6664D202859839100CCAB1F /* SolanaTransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaTransactionProcessor.swift; sourceTree = "<group>"; };
 		A6664D22285986A700CCAB1F /* SolanaSerumService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaSerumService.swift; sourceTree = "<group>"; };
+		A668461929093D17006BBE29 /* RevokeConfirmPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevokeConfirmPopup.swift; sourceTree = "<group>"; };
+		A668461A29093D17006BBE29 /* RevokeConfirmPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RevokeConfirmPopup.xib; sourceTree = "<group>"; };
+		A668461D290946B0006BBE29 /* RevokeConfirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevokeConfirmViewModel.swift; sourceTree = "<group>"; };
 		A66B9C6B280818F6001B7A3D /* ValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationResult.swift; sourceTree = "<group>"; };
 		A66EC310287D176200D15FE0 /* MultiSendSubTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendSubTransactionCell.swift; sourceTree = "<group>"; };
 		A66EC311287D176200D15FE0 /* MultiSendSubTransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSendSubTransactionCell.xib; sourceTree = "<group>"; };
@@ -5014,6 +5020,9 @@
 				A636555B2907BD7B003B66F0 /* ApprovedTokenItemViewModel.swift */,
 				A636555D2907BEAE003B66F0 /* ApprovalListViewModel.swift */,
 				A636555F2907C426003B66F0 /* ApprovalsCoordinator.swift */,
+				A668461929093D17006BBE29 /* RevokeConfirmPopup.swift */,
+				A668461A29093D17006BBE29 /* RevokeConfirmPopup.xib */,
+				A668461D290946B0006BBE29 /* RevokeConfirmViewModel.swift */,
 			);
 			path = Approvals;
 			sourceTree = "<group>";
@@ -7100,6 +7109,7 @@
 				255F6F2420BBC6B500EF808F /* KNWalletQRCodeViewController.xib in Resources */,
 				C37CC095245803CA0081FB32 /* Roboto-MediumItalic.ttf in Resources */,
 				C39D311528F5645800EC26ED /* StakingPortfolioViewController.xib in Resources */,
+				A668461C29093D17006BBE29 /* RevokeConfirmPopup.xib in Resources */,
 				25C45ACE20AC475700CDA1FF /* KNImportWalletViewController.xib in Resources */,
 				25929C5C20DA5C760045CFA3 /* SF-Pro-Text-LightItalic.otf in Resources */,
 				A655619B283503A900944624 /* BridgeSubTransactionCell.xib in Resources */,
@@ -8100,6 +8110,7 @@
 				CCA4FE361FD4282400749AE4 /* DeviceChecker.swift in Sources */,
 				A6B6ED35290F8BF600514A01 /* AppNonceStorage.swift in Sources */,
 				C3F71C90261AB0FF00285935 /* ClaimRewardViewController.swift in Sources */,
+				A668461E290946B0006BBE29 /* RevokeConfirmViewModel.swift in Sources */,
 				A65C7A742818E3C6000FA9CE /* NavigationBar.swift in Sources */,
 				7EB47FF427C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift in Sources */,
 				7ED5FA8527D214D000F0CB8E /* SelectNetworkCell.swift in Sources */,
@@ -8357,6 +8368,7 @@
 				C35A133326F1CEBA002B627C /* SRCountdownTimer.swift in Sources */,
 				C3714E6728A63C900027A89D /* ExpertModeWarningViewController.swift in Sources */,
 				C3299D5F27730B9D00D1065A /* BrowserViewController.swift in Sources */,
+				A668461B29093D17006BBE29 /* RevokeConfirmPopup.swift in Sources */,
 				A685D496284877EA0066E177 /* EthGasCalculator.swift in Sources */,
 				C35136E626CCE53D006A55F4 /* OverviewNFTTableViewCell.swift in Sources */,
 				A69813E428E1BC230054F3E5 /* NotificationDetailViewController.swift in Sources */,
