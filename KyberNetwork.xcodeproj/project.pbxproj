@@ -1023,6 +1023,8 @@
 		C347DA4025C03144000D6E81 /* EarnMenuTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C347DA3E25C03144000D6E81 /* EarnMenuTableViewCell.xib */; };
 		C34A2265277AE64300F240B8 /* BrowserOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34A2263277AE64200F240B8 /* BrowserOptionsViewController.swift */; };
 		C34A2266277AE64300F240B8 /* BrowserOptionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C34A2264277AE64300F240B8 /* BrowserOptionsViewController.xib */; };
+		C3502D9029090D2700C48391 /* StakingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3502D8E29090D2700C48391 /* StakingViewController.swift */; };
+		C3502D9129090D2700C48391 /* StakingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3502D8F29090D2700C48391 /* StakingViewController.xib */; };
 		C35136E626CCE53D006A55F4 /* OverviewNFTTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35136E426CCE53D006A55F4 /* OverviewNFTTableViewCell.swift */; };
 		C35136E726CCE53D006A55F4 /* OverviewNFTTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C35136E526CCE53D006A55F4 /* OverviewNFTTableViewCell.xib */; };
 		C3554D89280E5E3F0043BC1B /* SolanaUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */; };
@@ -2301,6 +2303,8 @@
 		C347DA3E25C03144000D6E81 /* EarnMenuTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnMenuTableViewCell.xib; sourceTree = "<group>"; };
 		C34A2263277AE64200F240B8 /* BrowserOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserOptionsViewController.swift; sourceTree = "<group>"; };
 		C34A2264277AE64300F240B8 /* BrowserOptionsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BrowserOptionsViewController.xib; sourceTree = "<group>"; };
+		C3502D8E29090D2700C48391 /* StakingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingViewController.swift; sourceTree = "<group>"; };
+		C3502D8F29090D2700C48391 /* StakingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingViewController.xib; sourceTree = "<group>"; };
 		C35136E426CCE53D006A55F4 /* OverviewNFTTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewNFTTableViewCell.swift; sourceTree = "<group>"; };
 		C35136E526CCE53D006A55F4 /* OverviewNFTTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewNFTTableViewCell.xib; sourceTree = "<group>"; };
 		C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaUtil.swift; sourceTree = "<group>"; };
@@ -4813,6 +4817,8 @@
 				7E79FB5128F5624400306FC0 /* EarnOverviewV2Controller.xib */,
 				7E2A2EA328F66E4E00AB9A77 /* EarnListViewController.swift */,
 				7E2A2EA428F66E4E00AB9A77 /* EarnListViewController.xib */,
+				C3502D8E29090D2700C48391 /* StakingViewController.swift */,
+				C3502D8F29090D2700C48391 /* StakingViewController.xib */,
 			);
 			path = ControllersV2;
 			sourceTree = "<group>";
@@ -7155,6 +7161,7 @@
 				7E16B8D42769DB3300F9A234 /* ReferralTiersCell.xib in Resources */,
 				A65C7A762818E3D5000FA9CE /* NavigationBar.xib in Resources */,
 				C3053AF92685D2990079B505 /* OverviewSearchTokenViewController.xib in Resources */,
+				C3502D9129090D2700C48391 /* StakingViewController.xib in Resources */,
 				C32649DC26CF81BE001B6E11 /* OverviewNFTDetailViewController.xib in Resources */,
 				25073D2A211AF20D00833C92 /* Montserrat-BoldItalic.ttf in Resources */,
 				C37CC098245803CA0081FB32 /* Roboto-LightItalic.ttf in Resources */,
@@ -8008,6 +8015,7 @@
 				A685D4A32848B78F0066E177 /* KWallet+Codable.swift in Sources */,
 				257A377A205B013E00E86794 /* String+Kyber.swift in Sources */,
 				A6CC31772877E7AD00891200 /* TextDetector.swift in Sources */,
+				C3502D9029090D2700C48391 /* StakingViewController.swift in Sources */,
 				C33CCB2D23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift in Sources */,
 				C32EA22B246934AA00866968 /* KNPrettyAlertController.swift in Sources */,
 				25369F1020F88C3E007231FE /* KNWelcomeScreenCollectionView.swift in Sources */,
