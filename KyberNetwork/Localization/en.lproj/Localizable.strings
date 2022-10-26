@@ -1001,4 +1001,3 @@
 "total.allowance.description" = "This is the total amount of funds in your wallet that can be accessed by smart contracts that you've previously approved. These funds may be lost if the smart contract is compromised by a hacker.";
 "approvals.no.risk" = "Don’t worry, you have NO risk now :D";
 "approvals.no.records.found" = "No records found";
-"total.allowance.description" = "This is the total amount of funds in your wallet that can be accessed by smart contracts that you've previously approved. These funds may be lost if the smart contract is compromised by a hacker";
