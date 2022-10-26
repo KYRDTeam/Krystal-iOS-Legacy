@@ -42,8 +42,8 @@ class ApprovalListViewModel {
     var approvals: [Approval] = []
     var filteredApprovals: [ApprovedTokenItemViewModel] = []
     let service = ApprovalService()
-    var onFetchApprovals: (() -> ())?
-    var onFilterApprovalsUpdated: (() -> ())?
+    var onFetchApprovals: (() -> Void)?
+    var onFilterApprovalsUpdated: (() -> Void)?
     var selectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : AppState.shared.currentChain
     var totalAllowanceString: String?
     
@@ -54,7 +54,9 @@ class ApprovalListViewModel {
     func fetchApprovals() {
         let chains: [Int] = selectedChain == .all ? ChainType.allCases.map { $0.customRPC().chainID } : [selectedChain.getChainId()]
         service.getListApproval(address: address, chainIds: chains) { [weak self] response in
-            self?.approvals = response?.data?.approvals ?? []
+            self?.approvals = response?.data?.approvals?.filter { approval in
+                return BigInt(approval.amount ?? "0") ?? .zero >= BigInt(10).power(12)
+            } ?? []
             self?.filteredApprovals = self?.getFilteredApprovals(searchText: self?.searchText ?? "")
                 .map { approval in ApprovedTokenItemViewModel(approval: approval) } ?? []
             self?.totalAllowance = (response?.data?.atRisk?["usd"] as? Double) ?? 0

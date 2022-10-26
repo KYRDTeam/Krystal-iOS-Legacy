@@ -164,7 +164,9 @@ extension ApprovalListViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(ApprovedTokenCell.self, indexPath: indexPath)!
         cell.selectionStyle = .none
-        cell.configure(viewModel: viewModel.filteredApprovals[indexPath.row])
+        if let approval = viewModel.filteredApprovals[safe: indexPath.row] {
+            cell.configure(viewModel: approval)
+        }
         return cell
     }
     
