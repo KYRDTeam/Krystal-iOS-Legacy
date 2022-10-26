@@ -47,6 +47,9 @@ class ApprovalListViewModel {
     var selectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : AppState.shared.currentChain
     var totalAllowanceString: String?
     
+    @UserDefault(key: "user_has_interact_approval", defaultValue: false)
+    var userHasInteractApproval: Bool
+    
     init(actions: Actions) {
         self.actions = actions
     }
