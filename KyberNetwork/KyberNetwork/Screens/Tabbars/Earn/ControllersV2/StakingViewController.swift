@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StakingViewController: UIViewController {
+class StakingViewController: InAppBrowsingViewController {
   
   @IBOutlet weak var stakeMainHeaderLabel: UILabel!
   @IBOutlet weak var stakeTokenLabel: UILabel!
@@ -43,4 +43,8 @@ class StakingViewController: UIViewController {
     
   }
 
+  @IBAction func backButtonTapped(_ sender: UIButton) {
+    navigationController?.popViewController(animated: true)
+  }
+  
 }
