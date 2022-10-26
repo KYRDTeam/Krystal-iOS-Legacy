@@ -227,6 +227,14 @@ class OverviewCoordinator: NSObject, Coordinator {
     qrcodeCoordinator.start()
     self.qrCodeCoordinator = qrcodeCoordinator
   }
+    
+    func openApprovalTokens() {
+        let coordinator = ApprovalsCoordinator(navigationController: navigationController)
+        coordinator.onCompleted = { [weak self] in
+            self?.removeCoordinator(coordinator)
+        }
+        coordinate(coordinator: coordinator)
+    }
   
   func openHistoryScreen() {
     switch KNGeneralProvider.shared.currentChain {
@@ -676,6 +684,13 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     actionController.addAction(Action(ActionData(title: "Show History", image: UIImage(named: "history_actionsheet_icon")!), style: .default, handler: { _ in
       self.openHistoryScreen()
     }))
+      
+      if FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.tokenApproval) && !KNGeneralProvider.shared.isBrowsingMode {
+          actionController.addAction(Action(ActionData(title: Strings.approvalMenuTitle, image: Images.exploreApprovalIcon), style: .default, handler: { [weak self] _ in
+            self?.openApprovalTokens()
+          }))
+      }
+
     if !currentAddress.isWatchWallet {
       actionController.addAction(Action(ActionData(title: "Export Wallet", image: UIImage(named: "export_actionsheet_icon")!), style: .default, handler: { _ in
         guard let wallet = WalletManager.shared.getWallet(id: self.currentAddress.walletID) else {

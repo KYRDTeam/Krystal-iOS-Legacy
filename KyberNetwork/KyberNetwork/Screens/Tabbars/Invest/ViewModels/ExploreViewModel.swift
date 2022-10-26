@@ -55,6 +55,7 @@ class ExploreViewModel {
         let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
         let isScannerEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
         let isStakeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.earnV2)
+        let isTokenApprovalEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.tokenApproval)
         let isNotBrowsing = !KNGeneralProvider.shared.isBrowsingMode
         
         var menuItems: [ExploreMenuItem] = []
@@ -62,7 +63,6 @@ class ExploreViewModel {
         menuItems.append(.transfer)
         menuItems.append(.buyCrypto)
         menuItems.append(.bridge)
-        menuItems.append(.approvals)
         
         if KNGeneralProvider.shared.currentChain.isSupportSwap() {
             menuItems.append(contentsOf: [.dapps, .multisend])
@@ -87,6 +87,11 @@ class ExploreViewModel {
         if isScannerEnabled && isNotBrowsing {
             menuItems.append(.scanner)
         }
+        
+        if isTokenApprovalEnabled && isNotBrowsing {
+            menuItems.append(.approvals)
+        }
+        
         if self.menuItems.value != menuItems {
             self.menuItems.value = menuItems
         }
