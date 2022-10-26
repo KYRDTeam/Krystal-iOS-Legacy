@@ -77,5 +77,14 @@ class ExploreMenuItemViewModel {
         return Images.exploreApprovalIcon
     }
   }
+    
+    var isNewFeature: Bool {
+        switch item {
+        case .approvals:
+            return true
+        default:
+            return false
+        }
+    }
   
 }

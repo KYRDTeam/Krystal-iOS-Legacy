@@ -62,7 +62,6 @@ class ExploreViewModel {
         menuItems.append(.transfer)
         menuItems.append(.buyCrypto)
         menuItems.append(.bridge)
-        menuItems.append(.approvals)
         
         if KNGeneralProvider.shared.currentChain.isSupportSwap() {
             menuItems.append(contentsOf: [.dapps, .multisend])
@@ -87,6 +86,9 @@ class ExploreViewModel {
         if isScannerEnabled && isNotBrowsing {
             menuItems.append(.scanner)
         }
+        
+        menuItems.append(.approvals)
+        
         if self.menuItems.value != menuItems {
             self.menuItems.value = menuItems
         }

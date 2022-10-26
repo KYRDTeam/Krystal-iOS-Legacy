@@ -14,6 +14,7 @@ class ApprovalListViewModel {
     
     struct Actions {
         var onTapBack: () -> Void
+        var onTapHistory: () -> Void
     }
     
     var address: String {
@@ -77,5 +78,9 @@ class ApprovalListViewModel {
     
     func onTapBack() {
         actions.onTapBack()
+    }
+    
+    func onTapHistory() {
+        actions.onTapHistory()
     }
 }

@@ -18,7 +18,7 @@ public class BottomMessagePopup: UIViewController {
         super.viewDidLoad()
         
         titleLabel.text = title
-        messageLabel.text = message
+        messageLabel.attributedText = message?.withLineSpacing()
     }
     
     public static func show(on viewController: UIViewController, title: String, message: String) {

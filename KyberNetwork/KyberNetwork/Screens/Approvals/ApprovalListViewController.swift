@@ -116,6 +116,10 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
         viewModel.onTapBack()
     }
     
+    @IBAction func historyTapped(_ sender: Any) {
+        viewModel.onTapHistory()
+    }
+    
 }
 
 extension ApprovalListViewController: UITextFieldDelegate {

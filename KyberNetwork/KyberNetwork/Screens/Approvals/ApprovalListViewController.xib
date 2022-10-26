@@ -101,6 +101,9 @@
                                     <integer key="value" value="10"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="historyTapped:" destination="-1" eventType="touchUpInside" id="Px4-pm-h7b"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p9q-BS-NPw">
                             <rect key="frame" x="16" y="9" width="36" height="36"/>
@@ -169,6 +172,9 @@
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                             <color key="textColor" red="0.95686274509803915" green="0.33333333333333331" blue="0.19607843137254902" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                            </userDefinedRuntimeAttributes>
                         </label>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="warning_red_icon" translatesAutoresizingMaskIntoConstraints="NO" id="7st-KX-LGm">
                             <rect key="frame" x="123" y="10" width="16" height="16"/>
@@ -187,6 +193,9 @@
                         <constraint firstItem="jFG-fX-Cvd" firstAttribute="leading" secondItem="4oj-2l-J6E" secondAttribute="leading" constant="36" id="hiB-V4-cGA"/>
                         <constraint firstAttribute="height" constant="36" id="tIt-zF-mER"/>
                     </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y5k-N1-K4s">
                     <rect key="frame" x="18" y="177" width="378" height="42"/>
