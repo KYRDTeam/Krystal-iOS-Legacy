@@ -214,8 +214,8 @@ extension ApprovalListViewController: SwipeTableViewCellDelegate {
         guard orientation == .right else { return nil }
         
         let delete = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
-            // TODO: revoke
             self?.disableHint()
+            self?.viewModel.onTapRevoke(index: indexPath.row)
         }
         delete.image = Images.revoke
         delete.title = Strings.revoke

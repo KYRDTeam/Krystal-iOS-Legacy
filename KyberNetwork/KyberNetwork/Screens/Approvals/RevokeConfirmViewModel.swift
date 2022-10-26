@@ -1,16 +1,17 @@
 //
-//  ApprovedTokenItemViewModel.swift
+//  RevokeConfirmViewModel.swift
 //  KyberNetwork
 //
-//  Created by Tung Nguyen on 25/10/2022.
+//  Created by Tung Nguyen on 26/10/2022.
 //
 
 import Foundation
-import UIKit
 import Services
+import UIKit
 import BigInt
 
-class ApprovedTokenItemViewModel {
+class RevokeConfirmViewModel {
+    var contract: String?
     var symbol: String?
     var tokenIcon: String?
     var chainIcon: UIImage?
@@ -22,15 +23,17 @@ class ApprovedTokenItemViewModel {
     
     init(approval: Approval) {
         self.approval = approval
+        contract = approval.tokenAddress
         symbol = approval.symbol
         tokenIcon = approval.logo
         chainIcon = ChainType.make(chainID: approval.chainId)?.squareIcon()
         tokenName = approval.name
         isVerified = approval.isVerified
-        spenderAddress = approval.spenderAddress?.shortTypeAddress
+        spenderAddress = approval.spenderAddress
         let bigIntAmount = BigInt(approval.amount ?? "0") ?? .zero
         amountString = bigIntAmount > BigInt(10).power(24)
                                         ? Strings.unlimitedAllowance
                                         : NumberFormatUtils.amount(value: bigIntAmount, decimals: approval.decimals)
     }
+    
 }
