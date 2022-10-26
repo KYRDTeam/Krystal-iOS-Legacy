@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -10,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -50,7 +52,7 @@
                     <rect key="frame" x="0.0" y="137" width="375" height="530"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VtB-IA-jcK">
-                            <rect key="frame" x="61" y="40" width="253" height="32"/>
+                            <rect key="frame" x="59" y="40" width="257.33333333333331" height="32"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jrs-lc-WjI">
                                     <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
@@ -58,7 +60,7 @@
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="success" translatesAutoresizingMaskIntoConstraints="NO" id="3QI-6S-UOY">
                                             <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                                         </imageView>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uav-4z-cuu" customClass="CountdownTimer" customModule="Krystal" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uav-4z-cuu" customClass="CountdownTimer" customModule="DesignSystem">
                                             <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
@@ -78,7 +80,7 @@
                                     </constraints>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Processing Transaction" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="25S-K4-RhF">
-                                    <rect key="frame" x="45" y="0.0" width="208" height="32"/>
+                                    <rect key="frame" x="45.000000000000014" y="0.0" width="212.33333333333337" height="32"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="20"/>
                                     <color key="textColor" name="textWhiteColor"/>
                                     <nil key="highlightedColor"/>
@@ -102,17 +104,17 @@
                             <rect key="frame" x="8" y="112" width="367" height="92"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="circle_arrow_right" translatesAutoresizingMaskIntoConstraints="NO" id="IIY-el-orx">
-                                    <rect key="frame" x="174.5" y="37" width="18" height="18"/>
+                                    <rect key="frame" x="174.66666666666666" y="37" width="18" height="18"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="18" id="KiA-6I-BwL"/>
                                         <constraint firstAttribute="width" constant="18" id="YvO-tI-HbJ"/>
                                     </constraints>
                                 </imageView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wdu-qB-zI2">
-                                    <rect key="frame" x="201.5" y="0.0" width="145.5" height="92"/>
+                                    <rect key="frame" x="201.66666666666663" y="0.0" width="145.33333333333337" height="92"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="bnb" translatesAutoresizingMaskIntoConstraints="NO" id="ZmA-TJ-ZK6">
-                                            <rect key="frame" x="57" y="17" width="32" height="32"/>
+                                            <rect key="frame" x="56.666666666666657" y="17" width="32" height="32"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="32" id="ZLB-Jr-gs8"/>
                                                 <constraint firstAttribute="height" constant="32" id="cSs-Ux-O5X"/>
@@ -124,7 +126,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.1 BNB" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DsT-uS-Z26">
-                                            <rect key="frame" x="0.0" y="56" width="145.5" height="21"/>
+                                            <rect key="frame" x="0.0" y="56" width="145.33333333333334" height="21"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
@@ -149,10 +151,10 @@
                                     </userDefinedRuntimeAttributes>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tH0-fD-rF1">
-                                    <rect key="frame" x="20" y="0.0" width="145.5" height="92"/>
+                                    <rect key="frame" x="20" y="0.0" width="145.66666666666666" height="92"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="bnb" translatesAutoresizingMaskIntoConstraints="NO" id="ChB-oP-GR4">
-                                            <rect key="frame" x="57" y="17" width="32" height="32"/>
+                                            <rect key="frame" x="56.666666666666671" y="17" width="32" height="32"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="32" id="4VU-7e-Uhk"/>
                                                 <constraint firstAttribute="height" constant="32" id="ahb-gn-snM"/>
@@ -164,7 +166,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.1 BNB" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1T9-yY-YwM">
-                                            <rect key="frame" x="0.0" y="56" width="145.5" height="21"/>
+                                            <rect key="frame" x="0.0" y="56" width="145.66666666666666" height="21"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
@@ -208,13 +210,13 @@
                             <rect key="frame" x="37" y="224" width="301" height="46"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="TxHash" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ppc-RE-C1b">
-                                    <rect key="frame" x="20" y="15" width="48" height="16.5"/>
+                                    <rect key="frame" x="20.000000000000004" y="14.666666666666687" width="46.333333333333343" height="16.666666666666671"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="normalTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="0x6d679678ghrtcca0ef6…3415b7978797979789789789789" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YFp-Le-pk8">
-                                    <rect key="frame" x="77" y="15" width="171" height="16.5"/>
+                                    <rect key="frame" x="75.333333333333329" y="14.666666666666687" width="172.66666666666669" height="16.666666666666671"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
@@ -311,7 +313,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="06X-Gc-FJT">
-                                    <rect key="frame" x="36.5" y="61" width="28" height="25"/>
+                                    <rect key="frame" x="36.666666666666671" y="61" width="28" height="25"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="25" id="5UQ-LQ-soR"/>
                                         <constraint firstAttribute="width" constant="28" id="TJ7-c4-lZx"/>
@@ -323,7 +325,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ONJ-J3-siW">
-                                    <rect key="frame" x="86.5" y="61" width="28" height="25"/>
+                                    <rect key="frame" x="86.666666666666671" y="61" width="28" height="25"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="25" id="1mm-29-90v"/>
                                         <constraint firstAttribute="width" constant="28" id="aAU-4l-yg1"/>
@@ -335,7 +337,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FbQ-r6-LKq">
-                                    <rect key="frame" x="136.5" y="61" width="28" height="25"/>
+                                    <rect key="frame" x="136.66666666666666" y="61" width="28" height="25"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="25" id="HsM-CJ-Y2z"/>
                                         <constraint firstAttribute="width" constant="28" id="ciF-O7-Vew"/>
@@ -347,7 +349,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GAC-kM-dNT">
-                                    <rect key="frame" x="236.5" y="61" width="28" height="25"/>
+                                    <rect key="frame" x="236.66666666666669" y="61" width="28" height="25"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="28" id="hgp-Uf-Bd2"/>
                                         <constraint firstAttribute="height" constant="25" id="r1P-qt-mHc"/>
@@ -359,7 +361,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FmF-OZ-Hqb">
-                                    <rect key="frame" x="186.5" y="61" width="28" height="25"/>
+                                    <rect key="frame" x="186.66666666666666" y="61" width="28" height="25"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="28" id="QD7-ur-Kds"/>
                                         <constraint firstAttribute="height" constant="25" id="dM3-x5-axC"/>
@@ -460,7 +462,7 @@
     </objects>
     <resources>
         <image name="bnb" width="36" height="36"/>
-        <image name="circle_arrow_right" width="19" height="19"/>
+        <image name="circle_arrow_right" width="19.333333969116211" height="19.333333969116211"/>
         <image name="open_link_icon_blue" width="14" height="14"/>
         <image name="star_icon" width="38" height="32"/>
         <image name="success" width="64" height="64"/>
