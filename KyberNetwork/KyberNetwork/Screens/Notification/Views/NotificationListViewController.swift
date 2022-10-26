@@ -13,7 +13,7 @@ protocol NotificationListViewControllerDelegate: AnyObject {
 }
 
 class NotificationListViewController: UIViewController {
-  @IBOutlet weak var emptyView: ListEmptyView!
+  @IBOutlet weak var emptyView: NotificationListEmptyView!
   @IBOutlet weak var tableView: UITableView!
   private let refreshControl = UIRefreshControl()
   

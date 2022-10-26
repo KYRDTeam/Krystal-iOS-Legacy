@@ -728,8 +728,8 @@
 		A69C5BE128D1C10F000DE825 /* NotificationListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BE028D1C10F000DE825 /* NotificationListViewModel.swift */; };
 		A69C5BE428D1C45A000DE825 /* NotificationFilterTagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BE228D1C45A000DE825 /* NotificationFilterTagCell.swift */; };
 		A69C5BE528D1C45A000DE825 /* NotificationFilterTagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69C5BE328D1C45A000DE825 /* NotificationFilterTagCell.xib */; };
-		A69C5BE928D1E07D000DE825 /* ListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BE828D1E07D000DE825 /* ListEmptyView.swift */; };
-		A69C5BEB28D1E088000DE825 /* ListEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69C5BEA28D1E088000DE825 /* ListEmptyView.xib */; };
+		A69C5BE928D1E07D000DE825 /* NotificationListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BE828D1E07D000DE825 /* NotificationListEmptyView.swift */; };
+		A69C5BEB28D1E088000DE825 /* NotificationListEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69C5BEA28D1E088000DE825 /* NotificationListEmptyView.xib */; };
 		A6B0671E2859CDBE00DEBAE8 /* KrystalWallets.h in Headers */ = {isa = PBXBuildFile; fileRef = A6B0671D2859CDBE00DEBAE8 /* KrystalWallets.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6B067262859CF1900DEBAE8 /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; };
 		A6B067272859CF1900DEBAE8 /* KrystalWallets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1085,7 +1085,7 @@
 		C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38E5D7825F63FC000E5FC48 /* TransactionHistory.swift */; };
 		C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */; };
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
-		C39A7EED24778B03003EA57D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		C39D311428F5645800EC26ED /* StakingPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D311228F5645800EC26ED /* StakingPortfolioViewController.swift */; };
 		C39D311528F5645800EC26ED /* StakingPortfolioViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C39D311328F5645800EC26ED /* StakingPortfolioViewController.xib */; };
 		C39D311928F5679700EC26ED /* StakingPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D311728F5679700EC26ED /* StakingPortfolioCell.swift */; };
@@ -2014,8 +2014,8 @@
 		A69C5BE028D1C10F000DE825 /* NotificationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationListViewModel.swift; sourceTree = "<group>"; };
 		A69C5BE228D1C45A000DE825 /* NotificationFilterTagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFilterTagCell.swift; sourceTree = "<group>"; };
 		A69C5BE328D1C45A000DE825 /* NotificationFilterTagCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationFilterTagCell.xib; sourceTree = "<group>"; };
-		A69C5BE828D1E07D000DE825 /* ListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEmptyView.swift; sourceTree = "<group>"; };
-		A69C5BEA28D1E088000DE825 /* ListEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListEmptyView.xib; sourceTree = "<group>"; };
+		A69C5BE828D1E07D000DE825 /* NotificationListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationListEmptyView.swift; sourceTree = "<group>"; };
+		A69C5BEA28D1E088000DE825 /* NotificationListEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationListEmptyView.xib; sourceTree = "<group>"; };
 		A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KrystalWallets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B0671D2859CDBE00DEBAE8 /* KrystalWallets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KrystalWallets.h; sourceTree = "<group>"; };
 		A6B0673C2859F43A00DEBAE8 /* KrystalTransactionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalTransactionService.swift; sourceTree = "<group>"; };
@@ -5424,8 +5424,8 @@
 				A69C5BDB28D1BAEF000DE825 /* NotificationItemV2Cell.xib */,
 				A69C5BE228D1C45A000DE825 /* NotificationFilterTagCell.swift */,
 				A69C5BE328D1C45A000DE825 /* NotificationFilterTagCell.xib */,
-				A69C5BE828D1E07D000DE825 /* ListEmptyView.swift */,
-				A69C5BEA28D1E088000DE825 /* ListEmptyView.xib */,
+				A69C5BE828D1E07D000DE825 /* NotificationListEmptyView.swift */,
+				A69C5BEA28D1E088000DE825 /* NotificationListEmptyView.xib */,
 				A69813E228E1BC230054F3E5 /* NotificationDetailViewController.swift */,
 				A69813E328E1BC230054F3E5 /* NotificationDetailViewController.xib */,
 			);
@@ -7025,7 +7025,7 @@
 				7E72917A27F193FC00ADF721 /* SwitchChainCell.xib in Resources */,
 				296106CE1F777E410006164B /* LaunchScreen.storyboard in Resources */,
 				7E1EBE4E283507E200793B6D /* BridgeSwapButtonCell.xib in Resources */,
-				A69C5BEB28D1E088000DE825 /* ListEmptyView.xib in Resources */,
+				A69C5BEB28D1E088000DE825 /* NotificationListEmptyView.xib in Resources */,
 				A69C5BD528D1BA84000DE825 /* NotificationV2ViewController.xib in Resources */,
 				25929C9720DA5CC10045CFA3 /* SFCompactDisplay-Heavy.otf in Resources */,
 				290B2B541F8F50030053C83E /* Localizable.strings in Resources */,
@@ -7689,7 +7689,7 @@
 				7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */,
 				7EE92A0F286307E10050DC8D /* ShowAllCell.swift in Sources */,
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
-				C39A7EED24778B03003EA57D /* BuildFile in Sources */,
+				C39A7EED24778B03003EA57D /* (null) in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				C3233EFE2807DF4D0086C2BC /* CopyAddressCell.swift in Sources */,
 				A69C5BCE28D1B342000DE825 /* NotificationEndpoint.swift in Sources */,
@@ -7832,7 +7832,7 @@
 				C3ED1DCD2616F0090024970C /* NotificationsViewController.swift in Sources */,
 				A6E6C9D128171A1400EEB2E6 /* SolanaTransactionListViewModel.swift in Sources */,
 				C322EB0B25B1A3D8009746FB /* CreateWalletMenuViewController.swift in Sources */,
-				A69C5BE928D1E07D000DE825 /* ListEmptyView.swift in Sources */,
+				A69C5BE928D1E07D000DE825 /* NotificationListEmptyView.swift in Sources */,
 				293112371FC9A24600966EEA /* UIGestureRecognizer+Closure.swift in Sources */,
 				29BDF1A11FEE51A80023A45F /* GasLimitConfiguration.swift in Sources */,
 				25696F4E20BD162F002CC53F /* XibViewLoader.swift in Sources */,
