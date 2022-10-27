@@ -153,6 +153,7 @@ class InvestCoordinator: Coordinator {
   fileprivate func openStakeView() {
     let viewModel = EarnOverViewModel()
     let viewController = EarnOverviewV2Controller(viewModel: viewModel)
+    viewController.delegate = self
     self.navigationController.pushViewController(viewController, animated: true)
   }
   
@@ -194,6 +195,11 @@ class InvestCoordinator: Coordinator {
     coordinator.start()
     coordinator.delegate = self
     self.rewardHuntingCoordinator = coordinator
+  }
+  
+  private func openSetupStakeView() {
+    let vc = StakingViewController.instantiateFromNib()
+    navigationController.pushViewController(vc, animated: true)
   }
   
   func appCoordinatorPendingTransactionsDidUpdate() {
@@ -420,4 +426,10 @@ extension InvestCoordinator: KNImportWalletCoordinatorDelegate {
     importWalletCoordinator = nil
   }
 
+}
+
+extension InvestCoordinator: EarnOverviewV2ControllerDelegate {
+  func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
+    
+  }
 }
