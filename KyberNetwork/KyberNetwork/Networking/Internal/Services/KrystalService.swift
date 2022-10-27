@@ -86,4 +86,21 @@ class KrystalService {
     }
   }
   
+  func getStakingOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String, completion: @escaping (Result<[EarningToken], AnyError>) -> Void) {
+    provider.requestWithFilter(.getEarningOptionDetail(platform: platform, earningType: earningType, chainID: chainID, tokenAddress: tokenAddress)) { result in
+      switch result {
+      case .success(let response):
+        let decoder = JSONDecoder()
+        do {
+          let decoded = try decoder.decode(OptionDetailResponse.self, from: response.data)
+          completion(.success(decoded.earningTokens))
+        } catch let error {
+          completion(.failure(AnyError(error)))
+        }
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+  
 }

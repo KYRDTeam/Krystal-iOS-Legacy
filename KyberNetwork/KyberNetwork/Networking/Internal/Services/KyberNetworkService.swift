@@ -908,6 +908,7 @@ enum KrytalService {
   case getSearchToken(address: String, query: String, orderBy: String)
   case getEarningBalances(address: String)
   case getPendingUnstakes(address: String)
+  case getEarningOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String)
 }
 
 extension KrytalService: TargetType {
@@ -926,7 +927,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance, .getAllLendingBalance, .getAllLendingDistributionBalance, .getMultichainBalance, .getLiquidityPool, .getEarningBalances, .getPendingUnstakes:
+    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance, .getAllLendingBalance, .getAllLendingDistributionBalance, .getMultichainBalance, .getLiquidityPool, .getEarningBalances, .getPendingUnstakes, .getEarningOptionDetail:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     case .getChartData(chainPath: let chainPath, address: _, quote: _, from: _), .getTokenDetail(chainPath: let chainPath, address: _):
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -1058,6 +1059,8 @@ extension KrytalService: TargetType {
       return "/v1/earning/earningBalances"
     case .getPendingUnstakes:
       return "/v1/earning/pendingUnstakes"
+    case .getEarningOptionDetail:
+      return "/v1/earning/optionDetail"
     }
   }
 
@@ -1518,6 +1521,14 @@ extension KrytalService: TargetType {
     case .getPendingUnstakes(address: let address):
       var json: JSONDictionary = [
         "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getEarningOptionDetail(platform: let platform, earningType: let earningType, chainID: let chainID, tokenAddress: let tokenAddress):
+      var json: JSONDictionary = [
+        "platform": platform,
+        "earningType": earningType,
+        "chainId": chainID,
+        "tokenAddress": tokenAddress
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
