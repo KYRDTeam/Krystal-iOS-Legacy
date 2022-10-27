@@ -761,4 +761,8 @@ extension SwapV2ViewController: SwapSummaryViewControllerDelegate {
   func onSwapSummarySubmitTransaction() {
     viewModel.updateSettings(settings: SwapTransactionSettings.getDefaultSettings())
   }
+    
+    func onUpdateSettings(settings: SwapTransactionSettings) {
+        viewModel.updateSettings(settings: settings)
+    }
 }
