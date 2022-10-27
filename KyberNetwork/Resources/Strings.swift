@@ -99,6 +99,8 @@ struct Strings {
   static let findTokenByNameSymbolAddress = "Find a token by name, symbol or address".toBeLocalised()
   static let FunctionCall = "Function call".toBeLocalised()
   static let transactions = "transactions".toBeLocalised()
+    static let supply = "supply".toBeLocalised()
+    static let withdraw = "withdraw".toBeLocalised()
   
   // Wallet
   static let chooseChainWallet = "choose.chain.wallet".toBeLocalised()
