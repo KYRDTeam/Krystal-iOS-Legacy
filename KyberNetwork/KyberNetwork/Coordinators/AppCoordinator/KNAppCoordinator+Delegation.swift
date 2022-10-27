@@ -142,13 +142,8 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
   }
 
   func overviewCoordinatorDidSelectSwapToken(token: Token, isBuy: Bool) {
-    if FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.swapV2) {
       self.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: isBuy)
-    } else {
-      let tokenObject = KNSupportedTokenStorage.shared.get(forPrimaryKey: token.address.lowercased()) ?? KNGeneralProvider.shared.quoteTokenObject
-      self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(tokenObject, isReceived: isBuy)
-    }
-    self.tabbarController.selectedIndex = 1
+      self.tabbarController.selectedIndex = 1
   }
   
   func overviewCoordinatorOpenCreateChainWalletMenu(chainType: ChainType) {
@@ -229,10 +224,6 @@ extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
   
   func settingsCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
     self.addNewWallet(type: .chain(chainType: chainType))
-  }
-  
-  func settingsCoordinatorDidImportDeepLinkTokens(srcToken: TokenObject?, destToken: TokenObject?) {
-    self.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: srcToken?.address, destTokenAddress: destToken?.address, chainIdString: "\(KNGeneralProvider.shared.customRPC.chainID)")
   }
   
   func settingsCoordinatorDidSelectAddWallet() {
