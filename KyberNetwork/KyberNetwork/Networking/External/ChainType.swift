@@ -249,6 +249,8 @@ extension ChainType {
       return Images.chainSolanaSquare
     case .klaytn:
       return Images.chainKlaytnSquare
+    case .optimism:
+      return Images.chainOptimismSquare
     }
   }
 
@@ -379,6 +381,8 @@ extension ChainType {
     case .solana:
         return KNSupportedTokenStorage.shared.usdcToken
     case .klaytn:
+      return KNSupportedTokenStorage.shared.usdcToken
+    case .optimism:
       return KNSupportedTokenStorage.shared.usdcToken
     case .all:
       return KNSupportedTokenStorage.shared.usdcToken

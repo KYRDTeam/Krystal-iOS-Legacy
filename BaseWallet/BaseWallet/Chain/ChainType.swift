@@ -24,6 +24,7 @@ public enum ChainType: Codable, CaseIterable {
     case aurora
     case solana
     case klaytn
+    case optimism
     
     enum Key: CodingKey {
         case rawValue
@@ -67,6 +68,8 @@ public enum ChainType: Codable, CaseIterable {
             self = .solana
         case 14:
             self = .klaytn
+        case 15:
+            self = .optimism
         default:
             throw CodingError.unknownValue
         }
@@ -105,6 +108,8 @@ public enum ChainType: Codable, CaseIterable {
             try container.encode(13, forKey: .rawValue)
         case .klaytn:
             try container.encode(14, forKey: .rawValue)
+        case .optimism:
+            try container.encode(15, forKey: .rawValue)
         }
     }
 }
@@ -150,6 +155,8 @@ public extension ChainType {
             return AllChains.solana
         case .klaytn:
             return AllChains.klaytnMainnetRPC
+        case .optimism:
+            return AllChains.optimismMainnetRPC
         }
     }
     

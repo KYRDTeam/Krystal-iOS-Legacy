@@ -906,7 +906,8 @@ enum KrytalService {
   case getAllLendingDistributionBalance(lendingPlatforms: [String], address: String, chains: [String], quotes: [String])
   case getCommonBaseToken
   case getSearchToken(address: String, query: String, orderBy: String)
-  case getStakingPortfolio(address: String)
+  case getEarningBalances(address: String)
+  case getPendingUnstakes(address: String)
 }
 
 extension KrytalService: TargetType {
@@ -925,7 +926,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance, .getAllLendingBalance, .getAllLendingDistributionBalance, .getMultichainBalance, .getLiquidityPool, .getStakingPortfolio:
+    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance, .getAllLendingBalance, .getAllLendingDistributionBalance, .getMultichainBalance, .getLiquidityPool, .getEarningBalances, .getPendingUnstakes:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     case .getChartData(chainPath: let chainPath, address: _, quote: _, from: _), .getTokenDetail(chainPath: let chainPath, address: _):
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -1053,8 +1054,10 @@ extension KrytalService: TargetType {
       return "/v1/token/commonBase"
     case .getSearchToken:
       return "/v1/token/search"
-    case .getStakingPortfolio(address: let address):
-      return "/v1/earning/portfolio"
+    case .getEarningBalances:
+      return "/v1/earning/earningBalances"
+    case .getPendingUnstakes:
+      return "/v1/earning/pendingUnstakes"
     }
   }
 
@@ -1507,9 +1510,14 @@ extension KrytalService: TargetType {
         json["address"] = address
       }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getStakingPortfolio(address: let address):
+    case .getEarningBalances(address: let address):
       var json: JSONDictionary = [
-        "userAddress": address
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getPendingUnstakes(address: let address):
+      var json: JSONDictionary = [
+        "address": address
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }

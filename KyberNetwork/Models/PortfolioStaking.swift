@@ -7,33 +7,25 @@
 
 import Foundation
 
-// MARK: - PortfolioStakingResponse
-struct PortfolioStakingResponse: Codable {
-    let portfolio: PortfolioStaking
-    let timestamp: Int
+// MARK: - PendingUnstakesResponse
+struct PendingUnstakesResponse: Codable {
+    let pendingUnstakes: [PendingUnstake]
 }
 
-// MARK: - Portfolio
-struct PortfolioStaking: Codable {
-    let balances: [StakingBalance]
-    let earningBalances: [EarningBalance]
-    let pendingUnstakes: [StakingBalance]
-}
-
-// MARK: - Balance
-struct StakingBalance: Codable {
-    let chainID: Int?
+// MARK: - PendingUnstake
+struct PendingUnstake: Codable {
+    let chainID: Int
     let address, symbol: String
     let logo: String
     let balance: String
     let decimals: Int
-    let platform: Platform?
-    let status: String?
-    let extraData: StakingExtraData?
+    let platform: Platform
+    let extraData: StakingExtraData
+    let priceUsd: Double
 
     enum CodingKeys: String, CodingKey {
         case chainID = "chainId"
-        case address, symbol, logo, balance, decimals, platform, status, extraData
+        case address, symbol, logo, balance, decimals, platform, extraData, priceUsd
     }
 }
 
@@ -54,11 +46,16 @@ struct Platform: Codable {
     let type, desc: String
 }
 
+// MARK: - EarningBalancesResponse
+struct EarningBalancesResponse: Codable {
+    let earningBalances: [EarningBalance]
+}
+
 // MARK: - EarningBalance
 struct EarningBalance: Codable {
     let chainID: Int
     let platform: Platform
-    let stakingToken, toUnderlyingToken: StakingBalance
+    let stakingToken, toUnderlyingToken: IngToken
     let underlyingUsd, apy, ratio: Double
 
     enum CodingKeys: String, CodingKey {
@@ -67,3 +64,10 @@ struct EarningBalance: Codable {
     }
 }
 
+// MARK: - IngToken
+struct IngToken: Codable {
+    let address, symbol: String
+    let logo: String
+    let balance: String
+    let decimals: Int
+}

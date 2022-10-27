@@ -20,4 +20,5 @@ extension UIImage {
     static let chainAuroraSquare = UIImage(named: "chain_aurora_square")!
     static let chainSolanaSquare = UIImage(named: "chain_solana_square")!
     static let chainKlaytnSquare = UIImage(named: "chain_klaytn_square")!
+    static let chainOptimismSquare = UIImage(named: "chain_optimism_square")!
 }
