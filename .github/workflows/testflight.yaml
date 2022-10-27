@@ -142,6 +142,8 @@ jobs:
 
       - name: Build and Upload to Testflight
         uses: maierj/fastlane-action@v2.0.1
+        env:
+          ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD: true
         with:
           lane: pre_release
           bundle-install-path: "vendor/bundle"

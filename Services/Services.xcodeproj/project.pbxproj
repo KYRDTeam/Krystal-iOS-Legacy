@@ -45,7 +45,6 @@
 		A64C2ECF28F91F88002FD64C /* CallRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2ECE28F91F88002FD64C /* CallRequest.swift */; };
 		A64C2ED128F9202A002FD64C /* Web3Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2ED028F9202A002FD64C /* Web3Factory.swift */; };
 		A64C2ED528F923BC002FD64C /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2ED428F923BC002FD64C /* Utilities.framework */; };
-		A64C2ED628F923BC002FD64C /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2ED428F923BC002FD64C /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A64C2EEA28F93741002FD64C /* TokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EE928F93741002FD64C /* TokenService.swift */; };
 		A64C2EEC28F9374A002FD64C /* TokenEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EEB28F9374A002FD64C /* TokenEndpoint.swift */; };
 		A64C2EEE28F93C4F002FD64C /* TokenDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EED28F93C4F002FD64C /* TokenDetail.swift */; };
@@ -60,21 +59,6 @@
 		A6F6292728FD49030085AE67 /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6292628FD49030085AE67 /* ErrorTracker.swift */; };
 		DFBC1392A80048AF5E1D8B55 /* Pods_Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 577F9B8B04D43859B76C1799 /* Pods_Services.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		A64C2ED728F923BC002FD64C /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				A673A6A828FFA29D00270DA7 /* BaseWallet.framework in Embed Frameworks */,
-				A64C2ED628F923BC002FD64C /* Utilities.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		26F29B442B1AF328B11DD1F1 /* Pods-Services.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Services.debug.xcconfig"; path = "Target Support Files/Pods-Services/Pods-Services.debug.xcconfig"; sourceTree = "<group>"; };
@@ -361,7 +345,6 @@
 				A66FC41B28F4F56600E49E86 /* Sources */,
 				A66FC41C28F4F56600E49E86 /* Frameworks */,
 				A66FC41D28F4F56600E49E86 /* Resources */,
-				A64C2ED728F923BC002FD64C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

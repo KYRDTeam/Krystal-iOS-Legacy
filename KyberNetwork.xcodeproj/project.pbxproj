@@ -587,20 +587,7 @@
 		7EFE71492817DC2E00476184 /* SolFeeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE71482817DC2E00476184 /* SolFeeCoordinator.swift */; };
 		7EFFAB8428AE4F5B007CFE7D /* SeedStringCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFAB8228AE4F5B007CFE7D /* SeedStringCell.swift */; };
 		7EFFAB8528AE4F5B007CFE7D /* SeedStringCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EFFAB8328AE4F5B007CFE7D /* SeedStringCell.xib */; };
-		8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
 		938288E2ED2CF2CECDBAEA28 /* Pods_KyberNetworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */; };
-		A6042C6528FD67C8001F4C40 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6428FD67C8001F4C40 /* AppState.framework */; };
-		A6042C6628FD67C8001F4C40 /* AppState.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6428FD67C8001F4C40 /* AppState.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A6042C6828FD6820001F4C40 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6728FD6820001F4C40 /* Services.framework */; };
-		A6042C6928FD6820001F4C40 /* Services.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6728FD6820001F4C40 /* Services.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A6042C6B28FD6899001F4C40 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; };
-		A6042C6C28FD6899001F4C40 /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A6042C6E28FD6930001F4C40 /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6D28FD6930001F4C40 /* BaseWallet.framework */; };
-		A6042C6F28FD6930001F4C40 /* BaseWallet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6D28FD6930001F4C40 /* BaseWallet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A6042C7128FD69B0001F4C40 /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7028FD69B0001F4C40 /* BaseModule.framework */; };
-		A6042C7228FD69B0001F4C40 /* BaseModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7028FD69B0001F4C40 /* BaseModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A6042C7428FD6A05001F4C40 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7328FD6A05001F4C40 /* DesignSystem.framework */; };
-		A6042C7528FD6A06001F4C40 /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7328FD6A05001F4C40 /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A608C45228B726A600B0B867 /* KQRCodeReaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A608C45128B726A600B0B867 /* KQRCodeReaderDelegate.swift */; };
 		A610B2D728ED5BAD00456965 /* EditWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A610B2D628ED5BAD00456965 /* EditWalletCoordinator.swift */; };
 		A610B2DA28ED66E800456965 /* WalletBackupableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A610B2D928ED66E800456965 /* WalletBackupableProtocol.swift */; };
@@ -630,8 +617,6 @@
 		A646E87828E5AD87007591FC /* WalletConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646E87628E5AD87007591FC /* WalletConnectViewController.swift */; };
 		A646E87928E5AD87007591FC /* WalletConnectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A646E87728E5AD87007591FC /* WalletConnectViewController.xib */; };
 		A64C2EF528F94FC4002FD64C /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EF428F94FC4002FD64C /* AppRouter.swift */; };
-		A64C2EF728F95001002FD64C /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EF628F95001002FD64C /* Dependencies.framework */; };
-		A64C2EF828F95001002FD64C /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EF628F95001002FD64C /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A64C2EFA28F95226002FD64C /* DependenciesRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EF928F95226002FD64C /* DependenciesRegister.swift */; };
 		A64CC665289405B8006BA1C6 /* Web3Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64CC664289405B8006BA1C6 /* Web3Factory.swift */; };
 		A64E17B5281932C400ED6E6D /* PendingTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B3281932C400ED6E6D /* PendingTransactionListViewController.swift */; };
@@ -675,8 +660,6 @@
 		A65CC8F128695D6A008620E2 /* ChartLoadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F028695D6A008620E2 /* ChartLoadRequest.swift */; };
 		A65CC8F328698C11008620E2 /* ChartType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F228698C11008620E2 /* ChartType.swift */; };
 		A65CC8F528698C1F008620E2 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F428698C1F008620E2 /* Period.swift */; };
-		A65D14DB28FD05DC00B12E84 /* SwapModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A65D14DA28FD05DC00B12E84 /* SwapModule.framework */; };
-		A65D14DC28FD05DC00B12E84 /* SwapModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A65D14DA28FD05DC00B12E84 /* SwapModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A65D14DE28FD0B6000B12E84 /* AppTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65D14DD28FD0B6000B12E84 /* AppTracker.swift */; };
 		A65D14E028FD0CFE00B12E84 /* AppErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65D14DF28FD0CFE00B12E84 /* AppErrorTracker.swift */; };
 		A661070528ACE94900425D67 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661070428ACE94900425D67 /* AsyncOperation.swift */; };
@@ -684,6 +667,23 @@
 		A6664D1F2858878800CCAB1F /* TransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D1E2858878800CCAB1F /* TransactionProcessor.swift */; };
 		A6664D212859839100CCAB1F /* SolanaTransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D202859839100CCAB1F /* SolanaTransactionProcessor.swift */; };
 		A6664D23285986A700CCAB1F /* SolanaSerumService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D22285986A700CCAB1F /* SolanaSerumService.swift */; };
+		A6684630290A27CA006BBE29 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
+		A6684636290A2D84006BBE29 /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7028FD69B0001F4C40 /* BaseModule.framework */; };
+		A6684637290A2D84006BBE29 /* BaseModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7028FD69B0001F4C40 /* BaseModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A6684639290A2DDF006BBE29 /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EF628F95001002FD64C /* Dependencies.framework */; };
+		A668463A290A2DDF006BBE29 /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EF628F95001002FD64C /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A668463B290A2DE1006BBE29 /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6D28FD6930001F4C40 /* BaseWallet.framework */; };
+		A668463C290A2DE1006BBE29 /* BaseWallet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6D28FD6930001F4C40 /* BaseWallet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A668463D290A2DE5006BBE29 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6428FD67C8001F4C40 /* AppState.framework */; };
+		A668463E290A2DE5006BBE29 /* AppState.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6428FD67C8001F4C40 /* AppState.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A668463F290A2DE7006BBE29 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7328FD6A05001F4C40 /* DesignSystem.framework */; };
+		A6684640290A2DE7006BBE29 /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7328FD6A05001F4C40 /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A6684641290A2DE9006BBE29 /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; };
+		A6684642290A2DE9006BBE29 /* KrystalWallets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A6684643290A2DEB006BBE29 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6728FD6820001F4C40 /* Services.framework */; };
+		A6684644290A2DEB006BBE29 /* Services.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6728FD6820001F4C40 /* Services.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A6684645290A2DED006BBE29 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; };
+		A6684646290A2DED006BBE29 /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A66B9C6C280818F6001B7A3D /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B9C6B280818F6001B7A3D /* ValidationResult.swift */; };
 		A66EC312287D176200D15FE0 /* MultiSendSubTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66EC310287D176200D15FE0 /* MultiSendSubTransactionCell.swift */; };
 		A66EC313287D176200D15FE0 /* MultiSendSubTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66EC311287D176200D15FE0 /* MultiSendSubTransactionCell.xib */; };
@@ -731,8 +731,6 @@
 		A69C5BE928D1E07D000DE825 /* NotificationListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BE828D1E07D000DE825 /* NotificationListEmptyView.swift */; };
 		A69C5BEB28D1E088000DE825 /* NotificationListEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69C5BEA28D1E088000DE825 /* NotificationListEmptyView.xib */; };
 		A6B0671E2859CDBE00DEBAE8 /* KrystalWallets.h in Headers */ = {isa = PBXBuildFile; fileRef = A6B0671D2859CDBE00DEBAE8 /* KrystalWallets.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A6B067262859CF1900DEBAE8 /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; };
-		A6B067272859CF1900DEBAE8 /* KrystalWallets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A6B0672F2859CF5100DEBAE8 /* Signer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E607112851A31C00387388 /* Signer.swift */; };
 		A6B067302859CF5100DEBAE8 /* ImportType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4832847BCF70066E177 /* ImportType.swift */; };
 		A6B067312859CF5100DEBAE8 /* AddressObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D47B2847B1300066E177 /* AddressObject.swift */; };
@@ -1237,21 +1235,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		A6B0672A2859CF1A00DEBAE8 /* Embed Frameworks */ = {
+		A6684638290A2D84006BBE29 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A6042C6628FD67C8001F4C40 /* AppState.framework in Embed Frameworks */,
-				A6042C7228FD69B0001F4C40 /* BaseModule.framework in Embed Frameworks */,
-				A6042C6C28FD6899001F4C40 /* Utilities.framework in Embed Frameworks */,
-				A6042C7528FD6A06001F4C40 /* DesignSystem.framework in Embed Frameworks */,
-				A6B067272859CF1900DEBAE8 /* KrystalWallets.framework in Embed Frameworks */,
-				A6042C6F28FD6930001F4C40 /* BaseWallet.framework in Embed Frameworks */,
-				A65D14DC28FD05DC00B12E84 /* SwapModule.framework in Embed Frameworks */,
-				A6042C6928FD6820001F4C40 /* Services.framework in Embed Frameworks */,
-				A64C2EF828F95001002FD64C /* Dependencies.framework in Embed Frameworks */,
+				A6684644290A2DEB006BBE29 /* Services.framework in Embed Frameworks */,
+				A668463E290A2DE5006BBE29 /* AppState.framework in Embed Frameworks */,
+				A6684637290A2D84006BBE29 /* BaseModule.framework in Embed Frameworks */,
+				A6684646290A2DED006BBE29 /* Utilities.framework in Embed Frameworks */,
+				A6684640290A2DE7006BBE29 /* DesignSystem.framework in Embed Frameworks */,
+				A668463A290A2DDF006BBE29 /* Dependencies.framework in Embed Frameworks */,
+				A6684642290A2DE9006BBE29 /* KrystalWallets.framework in Embed Frameworks */,
+				A668463C290A2DE1006BBE29 /* BaseWallet.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2490,19 +2487,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A6042C6528FD67C8001F4C40 /* AppState.framework in Frameworks */,
-				A6042C7128FD69B0001F4C40 /* BaseModule.framework in Frameworks */,
-				A6042C6828FD6820001F4C40 /* Services.framework in Frameworks */,
-				A6042C6E28FD6930001F4C40 /* BaseWallet.framework in Frameworks */,
 				C626BEDE238D871700C96410 /* iAd.framework in Frameworks */,
-				A6042C7428FD6A05001F4C40 /* DesignSystem.framework in Frameworks */,
+				A6684636290A2D84006BBE29 /* BaseModule.framework in Frameworks */,
 				C3D9517A25FB97EC00DE3C05 /* CloudKit.framework in Frameworks */,
-				A6B067262859CF1900DEBAE8 /* KrystalWallets.framework in Frameworks */,
-				A6042C6B28FD6899001F4C40 /* Utilities.framework in Frameworks */,
-				8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */,
+				A6684630290A27CA006BBE29 /* Pods_KyberNetwork.framework in Frameworks */,
+				A6684639290A2DDF006BBE29 /* Dependencies.framework in Frameworks */,
+				A668463B290A2DE1006BBE29 /* BaseWallet.framework in Frameworks */,
+				A668463D290A2DE5006BBE29 /* AppState.framework in Frameworks */,
+				A6684645290A2DED006BBE29 /* Utilities.framework in Frameworks */,
+				A668463F290A2DE7006BBE29 /* DesignSystem.framework in Frameworks */,
+				A6684641290A2DE9006BBE29 /* KrystalWallets.framework in Frameworks */,
+				A6684643290A2DEB006BBE29 /* Services.framework in Frameworks */,
 				C626BEDC238D870F00C96410 /* AdSupport.framework in Frameworks */,
-				A64C2EF728F95001002FD64C /* Dependencies.framework in Frameworks */,
-				A65D14DB28FD05DC00B12E84 /* SwapModule.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6655,9 +6651,9 @@
 				C379417E262816E100FBCA14 /* Embed App Extensions */,
 				C3D6996F2641454C004B34E1 /* Run Crashlytics */,
 				A6B3A86027FAD77900F84819 /* Upload dSYMs */,
-				A6B0672A2859CF1A00DEBAE8 /* Embed Frameworks */,
 				7E59E57F2872E09A00DFD01C /* ShellScript */,
 				940A881FAE177D5F7795A5AE /* [CP] Copy Pods Resources */,
+				A6684638290A2D84006BBE29 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -8668,7 +8664,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				ENABLE_BITCODE = NO;
@@ -8679,7 +8675,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.23;
+				MARKETING_VERSION = 1.2.24;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios;
 				PRODUCT_NAME = Krystal;
@@ -8702,7 +8698,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				ENABLE_BITCODE = NO;
@@ -8713,7 +8709,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.23;
+				MARKETING_VERSION = 1.2.24;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios;
 				PRODUCT_NAME = Krystal;
 				PROVISIONING_PROFILE_SPECIFIER = "Krytal Dev";
@@ -8830,7 +8826,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -8856,7 +8852,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -8881,12 +8877,12 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 5;
+				DYLIB_CURRENT_VERSION = 3;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -8923,11 +8919,11 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 3;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 5;
+				DYLIB_CURRENT_VERSION = 3;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -8961,7 +8957,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -8986,7 +8982,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -9012,7 +9008,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
@@ -9022,7 +9018,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.23;
+				MARKETING_VERSION = 1.2.24;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -9046,7 +9042,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -9055,7 +9051,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.23;
+				MARKETING_VERSION = 1.2.24;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios.KrystalNotificationServiceExtension;
