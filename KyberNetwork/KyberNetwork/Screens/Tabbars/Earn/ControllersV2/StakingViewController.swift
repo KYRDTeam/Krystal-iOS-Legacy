@@ -149,7 +149,7 @@ extension StakingViewController: UITextFieldDelegate {
   }
   
   @objc func keyboardPauseTyping(timer: Timer) {
-    //TODO: reload ui
+    updateRateInfoView()
   }
   
   func textFieldDidEndEditing(_ textField: UITextField) {
