@@ -43,15 +43,6 @@ extension KNAppCoordinator {
     AppState.shared.isSelectedAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all
     self.loadBalanceCoordinator?.resume()
 
-    // KyberSwap Tab
-    self.exchangeCoordinator = {
-      let coordinator = KNExchangeTokenCoordinator()
-      coordinator.delegate = self
-      return coordinator
-    }()
-    self.addCoordinator(self.exchangeCoordinator!)
-    self.exchangeCoordinator?.start()
-
     // Settings tab
     self.settingsCoordinator = {
       let coordinator = KNSettingsCoordinator(
@@ -76,31 +67,21 @@ extension KNAppCoordinator {
     self.addCoordinator(self.settingsCoordinator!)
     self.settingsCoordinator?.start()
     
-    if FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.swapV2) {
-      self.swapV2Coordinator = SwapV2Coordinator()
-      self.swapV2Coordinator?.start()
-      self.swapV2Coordinator?.navigationController.tabBarItem = UITabBarItem(
-        title: nil,
-        image: UIImage(named: "tabbar_swap_icon"),
-        selectedImage: nil
-      )
-      self.swapV2Coordinator?.navigationController.tabBarItem.tag = 1
-      self.tabbarController.viewControllers = [
-        self.overviewTabCoordinator!.navigationController,
-        self.swapV2Coordinator!.navigationController,
-        self.investCoordinator!.navigationController,
-        self.earnCoordinator!.navigationController,
-        self.settingsCoordinator!.navigationController,
-      ]
-    } else {
-      self.tabbarController.viewControllers = [
-        self.overviewTabCoordinator!.navigationController,
-        self.exchangeCoordinator!.navigationController,
-        self.investCoordinator!.navigationController,
-        self.earnCoordinator!.navigationController,
-        self.settingsCoordinator!.navigationController,
-      ]
-    }
+  self.swapV2Coordinator = SwapV2Coordinator()
+  self.swapV2Coordinator?.start()
+  self.swapV2Coordinator?.navigationController.tabBarItem = UITabBarItem(
+    title: nil,
+    image: UIImage(named: "tabbar_swap_icon"),
+    selectedImage: nil
+  )
+  self.swapV2Coordinator?.navigationController.tabBarItem.tag = 1
+  self.tabbarController.viewControllers = [
+    self.overviewTabCoordinator!.navigationController,
+    self.swapV2Coordinator!.navigationController,
+    self.investCoordinator!.navigationController,
+    self.earnCoordinator!.navigationController,
+    self.settingsCoordinator!.navigationController,
+  ]
     
     self.tabbarController.tabBar.tintColor = UIColor(named: "buttonBackgroundColor")
     if #available(iOS 15.0, *) {
@@ -121,14 +102,6 @@ extension KNAppCoordinator {
     )
     self.overviewTabCoordinator?.navigationController.tabBarItem.tag = 0
     self.overviewTabCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuHome"
-
-    self.exchangeCoordinator?.navigationController.tabBarItem = UITabBarItem(
-      title: nil,
-      image: UIImage(named: "tabbar_swap_icon"),
-      selectedImage: nil
-    )
-    self.exchangeCoordinator?.navigationController.tabBarItem.tag = 1
-    self.exchangeCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuSwap"
 
     self.investCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: nil,
@@ -161,9 +134,7 @@ extension KNAppCoordinator {
     self.updateLocalData()
 
     KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
-
-    self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
-
+      
     self.doLogin { _ in }
     UserService().connectEVM(address: address) {}
   }
@@ -173,8 +144,6 @@ extension KNAppCoordinator {
     self.walletCache.lastUsedAddress = nil
     self.session.stopSession()
     AppState.shared.updateAddress(address: self.walletManager.createEmptyAddress(), targetChain: AppState.shared.currentChain)
-    self.exchangeCoordinator?.stop()
-    self.exchangeCoordinator = nil
     self.settingsCoordinator?.stop()
     self.overviewTabCoordinator?.stop()
     self.overviewTabCoordinator?.start()
@@ -190,7 +159,6 @@ extension KNAppCoordinator {
     self.investCoordinator?.appCoordinatorSwitchAddress()
     
     KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
-    self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     
     self.doLogin { _ in }
