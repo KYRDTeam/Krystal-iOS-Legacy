@@ -309,6 +309,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       MixPanelManager.track("scanner_open", properties: ["screenid": "scanner"])
     case .stake:
       self.openStakeView()
+    case .openApprovals:
+        openApprovals()
     }
   }
   
@@ -325,6 +327,14 @@ extension InvestCoordinator: InvestViewControllerDelegate {
     self.promoCodeCoordinator = coordinator
     MixPanelManager.track("promotion_open", properties: ["screenid": "promotion"])
   }
+    
+    func openApprovals() {
+        let coordinator = ApprovalsCoordinator(navigationController: navigationController)
+        coordinator.onCompleted = { [weak self] in
+            self?.removeCoordinator(coordinator)
+        }
+        coordinate(coordinator: coordinator)
+    }
   
 }
 

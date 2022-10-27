@@ -229,6 +229,7 @@
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <gestureRecognizers/>
                     <constraints>
+                        <constraint firstItem="3JI-9Y-K6Q" firstAttribute="leading" secondItem="2bX-gH-E8o" secondAttribute="leading" constant="51" id="4kQ-iu-f8S"/>
                         <constraint firstItem="g0Z-y2-W5i" firstAttribute="leading" secondItem="WZT-IK-Rel" secondAttribute="trailing" constant="4" id="7ze-qD-7yk"/>
                         <constraint firstItem="vxS-K0-QVF" firstAttribute="trailing" secondItem="TK8-a8-VNf" secondAttribute="trailing" id="D3S-L0-X3n"/>
                         <constraint firstItem="WZT-IK-Rel" firstAttribute="leading" secondItem="3JI-9Y-K6Q" secondAttribute="leading" id="IFu-Ca-abH"/>

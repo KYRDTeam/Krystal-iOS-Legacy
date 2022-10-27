@@ -13,7 +13,12 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ListEmptyView" customModule="Krystal" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ListEmptyView" customModule="DesignSystem" customModuleProvider="target">
+            <connections>
+                <outlet property="iconImageView" destination="90j-8s-rK7" id="DS2-ps-6no"/>
+                <outlet property="messageLabel" destination="JOm-rk-G4F" id="OeE-Qk-i05"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
@@ -26,8 +31,8 @@
                         <constraint firstAttribute="height" constant="96" id="igS-it-CaJ"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No notification found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JOm-rk-G4F">
-                    <rect key="frame" x="129" y="382.5" width="156.5" height="19"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No notification found" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JOm-rk-G4F">
+                    <rect key="frame" x="32" y="382.5" width="350" height="19"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                     <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
@@ -39,6 +44,8 @@
                 <constraint firstItem="90j-8s-rK7" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" multiplier="2:3" id="1J4-Ds-vBT"/>
                 <constraint firstItem="90j-8s-rK7" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="5bc-7x-Sa5"/>
                 <constraint firstItem="JOm-rk-G4F" firstAttribute="top" secondItem="90j-8s-rK7" secondAttribute="bottom" constant="36" id="Cvq-sI-IJp"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="JOm-rk-G4F" secondAttribute="trailing" constant="32" id="rh5-Ba-bON"/>
+                <constraint firstItem="JOm-rk-G4F" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="32" id="wEL-nq-oUP"/>
                 <constraint firstItem="JOm-rk-G4F" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="zBn-fn-Q9b"/>
             </constraints>
             <point key="canvasLocation" x="139" y="109"/>

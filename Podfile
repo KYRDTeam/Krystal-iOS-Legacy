@@ -89,6 +89,7 @@ end
 
 def designSystemDependencies
   pod 'SwiftMessages'
+  pod 'FittedSheets'
 end
 
 def dependenciesDependencies

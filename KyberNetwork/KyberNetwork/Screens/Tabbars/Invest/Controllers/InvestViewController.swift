@@ -24,6 +24,7 @@ enum InvestViewEvent {
   case bridge
   case scanner
   case stake
+    case openApprovals
 }
 
 protocol InvestViewControllerDelegate: class {
@@ -263,6 +264,8 @@ extension InvestViewController: UICollectionViewDelegate {
       case .stake:
         delegate?.investViewController(self, run: .stake)
 //          MixPanelManager.track("Xplore_Scanner", properties: ["screenid": "explore"])
+      case .approvals:
+          delegate?.investViewController(self, run: .openApprovals)
       }
     case .partners:
       let partner = viewModel.partners.value[indexPath.item]

@@ -90,8 +90,8 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
   }
   
   open func reloadChain() {
-    chainIcon?.image = AppState.shared.currentChain.squareIcon()
-    chainButton?.setTitle(AppState.shared.currentChain.chainName(), for: .normal)
+    chainIcon?.image = currentChain.squareIcon()
+    chainButton?.setTitle(currentChain.chainName(), for: .normal)
   }
   
   open func reloadAllNetworksChain() {
