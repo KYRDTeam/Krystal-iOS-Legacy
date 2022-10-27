@@ -10,6 +10,7 @@ import BigInt
 import BaseModule
 
 protocol SwapSummaryViewControllerDelegate: AnyObject {
+    func onUpdateSettings(settings: SwapTransactionSettings)
   func onSwapSummaryViewClose(selectedPlatformHint: String)
   func onSwapSummarySubmitTransaction()
 }
@@ -300,7 +301,8 @@ class SwapSummaryViewController: KNBaseViewController {
     vm.update(priorityFee: advancedMaxPriorityFee, maxGas: advancedMaxFee, gasLimit: advancedGasLimit, nonceString: advancedNonce)
     
     vm.saveEventHandler = { [weak self] swapSettings in
-      self?.viewModel.updateSettings(settings: swapSettings)
+        self?.delegate?.onUpdateSettings(settings: swapSettings)
+        self?.viewModel.updateSettings(settings: swapSettings)
     }
     self.navigationController?.pushViewController(popup, animated: true, completion: nil)
   }
