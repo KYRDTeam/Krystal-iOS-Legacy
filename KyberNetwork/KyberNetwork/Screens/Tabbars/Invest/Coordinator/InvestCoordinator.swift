@@ -197,8 +197,9 @@ class InvestCoordinator: Coordinator {
     self.rewardHuntingCoordinator = coordinator
   }
   
-  private func openSetupStakeView() {
+  private func openSetupStakeView(platform: EarnPlatform, pool: EarnPoolModel) {
     let vc = StakingViewController.instantiateFromNib()
+    vc.viewModel = StakingViewModel(pool: pool, platform: platform)
     navigationController.pushViewController(vc, animated: true)
   }
   
@@ -430,6 +431,6 @@ extension InvestCoordinator: KNImportWalletCoordinatorDelegate {
 
 extension InvestCoordinator: EarnOverviewV2ControllerDelegate {
   func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
-    
+    openSetupStakeView(platform: platform, pool: pool)
   }
 }

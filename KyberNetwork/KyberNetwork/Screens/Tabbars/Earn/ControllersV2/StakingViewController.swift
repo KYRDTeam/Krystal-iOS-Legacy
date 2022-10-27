@@ -7,6 +7,26 @@
 
 import UIKit
 
+class StakingViewModel {
+  let pool: EarnPoolModel
+  let selectedPlatform: EarnPlatform
+  
+  init(pool: EarnPoolModel, platform: EarnPlatform) {
+    self.pool = pool
+    self.selectedPlatform = platform
+  }
+  
+  var displayMainHeader: String {
+    return "Stake \(pool.token.name.uppercased()) on \(selectedPlatform.name.uppercased())"
+  }
+  
+  var displayStakeToken: String {
+    return pool.token.getBalanceBigInt().shortString(decimals: pool.token.decimals) + " " + pool.token.symbol.uppercased()
+  }
+  
+  
+}
+
 class StakingViewController: InAppBrowsingViewController {
   
   @IBOutlet weak var stakeMainHeaderLabel: UILabel!
@@ -17,7 +37,7 @@ class StakingViewController: InAppBrowsingViewController {
   @IBOutlet weak var amountReceiveInfoView: SwapInfoView!
   @IBOutlet weak var rateInfoView: SwapInfoView!
   @IBOutlet weak var networkFeeInfoView: SwapInfoView!
-  
+  var viewModel: StakingViewModel!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -40,6 +60,10 @@ class StakingViewController: InAppBrowsingViewController {
   }
   
   private func bindingViewModel() {
+    stakeMainHeaderLabel.text = viewModel.displayMainHeader
+    stakeTokenLabel.text = viewModel.displayStakeToken
+    stakeTokenImageView.setImage(urlString: viewModel.pool.token.logo, symbol: viewModel.pool.token.symbol)
+    apyInfoView.setValue(value: viewModel.selectedPlatform.apy.description, highlighted: true)
     
   }
 
