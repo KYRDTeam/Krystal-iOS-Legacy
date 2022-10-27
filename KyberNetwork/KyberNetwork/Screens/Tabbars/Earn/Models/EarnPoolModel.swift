@@ -29,6 +29,7 @@ class EarnPoolModel {
     } else {
       self.chainName = ""
       self.chainLogo = ""
+      self.chainID = -1
     }
     self.apy = json["apy"] as? Double ?? 0
     self.tvl = json["tvl"] as? Double ?? 0
