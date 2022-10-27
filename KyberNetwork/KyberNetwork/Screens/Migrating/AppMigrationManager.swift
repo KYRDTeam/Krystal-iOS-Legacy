@@ -21,16 +21,35 @@ class AppMigrationManager {
     self.keystore = keystore
     operationQueue.maxConcurrentOperationCount = 1
   }
+    
+    let unknowWalletsHasMigratedStorageKey = "unknown_wallets_has_been_migrated.data"
+    let walletsHasMigratedStorageKey = "wallets_has_been_migrated.data"
   
   var needMigrateUnknownWallets: Bool {
-    return getUnknownWallets().isNotEmpty && UserDefaults.hasMigratedUnknownKeystoreWallet == false
+      if Storage.retrieve(unknowWalletsHasMigratedStorageKey, as: Bool.self) ?? false {
+          return false
+      }
+      // Migrate data to storage
+      if UserDefaults.hasMigratedUnknownKeystoreWallet {
+          Storage.store(true, as: unknowWalletsHasMigratedStorageKey)
+          return false
+      }
+      return getUnknownWallets().isNotEmpty
   }
   
   var needMigrate: Bool {
-    if needMigrateUnknownWallets {
-      return true
-    }
-    return !UserDefaults.hasMigratedKeystoreWallet && !keystore.wallets.isEmpty
+      if needMigrateUnknownWallets {
+          return true
+      }
+      if Storage.retrieve(walletsHasMigratedStorageKey, as: Bool.self) ?? false {
+          return false
+      }
+      // Migrate data to storage
+      if UserDefaults.hasMigratedKeystoreWallet {
+          Storage.store(true, as: walletsHasMigratedStorageKey)
+          return false
+      }
+      return !keystore.wallets.isEmpty
   }
   
   func getUnknownWallets() -> [KNWalletObject] {
@@ -40,15 +59,15 @@ class AppMigrationManager {
   }
   
   func execute(progressCallback: @escaping (Float) -> Void, completion: @escaping () -> Void) {
-    if needMigrate {
-      migrateKeystoreWallets { progress in
-        progressCallback(progress)
-      } completion: {
-        UserDefaults.hasMigratedKeystoreWallet = true
-        UserDefaults.hasMigratedUnknownKeystoreWallet = true
-        completion()
+      if needMigrate {
+          migrateKeystoreWallets { progress in
+              progressCallback(progress)
+          } completion: {
+              Storage.store(true, as: self.walletsHasMigratedStorageKey)
+              Storage.store(true, as: self.unknowWalletsHasMigratedStorageKey)
+              completion()
+          }
       }
-    }
   }
   
   private func migrateKeystoreWallets(progressCallback: @escaping (Float) -> (), completion: @escaping () -> ()) {

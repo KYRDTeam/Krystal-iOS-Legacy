@@ -23,7 +23,7 @@ public class AppState {
     }
   }
   
-  public private(set) var currentAddress: KAddress {
+  public var currentAddress: KAddress {
     get {
       guard let data = UserDefaults.standard.data(forKey: Constants.UserDefaultKeys.kLastUsedAddress) else {
         return WalletManager.shared.createEmptyAddress()

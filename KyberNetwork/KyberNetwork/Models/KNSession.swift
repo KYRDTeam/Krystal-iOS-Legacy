@@ -37,11 +37,13 @@ class KNSession {
   }
   
   func refreshCurrentAddressInfo() {
-//    guard let address = WalletManager.shared.getAddress(id: address.id) else {
-//      return
-//    }
+    guard let address = WalletManager.shared.getAddress(id: address.id) else {
+      return
+    }
+    AppState.shared.currentAddress = address
 //    WalletCache.shared.lastUsedAddress = address
 //    AppEventCenter.shared.currentAddressUpdated()
+    
     AppEventManager.shared.postWalletListUpdatedEvent()
   }
   

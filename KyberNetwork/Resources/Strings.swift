@@ -99,6 +99,8 @@ struct Strings {
   static let findTokenByNameSymbolAddress = "Find a token by name, symbol or address".toBeLocalised()
   static let FunctionCall = "Function call".toBeLocalised()
   static let transactions = "transactions".toBeLocalised()
+    static let supply = "supply".toBeLocalised()
+    static let withdraw = "withdraw".toBeLocalised()
   
   // Wallet
   static let chooseChainWallet = "choose.chain.wallet".toBeLocalised()
@@ -297,4 +299,14 @@ struct Strings {
   static let noRecordFound = "no.record.found".toBeLocalised()
   static let earnIsCurrentlyNotSupportedOnThisChainYet = "earn.is.currently.not.supported.on.this.chain.yet".toBeLocalised()
   static let emptyTokenDeposit = "no.tokens.deposited".toBeLocalised()
+    
+    // Approval
+    static let approvalSearchPlaceholder = "approval.search.placeholder".toBeLocalised()
+    static let approvalMenuTitle = "approval.menu.title".toBeLocalised()
+    static let unlimitedAllowance = "unlimited.allowance".toBeLocalised()
+    static let totalAllowance = "total.allowance".toBeLocalised()
+    static let totalAllowanceFormat = "total.allowance.format".toBeLocalised()
+    static let totalAllowanceDescription = "total.allowance.description".toBeLocalised()
+    static let approvalsNoRisk = "approvals.no.risk".toBeLocalised()
+    static let aprovalsNoRecords = "approvals.no.records.found".toBeLocalised()
 }

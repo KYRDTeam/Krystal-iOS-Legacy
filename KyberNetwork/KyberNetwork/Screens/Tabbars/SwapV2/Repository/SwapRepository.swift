@@ -34,7 +34,7 @@ class SwapRepository {
   }
   
   func getBalance(tokenAddress: String, address: String, completion: @escaping (BigInt?, String) -> ()) {
-    if tokenAddress == KNGeneralProvider.shared.quoteTokenObject.address { // is native token
+    if tokenAddress.lowercased() == KNGeneralProvider.shared.quoteTokenObject.address.lowercased() { // is native token
       KNGeneralProvider.shared.getETHBalanace(for: address) { result in
         switch result {
         case .success(let balance):
@@ -44,7 +44,7 @@ class SwapRepository {
         }
       }
     } else {
-      KNGeneralProvider.shared.getTokenBalance(for: address, contract: tokenAddress) { result in
+      KNGeneralProvider.shared.getTokenBalance(for: address, contract: tokenAddress.lowercased()) { result in
         switch result {
         case .success(let amount):
           completion(amount, tokenAddress)
