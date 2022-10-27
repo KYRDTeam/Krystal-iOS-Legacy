@@ -6,7 +6,6 @@ import KrystalWallets
 
 protocol KNSettingsCoordinatorDelegate: class {
   func settingsCoordinatorUserDidSelectExit()
-  func settingsCoordinatorDidImportDeepLinkTokens(srcToken: TokenObject?, destToken: TokenObject?)
 }
 
 class KNSettingsCoordinator: NSObject, Coordinator {
