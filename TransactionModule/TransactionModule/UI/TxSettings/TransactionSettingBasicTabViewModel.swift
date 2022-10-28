@@ -1,0 +1,78 @@
+//
+//  TransactionSettingBasicTabViewModel.swift
+//  TransactionModule
+//
+//  Created by Tung Nguyen on 28/10/2022.
+//
+
+import Foundation
+import DesignSystem
+import UIKit
+import BigInt
+import Dependencies
+import AppState
+import Utilities
+
+class TransactionSettingBasicTabViewModel {
+    
+    var selectedGasType: GasType = .regular
+    var gasConfig: GasConfig
+    var gasLimit: BigInt = BigInt(120_000)
+    
+    init(gasConfig: GasConfig) {
+        self.gasConfig = gasConfig
+    }
+    
+    func gasPrice(gasType: GasType) -> BigInt {
+        switch gasType {
+        case .slow:
+            return gasConfig.lowGas
+        case .regular:
+            return gasConfig.standardGas
+        case .fast:
+            return gasConfig.fastGas
+        case .superFast:
+            return gasConfig.superFastGas
+        }
+    }
+    
+    func getGasOptionText(gasType: GasType) -> NSAttributedString {
+        switch gasType {
+        case .slow:
+            return self.attributedString(for: gasConfig.lowGas, text: Strings.slow.uppercased())
+        case .regular:
+            return self.attributedString(for: gasConfig.standardGas, text: Strings.regular.uppercased())
+        case .fast:
+            return self.attributedString(for: gasConfig.fastGas, text: Strings.fast.uppercased())
+        case .superFast:
+            return self.attributedString(for: gasConfig.superFastGas, text: Strings.superFast.uppercased())
+        }
+    }
+    
+    func getEstimatedGasFee(gasType: GasType) -> String {
+        let fee = gasPrice(gasType: gasType) * gasLimit
+        let feeString: String = NumberFormatUtils.gasFeeFormat(number: fee)
+        let quoteToken = AppState.shared.currentChain.customRPC().quoteToken
+        return "~ \(feeString) \(quoteToken)"
+    }
+    
+    func attributedString(for gasPrice: BigInt, text: String) -> NSAttributedString {
+        let gasPriceString: String = gasPrice.string(units: .gwei, minFractionDigits: 2, maxFractionDigits: 2)
+        let gasPriceAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.foregroundColor: AppTheme.current.primaryTextColor,
+            NSAttributedString.Key.font: UIFont.karlaReguler(ofSize: 16),
+            NSAttributedString.Key.kern: 0.0,
+        ]
+        let feeAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.foregroundColor: AppTheme.current.secondaryTextColor,
+            NSAttributedString.Key.font: UIFont.karlaReguler(ofSize: 12),
+            NSAttributedString.Key.kern: 0.0,
+        ]
+        let attributedString = NSMutableAttributedString()
+        attributedString.append(NSAttributedString(string: gasPriceString, attributes: gasPriceAttributes))
+        attributedString.append(NSAttributedString(string: " \(text)", attributes: feeAttributes))
+        return attributedString
+    }
+    
+    
+}

@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:TransactionModule/TransactionModule.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Services/Services.xcodeproj">
    </FileRef>
    <FileRef

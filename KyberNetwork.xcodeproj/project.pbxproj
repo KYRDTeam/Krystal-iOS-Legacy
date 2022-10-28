@@ -624,6 +624,8 @@
 		A64E17B8281934A700ED6E6D /* BasePendingTransactionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B7281934A700ED6E6D /* BasePendingTransactionListViewModel.swift */; };
 		A64E17BA28193AF700ED6E6D /* BaseTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B928193AF700ED6E6D /* BaseTransactionListViewController.swift */; };
 		A64E17BD2819484700ED6E6D /* GasFeePopupDelegateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17BC2819484700ED6E6D /* GasFeePopupDelegateCoordinator.swift */; };
+		A64F1D61290B904E000D4733 /* TransactionModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64F1D60290B904E000D4733 /* TransactionModule.framework */; };
+		A64F1D62290B904E000D4733 /* TransactionModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64F1D60290B904E000D4733 /* TransactionModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A65194382835F13D008F4AEB /* TransactionDetailContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65194312835F13D008F4AEB /* TransactionDetailContract.swift */; };
 		A65194392835F13D008F4AEB /* TransactionDetailModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65194322835F13D008F4AEB /* TransactionDetailModule.swift */; };
 		A651943A2835F13D008F4AEB /* TransactionDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65194332835F13D008F4AEB /* TransactionDetailPresenter.swift */; };
@@ -1249,6 +1251,7 @@
 				A668463A290A2DDF006BBE29 /* Dependencies.framework in Embed Frameworks */,
 				A6684642290A2DE9006BBE29 /* KrystalWallets.framework in Embed Frameworks */,
 				A668463C290A2DE1006BBE29 /* BaseWallet.framework in Embed Frameworks */,
+				A64F1D62290B904E000D4733 /* TransactionModule.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1912,6 +1915,7 @@
 		A64E17B7281934A700ED6E6D /* BasePendingTransactionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePendingTransactionListViewModel.swift; sourceTree = "<group>"; };
 		A64E17B928193AF700ED6E6D /* BaseTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionListViewController.swift; sourceTree = "<group>"; };
 		A64E17BC2819484700ED6E6D /* GasFeePopupDelegateCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasFeePopupDelegateCoordinator.swift; sourceTree = "<group>"; };
+		A64F1D60290B904E000D4733 /* TransactionModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TransactionModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A65194312835F13D008F4AEB /* TransactionDetailContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailContract.swift; sourceTree = "<group>"; };
 		A65194322835F13D008F4AEB /* TransactionDetailModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailModule.swift; sourceTree = "<group>"; };
 		A65194332835F13D008F4AEB /* TransactionDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailPresenter.swift; sourceTree = "<group>"; };
@@ -2490,6 +2494,7 @@
 				C626BEDE238D871700C96410 /* iAd.framework in Frameworks */,
 				A6684636290A2D84006BBE29 /* BaseModule.framework in Frameworks */,
 				C3D9517A25FB97EC00DE3C05 /* CloudKit.framework in Frameworks */,
+				A64F1D61290B904E000D4733 /* TransactionModule.framework in Frameworks */,
 				A6684630290A27CA006BBE29 /* Pods_KyberNetwork.framework in Frameworks */,
 				A6684639290A2DDF006BBE29 /* Dependencies.framework in Frameworks */,
 				A668463B290A2DE1006BBE29 /* BaseWallet.framework in Frameworks */,
@@ -6598,6 +6603,7 @@
 		FAD3F374A5C639BD900944DB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A64F1D60290B904E000D4733 /* TransactionModule.framework */,
 				A6042C7328FD6A05001F4C40 /* DesignSystem.framework */,
 				A6042C7028FD69B0001F4C40 /* BaseModule.framework */,
 				A6042C6D28FD6930001F4C40 /* BaseWallet.framework */,

@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  TransactionModule
+
+  Created by Tung Nguyen on 28/10/2022.
+  
+*/
+
+"fast" = "Fast";
+"super.fast" = "Super fast";
+"regular" = "Regular";
+"slow" = "Slow";
