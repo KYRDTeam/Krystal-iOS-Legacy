@@ -31,6 +31,7 @@
                 <outlet property="errorMsgLabel" destination="eXy-Nq-Sss" id="OOs-y4-2ba"/>
                 <outlet property="infoAreaTopContraint" destination="8HI-i4-JNA" id="lET-P2-7Qy"/>
                 <outlet property="networkFeeInfoView" destination="cyu-cp-C1e" id="JWp-U2-iZB"/>
+                <outlet property="nextButton" destination="qRD-Uw-5YN" id="1oZ-Yu-iIJ"/>
                 <outlet property="rateInfoView" destination="Fd2-Pd-wBO" id="cni-aj-eZ1"/>
                 <outlet property="stakeMainHeaderLabel" destination="E6D-sW-5ed" id="AFl-hG-SDQ"/>
                 <outlet property="stakeTokenImageView" destination="OPS-mj-2RC" id="50c-S1-4Q7"/>
@@ -272,6 +273,9 @@
                                             <integer key="value" value="3"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="maxButtonTapped:" destination="-1" eventType="touchUpInside" id="mpe-gF-4KB"/>
+                                    </connections>
                                 </button>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chain_polygon_big_icon" translatesAutoresizingMaskIntoConstraints="NO" id="OPS-mj-2RC">
                                     <rect key="frame" x="15" y="9" width="24" height="24"/>

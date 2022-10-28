@@ -11,6 +11,7 @@ import BigInt
 enum FormState {
   case valid
   case error(msg: String)
+  case empty
 }
 
 class StakingViewModel {
@@ -21,7 +22,7 @@ class StakingViewModel {
   var error: Observable<Error?> = .init(nil)
   var amount: Observable<String> = .init("")
   var selectedEarningToken: Observable<EarningToken?> = .init(nil)
-  var formState: Observable<FormState> = .init(.valid)
+  var formState: Observable<FormState> = .init(.empty)
   
   init(pool: EarnPoolModel, platform: EarnPlatform) {
     self.pool = pool
@@ -29,7 +30,7 @@ class StakingViewModel {
   }
   
   var displayMainHeader: String {
-    return "Stake \(pool.token.name.uppercased()) on \(selectedPlatform.name.uppercased())"
+    return "Stake \(pool.token.symbol.uppercased()) on \(selectedPlatform.name.uppercased())"
   }
   
   var displayStakeToken: String {
@@ -88,6 +89,7 @@ class StakingViewController: InAppBrowsingViewController {
   @IBOutlet weak var infoAreaTopContraint: NSLayoutConstraint!
   @IBOutlet weak var errorMsgLabel: UILabel!
   @IBOutlet weak var amountFieldContainerView: UIView!
+  @IBOutlet weak var nextButton: UIButton!
   
   var viewModel: StakingViewModel!
   var keyboardTimer: Timer?
@@ -135,9 +137,15 @@ class StakingViewController: InAppBrowsingViewController {
     case .valid:
       amountFieldContainerView.rounded(radius: 16)
       errorMsgLabel.text = ""
+      nextButton.alpha = 1
     case .error(let msg):
       amountFieldContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
       errorMsgLabel.text = msg
+      nextButton.alpha = 0.2
+    case .empty:
+      amountFieldContainerView.rounded(radius: 16)
+      errorMsgLabel.text = ""
+      nextButton.alpha = 0.2
     }
   }
   
@@ -157,6 +165,7 @@ class StakingViewController: InAppBrowsingViewController {
     }
     viewModel.amount.observeAndFire(on: self) { _ in
       self.updateRateInfoView()
+      self.updateUIError()
     }
     viewModel.formState.observeAndFire(on: self) { _ in
       self.updateUIError()
@@ -167,6 +176,10 @@ class StakingViewController: InAppBrowsingViewController {
     navigationController?.popViewController(animated: true)
   }
   
+  @IBAction func maxButtonTapped(_ sender: UIButton) {
+    viewModel.amount.value = viewModel.pool.token.getBalanceBigInt().fullString(decimals: viewModel.pool.token.decimals)
+    amountTextField.text = viewModel.amount.value
+  }
 }
 
 extension StakingViewController: UITextFieldDelegate {
@@ -197,36 +210,32 @@ extension StakingViewController: UITextFieldDelegate {
   }
   
   func textFieldDidEndEditing(_ textField: UITextField) {
-    showWarningInvalidAmountDataIfNeeded()
+//    showWarningInvalidAmountDataIfNeeded()
   }
   
-  fileprivate func showWarningInvalidAmountDataIfNeeded() {
-    guard !self.viewModel.amount.value.isEmpty else {
-      viewModel.formState.value = .error(msg: "invalid.input".toBeLocalised())
-      return
-    }
-//    guard self.viewModel.isEnoughFee else {
-//      self.showWarningTopBannerMessage(
-//        with: NSLocalizedString("Insufficient \(KNGeneralProvider.shared.quoteToken) for transaction", value: "Insufficient \(KNGeneralProvider.shared.quoteToken) for transaction", comment: ""),
-//        message: String(format: "Deposit more \(KNGeneralProvider.shared.quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), self.viewModel.transactionFee.shortString(units: .ether, maxFractionDigits: 6))
-//      )
-//      return true
+//  fileprivate func showWarningInvalidAmountDataIfNeeded() {
+//    guard !self.viewModel.amount.value.isEmpty else {
+//      viewModel.formState.value = .empty
+//      return
 //    }
-
-    guard !self.viewModel.isAmountTooSmall else {
-      viewModel.formState.value = .error(msg: "amount.to.send.greater.than.zero".toBeLocalised())
-      return
-    }
-    guard !self.viewModel.isAmountTooBig else {
-      self.showWarningTopBannerMessage(
-        with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
-        message: NSLocalizedString("balance.not.enough.to.make.transaction", value: "Balance is not be enough to make the transaction.", comment: "")
-      )
-      viewModel.formState.value = .error(msg: "balance.not.enough.to.make.transaction".toBeLocalised())
-      return
-    }
-    viewModel.formState.value = .valid
-  }
+////    guard self.viewModel.isEnoughFee else {
+////      self.showWarningTopBannerMessage(
+////        with: NSLocalizedString("Insufficient \(KNGeneralProvider.shared.quoteToken) for transaction", value: "Insufficient \(KNGeneralProvider.shared.quoteToken) for transaction", comment: ""),
+////        message: String(format: "Deposit more \(KNGeneralProvider.shared.quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), self.viewModel.transactionFee.shortString(units: .ether, maxFractionDigits: 6))
+////      )
+////      return true
+////    }
+//
+//    guard !self.viewModel.isAmountTooSmall else {
+//      viewModel.formState.value = .error(msg: "amount.to.send.greater.than.zero".toBeLocalised())
+//      return
+//    }
+//    guard !self.viewModel.isAmountTooBig else {
+//      viewModel.formState.value = .error(msg: "balance.not.enough.to.make.transaction".toBeLocalised())
+//      return
+//    }
+//    viewModel.formState.value = .valid
+//  }
 }
 
 extension StakingViewController: StakingEarningTokensViewDelegate {
