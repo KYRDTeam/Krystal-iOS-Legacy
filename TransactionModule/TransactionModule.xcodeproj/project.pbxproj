@@ -24,6 +24,9 @@
 		A64F1D76290BC06F000D4733 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A64F1D75290BC06F000D4733 /* Localizable.strings */; };
 		A64F1D78290BC093000D4733 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D77290BC093000D4733 /* Strings.swift */; };
 		A64F1D7A290BC0C4000D4733 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D79290BC0C4000D4733 /* String+.swift */; };
+		A64F1D7C290BCC53000D4733 /* BaseTransactionSettingTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D7B290BCC53000D4733 /* BaseTransactionSettingTab.swift */; };
+		A64F1D82290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D81290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift */; };
+		A64F1D84290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -57,6 +60,9 @@
 		A64F1D75290BC06F000D4733 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		A64F1D77290BC093000D4733 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		A64F1D79290BC0C4000D4733 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		A64F1D7B290BCC53000D4733 /* BaseTransactionSettingTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionSettingTab.swift; sourceTree = "<group>"; };
+		A64F1D81290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionSettingTabViewModel.swift; sourceTree = "<group>"; };
+		A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSettingAdvancedTabViewModel.swift; sourceTree = "<group>"; };
 		ACB68FEDF6F817D1BE1300AD /* Pods-TransactionModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TransactionModule.debug.xcconfig"; path = "Target Support Files/Pods-TransactionModule/Pods-TransactionModule.debug.xcconfig"; sourceTree = "<group>"; };
 		AE2D410ED02563A76864D651 /* Pods_TransactionModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TransactionModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD93F446527C79081DC45CA8 /* Pods-TransactionModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TransactionModule.release.xcconfig"; path = "Target Support Files/Pods-TransactionModule/Pods-TransactionModule.release.xcconfig"; sourceTree = "<group>"; };
@@ -146,6 +152,8 @@
 		A64F1D51290B8123000D4733 /* TxSettings */ = {
 			isa = PBXGroup;
 			children = (
+				A64F1D80290BE3BB000D4733 /* ViewModels */,
+				A64F1D7F290BE3B3000D4733 /* Views */,
 				A64F1D52290B8132000D4733 /* TransactionSettingPopup.swift */,
 				A64F1D53290B8132000D4733 /* TransactionSettingPopup.xib */,
 				A64F1D56290B817C000D4733 /* TransactionSettingBasicTab.swift */,
@@ -153,9 +161,26 @@
 				A64F1D5A290B818E000D4733 /* TransactionSettingAdvancedTab.swift */,
 				A64F1D5B290B818E000D4733 /* TransactionSettingAdvancedTab.xib */,
 				A64F1D5E290B8992000D4733 /* TxSettingObject.swift */,
-				A64F1D73290BBF19000D4733 /* TransactionSettingBasicTabViewModel.swift */,
+				A64F1D7B290BCC53000D4733 /* BaseTransactionSettingTab.swift */,
 			);
 			path = TxSettings;
+			sourceTree = "<group>";
+		};
+		A64F1D7F290BE3B3000D4733 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A64F1D80290BE3BB000D4733 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */,
+				A64F1D73290BBF19000D4733 /* TransactionSettingBasicTabViewModel.swift */,
+				A64F1D81290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -270,6 +295,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A64F1D84290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift in Sources */,
+				A64F1D7C290BCC53000D4733 /* BaseTransactionSettingTab.swift in Sources */,
+				A64F1D82290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift in Sources */,
 				A64F1D58290B817C000D4733 /* TransactionSettingBasicTab.swift in Sources */,
 				A64F1D74290BBF19000D4733 /* TransactionSettingBasicTabViewModel.swift in Sources */,
 				A64F1D5F290B8992000D4733 /* TxSettingObject.swift in Sources */,

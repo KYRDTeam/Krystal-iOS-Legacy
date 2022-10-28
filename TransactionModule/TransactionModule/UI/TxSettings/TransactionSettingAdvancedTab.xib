@@ -9,13 +9,15 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionSettingAdvancedTab" customModule="TransactionModule" customModuleProvider="target">
             <connections>
+                <outlet property="estimatedGasLabel" destination="teV-7B-8uT" id="ADl-JQ-n9j"/>
+                <outlet property="estimatedGasUsdValueLabel" destination="akH-kl-Sx9" id="gkA-RC-pG4"/>
                 <outlet property="totalGasView" destination="KmT-Ya-q4y" id="b9j-GC-sxH"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

@@ -12,27 +12,22 @@ import BigInt
 import Dependencies
 import AppState
 import Utilities
+import BaseWallet
 
-class TransactionSettingBasicTabViewModel {
+class TransactionSettingBasicTabViewModel: BaseTransactionSettingTabViewModel {
     
-    var selectedGasType: GasType = .regular
-    var gasConfig: GasConfig
-    var gasLimit: BigInt = BigInt(120_000)
+    var settingObject: TxSettingObject
     
-    init(gasConfig: GasConfig) {
-        self.gasConfig = gasConfig
+    init(gasConfig: GasConfig, settingObject: TxSettingObject, chain: ChainType) {
+        self.settingObject = settingObject
+        super.init(gasConfig: gasConfig, chain: chain)
     }
     
-    func gasPrice(gasType: GasType) -> BigInt {
-        switch gasType {
-        case .slow:
-            return gasConfig.lowGas
-        case .regular:
-            return gasConfig.standardGas
-        case .fast:
-            return gasConfig.fastGas
-        case .superFast:
-            return gasConfig.superFastGas
+    func selectGasType(gasType: GasType) {
+        if settingObject.basic == nil {
+            settingObject = .init(basic: .init(gasType: gasType), advanced: nil)
+        } else {
+            settingObject.basic?.gasType = gasType
         }
     }
     
@@ -50,7 +45,7 @@ class TransactionSettingBasicTabViewModel {
     }
     
     func getEstimatedGasFee(gasType: GasType) -> String {
-        let fee = gasPrice(gasType: gasType) * gasLimit
+        let fee = getGasPrice(gasType: gasType) * gasLimit
         let feeString: String = NumberFormatUtils.gasFeeFormat(number: fee)
         let quoteToken = AppState.shared.currentChain.customRPC().quoteToken
         return "~ \(feeString) \(quoteToken)"

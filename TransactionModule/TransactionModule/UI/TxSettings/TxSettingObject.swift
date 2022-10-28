@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import BigInt
 
 public enum GasType {
     case slow
@@ -14,6 +15,20 @@ public enum GasType {
     case superFast
 }
 
-public class TxSettingObject {
+public struct TxSettingObject {
+    var basic: TxBasicSetting?
+    var advanced: TxAdvancedSetting?
+    
+    public static let `default`: TxSettingObject = .init(basic: .init(gasType: .regular), advanced: nil)
+}
+
+public struct TxBasicSetting {
     var gasType: GasType = .regular
+}
+
+public struct TxAdvancedSetting {
+    var gasLimit: BigInt
+    var maxFee: BigInt
+    var maxPriorityFee: BigInt
+    var nonce: Int
 }

@@ -10,7 +10,7 @@ import DesignSystem
 import BaseWallet
 import AppState
 
-class TransactionSettingBasicTab: UIViewController {
+class TransactionSettingBasicTab: BaseTransactionSettingTab {
     @IBOutlet weak var superFastRadioButton: RadioButton!
     @IBOutlet weak var fastRadioButton: RadioButton!
     @IBOutlet weak var regularRadioButton: RadioButton!
@@ -31,6 +31,7 @@ class TransactionSettingBasicTab: UIViewController {
     @IBOutlet weak var slowGasAmount: UILabel!
     
     var viewModel: TransactionSettingBasicTabViewModel!
+    var onUpdateSettings: ((TxSettingObject) -> ())?
     
     var currentChain: ChainType {
         return AppState.shared.currentChain
@@ -67,41 +68,62 @@ class TransactionSettingBasicTab: UIViewController {
     @IBAction func superFastTapped(_ sender: Any) {
         uncheckAll()
         superFastRadioButton.isChecked = true
+        selectGasType(gasType: .superFast)
     }
     
     @IBAction func fastTapped(_ sender: Any) {
         uncheckAll()
         fastRadioButton.isChecked = true
+        selectGasType(gasType: .fast)
     }
     
     @IBAction func regularTapped(_ sender: Any) {
         uncheckAll()
         regularRadioButton.isChecked = true
+        selectGasType(gasType: .regular)
     }
     
     @IBAction func slowTapped(_ sender: Any) {
         uncheckAll()
         slowRadioButton.isChecked = true
+        selectGasType(gasType: .slow)
     }
     
     @IBAction func superFastContentTapped(_ sender: Any) {
         uncheckAll()
         superFastRadioButton.isChecked = true
+        selectGasType(gasType: .superFast)
     }
     
     @IBAction func fastContentTapped(_ sender: Any) {
         uncheckAll()
         fastRadioButton.isChecked = true
+        selectGasType(gasType: .fast)
     }
     
     @IBAction func regularContentTapped(_ sender: Any) {
         uncheckAll()
         regularRadioButton.isChecked = true
+        selectGasType(gasType: .regular)
     }
     
     @IBAction func slowContentTapped(_ sender: Any) {
         uncheckAll()
         slowRadioButton.isChecked = true
+        selectGasType(gasType: .slow)
+    }
+    
+    func selectGasType(gasType: GasType) {
+        viewModel.selectGasType(gasType: gasType)
+        onUpdateSettings?(viewModel.settingObject)
+        estimatedGasAmountLabel.text = viewModel.getEstimatedGasFee(setting: viewModel.settingObject)
+        estimatedGasUsdValueLabel.text = viewModel.getMaxFeeString(setting: viewModel.settingObject)
+    }
+    
+    func updateSettings(settings: TxSettingObject) {
+        viewModel.settingObject = settings
+        estimatedGasAmountLabel.text = viewModel.getEstimatedGasFee(setting: settings)
+        estimatedGasUsdValueLabel.text = viewModel.getMaxFeeString(setting: settings)
     }
     
 }

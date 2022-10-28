@@ -10,6 +10,8 @@ import Utilities
 import FittedSheets
 import DesignSystem
 import Dependencies
+import AppState
+import BaseWallet
 
 public class TransactionSettingPopup: UIViewController {
     @IBOutlet weak var segmentControl: SegmentedControl!
@@ -20,6 +22,8 @@ public class TransactionSettingPopup: UIViewController {
     var onCancelled: (() -> ())?
     var basicTab: TransactionSettingBasicTab!
     var advancedTab: TransactionSettingAdvancedTab!
+    var settingObject: TxSettingObject = .default
+    var chain: ChainType = AppState.shared.currentChain
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -32,9 +36,27 @@ public class TransactionSettingPopup: UIViewController {
     
     func initViewControllers() {
         basicTab = TransactionSettingBasicTab.instantiateFromNib()
-        basicTab.viewModel = TransactionSettingBasicTabViewModel(gasConfig: AppDependencies.gasConfig)
+        basicTab.viewModel = TransactionSettingBasicTabViewModel(
+            gasConfig: AppDependencies.gasConfig,
+            settingObject: settingObject,
+            chain: chain
+        )
+        basicTab.onUpdateSettings = { [weak self] settings in
+            self?.settingObject = settings
+            self?.advancedTab.updateSettings(settings: settings)
+        }
         
         advancedTab = TransactionSettingAdvancedTab.instantiateFromNib()
+        advancedTab.viewModel = TransactionSettingAdvancedTabViewModel(
+            gasConfig: AppDependencies.gasConfig,
+            settingObject: settingObject,
+            chain: chain
+        )
+        advancedTab.onUpdateSettings = { [weak self] settings in
+            self?.settingObject = settings
+            self?.basicTab.updateSettings(settings: settings)
+        }
+        
         controllers = [basicTab, advancedTab]
     }
     
