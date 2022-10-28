@@ -22,6 +22,7 @@ struct Images {
   static let exploreBridgeIcon = UIImage(named: "bridge_icon")!
   static let exploreScannerIcon = UIImage(named: "scan")!
   static let exploreStakeIcon = UIImage(named: "stake_icon")!
+    static let exploreApprovalIcon = UIImage(named: "menu_approval")!
   
   // History
   static let giftIcon = UIImage(named: "gift_icon")!
@@ -82,4 +83,8 @@ struct Images {
   // Wallet connect
   static let connectSuccess = UIImage(named: "connect_success")!
   static let connectFailed = UIImage(named: "connect_fail")!
+    
+    // Notfound
+    static let noApprovals = UIImage(named: "ic_unlink")!
+    static let noRecords = UIImage(named: "ic_no_records")!
 }

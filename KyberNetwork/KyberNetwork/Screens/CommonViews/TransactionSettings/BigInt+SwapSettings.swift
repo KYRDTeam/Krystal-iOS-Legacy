@@ -35,7 +35,7 @@ extension BigInt {
     if let usdRate = KNGeneralProvider.shared.quoteTokenPrice?.usd, let gasLimit = rate?.estimatedGas {
       let fee = self * BigInt(gasLimit)
       let usdAmt = fee * BigInt(usdRate * pow(10.0, 18.0)) / BigInt(10).power(18)
-      let usdString = NumberFormatUtils.usdAmount(value: usdAmt, decimals: 18)
+      let usdString = NumberFormatUtils.gasFee(value: usdAmt)
       
       return "~$\(usdString) • \(typeString)"
     } else {

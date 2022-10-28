@@ -90,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             parameters[element.name] = element.value
           })
           if components.path == "/swap" {
-            self.coordinator?.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+            self.coordinator?.swapV2Coordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
           } else {
             self.coordinator?.overviewTabCoordinator?.navigationController.openSafari(with: url)
           }
@@ -222,12 +222,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     })
     
     if components.path == "/swap" {
-      
-      if FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.swapV2) {
         self.coordinator.swapV2Coordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
-      } else {
-        self.coordinator.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
-      }
     } else if components.path == "/token" {
       self.coordinator.overviewTabCoordinator?.navigationController.tabBarController?.selectedIndex = 0
       self.coordinator.overviewTabCoordinator?.navigationController.popToRootViewController(animated: false)

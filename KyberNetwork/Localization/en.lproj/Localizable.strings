@@ -864,6 +864,8 @@
 "multi.receive" = "Multi-receive";
 "x.transfers" = "%d Transfers";
 "1.transfer" = "1 Transfer";
+"supply" = "Supply";
+"withdraw" = "Withdraw";
 
 // Receive screen
 "receive_screen_warning_text" = "Send only %@ token or %@ to this address. Sending any other token may result in loss of your deposit.";
@@ -989,3 +991,13 @@
 "search.token" = "Search token";
 "earn.is.currently.not.supported.on.this.chain.yet" = "Earn is currently not supported on this chain yet.";
 "no.tokens.deposited" = "No tokens deposited yet.";
+
+// Approval
+"approval.search.placeholder" = "Symbol, name, address";
+"approval.menu.title" = "Token Approvals";
+"unlimited.allowance" = "Unlimited";
+"total.allowance" = "Total Allowance";
+"total.allowance.format" = "Total Allowance: $%@";
+"total.allowance.description" = "This is the total amount of funds in your wallet that can be accessed by smart contracts that you've previously approved. These funds may be lost if the smart contract is compromised by a hacker.";
+"approvals.no.risk" = "Don’t worry, you have NO risk now :D";
+"approvals.no.records.found" = "No records found";

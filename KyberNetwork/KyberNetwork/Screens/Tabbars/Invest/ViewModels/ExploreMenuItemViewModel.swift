@@ -42,6 +42,8 @@ class ExploreMenuItemViewModel {
       return Strings.scanner
     case .stake:
       return Strings.Staking
+    case .approvals:
+        return Strings.approvalMenuTitle
     }
   }
   
@@ -71,7 +73,18 @@ class ExploreMenuItemViewModel {
       return Images.exploreScannerIcon
     case .stake:
       return Images.exploreStakeIcon
+    case .approvals:
+        return Images.exploreApprovalIcon
     }
   }
+    
+    var isNewFeature: Bool {
+        switch item {
+        case .approvals:
+            return true
+        default:
+            return false
+        }
+    }
   
 }

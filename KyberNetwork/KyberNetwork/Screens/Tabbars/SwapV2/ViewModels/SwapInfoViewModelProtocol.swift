@@ -107,19 +107,19 @@ extension SwapInfoViewModelProtocol {
           return Strings.custom
         }
       }()
-      return "$\(NumberFormatUtils.usdAmount(value: feeInUSD, decimals: 18)) • \(typeString)"
+      return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
     }
     let typeString = Strings.custom
-    return "$\(NumberFormatUtils.usdAmount(value: feeInUSD, decimals: 18)) • \(typeString)"
+    return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
   }
   
   func getMaxNetworkFeeString(rate: Rate) -> String {
     if let basic = settings.basic {
       let feeInUSD = self.getGasFeeUSD(estGas: gasLimit, gasPrice: self.getGasPrice(forType: basic.gasPriceType))
-      return "$\(NumberFormatUtils.usdAmount(value: feeInUSD, decimals: 18))"
+      return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
     } else if let advanced = settings.advanced {
       let feeInUSD = self.getGasFeeUSD(estGas: gasLimit, gasPrice: advanced.maxFee)
-      return "$\(NumberFormatUtils.usdAmount(value: feeInUSD, decimals: 18))"
+      return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
     }
     return ""
   }

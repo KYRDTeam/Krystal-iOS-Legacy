@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwapModule
 import Dependencies
 import UIKit
 import KrystalWallets
@@ -65,9 +64,9 @@ class AppRouter: AppRouterProtocol, Coordinator {
     UIApplication.shared.topMostViewController()?.present(popup, animated: true, completion: nil)
   }
   
-  func createSwapViewController() -> UIViewController {
-    return SwapModule.createSwapViewController()
-  }
+//  func createSwapViewController() -> UIViewController {
+//    return SwapModule.createSwapViewController()
+//  }
   
   func openTransactionHistory() {
     guard let navigation = UIApplication.shared.topMostViewController() as? UINavigationController else { return }

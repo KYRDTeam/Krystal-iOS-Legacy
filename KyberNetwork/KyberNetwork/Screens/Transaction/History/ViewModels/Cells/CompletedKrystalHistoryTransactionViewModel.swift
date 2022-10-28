@@ -142,6 +142,10 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       return Strings.multiSend.uppercased()
     case .multiReceive:
       return Strings.multiReceive.uppercased()
+    case .supply:
+        return Strings.supply.uppercased()
+    case .withdraw:
+        return Strings.withdraw.uppercased()
     default:
       return Strings.contractExecution.uppercased()
     }
