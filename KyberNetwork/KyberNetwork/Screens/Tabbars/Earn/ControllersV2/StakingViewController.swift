@@ -8,14 +8,20 @@
 import UIKit
 import BigInt
 
+enum FormState {
+  case valid
+  case error(msg: String)
+}
 
 class StakingViewModel {
   let pool: EarnPoolModel
   let selectedPlatform: EarnPlatform
   let apiService = KrystalService()
-  var optionDetail: Observable<EarningToken?> = .init(nil)
+  var optionDetail: Observable<[EarningToken]?> = .init(nil)
   var error: Observable<Error?> = .init(nil)
-  var amount:  Observable<String> = .init("")
+  var amount: Observable<String> = .init("")
+  var selectedEarningToken: Observable<EarningToken?> = .init(nil)
+  var formState: Observable<FormState> = .init(.valid)
   
   init(pool: EarnPoolModel, platform: EarnPlatform) {
     self.pool = pool
@@ -38,7 +44,8 @@ class StakingViewModel {
     apiService.getStakingOptionDetail(platform: selectedPlatform.name, earningType: selectedPlatform.type, chainID: "\(pool.chainID)", tokenAddress: pool.token.address) { result in
       switch result {
       case .success(let detail):
-        self.optionDetail.value = detail.first
+        self.optionDetail.value = detail
+        self.selectedEarningToken.value = detail.first
       case .failure(let error):
         self.error.value = error
       }
@@ -46,13 +53,13 @@ class StakingViewModel {
   }
   
   var displayAmountReceive: String {
-    guard let detail = optionDetail.value, !amount.value.isEmpty, let amountDouble = Double(amount.value) else { return "---" }
+    guard let detail = selectedEarningToken.value, !amount.value.isEmpty, let amountDouble = Double(amount.value) else { return "---" }
     let receiveAmt = detail.exchangeRate * amountDouble
     return receiveAmt.description + " " + detail.symbol
   }
   
   var displayRate: String {
-    guard let detail = optionDetail.value else { return "---" }
+    guard let detail = selectedEarningToken.value else { return "---" }
     return "1 \(pool.token.symbol) = \(detail.exchangeRate) \(detail.symbol)"
   }
   
@@ -76,6 +83,12 @@ class StakingViewController: InAppBrowsingViewController {
   @IBOutlet weak var amountReceiveInfoView: SwapInfoView!
   @IBOutlet weak var rateInfoView: SwapInfoView!
   @IBOutlet weak var networkFeeInfoView: SwapInfoView!
+  
+  @IBOutlet weak var earningTokenContainerView: StakingEarningTokensView!
+  @IBOutlet weak var infoAreaTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var errorMsgLabel: UILabel!
+  @IBOutlet weak var amountFieldContainerView: UIView!
+  
   var viewModel: StakingViewModel!
   var keyboardTimer: Timer?
   
@@ -98,6 +111,8 @@ class StakingViewController: InAppBrowsingViewController {
     
     networkFeeInfoView.setTitle(title: "Network Fee", underlined: false)
     networkFeeInfoView.iconImageView.isHidden = true
+    
+    earningTokenContainerView.delegate = self
   }
   
   fileprivate func updateRateInfoView() {
@@ -105,17 +120,46 @@ class StakingViewController: InAppBrowsingViewController {
     self.rateInfoView.setValue(value: self.viewModel.displayRate)
   }
   
+  fileprivate func updateUIEarningTokenView() {
+    if let data = viewModel.optionDetail.value, data.count <= 1 {
+      earningTokenContainerView.isHidden = true
+      infoAreaTopContraint.constant = 40
+    } else {
+      earningTokenContainerView.isHidden = false
+      infoAreaTopContraint.constant = 211
+    }
+  }
+  
+  fileprivate func updateUIError() {
+    switch viewModel.formState.value {
+    case .valid:
+      amountFieldContainerView.rounded(radius: 16)
+      errorMsgLabel.text = ""
+    case .error(let msg):
+      amountFieldContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
+      errorMsgLabel.text = msg
+    }
+  }
+  
   private func bindingViewModel() {
     stakeMainHeaderLabel.text = viewModel.displayMainHeader
     stakeTokenLabel.text = viewModel.displayStakeToken
     stakeTokenImageView.setImage(urlString: viewModel.pool.token.logo, symbol: viewModel.pool.token.symbol)
     apyInfoView.setValue(value: viewModel.selectedPlatform.apy.description, highlighted: true)
-    viewModel.optionDetail.observeAndFire(on: self) { _ in
+    viewModel.selectedEarningToken.observeAndFire(on: self) { _ in
       self.updateRateInfoView()
-      
+    }
+    viewModel.optionDetail.observeAndFire(on: self) { data in
+      if let unwrap = data {
+        self.earningTokenContainerView.updateData(unwrap)
+      }
+      self.updateUIEarningTokenView()
     }
     viewModel.amount.observeAndFire(on: self) { _ in
       self.updateRateInfoView()
+    }
+    viewModel.formState.observeAndFire(on: self) { _ in
+      self.updateUIError()
     }
   }
 
@@ -153,17 +197,13 @@ extension StakingViewController: UITextFieldDelegate {
   }
   
   func textFieldDidEndEditing(_ textField: UITextField) {
-    _ = self.showWarningInvalidAmountDataIfNeeded()
+    showWarningInvalidAmountDataIfNeeded()
   }
   
-  fileprivate func showWarningInvalidAmountDataIfNeeded(isConfirming: Bool = false) -> Bool {
-    if !isConfirming { return false }
+  fileprivate func showWarningInvalidAmountDataIfNeeded() {
     guard !self.viewModel.amount.value.isEmpty else {
-      self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.input", value: "Invalid input", comment: ""),
-        message: NSLocalizedString("please.enter.an.amount.to.continue", value: "Please enter an amount to continue", comment: "")
-      )
-      return true
+      viewModel.formState.value = .error(msg: "invalid.input".toBeLocalised())
+      return
     }
 //    guard self.viewModel.isEnoughFee else {
 //      self.showWarningTopBannerMessage(
@@ -174,19 +214,23 @@ extension StakingViewController: UITextFieldDelegate {
 //    }
 
     guard !self.viewModel.isAmountTooSmall else {
-      self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
-        message: NSLocalizedString("amount.to.send.greater.than.zero", value: "Amount to transfer should be greater than zero", comment: "")
-      )
-      return true
+      viewModel.formState.value = .error(msg: "amount.to.send.greater.than.zero".toBeLocalised())
+      return
     }
     guard !self.viewModel.isAmountTooBig else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
         message: NSLocalizedString("balance.not.enough.to.make.transaction", value: "Balance is not be enough to make the transaction.", comment: "")
       )
-      return true
+      viewModel.formState.value = .error(msg: "balance.not.enough.to.make.transaction".toBeLocalised())
+      return
     }
-    return false
+    viewModel.formState.value = .valid
+  }
+}
+
+extension StakingViewController: StakingEarningTokensViewDelegate {
+  func didSelectEarningToken(_ token: EarningToken) {
+    viewModel.selectedEarningToken.value = token
   }
 }

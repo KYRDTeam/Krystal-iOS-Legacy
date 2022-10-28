@@ -1021,6 +1021,10 @@
 		C347DA3925C02BE3000D6E81 /* EarnMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C347DA3725C02BE3000D6E81 /* EarnMenuViewController.xib */; };
 		C347DA3F25C03144000D6E81 /* EarnMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C347DA3D25C03144000D6E81 /* EarnMenuTableViewCell.swift */; };
 		C347DA4025C03144000D6E81 /* EarnMenuTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C347DA3E25C03144000D6E81 /* EarnMenuTableViewCell.xib */; };
+		C348E1AD290B8C70001CE430 /* StakingEarningTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348E1AC290B8C70001CE430 /* StakingEarningTokensView.swift */; };
+		C348E1AF290B8CB1001CE430 /* StakingEarningTokensView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C348E1AE290B8CB1001CE430 /* StakingEarningTokensView.xib */; };
+		C348E1B2290B99B1001CE430 /* EarningTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348E1B0290B99B1001CE430 /* EarningTokenCell.swift */; };
+		C348E1B3290B99B1001CE430 /* EarningTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C348E1B1290B99B1001CE430 /* EarningTokenCell.xib */; };
 		C34A2265277AE64300F240B8 /* BrowserOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34A2263277AE64200F240B8 /* BrowserOptionsViewController.swift */; };
 		C34A2266277AE64300F240B8 /* BrowserOptionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C34A2264277AE64300F240B8 /* BrowserOptionsViewController.xib */; };
 		C3502D9029090D2700C48391 /* StakingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3502D8E29090D2700C48391 /* StakingViewController.swift */; };
@@ -2301,6 +2305,10 @@
 		C347DA3725C02BE3000D6E81 /* EarnMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnMenuViewController.xib; sourceTree = "<group>"; };
 		C347DA3D25C03144000D6E81 /* EarnMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnMenuTableViewCell.swift; sourceTree = "<group>"; };
 		C347DA3E25C03144000D6E81 /* EarnMenuTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnMenuTableViewCell.xib; sourceTree = "<group>"; };
+		C348E1AC290B8C70001CE430 /* StakingEarningTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingEarningTokensView.swift; sourceTree = "<group>"; };
+		C348E1AE290B8CB1001CE430 /* StakingEarningTokensView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingEarningTokensView.xib; sourceTree = "<group>"; };
+		C348E1B0290B99B1001CE430 /* EarningTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarningTokenCell.swift; sourceTree = "<group>"; };
+		C348E1B1290B99B1001CE430 /* EarningTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarningTokenCell.xib; sourceTree = "<group>"; };
 		C34A2263277AE64200F240B8 /* BrowserOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserOptionsViewController.swift; sourceTree = "<group>"; };
 		C34A2264277AE64300F240B8 /* BrowserOptionsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BrowserOptionsViewController.xib; sourceTree = "<group>"; };
 		C3502D8E29090D2700C48391 /* StakingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingViewController.swift; sourceTree = "<group>"; };
@@ -4742,6 +4750,8 @@
 				7E2A2EA928F697FD00AB9A77 /* EarnPoolViewCell.xib */,
 				7E38C6EA28F6CD8700866390 /* EarnPoolPlatformCell.swift */,
 				7E38C6EB28F6CD8700866390 /* EarnPoolPlatformCell.xib */,
+				C348E1B0290B99B1001CE430 /* EarningTokenCell.swift */,
+				C348E1B1290B99B1001CE430 /* EarningTokenCell.xib */,
 			);
 			path = CellsV2;
 			sourceTree = "<group>";
@@ -6206,6 +6216,7 @@
 		C347DA2D25C0298F000D6E81 /* Earn */ = {
 			isa = PBXGroup;
 			children = (
+				C348E1AB290B8B7C001CE430 /* Views */,
 				7E7EC8EF28FFE4EB005BB579 /* ViewModels */,
 				7EAD2B1828F94A7E001FC888 /* Models */,
 				7EAD2B1528F9391C001FC888 /* Services */,
@@ -6260,6 +6271,15 @@
 				C3F71C99261B27B800285935 /* EarnTutorialCell.xib */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		C348E1AB290B8B7C001CE430 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C348E1AC290B8C70001CE430 /* StakingEarningTokensView.swift */,
+				C348E1AE290B8CB1001CE430 /* StakingEarningTokensView.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		C360D21B255E94DB00B166E0 /* CustomTransition */ = {
@@ -7045,6 +7065,7 @@
 				7E62A41728AB4FC100319436 /* CreateWalletViewController.xib in Resources */,
 				7E59E5812872E80C00DFD01C /* Settings.bundle in Resources */,
 				C308BC1626D897290030022B /* ConfirmSendNFTViewController.xib in Resources */,
+				C348E1AF290B8CB1001CE430 /* StakingEarningTokensView.xib in Resources */,
 				C3F367BF25C3F63E003207B7 /* EarnSelectTableViewCell.xib in Resources */,
 				A651945028362E54008F4AEB /* TxInfoCell.xib in Resources */,
 				C35E9DFD27E1BDF500E1E7CE /* PromoCodeDetailViewController.xib in Resources */,
@@ -7207,6 +7228,7 @@
 				C3EE06BD267A15E50090B432 /* Karla-ExtraBold.ttf in Resources */,
 				C347DA4025C03144000D6E81 /* EarnMenuTableViewCell.xib in Resources */,
 				25929C9B20DA5CC10045CFA3 /* SFCompactText-Regular.otf in Resources */,
+				C348E1B3290B99B1001CE430 /* EarningTokenCell.xib in Resources */,
 				25929C7120DA5C820045CFA3 /* SF Pro Font License.rtf in Resources */,
 				C3A58E2526D49BCF00EE3801 /* OverviewAddNFTViewController.xib in Resources */,
 				25929C5320DA5C760045CFA3 /* SF-Pro-Display-Regular.otf in Resources */,
@@ -7754,6 +7776,7 @@
 				A685D4AA2849F2620066E177 /* KAddress+Codable.swift in Sources */,
 				A6DA410227F974B50078C58E /* ThreadProtectedObject.swift in Sources */,
 				A66EC316287D20D400D15FE0 /* TxApplicationInfoCell.swift in Sources */,
+				C348E1AD290B8C70001CE430 /* StakingEarningTokensView.swift in Sources */,
 				C3409E1A25AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift in Sources */,
 				255C40EB2092D64F00475871 /* KNTokenStorage.swift in Sources */,
 				C3EEA45B2671EF840011DB97 /* OverviewMainViewCell.swift in Sources */,
@@ -7802,6 +7825,7 @@
 				7E4D7FAB28AE2EC300375016 /* ConfirmBackupViewController.swift in Sources */,
 				29C0FCE5200EBAF6004A13CB /* TokenType.swift in Sources */,
 				7E1EBE452834F82A00793B6D /* BridgeSendToCell.swift in Sources */,
+				C348E1B2290B99B1001CE430 /* EarningTokenCell.swift in Sources */,
 				257740CF20579CE0003323EB /* KNSplashScreenCoordinator.swift in Sources */,
 				7E29FEE7289B8693008D01BD /* CommonBaseTokenCell.swift in Sources */,
 				C3ED1DCD2616F0090024970C /* NotificationsViewController.swift in Sources */,
