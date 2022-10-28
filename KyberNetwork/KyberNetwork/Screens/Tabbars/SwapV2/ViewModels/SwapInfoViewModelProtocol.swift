@@ -116,10 +116,10 @@ extension SwapInfoViewModelProtocol {
   func getMaxNetworkFeeString(rate: Rate) -> String {
     if let basic = settings.basic {
       let feeInUSD = self.getGasFeeUSD(estGas: gasLimit, gasPrice: self.getGasPrice(forType: basic.gasPriceType))
-      return "$\(NumberFormatUtils.usdAmount(value: feeInUSD, decimals: 18))"
+      return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
     } else if let advanced = settings.advanced {
       let feeInUSD = self.getGasFeeUSD(estGas: gasLimit, gasPrice: advanced.maxFee)
-      return "$\(NumberFormatUtils.usdAmount(value: feeInUSD, decimals: 18))"
+      return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
     }
     return ""
   }
