@@ -5,6 +5,7 @@
 //  Created by Com1 on 25/10/2022.
 //
 import UIKit
+import DesignSystem
 
 class SegmentedControl: UISegmentedControl {
   var isSetupHighlight = false
@@ -17,8 +18,9 @@ class SegmentedControl: UISegmentedControl {
     
     let deviderLine = UIImage.getSegRect(color: UIColor.clear.cgColor, andSize: CGSize(width: 1.0, height: 5))
     self.setDividerImage(deviderLine, forLeftSegmentState: .selected, rightSegmentState: .normal, barMetrics: .default)
-//    self.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "normalTextColor")!, NSAttributedString.Key.font: UIFont.Kyber.regular(with: 16)], for: .normal)
-//    self.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor")!, NSAttributedString.Key.font: UIFont.Kyber.regular(with: 16)], for: .selected)
+    
+    self.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "normalTextColor")!, NSAttributedString.Key.font: UIFont.karlaMedium(ofSize: 16)], for: .normal)
+    self.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor")!, NSAttributedString.Key.font: UIFont.karlaMedium(ofSize: 16)], for: .selected)
   }
   
   func highlightSelectedSegment(width: CGFloat? = nil) {

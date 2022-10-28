@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		724567E960E5EE407A35533D /* Pods_EarnModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5969EB6F30F2999141BBB05 /* Pods_EarnModule.framework */; };
+		7E5E7278290B7E5700156F3C /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5E7277290B7E5700156F3C /* Services.framework */; };
 		7E6EBD6029091E0800069B33 /* EarnListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5C29091E0700069B33 /* EarnListViewController.xib */; };
 		7E6EBD6129091E0800069B33 /* EarnListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5D29091E0700069B33 /* EarnListViewController.swift */; };
 		7E6EBD6229091E0800069B33 /* StakingPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5E29091E0700069B33 /* StakingPortfolioViewController.swift */; };
@@ -20,9 +21,6 @@
 		7E6EBD70290928D400069B33 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD6F290928D400069B33 /* Strings.swift */; };
 		7E6EBD72290929A400069B33 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD71290929A400069B33 /* Localizable.strings */; };
 		7E6EBD7429092ACC00069B33 /* UIColor+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD7329092ACC00069B33 /* UIColor+Kyber.swift */; };
-		7E6EBD7729092B0400069B33 /* EarnServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD7629092B0400069B33 /* EarnServices.swift */; };
-		7E6EBD7A29092C8100069B33 /* EarnPoolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD7929092C8100069B33 /* EarnPoolModel.swift */; };
-		7E6EBD7F2909306B00069B33 /* PortfolioStaking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD7E2909306B00069B33 /* PortfolioStaking.swift */; };
 		7E6EBD822909318E00069B33 /* OverviewSkeletonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD802909318E00069B33 /* OverviewSkeletonCell.xib */; };
 		7E6EBD832909318E00069B33 /* OverviewSkeletonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD812909318E00069B33 /* OverviewSkeletonCell.swift */; };
 		7E6EBD86290931E900069B33 /* StakingPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD84290931E800069B33 /* StakingPortfolioCell.swift */; };
@@ -30,7 +28,6 @@
 		7E6EBD8B2909386900069B33 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD8A2909386900069B33 /* Images.swift */; };
 		7E987F262908E92500AA5F8F /* EarnOverviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E987F252908E92500AA5F8F /* EarnOverviewController.xib */; };
 		7E987F292908F17700AA5F8F /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E987F282908F17700AA5F8F /* BaseModule.framework */; };
-		7E987F2A2908F17700AA5F8F /* BaseModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7E987F282908F17700AA5F8F /* BaseModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7EB252B92907F25200648438 /* EarnOverviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252B72907F25200648438 /* EarnOverviewController.swift */; };
 		7EB252BE2907F30300648438 /* EarnModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252BD2907F30300648438 /* EarnModule.swift */; };
 		7EB252C12907F3E100648438 /* EarnOverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252C02907F3E100648438 /* EarnOverViewModel.swift */; };
@@ -38,25 +35,14 @@
 		7EB252C52907F6AC00648438 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252C42907F6AC00648438 /* SegmentedControl.swift */; };
 		7EB252C72907F7EC00648438 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252C62907F7EC00648438 /* TypeAliases.swift */; };
 		7EB252C92907F8C300648438 /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252C82907F8C300648438 /* NSObject.swift */; };
+		7EF19ED8290B860B00358B66 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF19ED7290B860B00358B66 /* DesignSystem.framework */; };
+		7EF19EDC290B865300358B66 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF19EDB290B865300358B66 /* Utilities.framework */; };
 		A66FC3FB28F4F52100E49E86 /* EarnModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A66FC3FA28F4F52100E49E86 /* EarnModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		7E987F2B2908F17700AA5F8F /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				7E987F2A2908F17700AA5F8F /* BaseModule.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		60E45F03C79752ACE005A2BE /* Pods-EarnModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EarnModule.release.xcconfig"; path = "Target Support Files/Pods-EarnModule/Pods-EarnModule.release.xcconfig"; sourceTree = "<group>"; };
+		7E5E7277290B7E5700156F3C /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E6EBD5C29091E0700069B33 /* EarnListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EarnListViewController.xib; sourceTree = "<group>"; };
 		7E6EBD5D29091E0700069B33 /* EarnListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EarnListViewController.swift; sourceTree = "<group>"; };
 		7E6EBD5E29091E0700069B33 /* StakingPortfolioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StakingPortfolioViewController.swift; sourceTree = "<group>"; };
@@ -69,9 +55,6 @@
 		7E6EBD6F290928D400069B33 /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		7E6EBD71290929A400069B33 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		7E6EBD7329092ACC00069B33 /* UIColor+Kyber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Kyber.swift"; sourceTree = "<group>"; };
-		7E6EBD7629092B0400069B33 /* EarnServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EarnServices.swift; sourceTree = "<group>"; };
-		7E6EBD7929092C8100069B33 /* EarnPoolModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EarnPoolModel.swift; sourceTree = "<group>"; };
-		7E6EBD7E2909306B00069B33 /* PortfolioStaking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioStaking.swift; sourceTree = "<group>"; };
 		7E6EBD802909318E00069B33 /* OverviewSkeletonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverviewSkeletonCell.xib; sourceTree = "<group>"; };
 		7E6EBD812909318E00069B33 /* OverviewSkeletonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverviewSkeletonCell.swift; sourceTree = "<group>"; };
 		7E6EBD84290931E800069B33 /* StakingPortfolioCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StakingPortfolioCell.swift; sourceTree = "<group>"; };
@@ -86,6 +69,8 @@
 		7EB252C42907F6AC00648438 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		7EB252C62907F7EC00648438 /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
 		7EB252C82907F8C300648438 /* NSObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObject.swift; sourceTree = "<group>"; };
+		7EF19ED7290B860B00358B66 /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EF19EDB290B865300358B66 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66FC3F728F4F52100E49E86 /* EarnModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EarnModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66FC3FA28F4F52100E49E86 /* EarnModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EarnModule.h; sourceTree = "<group>"; };
 		B5969EB6F30F2999141BBB05 /* Pods_EarnModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EarnModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,7 +82,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7EF19EDC290B865300358B66 /* Utilities.framework in Frameworks */,
 				7E987F292908F17700AA5F8F /* BaseModule.framework in Frameworks */,
+				7EF19ED8290B860B00358B66 /* DesignSystem.framework in Frameworks */,
+				7E5E7278290B7E5700156F3C /* Services.framework in Frameworks */,
 				724567E960E5EE407A35533D /* Pods_EarnModule.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -130,33 +118,12 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		7E6EBD7529092AF800069B33 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				7E6EBD7629092B0400069B33 /* EarnServices.swift */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		7E6EBD7829092C7600069B33 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				7E6EBD7E2909306B00069B33 /* PortfolioStaking.swift */,
-				7E6EBD7929092C8100069B33 /* EarnPoolModel.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		7E6EBD7B29092D2600069B33 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utils;
-			sourceTree = "<group>";
-		};
 		7E987F272908F17700AA5F8F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7EF19EDB290B865300358B66 /* Utilities.framework */,
+				7EF19ED7290B860B00358B66 /* DesignSystem.framework */,
+				7E5E7277290B7E5700156F3C /* Services.framework */,
 				7E987F282908F17700AA5F8F /* BaseModule.framework */,
 				B5969EB6F30F2999141BBB05 /* Pods_EarnModule.framework */,
 			);
@@ -222,9 +189,6 @@
 		A66FC3F928F4F52100E49E86 /* EarnModule */ = {
 			isa = PBXGroup;
 			children = (
-				7E6EBD7B29092D2600069B33 /* Utils */,
-				7E6EBD7829092C7600069B33 /* Models */,
-				7E6EBD7529092AF800069B33 /* Services */,
 				7E6EBD66290927F900069B33 /* Cells */,
 				7EB252BF2907F3C500648438 /* ViewModel */,
 				7EB252BC2907F2A800648438 /* Resources */,
@@ -257,7 +221,6 @@
 				A66FC3F328F4F52100E49E86 /* Sources */,
 				A66FC3F428F4F52100E49E86 /* Frameworks */,
 				A66FC3F528F4F52100E49E86 /* Resources */,
-				7E987F2B2908F17700AA5F8F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -275,6 +238,9 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				KnownAssetTags = (
+					Resources,
+				);
 				LastUpgradeCheck = 1340;
 				TargetAttributes = {
 					A66FC3F628F4F52100E49E86 = {
@@ -350,7 +316,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E6EBD7F2909306B00069B33 /* PortfolioStaking.swift in Sources */,
 				7E6EBD6B2909280900069B33 /* EarnPoolPlatformCell.swift in Sources */,
 				7E6EBD6129091E0800069B33 /* EarnListViewController.swift in Sources */,
 				7E6EBD6C2909280900069B33 /* EarnPoolViewCell.swift in Sources */,
@@ -358,9 +323,7 @@
 				7EB252C72907F7EC00648438 /* TypeAliases.swift in Sources */,
 				7EB252C12907F3E100648438 /* EarnOverViewModel.swift in Sources */,
 				7EB252C32907F43B00648438 /* Observer.swift in Sources */,
-				7E6EBD7A29092C8100069B33 /* EarnPoolModel.swift in Sources */,
 				7EB252C92907F8C300648438 /* NSObject.swift in Sources */,
-				7E6EBD7729092B0400069B33 /* EarnServices.swift in Sources */,
 				7E6EBD8B2909386900069B33 /* Images.swift in Sources */,
 				7E6EBD7429092ACC00069B33 /* UIColor+Kyber.swift in Sources */,
 				7EB252B92907F25200648438 /* EarnOverviewController.swift in Sources */,

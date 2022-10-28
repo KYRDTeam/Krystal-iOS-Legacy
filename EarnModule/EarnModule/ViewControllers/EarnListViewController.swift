@@ -10,6 +10,7 @@ import SkeletonView
 import BaseModule
 import Dependencies
 import AppState
+import Services
 
 class EarnListViewController: InAppBrowsingViewController {
   @IBOutlet weak var searchTextField: UITextField!

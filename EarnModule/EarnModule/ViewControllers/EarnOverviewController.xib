@@ -257,7 +257,7 @@
                 <constraint firstItem="Pri-qj-GIm" firstAttribute="top" secondItem="ILr-eH-wbn" secondAttribute="bottom" id="r1H-EN-P5g"/>
                 <constraint firstItem="Pri-qj-GIm" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="70" id="uhd-gf-63i"/>
             </constraints>
-            <point key="canvasLocation" x="61.538461538461533" y="20.616113744075829"/>
+            <point key="canvasLocation" x="60" y="19.95073891625616"/>
         </view>
     </objects>
     <designables>
@@ -277,7 +277,7 @@
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="mainViewBgColor">
-            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0040000001899898052" green="0.0040000001899898052" blue="0.0040000001899898052" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="secondaryColor">
             <color red="0.99599999189376831" green="0.4309999942779541" blue="0.25099998712539673" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

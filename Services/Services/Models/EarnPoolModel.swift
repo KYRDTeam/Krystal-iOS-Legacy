@@ -9,13 +9,13 @@ import UIKit
 import Services
 import Utilities
 
-class EarnPoolModel {
-  let token: Token
-  let chainName: String
-  let chainLogo: String
-  let apy: Double
-  let tvl: Double
-  let platforms: [EarnPlatform]
+public class EarnPoolModel {
+  public let token: Token
+  public let chainName: String
+  public let chainLogo: String
+  public let apy: Double
+  public let tvl: Double
+  public let platforms: [EarnPlatform]
   
   init(json: JSONDictionary) {
     if let jsonData = json["token"] as? JSONDictionary {
@@ -43,13 +43,13 @@ class EarnPoolModel {
   }
 }
 
-class EarnPlatform {
-  let name: String
-  let logo: String
-  let type: String
-  let desc: String
-  let apy: Double
-  let tvl: Double
+public class EarnPlatform {
+  public let name: String
+  public let logo: String
+  public let type: String
+  public let desc: String
+  public let apy: Double
+  public let tvl: Double
 
   init(json: JSONDictionary) {
     self.name = json["name"] as? String ?? ""

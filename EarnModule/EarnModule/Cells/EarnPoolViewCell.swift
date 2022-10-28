@@ -8,6 +8,7 @@
 import UIKit
 import DesignSystem
 import Utilities
+import Services
 
 class EarnPoolViewCellViewModel {
   var isExpanse: Bool

@@ -8,6 +8,7 @@
 import UIKit
 import DesignSystem
 import Utilities
+import Services
 
 class EarnPoolPlatformCell: UITableViewCell {
   @IBOutlet weak var apyValueLabel: UILabel!

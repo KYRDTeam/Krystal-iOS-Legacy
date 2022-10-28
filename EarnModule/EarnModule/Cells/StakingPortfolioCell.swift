@@ -8,6 +8,7 @@
 import UIKit
 import BigInt
 import Utilities
+import Services
 
 struct StakingPortfolioCellModel {
   let tokenLogo: String
