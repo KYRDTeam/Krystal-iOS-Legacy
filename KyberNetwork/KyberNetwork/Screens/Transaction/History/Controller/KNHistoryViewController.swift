@@ -478,6 +478,10 @@ class KNHistoryViewController: BaseWalletOrientedViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
   }
+  
+  override func onAppSwitchAddress() {
+    EtherscanTransactionStorage.shared.updateCurrentHistoryCache()
+  }
 
   fileprivate func setupUI() {
     self.setupNavigationBar()
