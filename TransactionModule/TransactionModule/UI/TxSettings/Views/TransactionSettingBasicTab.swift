@@ -33,10 +33,6 @@ class TransactionSettingBasicTab: BaseTransactionSettingTab {
     var viewModel: TransactionSettingBasicTabViewModel!
     var onUpdateSettings: ((TxSettingObject) -> ())?
     
-    var currentChain: ChainType {
-        return AppState.shared.currentChain
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -45,7 +41,7 @@ class TransactionSettingBasicTab: BaseTransactionSettingTab {
     }
     
     func setupViews() {
-        if !currentChain.isSupportedEIP1559() {
+        if !viewModel.chain.isSupportedEIP1559() {
             totalGasView.removeFromSuperview()
         }
         superFastGasFee.attributedText = viewModel.getGasOptionText(gasType: .superFast)
@@ -57,6 +53,10 @@ class TransactionSettingBasicTab: BaseTransactionSettingTab {
         fastGasAmount.text = viewModel.getEstimatedGasFee(gasType: .fast)
         regularGasAmount.text = viewModel.getEstimatedGasFee(gasType: .regular)
         slowGasAmount.text = viewModel.getEstimatedGasFee(gasType: .slow)
+        
+        if viewModel.setting.advanced != nil {
+            self.uncheckAll()
+        }
     }
     
     func uncheckAll() {
@@ -129,6 +129,9 @@ class TransactionSettingBasicTab: BaseTransactionSettingTab {
     func updateSettings(settings: TxSettingObject) {
         viewModel.setting = settings
         reloadEstimatedGasUI()
+        if viewModel.setting.advanced != nil {
+            self.uncheckAll()
+        }
     }
     
     func reloadEstimatedGasUI() {

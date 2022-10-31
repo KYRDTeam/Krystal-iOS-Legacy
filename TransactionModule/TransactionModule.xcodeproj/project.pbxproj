@@ -154,14 +154,7 @@
 			children = (
 				A64F1D80290BE3BB000D4733 /* ViewModels */,
 				A64F1D7F290BE3B3000D4733 /* Views */,
-				A64F1D52290B8132000D4733 /* TransactionSettingPopup.swift */,
-				A64F1D53290B8132000D4733 /* TransactionSettingPopup.xib */,
-				A64F1D56290B817C000D4733 /* TransactionSettingBasicTab.swift */,
-				A64F1D57290B817C000D4733 /* TransactionSettingBasicTab.xib */,
-				A64F1D5A290B818E000D4733 /* TransactionSettingAdvancedTab.swift */,
-				A64F1D5B290B818E000D4733 /* TransactionSettingAdvancedTab.xib */,
 				A64F1D5E290B8992000D4733 /* TxSettingObject.swift */,
-				A64F1D7B290BCC53000D4733 /* BaseTransactionSettingTab.swift */,
 			);
 			path = TxSettings;
 			sourceTree = "<group>";
@@ -169,6 +162,13 @@
 		A64F1D7F290BE3B3000D4733 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A64F1D7B290BCC53000D4733 /* BaseTransactionSettingTab.swift */,
+				A64F1D52290B8132000D4733 /* TransactionSettingPopup.swift */,
+				A64F1D53290B8132000D4733 /* TransactionSettingPopup.xib */,
+				A64F1D56290B817C000D4733 /* TransactionSettingBasicTab.swift */,
+				A64F1D57290B817C000D4733 /* TransactionSettingBasicTab.xib */,
+				A64F1D5A290B818E000D4733 /* TransactionSettingAdvancedTab.swift */,
+				A64F1D5B290B818E000D4733 /* TransactionSettingAdvancedTab.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";

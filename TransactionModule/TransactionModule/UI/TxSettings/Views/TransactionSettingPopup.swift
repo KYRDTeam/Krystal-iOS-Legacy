@@ -16,6 +16,7 @@ import BaseWallet
 public class TransactionSettingPopup: UIViewController {
     @IBOutlet weak var segmentControl: SegmentedControl!
     @IBOutlet weak var pageViewContainer: UIView!
+    
     var pageController: UIPageViewController!
     var controllers: [UIViewController] = []
     var onConfirmed: ((TxSettingObject) -> ())?
@@ -87,6 +88,19 @@ public class TransactionSettingPopup: UIViewController {
             pageController.setViewControllers([controllers[0]], direction: .reverse, animated: true)
         } else {
             pageController.setViewControllers([controllers[segmentControl.selectedSegmentIndex]], direction: .forward, animated: true)
+        }
+    }
+    
+    @IBAction func confirmTapped(sender: UIButton) {
+        dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.onConfirmed?(self.settingObject)
+        }
+    }
+    
+    @IBAction func cancelTapped(sender: UIButton) {
+        dismiss(animated: true) { [weak self] in
+            self?.onCancelled?()
         }
     }
     

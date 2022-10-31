@@ -77,6 +77,9 @@
                                     <real key="value" value="14"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="cancelTappedWithSender:" destination="-1" eventType="touchUpInside" id="rCD-pl-NfM"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TuU-u1-wDh">
                             <rect key="frame" x="175" y="0.0" width="159" height="38"/>
@@ -94,6 +97,9 @@
                                     <real key="value" value="14"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="confirmTappedWithSender:" destination="-1" eventType="touchUpInside" id="xN9-rQ-Wc8"/>
+                            </connections>
                         </button>
                     </subviews>
                 </stackView>
