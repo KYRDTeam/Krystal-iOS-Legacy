@@ -909,6 +909,7 @@ enum KrytalService {
   case getEarningBalances(address: String)
   case getPendingUnstakes(address: String)
   case getEarningOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String)
+  case buildStateTx(params: JSONDictionary)
 }
 
 extension KrytalService: TargetType {
@@ -928,7 +929,7 @@ extension KrytalService: TargetType {
       urlComponents.queryItems = queryItems
       return urlComponents.url!
     case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance, .getAllLendingBalance, .getAllLendingDistributionBalance, .getMultichainBalance, .getLiquidityPool, .getEarningBalances, .getPendingUnstakes,
-        .getEarningOptionDetail:
+        .getEarningOptionDetail, .buildStateTx:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     case .getChartData(chainPath: let chainPath, address: _, quote: _, from: _), .getTokenDetail(chainPath: let chainPath, address: _):
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -1062,12 +1063,14 @@ extension KrytalService: TargetType {
       return "/v1/earning/pendingUnstakes"
     case .getEarningOptionDetail:
       return "/v1/earning/optionDetail"
+    case .buildStateTx(params: let params):
+      return "/v1/earning/buildStakeTx"
     }
   }
 
   var method: Moya.Method {
     switch self {
-    case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .claimPromotion, .sendRate, .buyCrypto:
+    case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .claimPromotion, .sendRate, .buyCrypto, .buildStateTx:
       return .post
     default:
       return .get
@@ -1532,6 +1535,8 @@ extension KrytalService: TargetType {
         "tokenAddress": tokenAddress
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .buildStateTx(params: let params):
+      return .requestParameters(parameters: params, encoding: JSONEncoding.default)
     }
   }
 

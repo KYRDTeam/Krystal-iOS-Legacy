@@ -8,10 +8,19 @@
 import UIKit
 import BigInt
 
-enum FormState {
+enum FormState: Equatable {
   case valid
   case error(msg: String)
   case empty
+  
+  static public func == (lhs: FormState, rhs: FormState) -> Bool {
+    switch (lhs, rhs) {
+    case (.valid, .valid), (.empty, .empty):
+      return true
+    default:
+      return false
+    }
+  }
 }
 
 class StakingViewModel {
@@ -23,6 +32,12 @@ class StakingViewModel {
   var amount: Observable<String> = .init("")
   var selectedEarningToken: Observable<EarningToken?> = .init(nil)
   var formState: Observable<FormState> = .init(.empty)
+  var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
+  var gasLimit: Observable<BigInt> = .init(KNGasConfiguration.earnGasLimitDefault)
+  var baseGasLimit: BigInt = KNGasConfiguration.earnGasLimitDefault
+  var txObject: Observable<TxObject?> = .init(nil)
+  var isLoading: Observable<Bool> = .init(false)
+  
   
   init(pool: EarnPoolModel, platform: EarnPlatform) {
     self.pool = pool
@@ -41,6 +56,26 @@ class StakingViewModel {
     return self.amount.value.amountBigInt(decimals: pool.token.decimals) ?? BigInt(0)
   }
   
+  var transactionFee: BigInt {
+    return self.gasPrice * self.gasLimit.value
+  }
+  
+  var feeETHString: String {
+    let string: String = self.transactionFee.displayRate(decimals: 18)
+    return "\(string) \(KNGeneralProvider.shared.quoteToken)"
+  }
+
+  var feeUSDString: String {
+    guard let price = KNTrackerRateStorage.shared.getETHPrice() else { return "" }
+    let usd = self.transactionFee * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
+    let valueString: String = usd.displayRate(decimals: 18)
+    return "(~ \(valueString) USD)"
+  }
+  
+  var displayFeeString: String {
+    return "\(feeETHString) \(feeUSDString)"
+  }
+  
   func requestOptionDetail() {
     apiService.getStakingOptionDetail(platform: selectedPlatform.name, earningType: selectedPlatform.type, chainID: "\(pool.chainID)", tokenAddress: pool.token.address) { result in
       switch result {
@@ -50,6 +85,40 @@ class StakingViewModel {
       case .failure(let error):
         self.error.value = error
       }
+    }
+  }
+  
+  var buildTxRequestParams: JSONDictionary {
+    var params: JSONDictionary = [
+      "tokenAmount": amountBigInt.description,
+      "chainID": pool.chainID,
+      "earningType": selectedPlatform.type,
+      "platform": selectedPlatform.name,
+      "userAddress": AppDelegate.session.address.addressString,
+      "tokenAddress": pool.token.address
+    ]
+    if selectedPlatform.name.lowercased() == "ankr" {
+      var useC = false
+      if selectedEarningToken.value?.name.suffix(1).description.lowercased() == "c" {
+        useC = true
+      }
+      
+      params["extraData"] = ["ankr": ["useTokenC": useC]]
+    }
+    return params
+  }
+  
+  func requestBuildStateTx(showLoading: Bool = false) {
+    if showLoading { isLoading.value = true }
+    apiService.buildStakeTx(param: buildTxRequestParams) { result in
+      switch result {
+      case .success(let tx):
+        self.txObject.value = tx
+        self.gasLimit.value = BigInt(tx.gasLimit.drop0x, radix: 16) ?? KNGasConfiguration.earnGasLimitDefault
+      case .failure(let error):
+        self.error.value = error
+      }
+      if showLoading { self.isLoading.value = false }
     }
   }
   
@@ -115,6 +184,7 @@ class StakingViewController: InAppBrowsingViewController {
     networkFeeInfoView.iconImageView.isHidden = true
     
     earningTokenContainerView.delegate = self
+    updateUIGasFee()
   }
   
   fileprivate func updateRateInfoView() {
@@ -149,6 +219,10 @@ class StakingViewController: InAppBrowsingViewController {
     }
   }
   
+  fileprivate func updateUIGasFee() {
+    networkFeeInfoView.setValue(value: viewModel.displayFeeString)
+  }
+  
   private func bindingViewModel() {
     stakeMainHeaderLabel.text = viewModel.displayMainHeader
     stakeTokenLabel.text = viewModel.displayStakeToken
@@ -170,6 +244,24 @@ class StakingViewController: InAppBrowsingViewController {
     viewModel.formState.observeAndFire(on: self) { _ in
       self.updateUIError()
     }
+    
+    viewModel.txObject.observeAndFire(on: self, observerBlock: { value in
+      guard let tx = value else { return }
+      print("[Stake] \(tx)")
+    })
+    
+    viewModel.isLoading.observeAndFire(on: self) { value in
+      if value {
+        self.displayLoading()
+      } else {
+        self.hideLoading()
+        
+      }
+    }
+    
+    viewModel.gasLimit.observeAndFire(on: self) { _ in
+      self.updateUIGasFee()
+    }
   }
 
   @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -180,6 +272,17 @@ class StakingViewController: InAppBrowsingViewController {
     viewModel.amount.value = viewModel.pool.token.getBalanceBigInt().fullString(decimals: viewModel.pool.token.decimals)
     amountTextField.text = viewModel.amount.value
   }
+  
+  @IBAction func nextButtonTapped(_ sender: UIButton) {
+//    guard viewModel.formState.value == .valid else { return }
+    if let tx = viewModel.txObject.value {
+      
+    } else {
+      viewModel.requestBuildStateTx(showLoading: true)
+    }
+    
+  }
+  
 }
 
 extension StakingViewController: UITextFieldDelegate {
@@ -207,6 +310,7 @@ extension StakingViewController: UITextFieldDelegate {
   
   @objc func keyboardPauseTyping(timer: Timer) {
     updateRateInfoView()
+    viewModel.requestBuildStateTx()
   }
   
   func textFieldDidEndEditing(_ textField: UITextField) {
