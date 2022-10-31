@@ -28,7 +28,7 @@ class EarnPoolPlatformCell: UITableViewCell {
     
   func updateUI(platform: EarnPlatform) {
     nameLabel.text = platform.name.uppercased()
-    typeLabel.text = "| \(platform.type)".uppercased()
+    typeLabel.text = "| \(platform.type)".capitalized
     platformIcon.setImage(urlString: platform.logo, symbol: "")
     apyValueLabel.text = NumberFormatUtils.percent(value: platform.apy)
     tvlValueLabel.text = "$" + NumberFormatUtils.volFormat(number: platform.tvl)
