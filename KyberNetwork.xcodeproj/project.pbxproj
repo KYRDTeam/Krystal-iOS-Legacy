@@ -1036,6 +1036,8 @@
 		C3502D9129090D2700C48391 /* StakingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3502D8F29090D2700C48391 /* StakingViewController.xib */; };
 		C35136E626CCE53D006A55F4 /* OverviewNFTTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35136E426CCE53D006A55F4 /* OverviewNFTTableViewCell.swift */; };
 		C35136E726CCE53D006A55F4 /* OverviewNFTTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C35136E526CCE53D006A55F4 /* OverviewNFTTableViewCell.xib */; };
+		C352A064290FC540008947A3 /* StakingSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C352A062290FC53F008947A3 /* StakingSummaryViewController.swift */; };
+		C352A065290FC540008947A3 /* StakingSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C352A063290FC53F008947A3 /* StakingSummaryViewController.xib */; };
 		C3554D89280E5E3F0043BC1B /* SolanaUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */; };
 		C35A133326F1CEBA002B627C /* SRCountdownTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35A133226F1CEBA002B627C /* SRCountdownTimer.swift */; };
 		C35E9DEC27DB2BE000E1E7CE /* PromoCodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E9DEB27DB2BE000E1E7CE /* PromoCodeCoordinator.swift */; };
@@ -2326,6 +2328,8 @@
 		C3502D8F29090D2700C48391 /* StakingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingViewController.xib; sourceTree = "<group>"; };
 		C35136E426CCE53D006A55F4 /* OverviewNFTTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewNFTTableViewCell.swift; sourceTree = "<group>"; };
 		C35136E526CCE53D006A55F4 /* OverviewNFTTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewNFTTableViewCell.xib; sourceTree = "<group>"; };
+		C352A062290FC53F008947A3 /* StakingSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingSummaryViewController.swift; sourceTree = "<group>"; };
+		C352A063290FC53F008947A3 /* StakingSummaryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingSummaryViewController.xib; sourceTree = "<group>"; };
 		C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaUtil.swift; sourceTree = "<group>"; };
 		C35A133226F1CEBA002B627C /* SRCountdownTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRCountdownTimer.swift; sourceTree = "<group>"; };
 		C35E9DEB27DB2BE000E1E7CE /* PromoCodeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoCodeCoordinator.swift; sourceTree = "<group>"; };
@@ -4840,6 +4844,8 @@
 				7E2A2EA428F66E4E00AB9A77 /* EarnListViewController.xib */,
 				C3502D8E29090D2700C48391 /* StakingViewController.swift */,
 				C3502D8F29090D2700C48391 /* StakingViewController.xib */,
+				C352A062290FC53F008947A3 /* StakingSummaryViewController.swift */,
+				C352A063290FC53F008947A3 /* StakingSummaryViewController.xib */,
 			);
 			path = ControllersV2;
 			sourceTree = "<group>";
@@ -6983,6 +6989,7 @@
 				C3377AD025E650B00035A18D /* ChartViewController.xib in Resources */,
 				25929C6220DA5C760045CFA3 /* SF-Pro-Text-Bold.otf in Resources */,
 				25968732211DEC1D0080A33F /* KConfirmSwapViewController.xib in Resources */,
+				C352A065290FC540008947A3 /* StakingSummaryViewController.xib in Resources */,
 				C3EDDCC325C1829400A99CC8 /* EarnViewController.xib in Resources */,
 				C3285AAE277EC2A600D28BC6 /* RecentlyHistoryViewController.xib in Resources */,
 				25929C8D20DA5CC10045CFA3 /* SFCompactText-BoldItalic.otf in Resources */,
@@ -7947,6 +7954,7 @@
 				A6B3CD582811C07C005D0D66 /* PendingHistoryTransactonViewModel.swift in Sources */,
 				A6F6292D28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift in Sources */,
 				25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */,
+				C352A064290FC540008947A3 /* StakingSummaryViewController.swift in Sources */,
 				A6DA40EF27F6E1450078C58E /* ExploreBannersCell.swift in Sources */,
 				A608C45228B726A600B0B867 /* KQRCodeReaderDelegate.swift in Sources */,
 				7ECCB1FC2861711800499FA0 /* SearchResult.swift in Sources */,
