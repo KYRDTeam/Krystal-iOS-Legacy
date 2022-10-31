@@ -9,15 +9,30 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionSettingAdvancedTab" customModule="TransactionModule" customModuleProvider="target">
             <connections>
+                <outlet property="currentNonceErrorLabel" destination="1SR-IQ-DAc" id="GTx-fd-TVH"/>
+                <outlet property="equivalentMaxETHFeeLabel" destination="Wfb-gE-tOg" id="Cmp-t4-Nmw"/>
+                <outlet property="equivalentPriorityETHFeeLabel" destination="Ehc-dw-Vtp" id="2vl-Ok-cns"/>
                 <outlet property="estimatedGasLabel" destination="teV-7B-8uT" id="ADl-JQ-n9j"/>
                 <outlet property="estimatedGasUsdValueLabel" destination="akH-kl-Sx9" id="gkA-RC-pG4"/>
+                <outlet property="gasLimitErrorLabel" destination="F6t-5L-qEG" id="Mlc-xM-PLH"/>
+                <outlet property="gasLimitField" destination="pMV-dW-6Ob" id="gHy-A6-hdz"/>
+                <outlet property="maxFeeAccessoryLabel" destination="Amc-D7-ATL" id="joL-bx-mpg"/>
+                <outlet property="maxFeeErrorLabel" destination="AXC-E8-WpE" id="I72-Uq-sHl"/>
+                <outlet property="maxFeeField" destination="ad2-W4-4Kt" id="45g-62-qdN"/>
+                <outlet property="maxPriorityFeeErrorLabel" destination="qzg-Qb-8f4" id="ung-iw-Tyi"/>
+                <outlet property="maxPriorityFeeTitleLabel" destination="Beo-X2-HLq" id="QNc-3V-wlV"/>
+                <outlet property="maxPriorityInfoButton" destination="wKz-3D-N4Z" id="Skk-Iz-J7Y"/>
+                <outlet property="maxPriorityView" destination="dOU-O5-UBc" id="pAF-Qm-xlw"/>
+                <outlet property="nonceField" destination="85C-G3-Cbr" id="qbL-Ex-uxS"/>
+                <outlet property="priorityAccessoryLabel" destination="dKv-Qj-cvt" id="G3X-mT-iUY"/>
+                <outlet property="priorityField" destination="JiI-c8-QMy" id="1le-Rr-DtO"/>
                 <outlet property="totalGasView" destination="KmT-Ya-q4y" id="b9j-GC-sxH"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -98,6 +113,9 @@
                                                             </constraints>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                             <state key="normal" image="plus_icon"/>
+                                                            <connections>
+                                                                <action selector="gasLimitIncreaseTapped:" destination="-1" eventType="touchUpInside" id="4ek-54-HBi"/>
+                                                            </connections>
                                                         </button>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pMV-dW-6Ob">
                                                             <rect key="frame" x="42" y="0.0" width="251" height="42"/>
@@ -117,6 +135,9 @@
                                                             </constraints>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                             <state key="normal" image="minus_icon"/>
+                                                            <connections>
+                                                                <action selector="gasLimitDecreaseTapped:" destination="-1" eventType="touchUpInside" id="PTO-Ad-1aN"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <color key="backgroundColor" name="innerContainerBgColor"/>
@@ -146,7 +167,7 @@
                                                     <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dOU-O5-UBc">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dOU-O5-UBc" userLabel="Max priority View">
                                                     <rect key="frame" x="37" y="142" width="340" height="42"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="omP-pU-XHi">
@@ -157,6 +178,9 @@
                                                             </constraints>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                             <state key="normal" image="minus_icon"/>
+                                                            <connections>
+                                                                <action selector="priorityDecreaseTapped:" destination="-1" eventType="touchUpInside" id="LnJ-EI-A1d"/>
+                                                            </connections>
                                                         </button>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wy0-Ac-GHA">
                                                             <rect key="frame" x="70.5" y="0.0" width="199" height="42"/>
@@ -207,6 +231,9 @@
                                                             </constraints>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                             <state key="normal" image="plus_icon"/>
+                                                            <connections>
+                                                                <action selector="priorityIncreaseTapped:" destination="-1" eventType="touchUpInside" id="YvZ-nZ-b1u"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <color key="backgroundColor" name="innerContainerBgColor"/>
@@ -248,6 +275,9 @@
                                                             </constraints>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                             <state key="normal" image="minus_icon"/>
+                                                            <connections>
+                                                                <action selector="maxFeeDecreaseTapped:" destination="-1" eventType="touchUpInside" id="jQv-ss-YmO"/>
+                                                            </connections>
                                                         </button>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fig-mc-PFJ">
                                                             <rect key="frame" x="70.5" y="0.0" width="199" height="42"/>
@@ -298,6 +328,9 @@
                                                             </constraints>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                             <state key="normal" image="plus_icon"/>
+                                                            <connections>
+                                                                <action selector="maxFeeIncreaseTapped:" destination="-1" eventType="touchUpInside" id="T4i-MY-rfe"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <color key="backgroundColor" name="innerContainerBgColor"/>
@@ -340,6 +373,9 @@
                                                             </constraints>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                             <state key="normal" image="minus_icon"/>
+                                                            <connections>
+                                                                <action selector="nonceDecreaseTapped:" destination="-1" eventType="touchUpInside" id="efp-ds-cWt"/>
+                                                            </connections>
                                                         </button>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="85C-G3-Cbr">
                                                             <rect key="frame" x="42" y="0.0" width="251" height="42"/>
@@ -359,6 +395,9 @@
                                                             </constraints>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                             <state key="normal" image="plus_icon"/>
+                                                            <connections>
+                                                                <action selector="nonceIncreaseTapped:" destination="-1" eventType="touchUpInside" id="R7S-WI-KcJ"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <color key="backgroundColor" name="innerContainerBgColor"/>
@@ -455,7 +494,7 @@
                                                 <constraint firstItem="Beo-X2-HLq" firstAttribute="top" secondItem="kIJ-14-j26" secondAttribute="bottom" constant="30" id="6aJ-d3-6wI"/>
                                                 <constraint firstItem="Beo-X2-HLq" firstAttribute="leading" secondItem="JCq-TK-uZu" secondAttribute="leading" constant="37" id="7t0-OP-y5g"/>
                                                 <constraint firstItem="Qm3-ty-xmC" firstAttribute="leading" secondItem="JCq-TK-uZu" secondAttribute="leading" constant="37" id="7wK-AT-mHw"/>
-                                                <constraint firstItem="Lhe-h3-KmX" firstAttribute="top" secondItem="kIJ-14-j26" secondAttribute="bottom" constant="133" id="8cT-80-XYG"/>
+                                                <constraint firstItem="Lhe-h3-KmX" firstAttribute="top" secondItem="kIJ-14-j26" secondAttribute="bottom" priority="250" constant="30" id="8cT-80-XYG"/>
                                                 <constraint firstItem="AXC-E8-WpE" firstAttribute="top" secondItem="Qm3-ty-xmC" secondAttribute="bottom" constant="8" symbolic="YES" id="BNs-uE-nhl"/>
                                                 <constraint firstItem="Qm3-ty-xmC" firstAttribute="top" secondItem="Lhe-h3-KmX" secondAttribute="bottom" constant="12" id="CsF-3z-0jc"/>
                                                 <constraint firstItem="znG-DS-Wm5" firstAttribute="leading" secondItem="VxU-aF-eIC" secondAttribute="trailing" constant="8" symbolic="YES" id="F2t-nk-ixK"/>
@@ -481,6 +520,7 @@
                                                 <constraint firstItem="SQM-Jv-Tgq" firstAttribute="leading" secondItem="Lhe-h3-KmX" secondAttribute="trailing" constant="8" id="hHh-ck-HPe"/>
                                                 <constraint firstItem="dOU-O5-UBc" firstAttribute="top" secondItem="Beo-X2-HLq" secondAttribute="bottom" constant="12" id="k3L-Ps-XQF"/>
                                                 <constraint firstItem="SQM-Jv-Tgq" firstAttribute="top" secondItem="Lhe-h3-KmX" secondAttribute="top" id="lLB-Cy-CaZ"/>
+                                                <constraint firstItem="Lhe-h3-KmX" firstAttribute="top" secondItem="dOU-O5-UBc" secondAttribute="bottom" constant="30" id="o26-Ud-LWD"/>
                                                 <constraint firstItem="dOU-O5-UBc" firstAttribute="leading" secondItem="JCq-TK-uZu" secondAttribute="leading" constant="37" id="p8w-8U-Taq"/>
                                                 <constraint firstItem="znG-DS-Wm5" firstAttribute="top" secondItem="VxU-aF-eIC" secondAttribute="top" id="qFr-Ap-MkW"/>
                                                 <constraint firstItem="yzZ-sy-va5" firstAttribute="leading" secondItem="O52-wT-zHr" secondAttribute="trailing" constant="8" id="sXk-fd-sKl"/>

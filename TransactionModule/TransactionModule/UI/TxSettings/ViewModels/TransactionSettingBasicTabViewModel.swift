@@ -16,18 +16,11 @@ import BaseWallet
 
 class TransactionSettingBasicTabViewModel: BaseTransactionSettingTabViewModel {
     
-    var settingObject: TxSettingObject
-    
-    init(gasConfig: GasConfig, settingObject: TxSettingObject, chain: ChainType) {
-        self.settingObject = settingObject
-        super.init(gasConfig: gasConfig, chain: chain)
-    }
-    
     func selectGasType(gasType: GasType) {
-        if settingObject.basic == nil {
-            settingObject = .init(basic: .init(gasType: gasType), advanced: nil)
+        if setting.basic == nil {
+            setting = .init(basic: .init(gasType: gasType), advanced: nil)
         } else {
-            settingObject.basic?.gasType = gasType
+            setting.basic?.gasType = gasType
         }
     }
     

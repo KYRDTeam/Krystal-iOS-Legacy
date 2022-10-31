@@ -37,8 +37,8 @@ public class TransactionSettingPopup: UIViewController {
     func initViewControllers() {
         basicTab = TransactionSettingBasicTab.instantiateFromNib()
         basicTab.viewModel = TransactionSettingBasicTabViewModel(
+            settings: settingObject,
             gasConfig: AppDependencies.gasConfig,
-            settingObject: settingObject,
             chain: chain
         )
         basicTab.onUpdateSettings = { [weak self] settings in
@@ -48,14 +48,15 @@ public class TransactionSettingPopup: UIViewController {
         
         advancedTab = TransactionSettingAdvancedTab.instantiateFromNib()
         advancedTab.viewModel = TransactionSettingAdvancedTabViewModel(
+            settings: settingObject,
             gasConfig: AppDependencies.gasConfig,
-            settingObject: settingObject,
             chain: chain
         )
         advancedTab.onUpdateSettings = { [weak self] settings in
             self?.settingObject = settings
             self?.basicTab.updateSettings(settings: settings)
         }
+        advancedTab.loadViewIfNeeded()
         
         controllers = [basicTab, advancedTab]
     }

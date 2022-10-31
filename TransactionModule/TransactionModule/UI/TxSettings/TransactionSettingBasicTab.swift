@@ -41,6 +41,7 @@ class TransactionSettingBasicTab: BaseTransactionSettingTab {
         super.viewDidLoad()
 
         setupViews()
+        reloadEstimatedGasUI()
     }
     
     func setupViews() {
@@ -115,15 +116,32 @@ class TransactionSettingBasicTab: BaseTransactionSettingTab {
     
     func selectGasType(gasType: GasType) {
         viewModel.selectGasType(gasType: gasType)
-        onUpdateSettings?(viewModel.settingObject)
-        estimatedGasAmountLabel.text = viewModel.getEstimatedGasFee(setting: viewModel.settingObject)
-        estimatedGasUsdValueLabel.text = viewModel.getMaxFeeString(setting: viewModel.settingObject)
+        onUpdateSettings?(viewModel.setting)
+        reloadEstimatedGasUI()
     }
     
     func updateSettings(settings: TxSettingObject) {
-        viewModel.settingObject = settings
-        estimatedGasAmountLabel.text = viewModel.getEstimatedGasFee(setting: settings)
-        estimatedGasUsdValueLabel.text = viewModel.getMaxFeeString(setting: settings)
+        viewModel.setting = settings
+        reloadEstimatedGasUI()
+    }
+    
+    func reloadEstimatedGasUI() {
+        if let basic = viewModel.setting.basic {
+            viewModel.selectGasType(gasType: basic.gasType)
+            uncheckAll()
+            switch basic.gasType {
+            case .superFast:
+                superFastRadioButton.isChecked = true
+            case .fast:
+                fastRadioButton.isChecked = true
+            case .regular:
+                regularRadioButton.isChecked = true
+            case .slow:
+                slowRadioButton.isChecked = true
+            }
+        }
+        estimatedGasAmountLabel?.text = viewModel.getEstimatedGasFee()
+        estimatedGasUsdValueLabel?.text = viewModel.getMaxFeeString()
     }
     
 }

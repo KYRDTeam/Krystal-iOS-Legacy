@@ -27,6 +27,13 @@
 		A64F1D7C290BCC53000D4733 /* BaseTransactionSettingTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D7B290BCC53000D4733 /* BaseTransactionSettingTab.swift */; };
 		A64F1D82290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D81290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift */; };
 		A64F1D84290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */; };
+		A6B6ED2F290F82F200514A01 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED2E290F82F200514A01 /* AppState.framework */; };
+		A6B6ED30290F82F200514A01 /* AppState.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED2E290F82F200514A01 /* AppState.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A6B6ED32290F859700514A01 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED31290F859700514A01 /* Utilities.framework */; };
+		A6B6ED33290F859700514A01 /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED31290F859700514A01 /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A6B6ED37290F9FE700514A01 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6ED36290F9FE700514A01 /* Constants.swift */; };
+		A6B6ED39290FBAAF00514A01 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED38290FBAAF00514A01 /* Services.framework */; };
+		A6B6ED3A290FBAAF00514A01 /* Services.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED38290FBAAF00514A01 /* Services.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +43,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A6B6ED30290F82F200514A01 /* AppState.framework in Embed Frameworks */,
+				A6B6ED33290F859700514A01 /* Utilities.framework in Embed Frameworks */,
+				A6B6ED3A290FBAAF00514A01 /* Services.framework in Embed Frameworks */,
 				A64F1D71290BB8E1000D4733 /* BaseWallet.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -63,6 +73,10 @@
 		A64F1D7B290BCC53000D4733 /* BaseTransactionSettingTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionSettingTab.swift; sourceTree = "<group>"; };
 		A64F1D81290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionSettingTabViewModel.swift; sourceTree = "<group>"; };
 		A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSettingAdvancedTabViewModel.swift; sourceTree = "<group>"; };
+		A6B6ED2E290F82F200514A01 /* AppState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6B6ED31290F859700514A01 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6B6ED36290F9FE700514A01 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A6B6ED38290FBAAF00514A01 /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACB68FEDF6F817D1BE1300AD /* Pods-TransactionModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TransactionModule.debug.xcconfig"; path = "Target Support Files/Pods-TransactionModule/Pods-TransactionModule.debug.xcconfig"; sourceTree = "<group>"; };
 		AE2D410ED02563A76864D651 /* Pods_TransactionModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TransactionModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD93F446527C79081DC45CA8 /* Pods-TransactionModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TransactionModule.release.xcconfig"; path = "Target Support Files/Pods-TransactionModule/Pods-TransactionModule.release.xcconfig"; sourceTree = "<group>"; };
@@ -73,8 +87,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6B6ED32290F859700514A01 /* Utilities.framework in Frameworks */,
+				A6B6ED2F290F82F200514A01 /* AppState.framework in Frameworks */,
 				0E81F6026D12F409B8F03625 /* Pods_TransactionModule.framework in Frameworks */,
 				A64F1D68290B98C3000D4733 /* DesignSystem.framework in Frameworks */,
+				A6B6ED39290FBAAF00514A01 /* Services.framework in Frameworks */,
 				A64F1D70290BB8E1000D4733 /* BaseWallet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,6 +102,9 @@
 		0EE45598E266B0540A9D667B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6B6ED38290FBAAF00514A01 /* Services.framework */,
+				A6B6ED31290F859700514A01 /* Utilities.framework */,
+				A6B6ED2E290F82F200514A01 /* AppState.framework */,
 				A64F1D6F290BB8E1000D4733 /* BaseWallet.framework */,
 				A64F1D67290B98C3000D4733 /* DesignSystem.framework */,
 				AE2D410ED02563A76864D651 /* Pods_TransactionModule.framework */,
@@ -130,6 +150,7 @@
 				A64F1D75290BC06F000D4733 /* Localizable.strings */,
 				A64F1D77290BC093000D4733 /* Strings.swift */,
 				A64F1D79290BC0C4000D4733 /* String+.swift */,
+				A6B6ED36290F9FE700514A01 /* Constants.swift */,
 			);
 			path = TransactionModule;
 			sourceTree = "<group>";
@@ -296,6 +317,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A64F1D84290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift in Sources */,
+				A6B6ED37290F9FE700514A01 /* Constants.swift in Sources */,
 				A64F1D7C290BCC53000D4733 /* BaseTransactionSettingTab.swift in Sources */,
 				A64F1D82290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift in Sources */,
 				A64F1D58290B817C000D4733 /* TransactionSettingBasicTab.swift in Sources */,
