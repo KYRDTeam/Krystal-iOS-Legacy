@@ -427,6 +427,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     guard self.isViewLoaded else { return }
     calculatingQueue.async {
       self.viewModel.reloadAllData()
+      self.delegate?.overviewMainViewController(self, run: .pullToRefreshed(current: self.viewModel.currentMode, overviewMode: self.viewModel.overviewMode))
       DispatchQueue.main.async {
         self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
         self.tableView.reloadData()
@@ -447,6 +448,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     DispatchQueue.main.async {
       self.refreshControl.endRefreshing()
       self.view.hideSkeleton()
+      self.reloadUI()
     }
   }
   
