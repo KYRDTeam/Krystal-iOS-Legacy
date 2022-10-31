@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -26,6 +26,7 @@
                 <outlet property="maxFeeAccessoryLabel" destination="Amc-D7-ATL" id="joL-bx-mpg"/>
                 <outlet property="maxFeeErrorLabel" destination="AXC-E8-WpE" id="I72-Uq-sHl"/>
                 <outlet property="maxFeeField" destination="ad2-W4-4Kt" id="45g-62-qdN"/>
+                <outlet property="maxFeeTitleLabel" destination="Lhe-h3-KmX" id="jod-bn-pFt"/>
                 <outlet property="maxPriorityFeeErrorLabel" destination="qzg-Qb-8f4" id="ung-iw-Tyi"/>
                 <outlet property="maxPriorityFeeTitleLabel" destination="Beo-X2-HLq" id="QNc-3V-wlV"/>
                 <outlet property="maxPriorityInfoButton" destination="wKz-3D-N4Z" id="Skk-Iz-J7Y"/>
@@ -446,6 +447,9 @@
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="2"/>
                                                     <state key="normal" image="help_icon"/>
+                                                    <connections>
+                                                        <action selector="maxFeeInfoTapped:" destination="-1" eventType="touchUpInside" id="ySR-gG-WI4"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yzZ-sy-va5">
                                                     <rect key="frame" x="114.5" y="8" width="24" height="24"/>
@@ -454,6 +458,9 @@
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="2"/>
                                                     <state key="normal" image="help_icon"/>
+                                                    <connections>
+                                                        <action selector="gasLimitInfoTapped:" destination="-1" eventType="touchUpInside" id="mK0-z4-I68"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wKz-3D-N4Z">
                                                     <rect key="frame" x="158" y="111" width="24" height="24"/>
@@ -462,6 +469,9 @@
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="2"/>
                                                     <state key="normal" image="help_icon"/>
+                                                    <connections>
+                                                        <action selector="maxPriorityFeeInfoTapped:" destination="-1" eventType="touchUpInside" id="C7r-PD-QIg"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Custom Nonce:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VxU-aF-eIC">
                                                     <rect key="frame" x="37" y="333" width="111" height="19"/>
@@ -476,6 +486,9 @@
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="2"/>
                                                     <state key="normal" image="help_icon"/>
+                                                    <connections>
+                                                        <action selector="customNonceInfoTapped:" destination="-1" eventType="touchUpInside" id="bqo-RX-xBa"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolosit amet tabdauyb" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F6t-5L-qEG">
                                                     <rect key="frame" x="37" y="89" width="199.5" height="14"/>

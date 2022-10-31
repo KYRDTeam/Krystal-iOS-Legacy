@@ -31,14 +31,10 @@ class TransactionSettingAdvancedTab: UIViewController {
     @IBOutlet weak var maxPriorityFeeTitleLabel: UILabel!
     @IBOutlet weak var maxPriorityView: UIView!
     @IBOutlet weak var maxPriorityInfoButton: UIButton!
-    
+    @IBOutlet weak var maxFeeTitleLabel: UILabel!
     
     var viewModel: TransactionSettingAdvancedTabViewModel!
     var onUpdateSettings: ((TxSettingObject) -> ())?
-    
-    var currentChain: ChainType {
-        return AppState.shared.currentChain
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,13 +52,16 @@ class TransactionSettingAdvancedTab: UIViewController {
     }
     
     func setupViews() {
-        if !currentChain.isSupportedEIP1559() {
+        if !viewModel.chain.isSupportedEIP1559() {
             totalGasView.removeFromSuperview()
             maxPriorityFeeTitleLabel.removeFromSuperview()
             maxPriorityView.removeFromSuperview()
             maxPriorityInfoButton.removeFromSuperview()
             maxPriorityFeeErrorLabel.removeFromSuperview()
         }
+        
+        maxFeeTitleLabel.text = viewModel.chain.isSupportedEIP1559() ? Strings.maxFee : Strings.gasPrice
+        
         gasLimitField.delegate = self
         priorityField.delegate = self
         maxFeeField.delegate = self
@@ -202,6 +201,28 @@ class TransactionSettingAdvancedTab: UIViewController {
             nonceField.textColor = AppTheme.current.primaryTextColor
             currentNonceErrorLabel.text = nil
         }
+    }
+    
+    func showHelp(message: String) {
+        showBottomBannerView(message: message,
+                             icon: Constants.helpIcon,
+                             time: 10)
+    }
+    
+    @IBAction func gasLimitInfoTapped(_ sender: Any) {
+        showHelp(message: viewModel.chain.isSupportedEIP1559() ? Strings.gasLimitAbout : Strings.gasLimitLegacyAbout)
+    }
+    
+    @IBAction func maxPriorityFeeInfoTapped(_ sender: Any) {
+        showHelp(message: Strings.maxPriorityAbout)
+    }
+    
+    @IBAction func maxFeeInfoTapped(_ sender: Any) {
+        showHelp(message: viewModel.chain.isSupportedEIP1559() ? Strings.maxFeeAbout : Strings.gasPriceAbout)
+    }
+    
+    @IBAction func customNonceInfoTapped(_ sender: Any) {
+        showHelp(message: Strings.nonceAbout)
     }
     
     @IBAction func gasLimitDecreaseTapped(_ sender: Any) {

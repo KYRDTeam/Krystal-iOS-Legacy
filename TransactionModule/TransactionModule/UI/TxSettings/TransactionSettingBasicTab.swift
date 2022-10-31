@@ -66,6 +66,12 @@ class TransactionSettingBasicTab: BaseTransactionSettingTab {
         slowRadioButton.isChecked = false
     }
     
+    @IBAction func gasFeeAboutTapped(_ sender: Any) {
+        showBottomBannerView(message: Strings.gasFeeAbout,
+                             icon: Constants.helpIcon,
+                             time: 10)
+    }
+    
     @IBAction func superFastTapped(_ sender: Any) {
         uncheckAll()
         superFastRadioButton.isChecked = true
