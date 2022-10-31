@@ -19,7 +19,6 @@
 		A64F1D64290B9351000D4733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A64F1D63290B9351000D4733 /* Assets.xcassets */; };
 		A64F1D68290B98C3000D4733 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64F1D67290B98C3000D4733 /* DesignSystem.framework */; };
 		A64F1D70290BB8E1000D4733 /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64F1D6F290BB8E1000D4733 /* BaseWallet.framework */; };
-		A64F1D71290BB8E1000D4733 /* BaseWallet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64F1D6F290BB8E1000D4733 /* BaseWallet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A64F1D74290BBF19000D4733 /* TransactionSettingBasicTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D73290BBF19000D4733 /* TransactionSettingBasicTabViewModel.swift */; };
 		A64F1D76290BC06F000D4733 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A64F1D75290BC06F000D4733 /* Localizable.strings */; };
 		A64F1D78290BC093000D4733 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D77290BC093000D4733 /* Strings.swift */; };
@@ -28,30 +27,10 @@
 		A64F1D82290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D81290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift */; };
 		A64F1D84290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */; };
 		A6B6ED2F290F82F200514A01 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED2E290F82F200514A01 /* AppState.framework */; };
-		A6B6ED30290F82F200514A01 /* AppState.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED2E290F82F200514A01 /* AppState.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A6B6ED32290F859700514A01 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED31290F859700514A01 /* Utilities.framework */; };
-		A6B6ED33290F859700514A01 /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED31290F859700514A01 /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A6B6ED37290F9FE700514A01 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6ED36290F9FE700514A01 /* Constants.swift */; };
 		A6B6ED39290FBAAF00514A01 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED38290FBAAF00514A01 /* Services.framework */; };
-		A6B6ED3A290FBAAF00514A01 /* Services.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED38290FBAAF00514A01 /* Services.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		A64F1D72290BB8E1000D4733 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				A6B6ED30290F82F200514A01 /* AppState.framework in Embed Frameworks */,
-				A6B6ED33290F859700514A01 /* Utilities.framework in Embed Frameworks */,
-				A6B6ED3A290FBAAF00514A01 /* Services.framework in Embed Frameworks */,
-				A64F1D71290BB8E1000D4733 /* BaseWallet.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		A64F1D45290B8109000D4733 /* TransactionModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TransactionModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -227,7 +206,6 @@
 				A64F1D41290B8109000D4733 /* Sources */,
 				A64F1D42290B8109000D4733 /* Frameworks */,
 				A64F1D43290B8109000D4733 /* Resources */,
-				A64F1D72290BB8E1000D4733 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
