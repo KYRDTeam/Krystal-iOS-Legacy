@@ -9,6 +9,7 @@ import UIKit
 import BaseModule
 import DesignSystem
 import SkeletonView
+import TransactionModule
 
 class ApprovalListViewController: BaseWalletOrientedViewController {
     
@@ -170,6 +171,15 @@ extension ApprovalListViewController: UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 84
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        TransactionSettingPopup
+            .show(on: self, onConfirmed: { settingObject in
+                
+            }, onCancelled: {
+                
+            })
     }
     
 }

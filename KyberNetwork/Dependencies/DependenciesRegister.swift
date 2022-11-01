@@ -17,6 +17,8 @@ class Dependencies {
         AppDependencies.router = AppRouter()
         AppDependencies.tracker = AppTracker()
         AppDependencies.gasConfig = AppGasConfig()
+        AppDependencies.priceStorage = AppPriceStorage()
+        AppDependencies.nonceStorage = AppNonceStorage()
         
         ServiceConfig.baseAPIURL = KNEnvironment.default.krystalEndpoint
         ServiceConfig.errorTracker = AppErrorTracker()
