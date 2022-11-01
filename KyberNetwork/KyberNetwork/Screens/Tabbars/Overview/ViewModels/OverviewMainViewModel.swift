@@ -272,25 +272,27 @@ class OverviewMainViewModel {
     }
   }
   
-  func filterSmallAssetTokens(tokens: [Token]) -> [Token] {
-    let filteredTokens = tokens.filter({ token in
-      let rateBigInt = BigInt(token.getTokenLastPrice(self.currencyMode) * pow(10.0, 18.0))
-      let valueBigInt = token.getBalanceBigInt() * rateBigInt / BigInt(10).power(token.decimals)
-      if let doubleValue = Double(valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber())) {
-        return doubleValue > 0
+  func filterSmallAssetTokens(balanceModels: [BalanceModel]) -> [BalanceModel] {
+    let filterValues = balanceModels.filter { balance in
+      var doubleValue: Double = 0
+      if let currentQuoteValue = balance.quotes[self.currencyMode.toString()] {
+        doubleValue = currentQuoteValue.value
       }
-      return true
-    })
-    return filteredTokens
+      let valueString = StringFormatter.currencyString(value: doubleValue, symbol: self.currencyMode.toString())
+      return valueString.doubleValue > 0
+    }
+    return filterValues
   }
   
   func shouldShowHideButton() -> Bool {
     if self.currentChain == .all {
       return true
     } else {
-      let assetTokens = KNSupportedTokenStorage.shared.getAssetTokens()
-      let filteredTokens = filterSmallAssetTokens(tokens: assetTokens)
-      return assetTokens.count != filteredTokens.count
+      if let assetChainBalanceModels = self.assetChainBalanceModels.first {
+        let filteredTokens = filterSmallAssetTokens(balanceModels: assetChainBalanceModels.balances)
+        return assetChainBalanceModels.balances.count != filteredTokens.count
+      }
+      return false
     }
   }
   
