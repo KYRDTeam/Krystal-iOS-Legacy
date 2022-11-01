@@ -150,7 +150,7 @@ extension TransactionSettingPopup {
         popup.onCancelled = onCancelled
         popup.onConfirmed = onConfirmed
         let options = SheetOptions(pullBarHeight: 0)
-        let sheet = SheetViewController(controller: popup, sizes: [.percent(0.9)], options: options)
+        let sheet = SheetViewController(controller: popup, sizes: [.percent(0.8)], options: options)
         viewController.present(sheet, animated: true)
     }
     

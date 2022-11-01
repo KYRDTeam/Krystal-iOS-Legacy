@@ -7,6 +7,7 @@
 
 import UIKit
 import Services
+import TransactionModule
 
 class RevokeConfirmPopup: UIViewController {
     @IBOutlet weak var tokenIconImageView: UIImageView!
@@ -50,4 +51,12 @@ class RevokeConfirmPopup: UIViewController {
         }
     }
     
+    @IBAction func settingTapped(_ sender: Any) {
+        TransactionSettingPopup.show(on: self, onConfirmed: { settingObject in
+            print(settingObject)
+        }, onCancelled: {
+            return
+        })
+
+    }
 }

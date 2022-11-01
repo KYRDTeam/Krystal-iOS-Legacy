@@ -142,18 +142,18 @@ class TransactionSettingAdvancedTab: UIViewController {
                 equivalentPriorityETHFeeLabel.textColor = AppTheme.current.errorTextColor.withAlphaComponent(0.5)
                 priorityAccessoryLabel.textColor = AppTheme.current.errorTextColor
             case .empty:
-                priorityField.textColor = AppTheme.current.primaryTextColor
-                maxPriorityFeeErrorLabel.text = nil
-                equivalentPriorityETHFeeLabel.textColor = AppTheme.current.secondaryTextColor
-                priorityAccessoryLabel.textColor = AppTheme.current.primaryTextColor
+                priorityField?.textColor = AppTheme.current.primaryTextColor
+                maxPriorityFeeErrorLabel?.text = nil
+                equivalentPriorityETHFeeLabel?.textColor = AppTheme.current.secondaryTextColor
+                priorityAccessoryLabel?.textColor = AppTheme.current.primaryTextColor
             }
         } else {
-            priorityField.textColor = AppTheme.current.primaryTextColor
-            maxPriorityFeeErrorLabel.text = nil
-            equivalentPriorityETHFeeLabel.textColor = AppTheme.current.secondaryTextColor
-            priorityAccessoryLabel.textColor = AppTheme.current.primaryTextColor
+            priorityField?.textColor = AppTheme.current.primaryTextColor
+            maxPriorityFeeErrorLabel?.text = nil
+            equivalentPriorityETHFeeLabel?.textColor = AppTheme.current.secondaryTextColor
+            priorityAccessoryLabel?.textColor = AppTheme.current.primaryTextColor
         }
-        equivalentPriorityETHFeeLabel.text = viewModel.displayEquivalentPriorityETHFee
+        equivalentPriorityETHFeeLabel?.text = viewModel.displayEquivalentPriorityETHFee
     }
     
     func reloadMaxFeeUI() {
