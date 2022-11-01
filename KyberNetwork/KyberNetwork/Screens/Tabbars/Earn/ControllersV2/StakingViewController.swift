@@ -8,6 +8,13 @@
 import UIKit
 import BigInt
 
+typealias UserSettings = (BasicTransactionSettings, AdvancedTransactionSettings?)
+typealias StakeDisplayInfo = (amount: String, apy: String, receiveAmount: String, rate: String, fee: String, platform: String, stakeTokenIcon: String)
+
+protocol StakingViewControllerDelegate: class {
+  func didSelectNext(_ viewController: StakingViewController, settings: UserSettings, txObject: TxObject, displayInfo: StakeDisplayInfo)
+}
+
 enum FormState: Equatable {
   case valid
   case error(msg: String)
@@ -32,11 +39,24 @@ class StakingViewModel {
   var amount: Observable<String> = .init("")
   var selectedEarningToken: Observable<EarningToken?> = .init(nil)
   var formState: Observable<FormState> = .init(.empty)
-  var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
+  var gasPrice: Observable<BigInt> = .init(KNGasCoordinator.shared.standardKNGas)
   var gasLimit: Observable<BigInt> = .init(KNGasConfiguration.earnGasLimitDefault)
   var baseGasLimit: BigInt = KNGasConfiguration.earnGasLimitDefault
   var txObject: Observable<TxObject?> = .init(nil)
   var isLoading: Observable<Bool> = .init(false)
+  var basicSetting: BasicTransactionSettings = BasicTransactionSettings(gasPriceType: .medium) {
+    didSet {
+      let gas = self.basicSetting.gasPriceType.getGasValue()
+      self.gasPrice.value = gas
+    }
+  }
+  var advancedSetting: AdvancedTransactionSettings? = nil {
+    didSet {
+      guard let setting = self.advancedSetting else { return }
+      self.gasPrice.value = setting.maxFee
+      self.gasLimit.value = setting.gasLimit
+    }
+  }
   
   
   init(pool: EarnPoolModel, platform: EarnPlatform) {
@@ -52,12 +72,16 @@ class StakingViewModel {
     return pool.token.getBalanceBigInt().shortString(decimals: pool.token.decimals) + " " + pool.token.symbol.uppercased()
   }
   
+  var displayAPY: String {
+    return selectedPlatform.apy.description + " %"
+  }
+  
   var amountBigInt: BigInt {
     return self.amount.value.amountBigInt(decimals: pool.token.decimals) ?? BigInt(0)
   }
   
   var transactionFee: BigInt {
-    return self.gasPrice * self.gasLimit.value
+    return self.gasPrice.value * self.gasLimit.value
   }
   
   var feeETHString: String {
@@ -163,6 +187,8 @@ class StakingViewController: InAppBrowsingViewController {
   var viewModel: StakingViewModel!
   var keyboardTimer: Timer?
   
+  weak var delegate: StakingViewControllerDelegate?
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
@@ -262,6 +288,10 @@ class StakingViewController: InAppBrowsingViewController {
     viewModel.gasLimit.observeAndFire(on: self) { _ in
       self.updateUIGasFee()
     }
+    
+    viewModel.gasPrice.observeAndFire(on: self) { _ in
+      self.updateUIGasFee()
+    }
   }
 
   @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -276,7 +306,8 @@ class StakingViewController: InAppBrowsingViewController {
   @IBAction func nextButtonTapped(_ sender: UIButton) {
 //    guard viewModel.formState.value == .valid else { return }
     if let tx = viewModel.txObject.value {
-      
+      let displayInfo = ("\(viewModel.amount.value) \(viewModel.pool.token.symbol)", viewModel.displayAPY, viewModel.displayAmountReceive, viewModel.displayRate, viewModel.displayFeeString, viewModel.selectedPlatform.name, viewModel.pool.token.logo)
+      delegate?.didSelectNext(self, settings: (viewModel.basicSetting, viewModel.advancedSetting), txObject: tx, displayInfo: displayInfo)
     } else {
       viewModel.requestBuildStateTx(showLoading: true)
     }

@@ -200,6 +200,7 @@ class InvestCoordinator: Coordinator {
   private func openSetupStakeView(platform: EarnPlatform, pool: EarnPoolModel) {
     let vc = StakingViewController.instantiateFromNib()
     vc.viewModel = StakingViewModel(pool: pool, platform: platform)
+    vc.delegate = self
     navigationController.pushViewController(vc, animated: true)
   }
   
@@ -343,6 +344,12 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         coordinate(coordinator: coordinator)
     }
   
+  func openStakeSummary(txObject: TxObject, settings: UserSettings, displayInfo: StakeDisplayInfo) {
+    let vm = StakingSummaryViewModel(txObject: txObject, settings: settings, displayInfo: displayInfo)
+    let vc = StakingSummaryViewController(viewModel: vm)
+    navigationController.present(vc, animated: true)
+  }
+  
 }
 
 extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
@@ -443,4 +450,13 @@ extension InvestCoordinator: EarnOverviewV2ControllerDelegate {
   func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
     openSetupStakeView(platform: platform, pool: pool)
   }
+}
+
+extension InvestCoordinator: StakingViewControllerDelegate {
+  func didSelectNext(_ viewController: StakingViewController, settings: UserSettings, txObject: TxObject, displayInfo: StakeDisplayInfo) {
+    openStakeSummary(txObject: txObject, settings: settings, displayInfo: displayInfo)
+  }
+  
+  
+  
 }

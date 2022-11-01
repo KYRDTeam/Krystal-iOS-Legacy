@@ -7,6 +7,8 @@
 
 import UIKit
 import KrystalWallets
+import BigInt
+import AppState
 
 class StakingSummaryViewModel {
   var session: KNSession {
@@ -15,6 +17,25 @@ class StakingSummaryViewModel {
   
   var currentAddress: KAddress {
     return AppDelegate.session.address
+  }
+  
+  var gasPrice: BigInt
+  var gasLimit: BigInt
+  
+  let txObject: TxObject
+  let settings: UserSettings
+  let displayInfo: StakeDisplayInfo
+  
+  init(txObject: TxObject, settings: UserSettings, displayInfo: StakeDisplayInfo) {
+    self.txObject = txObject
+    self.settings = settings
+    self.displayInfo = displayInfo
+    self.gasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16) ?? KNGasConfiguration.earnGasLimitDefault
+    if let advanced = settings.1?.maxFee {
+      self.gasPrice = advanced
+    } else {
+      self.gasPrice = settings.0.gasPriceType.getGasValue()
+    }
   }
   
   
@@ -38,9 +59,12 @@ class StakingSummaryViewController: KNBaseViewController {
   @IBOutlet weak var feeInfoView: SwapInfoView!
   
   let transitor = TransitionDelegate()
+  let viewModel: StakingSummaryViewModel
   
-  init() {
+  init(viewModel: StakingSummaryViewModel) {
+    self.viewModel = viewModel
     super.init(nibName: StakingSummaryViewController.className, bundle: nil)
+    
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
   }
@@ -67,11 +91,30 @@ class StakingSummaryViewController: KNBaseViewController {
     feeInfoView.setTitle(title: "Network Fee", underlined: false)
     feeInfoView.iconImageView.isHidden = true
     
+    let currentChain = AppState.shared.currentChain
+    chainIconImageView.image = currentChain.squareIcon()
+    chainNameLabel.text = currentChain.chainName()
+    
+    apyInfoView.setValue(value: viewModel.displayInfo.apy)
+    receiveAmountInfoView.setValue(value: viewModel.displayInfo.receiveAmount)
+    rateInfoView.setValue(value: viewModel.displayInfo.rate)
+    feeInfoView.setValue(value: viewModel.displayInfo.fee)
+    
+    tokenIconImageView.setImage(urlString: viewModel.displayInfo.stakeTokenIcon, symbol: "")
+    tokenNameLabel.text = viewModel.displayInfo.amount
+    platformNameLabel.text = "On " + viewModel.displayInfo.platform.uppercased()
+    
+    
   }
   
   @IBAction func confirmButtonTapped(_ sender: UIButton) {
     
   }
+  
+  @IBAction func tapOutSidePopup(_ sender: UITapGestureRecognizer) {
+    dismiss(animated: true)
+  }
+  
   
 }
 
