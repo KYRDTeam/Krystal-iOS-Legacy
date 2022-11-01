@@ -27,7 +27,7 @@ class ApprovedTokenItemViewModel {
         isVerified = approval.isVerified
         spenderAddress = approval.spenderAddress?.shortTypeAddress
         let bigIntAmount = BigInt(approval.amount ?? "0") ?? .zero
-        amountString = bigIntAmount > BigInt(10).power(24)
+        amountString = bigIntAmount > BigInt(10).power(approval.decimals + 9)
                                         ? Strings.unlimitedAllowance
                                         : NumberFormatUtils.amount(value: bigIntAmount, decimals: approval.decimals)
     }
