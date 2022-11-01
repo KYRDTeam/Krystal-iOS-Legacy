@@ -16,7 +16,7 @@ import BaseWallet
 
 class TransactionSettingBasicTabViewModel: BaseTransactionSettingTabViewModel {
     
-    func selectGasType(gasType: GasType) {
+    func selectGasType(gasType: GasSpeed) {
         if setting.basic == nil {
             setting = .init(basic: .init(gasType: gasType), advanced: nil)
         } else {
@@ -24,20 +24,20 @@ class TransactionSettingBasicTabViewModel: BaseTransactionSettingTabViewModel {
         }
     }
     
-    func getGasOptionText(gasType: GasType) -> NSAttributedString {
+    func getGasOptionText(gasType: GasSpeed) -> NSAttributedString {
         switch gasType {
         case .slow:
-            return self.attributedString(for: gasConfig.lowGas, text: Strings.slow.uppercased())
+            return self.attributedString(for: gasConfig.getLowGasPrice(chain: chain), text: Strings.slow.uppercased())
         case .regular:
-            return self.attributedString(for: gasConfig.standardGas, text: Strings.regular.uppercased())
+            return self.attributedString(for: gasConfig.getStandardGasPrice(chain: chain), text: Strings.regular.uppercased())
         case .fast:
-            return self.attributedString(for: gasConfig.fastGas, text: Strings.fast.uppercased())
+            return self.attributedString(for: gasConfig.getFastGasPrice(chain: chain), text: Strings.fast.uppercased())
         case .superFast:
-            return self.attributedString(for: gasConfig.superFastGas, text: Strings.superFast.uppercased())
+            return self.attributedString(for: gasConfig.getSuperFastGasPrice(chain: chain), text: Strings.superFast.uppercased())
         }
     }
     
-    func getEstimatedGasFee(gasType: GasType) -> String {
+    func getEstimatedGasFee(gasType: GasSpeed) -> String {
         let fee = getGasPrice(gasType: gasType) * gasLimit
         let feeString: String = NumberFormatUtils.gasFeeFormat(number: fee)
         let quoteToken = AppState.shared.currentChain.customRPC().quoteToken

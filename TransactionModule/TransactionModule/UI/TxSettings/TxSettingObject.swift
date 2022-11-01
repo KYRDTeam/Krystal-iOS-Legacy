@@ -8,7 +8,7 @@
 import Foundation
 import BigInt
 
-public enum GasType {
+public enum GasSpeed {
     case slow
     case regular
     case fast
@@ -23,7 +23,7 @@ public struct TxSettingObject {
 }
 
 public struct TxBasicSetting {
-    public var gasType: GasType = .regular
+    public var gasType: GasSpeed = .regular
 }
 
 public struct TxAdvancedSetting {

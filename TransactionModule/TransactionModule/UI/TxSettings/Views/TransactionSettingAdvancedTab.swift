@@ -121,7 +121,7 @@ class TransactionSettingAdvancedTab: UIViewController {
     func reloadGasLimitUI() {
         if let gasLimitError = viewModel.gasLimitError, gasLimitError == .low {
             gasLimitField.textColor = AppTheme.current.errorTextColor
-            gasLimitErrorLabel.text = "Gas limit must be at least \(Constants.lowestGasLimit)"
+            gasLimitErrorLabel.text = "Gas limit must be at least \(TransactionConstants.lowestGasLimit)"
         } else {
             gasLimitField.textColor = AppTheme.current.primaryTextColor
             gasLimitErrorLabel.text = nil
@@ -205,7 +205,7 @@ class TransactionSettingAdvancedTab: UIViewController {
     
     func showHelp(message: String) {
         showBottomBannerView(message: message,
-                             icon: Constants.helpIcon,
+                             icon: Images.helpIcon,
                              time: 10)
     }
     

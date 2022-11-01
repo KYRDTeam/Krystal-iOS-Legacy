@@ -24,7 +24,7 @@ public class TransactionSettingPopup: UIViewController {
     var basicTab: TransactionSettingBasicTab!
     var advancedTab: TransactionSettingAdvancedTab!
     var settingObject: TxSettingObject = .default
-    var chain: ChainType = AppState.shared.currentChain
+    var chain: ChainType!
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -144,11 +144,13 @@ extension TransactionSettingPopup: UIPageViewControllerDataSource, UIPageViewCon
 extension TransactionSettingPopup {
     
     public static func show(on viewController: UIViewController,
+                            chain: ChainType,
                             onConfirmed: @escaping (TxSettingObject) -> Void,
                             onCancelled: @escaping () -> Void) {
         let popup = TransactionSettingPopup.instantiateFromNib()
         popup.onCancelled = onCancelled
         popup.onConfirmed = onConfirmed
+        popup.chain = chain
         let options = SheetOptions(pullBarHeight: 0)
         let sheet = SheetViewController(controller: popup, sizes: [.percent(0.8)], options: options)
         viewController.present(sheet, animated: true)

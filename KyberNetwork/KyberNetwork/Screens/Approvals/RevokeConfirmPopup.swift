@@ -39,6 +39,7 @@ class RevokeConfirmPopup: UIViewController {
         verifyIcon.isHidden = !viewModel.isVerified
         spenderAddressLabel.text = viewModel.spenderAddress
         allowanceLabel.text = viewModel.amountString
+        feeLabel.text = viewModel.getEstimatedGasFee()
     }
 
     @IBAction func cancelTapped(_ sender: Any) {
@@ -52,11 +53,15 @@ class RevokeConfirmPopup: UIViewController {
     }
     
     @IBAction func settingTapped(_ sender: Any) {
-        TransactionSettingPopup.show(on: self, onConfirmed: { settingObject in
-            print(settingObject)
-        }, onCancelled: {
-            return
-        })
-
+        guard let chain = ChainType.make(chainID: viewModel.approval.chainId) else { return }
+        TransactionSettingPopup
+            .show(on: self,
+                  chain: chain,
+                  onConfirmed: { settingObject in
+                      print(settingObject)
+                  },
+                  onCancelled: {
+                    return
+                  })
     }
 }

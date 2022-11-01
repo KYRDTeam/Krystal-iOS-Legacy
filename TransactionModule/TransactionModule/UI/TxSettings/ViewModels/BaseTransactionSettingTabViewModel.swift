@@ -17,7 +17,7 @@ class BaseTransactionSettingTabViewModel {
     var gasConfig: GasConfig
     var chain: ChainType
     var setting: TxSettingObject
-    var remoteGasLimit: BigInt = Constants.defaultGasLimit
+    var remoteGasLimit: BigInt = TransactionConstants.defaultGasLimit
     
     init(settings: TxSettingObject, gasConfig: GasConfig, chain: ChainType) {
         self.setting = settings
@@ -57,29 +57,29 @@ class BaseTransactionSettingTabViewModel {
         return AppDependencies.nonceStorage.currentNonce(chain: chain, address: AppState.shared.currentAddress.addressString)
     }
     
-    func getPriority(gasType: GasType) -> BigInt? {
+    func getPriority(gasType: GasSpeed) -> BigInt? {
         switch gasType {
         case .slow:
-            return gasConfig.lowPriorityFee
+            return gasConfig.getLowPriorityFee(chain: chain)
         case .regular:
-            return gasConfig.standardPriorityFee
+            return gasConfig.getStandardPriorityFee(chain: chain)
         case .fast:
-            return gasConfig.fastPriorityFee
+            return gasConfig.getFastPriorityFee(chain: chain)
         case .superFast:
-            return gasConfig.superFastPriorityFee
+            return gasConfig.getSuperFastPriorityFee(chain: chain)
         }
     }
     
-    func getGasPrice(gasType: GasType) -> BigInt {
+    func getGasPrice(gasType: GasSpeed) -> BigInt {
         switch gasType {
         case .slow:
-            return gasConfig.lowGas
+            return gasConfig.getLowGasPrice(chain: chain)
         case .regular:
-            return gasConfig.standardGas
+            return gasConfig.getStandardGasPrice(chain: chain)
         case .fast:
-            return gasConfig.fastGas
+            return gasConfig.getFastGasPrice(chain: chain)
         case .superFast:
-            return gasConfig.superFastGas
+            return gasConfig.getSuperFastGasPrice(chain: chain)
         }
     }
     
@@ -91,7 +91,7 @@ class BaseTransactionSettingTabViewModel {
                 return setting.advanced?.maxPriorityFee
             }
         }()
-        let fee = (gasConfig.baseFee ?? .zero) + (priorityFee ?? .zero)
+        let fee = (gasConfig.getBaseFee(chain: chain) ?? .zero) + (priorityFee ?? .zero)
         return formatFeeStringFor(gasPrice: fee, gasLimit: gasLimit)
     }
     

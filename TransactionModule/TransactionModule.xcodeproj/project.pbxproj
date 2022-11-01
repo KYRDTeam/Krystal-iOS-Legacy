@@ -30,6 +30,7 @@
 		A6B6ED32290F859700514A01 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED31290F859700514A01 /* Utilities.framework */; };
 		A6B6ED37290F9FE700514A01 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6ED36290F9FE700514A01 /* Constants.swift */; };
 		A6B6ED39290FBAAF00514A01 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED38290FBAAF00514A01 /* Services.framework */; };
+		A6ED2D3E2911354F00845EF2 /* GasPriceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ED2D3D2911354F00845EF2 /* GasPriceManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		A6B6ED31290F859700514A01 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B6ED36290F9FE700514A01 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A6B6ED38290FBAAF00514A01 /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6ED2D3D2911354F00845EF2 /* GasPriceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPriceManager.swift; sourceTree = "<group>"; };
 		ACB68FEDF6F817D1BE1300AD /* Pods-TransactionModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TransactionModule.debug.xcconfig"; path = "Target Support Files/Pods-TransactionModule/Pods-TransactionModule.debug.xcconfig"; sourceTree = "<group>"; };
 		AE2D410ED02563A76864D651 /* Pods_TransactionModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TransactionModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD93F446527C79081DC45CA8 /* Pods-TransactionModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TransactionModule.release.xcconfig"; path = "Target Support Files/Pods-TransactionModule/Pods-TransactionModule.release.xcconfig"; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 		A64F1D50290B811A000D4733 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				A6ED2D3D2911354F00845EF2 /* GasPriceManager.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -303,6 +306,7 @@
 				A64F1D5F290B8992000D4733 /* TxSettingObject.swift in Sources */,
 				A64F1D54290B8132000D4733 /* TransactionSettingPopup.swift in Sources */,
 				A64F1D78290BC093000D4733 /* Strings.swift in Sources */,
+				A6ED2D3E2911354F00845EF2 /* GasPriceManager.swift in Sources */,
 				A64F1D7A290BC0C4000D4733 /* String+.swift in Sources */,
 				A64F1D5C290B818E000D4733 /* TransactionSettingAdvancedTab.swift in Sources */,
 			);

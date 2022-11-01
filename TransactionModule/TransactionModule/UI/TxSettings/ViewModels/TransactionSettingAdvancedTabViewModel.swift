@@ -65,8 +65,8 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
         guard let advancedPriority = setting.advanced?.maxPriorityFee else {
             return nil
         }
-        let lowerLimit = gasConfig.lowPriorityFee ?? .zero
-        let upperLimit = (gasConfig.fastPriorityFee ?? .zero) * BigInt(2)
+        let lowerLimit = gasConfig.getLowPriorityFee(chain: chain) ?? .zero
+        let upperLimit = (gasConfig.getFastPriorityFee(chain: chain) ?? .zero) * BigInt(2)
 
         if advancedPriority < lowerLimit {
           return .low
@@ -81,8 +81,8 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
         guard let advancedMaxFee = setting.advanced?.maxFee else {
             return nil
         }
-        let lowerLimit = gasConfig.lowGas
-        let upperLimit = gasConfig.superFastGas
+        let lowerLimit = gasConfig.getLowGasPrice(chain: chain)
+        let upperLimit = gasConfig.getSuperFastGasPrice(chain: chain)
         
         if advancedMaxFee < lowerLimit {
             return .low

@@ -8,8 +8,12 @@
 import Foundation
 import BigInt
 
-class Constants {
-    static let lowestGasLimit = BigInt(21_000)
-    static let defaultGasLimit = BigInt(180_000)
-    static let helpIcon = UIImage(named: "help_icon_large", in: Bundle(for: Constants.self), compatibleWith: nil)!
+class Images {
+    static let helpIcon = UIImage(named: "help_icon_large", in: Bundle(for: Images.self), compatibleWith: nil)!
+}
+
+public class TransactionConstants {
+    public static let lowestGasLimit = BigInt(21_000)
+    public static let defaultGasLimit = BigInt(180_000)
+    public static let oneGWei = BigInt(10).power(9)
 }

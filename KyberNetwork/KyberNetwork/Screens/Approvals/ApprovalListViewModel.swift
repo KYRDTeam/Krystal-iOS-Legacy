@@ -9,6 +9,7 @@ import Foundation
 import Services
 import AppState
 import BigInt
+import TransactionModule
 
 class ApprovalListViewModel {
     
