@@ -79,7 +79,6 @@ class ApprovalListViewModel {
         )
     }
     
-    
     @objc func appDidSwitchAddress() {
         checkPendingTx()
     }
@@ -96,7 +95,7 @@ class ApprovalListViewModel {
     }
     
     func fetchApprovals() {
-        let chains: [Int] = selectedChain == .all ? ChainType.allCases.map { $0.customRPC().chainID } : [selectedChain.getChainId()]
+        let chains: [Int] = selectedChain == .all ? ChainType.getAllChain().map { $0.customRPC().chainID } : [selectedChain.getChainId()]
         service.getListApproval(address: address, chainIds: chains) { [weak self] response in
             self?.approvals = response?.data?.approvals?.filter { approval in
                 return BigInt(approval.amount ?? "0") ?? .zero >= BigInt(10).power(approval.decimals) / BigInt(10).power(6) // Should > 0.000001
