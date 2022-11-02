@@ -132,6 +132,7 @@ class EarnCoordinator: NSObject, Coordinator {
           }
           self.lendingTokens = lendingTokensData
           self.menuViewController.coordinatorDidUpdateLendingToken(self.lendingTokens)
+          self.depositViewController.coordinatorDidUpdateDidUpdateTokenList()
           Storage.store(self.lendingTokens, as: KNEnvironment.default.envPrefix + Constants.lendingTokensStoreFileName)
         } else {
           self.loadCachedLendingTokens()
@@ -170,6 +171,7 @@ class EarnCoordinator: NSObject, Coordinator {
     let tokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.lendingTokensStoreFileName, as: [TokenData].self) ?? []
     self.lendingTokens = tokens
     self.menuViewController.coordinatorDidUpdateLendingToken(self.lendingTokens)
+    self.depositViewController.coordinatorDidUpdateDidUpdateTokenList()
   }
   
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {
