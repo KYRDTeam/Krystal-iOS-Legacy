@@ -23,6 +23,17 @@ extension UIViewController {
       let vc = SFSafariViewController(url: url)
       present(vc, animated: true, completion: nil)
     }
+    
+    func openAddress(address: String, chainID: Int) {
+      guard let endpoint = ChainType.getChain(id: chainID)?.customRPC().etherScanEndpoint else {
+        return
+      }
+      guard let url = URL(string: endpoint + "address/" + address) else {
+        return
+      }
+      let vc = SFSafariViewController(url: url)
+      present(vc, animated: true, completion: nil)
+    }
   
     func displaySuccess(title: String? = .none, message: String? = .none) {
       let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
@@ -69,7 +80,7 @@ extension UIViewController {
       hud.isUserInteractionEnabled = false
     }
 
-    func showLoadingHUD (animated: Bool = true) {
+    func showLoadingHUD(animated: Bool = true) {
       let hud = MBProgressHUD.showAdded(to: self.view, animated: animated)
       hud.isUserInteractionEnabled = false
     }

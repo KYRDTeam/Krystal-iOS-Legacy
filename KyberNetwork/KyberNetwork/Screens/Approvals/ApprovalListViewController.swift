@@ -14,6 +14,7 @@ import SwipeCellKit
 
 class ApprovalListViewController: BaseWalletOrientedViewController {
     
+    @IBOutlet weak var dotView: UIView!
     @IBOutlet weak var emptyView: ListEmptyView!
     @IBOutlet weak var riskInfoImageView: UIImageView!
     @IBOutlet weak var searchField: UITextField!
@@ -40,6 +41,7 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
         showLoading()
         scheduleShowSwipeHint()
         viewModel.fetchApprovals()
+        viewModel.observeNotifications()
     }
     
     override func onAppSwitchChain() {
@@ -107,6 +109,10 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
                 self?.emptyView.setup(icon: Images.noRecords, message: Strings.aprovalsNoRecords)
                 self?.tableView.reloadData()
             }
+        }
+        
+        viewModel.onUpdatePendingTx = { [weak self] hasPendingTx in
+            self?.dotView.isHidden = !hasPendingTx
         }
     }
     
@@ -192,8 +198,14 @@ extension ApprovalListViewController: UITableViewDataSource, UITableViewDelegate
         let cell = tableView.dequeueReusableCell(ApprovedTokenCell.self, indexPath: indexPath)!
         cell.selectionStyle = .none
         cell.delegate = self
-        if let approval = viewModel.filteredApprovals[safe: indexPath.row] {
-            cell.configure(viewModel: approval)
+        if let itemViewModel = viewModel.filteredApprovals[safe: indexPath.row] {
+            cell.configure(viewModel: itemViewModel)
+            cell.onTapTokenSymbol = { [weak self] in
+                self?.viewModel.onTapTokenSymbol(approval: itemViewModel.approval)
+            }
+            cell.onTapSpenderAddress = { [weak self] in
+                self?.viewModel.onTapSpenderAddress(approval: itemViewModel.approval)
+            }
         }
         return cell
     }
@@ -215,8 +227,8 @@ extension ApprovalListViewController: SwipeTableViewCellDelegate {
         guard orientation == .right else { return nil }
         
         let delete = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
-            // TODO: revoke
             self?.disableHint()
+            self?.viewModel.onTapRevoke(index: indexPath.row)
         }
         delete.image = Images.revoke
         delete.title = Strings.revoke

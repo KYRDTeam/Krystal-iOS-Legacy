@@ -9,5 +9,5 @@ import Foundation
 import BaseWallet
 
 public protocol PriceStorage {
-    func getUsdRate() -> Double?
+    func getQuoteUsdRate(chain: ChainType) -> Double?
 }

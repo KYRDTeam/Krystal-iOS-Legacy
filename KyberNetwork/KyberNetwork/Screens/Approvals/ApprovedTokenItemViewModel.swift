@@ -18,10 +18,12 @@ class ApprovedTokenItemViewModel {
     var isVerified: Bool
     var spenderAddress: String?
     var amountString: String?
+    let approval: Approval
     
     let minUnlimitedApprovalAmount: BigInt = BigInt(10).power(9)
     
     init(approval: Approval) {
+        self.approval = approval
         symbol = approval.symbol
         tokenIcon = approval.logo
         chainIcon = ChainType.make(chainID: approval.chainId)?.squareIcon()
