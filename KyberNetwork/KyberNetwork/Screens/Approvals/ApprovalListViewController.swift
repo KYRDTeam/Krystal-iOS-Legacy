@@ -173,15 +173,6 @@ extension ApprovalListViewController: UITableViewDataSource, UITableViewDelegate
         return 84
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        TransactionSettingPopup
-            .show(on: self, onConfirmed: { settingObject in
-                
-            }, onCancelled: {
-                
-            })
-    }
-    
 }
 
 extension ApprovalListViewController: SkeletonTableViewDataSource {
