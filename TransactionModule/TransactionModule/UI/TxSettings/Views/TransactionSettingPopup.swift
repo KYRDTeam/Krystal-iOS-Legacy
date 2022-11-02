@@ -69,6 +69,9 @@ public class TransactionSettingPopup: UIViewController {
                                       y: self.segmentControl.frame.minY,
                                       width: segmentControl.frame.width, height: 30)
         segmentControl.selectedSegmentIndex = 0
+        segmentControl.setTitleTextAttributes([
+            .font: UIFont.karlaReguler(ofSize: 16)
+        ], for: .normal)
         segmentControl.highlightSelectedSegment()
     }
     

@@ -48,6 +48,7 @@ class ApprovalListViewModel {
     let service = ApprovalService()
     var onFetchApprovals: (() -> Void)?
     var onFilterApprovalsUpdated: (() -> Void)?
+    var onUpdatePendingTx: ((Bool) -> Void)?
     var selectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : AppState.shared.currentChain
     var totalAllowanceString: String?
     
@@ -56,6 +57,42 @@ class ApprovalListViewModel {
     
     init(actions: Actions) {
         self.actions = actions
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidChangeAddress, object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(kTransactionDidUpdateNotificationKey), object: nil)
+    }
+    
+    func observeNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appDidSwitchAddress),
+            name: AppEventCenter.shared.kAppDidChangeAddress,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.transactionStateDidUpdate),
+            name: Notification.Name(kTransactionDidUpdateNotificationKey),
+            object: nil
+        )
+    }
+    
+    
+    @objc func appDidSwitchAddress() {
+        checkPendingTx()
+    }
+    
+    @objc func transactionStateDidUpdate() {
+        checkPendingTx()
+    }
+    
+    func checkPendingTx() {
+        let pendingTransaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().first { transaction in
+            transaction.state == .pending
+        }
+        onUpdatePendingTx?(pendingTransaction != nil)
     }
     
     func fetchApprovals() {

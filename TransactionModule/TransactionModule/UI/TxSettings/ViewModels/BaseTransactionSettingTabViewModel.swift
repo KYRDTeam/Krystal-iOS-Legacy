@@ -96,7 +96,7 @@ class BaseTransactionSettingTabViewModel {
     }
     
     func getMaxFeeString() -> String {
-        if let usdRate = AppDependencies.priceStorage.getUsdRate() {
+        if let usdRate = AppDependencies.priceStorage.getQuoteUsdRate(chain: chain) {
             let fee: BigInt = maxFee * gasLimit
             let usdAmt = fee * BigInt(usdRate * pow(10.0, 18.0)) / BigInt(10).power(18)
             let valueEth = NumberFormatUtils.gasFee(value: fee) + " \(chain.customRPC().quoteToken)"

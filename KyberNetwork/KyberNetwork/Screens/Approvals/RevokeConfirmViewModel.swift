@@ -61,7 +61,10 @@ class RevokeConfirmViewModel {
     }
     
     var maxFeeTokenUSDString: String {
-        if let usdRate = AppDependencies.priceStorage.getUsdRate() {
+        guard let chain = chain else {
+            return ""
+        }
+        if let usdRate = AppDependencies.priceStorage.getQuoteUsdRate(chain: chain) {
             let fee: BigInt = maxFee * setting.gasLimit
             let usdAmt = fee * BigInt(usdRate * pow(10.0, 18.0)) / BigInt(10).power(18)
             let value = NumberFormatUtils.gasFee(value: usdAmt)
