@@ -26,7 +26,7 @@ class RevokeConfirmPopup: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupViews()
     }
     
@@ -39,9 +39,9 @@ class RevokeConfirmPopup: UIViewController {
         verifyIcon.isHidden = !viewModel.isVerified
         spenderAddressLabel.text = viewModel.spenderAddress
         allowanceLabel.text = viewModel.amountString
-        feeLabel.text = viewModel.getEstimatedGasFee()
+        reloadGasUI()
     }
-
+    
     @IBAction func cancelTapped(_ sender: Any) {
         dismiss(animated: true)
     }
@@ -54,14 +54,19 @@ class RevokeConfirmPopup: UIViewController {
     
     @IBAction func settingTapped(_ sender: Any) {
         guard let chain = ChainType.make(chainID: viewModel.approval.chainId) else { return }
-        TransactionSettingPopup
-            .show(on: self,
-                  chain: chain,
-                  onConfirmed: { settingObject in
-                      print(settingObject)
-                  },
-                  onCancelled: {
-                    return
-                  })
+        TransactionSettingPopup.show(on: self, chain: chain, onConfirmed: { [weak self] settingObject in
+            self?.viewModel.setting = settingObject
+            self?.reloadGasUI()
+        }, onCancelled: {
+            return
+        })
+    }
+    
+    func reloadGasUI() {
+        feeLabel.text = viewModel.maxFeeTokenAmountString
+        feeFomularLabel.text = """
+            \(viewModel.maxFeeTokenUSDString)
+            \(viewModel.maxGasFeeFomular)
+        """
     }
 }

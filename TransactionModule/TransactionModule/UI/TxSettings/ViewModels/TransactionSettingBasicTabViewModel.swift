@@ -40,7 +40,7 @@ class TransactionSettingBasicTabViewModel: BaseTransactionSettingTabViewModel {
     func getEstimatedGasFee(gasType: GasSpeed) -> String {
         let fee = getGasPrice(gasType: gasType) * gasLimit
         let feeString: String = NumberFormatUtils.gasFeeFormat(number: fee)
-        let quoteToken = AppState.shared.currentChain.customRPC().quoteToken
+        let quoteToken = chain.customRPC().quoteToken
         return "~ \(feeString) \(quoteToken)"
     }
     

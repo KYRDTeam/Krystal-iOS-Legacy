@@ -21,7 +21,7 @@ public class GasPriceManager {
     
     var gasConfig: [ChainType: GasPriceResponse] = [:]
     
-    func scheduleFetchAllChainGasPrice() {
+    public func scheduleFetchAllChainGasPrice() {
         fetchAllNetworkGasPrice()
         Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { [weak self] _ in
             self?.fetchAllNetworkGasPrice()
