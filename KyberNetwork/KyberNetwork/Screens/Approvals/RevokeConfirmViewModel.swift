@@ -81,29 +81,7 @@ class RevokeConfirmViewModel {
         let gasLimitText = EtherNumberFormatter.short.string(from: setting.gasLimit, decimals: 0)
         return String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
     }
-    
-//    func getEstimatedGasFee() -> String {
-//        guard let chain = chain else {
-//            return ""
-//        }
-//
-//        let priorityFee: BigInt? = {
-//            if let basic = setting.basic {
-//                return getPriority(gasType: basic.gasType)
-//            } else {
-//                return setting.advanced?.maxPriorityFee
-//            }
-//        }()
-//        let gasLimit: BigInt = {
-//            if let advance = setting.advanced {
-//                return advance.gasLimit
-//            }
-//            return TransactionConstants.defaultGasLimit
-//        }()
-//        let fee = (AppDependencies.gasConfig.getBaseFee(chain: chain) ?? .zero) + (priorityFee ?? .zero)
-//        return formatFeeStringFor(gasPrice: fee, gasLimit: gasLimit)
-//    }
-//    
+ 
     func getGasPrice(gasType: GasSpeed) -> BigInt {
         guard let chain = chain else {
             return .zero
