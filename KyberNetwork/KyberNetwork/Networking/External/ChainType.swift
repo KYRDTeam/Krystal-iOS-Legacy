@@ -123,9 +123,7 @@ extension ChainType {
     if !shouldShowKlaytn && KNGeneralProvider.shared.currentChain != .klaytn {
       allChains = allChains.filter { $0 != .klaytn }
     }
-
-    let shouldShowAll = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.multichainPortfolio)
-    if !includeAll || !shouldShowAll {
+    if !includeAll {
       allChains = allChains.filter { $0 != .all }
     } else {
       allChains.bringToFront(item: .all)
