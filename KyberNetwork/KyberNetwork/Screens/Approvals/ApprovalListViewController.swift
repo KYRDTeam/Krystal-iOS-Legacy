@@ -9,6 +9,7 @@ import UIKit
 import BaseModule
 import DesignSystem
 import SkeletonView
+import TransactionModule
 import SwipeCellKit
 
 class ApprovalListViewController: BaseWalletOrientedViewController {
@@ -201,6 +202,39 @@ extension ApprovalListViewController: UITableViewDataSource, UITableViewDelegate
         return 84
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+}
+
+extension ApprovalListViewController: SwipeTableViewCellDelegate {
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else { return nil }
+        
+        let delete = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
+            // TODO: revoke
+            self?.disableHint()
+        }
+        delete.image = Images.revoke
+        delete.title = Strings.revoke
+        delete.textColor = AppTheme.current.primaryColor
+        delete.font = .karlaReguler(ofSize: 14)
+        delete.backgroundColor = AppTheme.current.primaryColor.withAlphaComponent(0.1)
+        
+        return [delete]
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = .selection
+        options.minimumButtonWidth = 84
+        options.maximumButtonWidth = 84
+        
+        return options
+    }
 }
 
 extension ApprovalListViewController: SwipeTableViewCellDelegate {
