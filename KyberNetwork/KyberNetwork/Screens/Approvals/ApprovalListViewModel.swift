@@ -19,6 +19,8 @@ class ApprovalListViewModel {
         var onTapHistory: () -> Void
         var onTapRevoke: (Approval) -> Void
         var onOpenStatus: (String, ChainType) -> Void
+        var onTapTokenSymbol: (Approval) -> Void
+        var onTapSpenderAddress: (Approval) -> Void
     }
     
     var address: String {
@@ -203,6 +205,14 @@ class ApprovalListViewModel {
         } else {
             return setting.advanced?.maxFee ?? .zero
         }
+    }
+    
+    func onTapTokenSymbol(approval: Approval) {
+        actions.onTapTokenSymbol(approval)
+    }
+    
+    func onTapSpenderAddress(approval: Approval) {
+        actions.onTapSpenderAddress(approval)
     }
     
 }

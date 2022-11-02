@@ -38,7 +38,17 @@ class ApprovalsCoordinator: Coordinator {
                 onTapRevoke: { [weak self] approval in
                     self?.openRevokeConfirm(approval: approval)
                 },
-                onOpenStatus: onOpenTxStatusPopup
+                onOpenStatus: onOpenTxStatusPopup,
+                onTapTokenSymbol: { [weak self] approval in
+                    if let tokenAddress = approval.tokenAddress {
+                        self?.rootViewController.openAddress(address: tokenAddress, chainID: approval.chainId)
+                    }
+                },
+                onTapSpenderAddress: { [weak self] approval in
+                    if let spenderAddress = approval.spenderAddress {
+                        self?.rootViewController.openAddress(address: spenderAddress, chainID: approval.chainId)
+                    }
+                }
             )
         )
         self.viewModel = viewModel

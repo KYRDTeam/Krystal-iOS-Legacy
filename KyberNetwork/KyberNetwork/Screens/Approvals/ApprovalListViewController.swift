@@ -198,8 +198,14 @@ extension ApprovalListViewController: UITableViewDataSource, UITableViewDelegate
         let cell = tableView.dequeueReusableCell(ApprovedTokenCell.self, indexPath: indexPath)!
         cell.selectionStyle = .none
         cell.delegate = self
-        if let approval = viewModel.filteredApprovals[safe: indexPath.row] {
-            cell.configure(viewModel: approval)
+        if let itemViewModel = viewModel.filteredApprovals[safe: indexPath.row] {
+            cell.configure(viewModel: itemViewModel)
+            cell.onTapTokenSymbol = { [weak self] in
+                self?.viewModel.onTapTokenSymbol(approval: itemViewModel.approval)
+            }
+            cell.onTapSpenderAddress = { [weak self] in
+                self?.viewModel.onTapSpenderAddress(approval: itemViewModel.approval)
+            }
         }
         return cell
     }
