@@ -69,4 +69,5 @@ class RevokeConfirmPopup: UIViewController {
             \(viewModel.maxGasFeeFomular)
         """
     }
+    
 }

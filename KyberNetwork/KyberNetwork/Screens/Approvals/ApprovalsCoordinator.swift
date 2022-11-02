@@ -53,7 +53,7 @@ class ApprovalsCoordinator: Coordinator {
         let vc = RevokeConfirmPopup.instantiateFromNib()
         vc.viewModel = viewModel
         vc.onSelectRevoke = { [weak self] in
-            self?.viewModel?.requestRevoke()
+            self?.viewModel?.requestRevoke(approval: approval, setting: viewModel.setting)
         }
         
         let options = SheetOptions(pullBarHeight: 0)

@@ -27,6 +27,7 @@ public struct TxSettingObject {
         }
         return TransactionConstants.defaultGasLimit
     }
+    
 }
 
 public struct TxBasicSetting {

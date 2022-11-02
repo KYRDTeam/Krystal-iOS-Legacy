@@ -10,6 +10,7 @@ import Services
 import AppState
 import BigInt
 import TransactionModule
+import Dependencies
 
 class ApprovalListViewModel {
     
@@ -97,7 +98,63 @@ class ApprovalListViewModel {
         }
     }
     
-    func requestRevoke() {
-        // TODO: Make revoke request here
+    func requestRevoke(approval: Approval, setting: TxSettingObject) {
+        guard let chain = ChainType.make(chainID: approval.chainId) else {
+            return
+        }
+        guard let spender = approval.spenderAddress else {
+            return
+        }
+        guard let tokenAddress = approval.tokenAddress else {
+            return
+        }
+        let service = EthereumNodeService(chain: chain)
+        let gasPrice = self.getGasPrice(chain: chain, setting: setting)
+        service.getSendApproveERC20TokenEncodeData(spender: spender, value: .zero) { result in
+            switch result {
+            case .success(let hex):
+                service.getTransactionCount(address: self.address) { result in
+                    switch result {
+                    case .success(let count):
+                        let signResult = KNGeneralProvider.shared.signTransactionData(address: AppState.shared.currentAddress, tokenAddress: tokenAddress, nonce: count, data: hex, gasPrice: gasPrice, gasLimit: setting.gasLimit)
+                        switch signResult {
+                        case .success(let signature):
+                            KNGeneralProvider.shared.sendSignedTransactionData(signature.0) { result in
+                                switch result {
+                                case .success(let hash):
+                                    print(hash)
+                                case .failure:
+                                    ()
+                                }
+                            }
+                        case .failure:
+                            ()
+                        }
+                    case .failure:
+                        ()
+                    }
+                }
+            case .failure(let error):
+                ()
+            }
+        }
     }
+    
+    func getGasPrice(chain: ChainType, setting: TxSettingObject) -> BigInt {
+        if let basic = setting.basic {
+            switch basic.gasType {
+            case .slow:
+                return AppDependencies.gasConfig.getLowGasPrice(chain: chain)
+            case .regular:
+                return AppDependencies.gasConfig.getStandardGasPrice(chain: chain)
+            case .fast:
+                return AppDependencies.gasConfig.getFastGasPrice(chain: chain)
+            case .superFast:
+                return AppDependencies.gasConfig.getSuperFastGasPrice(chain: chain)
+            }
+        } else {
+            return setting.advanced?.maxFee ?? .zero
+        }
+    }
+    
 }

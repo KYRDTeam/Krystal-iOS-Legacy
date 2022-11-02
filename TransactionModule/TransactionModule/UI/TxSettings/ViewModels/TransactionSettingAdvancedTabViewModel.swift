@@ -105,10 +105,10 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
         return nil
     }
     
-    var web3Client: EthereumWeb3Service
+    var web3Client: EthereumNodeService
     
     override init(settings: TxSettingObject, gasConfig: GasConfig, chain: ChainType) {
-        web3Client = EthereumWeb3Service(chain: chain)
+        web3Client = EthereumNodeService(chain: chain)
         super.init(settings: settings, gasConfig: gasConfig, chain: chain)
     }
     
@@ -174,7 +174,7 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
     
     func getLatestNonce(completion: @escaping (Int?) -> ()) {
         let address = AppState.shared.currentAddress.addressString
-        web3Client.getTransactionCount(for: address) { [weak self] result in
+        web3Client.getTransactionCount(address: address) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let nonce):
