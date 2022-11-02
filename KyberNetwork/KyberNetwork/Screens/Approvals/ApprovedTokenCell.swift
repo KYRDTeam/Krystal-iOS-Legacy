@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import SwipeCellKit
 
-class ApprovedTokenCell: UITableViewCell {
+class ApprovedTokenCell: SwipeTableViewCell {
     @IBOutlet weak var tokenImageView: UIImageView!
     @IBOutlet weak var chainImageView: UIImageView!
     @IBOutlet weak var tokenSymbolLabel: UILabel!
