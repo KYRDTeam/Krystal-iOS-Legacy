@@ -18,6 +18,7 @@ class ApprovalListViewModel {
         var onTapBack: () -> Void
         var onTapHistory: () -> Void
         var onTapRevoke: (Approval) -> Void
+        var onOpenStatus: (String, ChainType) -> Void
     }
     
     var address: String {
@@ -98,7 +99,7 @@ class ApprovalListViewModel {
         }
     }
     
-    func requestRevoke(approval: Approval, setting: TxSettingObject) {
+    func requestRevoke(approval: Approval, setting: TxSettingObject, onCompleted: @escaping (Error?) -> Void) {
         guard let chain = ChainType.make(chainID: approval.chainId) else {
             return
         }
@@ -110,7 +111,8 @@ class ApprovalListViewModel {
         }
         let service = EthereumNodeService(chain: chain)
         let gasPrice = self.getGasPrice(chain: chain, setting: setting)
-        service.getSendApproveERC20TokenEncodeData(spender: spender, value: .zero) { result in
+        service.getSendApproveERC20TokenEncodeData(spender: spender, value: .zero) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let hex):
                 service.getTransactionCount(address: self.address) { result in
@@ -122,22 +124,32 @@ class ApprovalListViewModel {
                             KNGeneralProvider.shared.sendSignedTransactionData(signature.0) { result in
                                 switch result {
                                 case .success(let hash):
-                                    print(hash)
-                                case .failure:
-                                    ()
+                                    self.savePendingTx(txCount: count, txHash: hash, approval: approval, transaction: signature.1)
+                                    self.actions.onOpenStatus(hash, chain)
+                                    onCompleted(nil)
+                                case .failure(let error):
+                                    onCompleted(error)
                                 }
                             }
-                        case .failure:
-                            ()
+                        case .failure(let error):
+                            onCompleted(error)
                         }
-                    case .failure:
-                        ()
+                    case .failure(let error):
+                        onCompleted(error)
                     }
                 }
             case .failure(let error):
-                ()
+                onCompleted(error)
             }
         }
+    }
+    
+    func savePendingTx(txCount: Int, txHash: String, approval: Approval, transaction: SignTransaction) {
+        let historyTransaction = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: approval.symbol ?? "", transactionDetailDescription: approval.tokenAddress ?? "", transactionObj: transaction.toSignTransactionObject(), eip1559Tx: nil)
+        historyTransaction.hash = txHash
+        historyTransaction.time = Date()
+        historyTransaction.nonce = txCount
+        EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
     }
     
     func getGasPrice(chain: ChainType, setting: TxSettingObject) -> BigInt {

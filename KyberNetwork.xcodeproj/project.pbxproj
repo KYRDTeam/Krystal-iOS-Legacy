@@ -592,6 +592,8 @@
 		A610B2D728ED5BAD00456965 /* EditWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A610B2D628ED5BAD00456965 /* EditWalletCoordinator.swift */; };
 		A610B2DA28ED66E800456965 /* WalletBackupableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A610B2D928ED66E800456965 /* WalletBackupableProtocol.swift */; };
 		A610B2DD28ED684400456965 /* ExportWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A610B2DC28ED684400456965 /* ExportWalletCoordinator.swift */; };
+		A613BC8E291249F4006DD220 /* RevokeTxStatusPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A613BC8C291249F4006DD220 /* RevokeTxStatusPopup.swift */; };
+		A613BC8F291249F4006DD220 /* RevokeTxStatusPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A613BC8D291249F4006DD220 /* RevokeTxStatusPopup.xib */; };
 		A6156B4E2885188700276120 /* CameraHoleCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6156B4D2885188700276120 /* CameraHoleCover.swift */; };
 		A6156B5128856E1700276120 /* CustomSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6156B5028856E1700276120 /* CustomSegmentView.swift */; };
 		A6156B5328856E4F00276120 /* CustomSegmentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6156B5228856E4F00276120 /* CustomSegmentView.xib */; };
@@ -1885,6 +1887,8 @@
 		A610B2D628ED5BAD00456965 /* EditWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWalletCoordinator.swift; sourceTree = "<group>"; };
 		A610B2D928ED66E800456965 /* WalletBackupableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletBackupableProtocol.swift; sourceTree = "<group>"; };
 		A610B2DC28ED684400456965 /* ExportWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportWalletCoordinator.swift; sourceTree = "<group>"; };
+		A613BC8C291249F4006DD220 /* RevokeTxStatusPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevokeTxStatusPopup.swift; sourceTree = "<group>"; };
+		A613BC8D291249F4006DD220 /* RevokeTxStatusPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RevokeTxStatusPopup.xib; sourceTree = "<group>"; };
 		A6156B4D2885188700276120 /* CameraHoleCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraHoleCover.swift; sourceTree = "<group>"; };
 		A6156B5028856E1700276120 /* CustomSegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentView.swift; sourceTree = "<group>"; };
 		A6156B5228856E4F00276120 /* CustomSegmentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomSegmentView.xib; sourceTree = "<group>"; };
@@ -5021,6 +5025,8 @@
 				A668461929093D17006BBE29 /* RevokeConfirmPopup.swift */,
 				A668461A29093D17006BBE29 /* RevokeConfirmPopup.xib */,
 				A668461D290946B0006BBE29 /* RevokeConfirmViewModel.swift */,
+				A613BC8C291249F4006DD220 /* RevokeTxStatusPopup.swift */,
+				A613BC8D291249F4006DD220 /* RevokeTxStatusPopup.xib */,
 			);
 			path = Approvals;
 			sourceTree = "<group>";
@@ -6959,6 +6965,7 @@
 				A66EC313287D176200D15FE0 /* MultiSendSubTransactionCell.xib in Resources */,
 				C31371FA2603B194003D432B /* KrytalTableViewCell.xib in Resources */,
 				25073D21211AF20D00833C92 /* Montserrat-Bold.ttf in Resources */,
+				A613BC8F291249F4006DD220 /* RevokeTxStatusPopup.xib in Resources */,
 				25929C5720DA5C760045CFA3 /* SF-Pro-Display-MediumItalic.otf in Resources */,
 				7E0AE5C527D86A2A0078D135 /* RateTransactionPopupViewController.xib in Resources */,
 				25929C6E20DA5C760045CFA3 /* SF-Pro-Display-Thin.otf in Resources */,
@@ -7884,6 +7891,7 @@
 				C31371E52603511F003D432B /* KrytalCoordinator.swift in Sources */,
 				A6E6C9DB281798E100EEB2E6 /* Observable.swift in Sources */,
 				737D1675202BDCB400B42DDE /* UINavigationController.swift in Sources */,
+				A613BC8E291249F4006DD220 /* RevokeTxStatusPopup.swift in Sources */,
 				296105931FA2AA2100292494 /* SignTransaction.swift in Sources */,
 				7EB47FF827CCDDDB00FB28D9 /* FeatureFlagManager.swift in Sources */,
 				A6D38BFD289916F7003579F2 /* SwapV2ViewModel.swift in Sources */,

@@ -69,7 +69,7 @@ extension UIViewController {
       hud.isUserInteractionEnabled = false
     }
 
-    func showLoadingHUD (animated: Bool = true) {
+    func showLoadingHUD(animated: Bool = true) {
       let hud = MBProgressHUD.showAdded(to: self.view, animated: animated)
       hud.isUserInteractionEnabled = false
     }

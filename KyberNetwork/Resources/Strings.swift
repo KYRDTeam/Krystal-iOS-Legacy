@@ -310,4 +310,7 @@ struct Strings {
     static let approvalsNoRisk = "approvals.no.risk".toBeLocalised()
     static let aprovalsNoRecords = "approvals.no.records.found".toBeLocalised()
     static let revoke = "revoke".toBeLocalised()
+    static let broadcastingTransaction = "broadcasting.transaction".toBeLocalised()
+    static let openX = "open.x".toBeLocalised()
+    static let support = "support".toBeLocalised()
 }

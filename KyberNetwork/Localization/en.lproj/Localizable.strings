@@ -1002,3 +1002,6 @@
 "approvals.no.risk" = "Don’t worry, you have NO risk now :D";
 "approvals.no.records.found" = "No records found";
 "revoke" = "Revoke";
+"broadcasting.transaction" = "Broadcasting Transaction";
+"open.x" = "Open %@";
+"support" = "Support";
