@@ -13,7 +13,7 @@ import JSONRPCKit
 import Web3
 import BaseWallet
 
-class EthereumWeb3Service {
+public class EthereumWeb3Service {
     
     let web3: Web3Swift?
     let chain: ChainType
@@ -22,7 +22,7 @@ class EthereumWeb3Service {
         return URL(string: self.chain.customRPC().endpointAlchemy)
     }
     
-    init(chain: ChainType) {
+    public init(chain: ChainType) {
         self.chain = chain
         self.web3 = Web3Factory.shared.web3Instance(forChain: chain)
     }
@@ -99,7 +99,7 @@ class EthereumWeb3Service {
         })
     }
     
-    func getTransactionCount(for address: String, state: String = "latest", completion: @escaping (Result<Int, AnyError>) -> Void) {
+    public func getTransactionCount(for address: String, state: String = "latest", completion: @escaping (Result<Int, AnyError>) -> Void) {
         let request = EthereumNodeRequest(
             batch: BatchFactory().create(GetTransactionCountRequest(address: address, state: state)),
             nodeURL: baseURL
