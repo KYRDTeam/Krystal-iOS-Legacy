@@ -94,12 +94,16 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
     
     func bindViewModel() {
         viewModel.onFetchApprovals = { [weak self] in
+            guard let self = self else { return }
             DispatchQueue.main.async {
-                self?.hideLoading()
-                self?.riskAmountLabel.text = self?.viewModel.totalAllowanceString
-                self?.emptyView.isHidden = self?.viewModel.filteredApprovals.isEmpty == false
-                self?.emptyView.setup(icon: Images.noApprovals, message: Strings.approvalsNoRisk)
-                self?.tableView.reloadData()
+                self.hideLoading()
+                self.riskAmountLabel.text = self.viewModel.totalAllowanceString
+                self.emptyView.isHidden = self.viewModel.filteredApprovals.isEmpty == false
+                self.emptyView.setup(icon: Images.noApprovals,
+                                     message: self.viewModel.selectedChain == .all
+                                          ? Strings.approvalNoTokenFoundOnWallet
+                                          : Strings.approvalNoTokenFoundOnNetwork)
+                self.tableView.reloadData()
             }
         }
         
