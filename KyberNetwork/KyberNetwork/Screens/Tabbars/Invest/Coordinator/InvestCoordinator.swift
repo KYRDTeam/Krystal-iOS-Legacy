@@ -347,6 +347,7 @@ extension InvestCoordinator: InvestViewControllerDelegate {
   func openStakeSummary(txObject: TxObject, settings: UserSettings, displayInfo: StakeDisplayInfo) {
     let vm = StakingSummaryViewModel(txObject: txObject, settings: settings, displayInfo: displayInfo)
     let vc = StakingSummaryViewController(viewModel: vm)
+    vc.delegate = self
     navigationController.present(vc, animated: true)
   }
   
@@ -457,6 +458,10 @@ extension InvestCoordinator: StakingViewControllerDelegate {
     openStakeSummary(txObject: txObject, settings: settings, displayInfo: displayInfo)
   }
   
-  
-  
+}
+
+extension InvestCoordinator: StakingSummaryViewControllerDelegate {
+  func didSendTransaction(viewController: StakingSummaryViewController, internalTransaction: InternalHistoryTransaction) {
+    
+  }
 }
