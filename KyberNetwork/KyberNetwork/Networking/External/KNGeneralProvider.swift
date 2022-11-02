@@ -928,6 +928,27 @@ extension KNGeneralProvider {
             return .failure(AnyError(error))
         }
     }
+    
+    func signTransactionData(chain: ChainType, address: KAddress, tokenAddress: String, nonce: Int, data: Data, gasPrice: BigInt, gasLimit: BigInt) -> Result<(Data, SignTransaction), AnyError> {
+        let signTransaction = SignTransaction(
+            value: BigInt(0),
+            address: address.addressString,
+            to: tokenAddress,
+            nonce: nonce,
+            data: data,
+            gasPrice: gasPrice,
+            gasLimit: gasLimit,
+            chainID: chain.getChainId()
+        )
+        
+        let signResult = EthereumTransactionSigner().signTransaction(address: address, transaction: signTransaction)
+        switch signResult {
+        case .success(let data):
+            return .success((data, signTransaction))
+        case .failure(let error):
+            return .failure(AnyError(error))
+        }
+    }
 
 }
 

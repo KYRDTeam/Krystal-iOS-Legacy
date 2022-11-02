@@ -156,7 +156,7 @@ class ApprovalListViewModel {
                 service.getTransactionCount(address: self.address) { result in
                     switch result {
                     case .success(let count):
-                        let signResult = KNGeneralProvider.shared.signTransactionData(address: AppState.shared.currentAddress, tokenAddress: tokenAddress, nonce: count, data: hex, gasPrice: gasPrice, gasLimit: setting.gasLimit)
+                        let signResult = KNGeneralProvider.shared.signTransactionData(chain: chain, address: AppState.shared.currentAddress, tokenAddress: tokenAddress, nonce: count, data: hex, gasPrice: gasPrice, gasLimit: setting.gasLimit)
                         switch signResult {
                         case .success(let signature):
                             KNGeneralProvider.shared.sendSignedTransactionData(signature.0) { result in
