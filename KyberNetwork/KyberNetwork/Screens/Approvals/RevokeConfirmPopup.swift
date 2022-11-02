@@ -28,6 +28,8 @@ class RevokeConfirmPopup: UIViewController {
         super.viewDidLoad()
         
         setupViews()
+        bindViewModel()
+        viewModel.getQuoteTokenPrice()
     }
     
     func setupViews() {
@@ -40,6 +42,12 @@ class RevokeConfirmPopup: UIViewController {
         spenderAddressLabel.text = viewModel.spenderAddress
         allowanceLabel.text = viewModel.amountString
         reloadGasUI()
+    }
+    
+    func bindViewModel() {
+        viewModel.onFetchedQuoteTokenPrice = { [weak self] in
+            self?.reloadGasUI()
+        }
     }
     
     @IBAction func cancelTapped(_ sender: Any) {

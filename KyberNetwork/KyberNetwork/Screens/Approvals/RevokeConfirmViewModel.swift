@@ -25,6 +25,9 @@ class RevokeConfirmViewModel {
     let approval: Approval
     var setting: TxSettingObject = .default
     var chain: ChainType?
+    var quoteTokenDetail: Services.TokenDetailInfo?
+    let tokenService = TokenService()
+    var onFetchedQuoteTokenPrice: (() -> ())?
     
     init(approval: Approval) {
         self.approval = approval
@@ -61,10 +64,7 @@ class RevokeConfirmViewModel {
     }
     
     var maxFeeTokenUSDString: String {
-        guard let chain = chain else {
-            return ""
-        }
-        if let usdRate = AppDependencies.priceStorage.getQuoteUsdRate(chain: chain) {
+        if let usdRate = quoteTokenUsdPrice {
             let fee: BigInt = maxFee * setting.gasLimit
             let usdAmt = fee * BigInt(usdRate * pow(10.0, 18.0)) / BigInt(10).power(18)
             let value = NumberFormatUtils.gasFee(value: usdAmt)
@@ -80,6 +80,10 @@ class RevokeConfirmViewModel {
         )
         let gasLimitText = EtherNumberFormatter.short.string(from: setting.gasLimit, decimals: 0)
         return String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
+    }
+    
+    var quoteTokenUsdPrice: Double? {
+        return quoteTokenDetail?.markets["usd"]?.price
     }
  
     func getGasPrice(gasType: GasSpeed) -> BigInt {
@@ -120,6 +124,14 @@ class RevokeConfirmViewModel {
         }
         let feeString: String = NumberFormatUtils.gasFeeFormat(number: gasPrice * gasLimit)
         return "\(feeString) \(chain.customRPC().quoteToken)"
+    }
+    
+    func getQuoteTokenPrice() {
+        guard let chain = chain else { return }
+        tokenService.getTokenDetail(address: chain.customRPC().quoteTokenAddress, chainPath: chain.customRPC().apiChainPath) { [weak self] tokenDetail in
+            self?.quoteTokenDetail = tokenDetail
+            self?.onFetchedQuoteTokenPrice?()
+        }
     }
     
 }
