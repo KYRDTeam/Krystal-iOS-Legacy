@@ -54,7 +54,7 @@ class RevokeConfirmPopup: UIViewController {
     
     @IBAction func settingTapped(_ sender: Any) {
         guard let chain = ChainType.make(chainID: viewModel.approval.chainId) else { return }
-        TransactionSettingPopup.show(on: self, chain: chain, onConfirmed: { [weak self] settingObject in
+        TransactionSettingPopup.show(on: self, chain: chain, currentSetting: viewModel.setting, onConfirmed: { [weak self] settingObject in
             self?.viewModel.setting = settingObject
             self?.reloadGasUI()
         }, onCancelled: {

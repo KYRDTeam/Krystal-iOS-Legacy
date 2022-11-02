@@ -145,12 +145,14 @@ extension TransactionSettingPopup {
     
     public static func show(on viewController: UIViewController,
                             chain: ChainType,
+                            currentSetting: TxSettingObject = .default,
                             onConfirmed: @escaping (TxSettingObject) -> Void,
                             onCancelled: @escaping () -> Void) {
         let popup = TransactionSettingPopup.instantiateFromNib()
         popup.onCancelled = onCancelled
         popup.onConfirmed = onConfirmed
         popup.chain = chain
+        popup.settingObject = currentSetting
         let options = SheetOptions(pullBarHeight: 0)
         let sheet = SheetViewController(controller: popup, sizes: [.percent(0.8)], options: options)
         viewController.present(sheet, animated: true)
