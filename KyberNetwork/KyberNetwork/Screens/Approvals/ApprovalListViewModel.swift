@@ -61,7 +61,7 @@ class ApprovalListViewModel {
         let chains: [Int] = selectedChain == .all ? ChainType.allCases.map { $0.customRPC().chainID } : [selectedChain.getChainId()]
         service.getListApproval(address: address, chainIds: chains) { [weak self] response in
             self?.approvals = response?.data?.approvals?.filter { approval in
-                return BigInt(approval.amount ?? "0") ?? .zero >= BigInt(10).power(12)
+                return BigInt(approval.amount ?? "0") ?? .zero >= BigInt(10).power(approval.decimals) / BigInt(10).power(6) // Should > 0.000001
             } ?? []
             self?.filteredApprovals = self?.getFilteredApprovals(searchText: self?.searchText ?? "")
                 .map { approval in ApprovedTokenItemViewModel(approval: approval) } ?? []

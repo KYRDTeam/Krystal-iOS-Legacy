@@ -201,11 +201,6 @@ extension ApprovalListViewController: UITableViewDataSource, UITableViewDelegate
         return 84
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        timer?.invalidate()
-        timer = nil
-    }
-    
 }
 
 extension ApprovalListViewController: SwipeTableViewCellDelegate {
