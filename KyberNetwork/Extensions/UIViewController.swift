@@ -28,7 +28,7 @@ extension UIViewController {
       guard let endpoint = ChainType.getChain(id: chainID)?.customRPC().etherScanEndpoint else {
         return
       }
-      guard let url = URL(string: endpoint + "address/" + txHash) else {
+      guard let url = URL(string: endpoint + "address/" + address) else {
         return
       }
       let vc = SFSafariViewController(url: url)
