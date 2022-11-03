@@ -207,7 +207,7 @@ jobs:
         env:
           FIREBASE_APP_ID: ${{ secrets[matrix.firebase_app_id] }}
         with:
-          lane: fda
+          lane: fda_self_hosted
           bundle-install-path: "vendor/bundle"
 
       - name: Prepare bump build number
