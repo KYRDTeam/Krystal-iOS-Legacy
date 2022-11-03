@@ -150,16 +150,17 @@ jobs:
           mkdir -p /Users/runner/privates        
           cp -va $CONFIG_PATH/* /Users/runner/privates
 
-      ### Setup Ruby manually in the host beforehand
+      ### Setup manually in the host beforehand
+      
       # - name: Setup Ruby
       #   uses: ruby/setup-ruby@v1
       #   with:
       #     ruby-version: 2.6
       #     bundler-cache: true
 
-      - name: Install firebase tool
-        run: |
-          curl -sL https://firebase.tools | bash
+      # - name: Install firebase tool
+      #   run: |
+      #     curl -sL https://firebase.tools | bash
 
       - name: Install Pod check
         run: gem install cocoapods-check
