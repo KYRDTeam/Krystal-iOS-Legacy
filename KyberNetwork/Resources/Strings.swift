@@ -313,4 +313,6 @@ struct Strings {
     static let broadcastingTransaction = "broadcasting.transaction".toBeLocalised()
     static let openX = "open.x".toBeLocalised()
     static let support = "support".toBeLocalised()
+    static let approvalNoTokenFoundOnWallet = "approval.no.token.found.on.wallet".toBeLocalised()
+    static let approvalNoTokenFoundOnNetwork = "approval.no.token.found.on.wallet".toBeLocalised()
 }

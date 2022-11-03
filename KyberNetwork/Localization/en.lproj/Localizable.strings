@@ -993,7 +993,7 @@
 "no.tokens.deposited" = "No tokens deposited yet.";
 
 // Approval
-"approval.search.placeholder" = "Search token, spender";
+"approval.search.placeholder" = "Token name, symbol, address";
 "approval.menu.title" = "Token Approvals";
 "unlimited.allowance" = "Unlimited";
 "total.allowance" = "Total Allowance";
@@ -1005,3 +1005,5 @@
 "broadcasting.transaction" = "Broadcasting Transaction";
 "open.x" = "Open %@";
 "support" = "Support";
+"approval.no.token.found.on.wallet" = "There are no token approvals found on this wallet.";
+"approval.no.token.found.on.network" = "There are no token approvals found on this network.";
