@@ -75,7 +75,7 @@ end
 
 # Build and upload to FDA, using self-hosted macos runner
 lane :fda_self_hosted do
-  prepare_keychain
+  # prepare_keychain
   install_profiles
   update_project
   build_debug_self_hosted
