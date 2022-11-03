@@ -162,6 +162,9 @@ jobs:
       #   run: |
       #     curl -sL https://firebase.tools | bash
 
+      - name: Install Pod
+        run: gem install cocoapods
+
       - name: Install Pod check
         run: gem install cocoapods-check
 
