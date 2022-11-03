@@ -1,14 +1,11 @@
-name: Krystal iOS CI Build
+name: Krystal iOS CI Build Self-Hosted
 
 on:
   workflow_dispatch:
+  pull_request:
   push:
     branches:
       - main
-      - ci-test
-      - testflight-build
-      - debug-action
-      - feature/slack-notification
 
 concurrency: 
   group: ios-build-dev-${{ github.ref }}
@@ -77,7 +74,7 @@ jobs:
             bump_build: false
             slack_webhook: SLACK_WEBHOOK_STG_IOS
             
-    runs-on: macos-12
+    runs-on: self-hosted
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
       # cetificate environment
