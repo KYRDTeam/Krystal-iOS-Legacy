@@ -13,7 +13,7 @@ import JSONRPCKit
 import Web3
 import BaseWallet
 
-public class EthereumWeb3Service {
+public class EthereumNodeService {
     
     let web3: Web3Swift?
     let chain: ChainType
@@ -99,7 +99,7 @@ public class EthereumWeb3Service {
         })
     }
     
-    public func getTransactionCount(for address: String, state: String = "latest", completion: @escaping (Result<Int, AnyError>) -> Void) {
+    public func getTransactionCount(address: String, state: String = "latest", completion: @escaping (Result<Int, AnyError>) -> Void) {
         let request = EthereumNodeRequest(
             batch: BatchFactory().create(GetTransactionCountRequest(address: address, state: state)),
             nodeURL: baseURL
@@ -327,17 +327,17 @@ public class EthereumWeb3Service {
     //    }
     //  }
     //
-    //  func getSendApproveERC20TokenEncodeData(networkAddress: String, value: BigInt = Constants.maxValueBigInt, completion: @escaping (Result<Data, AnyError>) -> Void) {
-    //    let encodeRequest = ApproveERC20Encode(address: networkAddress, value: value)
-    //    web3?.request(request: encodeRequest) { (encodeResult) in
-    //      switch encodeResult {
-    //      case .success(let data):
-    //        completion(.success(Data(hex: data.drop0x)))
-    //      case .failure(let error):
-    //        completion(.failure(AnyError(error)))
-    //      }
-    //    }
-    //  }
+    public func getSendApproveERC20TokenEncodeData(spender: String, value: BigInt, completion: @escaping (Result<Data, AnyError>) -> Void) {
+        let encodeRequest = ApproveERC20Encode(address: spender, value: value)
+        web3?.request(request: encodeRequest) { (encodeResult) in
+            switch encodeResult {
+            case .success(let data):
+                completion(.success(Data(hex: data.drop0x)))
+            case .failure(let error):
+                completion(.failure(AnyError(error)))
+            }
+        }
+    }
     //
     //  private func valueToSend(_ transaction: UnconfirmedTransaction) -> BigInt {
     //    return transaction.transferType.isETHTransfer() ? transaction.value : BigInt(0)

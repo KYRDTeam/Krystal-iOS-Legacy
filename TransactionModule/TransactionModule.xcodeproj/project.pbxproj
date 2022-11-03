@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0E81F6026D12F409B8F03625 /* Pods_TransactionModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2D410ED02563A76864D651 /* Pods_TransactionModule.framework */; };
+		A613BC8929124730006DD220 /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A613BC8829124730006DD220 /* Dependencies.framework */; };
+		A613BC8A29124730006DD220 /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A613BC8829124730006DD220 /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A64F1D49290B8109000D4733 /* TransactionModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A64F1D48290B8109000D4733 /* TransactionModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A64F1D54290B8132000D4733 /* TransactionSettingPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D52290B8132000D4733 /* TransactionSettingPopup.swift */; };
 		A64F1D55290B8132000D4733 /* TransactionSettingPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A64F1D53290B8132000D4733 /* TransactionSettingPopup.xib */; };
@@ -30,10 +32,25 @@
 		A6B6ED32290F859700514A01 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED31290F859700514A01 /* Utilities.framework */; };
 		A6B6ED37290F9FE700514A01 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6ED36290F9FE700514A01 /* Constants.swift */; };
 		A6B6ED39290FBAAF00514A01 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED38290FBAAF00514A01 /* Services.framework */; };
-		A6ED2D4029115E5F00845EF2 /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6ED2D3F29115E5F00845EF2 /* Dependencies.framework */; };
+		A6ED2D3E2911354F00845EF2 /* GasPriceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ED2D3D2911354F00845EF2 /* GasPriceManager.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		A613BC8B29124730006DD220 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A613BC8A29124730006DD220 /* Dependencies.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		A613BC8829124730006DD220 /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A64F1D45290B8109000D4733 /* TransactionModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TransactionModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A64F1D48290B8109000D4733 /* TransactionModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransactionModule.h; sourceTree = "<group>"; };
 		A64F1D52290B8132000D4733 /* TransactionSettingPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSettingPopup.swift; sourceTree = "<group>"; };
@@ -57,7 +74,7 @@
 		A6B6ED31290F859700514A01 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B6ED36290F9FE700514A01 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A6B6ED38290FBAAF00514A01 /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A6ED2D3F29115E5F00845EF2 /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6ED2D3D2911354F00845EF2 /* GasPriceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPriceManager.swift; sourceTree = "<group>"; };
 		ACB68FEDF6F817D1BE1300AD /* Pods-TransactionModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TransactionModule.debug.xcconfig"; path = "Target Support Files/Pods-TransactionModule/Pods-TransactionModule.debug.xcconfig"; sourceTree = "<group>"; };
 		AE2D410ED02563A76864D651 /* Pods_TransactionModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TransactionModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD93F446527C79081DC45CA8 /* Pods-TransactionModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TransactionModule.release.xcconfig"; path = "Target Support Files/Pods-TransactionModule/Pods-TransactionModule.release.xcconfig"; sourceTree = "<group>"; };
@@ -70,7 +87,7 @@
 			files = (
 				A6B6ED32290F859700514A01 /* Utilities.framework in Frameworks */,
 				A6B6ED2F290F82F200514A01 /* AppState.framework in Frameworks */,
-				A6ED2D4029115E5F00845EF2 /* Dependencies.framework in Frameworks */,
+				A613BC8929124730006DD220 /* Dependencies.framework in Frameworks */,
 				0E81F6026D12F409B8F03625 /* Pods_TransactionModule.framework in Frameworks */,
 				A64F1D68290B98C3000D4733 /* DesignSystem.framework in Frameworks */,
 				A6B6ED39290FBAAF00514A01 /* Services.framework in Frameworks */,
@@ -84,7 +101,7 @@
 		0EE45598E266B0540A9D667B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A6ED2D3F29115E5F00845EF2 /* Dependencies.framework */,
+				A613BC8829124730006DD220 /* Dependencies.framework */,
 				A6B6ED38290FBAAF00514A01 /* Services.framework */,
 				A6B6ED31290F859700514A01 /* Utilities.framework */,
 				A6B6ED2E290F82F200514A01 /* AppState.framework */,
@@ -149,6 +166,7 @@
 		A64F1D50290B811A000D4733 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				A6ED2D3D2911354F00845EF2 /* GasPriceManager.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -210,6 +228,7 @@
 				A64F1D41290B8109000D4733 /* Sources */,
 				A64F1D42290B8109000D4733 /* Frameworks */,
 				A64F1D43290B8109000D4733 /* Resources */,
+				A613BC8B29124730006DD220 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -307,6 +326,7 @@
 				A64F1D5F290B8992000D4733 /* TxSettingObject.swift in Sources */,
 				A64F1D54290B8132000D4733 /* TransactionSettingPopup.swift in Sources */,
 				A64F1D78290BC093000D4733 /* Strings.swift in Sources */,
+				A6ED2D3E2911354F00845EF2 /* GasPriceManager.swift in Sources */,
 				A64F1D7A290BC0C4000D4733 /* String+.swift in Sources */,
 				A64F1D5C290B818E000D4733 /* TransactionSettingAdvancedTab.swift in Sources */,
 			);

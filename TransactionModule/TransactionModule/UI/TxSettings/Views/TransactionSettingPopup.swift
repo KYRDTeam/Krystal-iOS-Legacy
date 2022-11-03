@@ -24,7 +24,7 @@ public class TransactionSettingPopup: UIViewController {
     var basicTab: TransactionSettingBasicTab!
     var advancedTab: TransactionSettingAdvancedTab!
     var settingObject: TxSettingObject = .default
-    var chain: ChainType = AppState.shared.currentChain
+    var chain: ChainType!
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +69,9 @@ public class TransactionSettingPopup: UIViewController {
                                       y: self.segmentControl.frame.minY,
                                       width: segmentControl.frame.width, height: 30)
         segmentControl.selectedSegmentIndex = 0
+        segmentControl.setTitleTextAttributes([
+            .font: UIFont.karlaReguler(ofSize: 16)
+        ], for: .normal)
         segmentControl.highlightSelectedSegment()
     }
     
@@ -144,13 +147,17 @@ extension TransactionSettingPopup: UIPageViewControllerDataSource, UIPageViewCon
 extension TransactionSettingPopup {
     
     public static func show(on viewController: UIViewController,
+                            chain: ChainType,
+                            currentSetting: TxSettingObject = .default,
                             onConfirmed: @escaping (TxSettingObject) -> Void,
                             onCancelled: @escaping () -> Void) {
         let popup = TransactionSettingPopup.instantiateFromNib()
         popup.onCancelled = onCancelled
         popup.onConfirmed = onConfirmed
+        popup.chain = chain
+        popup.settingObject = currentSetting
         let options = SheetOptions(pullBarHeight: 0)
-        let sheet = SheetViewController(controller: popup, sizes: [.percent(0.9)], options: options)
+        let sheet = SheetViewController(controller: popup, sizes: [.percent(0.8)], options: options)
         viewController.present(sheet, animated: true)
     }
     

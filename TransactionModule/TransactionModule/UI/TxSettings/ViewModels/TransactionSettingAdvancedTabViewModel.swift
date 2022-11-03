@@ -65,8 +65,8 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
         guard let advancedPriority = setting.advanced?.maxPriorityFee else {
             return nil
         }
-        let lowerLimit = gasConfig.lowPriorityFee ?? .zero
-        let upperLimit = (gasConfig.fastPriorityFee ?? .zero) * BigInt(2)
+        let lowerLimit = gasConfig.getLowPriorityFee(chain: chain) ?? .zero
+        let upperLimit = (gasConfig.getFastPriorityFee(chain: chain) ?? .zero) * BigInt(2)
 
         if advancedPriority < lowerLimit {
           return .low
@@ -81,8 +81,8 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
         guard let advancedMaxFee = setting.advanced?.maxFee else {
             return nil
         }
-        let lowerLimit = gasConfig.lowGas
-        let upperLimit = gasConfig.superFastGas
+        let lowerLimit = gasConfig.getLowGasPrice(chain: chain)
+        let upperLimit = gasConfig.getSuperFastGasPrice(chain: chain)
         
         if advancedMaxFee < lowerLimit {
             return .low
@@ -105,10 +105,10 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
         return nil
     }
     
-    var web3Client: EthereumWeb3Service
+    var web3Client: EthereumNodeService
     
     override init(settings: TxSettingObject, gasConfig: GasConfig, chain: ChainType) {
-        web3Client = EthereumWeb3Service(chain: chain)
+        web3Client = EthereumNodeService(chain: chain)
         super.init(settings: settings, gasConfig: gasConfig, chain: chain)
     }
     
@@ -174,7 +174,7 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
     
     func getLatestNonce(completion: @escaping (Int?) -> ()) {
         let address = AppState.shared.currentAddress.addressString
-        web3Client.getTransactionCount(for: address) { [weak self] result in
+        web3Client.getTransactionCount(address: address) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let nonce):

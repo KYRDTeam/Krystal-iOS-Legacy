@@ -68,7 +68,7 @@ class TransactionSettingBasicTab: BaseTransactionSettingTab {
     
     @IBAction func gasFeeAboutTapped(_ sender: Any) {
         showBottomBannerView(message: Strings.gasFeeAbout,
-                             icon: Constants.helpIcon,
+                             icon: Images.helpIcon,
                              time: 10)
     }
     
@@ -120,7 +120,7 @@ class TransactionSettingBasicTab: BaseTransactionSettingTab {
         selectGasType(gasType: .slow)
     }
     
-    func selectGasType(gasType: GasType) {
+    func selectGasType(gasType: GasSpeed) {
         viewModel.selectGasType(gasType: gasType)
         onUpdateSettings?(viewModel.setting)
         reloadEstimatedGasUI()

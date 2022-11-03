@@ -5,11 +5,13 @@ import OneSignal
 import KrystalWallets
 import Dependencies
 import AppState
+import TransactionModule
 
 // MARK: This file for handling in session
 extension KNAppCoordinator {
   
   func startNewSession(address: KAddress) {
+      GasPriceManager.shared.scheduleFetchAllChainGasPrice()
     self.walletCache.lastUsedAddress = address
 //    self.currentAddress = address
     

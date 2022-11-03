@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import SwipeCellKit
 
-class ApprovedTokenCell: UITableViewCell {
+class ApprovedTokenCell: SwipeTableViewCell {
     @IBOutlet weak var tokenImageView: UIImageView!
     @IBOutlet weak var chainImageView: UIImageView!
     @IBOutlet weak var tokenSymbolLabel: UILabel!
@@ -17,9 +18,25 @@ class ApprovedTokenCell: UITableViewCell {
     @IBOutlet weak var rightTokenSymbolLabel: UILabel!
     @IBOutlet weak var amountLabel: UILabel!
     
+    var onTapTokenSymbol: (() -> ())?
+    var onTapSpenderAddress: (() -> ())?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        rightTokenSymbolLabel.isUserInteractionEnabled = true
+        rightTokenSymbolLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapTokenSymbol)))
+        
+        spenderAddressLabel.isUserInteractionEnabled = true
+        spenderAddressLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapSpenderAddress)))
+    }
+    
+    @objc func tapTokenSymbol() {
+        onTapTokenSymbol?()
+    }
+    
+    @objc func tapSpenderAddress() {
+        onTapSpenderAddress?()
     }
     
     func configure(viewModel: ApprovedTokenItemViewModel) {

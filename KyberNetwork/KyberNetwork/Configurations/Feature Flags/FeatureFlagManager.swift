@@ -16,7 +16,6 @@ struct FeatureFlagKeys {
   static let tokenPool = "token-pool"
   static let tradingView = "trading-view"
   static let scanner = "scanner"
-  static let multichainPortfolio = "multichain-portfolio"
   static let appBrowsing = "app-browsing"
   static let notiV2 = "noti-v2"
   static let earnV2 = "earn-v2"

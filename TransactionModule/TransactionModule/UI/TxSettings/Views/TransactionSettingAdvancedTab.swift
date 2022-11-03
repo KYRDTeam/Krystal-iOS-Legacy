@@ -121,7 +121,7 @@ class TransactionSettingAdvancedTab: UIViewController {
     func reloadGasLimitUI() {
         if let gasLimitError = viewModel.gasLimitError, gasLimitError == .low {
             gasLimitField.textColor = AppTheme.current.errorTextColor
-            gasLimitErrorLabel.text = "Gas limit must be at least \(Constants.lowestGasLimit)"
+            gasLimitErrorLabel.text = "Gas limit must be at least \(TransactionConstants.lowestGasLimit)"
         } else {
             gasLimitField.textColor = AppTheme.current.primaryTextColor
             gasLimitErrorLabel.text = nil
@@ -142,18 +142,18 @@ class TransactionSettingAdvancedTab: UIViewController {
                 equivalentPriorityETHFeeLabel.textColor = AppTheme.current.errorTextColor.withAlphaComponent(0.5)
                 priorityAccessoryLabel.textColor = AppTheme.current.errorTextColor
             case .empty:
-                priorityField.textColor = AppTheme.current.primaryTextColor
-                maxPriorityFeeErrorLabel.text = nil
-                equivalentPriorityETHFeeLabel.textColor = AppTheme.current.secondaryTextColor
-                priorityAccessoryLabel.textColor = AppTheme.current.primaryTextColor
+                priorityField?.textColor = AppTheme.current.primaryTextColor
+                maxPriorityFeeErrorLabel?.text = nil
+                equivalentPriorityETHFeeLabel?.textColor = AppTheme.current.secondaryTextColor
+                priorityAccessoryLabel?.textColor = AppTheme.current.primaryTextColor
             }
         } else {
-            priorityField.textColor = AppTheme.current.primaryTextColor
-            maxPriorityFeeErrorLabel.text = nil
-            equivalentPriorityETHFeeLabel.textColor = AppTheme.current.secondaryTextColor
-            priorityAccessoryLabel.textColor = AppTheme.current.primaryTextColor
+            priorityField?.textColor = AppTheme.current.primaryTextColor
+            maxPriorityFeeErrorLabel?.text = nil
+            equivalentPriorityETHFeeLabel?.textColor = AppTheme.current.secondaryTextColor
+            priorityAccessoryLabel?.textColor = AppTheme.current.primaryTextColor
         }
-        equivalentPriorityETHFeeLabel.text = viewModel.displayEquivalentPriorityETHFee
+        equivalentPriorityETHFeeLabel?.text = viewModel.displayEquivalentPriorityETHFee
     }
     
     func reloadMaxFeeUI() {
@@ -205,7 +205,7 @@ class TransactionSettingAdvancedTab: UIViewController {
     
     func showHelp(message: String) {
         showBottomBannerView(message: message,
-                             icon: Constants.helpIcon,
+                             icon: Images.helpIcon,
                              time: 10)
     }
     

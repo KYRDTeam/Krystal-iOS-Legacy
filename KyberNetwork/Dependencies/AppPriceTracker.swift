@@ -10,8 +10,9 @@ import Dependencies
 import BaseWallet
 
 class AppPriceStorage: PriceStorage {
-    func getUsdRate() -> Double? {
-        return KNGeneralProvider.shared.quoteTokenPrice?.usd
+    
+    func getQuoteUsdRate(chain: ChainType) -> Double? {
+        return KNTrackerRateStorage.shared.getPriceWithAddress(chain.customRPC().quoteTokenAddress)?.usd
     }
     
 }
