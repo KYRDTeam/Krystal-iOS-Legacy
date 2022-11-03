@@ -2,13 +2,10 @@ name: Krystal iOS CI Build
 
 on:
   workflow_dispatch:
+  pull_request:
   push:
     branches:
       - main
-      - ci-test
-      - testflight-build
-      - debug-action
-      - feat/use-k-runner
 
 concurrency: 
   group: ios-build-dev-${{ github.ref }}
