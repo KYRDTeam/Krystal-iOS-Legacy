@@ -156,7 +156,7 @@ jobs:
           ruby-version: 2.6
           bundler-cache: true
         env:
-          ImageOS: macos-12.6
+          ImageOS: macos12
 
       - name: Install firebase tool
         run: |
