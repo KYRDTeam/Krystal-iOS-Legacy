@@ -151,7 +151,7 @@ jobs:
           cp -va $CONFIG_PATH/* /Users/runner/privates
 
       ### Setup manually in the host beforehand
-      
+
       # - name: Setup Ruby
       #   uses: ruby/setup-ruby@v1
       #   with:
@@ -170,22 +170,24 @@ jobs:
 
       - name: Install Pod binary
         run: gem install cocoapods-binary
-          
-      - name: Setup Sentry CLI
-        shell: bash
-        run: curl -sL https://sentry.io/get-cli/ | bash
+
+      ### Installed it manually on self-hosted          
+      # - name: Setup Sentry CLI
+      #   shell: bash
+      #   run: curl -sL https://sentry.io/get-cli/ | bash
 
       - name: Install fda fastlane plguin
         shell: bash
         run:  bundle exec fastlane add_plugin firebase_app_distribution
 
-      - name: Setup cache
-        uses: actions/cache@v1
-        with:
-          path: Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
+      ### Disabled cache
+      # - name: Setup cache
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: Pods
+      #     key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pods-
 
       - name: Setup environments
         shell: bash
