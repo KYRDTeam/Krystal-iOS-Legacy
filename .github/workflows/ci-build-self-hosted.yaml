@@ -162,17 +162,16 @@ jobs:
       #   run: |
       #     curl -sL https://firebase.tools | bash
 
-      - name: Install Pod
-        run: gem install cocoapods
-
-      - name: Install Pod check
-        run: gem install cocoapods-check
+      ### Installed manually
+      # - name: Install Pod
+      #   run: gem install cocoapods
+      # - name: Install Pod check
+      #   run: gem install cocoapods-check
+      # - name: Install Pod binary
+      #   run: gem install cocoapods-binary
 
       - name: Install Fastlane
         run: gem install fastlane
-
-      - name: Install Pod binary
-        run: gem install cocoapods-binary
 
       ### Installed it manually on self-hosted          
       # - name: Setup Sentry CLI
