@@ -35,6 +35,17 @@ class ApprovalListViewModel {
         }
     }
     
+    var emptyMessage: String {
+        if !searchText.isEmpty {
+            return Strings.aprovalsNoRecords
+        }
+        if selectedChain == .all {
+            return Strings.approvalNoTokenFoundOnWallet
+        } else {
+            return Strings.approvalNoTokenFoundOnNetwork
+        }
+    }
+    
     var actions: Actions
     
     var totalAllowance: Double = 0 {
