@@ -481,6 +481,8 @@ class KNHistoryViewController: BaseWalletOrientedViewController {
   
   override func onAppSwitchAddress() {
     EtherscanTransactionStorage.shared.updateCurrentHistoryCache()
+    reloadWallet()
+    self.delegate?.historyViewController(self, run: .reloadAllData)
   }
 
   fileprivate func setupUI() {
