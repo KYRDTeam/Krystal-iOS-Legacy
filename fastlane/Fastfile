@@ -64,6 +64,7 @@ lane :debug_mode do
 #  sentry_upload
 end
 
+# Build and upload to FDA
 lane :fda do
   prepare_keychain
   install_profiles
@@ -72,6 +73,7 @@ lane :fda do
   firebase_distribution
 end
 
+# Build and upload to FDA, using self-hosted macos runner
 lane :fda_self_hosted do
   prepare_keychain
   install_profiles
