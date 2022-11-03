@@ -9,7 +9,7 @@ import UIKit
 import BigInt
 
 typealias UserSettings = (BasicTransactionSettings, AdvancedTransactionSettings?)
-typealias StakeDisplayInfo = (amount: String, apy: String, receiveAmount: String, rate: String, fee: String, platform: String, stakeTokenIcon: String)
+typealias StakeDisplayInfo = (amount: String, apy: String, receiveAmount: String, rate: String, fee: String, platform: String, stakeTokenIcon: String, fromSym: String, toSym: String)
 
 protocol StakingViewControllerDelegate: class {
   func didSelectNext(_ viewController: StakingViewController, settings: UserSettings, txObject: TxObject, displayInfo: StakeDisplayInfo)
@@ -281,7 +281,8 @@ class StakingViewController: InAppBrowsingViewController {
         self.displayLoading()
       } else {
         self.hideLoading()
-        
+        guard !self.viewModel.amount.value.isEmpty else { return }
+        self.nextButtonTapped(self.nextButton)
       }
     }
     
@@ -306,7 +307,7 @@ class StakingViewController: InAppBrowsingViewController {
   @IBAction func nextButtonTapped(_ sender: UIButton) {
 //    guard viewModel.formState.value == .valid else { return }
     if let tx = viewModel.txObject.value {
-      let displayInfo = ("\(viewModel.amount.value) \(viewModel.pool.token.symbol)", viewModel.displayAPY, viewModel.displayAmountReceive, viewModel.displayRate, viewModel.displayFeeString, viewModel.selectedPlatform.name, viewModel.pool.token.logo)
+      let displayInfo = ("\(viewModel.amount.value) \(viewModel.pool.token.symbol)", viewModel.displayAPY, viewModel.displayAmountReceive, viewModel.displayRate, viewModel.displayFeeString, viewModel.selectedPlatform.name, viewModel.pool.token.logo, viewModel.pool.token.symbol, viewModel.selectedEarningToken.value?.symbol ?? "")
       delegate?.didSelectNext(self, settings: (viewModel.basicSetting, viewModel.advancedSetting), txObject: tx, displayInfo: displayInfo)
     } else {
       viewModel.requestBuildStateTx(showLoading: true)

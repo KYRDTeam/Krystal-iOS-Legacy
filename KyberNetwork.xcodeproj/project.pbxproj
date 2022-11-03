@@ -404,6 +404,8 @@
 		29FF130D1F7626E800AFD326 /* FakeNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FF130C1F7626E800AFD326 /* FakeNavigationController.swift */; };
 		29FF6D6B2011D2AF00A3011C /* InCoordinatorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FF6D6A2011D2AF00A3011C /* InCoordinatorError.swift */; };
 		42F7E78AA6AFC645C7C8FE98 /* Pods_KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9BE5F7DFD20E386557D762B /* Pods_KrystalWallets.framework */; };
+		438FC3D129128F27007CBCCE /* StakingTrasactionProcessPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438FC3CF29128F27007CBCCE /* StakingTrasactionProcessPopup.swift */; };
+		438FC3D229128F28007CBCCE /* StakingTrasactionProcessPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 438FC3D029128F27007CBCCE /* StakingTrasactionProcessPopup.xib */; };
 		60450A79718C1E1276FC2E43 /* Pods_KyberNetworkUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF2D4C0FA288695E7C897F46 /* Pods_KyberNetworkUITests.framework */; };
 		61C359E02002AA5A0097B04D /* TransactionSigning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C359DF2002AA590097B04D /* TransactionSigning.swift */; };
 		61C359E22002AC9D0097B04D /* TransactionSigningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C359E12002AC9D0097B04D /* TransactionSigningTests.swift */; };
@@ -1684,6 +1686,8 @@
 		3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KyberNetworkTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		33D83D674C923CAB687DA690 /* Pods-KyberNetworkUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KyberNetworkUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KyberNetworkUITests/Pods-KyberNetworkUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KyberNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		438FC3CF29128F27007CBCCE /* StakingTrasactionProcessPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingTrasactionProcessPopup.swift; sourceTree = "<group>"; };
+		438FC3D029128F27007CBCCE /* StakingTrasactionProcessPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingTrasactionProcessPopup.xib; sourceTree = "<group>"; };
 		477899BEAA4489DA423E8857 /* Pods-TrustUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrustUITests/Pods-TrustUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4DB8204016307EAFC079EA48 /* Pods-Trust.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trust.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Trust/Pods-Trust.debug.xcconfig"; sourceTree = "<group>"; };
 		61C359DF2002AA590097B04D /* TransactionSigning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionSigning.swift; sourceTree = "<group>"; };
@@ -4846,6 +4850,8 @@
 				C3502D8F29090D2700C48391 /* StakingViewController.xib */,
 				C352A062290FC53F008947A3 /* StakingSummaryViewController.swift */,
 				C352A063290FC53F008947A3 /* StakingSummaryViewController.xib */,
+				438FC3CF29128F27007CBCCE /* StakingTrasactionProcessPopup.swift */,
+				438FC3D029128F27007CBCCE /* StakingTrasactionProcessPopup.xib */,
 			);
 			path = ControllersV2;
 			sourceTree = "<group>";
@@ -7188,6 +7194,7 @@
 				C30568AC2670B87700F331CE /* OverviewMainViewController.xib in Resources */,
 				C32D6E022784620A002886F1 /* KrystalWallet-min.js in Resources */,
 				7E2A2EAB28F697FD00AB9A77 /* EarnPoolViewCell.xib in Resources */,
+				438FC3D229128F28007CBCCE /* StakingTrasactionProcessPopup.xib in Resources */,
 				251ABCB220578F6E0069687F /* config_env_production.json in Resources */,
 				25929C5D20DA5C760045CFA3 /* SF-Pro-Display-Black.otf in Resources */,
 				A65C7A7A2818E877000FA9CE /* WebViewController.xib in Resources */,
@@ -8310,6 +8317,7 @@
 				257740CB205794CE003323EB /* KNAppCoordinator.swift in Sources */,
 				73ED85A520349BE400593BF3 /* StringFormatter.swift in Sources */,
 				2543D864223A0E8D0085F40E /* NumberFormatterUtil.swift in Sources */,
+				438FC3D129128F27007CBCCE /* StakingTrasactionProcessPopup.swift in Sources */,
 				A6D38BEB2898E8B5003579F2 /* SwapV2ViewController.swift in Sources */,
 				293112351FC9A0D500966EEA /* CallRequest.swift in Sources */,
 				C33BB80727955C9A00851BC6 /* Function.swift in Sources */,

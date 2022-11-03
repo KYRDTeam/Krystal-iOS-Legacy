@@ -351,6 +351,12 @@ extension InvestCoordinator: InvestViewControllerDelegate {
     navigationController.present(vc, animated: true)
   }
   
+  func openStakeProcess(_ tx: InternalHistoryTransaction) {
+    let vc = StakingTrasactionProcessPopup(transaction: tx)
+    vc.delegate = self
+    navigationController.present(vc, animated: true)
+  }
+  
 }
 
 extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
@@ -462,6 +468,28 @@ extension InvestCoordinator: StakingViewControllerDelegate {
 
 extension InvestCoordinator: StakingSummaryViewControllerDelegate {
   func didSendTransaction(viewController: StakingSummaryViewController, internalTransaction: InternalHistoryTransaction) {
+    viewController.dismiss(animated: true) {
+      self.openStakeProcess(internalTransaction)
+    }
     
+  }
+}
+
+extension InvestCoordinator: StakingProcessPopupDelegate {
+  func stakingProcessPopup(_ controller: StakingTrasactionProcessPopup, action: StakingProcessPopupEvent) {
+    switch action {
+    case .openLink(let url):
+      navigationController.openSafari(with: url)
+    case .goToSupport:
+      navigationController.openSafari(with: Constants.supportURL)
+    case .viewToken(let sym):
+      if let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: sym) {
+        controller.dismiss(animated: false) {
+          AppDelegate.shared.coordinator.exchangeTokenCoordinatorDidSelectTokens(token: token)
+        }
+      }
+    case .close:
+      controller.dismiss(animated: true)
+    }
   }
 }

@@ -56,7 +56,7 @@ class StakingSummaryViewModel {
   }
   
   func getEstimateGasLimit(txEIP1559: EIP1559Transaction?, tx: SignTransaction?) {
-    let internalHistory = InternalHistoryTransaction(type: .earn, state: .pending, fromSymbol: self.displayInfo.amount, toSymbol: self.displayInfo.receiveAmount, transactionDescription: "\(self.displayInfo.amount) → \(self.displayInfo.receiveAmount)", transactionDetailDescription: "", transactionObj: self.transaction?.toSignTransactionObject(), eip1559Tx: self.eip1559Transaction)
+    let internalHistory = InternalHistoryTransaction(type: .earn, state: .pending, fromSymbol: self.displayInfo.fromSym, toSymbol: self.displayInfo.toSym, transactionDescription: "\(self.displayInfo.amount) → \(self.displayInfo.receiveAmount)", transactionDetailDescription: "", transactionObj: self.transaction?.toSignTransactionObject(), eip1559Tx: self.eip1559Transaction)
     internalHistory.transactionSuccessDescription = "\(self.displayInfo.amount)) → \(self.displayInfo.receiveAmount)"
     if let txEIP1559 = txEIP1559 {
       shouldDiplayLoading.value = true
