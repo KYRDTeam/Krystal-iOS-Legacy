@@ -39,7 +39,9 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
         setupViews()
         bindViewModel()
         showLoading()
-        scheduleShowSwipeHint()
+        if viewModel.isRevokeAllowed {
+            scheduleShowSwipeHint()
+        }
         viewModel.fetchApprovals()
         viewModel.observeNotifications()
     }
@@ -100,18 +102,17 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
                 self.riskAmountLabel.text = self.viewModel.totalAllowanceString
                 self.emptyView.isHidden = self.viewModel.filteredApprovals.isEmpty == false
                 self.emptyView.setup(icon: Images.noApprovals,
-                                     message: self.viewModel.selectedChain == .all
-                                          ? Strings.approvalNoTokenFoundOnWallet
-                                          : Strings.approvalNoTokenFoundOnNetwork)
+                                     message: self.viewModel.emptyMessage)
                 self.tableView.reloadData()
             }
         }
         
         viewModel.onFilterApprovalsUpdated = { [weak self] in
+            guard let self = self else { return }
             DispatchQueue.main.async {
-                self?.emptyView.isHidden = self?.viewModel.filteredApprovals.isEmpty == false
-                self?.emptyView.setup(icon: Images.noRecords, message: Strings.aprovalsNoRecords)
-                self?.tableView.reloadData()
+                self.emptyView.isHidden = self.viewModel.filteredApprovals.isEmpty == false
+                self.emptyView.setup(icon: Images.noRecords, message: self.viewModel.emptyMessage)
+                self.tableView.reloadData()
             }
         }
         
@@ -228,6 +229,7 @@ extension ApprovalListViewController: UITableViewDataSource, UITableViewDelegate
 extension ApprovalListViewController: SwipeTableViewCellDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard viewModel.isRevokeAllowed else { return nil }
         guard orientation == .right else { return nil }
         
         let delete = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
