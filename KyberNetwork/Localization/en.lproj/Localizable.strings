@@ -932,6 +932,7 @@
 "connect.wallet" = "Connect Wallet";
 "review.swap" = "Review Swap";
 "insufficient.token.balance" = "Insufficient %@ Balance";
+"insufficient.token.for.network.fee" = "Insufficient %@ for network fee";
 "checking.allowance" = "Checking Allowance";
 "approve.token" = "Approve %@";
 "approving.token" = "Approving %@";
