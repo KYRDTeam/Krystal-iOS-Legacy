@@ -60,11 +60,14 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
         viewModel.fetchApprovals()
     }
     
-    override func onAppSwitchAddress() {
-        super.onAppSwitchAddress()
-        
-        showLoading()
-        viewModel.fetchApprovals()
+    override func onAppSwitchAddress(switchChain: Bool) {
+        super.onAppSwitchAddress(switchChain: switchChain)
+
+        // Case switch chain will be handle on onAppSwitchChain func
+        if !switchChain {
+            showLoading()
+            viewModel.fetchApprovals()
+        }
     }
     
     deinit {
@@ -162,8 +165,12 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
     }
     
     @objc func refreshData() {
-        refreshControl.endRefreshing()
-        showLoading()
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+            self.refreshControl.endRefreshing()
+            self.tableView.endUpdates()
+        }
+        
         viewModel.fetchApprovals()
     }
     
