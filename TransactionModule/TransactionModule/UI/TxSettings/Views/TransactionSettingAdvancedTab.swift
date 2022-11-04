@@ -302,7 +302,7 @@ extension TransactionSettingAdvancedTab: UITextFieldDelegate {
         let doubleValue = text.toDouble() ?? 0
         switch textField {
         case gasLimitField:
-            let bigIntValue = BigInt(doubleValue * pow(10, 9))
+            let bigIntValue = BigInt(doubleValue)
             self.updateGasLimit(value: bigIntValue)
             return true
         case priorityField:

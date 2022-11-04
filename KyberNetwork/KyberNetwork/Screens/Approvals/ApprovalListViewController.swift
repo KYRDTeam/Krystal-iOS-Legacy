@@ -185,6 +185,11 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
 
 extension ApprovalListViewController: UITextFieldDelegate {
     
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        viewModel.searchText = ""
+        return true
+    }
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
         viewModel.searchText = text
