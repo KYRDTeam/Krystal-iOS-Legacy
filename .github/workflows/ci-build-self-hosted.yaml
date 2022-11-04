@@ -150,19 +150,15 @@ jobs:
           mkdir -p /Users/runner/privates        
           cp -va $CONFIG_PATH/* /Users/runner/privates
 
-      ### Setup manually in the host beforehand
-
+      ### Installed manually
       # - name: Setup Ruby
       #   uses: ruby/setup-ruby@v1
       #   with:
       #     ruby-version: 2.6
       #     bundler-cache: true
-
       # - name: Install firebase tool
       #   run: |
       #     curl -sL https://firebase.tools | bash
-
-      ### Installed manually
       # - name: Install Pod
       #   run: gem install cocoapods
       # - name: Install Pod check
@@ -251,7 +247,7 @@ jobs:
           SLACK_CHANNEL: release-krystal-ios-stg
           SLACK_COLOR: ${{ job.status }}
           SLACK_ICON: https://github.com/rtCamp.png?size=48
-          SLACK_MESSAGE: ':rocket: Krystal-iOS | ${{ matrix.command }} | A new commit has been built | Download at https://console.firebase.google.com/u/0/project/stg-krystal-wallet/appdistribution/app/ios:com.kyrd.krystal.ios/releases'
+          SLACK_MESSAGE: ':rocket: Krystal-iOS | ${{ matrix.command }} | A new commit has been built on self-hosted runner | Download at https://console.firebase.google.com/u/0/project/stg-krystal-wallet/appdistribution/app/ios:com.kyrd.krystal.ios/releases'
           SLACK_TITLE: ':rocket: Krystal-iOS | ${{ matrix.command }}'
           SLACK_USERNAME: deployment-notifier
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_STG_IOS }}
@@ -263,7 +259,7 @@ jobs:
           SLACK_CHANNEL: release-krystal-ios-stg
           SLACK_COLOR: 'fc5a03'
           SLACK_ICON: https://github.com/rtCamp.png?size=48
-          SLACK_MESSAGE: ':rocket: Krystal-iOS | ${{ matrix.command }} | The build/deployment failed'
+          SLACK_MESSAGE: ':rocket: Krystal-iOS | ${{ matrix.command }} | The build/deployment failed on self-hosted runner'
           SLACK_TITLE: ':rocket: Krystal-iOS | ${{ matrix.command }}'
           SLACK_USERNAME: deployment-notifier
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_STG_IOS }}
