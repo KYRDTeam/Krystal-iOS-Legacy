@@ -460,6 +460,11 @@ extension InvestCoordinator: EarnOverviewV2ControllerDelegate {
 }
 
 extension InvestCoordinator: StakingViewControllerDelegate {
+  func sendApprove(_ viewController: StakingViewController, tokenAddress: String, remain: BigInt) {
+    //TODO: send approve
+    
+  }
+  
   func didSelectNext(_ viewController: StakingViewController, settings: UserSettings, txObject: TxObject, displayInfo: StakeDisplayInfo) {
     openStakeSummary(txObject: txObject, settings: settings, displayInfo: displayInfo)
   }

@@ -13,6 +13,7 @@ typealias StakeDisplayInfo = (amount: String, apy: String, receiveAmount: String
 
 protocol StakingViewControllerDelegate: class {
   func didSelectNext(_ viewController: StakingViewController, settings: UserSettings, txObject: TxObject, displayInfo: StakeDisplayInfo)
+  func sendApprove(_ viewController: StakingViewController, tokenAddress: String, remain: BigInt)
 }
 
 enum FormState: Equatable {
@@ -28,6 +29,13 @@ enum FormState: Equatable {
       return false
     }
   }
+}
+
+enum NextButtonState {
+  case notApprove
+  case needApprove
+  case approved
+  case noNeed
 }
 
 class StakingViewModel {
@@ -58,6 +66,13 @@ class StakingViewModel {
     }
   }
   
+  var nextButtonStatus: Observable<NextButtonState> = .init(.notApprove)
+  
+  var tokenAllowance: BigInt? {
+    didSet {
+      self.checkNextButtonStatus()
+    }
+  }
   
   init(pool: EarnPoolModel, platform: EarnPlatform) {
     self.pool = pool
@@ -112,6 +127,18 @@ class StakingViewModel {
     }
   }
   
+  func checkNextButtonStatus() {
+    guard let tokenAllowance = tokenAllowance else {
+      self.nextButtonStatus.value = .notApprove
+      return
+    }
+    if amountBigInt > tokenAllowance {
+      self.nextButtonStatus.value = .needApprove
+    } else {
+      self.nextButtonStatus.value = .noNeed
+    }
+  }
+  
   var buildTxRequestParams: JSONDictionary {
     var params: JSONDictionary = [
       "tokenAmount": amountBigInt.description,
@@ -132,13 +159,14 @@ class StakingViewModel {
     return params
   }
   
-  func requestBuildStateTx(showLoading: Bool = false) {
+  func requestBuildStateTx(showLoading: Bool = false, completion: @escaping BlankBlock = {}) {
     if showLoading { isLoading.value = true }
     apiService.buildStakeTx(param: buildTxRequestParams) { result in
       switch result {
       case .success(let tx):
         self.txObject.value = tx
         self.gasLimit.value = BigInt(tx.gasLimit.drop0x, radix: 16) ?? KNGasConfiguration.earnGasLimitDefault
+        completion()
       case .failure(let error):
         self.error.value = error
       }
@@ -164,6 +192,31 @@ class StakingViewModel {
 
   var isAmountTooBig: Bool {
     return self.amountBigInt > pool.token.getBalanceBigInt()
+  }
+  
+  func getAllowance() {
+    guard !pool.token.isQuoteToken else {
+      nextButtonStatus.value = .noNeed
+      return
+    }
+    guard let tx = txObject.value else {
+      requestBuildStateTx(showLoading: false, completion: {
+        self.getAllowance()
+      })
+      return
+    }
+    
+    let contractAddress = tx.to
+    
+    KNGeneralProvider.shared.getAllowance(for: AppDelegate.session.address.addressString, networkAddress: contractAddress, tokenAddress: pool.token.address) { result in
+      switch result {
+      case .success(let number):
+        self.tokenAllowance = number
+      case .failure(let error):
+        self.error.value = error
+        self.tokenAllowance = nil
+      }
+    }
   }
 }
 
@@ -194,6 +247,7 @@ class StakingViewController: InAppBrowsingViewController {
     setupUI()
     bindingViewModel()
     viewModel.requestOptionDetail()
+    viewModel.getAllowance()
   }
   
   private func setupUI() {
@@ -266,6 +320,7 @@ class StakingViewController: InAppBrowsingViewController {
     viewModel.amount.observeAndFire(on: self) { _ in
       self.updateRateInfoView()
       self.updateUIError()
+      self.viewModel.checkNextButtonStatus()
     }
     viewModel.formState.observeAndFire(on: self) { _ in
       self.updateUIError()
@@ -293,6 +348,19 @@ class StakingViewController: InAppBrowsingViewController {
     viewModel.gasPrice.observeAndFire(on: self) { _ in
       self.updateUIGasFee()
     }
+    
+    viewModel.nextButtonStatus.observeAndFire(on: self) { value in
+      switch value {
+      case .notApprove:
+        self.nextButton.setTitle(String(format: "Checking", self.viewModel.pool.token.symbol), for: .normal)
+      case .needApprove:
+        self.nextButton.setTitle(String(format: Strings.approveToken, self.viewModel.pool.token.symbol), for: .normal)
+      case .approved:
+        self.nextButton.setTitle("Stake Now", for: .normal)
+      case .noNeed:
+        self.nextButton.setTitle("Stake Now", for: .normal)
+      }
+    }
   }
 
   @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -312,6 +380,10 @@ class StakingViewController: InAppBrowsingViewController {
     } else {
       viewModel.requestBuildStateTx(showLoading: true)
     }
+    
+  }
+  
+  fileprivate func checkAllowance() {
     
   }
   

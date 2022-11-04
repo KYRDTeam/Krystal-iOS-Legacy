@@ -4,6 +4,8 @@ import Foundation
 import BigInt
 import Utilities
 
+typealias BlankBlock = () -> Void 
+
 enum ValidStatus: Equatable {
   case success
   case error(description: String)
