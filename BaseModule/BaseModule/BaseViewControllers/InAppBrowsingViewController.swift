@@ -73,6 +73,7 @@ open class InAppBrowsingViewController: BaseWalletOrientedViewController {
     open func updateChainInfo() {
         chainIcon?.image = AppState.shared.currentChain.squareIcon()
         chainLabel?.text = AppState.shared.currentChain.chainName()
+        browsingView?.isHidden = !AppState.shared.isBrowsingMode
     }
     
     open func reloadChainUI() {
