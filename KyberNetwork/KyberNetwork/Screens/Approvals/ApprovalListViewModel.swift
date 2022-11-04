@@ -68,6 +68,10 @@ class ApprovalListViewModel {
     @UserDefault(key: "user_has_interact_approval", defaultValue: false)
     var userHasInteractApproval: Bool
     
+    var isRevokeAllowed: Bool {
+        return !AppState.shared.currentAddress.isWatchWallet
+    }
+    
     init(actions: Actions) {
         self.actions = actions
     }
