@@ -336,7 +336,7 @@ class CompletedHistoryTransactonViewModel: TransactionHistoryItemViewModelProtoc
     case .receiveToken:
       return "RECEIVED"
     case .allowance:
-      return "APPROVED"
+      return "APPROVAL"
     case .earn:
       return "SUPPLY"
     case .contractInteraction:
