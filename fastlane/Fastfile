@@ -217,11 +217,12 @@ lane :update_project do
     profile_name: dev_profile
   )
 
+  # update code siging identity for Pods project as xcode 14 sometimes can't detect code signing ID config for these targets
   update_code_signing_settings(
     team_id: team_id,
     code_sign_identity: signing_id,
     targets: "SwiftMessages-SwiftMessages",
-    profile_name: dev_profile
+    profile_name: dev_profile,
     path: "Pods/Pods.xcodeproj"
   )
 end
