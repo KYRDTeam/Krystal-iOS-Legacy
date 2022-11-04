@@ -8705,7 +8705,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.24;
+				MARKETING_VERSION = 1.2.25;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios;
 				PRODUCT_NAME = Krystal;
@@ -8739,7 +8739,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.24;
+				MARKETING_VERSION = 1.2.25;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios;
 				PRODUCT_NAME = Krystal;
 				PROVISIONING_PROFILE_SPECIFIER = "Krytal Dev";
@@ -9048,7 +9048,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.24;
+				MARKETING_VERSION = 1.2.25;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -9081,7 +9081,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.24;
+				MARKETING_VERSION = 1.2.25;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios.KrystalNotificationServiceExtension;
