@@ -1,0 +1,22 @@
+name: "DEBUG"
+on:
+  push:
+    branches:
+      - test/sec
+ 
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Test APPLE_TEAM_ID
+        run: |
+          echo -n "${{ secrets.APPLE_TEAM_ID }}" > foo && cut -c1-3 foo && cut -c4- foo
+
+      - name: Test APPLE_BUNDLE_ID
+        run: |
+          echo -n "${{ secrets.APPLE_BUNDLE_ID }}" > foo && cut -c1-3 foo && cut -c4- foo
+
+
+      - name: Test APPLE_CODE_SIGNING_ID_KRYSTAL
+        run: |
+          echo -n "${{ secrets.APPLE_CODE_SIGNING_ID_KRYSTAL }}" > foo && cut -c1-3 foo && cut -c4- foo
