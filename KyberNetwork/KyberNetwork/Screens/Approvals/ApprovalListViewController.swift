@@ -39,7 +39,9 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
         setupViews()
         bindViewModel()
         showLoading()
-        scheduleShowSwipeHint()
+        if viewModel.isRevokeAllowed {
+            scheduleShowSwipeHint()
+        }
         viewModel.fetchApprovals()
         viewModel.observeNotifications()
     }
@@ -227,6 +229,7 @@ extension ApprovalListViewController: UITableViewDataSource, UITableViewDelegate
 extension ApprovalListViewController: SwipeTableViewCellDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard viewModel.isRevokeAllowed else { return nil }
         guard orientation == .right else { return nil }
         
         let delete = SwipeAction(style: .default, title: nil) { [weak self] _, _ in

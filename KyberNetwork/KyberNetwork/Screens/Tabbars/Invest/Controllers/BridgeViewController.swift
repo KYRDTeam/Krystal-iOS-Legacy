@@ -10,6 +10,7 @@ import BigInt
 import KrystalWallets
 import Utilities
 import BaseModule
+import AppState
 
 enum BridgeEvent {
   case openHistory
@@ -274,7 +275,7 @@ class BridgeViewController: InAppBrowsingViewController {
         self.delegate?.bridgeViewControllerController(self, run: .addChainWallet(chainType: selected))
         return
       } else {
-        self.onChainSelected(chain: selected)
+        AppState.shared.updateChain(chain: selected)
       }
     }
     self.present(popup, animated: true, completion: nil)

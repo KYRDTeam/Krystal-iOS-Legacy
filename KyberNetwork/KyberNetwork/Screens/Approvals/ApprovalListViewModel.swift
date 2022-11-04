@@ -30,7 +30,7 @@ class ApprovalListViewModel {
     var searchText: String = "" {
         didSet {
             filteredApprovals = self.getFilteredApprovals(searchText: searchText)
-                .map { approval in ApprovedTokenItemViewModel(approval: approval) }
+                .map { approval in ApprovedTokenItemViewModel(approval: approval, showChainIcon: selectedChain == .all) }
             onFilterApprovalsUpdated?()
         }
     }
@@ -67,6 +67,10 @@ class ApprovalListViewModel {
     
     @UserDefault(key: "user_has_interact_approval", defaultValue: false)
     var userHasInteractApproval: Bool
+    
+    var isRevokeAllowed: Bool {
+        return !AppState.shared.currentAddress.isWatchWallet
+    }
     
     init(actions: Actions) {
         self.actions = actions
@@ -109,12 +113,12 @@ class ApprovalListViewModel {
     
     func fetchApprovals() {
         let chains: [Int] = selectedChain == .all ? ChainType.getAllChain().map { $0.customRPC().chainID } : [selectedChain.getChainId()]
-        service.getListApproval(address: address, chainIds: chains) { [weak self] response in
+        service.getListApproval(address: address, chainIds: chains) { [weak self, selectedChain] response in
             self?.approvals = response?.data?.approvals?.filter { approval in
                 return BigInt(approval.amount ?? "0") ?? .zero >= BigInt(10).power(approval.decimals) / BigInt(10).power(6) // Should > 0.000001
             } ?? []
             self?.filteredApprovals = self?.getFilteredApprovals(searchText: self?.searchText ?? "")
-                .map { approval in ApprovedTokenItemViewModel(approval: approval) } ?? []
+                .map { approval in ApprovedTokenItemViewModel(approval: approval, showChainIcon: selectedChain == .all) } ?? []
             self?.totalAllowance = (response?.data?.atRisk?["usd"] as? Double) ?? 0
             self?.onFetchApprovals?()
         }

@@ -19,10 +19,11 @@ class ApprovedTokenItemViewModel {
     var spenderAddress: String?
     var amountString: String?
     let approval: Approval
+    var showChainIcon: Bool
     
     let minUnlimitedApprovalAmount: BigInt = BigInt(10).power(9)
     
-    init(approval: Approval) {
+    init(approval: Approval, showChainIcon: Bool) {
         self.approval = approval
         symbol = approval.symbol
         tokenIcon = approval.logo
@@ -34,5 +35,6 @@ class ApprovedTokenItemViewModel {
         amountString = bigIntAmount > BigInt(10).power(approval.decimals) * minUnlimitedApprovalAmount
                                         ? Strings.unlimitedAllowance
                                         : NumberFormatUtils.amount(value: bigIntAmount, decimals: approval.decimals)
+        self.showChainIcon = showChainIcon
     }
 }
