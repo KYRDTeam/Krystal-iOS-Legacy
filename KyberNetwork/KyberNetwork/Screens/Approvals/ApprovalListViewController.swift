@@ -162,8 +162,12 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
     }
     
     @objc func refreshData() {
-        refreshControl.endRefreshing()
-        showLoading()
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+            self.refreshControl.endRefreshing()
+            self.tableView.endUpdates()
+        }
+        
         viewModel.fetchApprovals()
     }
     
