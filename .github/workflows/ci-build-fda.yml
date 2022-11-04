@@ -1,4 +1,4 @@
-name: CI Manual Build (FDA)
+name: Get macOS runner info
 
 on:
   workflow_dispatch:
