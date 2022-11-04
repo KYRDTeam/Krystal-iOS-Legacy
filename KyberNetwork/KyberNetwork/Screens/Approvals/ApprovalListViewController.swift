@@ -100,18 +100,17 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
                 self.riskAmountLabel.text = self.viewModel.totalAllowanceString
                 self.emptyView.isHidden = self.viewModel.filteredApprovals.isEmpty == false
                 self.emptyView.setup(icon: Images.noApprovals,
-                                     message: self.viewModel.selectedChain == .all
-                                          ? Strings.approvalNoTokenFoundOnWallet
-                                          : Strings.approvalNoTokenFoundOnNetwork)
+                                     message: self.viewModel.emptyMessage)
                 self.tableView.reloadData()
             }
         }
         
         viewModel.onFilterApprovalsUpdated = { [weak self] in
+            guard let self = self else { return }
             DispatchQueue.main.async {
-                self?.emptyView.isHidden = self?.viewModel.filteredApprovals.isEmpty == false
-                self?.emptyView.setup(icon: Images.noRecords, message: Strings.aprovalsNoRecords)
-                self?.tableView.reloadData()
+                self.emptyView.isHidden = self.viewModel.filteredApprovals.isEmpty == false
+                self.emptyView.setup(icon: Images.noRecords, message: self.viewModel.emptyMessage)
+                self.tableView.reloadData()
             }
         }
         
