@@ -141,8 +141,9 @@ public extension WalletManager {
       guard let json = keystore.data(using: .utf8) else {
         throw WalletManagerError.invalidJSON
       }
-      let importedWallet = try self.keystore.import(json: json, name: name, password: password, newPassword: password, coins: [addressType.coinType])
-      keyManager.save(value: password, forKey: importedWallet.identifier)
+      let newPassword = PasswordGenerator.generateRandom()
+      let importedWallet = try self.keystore.import(json: json, name: name, password: password, newPassword: newPassword, coins: [addressType.coinType])
+      keyManager.save(value: newPassword, forKey: importedWallet.identifier)
       let wallet = WalletObject(id: importedWallet.identifier, importType: .privateKey, name: name)
       let account = try importedWallet.getAccount(password: "", coin: addressType.coinType)
       let address = AddressObject(walletID: wallet.id, addressType: addressType, address: account.address, name: name)
