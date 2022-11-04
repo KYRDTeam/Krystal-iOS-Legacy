@@ -11,6 +11,7 @@ import AppState
 import BigInt
 import TransactionModule
 import Dependencies
+import Moya
 
 class ApprovalListViewModel {
     
@@ -64,6 +65,7 @@ class ApprovalListViewModel {
     var onUpdatePendingTx: ((Bool) -> Void)?
     var selectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : AppState.shared.currentChain
     var totalAllowanceString: String?
+    var sendingRequest: Cancellable?
     
     @UserDefault(key: "user_has_interact_approval", defaultValue: false)
     var userHasInteractApproval: Bool
@@ -113,7 +115,8 @@ class ApprovalListViewModel {
     
     func fetchApprovals() {
         let chains: [Int] = selectedChain == .all ? ChainType.getAllChain().map { $0.customRPC().chainID } : [selectedChain.getChainId()]
-        service.getListApproval(address: address, chainIds: chains) { [weak self, selectedChain] response in
+        sendingRequest?.cancel()
+        sendingRequest = service.getListApproval(address: address, chainIds: chains) { [weak self, selectedChain] response in
             self?.approvals = response?.data?.approvals?.filter { approval in
                 return BigInt(approval.amount ?? "0") ?? .zero >= BigInt(10).power(approval.decimals) / BigInt(10).power(6) // Should > 0.000001
             } ?? []
