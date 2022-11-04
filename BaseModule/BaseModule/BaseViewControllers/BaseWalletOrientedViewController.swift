@@ -116,7 +116,9 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
   }
   
   @objc open func onAppSelectAllChain() {
-    reloadAllNetworksChain()
+    if supportAllChainOption {
+      reloadAllNetworksChain()
+    }
   }
   
   @objc open func onAppSwitchAddress() {
