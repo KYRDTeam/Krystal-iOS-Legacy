@@ -198,10 +198,7 @@ post_install do |installer|
       end
     end
   end
-end
 
-# https://github.com/CocoaPods/CocoaPods/issues/11402#issuecomment-1149585364
-post_install do |installer|
   installer.generated_projects.each do |project|
     project.targets.each do |target|
         target.build_configurations.each do |config|
