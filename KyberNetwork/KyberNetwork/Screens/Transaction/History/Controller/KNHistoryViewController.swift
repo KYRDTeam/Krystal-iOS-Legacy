@@ -3,6 +3,7 @@
 import UIKit
 import SwipeCellKit
 import BaseModule
+import AppState
 
 //swiftlint:disable file_length
 enum KNHistoryViewEvent {
@@ -88,7 +89,7 @@ struct KNHistoryViewModel {
   }
   
   var hasPendingTransactions: Bool {
-    return EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isNotEmpty
+      return EtherscanTransactionStorage.shared.getInternalHistoryTransaction(chain: AppState.shared.currentChain).isNotEmpty
   }
 
   mutating func updateIsShowingPending(_ isShowingPending: Bool) {

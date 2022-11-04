@@ -311,13 +311,13 @@ class EtherscanTransactionStorage {
   func getHistoryTransactionModel() -> [HistoryTransaction] {
     return self.historyTransactionModel
   }
-
-  func getInternalHistoryTransaction() -> [InternalHistoryTransaction] {
-    return self.internalHistoryTransactions.filter { transaction in
-      transaction.state == .pending
+    
+    func getInternalHistoryTransaction(chain: ChainType = AppState.shared.currentChain) -> [InternalHistoryTransaction] {
+        return self.internalHistoryTransactions.filter { transaction in
+            transaction.state == .pending && chain == transaction.chain
+        }
     }
-  }
-  
+    
   func getHandledInternalHistoryTransactionForUnsupportedApi() -> [InternalHistoryTransaction] {
     return self.internalHistoryTransactions.filter { transaction in
       transaction.state != .pending

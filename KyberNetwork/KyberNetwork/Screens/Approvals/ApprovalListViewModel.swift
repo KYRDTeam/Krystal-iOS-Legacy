@@ -80,6 +80,7 @@ class ApprovalListViewModel {
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidChangeAddress, object: nil)
+        NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidSwitchChain, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(kTransactionDidUpdateNotificationKey), object: nil)
     }
     
@@ -92,10 +93,20 @@ class ApprovalListViewModel {
         )
         NotificationCenter.default.addObserver(
             self,
+            selector: #selector(appDidSwitchChain),
+            name: AppEventCenter.shared.kAppDidSwitchChain,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
             selector: #selector(self.transactionStateDidUpdate),
             name: Notification.Name(kTransactionDidUpdateNotificationKey),
             object: nil
         )
+    }
+    
+    @objc func appDidSwitchChain() {
+        checkPendingTx()
     }
     
     @objc func appDidSwitchAddress() {
@@ -180,7 +191,7 @@ class ApprovalListViewModel {
                             KNGeneralProvider.shared.sendSignedTransactionData(signature.0, chain: chain) { result in
                                 switch result {
                                 case .success(let hash):
-                                    self.savePendingTx(txCount: count, txHash: hash, approval: approval, transaction: signature.1)
+                                    self.savePendingTx(chain: chain, txCount: count, txHash: hash, approval: approval, transaction: signature.1)
                                     self.actions.onOpenStatus(hash, chain)
                                     onCompleted(nil)
                                 case .failure(let error):
@@ -200,8 +211,8 @@ class ApprovalListViewModel {
         }
     }
     
-    func savePendingTx(txCount: Int, txHash: String, approval: Approval, transaction: SignTransaction) {
-        let historyTransaction = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: approval.symbol ?? "", transactionDetailDescription: approval.tokenAddress ?? "", transactionObj: transaction.toSignTransactionObject(), eip1559Tx: nil)
+    func savePendingTx(chain: ChainType, txCount: Int, txHash: String, approval: Approval, transaction: SignTransaction) {
+        let historyTransaction = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: approval.symbol ?? "", transactionDetailDescription: approval.tokenAddress ?? "", transactionObj: transaction.toSignTransactionObject(), eip1559Tx: nil, chain: chain)
         historyTransaction.hash = txHash
         historyTransaction.time = Date()
         historyTransaction.nonce = txCount
