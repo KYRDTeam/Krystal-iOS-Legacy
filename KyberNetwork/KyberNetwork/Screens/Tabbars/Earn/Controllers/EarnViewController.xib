@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Regular.ttf">
@@ -40,7 +40,6 @@
                 <outlet property="gasFeeTittleLabelTopContraint" destination="1tE-OJ-IEj" id="zoq-KB-cbN"/>
                 <outlet property="hintToNavigateToSwapViewLabel" destination="xRv-eU-hbE" id="qt9-ew-kcV"/>
                 <outlet property="maxFromAmountButton" destination="R7A-WG-QtX" id="dac-d4-jeu"/>
-                <outlet property="pendingTxIndicatorView" destination="bTq-X6-59I" id="wAT-MJ-fyQ"/>
                 <outlet property="platformTableView" destination="RUK-rd-xZx" id="Wmr-Jv-MPJ"/>
                 <outlet property="platformTableViewHeightContraint" destination="De4-y4-rPb" id="1Rw-Mr-6an"/>
                 <outlet property="selectDepositTitleLabel" destination="Nme-TJ-MrD" id="tDy-Pa-y5R"/>
@@ -64,24 +63,6 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Au7-Ch-oql">
-                            <rect key="frame" x="326" y="30" width="32" height="32"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="32" id="pbU-Zz-Luz"/>
-                                <constraint firstAttribute="height" constant="32" id="t7o-C7-gUn"/>
-                            </constraints>
-                            <state key="normal" image="history_actionsheet_icon"/>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="10"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                            <connections>
-                                <action selector="historyButtonTapped:" destination="-1" eventType="touchUpInside" id="8NJ-If-17J"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cF5-8x-RN9">
                             <rect key="frame" x="23" y="18" width="46" height="36"/>
                             <constraints>
@@ -96,20 +77,6 @@
                                 <action selector="backButtonTapped:" destination="-1" eventType="touchUpInside" id="ub4-Pm-ffS"/>
                             </connections>
                         </button>
-                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bTq-X6-59I">
-                            <rect key="frame" x="352" y="33" width="6" height="6"/>
-                            <color key="backgroundColor" name="secondaryColor"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="6" id="GRu-Fm-4p8"/>
-                                <constraint firstAttribute="height" constant="6" id="O38-iB-qaf"/>
-                            </constraints>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="3"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                        </view>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="w5j-tE-0Zu">
                             <rect key="frame" x="51" y="54" width="12" height="12"/>
                             <constraints>
@@ -179,16 +146,12 @@
                         <constraint firstItem="N5O-UQ-Cbc" firstAttribute="centerY" secondItem="w5j-tE-0Zu" secondAttribute="centerY" id="98v-FP-nUe"/>
                         <constraint firstAttribute="bottom" secondItem="N5O-UQ-Cbc" secondAttribute="bottom" constant="24" id="BRw-z1-suU"/>
                         <constraint firstAttribute="trailing" secondItem="Pc9-aj-osG" secondAttribute="trailing" id="G3R-N9-vJa"/>
-                        <constraint firstAttribute="trailing" secondItem="Au7-Ch-oql" secondAttribute="trailing" constant="17" id="HJK-Vx-JYR"/>
-                        <constraint firstItem="Au7-Ch-oql" firstAttribute="centerY" secondItem="I0A-k7-oVV" secondAttribute="centerY" id="Id0-Ew-Z7g"/>
                         <constraint firstItem="w5j-tE-0Zu" firstAttribute="leading" secondItem="Lgl-SE-yW3" secondAttribute="leading" id="JZf-SM-5gr"/>
                         <constraint firstItem="N5O-UQ-Cbc" firstAttribute="leading" secondItem="w5j-tE-0Zu" secondAttribute="trailing" constant="4" id="SSr-Wv-did"/>
                         <constraint firstItem="cF5-8x-RN9" firstAttribute="leading" secondItem="I0A-k7-oVV" secondAttribute="leading" constant="23" id="SY5-cn-YZc"/>
-                        <constraint firstItem="bTq-X6-59I" firstAttribute="top" secondItem="Au7-Ch-oql" secondAttribute="top" constant="3" id="Y7e-ZS-lJC"/>
                         <constraint firstItem="Pc9-aj-osG" firstAttribute="top" secondItem="I0A-k7-oVV" secondAttribute="top" id="e7w-w2-JdD"/>
                         <constraint firstItem="w5j-tE-0Zu" firstAttribute="top" secondItem="Lgl-SE-yW3" secondAttribute="bottom" constant="6" id="fPR-gH-FVJ"/>
                         <constraint firstItem="Lgl-SE-yW3" firstAttribute="centerY" secondItem="cF5-8x-RN9" secondAttribute="centerY" id="hcu-lD-tpq"/>
-                        <constraint firstItem="bTq-X6-59I" firstAttribute="trailing" secondItem="Au7-Ch-oql" secondAttribute="trailing" id="jnc-OS-Kwe"/>
                         <constraint firstItem="Pc9-aj-osG" firstAttribute="leading" secondItem="N5O-UQ-Cbc" secondAttribute="trailing" constant="30" id="l7f-j9-yuQ"/>
                         <constraint firstAttribute="bottom" secondItem="Pc9-aj-osG" secondAttribute="bottom" id="nI6-sa-3oo"/>
                         <constraint firstItem="cn1-1u-pp5" firstAttribute="centerY" secondItem="Lgl-SE-yW3" secondAttribute="centerY" id="nR9-ln-62x"/>
@@ -518,7 +481,6 @@
         <image name="eth" width="32" height="32"/>
         <image name="farming_icon" width="20" height="18"/>
         <image name="gas_config_icon" width="36" height="36"/>
-        <image name="history_actionsheet_icon" width="24" height="24"/>
         <image name="icon-plus-square" width="16" height="16"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -528,9 +490,6 @@
         </namedColor>
         <namedColor name="normalTextColor">
             <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="secondaryColor">
-            <color red="0.99599999189376831" green="0.4309999942779541" blue="0.25099998712539673" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>

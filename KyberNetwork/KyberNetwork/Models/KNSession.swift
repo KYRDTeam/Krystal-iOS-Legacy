@@ -88,8 +88,7 @@ class KNSession {
     self.transactionCoordinator = KNTransactionCoordinator(
       transactionStorage: self.transactionStorage,
       tokenStorage: self.tokenStorage,
-      externalProvider: self.externalProvider,
-      address: address
+      externalProvider: self.externalProvider
     )
     self.transactionCoordinator?.start()
     self.crosschainTxService.scheduleFetchPendingTransaction()
@@ -118,7 +117,7 @@ class KNSession {
     self.web3Swift?.start()
     self.transactionCoordinator?.start()
     BalanceStorage.shared.updateCurrentWallet(address)
-    EtherscanTransactionStorage.shared.updateCurrentWallet(address)
+    EtherscanTransactionStorage.shared.updateCurrentHistoryCache()
   }
 
   func stopSession() {

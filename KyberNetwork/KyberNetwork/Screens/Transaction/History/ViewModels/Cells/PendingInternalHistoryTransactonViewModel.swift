@@ -82,7 +82,7 @@ class PendingInternalHistoryTransactonViewModel: TransactionHistoryItemViewModel
     case .receiveToken:
       return "RECEIVE"
     case .allowance:
-      return "APPROVE"
+      return "APPROVAL"
     case .earn:
       return "SUPPLY"
     case .contractInteraction:

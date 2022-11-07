@@ -16,26 +16,9 @@
 		A64C2ED328F9220F002FD64C /* NonceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2ED228F9220F002FD64C /* NonceStorage.swift */; };
 		A64C2EF028F944BF002FD64C /* PriceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EEF28F944BF002FD64C /* PriceStorage.swift */; };
 		A65D14D728FD058E00B12E84 /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A65D14D628FD058E00B12E84 /* BaseWallet.framework */; };
-		A65D14D828FD058E00B12E84 /* BaseWallet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A65D14D628FD058E00B12E84 /* BaseWallet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A66FC40F28F4F55500E49E86 /* Dependencies.h in Headers */ = {isa = PBXBuildFile; fileRef = A66FC40E28F4F55500E49E86 /* Dependencies.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6F6292428FD45750085AE67 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6F6292328FD45750085AE67 /* Services.framework */; };
-		A6F6292528FD45750085AE67 /* Services.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6F6292328FD45750085AE67 /* Services.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		A65D14D928FD058E00B12E84 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				A6F6292528FD45750085AE67 /* Services.framework in Embed Frameworks */,
-				A65D14D828FD058E00B12E84 /* BaseWallet.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		49F3A3EBEEF754D1B5309B6E /* Pods-Dependencies.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dependencies.debug.xcconfig"; path = "Target Support Files/Pods-Dependencies/Pods-Dependencies.debug.xcconfig"; sourceTree = "<group>"; };
@@ -154,7 +137,6 @@
 				A66FC40728F4F55500E49E86 /* Sources */,
 				A66FC40828F4F55500E49E86 /* Frameworks */,
 				A66FC40928F4F55500E49E86 /* Resources */,
-				A65D14D928FD058E00B12E84 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

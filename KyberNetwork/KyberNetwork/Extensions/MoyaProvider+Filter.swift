@@ -22,7 +22,7 @@ extension MoyaProvider {
                     let decoder = JSONDecoder()
                     do {
                         let data = try decoder.decode(ErrorResponse.self, from: response.data)
-                        let err = NetworkError.backendError(reponse: data)
+                        let err = NetworkError.backendError(reponse: data, code: response.statusCode)
                         completion(.failure(err))
                         SentrySDK.capture(error: err.toNSError())
                         

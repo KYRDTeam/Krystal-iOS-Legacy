@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - ReferralOverviewData
 struct ReferralOverviewData: Codable {
-  let timestamp: Int
+  let timestamp: Int?
   let codeStats: [String: Code]
   let rewardToken: Token
   let rewardAmount, nextRewardAmount, volForNextReward, totalVol, bonusVol, bonusRatio: Double
@@ -37,7 +37,7 @@ struct Claim: Codable {
 
 // MARK: - ReferralTiers
 struct ReferralTiers: Codable {
-  let timestamp: Int
+  let timestamp: Int?
   let tiers: [Tier]
 }
 

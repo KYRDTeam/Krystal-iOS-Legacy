@@ -15,7 +15,7 @@ public protocol AppRouterProtocol {
                       onSelectWallet: @escaping (KWallet) -> (),
                       onSelectWatchAddress: @escaping (KAddress) -> ())
   func openChainList(_ selectedChain: ChainType, allowAllChainOption: Bool, onSelectChain: @escaping (ChainType) -> Void)
-  func createSwapViewController() -> UIViewController
+//  func createSwapViewController() -> UIViewController
   func createEarnOverViewController() -> UIViewController
   func openAddWallet()
   func openTransactionHistory()

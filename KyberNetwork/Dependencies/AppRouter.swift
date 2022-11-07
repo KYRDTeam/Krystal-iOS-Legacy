@@ -66,13 +66,13 @@ class AppRouter: AppRouterProtocol, Coordinator {
     UIApplication.shared.topMostViewController()?.present(popup, animated: true, completion: nil)
   }
   
-  func createSwapViewController() -> UIViewController {
-    return SwapModule.createSwapViewController()
+//  func createSwapViewController() -> UIViewController {
+//    return SwapModule.createSwapViewController()
   }
   
   func createEarnOverViewController() -> UIViewController {
     return EarnModule.createEarnOverViewController()
-  }
+//  }
   
   func openTransactionHistory() {
     guard let navigation = UIApplication.shared.topMostViewController() as? UINavigationController else { return }

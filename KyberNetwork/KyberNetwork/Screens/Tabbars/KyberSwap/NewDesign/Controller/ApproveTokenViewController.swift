@@ -346,7 +346,7 @@ class ApproveTokenViewController: KNBaseViewController {
     guard self.viewModel.getFee() < ethBalance else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
-        message: NSLocalizedString("balance.not.enough.to.make.transaction", value: "Balance is not enough to make the transaction.", comment: "")
+        message: String(format: Strings.insufficientTokenForNetworkFee, KNGeneralProvider.shared.quoteTokenObject.symbol)
       )
       return
     }

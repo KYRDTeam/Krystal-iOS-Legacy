@@ -104,6 +104,11 @@ def dependenciesDependencies
   pod 'BigInt'
 end
 
+def transactionModuleDependencies
+  pod 'FittedSheets'
+  pod 'BigInt'
+end
+
 target 'Dependencies' do
   project 'Dependencies/Dependencies.xcodeproj'
   use_frameworks!
@@ -130,6 +135,13 @@ target 'SwapModule' do
   use_frameworks!
   
   swapDependencies
+end
+
+target 'TransactionModule' do
+  project 'TransactionModule/TransactionModule.xcodeproj'
+  use_frameworks!
+  
+  transactionModuleDependencies
 end
 
 target 'EarnModule' do
