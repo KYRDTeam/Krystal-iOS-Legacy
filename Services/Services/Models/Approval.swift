@@ -28,6 +28,7 @@ public struct Approval: Decodable {
     public private(set) var logo: String?
     public private(set) var tag: String?
     public private(set) var decimals: Int
+    public private(set) var lastUpdateTimestamp: String?
     
     public var isVerified: Bool {
         return tag == "VERIFIED"
