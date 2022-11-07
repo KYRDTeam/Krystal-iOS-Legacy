@@ -13,7 +13,7 @@ typealias StakeDisplayInfo = (amount: String, apy: String, receiveAmount: String
 
 protocol StakingViewControllerDelegate: class {
   func didSelectNext(_ viewController: StakingViewController, settings: UserSettings, txObject: TxObject, displayInfo: StakeDisplayInfo)
-  func sendApprove(_ viewController: StakingViewController, tokenAddress: String, remain: BigInt)
+  func sendApprove(_ viewController: StakingViewController, tokenAddress: String, remain: BigInt, symbol: String, toAddress: String)
 }
 
 enum FormState: Equatable {
@@ -130,6 +130,7 @@ class StakingViewModel {
   func checkNextButtonStatus() {
     guard let tokenAllowance = tokenAllowance else {
       self.nextButtonStatus.value = .notApprove
+      getAllowance()
       return
     }
     if amountBigInt > tokenAllowance {
@@ -353,12 +354,18 @@ class StakingViewController: InAppBrowsingViewController {
       switch value {
       case .notApprove:
         self.nextButton.setTitle(String(format: "Checking", self.viewModel.pool.token.symbol), for: .normal)
+        self.nextButton.alpha = 0.2
+        self.nextButton.isEnabled = false
       case .needApprove:
         self.nextButton.setTitle(String(format: Strings.approveToken, self.viewModel.pool.token.symbol), for: .normal)
+        self.nextButton.alpha = 1
+        self.nextButton.isEnabled = true
       case .approved:
         self.nextButton.setTitle("Stake Now", for: .normal)
+        self.updateUIError()
       case .noNeed:
         self.nextButton.setTitle("Stake Now", for: .normal)
+        self.updateUIError()
       }
     }
   }
@@ -373,18 +380,27 @@ class StakingViewController: InAppBrowsingViewController {
   }
   
   @IBAction func nextButtonTapped(_ sender: UIButton) {
-//    guard viewModel.formState.value == .valid else { return }
-    if let tx = viewModel.txObject.value {
-      let displayInfo = ("\(viewModel.amount.value) \(viewModel.pool.token.symbol)", viewModel.displayAPY, viewModel.displayAmountReceive, viewModel.displayRate, viewModel.displayFeeString, viewModel.selectedPlatform.name, viewModel.pool.token.logo, viewModel.pool.token.symbol, viewModel.selectedEarningToken.value?.symbol ?? "")
-      delegate?.didSelectNext(self, settings: (viewModel.basicSetting, viewModel.advancedSetting), txObject: tx, displayInfo: displayInfo)
+    if viewModel.nextButtonStatus.value == .needApprove {
+      delegate?.sendApprove(self, tokenAddress: viewModel.pool.token.address, remain: viewModel.tokenAllowance ?? .zero, symbol: viewModel.pool.token.symbol, toAddress: viewModel.txObject.value?.to ?? "")
     } else {
-      viewModel.requestBuildStateTx(showLoading: true)
+      //    guard viewModel.formState.value == .valid else { return }
+      if let tx = viewModel.txObject.value {
+        let displayInfo = ("\(viewModel.amount.value) \(viewModel.pool.token.symbol)", viewModel.displayAPY, viewModel.displayAmountReceive, viewModel.displayRate, viewModel.displayFeeString, viewModel.selectedPlatform.name, viewModel.pool.token.logo, viewModel.pool.token.symbol, viewModel.selectedEarningToken.value?.symbol ?? "")
+        delegate?.didSelectNext(self, settings: (viewModel.basicSetting, viewModel.advancedSetting), txObject: tx, displayInfo: displayInfo)
+      } else {
+        viewModel.requestBuildStateTx(showLoading: true)
+      }
     }
     
   }
   
-  fileprivate func checkAllowance() {
-    
+  func coordinatorSuccessApprove(address: String) {
+    viewModel.nextButtonStatus.value = .approved
+    viewModel.tokenAllowance = nil
+  }
+  
+  func coordinatorFailApprove(address: String) {
+    viewModel.nextButtonStatus.value = .notApprove
   }
   
 }

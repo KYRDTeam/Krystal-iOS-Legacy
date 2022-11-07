@@ -50,6 +50,8 @@ class InvestCoordinator: Coordinator {
     return coordinator
   }()
   
+  var stakingViewController: StakingViewController?
+  
   init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
   }
@@ -202,6 +204,7 @@ class InvestCoordinator: Coordinator {
     vc.viewModel = StakingViewModel(pool: pool, platform: platform)
     vc.delegate = self
     navigationController.pushViewController(vc, animated: true)
+    stakingViewController = vc
   }
   
   func appCoordinatorPendingTransactionsDidUpdate() {
@@ -460,8 +463,13 @@ extension InvestCoordinator: EarnOverviewV2ControllerDelegate {
 }
 
 extension InvestCoordinator: StakingViewControllerDelegate {
-  func sendApprove(_ viewController: StakingViewController, tokenAddress: String, remain: BigInt) {
-    //TODO: send approve
+  func sendApprove(_ viewController: StakingViewController, tokenAddress: String, remain: BigInt, symbol: String, toAddress: String) {
+    let vm = ApproveTokenViewModelForTokenAddress(address: tokenAddress, remain: remain, state: false, symbol: symbol)
+    vm.toAddress = toAddress
+    let vc = ApproveTokenViewController(viewModel: vm)
+
+    vc.delegate = self
+    navigationController.present(vc, animated: true, completion: nil)
     
   }
   
@@ -495,6 +503,63 @@ extension InvestCoordinator: StakingProcessPopupDelegate {
       }
     case .close:
       controller.dismiss(animated: true)
+    }
+  }
+}
+
+extension InvestCoordinator: ApproveTokenViewControllerDelegate {
+  func approveTokenViewControllerDidSelectGasSetting(_ controller: ApproveTokenViewController, gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?) {
+    
+  }
+  
+  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: String, value: BigInt) {
+    
+  }
+
+  fileprivate func sendApprove(_ tokenAddress: String, _ toAddress: String?, _ address: String, _ gasLimit: BigInt) {
+    let processor = EthereumTransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+    processor.sendApproveERCTokenAddress(owner: self.currentAddress, tokenAddress: tokenAddress, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
+      switch approveResult {
+      case .success:
+        self.stakingViewController?.coordinatorSuccessApprove(address: address)
+      case .failure(let error):
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: error.localizedDescription,
+          time: 1.5
+        )
+        self.stakingViewController?.coordinatorFailApprove(address: address)
+      }
+    }
+  }
+  
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt) {
+    if currentAddress.isWatchWallet {
+      return
+    }
+    guard remain.isZero else {
+      self.resetAllowanceBeforeSend(address, toAddress, address, gasLimit)
+      return
+    }
+    self.sendApprove(address, toAddress, address, gasLimit)
+  }
+
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt) {
+  }
+
+  fileprivate func resetAllowanceBeforeSend(_ tokenAddress: String, _ toAddress: String?, _ address: String, _ gasLimit: BigInt) {
+    let processor = EthereumTransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+    processor.sendApproveERCTokenAddress(owner: self.currentAddress, tokenAddress: tokenAddress, value: BigInt(0), gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
+      switch approveResult {
+      case .success:
+        self.sendApprove(tokenAddress, toAddress, address, gasLimit)
+      case .failure(let error):
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: error.localizedDescription,
+          time: 1.5
+        )
+      }
     }
   }
 }
