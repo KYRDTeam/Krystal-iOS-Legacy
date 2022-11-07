@@ -7,9 +7,13 @@
 
 import UIKit
 import BigInt
+import Utilities
 
 typealias UserSettings = (BasicTransactionSettings, AdvancedTransactionSettings?)
 typealias StakeDisplayInfo = (amount: String, apy: String, receiveAmount: String, rate: String, fee: String, platform: String, stakeTokenIcon: String, fromSym: String, toSym: String)
+
+typealias ProjectionValue = (value: String, usd: String)
+typealias ProjectionValues = (p30: ProjectionValue, p60: ProjectionValue, p90: ProjectionValue)
 
 protocol StakingViewControllerDelegate: class {
   func didSelectNext(_ viewController: StakingViewController, settings: UserSettings, txObject: TxObject, displayInfo: StakeDisplayInfo)
@@ -73,6 +77,8 @@ class StakingViewModel {
       self.checkNextButtonStatus()
     }
   }
+  
+  var isExpandProjection: Observable<Bool> = .init(false)
   
   init(pool: EarnPoolModel, platform: EarnPlatform) {
     self.pool = pool
@@ -195,6 +201,45 @@ class StakingViewModel {
     return self.amountBigInt > pool.token.getBalanceBigInt()
   }
   
+  var displayProjectionValues: ProjectionValues? {
+    guard !amount.value.isEmpty else {
+      return nil
+    }
+    let amt = amountBigInt
+    let apy = selectedPlatform.apy
+    let decimal = pool.token.decimals
+    let symbol = pool.token.symbol
+    
+    let p30Param = apy * 30.0 / 365
+    let p60Param = apy * 60.0 / 365
+    let p90Param = apy * 90.0 / 365
+    
+    let p30 = self.amountBigInt * BigInt(p30Param * pow(10.0, 18.0)) / BigInt(10).power(18)
+    let p60 = self.amountBigInt * BigInt(p30Param * pow(10.0, 18.0)) / BigInt(10).power(18)
+    let p90 = self.amountBigInt * BigInt(p30Param * pow(10.0, 18.0)) / BigInt(10).power(18)
+    
+    let displayP30 = p30.shortString(decimals: decimal) + " \(symbol)"
+    let displayP60 = p60.shortString(decimals: decimal) + " \(symbol)"
+    let displayP90 = p90.shortString(decimals: decimal) + " \(symbol)"
+    
+    var displayP30USD = ""
+    var displayP60USD = ""
+    var displayP90USD = ""
+    
+    if let price = KNTrackerRateStorage.shared.getETHPrice() {
+      let usd30 = p30 * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(decimal)
+      let usd60 = p60 * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(decimal)
+      let usd90 = p90 * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(decimal)
+      
+      displayP30USD = "~" + usd30.string(units: EthereumUnit.ether, minFractionDigits: 0, maxFractionDigits: 4) + " USD"
+      displayP60USD = "~" + usd60.string(units: EthereumUnit.ether, minFractionDigits: 0, maxFractionDigits: 4) + " USD"
+      displayP90USD = "~" + usd90.string(units: EthereumUnit.ether, minFractionDigits: 0, maxFractionDigits: 4) + " USD"
+    }
+    
+    return ( (displayP30, displayP30USD), (displayP60, displayP60USD), (displayP90, displayP90USD) )
+    
+  }
+  
   func getAllowance() {
     guard !pool.token.isQuoteToken else {
       nextButtonStatus.value = .noNeed
@@ -237,6 +282,19 @@ class StakingViewController: InAppBrowsingViewController {
   @IBOutlet weak var errorMsgLabel: UILabel!
   @IBOutlet weak var amountFieldContainerView: UIView!
   @IBOutlet weak var nextButton: UIButton!
+  @IBOutlet weak var expandProjectionButton: UIButton!
+  @IBOutlet weak var expandContainerViewHeightContraint: NSLayoutConstraint!
+  
+  @IBOutlet weak var p30ValueLabel: UILabel!
+  @IBOutlet weak var p30USDValueLabel: UILabel!
+  
+  @IBOutlet weak var p60ValueLabel: UILabel!
+  @IBOutlet weak var p60USDValueLabel: UILabel!
+  
+  @IBOutlet weak var p90ValueLabel: UILabel!
+  @IBOutlet weak var p90USDValueLabel: UILabel!
+  
+  @IBOutlet weak var projectionContainerView: UIView!
   
   var viewModel: StakingViewModel!
   var keyboardTimer: Timer?
@@ -249,6 +307,7 @@ class StakingViewController: InAppBrowsingViewController {
     bindingViewModel()
     viewModel.requestOptionDetail()
     viewModel.getAllowance()
+    updateUIProjection()
   }
   
   private func setupUI() {
@@ -304,6 +363,24 @@ class StakingViewController: InAppBrowsingViewController {
     networkFeeInfoView.setValue(value: viewModel.displayFeeString)
   }
   
+  fileprivate func updateUIProjection() {
+    guard let projectionData = viewModel.displayProjectionValues else {
+      projectionContainerView.isHidden = true
+      return
+    }
+    p30ValueLabel.text = projectionData.p30.value
+    p30USDValueLabel.text = projectionData.p30.usd
+    
+    p60ValueLabel.text = projectionData.p60.value
+    p60USDValueLabel.text = projectionData.p60.usd
+    
+    p90ValueLabel.text = projectionData.p90.value
+    p90USDValueLabel.text = projectionData.p90.usd
+    
+    projectionContainerView.isHidden = false
+    viewModel.isExpandProjection.value = true
+  }
+  
   private func bindingViewModel() {
     stakeMainHeaderLabel.text = viewModel.displayMainHeader
     stakeTokenLabel.text = viewModel.displayStakeToken
@@ -322,6 +399,7 @@ class StakingViewController: InAppBrowsingViewController {
       self.updateRateInfoView()
       self.updateUIError()
       self.viewModel.checkNextButtonStatus()
+      self.updateUIProjection()
     }
     viewModel.formState.observeAndFire(on: self) { _ in
       self.updateUIError()
@@ -368,6 +446,18 @@ class StakingViewController: InAppBrowsingViewController {
         self.updateUIError()
       }
     }
+    
+    viewModel.isExpandProjection.observeAndFire(on: self) { value in
+      UIView.animate(withDuration: 0.25) {
+        if value {
+          self.expandContainerViewHeightContraint.constant = 380.0
+          self.expandProjectionButton.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+        } else {
+          self.expandContainerViewHeightContraint.constant = 48.0
+          self.expandProjectionButton.transform = CGAffineTransform(rotationAngle: 0)
+        }
+      }
+    }
   }
 
   @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -393,6 +483,11 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
   }
+  
+  @IBAction func expandProjectionButtonTapped(_ sender: UIButton) {
+    viewModel.isExpandProjection.value = !viewModel.isExpandProjection.value
+  }
+  
   
   func coordinatorSuccessApprove(address: String) {
     viewModel.nextButtonStatus.value = .approved
