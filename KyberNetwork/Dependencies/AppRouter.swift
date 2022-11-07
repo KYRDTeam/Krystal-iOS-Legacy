@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwapModule
 import EarnModule
 import Dependencies
 import UIKit
@@ -68,11 +67,11 @@ class AppRouter: AppRouterProtocol, Coordinator {
   
 //  func createSwapViewController() -> UIViewController {
 //    return SwapModule.createSwapViewController()
-  }
+//  }
   
   func createEarnOverViewController() -> UIViewController {
     return EarnModule.createEarnOverViewController()
-//  }
+  }
   
   func openTransactionHistory() {
     guard let navigation = UIApplication.shared.topMostViewController() as? UINavigationController else { return }
