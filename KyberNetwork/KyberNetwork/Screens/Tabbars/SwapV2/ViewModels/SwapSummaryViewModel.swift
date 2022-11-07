@@ -357,6 +357,9 @@ extension SwapSummaryViewModel {
           if errorMessage.lowercased().contains("Unknown(0x)".lowercased()) {
             errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
           }
+          if errorMessage.lowercased().contains("gas required exceeds allowance".lowercased()) {
+            errorMessage = String(format: Strings.insufficientTokenForNetworkFee, KNGeneralProvider.shared.quoteTokenObject.symbol)
+          }
             self.showError(errorMsg: errorMessage)
         }
       }
