@@ -7,6 +7,7 @@
 
 import Foundation
 import BigInt
+import BaseWallet
 
 class InternalHistoryTransaction: Codable {
   var hash: String = ""
@@ -24,7 +25,7 @@ class InternalHistoryTransaction: Codable {
   var transactionObject: SignTransactionObject?
   var toAddress: String?
   var eip1559Transaction: EIP1559Transaction?
-  let chain: ChainType
+  var chain: ChainType
   var extraData: InternalHistoryExtraData?
 
   init(
@@ -36,7 +37,8 @@ class InternalHistoryTransaction: Codable {
     transactionDetailDescription: String,
     transactionObj: SignTransactionObject?,
     eip1559Tx: EIP1559Transaction?,
-    extraData: InternalHistoryExtraData? = nil
+    extraData: InternalHistoryExtraData? = nil,
+    chain: ChainType = KNGeneralProvider.shared.currentChain
   ) {
     self.type = type
     self.state = state
@@ -46,7 +48,7 @@ class InternalHistoryTransaction: Codable {
     self.transactionDetailDescription = transactionDetailDescription
     self.transactionObject = transactionObj
     self.eip1559Transaction = eip1559Tx
-    self.chain = KNGeneralProvider.shared.currentChain
+    self.chain = chain
   }
   
   var gasFee: BigInt {

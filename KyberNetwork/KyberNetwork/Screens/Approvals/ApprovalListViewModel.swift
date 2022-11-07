@@ -11,6 +11,7 @@ import AppState
 import BigInt
 import TransactionModule
 import Dependencies
+import Moya
 
 class ApprovalListViewModel {
     
@@ -30,8 +31,19 @@ class ApprovalListViewModel {
     var searchText: String = "" {
         didSet {
             filteredApprovals = self.getFilteredApprovals(searchText: searchText)
-                .map { approval in ApprovedTokenItemViewModel(approval: approval) }
+                .map { approval in ApprovedTokenItemViewModel(approval: approval, showChainIcon: selectedChain == .all) }
             onFilterApprovalsUpdated?()
+        }
+    }
+    
+    var emptyMessage: String {
+        if !searchText.isEmpty {
+            return Strings.aprovalsNoRecords
+        }
+        if selectedChain == .all {
+            return Strings.approvalNoTokenFoundOnWallet
+        } else {
+            return Strings.approvalNoTokenFoundOnNetwork
         }
     }
     
@@ -53,9 +65,14 @@ class ApprovalListViewModel {
     var onUpdatePendingTx: ((Bool) -> Void)?
     var selectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : AppState.shared.currentChain
     var totalAllowanceString: String?
+    var sendingRequest: Cancellable?
     
     @UserDefault(key: "user_has_interact_approval", defaultValue: false)
     var userHasInteractApproval: Bool
+    
+    var isRevokeAllowed: Bool {
+        return !AppState.shared.currentAddress.isWatchWallet
+    }
     
     init(actions: Actions) {
         self.actions = actions
@@ -63,6 +80,7 @@ class ApprovalListViewModel {
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidChangeAddress, object: nil)
+        NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidSwitchChain, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(kTransactionDidUpdateNotificationKey), object: nil)
     }
     
@@ -75,10 +93,20 @@ class ApprovalListViewModel {
         )
         NotificationCenter.default.addObserver(
             self,
+            selector: #selector(appDidSwitchChain),
+            name: AppEventCenter.shared.kAppDidSwitchChain,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
             selector: #selector(self.transactionStateDidUpdate),
             name: Notification.Name(kTransactionDidUpdateNotificationKey),
             object: nil
         )
+    }
+    
+    @objc func appDidSwitchChain() {
+        checkPendingTx()
     }
     
     @objc func appDidSwitchAddress() {
@@ -98,12 +126,13 @@ class ApprovalListViewModel {
     
     func fetchApprovals() {
         let chains: [Int] = selectedChain == .all ? ChainType.getAllChain().map { $0.customRPC().chainID } : [selectedChain.getChainId()]
-        service.getListApproval(address: address, chainIds: chains) { [weak self] response in
+        sendingRequest?.cancel()
+        sendingRequest = service.getListApproval(address: address, chainIds: chains) { [weak self, selectedChain] response in
             self?.approvals = response?.data?.approvals?.filter { approval in
                 return BigInt(approval.amount ?? "0") ?? .zero >= BigInt(10).power(approval.decimals) / BigInt(10).power(6) // Should > 0.000001
             } ?? []
             self?.filteredApprovals = self?.getFilteredApprovals(searchText: self?.searchText ?? "")
-                .map { approval in ApprovedTokenItemViewModel(approval: approval) } ?? []
+                .map { approval in ApprovedTokenItemViewModel(approval: approval, showChainIcon: selectedChain == .all) } ?? []
             self?.totalAllowance = (response?.data?.atRisk?["usd"] as? Double) ?? 0
             self?.onFetchApprovals?()
         }
@@ -159,10 +188,10 @@ class ApprovalListViewModel {
                         let signResult = KNGeneralProvider.shared.signTransactionData(chain: chain, address: AppState.shared.currentAddress, tokenAddress: tokenAddress, nonce: count, data: hex, gasPrice: gasPrice, gasLimit: setting.gasLimit)
                         switch signResult {
                         case .success(let signature):
-                            KNGeneralProvider.shared.sendSignedTransactionData(signature.0) { result in
+                            KNGeneralProvider.shared.sendSignedTransactionData(signature.0, chain: chain) { result in
                                 switch result {
                                 case .success(let hash):
-                                    self.savePendingTx(txCount: count, txHash: hash, approval: approval, transaction: signature.1)
+                                    self.savePendingTx(chain: chain, txCount: count, txHash: hash, approval: approval, transaction: signature.1)
                                     self.actions.onOpenStatus(hash, chain)
                                     onCompleted(nil)
                                 case .failure(let error):
@@ -182,8 +211,8 @@ class ApprovalListViewModel {
         }
     }
     
-    func savePendingTx(txCount: Int, txHash: String, approval: Approval, transaction: SignTransaction) {
-        let historyTransaction = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: approval.symbol ?? "", transactionDetailDescription: approval.tokenAddress ?? "", transactionObj: transaction.toSignTransactionObject(), eip1559Tx: nil)
+    func savePendingTx(chain: ChainType, txCount: Int, txHash: String, approval: Approval, transaction: SignTransaction) {
+        let historyTransaction = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: approval.symbol ?? "", transactionDetailDescription: approval.tokenAddress ?? "", transactionObj: transaction.toSignTransactionObject(), eip1559Tx: nil, chain: chain)
         historyTransaction.hash = txHash
         historyTransaction.time = Date()
         historyTransaction.nonce = txCount
