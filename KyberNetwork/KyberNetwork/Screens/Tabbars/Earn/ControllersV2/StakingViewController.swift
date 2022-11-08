@@ -70,6 +70,7 @@ class StakingViewModel {
       self.gasLimit.value = setting.gasLimit
     }
   }
+  var isUseReverseRate: Observable<Bool> = .init(false)
   
   var nextButtonStatus: Observable<NextButtonState> = .init(.notApprove)
   
@@ -195,7 +196,11 @@ class StakingViewModel {
   
   var displayRate: String {
     guard let detail = selectedEarningToken.value else { return "---" }
-    return "1 \(pool.token.symbol) = \(rate) \(detail.symbol)"
+    if isUseReverseRate.value {
+      return "1 \(detail.symbol) = \(1 / rate) \(pool.token.symbol)"
+    } else {
+      return "1 \(pool.token.symbol) = \(rate) \(detail.symbol)"
+    }
   }
   
   var isAmountTooSmall: Bool {
@@ -219,9 +224,9 @@ class StakingViewModel {
     let p60Param = apy * 60.0 / 365
     let p90Param = apy * 90.0 / 365
     
-    let p30 = self.amountBigInt * BigInt(p30Param * pow(10.0, 18.0)) / BigInt(10).power(18)
-    let p60 = self.amountBigInt * BigInt(p30Param * pow(10.0, 18.0)) / BigInt(10).power(18)
-    let p90 = self.amountBigInt * BigInt(p30Param * pow(10.0, 18.0)) / BigInt(10).power(18)
+    let p30 = amt * BigInt(p30Param * pow(10.0, 18.0)) / BigInt(10).power(18)
+    let p60 = amt * BigInt(p30Param * pow(10.0, 18.0)) / BigInt(10).power(18)
+    let p90 = amt * BigInt(p30Param * pow(10.0, 18.0)) / BigInt(10).power(18)
     
     let displayP30 = p30.shortString(decimals: decimal) + " \(symbol)"
     let displayP60 = p60.shortString(decimals: decimal) + " \(symbol)"
@@ -327,7 +332,9 @@ class StakingViewController: InAppBrowsingViewController {
     amountReceiveInfoView.iconImageView.isHidden = true
     
     rateInfoView.setTitle(title: "Rate", underlined: false, shouldShowIcon: true)
-    rateInfoView.iconImageView.isHidden = true
+    rateInfoView.onTapRightIcon = {
+      self.viewModel.isUseReverseRate.value = !self.viewModel.isUseReverseRate.value
+    }
     
     networkFeeInfoView.setTitle(title: "Network Fee", underlined: false)
     networkFeeInfoView.iconImageView.isHidden = true
@@ -466,6 +473,10 @@ class StakingViewController: InAppBrowsingViewController {
           self.expandProjectionButton.transform = CGAffineTransform(rotationAngle: 0)
         }
       }
+    }
+    
+    viewModel.isUseReverseRate.observeAndFire(on: self) { _ in
+      self.rateInfoView.setValue(value: self.viewModel.displayRate)
     }
   }
 
