@@ -13,11 +13,11 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
-            <string>Karla-Regular</string>
-        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -27,6 +27,9 @@
                 <outlet property="amountReceiveInfoView" destination="UK8-lg-MT7" id="Wmy-jQ-YPL"/>
                 <outlet property="amountTextField" destination="XNk-hV-r3b" id="eVH-MZ-MBU"/>
                 <outlet property="apyInfoView" destination="8AN-XC-Lhr" id="AZk-zf-JGd"/>
+                <outlet property="browsingView" destination="dNJ-ss-9hQ" id="XYe-Sw-4uh"/>
+                <outlet property="chainButton" destination="U4I-3q-BJY" id="vqb-7i-FGV"/>
+                <outlet property="chainIcon" destination="Laj-A9-yYy" id="9HQ-wU-CBl"/>
                 <outlet property="earningTokenContainerView" destination="DXA-Eq-Vgp" id="aO3-Dg-RHJ"/>
                 <outlet property="errorMsgLabel" destination="eXy-Nq-Sss" id="OOs-y4-2ba"/>
                 <outlet property="expandContainerViewHeightContraint" destination="ibA-g0-5LK" id="64Q-AQ-L4P"/>
@@ -162,6 +165,9 @@
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="switchChain"/>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="onChainButtonTapped:" destination="-1" eventType="touchUpInside" id="Kvb-Wd-kEo"/>
+                            </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dNJ-ss-9hQ">
                             <rect key="frame" x="161" y="0.0" width="214" height="89"/>
@@ -188,6 +194,9 @@
                                         <constraint firstAttribute="height" constant="32" id="ahq-Ca-c1F"/>
                                     </constraints>
                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <connections>
+                                        <action selector="onAddWalletButtonTapped:" destination="-1" eventType="touchUpInside" id="g9F-Fx-d2m"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" name="mainViewBgColor"/>
