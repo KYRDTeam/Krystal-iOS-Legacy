@@ -210,7 +210,7 @@ class OverviewMainCellViewModel {
     switch self.mode {
     case .market(token: let token, rightMode: let mode):
       switch mode {
-      case .ch24:
+      case .ch24, .lastPrice:
         let change24 = token.getTokenChange24(self.currency)
         if change24 == 0 {
           return UIColor.clear
@@ -250,6 +250,12 @@ class OverviewMainCellViewModel {
         }
         let prefix = change24 > 0 ? "+" : ""
         return prefix + String(format: "%.2f", change24) + "%"
+          
+      case .lastPrice:
+        let price = token.getTokenLastPrice(self.currency)
+        let priceBigInt = BigInt(price * pow(10.0, 18.0))
+        let valueString = NumberFormatUtils.valueFormat(value: priceBigInt, decimals: 18, currencyMode: self.currency)
+        return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
       default:
         let mc = token.getMarketCap(self.currency)
         if mc == 0 {
