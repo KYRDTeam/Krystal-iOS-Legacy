@@ -113,6 +113,9 @@ class EarnListViewController: InAppBrowsingViewController {
     } else {
       self.updateUIStartSearchingMode()
     }
+      
+      let vc = UnstakeViewController.instantiateFromNib()
+      self.show(vc, sender: nil)
   }
   
   @IBAction func cancelButtonTapped(_ sender: Any) {

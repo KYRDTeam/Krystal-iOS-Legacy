@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		724567E960E5EE407A35533D /* Pods_EarnModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5969EB6F30F2999141BBB05 /* Pods_EarnModule.framework */; };
+		7E36E369291A530A009BC8FE /* UnstakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E36E367291A530A009BC8FE /* UnstakeViewController.swift */; };
+		7E36E36A291A530A009BC8FE /* UnstakeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E36E368291A530A009BC8FE /* UnstakeViewController.xib */; };
 		7E5E7278290B7E5700156F3C /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5E7277290B7E5700156F3C /* Services.framework */; };
 		7E6EBD6029091E0800069B33 /* EarnListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5C29091E0700069B33 /* EarnListViewController.xib */; };
 		7E6EBD6129091E0800069B33 /* EarnListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5D29091E0700069B33 /* EarnListViewController.swift */; };
@@ -40,6 +42,8 @@
 
 /* Begin PBXFileReference section */
 		60E45F03C79752ACE005A2BE /* Pods-EarnModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EarnModule.release.xcconfig"; path = "Target Support Files/Pods-EarnModule/Pods-EarnModule.release.xcconfig"; sourceTree = "<group>"; };
+		7E36E367291A530A009BC8FE /* UnstakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnstakeViewController.swift; sourceTree = "<group>"; };
+		7E36E368291A530A009BC8FE /* UnstakeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnstakeViewController.xib; sourceTree = "<group>"; };
 		7E5E7277290B7E5700156F3C /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E6EBD5C29091E0700069B33 /* EarnListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EarnListViewController.xib; sourceTree = "<group>"; };
 		7E6EBD5D29091E0700069B33 /* EarnListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EarnListViewController.swift; sourceTree = "<group>"; };
@@ -135,6 +139,8 @@
 				7E6EBD5F29091E0800069B33 /* StakingPortfolioViewController.xib */,
 				7E987F252908E92500AA5F8F /* EarnOverviewController.xib */,
 				7EB252B72907F25200648438 /* EarnOverviewController.swift */,
+				7E36E367291A530A009BC8FE /* UnstakeViewController.swift */,
+				7E36E368291A530A009BC8FE /* UnstakeViewController.xib */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -268,6 +274,7 @@
 			files = (
 				7E6EBD6029091E0800069B33 /* EarnListViewController.xib in Resources */,
 				7E6EBD6329091E0800069B33 /* StakingPortfolioViewController.xib in Resources */,
+				7E36E36A291A530A009BC8FE /* UnstakeViewController.xib in Resources */,
 				7E6EBD6D2909280900069B33 /* EarnPoolViewCell.xib in Resources */,
 				7E6EBD72290929A400069B33 /* Localizable.strings in Resources */,
 				7E6EBD6529091F7A00069B33 /* Assets.xcassets in Resources */,
@@ -317,6 +324,7 @@
 				7EB252C72907F7EC00648438 /* TypeAliases.swift in Sources */,
 				7EB252C12907F3E100648438 /* EarnOverViewModel.swift in Sources */,
 				7EB252C32907F43B00648438 /* Observer.swift in Sources */,
+				7E36E369291A530A009BC8FE /* UnstakeViewController.swift in Sources */,
 				7EB252C92907F8C300648438 /* NSObject.swift in Sources */,
 				7E6EBD8B2909386900069B33 /* Images.swift in Sources */,
 				7EB252B92907F25200648438 /* EarnOverviewController.swift in Sources */,
