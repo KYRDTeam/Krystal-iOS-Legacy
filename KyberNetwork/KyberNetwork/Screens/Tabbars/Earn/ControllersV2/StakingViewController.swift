@@ -473,7 +473,7 @@ class StakingViewController: InAppBrowsingViewController {
     if viewModel.nextButtonStatus.value == .needApprove {
       delegate?.sendApprove(self, tokenAddress: viewModel.pool.token.address, remain: viewModel.tokenAllowance ?? .zero, symbol: viewModel.pool.token.symbol, toAddress: viewModel.txObject.value?.to ?? "")
     } else {
-      //    guard viewModel.formState.value == .valid else { return }
+      guard viewModel.formState.value == .valid else { return }
       if let tx = viewModel.txObject.value {
         let displayInfo = ("\(viewModel.amount.value) \(viewModel.pool.token.symbol)", viewModel.displayAPY, viewModel.displayAmountReceive, viewModel.displayRate, viewModel.displayFeeString, viewModel.selectedPlatform.name, viewModel.pool.token.logo, viewModel.pool.token.symbol, viewModel.selectedEarningToken.value?.symbol ?? "")
         delegate?.didSelectNext(self, settings: (viewModel.basicSetting, viewModel.advancedSetting), txObject: tx, displayInfo: displayInfo)
@@ -487,7 +487,6 @@ class StakingViewController: InAppBrowsingViewController {
   @IBAction func expandProjectionButtonTapped(_ sender: UIButton) {
     viewModel.isExpandProjection.value = !viewModel.isExpandProjection.value
   }
-  
   
   func coordinatorSuccessApprove(address: String) {
     viewModel.nextButtonStatus.value = .approved
