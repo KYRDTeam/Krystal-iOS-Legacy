@@ -225,8 +225,8 @@ class StakingViewModel {
     let p90Param = apy * 90.0 / 365
     
     let p30 = amt * BigInt(p30Param * pow(10.0, 18.0)) / BigInt(10).power(18)
-    let p60 = amt * BigInt(p30Param * pow(10.0, 18.0)) / BigInt(10).power(18)
-    let p90 = amt * BigInt(p30Param * pow(10.0, 18.0)) / BigInt(10).power(18)
+    let p60 = amt * BigInt(p60Param * pow(10.0, 18.0)) / BigInt(10).power(18)
+    let p90 = amt * BigInt(p90Param * pow(10.0, 18.0)) / BigInt(10).power(18)
     
     let displayP30 = p30.shortString(decimals: decimal) + " \(symbol)"
     let displayP60 = p60.shortString(decimals: decimal) + " \(symbol)"
