@@ -143,7 +143,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   
   private func registerCell() {
     portfolioTableView.registerCellNib(StakingPortfolioCell.self)
-    portfolioTableView.registerCellNib(OverviewSkeletonCell.self)
+    portfolioTableView.registerCellNib(SkeletonCell.self)
     portfolioTableView.register(SkeletonBlankSectionHeader.self, forHeaderFooterViewReuseIdentifier: "SectionHeader")
   }
   
@@ -246,12 +246,12 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
   
   // MARK: - Skeleton dataSource
   func collectionSkeletonView(_ skeletonView: UITableView, skeletonCellForRowAt indexPath: IndexPath) -> UITableViewCell? {
-    let cell = skeletonView.dequeueReusableCell(OverviewSkeletonCell.self, indexPath: indexPath)!
+    let cell = skeletonView.dequeueReusableCell(SkeletonCell.self, indexPath: indexPath)!
     return cell
   }
   
   func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
-    return OverviewSkeletonCell.className
+    return SkeletonCell.className
   }
   
   func collectionSkeletonView(_ skeletonView: UITableView, prepareCellForSkeleton cell: UITableViewCell, at indexPath: IndexPath) {

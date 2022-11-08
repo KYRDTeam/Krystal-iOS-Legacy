@@ -7,6 +7,6 @@
 
 import UIKit
 
-class OverviewSkeletonCell: UITableViewCell {
+class SkeletonCell: UITableViewCell {
   
 }
