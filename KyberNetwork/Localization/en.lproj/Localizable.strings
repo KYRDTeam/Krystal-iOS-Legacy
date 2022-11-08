@@ -1008,3 +1008,11 @@
 "support" = "Support";
 "approval.no.token.found.on.wallet" = "There are no token approvals found on this wallet.";
 "approval.no.token.found.on.network" = "There are no token approvals found on this network.";
+
+
+"Checking" = "Checking";
+"Stake Now" = "Stake Now";
+"APY (Est. Yield" = "APY (Est. Yield";
+"You will receive" = "You will receive";
+"Rate" = "Rate";
+"Network Fee" = "Network Fee";
