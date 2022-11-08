@@ -265,6 +265,7 @@ class StakingSummaryViewController: KNBaseViewController {
     }
     
     viewModel.errorMessage.observeAndFire(on: self) { value in
+      guard !value.isEmpty else { return }
       self.showTopBannerView(message: value)
     }
     
@@ -291,7 +292,7 @@ extension StakingSummaryViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 542
+    return 560
     
   }
 

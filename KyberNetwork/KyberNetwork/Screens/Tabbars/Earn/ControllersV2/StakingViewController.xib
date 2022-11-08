@@ -13,11 +13,11 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
-        </array>
-        <array key="Karla-VariableFont_wght.ttf">
-            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -630,7 +630,7 @@
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
                 <constraint firstItem="mZ9-HU-8LJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="CCc-CG-hVb"/>
-                <constraint firstItem="D84-EH-lh0" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Dek-XG-6jk"/>
+                <constraint firstItem="D84-EH-lh0" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="Dek-XG-6jk"/>
                 <constraint firstItem="D84-EH-lh0" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="YbO-gh-4xp"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="mZ9-HU-8LJ" secondAttribute="bottom" id="Zh7-pC-S8W"/>
                 <constraint firstItem="mZ9-HU-8LJ" firstAttribute="top" secondItem="D84-EH-lh0" secondAttribute="bottom" id="ajH-8k-Xgl"/>
