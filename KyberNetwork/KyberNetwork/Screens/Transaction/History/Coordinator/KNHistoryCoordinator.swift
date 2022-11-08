@@ -50,6 +50,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
   }
 
   func start() {
+    EtherscanTransactionStorage.shared.updateCurrentHistoryCache()
     self.navigationController.pushViewController(self.rootViewController, animated: true) {
       self.appCoordinatorTokensTransactionsDidUpdate(showLoading: true)
       self.appCoordinatorPendingTransactionDidUpdate()

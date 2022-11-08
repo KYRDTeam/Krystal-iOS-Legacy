@@ -485,6 +485,12 @@ class KNHistoryViewController: BaseWalletOrientedViewController {
     reloadWallet()
     self.delegate?.historyViewController(self, run: .reloadAllData)
   }
+  
+  override func onAppSwitchChain() {
+    EtherscanTransactionStorage.shared.updateCurrentHistoryCache()
+    reloadWallet()
+    self.delegate?.historyViewController(self, run: .reloadAllData)
+  }
 
   fileprivate func setupUI() {
     self.setupNavigationBar()
