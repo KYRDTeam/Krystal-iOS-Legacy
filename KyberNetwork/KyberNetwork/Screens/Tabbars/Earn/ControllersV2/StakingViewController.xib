@@ -428,30 +428,30 @@
                                         <action selector="expandProjectionButtonTapped:" destination="-1" eventType="touchUpInside" id="MfO-uA-i9g"/>
                                     </connections>
                                 </button>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="LI3-n8-oAI">
-                                    <rect key="frame" x="20" y="67" width="305" height="148"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="LI3-n8-oAI">
+                                    <rect key="frame" x="20" y="67" width="305" height="156"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yan-fE-5xL">
                                             <rect key="frame" x="0.0" y="0.0" width="305" height="42"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3 Matic" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ce-KL-Ard">
-                                                    <rect key="frame" x="15" y="10.5" width="61.5" height="21.5"/>
-                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
+                                                    <rect key="frame" x="15" y="11.5" width="55" height="19"/>
+                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                                     <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="≈ $1.58 " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6sJ-Hb-AOV">
-                                                    <rect key="frame" x="81.5" y="10.5" width="60" height="21.5"/>
-                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
+                                                    <rect key="frame" x="75" y="11.5" width="53" height="19"/>
+                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                                     <color key="textColor" red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30 Days" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vmn-vm-wiM">
-                                                    <rect key="frame" x="239" y="13" width="51" height="16.5"/>
+                                                    <rect key="frame" x="230" y="11.5" width="60" height="19"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="51" id="Y8Y-UE-G8z"/>
+                                                        <constraint firstAttribute="width" constant="60" id="Y8Y-UE-G8z"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                                     <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -474,26 +474,26 @@
                                             </userDefinedRuntimeAttributes>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ayX-Qk-Lbg">
-                                            <rect key="frame" x="0.0" y="53" width="305" height="42"/>
+                                            <rect key="frame" x="0.0" y="57" width="305" height="42"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3 Matic" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BKY-9s-cTt">
-                                                    <rect key="frame" x="15" y="10.5" width="61.5" height="21.5"/>
-                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
+                                                    <rect key="frame" x="15" y="11.5" width="55" height="19"/>
+                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                                     <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="≈ $1.58 " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6bc-md-dhB">
-                                                    <rect key="frame" x="81.5" y="10.5" width="60" height="21.5"/>
-                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
+                                                    <rect key="frame" x="75" y="11.5" width="53" height="19"/>
+                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                                     <color key="textColor" red="0.1137254902" green="0.91372549020000005" blue="0.71372549019999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="60 Days" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mG7-Jn-2D9">
-                                                    <rect key="frame" x="239" y="13" width="51" height="16.5"/>
+                                                    <rect key="frame" x="230" y="11.5" width="60" height="19"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="51" id="0WY-ca-1NY"/>
+                                                        <constraint firstAttribute="width" constant="60" id="0WY-ca-1NY"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                                     <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -516,26 +516,26 @@
                                             </userDefinedRuntimeAttributes>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNQ-Ut-Yza">
-                                            <rect key="frame" x="0.0" y="106" width="305" height="42"/>
+                                            <rect key="frame" x="0.0" y="114" width="305" height="42"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3 Matic" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3XN-On-TKK">
-                                                    <rect key="frame" x="15" y="10.5" width="61.5" height="21.5"/>
-                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
+                                                    <rect key="frame" x="15" y="11.5" width="55" height="19"/>
+                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                                     <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="≈ $1.58 " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ed-He-wvC">
-                                                    <rect key="frame" x="81.5" y="10.5" width="60" height="21.5"/>
-                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
+                                                    <rect key="frame" x="75" y="11.5" width="53" height="19"/>
+                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                                     <color key="textColor" red="0.1137254902" green="0.91372549020000005" blue="0.71372549019999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="90 Days" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nqr-vG-p55">
-                                                    <rect key="frame" x="239" y="13" width="51" height="16.5"/>
+                                                    <rect key="frame" x="230" y="11.5" width="60" height="19"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="51" id="Nsr-58-8FX"/>
+                                                        <constraint firstAttribute="width" constant="60" id="Nsr-58-8FX"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                                     <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -560,7 +560,7 @@
                                     </subviews>
                                 </stackView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bk2-uQ-TaO">
-                                    <rect key="frame" x="20" y="235" width="305" height="98.5"/>
+                                    <rect key="frame" x="20" y="243" width="305" height="98.5"/>
                                     <string key="text">Disclaimer
 1. Calculated based on current rates
 2. Estimated earnings are not guaranteed and are provided for convenience only
@@ -582,7 +582,7 @@
                                 <constraint firstAttribute="trailing" secondItem="Nqr-vG-p55" secondAttribute="trailing" constant="35" id="cGI-55-pmq"/>
                                 <constraint firstAttribute="trailing" secondItem="7VS-cG-N4B" secondAttribute="trailing" constant="20" id="eBl-ah-Ki9"/>
                                 <constraint firstAttribute="height" constant="403.5" id="ibA-g0-5LK"/>
-                                <constraint firstItem="Nqr-vG-p55" firstAttribute="centerY" secondItem="uL6-Ya-9qb" secondAttribute="centerY" constant="-7.75" id="kVj-F3-gRI"/>
+                                <constraint firstItem="Nqr-vG-p55" firstAttribute="centerY" secondItem="uL6-Ya-9qb" secondAttribute="centerY" id="kVj-F3-gRI"/>
                                 <constraint firstItem="7VS-cG-N4B" firstAttribute="centerY" secondItem="9sj-ST-PbS" secondAttribute="centerY" id="lqd-n5-pcc"/>
                                 <constraint firstItem="bk2-uQ-TaO" firstAttribute="leading" secondItem="uL6-Ya-9qb" secondAttribute="leading" constant="20" id="pb7-SS-cix"/>
                             </constraints>
