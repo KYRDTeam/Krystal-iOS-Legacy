@@ -20,7 +20,6 @@
 		7E6EBD6E2909280900069B33 /* EarnPoolPlatformCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD6A2909280900069B33 /* EarnPoolPlatformCell.xib */; };
 		7E6EBD70290928D400069B33 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD6F290928D400069B33 /* Strings.swift */; };
 		7E6EBD72290929A400069B33 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD71290929A400069B33 /* Localizable.strings */; };
-		7E6EBD7429092ACC00069B33 /* UIColor+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD7329092ACC00069B33 /* UIColor+Kyber.swift */; };
 		7E6EBD822909318E00069B33 /* SkeletonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD802909318E00069B33 /* SkeletonCell.xib */; };
 		7E6EBD832909318E00069B33 /* SkeletonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD812909318E00069B33 /* SkeletonCell.swift */; };
 		7E6EBD86290931E900069B33 /* StakingPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD84290931E800069B33 /* StakingPortfolioCell.swift */; };
@@ -53,7 +52,6 @@
 		7E6EBD6A2909280900069B33 /* EarnPoolPlatformCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EarnPoolPlatformCell.xib; sourceTree = "<group>"; };
 		7E6EBD6F290928D400069B33 /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		7E6EBD71290929A400069B33 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
-		7E6EBD7329092ACC00069B33 /* UIColor+Kyber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Kyber.swift"; sourceTree = "<group>"; };
 		7E6EBD802909318E00069B33 /* SkeletonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SkeletonCell.xib; sourceTree = "<group>"; };
 		7E6EBD812909318E00069B33 /* SkeletonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SkeletonCell.swift; sourceTree = "<group>"; };
 		7E6EBD84290931E800069B33 /* StakingPortfolioCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StakingPortfolioCell.swift; sourceTree = "<group>"; };
@@ -145,7 +143,6 @@
 			isa = PBXGroup;
 			children = (
 				7E6EBD8A2909386900069B33 /* Images.swift */,
-				7E6EBD7329092ACC00069B33 /* UIColor+Kyber.swift */,
 				7E6EBD6F290928D400069B33 /* Strings.swift */,
 				7EB252BD2907F30300648438 /* EarnModule.swift */,
 				7EB252C22907F43B00648438 /* Observer.swift */,
@@ -322,7 +319,6 @@
 				7EB252C32907F43B00648438 /* Observer.swift in Sources */,
 				7EB252C92907F8C300648438 /* NSObject.swift in Sources */,
 				7E6EBD8B2909386900069B33 /* Images.swift in Sources */,
-				7E6EBD7429092ACC00069B33 /* UIColor+Kyber.swift in Sources */,
 				7EB252B92907F25200648438 /* EarnOverviewController.swift in Sources */,
 				7EB252BE2907F30300648438 /* EarnModule.swift in Sources */,
 				7E6EBD70290928D400069B33 /* Strings.swift in Sources */,

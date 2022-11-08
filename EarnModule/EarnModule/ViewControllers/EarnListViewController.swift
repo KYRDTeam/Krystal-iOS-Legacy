@@ -11,6 +11,7 @@ import BaseModule
 import Dependencies
 import AppState
 import Services
+import DesignSystem
 
 class EarnListViewController: InAppBrowsingViewController {
   @IBOutlet weak var searchTextField: UITextField!
@@ -47,7 +48,7 @@ class EarnListViewController: InAppBrowsingViewController {
   }
 
   func setupUI() {
-    self.searchTextField.setPlaceholder(text: Strings.searchToken, color: .Kyber.normalText)
+    self.searchTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
     self.tableView.registerCellNib(EarnPoolViewCell.self)
   }
   
@@ -165,7 +166,7 @@ extension EarnListViewController: UITableViewDelegate {
 extension EarnListViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
 
   func showLoading() {
-    let gradient = SkeletonGradient(baseColor: UIColor.Kyber.cellBackground)
+    let gradient = SkeletonGradient(baseColor: AppTheme.current.sectionBackgroundColor)
     view.showAnimatedGradientSkeleton(usingGradient: gradient)
   }
 

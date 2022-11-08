@@ -12,12 +12,13 @@ import SkeletonView
 import AppState
 import Utilities
 import Services
+import DesignSystem
 
 class SkeletonBlankSectionHeader: UITableViewHeaderFooterView {
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
     self.isSkeletonable = true
-    self.backgroundColor = UIColor(hex: "1B1D1C")
+    self.backgroundColor = AppTheme.current.sectionBackgroundColor
     
   }
   required init(coder aDecoder: NSCoder) {
@@ -116,7 +117,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     registerCell()
-    searchTextField.setPlaceholder(text: Strings.searchToken, color: .Kyber.normalText)
+    searchTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
     viewModel.dataSource.observeAndFire(on: self) { _ in
       self.portfolioTableView.reloadData()
       
@@ -159,7 +160,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   }
   
   func showLoadingSkeleton() {
-    let gradient = SkeletonGradient(baseColor: UIColor.Kyber.cellBackground)
+    let gradient = SkeletonGradient(baseColor: AppTheme.current.sectionBackgroundColor)
     view.showAnimatedGradientSkeleton(usingGradient: gradient)
   }
   
@@ -273,7 +274,7 @@ extension StakingPortfolioViewController: SkeletonTableViewDelegate {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
-    view.backgroundColor = UIColor(hex: "1B1D1C")
+    view.backgroundColor = AppTheme.current.sectionBackgroundColor
     let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: 100, height: 40))
     titleLabel.center.y = view.center.y
     titleLabel.text = section == 0 ? "STAKING" : "UNSTAKING"
