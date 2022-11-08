@@ -32,7 +32,6 @@
 		7EB252BE2907F30300648438 /* EarnModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252BD2907F30300648438 /* EarnModule.swift */; };
 		7EB252C12907F3E100648438 /* EarnOverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252C02907F3E100648438 /* EarnOverViewModel.swift */; };
 		7EB252C32907F43B00648438 /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252C22907F43B00648438 /* Observer.swift */; };
-		7EB252C52907F6AC00648438 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252C42907F6AC00648438 /* SegmentedControl.swift */; };
 		7EB252C72907F7EC00648438 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252C62907F7EC00648438 /* TypeAliases.swift */; };
 		7EB252C92907F8C300648438 /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252C82907F8C300648438 /* NSObject.swift */; };
 		7EF19ED8290B860B00358B66 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF19ED7290B860B00358B66 /* DesignSystem.framework */; };
@@ -66,7 +65,6 @@
 		7EB252BD2907F30300648438 /* EarnModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnModule.swift; sourceTree = "<group>"; };
 		7EB252C02907F3E100648438 /* EarnOverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnOverViewModel.swift; sourceTree = "<group>"; };
 		7EB252C22907F43B00648438 /* Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
-		7EB252C42907F6AC00648438 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		7EB252C62907F7EC00648438 /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
 		7EB252C82907F8C300648438 /* NSObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObject.swift; sourceTree = "<group>"; };
 		7EF19ED7290B860B00358B66 /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,7 +149,6 @@
 				7E6EBD6F290928D400069B33 /* Strings.swift */,
 				7EB252BD2907F30300648438 /* EarnModule.swift */,
 				7EB252C22907F43B00648438 /* Observer.swift */,
-				7EB252C42907F6AC00648438 /* SegmentedControl.swift */,
 				7EB252C62907F7EC00648438 /* TypeAliases.swift */,
 				7EB252C82907F8C300648438 /* NSObject.swift */,
 				7E6EBD6429091F7A00069B33 /* Assets.xcassets */,
@@ -327,7 +324,6 @@
 				7E6EBD8B2909386900069B33 /* Images.swift in Sources */,
 				7E6EBD7429092ACC00069B33 /* UIColor+Kyber.swift in Sources */,
 				7EB252B92907F25200648438 /* EarnOverviewController.swift in Sources */,
-				7EB252C52907F6AC00648438 /* SegmentedControl.swift in Sources */,
 				7EB252BE2907F30300648438 /* EarnModule.swift in Sources */,
 				7E6EBD70290928D400069B33 /* Strings.swift in Sources */,
 				7E6EBD6229091E0800069B33 /* StakingPortfolioViewController.swift in Sources */,

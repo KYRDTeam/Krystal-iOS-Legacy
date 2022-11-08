@@ -9,6 +9,7 @@ import UIKit
 import BaseModule
 import Dependencies
 import AppState
+import DesignSystem
 
 class EarnOverviewController: InAppBrowsingViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
