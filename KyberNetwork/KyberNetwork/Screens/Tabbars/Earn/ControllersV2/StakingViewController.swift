@@ -325,18 +325,18 @@ class StakingViewController: InAppBrowsingViewController {
   }
   
   private func setupUI() {
-    apyInfoView.setTitle(title: "APY (Est. Yield", underlined: false)
+    apyInfoView.setTitle(title: Strings.apyTitle, underlined: false)
     apyInfoView.iconImageView.isHidden = true
     
-    amountReceiveInfoView.setTitle(title: "You will receive", underlined: false)
+    amountReceiveInfoView.setTitle(title: Strings.youWillReceive, underlined: false)
     amountReceiveInfoView.iconImageView.isHidden = true
     
-    rateInfoView.setTitle(title: "Rate", underlined: false, shouldShowIcon: true)
+    rateInfoView.setTitle(title: Strings.rate, underlined: false, shouldShowIcon: true)
     rateInfoView.onTapRightIcon = {
       self.viewModel.isUseReverseRate.value = !self.viewModel.isUseReverseRate.value
     }
     
-    networkFeeInfoView.setTitle(title: "Network Fee", underlined: false)
+    networkFeeInfoView.setTitle(title: Strings.networkFee, underlined: false)
     networkFeeInfoView.iconImageView.isHidden = true
     
     earningTokenContainerView.delegate = self
@@ -447,7 +447,7 @@ class StakingViewController: InAppBrowsingViewController {
     viewModel.nextButtonStatus.observeAndFire(on: self) { value in
       switch value {
       case .notApprove:
-        self.nextButton.setTitle(String(format: "Checking", self.viewModel.pool.token.symbol), for: .normal)
+        self.nextButton.setTitle(String(format: Strings.cheking, self.viewModel.pool.token.symbol), for: .normal)
         self.nextButton.alpha = 0.2
         self.nextButton.isEnabled = false
       case .needApprove:
@@ -455,10 +455,10 @@ class StakingViewController: InAppBrowsingViewController {
         self.nextButton.alpha = 1
         self.nextButton.isEnabled = true
       case .approved:
-        self.nextButton.setTitle("Stake Now", for: .normal)
+        self.nextButton.setTitle(Strings.stakeNow, for: .normal)
         self.updateUIError()
       case .noNeed:
-        self.nextButton.setTitle("Stake Now", for: .normal)
+        self.nextButton.setTitle(Strings.stakeNow, for: .normal)
         self.updateUIError()
       }
     }

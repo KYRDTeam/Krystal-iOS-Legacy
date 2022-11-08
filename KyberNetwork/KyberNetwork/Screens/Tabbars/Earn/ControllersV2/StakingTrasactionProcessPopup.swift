@@ -92,7 +92,7 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
       self.secondButton.setTitle(buttonTitle, for: .normal)
       self.sourceTokenInfoContainerView.rounded(color: UIColor.Kyber.buttonBg, width: 1, radius: 16)
       self.destTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
-      self.processStatusLabel.text = "Processing Transaction"
+      self.processStatusLabel.text = "Staking in process"
     case .success:
       self.loadingIndicatorView.isHidden = true
       self.transactionStateIcon.isHidden = false
@@ -103,7 +103,7 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
       self.secondButton.setTitle(buttonTitle, for: .normal)
       self.destTokenInfoContainerView.rounded(color: UIColor.Kyber.buttonBg, width: 1, radius: 16)
       self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
-      self.processStatusLabel.text = "Swapped Successfully"
+      self.processStatusLabel.text = "Success"
     case .failure:
       self.loadingIndicatorView.isHidden = true
       self.transactionStateIcon.isHidden = false
