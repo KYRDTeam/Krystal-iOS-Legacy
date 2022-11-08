@@ -8,6 +8,7 @@
 import UIKit
 import BigInt
 import Utilities
+import AppState
 
 typealias UserSettings = (BasicTransactionSettings, AdvancedTransactionSettings?)
 typealias StakeDisplayInfo = (amount: String, apy: String, receiveAmount: String, rate: String, fee: String, platform: String, stakeTokenIcon: String, fromSym: String, toSym: String)
@@ -264,6 +265,10 @@ class StakingViewModel {
       }
     }
   }
+  
+  var isChainValid: Bool {
+    return KNGeneralProvider.shared.customRPC.chainID == pool.chainID
+  }
 }
 
 class StakingViewController: InAppBrowsingViewController {
@@ -470,6 +475,23 @@ class StakingViewController: InAppBrowsingViewController {
   }
   
   @IBAction func nextButtonTapped(_ sender: UIButton) {
+    guard viewModel.isChainValid else {
+      let chainType = ChainType.make(chainID: viewModel.pool.chainID) ?? .eth
+      let alertController = KNPrettyAlertController(
+        title: "",
+        message: "Please switch to \(chainType.chainName()) to continue".toBeLocalised(),
+        secondButtonTitle: Strings.ok,
+        firstButtonTitle: Strings.cancel,
+        secondButtonAction: {
+          AppState.shared.updateChain(chain: chainType)
+        },
+        firstButtonAction: {
+        }
+      )
+      alertController.popupHeight = 220
+      present(alertController, animated: true, completion: nil)
+      return
+    }
     if viewModel.nextButtonStatus.value == .needApprove {
       delegate?.sendApprove(self, tokenAddress: viewModel.pool.token.address, remain: viewModel.tokenAllowance ?? .zero, symbol: viewModel.pool.token.symbol, toAddress: viewModel.txObject.value?.to ?? "")
     } else {
@@ -496,6 +518,7 @@ class StakingViewController: InAppBrowsingViewController {
   func coordinatorFailApprove(address: String) {
     viewModel.nextButtonStatus.value = .notApprove
   }
+  
   
 }
 
