@@ -24,14 +24,15 @@ class UnstakeViewController: InAppBrowsingViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
     }
     
     func setupUI() {
         self.amountTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
         receiveInfoView.setInfo(title: "You will receive", value: "0 stMATIC")
-        receiveInfoView.setInfo(title: "Rate", value: "0 stMATIC", shouldShowIcon: true)
-        receiveInfoView.setInfo(title: "Network Fee", value: "0 stMATIC")
-        receiveInfoView.setInfo(title: "You will receive your MATIC in 2-3 days", value: "")
+        rateView.setInfo(title: "Rate", value: "0 stMATIC", shouldShowIcon: true)
+        networkFeeView.setInfo(title: "Network Fee", value: "0 stMATIC")
+        receiveTimeView.setInfo(title: "You will receive your MATIC in 2-3 days", value: "")
     }
 
     @IBAction func settingButtonTapped(_ sender: Any) {
