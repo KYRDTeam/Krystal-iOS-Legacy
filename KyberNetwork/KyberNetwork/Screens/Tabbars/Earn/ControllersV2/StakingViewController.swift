@@ -95,7 +95,7 @@ class StakingViewModel {
   }
   
   var displayAPY: String {
-    return selectedPlatform.apy.description + " %"
+    return StringFormatter.percentString(value: selectedPlatform.apy / 100)
   }
   
   var amountBigInt: BigInt {
@@ -184,13 +184,18 @@ class StakingViewModel {
   
   var displayAmountReceive: String {
     guard let detail = selectedEarningToken.value, !amount.value.isEmpty, let amountDouble = Double(amount.value) else { return "---" }
-    let receiveAmt = detail.exchangeRate * amountDouble
+    let receiveAmt = rate * amountDouble
     return receiveAmt.description + " " + detail.symbol
+  }
+  
+  var rate: Double {
+    guard let detail = selectedEarningToken.value else { return 0.0 }
+    return detail.exchangeRate / pow(10.0, 18.0)
   }
   
   var displayRate: String {
     guard let detail = selectedEarningToken.value else { return "---" }
-    return "1 \(pool.token.symbol) = \(detail.exchangeRate) \(detail.symbol)"
+    return "1 \(pool.token.symbol) = \(rate) \(detail.symbol)"
   }
   
   var isAmountTooSmall: Bool {
@@ -389,7 +394,7 @@ class StakingViewController: InAppBrowsingViewController {
     stakeMainHeaderLabel.text = viewModel.displayMainHeader
     stakeTokenLabel.text = viewModel.displayStakeToken
     stakeTokenImageView.setImage(urlString: viewModel.pool.token.logo, symbol: viewModel.pool.token.symbol)
-    apyInfoView.setValue(value: viewModel.selectedPlatform.apy.description, highlighted: true)
+    apyInfoView.setValue(value: viewModel.displayAPY, highlighted: true)
     viewModel.selectedEarningToken.observeAndFire(on: self) { _ in
       self.updateRateInfoView()
     }

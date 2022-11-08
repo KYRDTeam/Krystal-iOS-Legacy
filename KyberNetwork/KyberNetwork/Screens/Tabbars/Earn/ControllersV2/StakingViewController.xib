@@ -338,8 +338,8 @@
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="QKH-hD-w8o">
-                            <rect key="frame" x="15" y="185.5" width="345" height="157"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="QKH-hD-w8o">
+                            <rect key="frame" x="15" y="185.5" width="345" height="124"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8AN-XC-Lhr" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="345" height="28"/>
@@ -349,21 +349,21 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UK8-lg-MT7" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="43" width="345" height="28"/>
+                                    <rect key="frame" x="0.0" y="32" width="345" height="28"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="28" id="W0P-Dy-rvQ"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fd2-Pd-wBO" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="86" width="345" height="28"/>
+                                    <rect key="frame" x="0.0" y="64" width="345" height="28"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="28" id="Kd0-rQ-TBh"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cyu-cp-C1e" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="129" width="345" height="28"/>
+                                    <rect key="frame" x="0.0" y="96" width="345" height="28"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="28" id="gvq-Qp-rSr"/>
@@ -372,7 +372,7 @@
                             </subviews>
                         </stackView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRD-Uw-5YN">
-                            <rect key="frame" x="15" y="382.5" width="345" height="42"/>
+                            <rect key="frame" x="15" y="349.5" width="345" height="42"/>
                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="fba-9N-DXp"/>
@@ -405,7 +405,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uL6-Ya-9qb">
-                            <rect key="frame" x="15" y="439.5" width="345" height="403.5"/>
+                            <rect key="frame" x="15" y="406.5" width="345" height="403.5"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Staking Projections" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9sj-ST-PbS">
                                     <rect key="frame" x="20" y="15" width="161.5" height="22"/>
