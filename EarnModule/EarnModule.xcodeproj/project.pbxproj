@@ -21,8 +21,8 @@
 		7E6EBD70290928D400069B33 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD6F290928D400069B33 /* Strings.swift */; };
 		7E6EBD72290929A400069B33 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD71290929A400069B33 /* Localizable.strings */; };
 		7E6EBD7429092ACC00069B33 /* UIColor+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD7329092ACC00069B33 /* UIColor+Kyber.swift */; };
-		7E6EBD822909318E00069B33 /* OverviewSkeletonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD802909318E00069B33 /* OverviewSkeletonCell.xib */; };
-		7E6EBD832909318E00069B33 /* OverviewSkeletonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD812909318E00069B33 /* OverviewSkeletonCell.swift */; };
+		7E6EBD822909318E00069B33 /* SkeletonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD802909318E00069B33 /* SkeletonCell.xib */; };
+		7E6EBD832909318E00069B33 /* SkeletonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD812909318E00069B33 /* SkeletonCell.swift */; };
 		7E6EBD86290931E900069B33 /* StakingPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD84290931E800069B33 /* StakingPortfolioCell.swift */; };
 		7E6EBD87290931E900069B33 /* StakingPortfolioCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD85290931E900069B33 /* StakingPortfolioCell.xib */; };
 		7E6EBD8B2909386900069B33 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD8A2909386900069B33 /* Images.swift */; };
@@ -55,8 +55,8 @@
 		7E6EBD6F290928D400069B33 /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		7E6EBD71290929A400069B33 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		7E6EBD7329092ACC00069B33 /* UIColor+Kyber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Kyber.swift"; sourceTree = "<group>"; };
-		7E6EBD802909318E00069B33 /* OverviewSkeletonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverviewSkeletonCell.xib; sourceTree = "<group>"; };
-		7E6EBD812909318E00069B33 /* OverviewSkeletonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverviewSkeletonCell.swift; sourceTree = "<group>"; };
+		7E6EBD802909318E00069B33 /* SkeletonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SkeletonCell.xib; sourceTree = "<group>"; };
+		7E6EBD812909318E00069B33 /* SkeletonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SkeletonCell.swift; sourceTree = "<group>"; };
 		7E6EBD84290931E800069B33 /* StakingPortfolioCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StakingPortfolioCell.swift; sourceTree = "<group>"; };
 		7E6EBD85290931E900069B33 /* StakingPortfolioCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StakingPortfolioCell.xib; sourceTree = "<group>"; };
 		7E6EBD8A2909386900069B33 /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
@@ -108,8 +108,8 @@
 			children = (
 				7E6EBD84290931E800069B33 /* StakingPortfolioCell.swift */,
 				7E6EBD85290931E900069B33 /* StakingPortfolioCell.xib */,
-				7E6EBD812909318E00069B33 /* OverviewSkeletonCell.swift */,
-				7E6EBD802909318E00069B33 /* OverviewSkeletonCell.xib */,
+				7E6EBD812909318E00069B33 /* SkeletonCell.swift */,
+				7E6EBD802909318E00069B33 /* SkeletonCell.xib */,
 				7E6EBD672909280800069B33 /* EarnPoolPlatformCell.swift */,
 				7E6EBD6A2909280900069B33 /* EarnPoolPlatformCell.xib */,
 				7E6EBD682909280800069B33 /* EarnPoolViewCell.swift */,
@@ -277,7 +277,7 @@
 				7E6EBD6D2909280900069B33 /* EarnPoolViewCell.xib in Resources */,
 				7E6EBD72290929A400069B33 /* Localizable.strings in Resources */,
 				7E6EBD6529091F7A00069B33 /* Assets.xcassets in Resources */,
-				7E6EBD822909318E00069B33 /* OverviewSkeletonCell.xib in Resources */,
+				7E6EBD822909318E00069B33 /* SkeletonCell.xib in Resources */,
 				7E6EBD6E2909280900069B33 /* EarnPoolPlatformCell.xib in Resources */,
 				7E6EBD87290931E900069B33 /* StakingPortfolioCell.xib in Resources */,
 				7E987F262908E92500AA5F8F /* EarnOverviewController.xib in Resources */,
@@ -331,7 +331,7 @@
 				7EB252BE2907F30300648438 /* EarnModule.swift in Sources */,
 				7E6EBD70290928D400069B33 /* Strings.swift in Sources */,
 				7E6EBD6229091E0800069B33 /* StakingPortfolioViewController.swift in Sources */,
-				7E6EBD832909318E00069B33 /* OverviewSkeletonCell.swift in Sources */,
+				7E6EBD832909318E00069B33 /* SkeletonCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
