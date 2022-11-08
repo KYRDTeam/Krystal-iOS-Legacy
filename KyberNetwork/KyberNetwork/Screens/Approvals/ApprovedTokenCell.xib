@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -39,31 +39,34 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="USDC LONG SAFEMOON TOKEN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ze-bR-jh0">
-                                <rect key="frame" x="62" y="26.5" width="73.5" height="19"/>
+                                <rect key="frame" x="62" y="26.5" width="32" height="19"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="32" id="OwD-IT-d6x"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="20000000.2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="atR-Cu-4ax">
-                                <rect key="frame" x="189.5" y="26.5" width="88" height="19"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="20000000.2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="atR-Cu-4ax">
+                                <rect key="frame" x="132" y="26.5" width="88" height="19"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="USDC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i61-Ck-rJh">
-                                <rect key="frame" x="281.5" y="26.5" width="40.5" height="19"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="USDC LONG SAFEMOON TOKEN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i61-Ck-rJh">
+                                <rect key="frame" x="224" y="26.5" width="98" height="19"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <color key="textColor" name="buttonBackgroundColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="USD Coin Long Text Hrer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5jU-Gj-gMc">
-                                <rect key="frame" x="62" y="50" width="70" height="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="USDC LONG SAFEMOON TOKEN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5jU-Gj-gMc">
+                                <rect key="frame" x="62" y="49.5" width="70" height="16.5"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueTick_icon" translatesAutoresizingMaskIntoConstraints="NO" id="7we-qh-ynY">
-                                <rect key="frame" x="137.5" y="26" width="20" height="20"/>
+                                <rect key="frame" x="96" y="26" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="8J1-9M-KB2"/>
                                     <constraint firstAttribute="width" constant="20" id="RXM-ny-Soo"/>
@@ -77,13 +80,13 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Spender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jUg-S1-2GP">
-                                <rect key="frame" x="164" y="50.5" width="53" height="16.5"/>
+                                <rect key="frame" x="164" y="49.5" width="53" height="16.5"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="0xab12aaaa...def" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IOB-YR-tCx">
-                                <rect key="frame" x="221" y="50.5" width="103" height="16.5"/>
+                                <rect key="frame" x="221" y="49.5" width="103" height="16.5"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                 <color key="textColor" name="buttonBackgroundColor"/>
                                 <nil key="highlightedColor"/>
@@ -99,26 +102,27 @@
                         <color key="backgroundColor" name="mainViewBgColor"/>
                         <constraints>
                             <constraint firstItem="bre-WX-Kk0" firstAttribute="centerY" secondItem="V8J-rA-Dq0" secondAttribute="centerY" id="1rr-IU-tyc"/>
+                            <constraint firstItem="7we-qh-ynY" firstAttribute="centerY" secondItem="atR-Cu-4ax" secondAttribute="centerY" id="39G-Ax-QI9"/>
                             <constraint firstItem="IOB-YR-tCx" firstAttribute="leading" secondItem="jUg-S1-2GP" secondAttribute="trailing" constant="4" id="4S1-7Z-whs"/>
                             <constraint firstItem="7we-qh-ynY" firstAttribute="leading" secondItem="9Ze-bR-jh0" secondAttribute="trailing" constant="2" id="671-Nw-1YH"/>
                             <constraint firstItem="atR-Cu-4ax" firstAttribute="centerY" secondItem="i61-Ck-rJh" secondAttribute="centerY" id="6WC-0x-jEU"/>
                             <constraint firstItem="5jU-Gj-gMc" firstAttribute="leading" secondItem="9Ze-bR-jh0" secondAttribute="leading" id="8E8-Sj-u0x"/>
                             <constraint firstItem="bre-WX-Kk0" firstAttribute="leading" secondItem="V8J-rA-Dq0" secondAttribute="leading" constant="18" id="9p8-q1-atb"/>
                             <constraint firstItem="i61-Ck-rJh" firstAttribute="leading" secondItem="atR-Cu-4ax" secondAttribute="trailing" constant="4" id="CV6-X5-foO"/>
-                            <constraint firstItem="5jU-Gj-gMc" firstAttribute="top" secondItem="7we-qh-ynY" secondAttribute="bottom" constant="4" id="DMz-rz-QVF"/>
                             <constraint firstAttribute="trailing" secondItem="IOB-YR-tCx" secondAttribute="trailing" constant="16" id="Gqh-5R-Rxy"/>
                             <constraint firstItem="rUe-cN-WBD" firstAttribute="centerX" secondItem="bre-WX-Kk0" secondAttribute="trailing" constant="-4" id="Kh5-rg-611"/>
+                            <constraint firstItem="5jU-Gj-gMc" firstAttribute="top" secondItem="bre-WX-Kk0" secondAttribute="centerY" constant="2" id="SvK-GO-h3D"/>
                             <constraint firstItem="jUg-S1-2GP" firstAttribute="leading" secondItem="5jU-Gj-gMc" secondAttribute="trailing" constant="32" id="WKF-H3-D7F"/>
-                            <constraint firstItem="7we-qh-ynY" firstAttribute="centerY" secondItem="9Ze-bR-jh0" secondAttribute="centerY" id="XqJ-XB-En5"/>
+                            <constraint firstItem="5jU-Gj-gMc" firstAttribute="leading" secondItem="bre-WX-Kk0" secondAttribute="trailing" constant="12" id="Xah-iE-wRd"/>
+                            <constraint firstItem="jUg-S1-2GP" firstAttribute="top" secondItem="bre-WX-Kk0" secondAttribute="centerY" constant="2" id="ZDx-C2-nwt"/>
                             <constraint firstItem="jUg-S1-2GP" firstAttribute="centerY" secondItem="IOB-YR-tCx" secondAttribute="centerY" id="bk8-TC-xGE"/>
                             <constraint firstAttribute="bottom" secondItem="lbH-Az-OKQ" secondAttribute="bottom" id="ftA-eW-yhc"/>
                             <constraint firstItem="lbH-Az-OKQ" firstAttribute="leading" secondItem="V8J-rA-Dq0" secondAttribute="leading" constant="18" id="g2M-ht-Gi2"/>
-                            <constraint firstItem="i61-Ck-rJh" firstAttribute="centerY" secondItem="9Ze-bR-jh0" secondAttribute="centerY" id="j1A-7T-STP"/>
                             <constraint firstAttribute="trailing" secondItem="i61-Ck-rJh" secondAttribute="trailing" constant="18" id="mJy-1G-sFY"/>
-                            <constraint firstItem="atR-Cu-4ax" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7we-qh-ynY" secondAttribute="trailing" constant="32" id="n62-wV-shU"/>
-                            <constraint firstItem="IOB-YR-tCx" firstAttribute="centerY" secondItem="5jU-Gj-gMc" secondAttribute="centerY" id="nRB-7A-R9V"/>
+                            <constraint firstItem="atR-Cu-4ax" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7we-qh-ynY" secondAttribute="trailing" constant="16" id="n62-wV-shU"/>
                             <constraint firstItem="rUe-cN-WBD" firstAttribute="centerY" secondItem="bre-WX-Kk0" secondAttribute="bottom" constant="-4" id="rwk-PE-Jvt"/>
                             <constraint firstItem="9Ze-bR-jh0" firstAttribute="bottom" secondItem="bre-WX-Kk0" secondAttribute="centerY" constant="-2" id="tNf-MF-psN"/>
+                            <constraint firstItem="atR-Cu-4ax" firstAttribute="bottom" secondItem="bre-WX-Kk0" secondAttribute="centerY" constant="-2" id="tYZ-jz-YPI"/>
                             <constraint firstAttribute="trailing" secondItem="lbH-Az-OKQ" secondAttribute="trailing" id="vBV-Mn-3yb"/>
                             <constraint firstItem="9Ze-bR-jh0" firstAttribute="leading" secondItem="bre-WX-Kk0" secondAttribute="trailing" constant="12" id="zdC-tI-Bfd"/>
                         </constraints>

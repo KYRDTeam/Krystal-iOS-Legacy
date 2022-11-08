@@ -87,4 +87,8 @@ struct Images {
     // Notfound
     static let noApprovals = UIImage(named: "ic_unlink")!
     static let noRecords = UIImage(named: "ic_no_records")!
+    static let revoke = UIImage(named: "revoke")!
+    
+    static let txStatusSuccess = UIImage(named: "tx_status_success")!
+    static let txStatusFailed = UIImage(named: "tx_status_fail")!
 }

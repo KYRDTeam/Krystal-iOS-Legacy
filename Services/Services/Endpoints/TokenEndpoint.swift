@@ -21,8 +21,8 @@ extension TokenEndpoint: TargetType {
     
     var path: String {
         switch self {
-        case .getTokenDetail:
-            return "/v1/token/tokenDetails"
+        case .getTokenDetail(let chainPath, _):
+            return "/\(chainPath)/v1/token/tokenDetails"
         case .getCommonBaseToken:
           return "/v1/token/commonBase"
         }

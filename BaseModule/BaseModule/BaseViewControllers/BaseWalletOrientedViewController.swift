@@ -65,7 +65,7 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
     )
     NotificationCenter.default.addObserver(
       self,
-      selector: #selector(onAppSwitchAddress),
+      selector: #selector(handleAppSwitchAddressNotification),
       name: .appAddressChanged,
       object: nil
     )
@@ -116,16 +116,27 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
   }
   
   @objc open func onAppSelectAllChain() {
-    reloadAllNetworksChain()
+    if supportAllChainOption {
+      reloadAllNetworksChain()
+    }
   }
-  
-  @objc open func onAppSwitchAddress() {
-    reloadWallet()
-  }
-  
+    
+    @objc open func onAppSwitchAddress(switchChain: Bool) {
+        reloadWallet()
+    }
+    
+    @objc open func onAppSwitchAddress() {
+        self.onAppSwitchAddress(switchChain: false)
+    }
+    
   open func onChainSelected(chain: ChainType) {
 
   }
+    
+    @objc func handleAppSwitchAddressNotification(notification: Notification) {
+        let switchChain = notification.userInfo?["switch_chain"] as? Bool ?? false
+        self.onAppSwitchAddress(switchChain: switchChain)
+    }
   
   @objc open func handleWalletButtonTapped() {
     let selectWalletHandler: (KWallet) -> () = { [weak self] wallet in
@@ -172,4 +183,3 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
   }
   
 }
-

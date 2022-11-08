@@ -10,13 +10,13 @@ import BigInt
 import Moya
 import Sentry
 import KrystalWallets
+import AppState
 
 class KNTransactionCoordinator {
 
   let transactionStorage: TransactionsStorage
   let tokenStorage: KNTokenStorage
   let externalProvider: KNExternalProvider?
-  let address: KAddress
 
   lazy var addressToSymbol: [String: String] = {
     var maps: [String: String] = [:]
@@ -29,19 +29,19 @@ class KNTransactionCoordinator {
 
   fileprivate var pendingTxTimer: Timer?
   fileprivate var tokenTxTimer: Timer?
-
+  var address: KAddress {
+    return AppState.shared.currentAddress
+  }
   deinit { self.stop() }
 
   init(
     transactionStorage: TransactionsStorage,
     tokenStorage: KNTokenStorage,
-    externalProvider: KNExternalProvider?,
-    address: KAddress
+    externalProvider: KNExternalProvider?
   ) {
     self.transactionStorage = transactionStorage
     self.tokenStorage = tokenStorage
     self.externalProvider = externalProvider
-    self.address = address
   }
 
   func start(isReloadData: Bool = true) {

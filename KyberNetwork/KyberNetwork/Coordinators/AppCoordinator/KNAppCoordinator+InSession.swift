@@ -5,11 +5,13 @@ import OneSignal
 import KrystalWallets
 import Dependencies
 import AppState
+import TransactionModule
 
 // MARK: This file for handling in session
 extension KNAppCoordinator {
   
   func startNewSession(address: KAddress) {
+      GasPriceManager.shared.scheduleFetchAllChainGasPrice()
     self.walletCache.lastUsedAddress = address
 //    self.currentAddress = address
     
@@ -151,7 +153,7 @@ extension KNAppCoordinator {
   }
 
   func restartSession(address: KAddress) {
-    EtherscanTransactionStorage.shared.updateCurrentWallet(address)
+    EtherscanTransactionStorage.shared.updateCurrentHistoryCache()
     self.session.switchAddress(address: address)
     FeatureFlagManager.shared.configClient(session: self.session)
     AppState.shared.isSelectedAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all

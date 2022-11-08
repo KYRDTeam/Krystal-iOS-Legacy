@@ -233,6 +233,7 @@ struct Strings {
   static let connectWallet = "connect.wallet".toBeLocalised()
   static let reviewSwap = "review.swap".toBeLocalised()
   static let insufficientTokenBalance = "insufficient.token.balance".toBeLocalised()
+  static let insufficientTokenForNetworkFee = "insufficient.token.for.network.fee".toBeLocalised()
   static let checkingAllowance = "checking.allowance".toBeLocalised()
   static let approveToken = "approve.token".toBeLocalised()
   static let approvingToken = "approving.token".toBeLocalised()
@@ -309,4 +310,10 @@ struct Strings {
     static let totalAllowanceDescription = "total.allowance.description".toBeLocalised()
     static let approvalsNoRisk = "approvals.no.risk".toBeLocalised()
     static let aprovalsNoRecords = "approvals.no.records.found".toBeLocalised()
+    static let revoke = "revoke".toBeLocalised()
+    static let broadcastingTransaction = "broadcasting.transaction".toBeLocalised()
+    static let openX = "open.x".toBeLocalised()
+    static let support = "support".toBeLocalised()
+    static let approvalNoTokenFoundOnWallet = "approval.no.token.found.on.wallet".toBeLocalised()
+    static let approvalNoTokenFoundOnNetwork = "approval.no.token.found.on.network".toBeLocalised()
 }

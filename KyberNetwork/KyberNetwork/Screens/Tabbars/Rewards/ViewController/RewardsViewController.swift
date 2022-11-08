@@ -9,6 +9,7 @@ import UIKit
 import BigInt
 import KrystalWallets
 import AppState
+import BaseModule
 
 class RewardsViewControllerViewModel {
   
@@ -66,11 +67,12 @@ class RewardsViewControllerViewModel {
 }
 
 protocol RewardsViewControllerDelegate: class {
+  func reloadData(_ controller: RewardsViewController)
   func loadClaimRewards(_ controller: RewardsViewController)
   func showClaimRewardVC(_ controller: RewardsViewController, model: KNRewardModel, txObject: TxObject)
 }
 
-class RewardsViewController: KNBaseViewController {
+class RewardsViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var emptyView: UIView!
   @IBOutlet weak var emptyButton: UIButton!
   @IBOutlet weak var tableView: UITableView!
@@ -94,6 +96,10 @@ class RewardsViewController: KNBaseViewController {
       emptyButton.isHidden = false
       emptyLabel.text = "You don't have any reward".toBeLocalised()
     }
+  }
+  
+  override func onAppSwitchAddress() {
+    self.delegate?.reloadData(self)
   }
 
   func configUI() {

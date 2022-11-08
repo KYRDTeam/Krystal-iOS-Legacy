@@ -932,6 +932,7 @@
 "connect.wallet" = "Connect Wallet";
 "review.swap" = "Review Swap";
 "insufficient.token.balance" = "Insufficient %@ Balance";
+"insufficient.token.for.network.fee" = "Insufficient %@ for network fee";
 "checking.allowance" = "Checking Allowance";
 "approve.token" = "Approve %@";
 "approving.token" = "Approving %@";
@@ -993,7 +994,7 @@
 "no.tokens.deposited" = "No tokens deposited yet.";
 
 // Approval
-"approval.search.placeholder" = "Symbol, name, address";
+"approval.search.placeholder" = "Token name, symbol, address";
 "approval.menu.title" = "Token Approvals";
 "unlimited.allowance" = "Unlimited";
 "total.allowance" = "Total Allowance";
@@ -1001,3 +1002,9 @@
 "total.allowance.description" = "This is the total amount of funds in your wallet that can be accessed by smart contracts that you've previously approved. These funds may be lost if the smart contract is compromised by a hacker.";
 "approvals.no.risk" = "Don’t worry, you have NO risk now :D";
 "approvals.no.records.found" = "No records found";
+"revoke" = "Revoke";
+"broadcasting.transaction" = "Broadcasting Transaction";
+"open.x" = "Open %@";
+"support" = "Support";
+"approval.no.token.found.on.wallet" = "There are no token approvals found on this wallet.";
+"approval.no.token.found.on.network" = "There are no token approvals found on this network.";

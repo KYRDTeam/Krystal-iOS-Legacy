@@ -64,7 +64,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     switch viewModel.overviewMode {
     case .overview:
       switch viewModel.currentMode {
-      case .market:
+      case .market, .favourite:
         return 280
       default:
         return 264
@@ -209,7 +209,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     self.viewModel.reloadAllData()
     self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
     self.currentPageNameLabel.text = self.viewModel.displayCurrentPageName
-    self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
+    self.sortingContainerView.isHidden = (self.viewModel.currentMode != .market(rightMode: .ch24) && self.viewModel.currentMode != .favourite(rightMode: .ch24)) || self.viewModel.overviewMode == .summary
     self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
     self.insestView.frame.size.height = self.insetViewHeight
     self.updateUIByFeatureFlags()
@@ -427,6 +427,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     guard self.isViewLoaded else { return }
     calculatingQueue.async {
       self.viewModel.reloadAllData()
+      self.delegate?.overviewMainViewController(self, run: .pullToRefreshed(current: self.viewModel.currentMode, overviewMode: self.viewModel.overviewMode))
       DispatchQueue.main.async {
         self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
         self.tableView.reloadData()
@@ -447,6 +448,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     DispatchQueue.main.async {
       self.refreshControl.endRefreshing()
       self.view.hideSkeleton()
+      self.reloadUI()
     }
   }
   
@@ -463,7 +465,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   
   func overviewModeDidChanged(isSummary: Bool) {
     self.viewModel.overviewMode = isSummary ? .summary : .overview
-    self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
+    self.sortingContainerView.isHidden = (self.viewModel.currentMode != .market(rightMode: .ch24) && self.viewModel.currentMode != .favourite(rightMode: .ch24)) || self.viewModel.overviewMode == .summary
     self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
     self.tableViewTopConstraint.constant = 0
     self.insestView.frame.size.height = insetViewHeight

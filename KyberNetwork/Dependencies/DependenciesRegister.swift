@@ -10,13 +10,16 @@ import Dependencies
 import Services
 import AppState
 import BaseWallet
+import TransactionModule
 
 class Dependencies {
     
     static func register() {
         AppDependencies.router = AppRouter()
         AppDependencies.tracker = AppTracker()
-        AppDependencies.gasConfig = AppGasConfig()
+        AppDependencies.gasConfig = GasPriceManager.shared
+        AppDependencies.priceStorage = AppPriceStorage()
+        AppDependencies.nonceStorage = AppNonceStorage()
         
         ServiceConfig.baseAPIURL = KNEnvironment.default.krystalEndpoint
         ServiceConfig.errorTracker = AppErrorTracker()
