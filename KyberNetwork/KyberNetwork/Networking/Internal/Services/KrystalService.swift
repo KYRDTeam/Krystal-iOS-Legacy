@@ -104,7 +104,7 @@ class KrystalService {
   }
   
   func buildStakeTx(param: JSONDictionary, completion: @escaping (Result<TxObject, AnyError>) -> Void) {
-    provider.requestWithFilter(.buildStateTx(params: param)) { result in
+    provider.requestWithFilter(.buildStakeTx(params: param)) { result in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()

@@ -167,7 +167,7 @@ class StakingViewModel {
     return params
   }
   
-  func requestBuildStateTx(showLoading: Bool = false, completion: @escaping BlankBlock = {}) {
+  func requestBuildStakeTx(showLoading: Bool = false, completion: @escaping BlankBlock = {}) {
     if showLoading { isLoading.value = true }
     apiService.buildStakeTx(param: buildTxRequestParams) { result in
       switch result {
@@ -246,7 +246,7 @@ class StakingViewModel {
       return
     }
     guard let tx = txObject.value else {
-      requestBuildStateTx(showLoading: false, completion: {
+      requestBuildStakeTx(showLoading: false, completion: {
         self.getAllowance()
       })
       return
@@ -499,7 +499,7 @@ class StakingViewController: InAppBrowsingViewController {
         let displayInfo = ("\(viewModel.amount.value) \(viewModel.pool.token.symbol)", viewModel.displayAPY, viewModel.displayAmountReceive, viewModel.displayRate, viewModel.displayFeeString, viewModel.selectedPlatform.name, viewModel.pool.token.logo, viewModel.pool.token.symbol, viewModel.selectedEarningToken.value?.symbol ?? "")
         delegate?.didSelectNext(self, settings: (viewModel.basicSetting, viewModel.advancedSetting), txObject: tx, displayInfo: displayInfo)
       } else {
-        viewModel.requestBuildStateTx(showLoading: true)
+        viewModel.requestBuildStakeTx(showLoading: true)
       }
     }
     
@@ -546,7 +546,7 @@ extension StakingViewController: UITextFieldDelegate {
   
   @objc func keyboardPauseTyping(timer: Timer) {
     updateRateInfoView()
-    viewModel.requestBuildStateTx()
+    viewModel.requestBuildStakeTx()
   }
   
   func textFieldDidEndEditing(_ textField: UITextField) {
