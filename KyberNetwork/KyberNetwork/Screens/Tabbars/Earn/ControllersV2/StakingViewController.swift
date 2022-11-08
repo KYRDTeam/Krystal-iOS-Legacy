@@ -236,14 +236,14 @@ class StakingViewModel {
     var displayP60USD = ""
     var displayP90USD = ""
     
-    if let price = KNTrackerRateStorage.shared.getETHPrice() {
+    if let price = KNTrackerRateStorage.shared.getPriceWithAddress(pool.token.address) {
       let usd30 = p30 * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(decimal)
       let usd60 = p60 * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(decimal)
       let usd90 = p90 * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(decimal)
       
-      displayP30USD = "~" + usd30.string(units: EthereumUnit.ether, minFractionDigits: 0, maxFractionDigits: 4) + " USD"
-      displayP60USD = "~" + usd60.string(units: EthereumUnit.ether, minFractionDigits: 0, maxFractionDigits: 4) + " USD"
-      displayP90USD = "~" + usd90.string(units: EthereumUnit.ether, minFractionDigits: 0, maxFractionDigits: 4) + " USD"
+      displayP30USD = "≈ " + usd30.string(units: EthereumUnit.ether, minFractionDigits: 0, maxFractionDigits: 4) + " USD"
+      displayP60USD = "≈ " + usd60.string(units: EthereumUnit.ether, minFractionDigits: 0, maxFractionDigits: 4) + " USD"
+      displayP90USD = "≈ " + usd90.string(units: EthereumUnit.ether, minFractionDigits: 0, maxFractionDigits: 4) + " USD"
     }
     
     return ( (displayP30, displayP30USD), (displayP60, displayP60USD), (displayP90, displayP90USD) )
