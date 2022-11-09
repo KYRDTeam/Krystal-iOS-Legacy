@@ -108,6 +108,7 @@ end
 def transactionModuleDependencies
   pod 'FittedSheets'
   pod 'BigInt'
+  pod 'TrustWalletCore'
 end
 
 target 'Dependencies' do

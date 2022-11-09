@@ -55,7 +55,7 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
     self.transaction = transaction
     super.init(nibName: StakingTrasactionProcessPopup.className, bundle: nil)
     self.modalPresentationStyle = .custom
-    self.transitioningDelegate = transitor
+//    self.transitioningDelegate = transitor
   }
   
   required init?(coder: NSCoder) {

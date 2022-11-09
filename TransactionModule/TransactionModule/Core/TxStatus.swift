@@ -6,7 +6,8 @@
 //
 
 import Foundation
-enum TxStatus {
+
+public enum TxStatus {
   case processing
   case success
   case failure

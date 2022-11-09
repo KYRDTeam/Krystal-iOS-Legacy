@@ -15,10 +15,11 @@ import JSONRPCKit
 import DesignSystem
 import Services
 import Dependencies
+import TransactionModule
 
-protocol StakingSummaryViewControllerDelegate: class {
-  func didSendTransaction(viewController: StakingSummaryViewController, internalTransaction: InternalHistoryTransaction)
-}
+//protocol StakingSummaryViewControllerDelegate: class {
+//  func didSendTransaction(viewController: StakingSummaryViewController, internalTransaction: InternalHistoryTransaction)
+//}
 
 class StakingSummaryViewModel {
 
@@ -26,38 +27,40 @@ class StakingSummaryViewModel {
     return AppState.shared.currentAddress
   }
   
-  var gasPrice: BigInt
+//  var gasPrice: BigInt
   var gasLimit: BigInt
   
   let txObject: TxObject
-  let settings: UserSettings
+  let setting: TxSettingObject
   let displayInfo: StakeDisplayInfo
-  var transaction: SignTransaction?
-  var eip1559Transaction: EIP1559Transaction?
+//  var transaction: SignTransaction?
+//  var eip1559Transaction: EIP1559Transaction?
   var shouldDiplayLoading: Observable<Bool> = .init(false)
   var errorMessage: Observable<String> = .init("")
-  var internalHistoryTransaction: Observable<InternalHistoryTransaction?> = .init(nil)
+//  var internalHistoryTransaction: Observable<InternalHistoryTransaction?> = .init(nil)
+    var processor: TxProcessorProtocol!
+    let service = EthereumNodeService(chain: AppState.shared.currentChain)
   
-  init(txObject: TxObject, settings: UserSettings, displayInfo: StakeDisplayInfo) {
+  init(txObject: TxObject, setting: TxSettingObject, displayInfo: StakeDisplayInfo) {
     self.txObject = txObject
-    self.settings = settings
+    self.setting = setting
     self.displayInfo = displayInfo
-    self.gasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16) ?? KNGasConfiguration.earnGasLimitDefault
-    if let advanced = settings.1?.maxFee {
-      self.gasPrice = advanced
-    } else {
-      self.gasPrice = settings.0.gasPriceType.getGasValue()
-    }
-    
-    getLatestNonce { nonce in
-      self.transaction = txObject.convertToSignTransaction(address: self.currentAddress.addressString, nonce: nonce, settings: settings)
-      self.eip1559Transaction = txObject.convertToEIP1559Transaction(address: self.currentAddress.addressString, nonce: nonce, settings: settings)
-    }
+    self.gasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16) ?? Constants.earnGasLimitDefault
+//    if let advanced = setting.advanced?.maxFee {
+//      self.gasPrice = advanced
+//    } else {
+//        self.gasPrice = setting.basic?.gasType
+//    }
+//
+//    getLatestNonce { nonce in
+//      self.transaction = txObject.convertToSignTransaction(address: self.currentAddress.addressString, nonce: nonce, settings: settings)
+//      self.eip1559Transaction = txObject.convertToEIP1559Transaction(address: self.currentAddress.addressString, nonce: nonce, settings: settings)
+//    }
   }
-  
-  func getEstimateGasLimit(txEIP1559: EIP1559Transaction?, tx: SignTransaction?) {
-    let internalHistory = InternalHistoryTransaction(type: .earn, state: .pending, fromSymbol: self.displayInfo.fromSym, toSymbol: self.displayInfo.toSym, transactionDescription: "\(self.displayInfo.amount) → \(self.displayInfo.receiveAmount)", transactionDetailDescription: "", transactionObj: self.transaction?.toSignTransactionObject(), eip1559Tx: self.eip1559Transaction)
-    internalHistory.transactionSuccessDescription = "\(self.displayInfo.amount)) → \(self.displayInfo.receiveAmount)"
+
+  func getEstimateGasLimit(txEIP1559: EIP1559Transaction?, tx: LegacyTransaction?) {
+//    let internalHistory = InternalHistoryTransaction(type: .earn, state: .pending, fromSymbol: self.displayInfo.fromSym, toSymbol: self.displayInfo.toSym, transactionDescription: "\(self.displayInfo.amount) → \(self.displayInfo.receiveAmount)", transactionDetailDescription: "", transactionObj: self.transaction?.toSignTransactionObject(), eip1559Tx: self.eip1559Transaction)
+//    internalHistory.transactionSuccessDescription = "\(self.displayInfo.amount)) → \(self.displayInfo.receiveAmount)"
     if let txEIP1559 = txEIP1559 {
       shouldDiplayLoading.value = true
       KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: txEIP1559) { (result) in
@@ -121,7 +124,7 @@ class StakingSummaryViewModel {
       }
     }
   }
-  
+    
   func sendTransaction() {
     if AppState.shared.currentChain.isSupportedEIP1559() {
       guard let signTx = eip1559Transaction else { return }
@@ -131,6 +134,10 @@ class StakingSummaryViewModel {
       getEstimateGasLimit(txEIP1559: nil, tx: signTx)
     }
   }
+    
+    func request1559Staking() {
+        
+    }
   
   func getLatestNonce(completion: @escaping (Int?) -> Void) {
     let address = AppState.shared.currentAddress.addressString
@@ -181,9 +188,9 @@ class StakingSummaryViewModel {
     errorMessage.value = errorMsg
   }
   
-  fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
-    self.internalHistoryTransaction.value = transaction
-  }
+//  fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
+//    self.internalHistoryTransaction.value = transaction
+//  }
 }
 
 class StakingSummaryViewController: KNBaseViewController {
@@ -211,7 +218,7 @@ class StakingSummaryViewController: KNBaseViewController {
     super.init(nibName: StakingSummaryViewController.className, bundle: nil)
     
     self.modalPresentationStyle = .custom
-    self.transitioningDelegate = transitor
+//    self.transitioningDelegate = transitor
   }
   
   required init?(coder: NSCoder) {
@@ -267,12 +274,12 @@ class StakingSummaryViewController: KNBaseViewController {
       self.showTopBannerView(message: value)
     }
     
-    viewModel.internalHistoryTransaction.observeAndFire(on: self) { value in
-      guard let value = value else {
-        return
-      }
-      self.delegate?.didSendTransaction(viewController: self, internalTransaction: value)
-    }
+//    viewModel.internalHistoryTransaction.observeAndFire(on: self) { value in
+//      guard let value = value else {
+//        return
+//      }
+//      self.delegate?.didSendTransaction(viewController: self, internalTransaction: value)
+//    }
   }
   
   @IBAction func confirmButtonTapped(_ sender: UIButton) {

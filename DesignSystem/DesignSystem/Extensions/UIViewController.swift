@@ -10,7 +10,7 @@ enum ConfirmationError: LocalizedError {
     case cancel
 }
 
-extension UIViewController {
+public extension UIViewController {
 
   
     func displaySuccess(title: String? = .none, message: String? = .none) {

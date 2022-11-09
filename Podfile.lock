@@ -297,6 +297,7 @@ DEPENDENCIES:
   - TagListView (from `https://github.com/Expensify/TagListView.git`)
   - TrustCore (~> 0.0.7)
   - TrustKeystore (~> 0.4.2)
+  - TrustWalletCore
   - TrustWalletCore (~> 2.9)
   - WalletConnectSwift
   - Web3
@@ -461,6 +462,6 @@ SPEC CHECKSUMS:
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: 27b2606e7ee47c37a8c3eb9081cfcf7f7ab27cd8
+PODFILE CHECKSUM: edbb4b057b06e394563a7f9098307bb35df28de5
 
 COCOAPODS: 1.11.3

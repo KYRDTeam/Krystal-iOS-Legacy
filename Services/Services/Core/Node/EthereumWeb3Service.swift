@@ -352,4 +352,17 @@ public class EthereumNodeService {
     //    }
     //  }
     //
+    
+    func getEstimateGasLimit(request: KNEstimateGasLimitRequest, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+      Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { result in
+        switch result {
+        case .success(let value):
+          var limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+          limit += (limit * 20 / 100)
+          completion(.success(limit))
+        case .failure(let error):
+          completion(.failure(AnyError(error)))
+        }
+      }
+    }
 }

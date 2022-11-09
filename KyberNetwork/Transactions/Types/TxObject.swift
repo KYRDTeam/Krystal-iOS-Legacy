@@ -9,6 +9,7 @@ import Foundation
 import BigInt
 import TrustCore
 import TrustKeystore
+import TransactionModule
 
 struct TxObject: Codable {
     var nonce: String
@@ -107,6 +108,11 @@ extension TxObject {
   }
   
   //Use of staking tx
+    
+    func toSignTx(address: String, nonce: Int, setting: TxSettingObject) -> SignTransaction? {
+        
+    }
+    
   func convertToSignTransaction(address: String, nonce: Int, settings: UserSettings) -> SignTransaction? {
     guard !KNGeneralProvider.shared.isUseEIP1559 else {
       return nil

@@ -58,6 +58,8 @@
 		A6B6FA142907D56600109740 /* Approval.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6FA132907D56600109740 /* Approval.swift */; };
 		A6B6FA192907D6A100109740 /* ApprovalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6FA182907D6A100109740 /* ApprovalService.swift */; };
 		A6B6FA1B2907D6B600109740 /* BaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6FA1A2907D6B600109740 /* BaseService.swift */; };
+		A6D1F7E6291B699800ABA52B /* TxObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7E5291B699800ABA52B /* TxObject.swift */; };
+		A6D1F7F5291B89AD00ABA52B /* EthereumServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7F4291B89AD00ABA52B /* EthereumServiceRequest.swift */; };
 		A6ED2D37291131F500845EF2 /* GasEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ED2D36291131F500845EF2 /* GasEndpoint.swift */; };
 		A6ED2D3A291133A800845EF2 /* GasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ED2D39291133A800845EF2 /* GasService.swift */; };
 		A6ED2D3C2911342600845EF2 /* GasPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ED2D3B2911342600845EF2 /* GasPrice.swift */; };
@@ -65,21 +67,6 @@
 		A6F6292728FD49030085AE67 /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6292628FD49030085AE67 /* ErrorTracker.swift */; };
 		DFBC1392A80048AF5E1D8B55 /* Pods_Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 577F9B8B04D43859B76C1799 /* Pods_Services.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		A64C2ED728F923BC002FD64C /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				A673A6A828FFA29D00270DA7 /* BaseWallet.framework in Embed Frameworks */,
-				A64C2ED628F923BC002FD64C /* Utilities.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		26F29B442B1AF328B11DD1F1 /* Pods-Services.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Services.debug.xcconfig"; path = "Target Support Files/Pods-Services/Pods-Services.debug.xcconfig"; sourceTree = "<group>"; };
@@ -139,6 +126,8 @@
 		A6B6FA132907D56600109740 /* Approval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Approval.swift; sourceTree = "<group>"; };
 		A6B6FA182907D6A100109740 /* ApprovalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovalService.swift; sourceTree = "<group>"; };
 		A6B6FA1A2907D6B600109740 /* BaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseService.swift; sourceTree = "<group>"; };
+		A6D1F7E5291B699800ABA52B /* TxObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxObject.swift; sourceTree = "<group>"; };
+		A6D1F7F4291B89AD00ABA52B /* EthereumServiceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumServiceRequest.swift; sourceTree = "<group>"; };
 		A6ED2D36291131F500845EF2 /* GasEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasEndpoint.swift; sourceTree = "<group>"; };
 		A6ED2D39291133A800845EF2 /* GasService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasService.swift; sourceTree = "<group>"; };
 		A6ED2D3B2911342600845EF2 /* GasPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPrice.swift; sourceTree = "<group>"; };
@@ -201,6 +190,7 @@
 				A6F6292128FD455E0085AE67 /* Token.swift */,
 				A6B6FA132907D56600109740 /* Approval.swift */,
 				A6ED2D3B2911342600845EF2 /* GasPrice.swift */,
+				A6D1F7E5291B699800ABA52B /* TxObject.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -300,6 +290,7 @@
 				A64C2E9828F91ADA002FD64C /* EthereumNodeRequest.swift */,
 				A64C2EA528F91BF1002FD64C /* KNGetUserCapInWei.swift */,
 				A64C2EAD28F91C13002FD64C /* Web3Request.swift */,
+				A6D1F7F4291B89AD00ABA52B /* EthereumServiceRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -505,6 +496,7 @@
 				A64C2EC928F91DF9002FD64C /* GetTransactionCountRequest.swift in Sources */,
 				A64C2ECF28F91F88002FD64C /* CallRequest.swift in Sources */,
 				A6ED2D3A291133A800845EF2 /* GasService.swift in Sources */,
+				A6D1F7E6291B699800ABA52B /* TxObject.swift in Sources */,
 				7E3E7EA0290A8CF9007F6FCF /* EarnServices.swift in Sources */,
 				A6B6FA192907D6A100109740 /* ApprovalService.swift in Sources */,
 				A64C2EAB28F91BF1002FD64C /* KNExchangeRequest.swift in Sources */,
@@ -515,6 +507,7 @@
 				A64C2EBB28F91CAA002FD64C /* ApproveERC20.swift in Sources */,
 				A64C2E0C28F6F248002FD64C /* SwapService.swift in Sources */,
 				A6ED2D37291131F500845EF2 /* GasEndpoint.swift in Sources */,
+				A6D1F7F5291B89AD00ABA52B /* EthereumServiceRequest.swift in Sources */,
 				A64C2E7F28F9129A002FD64C /* Error+pretty.swift in Sources */,
 				A64C2E1128F6F32A002FD64C /* SwapServiceError.swift in Sources */,
 				A64C2EB728F91CAA002FD64C /* GetERC20Balance.swift in Sources */,

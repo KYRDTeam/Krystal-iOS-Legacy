@@ -9,8 +9,9 @@ import UIKit
 import BigInt
 import Utilities
 import AppState
+import Services
 
-typealias UserSettings = (BasicTransactionSettings, AdvancedTransactionSettings?)
+//typealias UserSettings = (BasicTransactionSettings, AdvancedTransactionSettings?)
 typealias StakeDisplayInfo = (amount: String, apy: String, receiveAmount: String, rate: String, fee: String, platform: String, stakeTokenIcon: String, fromSym: String, toSym: String)
 
 typealias ProjectionValue = (value: String, usd: String)
@@ -46,7 +47,7 @@ enum NextButtonState {
 class StakingViewModel {
   let pool: EarnPoolModel
   let selectedPlatform: EarnPlatform
-  let apiService = KrystalService()
+  let apiService = EarnServices()
   var optionDetail: Observable<[EarningToken]?> = .init(nil)
   var error: Observable<Error?> = .init(nil)
   var amount: Observable<String> = .init("")
@@ -168,7 +169,7 @@ class StakingViewModel {
     return params
   }
   
-  func requestBuildStakeTx(showLoading: Bool = false, completion: @escaping BlankBlock = {}) {
+  func requestBuildStakeTx(showLoading: Bool = false, completion: @escaping () -> () = {}) {
     if showLoading { isLoading.value = true }
     apiService.buildStakeTx(param: buildTxRequestParams) { result in
       switch result {

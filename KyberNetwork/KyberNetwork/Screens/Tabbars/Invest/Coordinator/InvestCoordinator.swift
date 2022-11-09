@@ -12,6 +12,7 @@ import WalletConnectSwift
 import KrystalWallets
 import BaseModule
 import Dependencies
+import FittedSheets
 
 protocol InvestCoordinatorDelegate: class {
   func investCoordinatorDidSelectManageWallet()
