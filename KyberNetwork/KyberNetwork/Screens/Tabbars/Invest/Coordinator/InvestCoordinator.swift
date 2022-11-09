@@ -463,6 +463,10 @@ extension InvestCoordinator: EarnOverviewV2ControllerDelegate {
 }
 
 extension InvestCoordinator: StakingViewControllerDelegate {
+  func didSelectHistoryList(_ viewController: StakingViewController) {
+    openHistoryScreen()
+  }
+  
   func sendApprove(_ viewController: StakingViewController, tokenAddress: String, remain: BigInt, symbol: String, toAddress: String) {
     let vm = ApproveTokenViewModelForTokenAddress(address: tokenAddress, remain: remain, state: false, symbol: symbol)
     vm.toAddress = toAddress

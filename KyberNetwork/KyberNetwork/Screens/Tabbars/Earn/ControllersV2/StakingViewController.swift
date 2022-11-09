@@ -19,6 +19,7 @@ typealias ProjectionValues = (p30: ProjectionValue, p60: ProjectionValue, p90: P
 protocol StakingViewControllerDelegate: class {
   func didSelectNext(_ viewController: StakingViewController, settings: UserSettings, txObject: TxObject, displayInfo: StakeDisplayInfo)
   func sendApprove(_ viewController: StakingViewController, tokenAddress: String, remain: BigInt, symbol: String, toAddress: String)
+  func didSelectHistoryList(_ viewController: StakingViewController)
 }
 
 enum FormState: Equatable {
@@ -535,7 +536,9 @@ class StakingViewController: InAppBrowsingViewController {
     viewModel.nextButtonStatus.value = .notApprove
   }
   
-  
+  @IBAction func historyButtonTapped(_ sender: UIButton) {
+    delegate?.didSelectHistoryList(self)
+  }
 }
 
 extension StakingViewController: UITextFieldDelegate {
