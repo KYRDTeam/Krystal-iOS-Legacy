@@ -1049,6 +1049,10 @@
 		C352A064290FC540008947A3 /* StakingSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C352A062290FC53F008947A3 /* StakingSummaryViewController.swift */; };
 		C352A065290FC540008947A3 /* StakingSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C352A063290FC53F008947A3 /* StakingSummaryViewController.xib */; };
 		C3554D89280E5E3F0043BC1B /* SolanaUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */; };
+		C358E708291B8EDB00446473 /* StakingFAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C358E707291B8EDA00446473 /* StakingFAQView.swift */; };
+		C358E70A291B8EFB00446473 /* StakingFAQView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C358E709291B8EFB00446473 /* StakingFAQView.xib */; };
+		C358E70D291B9D7000446473 /* StakingFAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C358E70B291B9D6F00446473 /* StakingFAQCell.swift */; };
+		C358E70E291B9D7000446473 /* StakingFAQCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C358E70C291B9D7000446473 /* StakingFAQCell.xib */; };
 		C35A133326F1CEBA002B627C /* SRCountdownTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35A133226F1CEBA002B627C /* SRCountdownTimer.swift */; };
 		C35E9DEC27DB2BE000E1E7CE /* PromoCodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E9DEB27DB2BE000E1E7CE /* PromoCodeCoordinator.swift */; };
 		C35E9DEF27DB2ED900E1E7CE /* PromoCodeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E9DED27DB2ED900E1E7CE /* PromoCodeListViewController.swift */; };
@@ -2351,6 +2355,10 @@
 		C352A062290FC53F008947A3 /* StakingSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingSummaryViewController.swift; sourceTree = "<group>"; };
 		C352A063290FC53F008947A3 /* StakingSummaryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingSummaryViewController.xib; sourceTree = "<group>"; };
 		C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaUtil.swift; sourceTree = "<group>"; };
+		C358E707291B8EDA00446473 /* StakingFAQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingFAQView.swift; sourceTree = "<group>"; };
+		C358E709291B8EFB00446473 /* StakingFAQView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingFAQView.xib; sourceTree = "<group>"; };
+		C358E70B291B9D6F00446473 /* StakingFAQCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingFAQCell.swift; sourceTree = "<group>"; };
+		C358E70C291B9D7000446473 /* StakingFAQCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingFAQCell.xib; sourceTree = "<group>"; };
 		C35A133226F1CEBA002B627C /* SRCountdownTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRCountdownTimer.swift; sourceTree = "<group>"; };
 		C35E9DEB27DB2BE000E1E7CE /* PromoCodeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoCodeCoordinator.swift; sourceTree = "<group>"; };
 		C35E9DED27DB2ED900E1E7CE /* PromoCodeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoCodeListViewController.swift; sourceTree = "<group>"; };
@@ -6329,6 +6337,8 @@
 				C3F367BD25C3F63E003207B7 /* EarnSelectTableViewCell.xib */,
 				C3F71C98261B27B800285935 /* EarnTutorialCell.swift */,
 				C3F71C99261B27B800285935 /* EarnTutorialCell.xib */,
+				C358E70B291B9D6F00446473 /* StakingFAQCell.swift */,
+				C358E70C291B9D7000446473 /* StakingFAQCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -6338,6 +6348,8 @@
 			children = (
 				C348E1AC290B8C70001CE430 /* StakingEarningTokensView.swift */,
 				C348E1AE290B8CB1001CE430 /* StakingEarningTokensView.xib */,
+				C358E707291B8EDA00446473 /* StakingFAQView.swift */,
+				C358E709291B8EFB00446473 /* StakingFAQView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -7010,6 +7022,7 @@
 				7E4793CA2859BC8400F15D3B /* AdvanceSearchPortfolioCell.xib in Resources */,
 				C37AC1E424A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib in Resources */,
 				C3319B0C28A36C6D00E5620A /* SettingAdvancedModeFormCell.xib in Resources */,
+				C358E70E291B9D7000446473 /* StakingFAQCell.xib in Resources */,
 				C333A6CA27BA5123003A6C6B /* ApproveTokenCell.xib in Resources */,
 				7EFE440127144533006CF502 /* RewardsViewController.xib in Resources */,
 				25929C9520DA5CC10045CFA3 /* SFCompactText-Heavy.otf in Resources */,
@@ -7288,6 +7301,7 @@
 				C35E9DF027DB2ED900E1E7CE /* PromoCodeListViewController.xib in Resources */,
 				25C45ADB20AD40F400CDA1FF /* KNImportPrivateKeyViewController.xib in Resources */,
 				C37CC099245803CA0081FB32 /* Roboto-Italic.ttf in Resources */,
+				C358E70A291B8EFB00446473 /* StakingFAQView.xib in Resources */,
 				7EA694DC2839D5EB0033E5D2 /* TextFieldCell.xib in Resources */,
 				C3A6911B25638DE700F57756 /* Lato-Light.ttf in Resources */,
 				7E1EBE422834DC1D00793B6D /* ChainInfoCell.xib in Resources */,
@@ -7741,6 +7755,7 @@
 				C680C1202382958700A621CB /* KNVersionControlManager.swift in Sources */,
 				C31F152C23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift in Sources */,
 				C385D8C727BCD7A300BB226D /* MultiSendConfirmViewController.swift in Sources */,
+				C358E708291B8EDB00446473 /* StakingFAQView.swift in Sources */,
 				C365812225E2503F00A6DA4B /* BalanceStorage.swift in Sources */,
 				C35E9DEF27DB2ED900E1E7CE /* PromoCodeListViewController.swift in Sources */,
 				A6E6C9E32817C93700EEB2E6 /* SolanaTransactionDetailViewModel.swift in Sources */,
@@ -7958,6 +7973,7 @@
 				A6E26FE428129CAC0054427E /* HistoryModelType.swift in Sources */,
 				C33BB80627955C9A00851BC6 /* ABIValue.swift in Sources */,
 				C311AAD4269D86AD0082A728 /* OverviewChangeCurrencyViewController.swift in Sources */,
+				C358E70D291B9D7000446473 /* StakingFAQCell.swift in Sources */,
 				7ECCB1F8286170C800499FA0 /* ResultToken.swift in Sources */,
 				29FC0CB81F8299510036089F /* Coordinator.swift in Sources */,
 				29E9CFCF1FE7347200017744 /* ERC20Token.swift in Sources */,
