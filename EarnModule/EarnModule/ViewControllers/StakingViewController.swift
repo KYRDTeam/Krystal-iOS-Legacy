@@ -12,15 +12,16 @@ import AppState
 import Services
 import DesignSystem
 import Dependencies
+import TransactionModule
 
-typealias UserSettings = (BasicTransactionSettings, AdvancedTransactionSettings?)
+
 typealias StakeDisplayInfo = (amount: String, apy: String, receiveAmount: String, rate: String, fee: String, platform: String, stakeTokenIcon: String, fromSym: String, toSym: String)
 
 typealias ProjectionValue = (value: String, usd: String)
 typealias ProjectionValues = (p30: ProjectionValue, p60: ProjectionValue, p90: ProjectionValue)
 
 protocol StakingViewControllerDelegate: class {
-  func didSelectNext(_ viewController: StakingViewController, settings: UserSettings, txObject: TxObject, displayInfo: StakeDisplayInfo)
+//  func didSelectNext(_ viewController: StakingViewController, settings: UserSettings, txObject: TxObject, displayInfo: StakeDisplayInfo)
   func sendApprove(_ viewController: StakingViewController, tokenAddress: String, remain: BigInt, symbol: String, toAddress: String)
 }
 
@@ -60,19 +61,29 @@ class StakingViewModel {
   var baseGasLimit: BigInt = AppDependencies.gasConfig.earnGasLimitDefault
   var txObject: Observable<TxObject?> = .init(nil)
   var isLoading: Observable<Bool> = .init(false)
-  var basicSetting: BasicTransactionSettings = BasicTransactionSettings(gasPriceType: .medium) {
-    didSet {
-      let gas = self.basicSetting.gasPriceType.getGasValue()
-      self.gasPrice.value = gas
-    }
-  }
-  var advancedSetting: AdvancedTransactionSettings? = nil {
-    didSet {
-      guard let setting = self.advancedSetting else { return }
-      self.gasPrice.value = setting.maxFee
-      self.gasLimit.value = setting.gasLimit
-    }
-  }
+  
+  
+  var setting: TxSettingObject = .default
+  
+  
+//  var basicSetting: BasicTransactionSettings = BasicTransactionSettings(gasPriceType: .medium) {
+//    didSet {
+//      let gas = self.basicSetting.gasPriceType.getGasValue()
+//      self.gasPrice.value = gas
+//    }
+//  }
+//  var advancedSetting: AdvancedTransactionSettings? = nil {
+//    didSet {
+//      guard let setting = self.advancedSetting else { return }
+//      self.gasPrice.value = setting.maxFee
+//      self.gasLimit.value = setting.gasLimit
+//    }
+//  }
+  
+  
+  
+  
+  
   var isUseReverseRate: Observable<Bool> = .init(false)
   
   var nextButtonStatus: Observable<NextButtonState> = .init(.notApprove)
@@ -519,7 +530,7 @@ class StakingViewController: InAppBrowsingViewController {
       guard viewModel.formState.value == .valid else { return }
       if let tx = viewModel.txObject.value {
         let displayInfo = ("\(viewModel.amount.value) \(viewModel.pool.token.symbol)", viewModel.displayAPY, viewModel.displayAmountReceive, viewModel.displayRate, viewModel.displayFeeString, viewModel.selectedPlatform.name, viewModel.pool.token.logo, viewModel.pool.token.symbol, viewModel.selectedEarningToken.value?.symbol ?? "")
-        delegate?.didSelectNext(self, settings: (viewModel.basicSetting, viewModel.advancedSetting), txObject: tx, displayInfo: displayInfo)
+        self.openStakeSummary(txObject: tx, settings: viewModel.setting, displayInfo: displayInfo)
       } else {
         viewModel.requestBuildStakeTx(showLoading: true)
       }
@@ -540,7 +551,13 @@ class StakingViewController: InAppBrowsingViewController {
     viewModel.nextButtonStatus.value = .notApprove
   }
   
-  
+  func openStakeSummary(txObject: TxObject, settings: TxSettingObject, displayInfo: StakeDisplayInfo) {
+//    let vm = StakingSummaryViewModel(txObject: txObject, settings: settings, displayInfo: displayInfo)
+//    let vc = StakingSummaryViewController(viewModel: vm)
+//    let sheet = SheetViewController(controller: vc, sizes: [.fixed(560)], options: .init(pullBarHeight: 0))
+//    vc.delegate = self
+//    navigationController.present(sheet, animated: true)
+  }
 }
 
 extension StakingViewController: UITextFieldDelegate {
