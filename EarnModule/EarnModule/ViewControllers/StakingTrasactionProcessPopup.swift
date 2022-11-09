@@ -42,7 +42,7 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
   @IBOutlet weak var destTokenAmountLabel: UILabel!
   @IBOutlet weak var processStatusLabel: UILabel!
   
-  fileprivate(set) var transaction: InternalHistoryTransaction
+//  fileprivate(set) var transaction: InternalHistoryTransaction
   
   weak var delegate: StakingProcessPopupDelegate?
   var state: TxStatus! {
@@ -51,12 +51,17 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
     }
   }
   
-  init(transaction: InternalHistoryTransaction) {
-    self.transaction = transaction
-    super.init(nibName: StakingTrasactionProcessPopup.className, bundle: nil)
-    self.modalPresentationStyle = .custom
+//  init(transaction: InternalHistoryTransaction) {
+//    self.transaction = transaction
+//    super.init(nibName: StakingTrasactionProcessPopup.className, bundle: nil)
+//    self.modalPresentationStyle = .custom
 //    self.transitioningDelegate = transitor
-  }
+//  }
+    
+    init() {
+        super.init(nibName: StakingTrasactionProcessPopup.className, bundle: nil)
+        self.modalPresentationStyle = .custom
+    }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -68,19 +73,19 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
     setupLoadingView()
     state = .processing
     
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.transactionStateDidUpdate(_:)),
-      name: Notification.Name(kTransactionDidUpdateNotificationKey),
-      object: nil
-    )
+//    NotificationCenter.default.addObserver(
+//      self,
+//      selector: #selector(self.transactionStateDidUpdate(_:)),
+//      name: Notification.Name(kTransactionDidUpdateNotificationKey),
+//      object: nil
+//    )
   }
   
   @objc func transactionStateDidUpdate(_ sender: Notification) {
-    guard let transaction = sender.object as? InternalHistoryTransaction else { return }
-    if self.transaction.hash == transaction.hash {
-      self.updateView(with: transaction)
-    }
+//    guard let transaction = sender.object as? InternalHistoryTransaction else { return }
+//    if self.transaction.hash == transaction.hash {
+//      self.updateView(with: transaction)
+//    }
   }
   
   func updateUIForStateChange(_ state: TxStatus) {
@@ -101,8 +106,8 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
       self.statusContainerView.bringSubviewToFront(self.transactionStateIcon)
       self.transactionStateIcon.image = UIImage(named: "tx_status_success")
       self.secondButton.setTitle("", for: .normal)
-      let buttonTitle = "View \(self.transaction.toSymbol ?? "")"
-      self.secondButton.setTitle(buttonTitle, for: .normal)
+//      let buttonTitle = "View \(self.transaction.toSymbol ?? "")"
+//      self.secondButton.setTitle(buttonTitle, for: .normal)
       self.destTokenInfoContainerView.rounded(color: AppTheme.current.primaryColor, width: 1, radius: 16)
       self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
       self.processStatusLabel.text = "Success"
@@ -120,12 +125,12 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
   }
   
   func setupUI() {
-    self.sourceTokenIcon.setSymbolImage(symbol: self.transaction.fromSymbol, size: sourceTokenIcon.frame.size)
-    self.destTokenIcon.setSymbolImage(symbol: self.transaction.toSymbol, size: destTokenIcon.frame.size)
-    self.txHashLabel.text = self.transaction.hash
-    let descriptions = self.transaction.transactionDescription.split(separator: "→").map { String($0) }
-    self.sourceTokenAmountLabel.text = descriptions.first ?? ""
-    self.destTokenAmountLabel.text = descriptions.last ?? ""
+//    self.sourceTokenIcon.setSymbolImage(symbol: self.transaction.fromSymbol, size: sourceTokenIcon.frame.size)
+//    self.destTokenIcon.setSymbolImage(symbol: self.transaction.toSymbol, size: destTokenIcon.frame.size)
+//    self.txHashLabel.text = self.transaction.hash
+//    let descriptions = self.transaction.transactionDescription.split(separator: "→").map { String($0) }
+//    self.sourceTokenAmountLabel.text = descriptions.first ?? ""
+//    self.destTokenAmountLabel.text = descriptions.last ?? ""
     
   }
   
@@ -138,30 +143,30 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
     self.loadingIndicatorView.isLabelHidden = true
   }
   
-  func updateView(with tx: InternalHistoryTransaction) {
-    switch tx.state {
-    case .pending:
-      self.state = .processing
-    case .error, .drop:
-      state = .failure
-    case .done:
-      state = .success
-    default:
-      state = .processing
-    }
-  }
-  
+//  func updateView(with tx: InternalHistoryTransaction) {
+//    switch tx.state {
+//    case .pending:
+//      self.state = .processing
+//    case .error, .drop:
+//      state = .failure
+//    case .done:
+//      state = .success
+//    default:
+//      state = .processing
+//    }
+//  }
+//
   @IBAction func secondButtonTapped(_ sender: UIButton) {
-    switch state {
-    case .processing:
-      self.txHashButtonTapped(sender)
-    case .success:
-      self.delegate?.stakingProcessPopup(self, action: .viewToken(sym: self.transaction.toSymbol ?? ""))
-    case .failure:
-      self.delegate?.stakingProcessPopup(self, action: .goToSupport)
-    case .none:
-      break
-    }
+//    switch state {
+//    case .processing:
+//      self.txHashButtonTapped(sender)
+//    case .success:
+//      self.delegate?.stakingProcessPopup(self, action: .viewToken(sym: self.transaction.toSymbol ?? ""))
+//    case .failure:
+//      self.delegate?.stakingProcessPopup(self, action: .goToSupport)
+//    case .none:
+//      break
+//    }
   }
   
   @IBAction func firstButtonTapped(_ sender: UIButton) {
@@ -172,8 +177,8 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
   
   @IBAction func txHashButtonTapped(_ sender: UIButton) {
    
-    let urlString = AppState.shared.currentChain.customRPC().etherScanEndpoint + "tx/\(self.transaction.hash)"
-    self.delegate?.stakingProcessPopup(self, action: .openLink(url: urlString))
+//    let urlString = AppState.shared.currentChain.customRPC().etherScanEndpoint + "tx/\(self.transaction.hash)"
+//    self.delegate?.stakingProcessPopup(self, action: .openLink(url: urlString))
   }
 }
 

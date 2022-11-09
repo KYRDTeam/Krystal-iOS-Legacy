@@ -23,18 +23,9 @@ class AppTxProcessor: TxProcessorProtocol {
     var currentNonce: Int {
         return AppDependencies.nonceStorage.currentNonce(chain: currentChain, address: currentAddress)
     }
-    
-    func process(stakeTx: StakeTxObject) {
-        if AppState.shared.currentChain.isSupportedEIP1559() {
-            // process 1559 tx
-            
-        } else {
-//            let tx = stakeTx.txObject.convertToSignTransaction(address: currentAddress, nonce: currentNonce, settings: <#T##UserSettings#>)
-        }
-    }
 
-    func getEstimatedGasLimit(tx: SignTransaction) {
-//        KNGeneralProvider.shared.getEstimateGasLimit(transaction: <#T##SignTransaction#>, completion: <#T##(Result<BigInt, AnyError>) -> Void#>)
+    func sendTxToNode(data: Data, chain: ChainType, completion: @escaping (Result<String, AnyError>) -> Void) {
+        KNGeneralProvider.shared.sendSignedTransactionData(data, chain: chain, completion: completion)
     }
     
 }

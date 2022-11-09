@@ -109,6 +109,10 @@ def transactionModuleDependencies
   pod 'FittedSheets'
   pod 'BigInt'
   pod 'TrustWalletCore'
+  pod 'TrustCore'
+  pod 'JSONRPCKit'
+  pod 'APIKit'
+  pod 'CryptoSwift'
 end
 
 target 'Dependencies' do

@@ -15,7 +15,7 @@ public struct Token: Codable, Equatable, Hashable {
     public private(set) var decimals: Int
     public private(set) var logo: String
     public private(set) var tag: String?
-    
+
     public init(dictionary: [String: Any]) {
         self.name = dictionary["name"] as? String ?? ""
         self.symbol = dictionary["symbol"] as? String ?? ""
@@ -26,7 +26,7 @@ public struct Token: Codable, Equatable, Hashable {
             self.tag = tag
         }
     }
-    
+
     public init(name: String, symbol: String, address: String, decimals: Int, logo: String) {
         self.name = name
         self.symbol = symbol

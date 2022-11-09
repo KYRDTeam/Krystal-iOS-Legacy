@@ -12,16 +12,20 @@ import Dependencies
 import BigInt
 import BaseWallet
 
-class TxObjectConverter {
+public class TxObjectConverter {
     
     let chain: ChainType
     let gasConfig: GasConfig = AppDependencies.gasConfig
     
-    init(chain: ChainType) {
+    public init(chain: ChainType) {
         self.chain = chain
     }
     
-    func convertToLegacyTransaction(txObject: TxObject, address: String, nonce: Int, setting: TxSettingObject) -> LegacyTransaction? {
+    func getCurrentNonce(address: String) -> Int {
+        return AppDependencies.nonceStorage.currentNonce(chain: chain, address: address)
+    }
+    
+    public func convertToLegacyTransaction(txObject: TxObject, address: String, setting: TxSettingObject) -> LegacyTransaction? {
         guard let value = BigInt(txObject.value.drop0x, radix: 16),
               let gasLimitTx = BigInt(txObject.gasLimit.drop0x, radix: 16)
         else {
@@ -29,7 +33,7 @@ class TxObjectConverter {
         }
         let gasPrice = setting.advanced?.maxFee ?? getGasPrice(gasType: setting.basic?.gasType ?? .regular)
         let gasLimit = setting.advanced?.gasLimit ?? gasLimitTx
-        let txNonce = setting.advanced?.nonce ?? nonce
+        let txNonce = setting.advanced?.nonce ?? getCurrentNonce(address: address)
         
         return LegacyTransaction(
             value: value,
@@ -43,14 +47,14 @@ class TxObjectConverter {
         )
     }
     
-    func convertToEIP1559Transaction(txObject: TxObject, address: String, nonce: Int, setting: TxSettingObject) -> EIP1559Transaction? {
+    public func convertToEIP1559Transaction(txObject: TxObject, address: String, setting: TxSettingObject) -> EIP1559Transaction? {
         guard let gasLimitTx = BigInt(txObject.gasLimit.drop0x, radix: 16)
         else {
           return nil
         }
         guard let baseFeeBigInt = gasConfig.getBaseFee(chain: chain) else { return nil }
 
-        let txNonce = setting.advanced?.nonce ?? nonce
+        let txNonce = setting.advanced?.nonce ?? getCurrentNonce(address: address)
         let maxGas = setting.advanced?.maxFee ?? getGasPrice(gasType: setting.basic?.gasType ?? .regular)
         let priorityFee = setting.advanced?.maxPriorityFee ?? getPriority(gasType: setting.basic?.gasType ?? .regular)
         let gasLimit = setting.advanced?.gasLimit ?? gasLimitTx
