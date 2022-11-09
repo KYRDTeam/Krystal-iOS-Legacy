@@ -53,6 +53,7 @@
 		7EF19EDC290B865300358B66 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF19EDB290B865300358B66 /* Utilities.framework */; };
 		A66FC3FB28F4F52100E49E86 /* EarnModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A66FC3FA28F4F52100E49E86 /* EarnModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6D1F7F1291B847800ABA52B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7F0291B847800ABA52B /* Constants.swift */; };
+		A6D1F808291BAF1E00ABA52B /* StakingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -103,6 +104,7 @@
 		A66FC3F728F4F52100E49E86 /* EarnModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EarnModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66FC3FA28F4F52100E49E86 /* EarnModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EarnModule.h; sourceTree = "<group>"; };
 		A6D1F7F0291B847800ABA52B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingViewModel.swift; sourceTree = "<group>"; };
 		B5969EB6F30F2999141BBB05 /* Pods_EarnModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EarnModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F185B69AD2CDE54B8542A46E /* Pods-EarnModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EarnModule.debug.xcconfig"; path = "Target Support Files/Pods-EarnModule/Pods-EarnModule.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -217,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				7EB252C02907F3E100648438 /* EarnOverViewModel.swift */,
+				A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -383,6 +386,7 @@
 				7E6EBD6C2909280900069B33 /* EarnPoolViewCell.swift in Sources */,
 				7E6EBD86290931E900069B33 /* StakingPortfolioCell.swift in Sources */,
 				7EB252C72907F7EC00648438 /* TypeAliases.swift in Sources */,
+				A6D1F808291BAF1E00ABA52B /* StakingViewModel.swift in Sources */,
 				7EB252C12907F3E100648438 /* EarnOverViewModel.swift in Sources */,
 				7EAF4768291B68C100BF5D00 /* EarningTokenCell.swift in Sources */,
 				7EAF477E291B7CDB00BF5D00 /* TransitionDelegate.swift in Sources */,
