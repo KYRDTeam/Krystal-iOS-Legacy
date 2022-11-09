@@ -12,6 +12,7 @@ import BaseWallet
 public protocol GasConfig {
     var defaultExchangeGasLimit: BigInt { get }
     var defaultTransferGasLimit: BigInt { get }
+    var earnGasLimitDefault: BigInt { get }
     
     func getLowGasPrice(chain: ChainType) -> BigInt
     func getStandardGasPrice(chain: ChainType) -> BigInt

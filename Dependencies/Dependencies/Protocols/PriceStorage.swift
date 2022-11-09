@@ -10,4 +10,5 @@ import BaseWallet
 
 public protocol PriceStorage {
     func getQuoteUsdRate(chain: ChainType) -> Double?
+    func getUsdPrice(address: String) -> Double?
 }

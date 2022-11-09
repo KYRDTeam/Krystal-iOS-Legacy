@@ -15,4 +15,8 @@ class AppPriceStorage: PriceStorage {
         return KNTrackerRateStorage.shared.getPriceWithAddress(chain.customRPC().quoteTokenAddress)?.usd
     }
     
+    func getUsdPrice(address: String) -> Double? {
+      let price = KNTrackerRateStorage.shared.getPriceWithAddress(address)
+      return price?.usd
+    }
 }

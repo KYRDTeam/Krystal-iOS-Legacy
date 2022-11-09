@@ -4,7 +4,6 @@ import Foundation
 import UIKit
 import MBProgressHUD
 import SafariServices
-import AppState
 
 enum ConfirmationError: LocalizedError {
     case cancel
@@ -31,23 +30,23 @@ public extension UIViewController {
 //      present(alertController, animated: true, completion: nil)
 //    }
 
-    func confirm(
-        title: String? = .none,
-        message: String? = .none,
-        okTitle: String = NSLocalizedString("ok", value: "OK", comment: ""),
-      okStyle: UIAlertAction.Style = .default,
-        completion: @escaping (Result<Void, ConfirmationError>) -> Void
-    ) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.popoverPresentationController?.sourceView = self.view
-        alertController.addAction(UIAlertAction(title: okTitle, style: okStyle, handler: { _ in
-            completion(.success(()))
-        }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: { _ in
-            completion(.failure(ConfirmationError.cancel))
-        }))
-        self.present(alertController, animated: true, completion: nil)
-    }
+//    func confirm(
+//        title: String? = .none,
+//        message: String? = .none,
+//        okTitle: String = NSLocalizedString("ok", value: "OK", comment: ""),
+//      okStyle: UIAlertAction.Style = .default,
+//        completion: @escaping (Result<Void, ConfirmationError>) -> Void
+//    ) {
+//        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+//        alertController.popoverPresentationController?.sourceView = self.view
+//        alertController.addAction(UIAlertAction(title: okTitle, style: okStyle, handler: { _ in
+//            completion(.success(()))
+//        }))
+//        alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: { _ in
+//            completion(.failure(ConfirmationError.cancel))
+//        }))
+//        self.present(alertController, animated: true, completion: nil)
+//    }
 
     func displayLoading(
         text: String = NSLocalizedString("loading", value: "Loading", comment: ""),

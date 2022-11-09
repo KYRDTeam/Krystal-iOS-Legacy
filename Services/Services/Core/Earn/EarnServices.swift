@@ -103,4 +103,22 @@ public class EarnServices: BaseService {
       }
     }
   }
+  
+  public func buildStakeTx(param: JSONDictionary, completion: @escaping (Result<TxObject, AnyError>) -> Void) {
+    provider.requestWithFilters(.buildStakeTx(params: param)) { result in
+      switch result {
+      case .success(let resp):
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(TransactionResponse.self, from: resp.data)
+          completion(.success(data.txObject))
+          
+        } catch let error {
+          completion(.failure(AnyError(error)))
+        }
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
 }

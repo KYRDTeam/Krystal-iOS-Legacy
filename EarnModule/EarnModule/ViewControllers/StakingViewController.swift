@@ -13,7 +13,7 @@ import Services
 import DesignSystem
 import Dependencies
 
-//typealias UserSettings = (BasicTransactionSettings, AdvancedTransactionSettings?)
+typealias UserSettings = (BasicTransactionSettings, AdvancedTransactionSettings?)
 typealias StakeDisplayInfo = (amount: String, apy: String, receiveAmount: String, rate: String, fee: String, platform: String, stakeTokenIcon: String, fromSym: String, toSym: String)
 
 typealias ProjectionValue = (value: String, usd: String)
@@ -55,9 +55,9 @@ class StakingViewModel {
   var amount: Observable<String> = .init("")
   var selectedEarningToken: Observable<EarningToken?> = .init(nil)
   var formState: Observable<FormState> = .init(.empty)
-  var gasPrice: Observable<BigInt> = .init(KNGasCoordinator.shared.standardKNGas)
-  var gasLimit: Observable<BigInt> = .init(KNGasConfiguration.earnGasLimitDefault)
-  var baseGasLimit: BigInt = KNGasConfiguration.earnGasLimitDefault
+  var gasPrice: Observable<BigInt> = .init(AppDependencies.gasConfig.getStandardGasPrice(chain: AppState.shared.currentChain))
+  var gasLimit: Observable<BigInt> = .init(AppDependencies.gasConfig.earnGasLimitDefault)
+  var baseGasLimit: BigInt = AppDependencies.gasConfig.earnGasLimitDefault
   var txObject: Observable<TxObject?> = .init(nil)
   var isLoading: Observable<Bool> = .init(false)
   var basicSetting: BasicTransactionSettings = BasicTransactionSettings(gasPriceType: .medium) {
@@ -178,7 +178,7 @@ class StakingViewModel {
       switch result {
       case .success(let tx):
         self.txObject.value = tx
-        self.gasLimit.value = BigInt(tx.gasLimit.drop0x, radix: 16) ?? KNGasConfiguration.earnGasLimitDefault
+        self.gasLimit.value = BigInt(tx.gasLimit.drop0x, radix: 16) ?? AppDependencies.gasConfig.earnGasLimitDefault
         completion()
       case .failure(let error):
         self.error.value = error
@@ -240,10 +240,10 @@ class StakingViewModel {
     var displayP60USD = ""
     var displayP90USD = ""
     
-    if let price = KNTrackerRateStorage.shared.getPriceWithAddress(pool.token.address) {
-      let usd30 = p30 * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(decimal)
-      let usd60 = p60 * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(decimal)
-      let usd90 = p90 * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(decimal)
+    if let usdPrice = AppDependencies.priceStorage.getUsdPrice(address: pool.token.address) {
+      let usd30 = p30 * BigInt(usdPrice * pow(10.0, 18.0)) / BigInt(10).power(decimal)
+      let usd60 = p60 * BigInt(usdPrice * pow(10.0, 18.0)) / BigInt(10).power(decimal)
+      let usd90 = p90 * BigInt(usdPrice * pow(10.0, 18.0)) / BigInt(10).power(decimal)
       
       displayP30USD = "≈ " + usd30.string(units: EthereumUnit.ether, minFractionDigits: 0, maxFractionDigits: 4) + " USD"
       displayP60USD = "≈ " + usd60.string(units: EthereumUnit.ether, minFractionDigits: 0, maxFractionDigits: 4) + " USD"
@@ -255,7 +255,7 @@ class StakingViewModel {
   }
   
   func getAllowance() {
-    guard !pool.token.isQuoteToken else {
+    guard !pool.token.isQuoteToken() else {
       nextButtonStatus.value = .noNeed
       return
     }
@@ -267,8 +267,9 @@ class StakingViewModel {
     }
     
     let contractAddress = tx.to
-    
-    KNGeneralProvider.shared.getAllowance(for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: pool.token.address) { result in
+
+    let allowanceService = AllowanceService()
+    allowanceService.getAllowance(for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: pool.token.address) { result in
       switch result {
       case .success(let number):
         self.tokenAllowance = number

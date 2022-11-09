@@ -52,6 +52,10 @@ extension GasPriceManager: GasConfig {
     public var defaultTransferGasLimit: BigInt {
         return BigInt(180_000)
     }
+  
+    public var earnGasLimitDefault: BigInt {
+        BigInt(1_140_000)
+    }
     
     public func getLowGasPrice(chain: ChainType) -> BigInt {
         return gasConfig[chain]?.gasPrice.low.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? .zero

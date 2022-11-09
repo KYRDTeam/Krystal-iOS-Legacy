@@ -11,6 +11,7 @@
 		7E3E7EA0290A8CF9007F6FCF /* EarnServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7E9F290A8CF9007F6FCF /* EarnServices.swift */; };
 		7E3E7EA3290A8D4E007F6FCF /* EarnPoolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7EA1290A8D4D007F6FCF /* EarnPoolModel.swift */; };
 		7E3E7EA4290A8D4E007F6FCF /* PortfolioStaking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7EA2290A8D4E007F6FCF /* PortfolioStaking.swift */; };
+		7EAF4785291B930900BF5D00 /* AllowanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF4784291B930900BF5D00 /* AllowanceService.swift */; };
 		A64C2E0A28F6F204002FD64C /* Rate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E0928F6F204002FD64C /* Rate.swift */; };
 		A64C2E0C28F6F248002FD64C /* SwapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E0B28F6F248002FD64C /* SwapService.swift */; };
 		A64C2E0E28F6F27D002FD64C /* SwapEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E0D28F6F27D002FD64C /* SwapEndpoint.swift */; };
@@ -76,6 +77,7 @@
 		7E3E7E9F290A8CF9007F6FCF /* EarnServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnServices.swift; sourceTree = "<group>"; };
 		7E3E7EA1290A8D4D007F6FCF /* EarnPoolModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EarnPoolModel.swift; sourceTree = "<group>"; };
 		7E3E7EA2290A8D4E007F6FCF /* PortfolioStaking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioStaking.swift; sourceTree = "<group>"; };
+		7EAF4784291B930900BF5D00 /* AllowanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowanceService.swift; sourceTree = "<group>"; };
 		A64C2E0928F6F204002FD64C /* Rate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rate.swift; sourceTree = "<group>"; };
 		A64C2E0B28F6F248002FD64C /* SwapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapService.swift; sourceTree = "<group>"; };
 		A64C2E0D28F6F27D002FD64C /* SwapEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapEndpoint.swift; sourceTree = "<group>"; };
@@ -169,6 +171,14 @@
 			path = Earn;
 			sourceTree = "<group>";
 		};
+		7EAF4783291B92D000BF5D00 /* Allowance */ = {
+			isa = PBXGroup;
+			children = (
+				7EAF4784291B930900BF5D00 /* AllowanceService.swift */,
+			);
+			path = Allowance;
+			sourceTree = "<group>";
+		};
 		9B95AD29A2C25D0486CE2D7D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -210,6 +220,7 @@
 		A64C2E0828F6F1FC002FD64C /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				7EAF4783291B92D000BF5D00 /* Allowance */,
 				A6ED2D38291133A000845EF2 /* Gas */,
 				7E3E7E9E290A8CDA007F6FCF /* Earn */,
 				A6B6FA172907D69800109740 /* Approval */,
@@ -486,6 +497,7 @@
 				7E3E7EA4290A8D4E007F6FCF /* PortfolioStaking.swift in Sources */,
 				A64C2EAC28F91BF1002FD64C /* KNGetUserCapInWei.swift in Sources */,
 				A64C2E6F28F90B00002FD64C /* MoyaProvider+.swift in Sources */,
+				7EAF4785291B930900BF5D00 /* AllowanceService.swift in Sources */,
 				A64C2E4028F7C101002FD64C /* ServiceConfig.swift in Sources */,
 				A64C2E9D28F91B3A002FD64C /* RPCConfig.swift in Sources */,
 				A64C2EC428F91DF9002FD64C /* SendRawTransactionRequest.swift in Sources */,
