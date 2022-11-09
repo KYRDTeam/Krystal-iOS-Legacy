@@ -17,5 +17,9 @@ public extension UIFont {
     static func karlaReguler(ofSize: CGFloat) -> UIFont {
         return UIFont(name: "Karla-Regular", size: ofSize)!
     }
+  
+  static func karlaBold(ofSize: CGFloat) -> UIFont {
+      return UIFont(name: "Karla-Bold", size: ofSize)!
+  }
     
 }

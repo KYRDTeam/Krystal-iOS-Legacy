@@ -13,6 +13,7 @@ enum EarnEndpoint {
   case listOption(chainId: String?)
   case getEarningBalances(address: String)
   case getPendingUnstakes(address: String)
+  case getEarningOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String)
 }
 
 extension EarnEndpoint: TargetType {
@@ -28,6 +29,8 @@ extension EarnEndpoint: TargetType {
       return "/v1/earning/earningBalances"
     case .getPendingUnstakes:
       return "/v1/earning/pendingUnstakes"
+    case .getEarningOptionDetail:
+      return "/v1/earning/optionDetail"
     }
   }
   
@@ -55,6 +58,14 @@ extension EarnEndpoint: TargetType {
     case .getPendingUnstakes(address: let address):
       var json: JSONDictionary = [
         "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getEarningOptionDetail(platform: let platform, earningType: let earningType, chainID: let chainID, tokenAddress: let tokenAddress):
+      var json: JSONDictionary = [
+        "platform": platform,
+        "earningType": earningType,
+        "chainId": chainID,
+        "tokenAddress": tokenAddress
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }

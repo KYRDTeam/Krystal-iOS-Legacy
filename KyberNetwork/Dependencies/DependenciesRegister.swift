@@ -20,6 +20,7 @@ class Dependencies {
         AppDependencies.gasConfig = GasPriceManager.shared
         AppDependencies.priceStorage = AppPriceStorage()
         AppDependencies.nonceStorage = AppNonceStorage()
+        AppDependencies.balancesStorage = AppBalanceStorage()
         
         ServiceConfig.baseAPIURL = KNEnvironment.default.krystalEndpoint
         ServiceConfig.errorTracker = AppErrorTracker()

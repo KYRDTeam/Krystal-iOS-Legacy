@@ -28,9 +28,9 @@ public class SwapInfoView: BaseXibView {
     }
   }
   
-  var onTapRightIcon: (() -> ())?
-  var onTapTitle: (() -> ())?
-  var onTapValue: (() -> ())?
+  public var onTapRightIcon: (() -> ())?
+  public var onTapTitle: (() -> ())?
+  public var onTapValue: (() -> ())?
   
   public override func commonInit() {
     super.commonInit()

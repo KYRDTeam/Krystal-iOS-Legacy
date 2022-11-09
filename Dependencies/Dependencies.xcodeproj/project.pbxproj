@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0DEA8C01D840AF55B630B4FD /* Pods_Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A564EBBC2D3B1EF3B4D97A /* Pods_Dependencies.framework */; };
+		7EAF4780291B804E00BF5D00 /* BalancesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF477F291B804E00BF5D00 /* BalancesStorage.swift */; };
 		A64C2E3728F7BA12002FD64C /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3628F7BA12002FD64C /* Tracker.swift */; };
 		A64C2E3928F7BAA1002FD64C /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3828F7BAA1002FD64C /* Dependencies.swift */; };
 		A64C2E6A28F880EA002FD64C /* GasConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E6928F880EA002FD64C /* GasConfig.swift */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		49F3A3EBEEF754D1B5309B6E /* Pods-Dependencies.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dependencies.debug.xcconfig"; path = "Target Support Files/Pods-Dependencies/Pods-Dependencies.debug.xcconfig"; sourceTree = "<group>"; };
+		7EAF477F291B804E00BF5D00 /* BalancesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesStorage.swift; sourceTree = "<group>"; };
 		85A564EBBC2D3B1EF3B4D97A /* Pods_Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C8188FBE862AEFAB5B20DD9 /* Pods-Dependencies.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dependencies.release.xcconfig"; path = "Target Support Files/Pods-Dependencies/Pods-Dependencies.release.xcconfig"; sourceTree = "<group>"; };
 		A64C2E3628F7BA12002FD64C /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				A64C2E8028F9131E002FD64C /* TokenStorage.swift */,
 				A64C2ED228F9220F002FD64C /* NonceStorage.swift */,
 				A64C2EEF28F944BF002FD64C /* PriceStorage.swift */,
+				7EAF477F291B804E00BF5D00 /* BalancesStorage.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 			files = (
 				A64C2E3928F7BAA1002FD64C /* Dependencies.swift in Sources */,
 				A64C2E8128F9131E002FD64C /* TokenStorage.swift in Sources */,
+				7EAF4780291B804E00BF5D00 /* BalancesStorage.swift in Sources */,
 				A64C2ED328F9220F002FD64C /* NonceStorage.swift in Sources */,
 				A64C2E3728F7BA12002FD64C /* Tracker.swift in Sources */,
 				A64C2E6A28F880EA002FD64C /* GasConfig.swift in Sources */,

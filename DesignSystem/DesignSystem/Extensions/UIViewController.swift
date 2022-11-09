@@ -23,7 +23,7 @@ public extension UIViewController {
 //    func displayError(error: Error) {
 //      displayAlert(message: error.prettyError)
 //    }
-//  
+//
 //    func displayAlert(message: String) {
 //      let alertController = UIAlertController(title: message, message: "", preferredStyle: .alert)
 //      alertController.popoverPresentationController?.sourceView = self.view

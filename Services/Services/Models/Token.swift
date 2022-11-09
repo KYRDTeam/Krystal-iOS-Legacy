@@ -34,4 +34,8 @@ public struct Token: Codable, Equatable, Hashable {
         self.logo = logo
     }
     
+  func getBalanceBigInt() -> BigInt {
+    let balance = BalanceStorage.shared.balanceForAddress(self.address)
+    return BigInt(balance?.balance ?? "") ?? BigInt(0)
+  }
 }

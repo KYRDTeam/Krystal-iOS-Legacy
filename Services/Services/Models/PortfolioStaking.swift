@@ -71,3 +71,18 @@ public struct IngToken: Codable {
   public let balance: String
   public let decimals: Int
 }
+
+// MARK: - OptionDetailResponse
+public struct OptionDetailResponse: Codable {
+  public let earningTokens: [EarningToken]
+}
+// MARK: - EarningToken
+public struct EarningToken: Codable {
+  public let addressStr, address, symbol, name: String
+  public let decimals: Int
+  public let logo: String
+  public let tag: String
+  public let exchangeRate: Double
+  public let desc: String
+}
+

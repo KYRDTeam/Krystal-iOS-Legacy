@@ -10,6 +10,8 @@ import BigInt
 import Utilities
 import AppState
 import Services
+import DesignSystem
+import Dependencies
 
 //typealias UserSettings = (BasicTransactionSettings, AdvancedTransactionSettings?)
 typealias StakeDisplayInfo = (amount: String, apy: String, receiveAmount: String, rate: String, fee: String, platform: String, stakeTokenIcon: String, fromSym: String, toSym: String)
@@ -93,7 +95,7 @@ class StakingViewModel {
   }
   
   var displayStakeToken: String {
-    return pool.token.getBalanceBigInt().shortString(decimals: pool.token.decimals) + " " + pool.token.symbol.uppercased()
+    return AppDependencies.balancesStorage.getBalanceBigInt(address: pool.token.address).shortString(decimals: pool.token.decimals) + " " + pool.token.symbol.uppercased()
   }
   
   var displayAPY: String {
@@ -109,14 +111,14 @@ class StakingViewModel {
   }
   
   var feeETHString: String {
-    let string: String = self.transactionFee.displayRate(decimals: 18)
-    return "\(string) \(KNGeneralProvider.shared.quoteToken)"
+    let string: String = self.transactionFee.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
+    return "\(string) \(AppState.shared.currentChain.quoteToken())"
   }
 
   var feeUSDString: String {
-    guard let price = KNTrackerRateStorage.shared.getETHPrice() else { return "" }
-    let usd = self.transactionFee * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
-    let valueString: String = usd.displayRate(decimals: 18)
+    let quoteUSD = AppDependencies.priceStorage.getQuoteUsdRate(chain: AppState.shared.currentChain) ?? 0
+    let usd = self.transactionFee * BigInt(quoteUSD * pow(10.0, 18.0)) / BigInt(10).power(18)
+    let valueString: String =  usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
     return "(~ \(valueString) USD)"
   }
   
@@ -150,12 +152,13 @@ class StakingViewModel {
   }
   
   var buildTxRequestParams: JSONDictionary {
+    
     var params: JSONDictionary = [
       "tokenAmount": amountBigInt.description,
       "chainID": pool.chainID,
       "earningType": selectedPlatform.type,
       "platform": selectedPlatform.name,
-      "userAddress": AppDelegate.session.address.addressString,
+      "userAddress": AppState.shared.currentAddress.addressString,
       "tokenAddress": pool.token.address
     ]
     if selectedPlatform.name.lowercased() == "ankr" {
@@ -209,7 +212,7 @@ class StakingViewModel {
   }
 
   var isAmountTooBig: Bool {
-    return self.amountBigInt > pool.token.getBalanceBigInt()
+    return self.amountBigInt > AppDependencies.balancesStorage.getBalanceBigInt(address: pool.token.address)
   }
   
   var displayProjectionValues: ProjectionValues? {
@@ -265,7 +268,7 @@ class StakingViewModel {
     
     let contractAddress = tx.to
     
-    KNGeneralProvider.shared.getAllowance(for: AppDelegate.session.address.addressString, networkAddress: contractAddress, tokenAddress: pool.token.address) { result in
+    KNGeneralProvider.shared.getAllowance(for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: pool.token.address) { result in
       switch result {
       case .success(let number):
         self.tokenAllowance = number
@@ -277,7 +280,7 @@ class StakingViewModel {
   }
   
   var isChainValid: Bool {
-    return KNGeneralProvider.shared.customRPC.chainID == pool.chainID
+    return AppState.shared.currentChain.customRPC().chainID == pool.chainID
   }
 }
 
@@ -327,10 +330,10 @@ class StakingViewController: InAppBrowsingViewController {
   
   private func setupUI() {
     apyInfoView.setTitle(title: Strings.apyTitle, underlined: false)
-    apyInfoView.iconImageView.isHidden = true
+//    apyInfoView.iconImageView.isHidden = true
     
     amountReceiveInfoView.setTitle(title: Strings.youWillReceive, underlined: false)
-    amountReceiveInfoView.iconImageView.isHidden = true
+//    amountReceiveInfoView.iconImageView.isHidden = true
     
     rateInfoView.setTitle(title: Strings.rate, underlined: false, shouldShowIcon: true)
     rateInfoView.onTapRightIcon = {
@@ -338,7 +341,7 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     networkFeeInfoView.setTitle(title: Strings.networkFee, underlined: false)
-    networkFeeInfoView.iconImageView.isHidden = true
+//    networkFeeInfoView.iconImageView.isHidden = true
     
     earningTokenContainerView.delegate = self
     updateUIGasFee()
@@ -367,7 +370,7 @@ class StakingViewController: InAppBrowsingViewController {
       nextButton.alpha = 1
       nextButton.isEnabled = true
     case .error(let msg):
-      amountFieldContainerView.rounded(color: UIColor.Kyber.textRedColor, width: 1, radius: 16)
+      amountFieldContainerView.rounded(color: AppTheme.current.errorTextColor, width: 1, radius: 16)
       errorMsgLabel.text = msg
       nextButton.alpha = 0.2
     case .empty:
@@ -487,7 +490,7 @@ class StakingViewController: InAppBrowsingViewController {
   }
   
   @IBAction func maxButtonTapped(_ sender: UIButton) {
-    viewModel.amount.value = viewModel.pool.token.getBalanceBigInt().fullString(decimals: viewModel.pool.token.decimals)
+    viewModel.amount.value = AppDependencies.balancesStorage.getBalanceBigInt(address: viewModel.pool.token.address).fullString(decimals: viewModel.pool.token.decimals)
     amountTextField.text = viewModel.amount.value
   }
   
