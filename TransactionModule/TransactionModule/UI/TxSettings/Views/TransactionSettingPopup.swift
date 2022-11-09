@@ -150,7 +150,7 @@ extension TransactionSettingPopup {
                             chain: ChainType,
                             currentSetting: TxSettingObject = .default,
                             onConfirmed: @escaping (TxSettingObject) -> Void,
-                            onCancelled: @escaping () -> Void) {
+                            onCancelled: @escaping (() -> Void) = {}) {
         let popup = TransactionSettingPopup.instantiateFromNib()
         popup.onCancelled = onCancelled
         popup.onConfirmed = onConfirmed
