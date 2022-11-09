@@ -54,6 +54,7 @@
 		A66FC3FB28F4F52100E49E86 /* EarnModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A66FC3FA28F4F52100E49E86 /* EarnModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6D1F7F1291B847800ABA52B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7F0291B847800ABA52B /* Constants.swift */; };
 		A6D1F808291BAF1E00ABA52B /* StakingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */; };
+		A6D1F80A291BB0F100ABA52B /* StakingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F809291BB0F100ABA52B /* StakingSummaryViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -105,6 +106,7 @@
 		A66FC3FA28F4F52100E49E86 /* EarnModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EarnModule.h; sourceTree = "<group>"; };
 		A6D1F7F0291B847800ABA52B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingViewModel.swift; sourceTree = "<group>"; };
+		A6D1F809291BB0F100ABA52B /* StakingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingSummaryViewModel.swift; sourceTree = "<group>"; };
 		B5969EB6F30F2999141BBB05 /* Pods_EarnModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EarnModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F185B69AD2CDE54B8542A46E /* Pods-EarnModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EarnModule.debug.xcconfig"; path = "Target Support Files/Pods-EarnModule/Pods-EarnModule.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -220,6 +222,7 @@
 			children = (
 				7EB252C02907F3E100648438 /* EarnOverViewModel.swift */,
 				A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */,
+				A6D1F809291BB0F100ABA52B /* StakingSummaryViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 				7EAF4752291B567600BF5D00 /* StakingViewController.swift in Sources */,
 				7EB252C32907F43B00648438 /* Observer.swift in Sources */,
 				7E36E369291A530A009BC8FE /* UnstakeViewController.swift in Sources */,
+				A6D1F80A291BB0F100ABA52B /* StakingSummaryViewModel.swift in Sources */,
 				7EB252C92907F8C300648438 /* NSObject.swift in Sources */,
 				7E6EBD8B2909386900069B33 /* Images.swift in Sources */,
 				7EB252B92907F25200648438 /* EarnOverviewController.swift in Sources */,
