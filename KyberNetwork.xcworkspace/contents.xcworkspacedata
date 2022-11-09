@@ -32,16 +32,10 @@
       location = "group:BaseWallet/BaseWallet.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Dependencies/Dependencies.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:AppState/AppState.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Utilities/Utilities.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Services/Services.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:EarnModule/EarnModule.xcodeproj">
