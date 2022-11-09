@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -27,6 +27,7 @@
                 <outlet property="amountReceiveInfoView" destination="UK8-lg-MT7" id="Wmy-jQ-YPL"/>
                 <outlet property="amountTextField" destination="XNk-hV-r3b" id="eVH-MZ-MBU"/>
                 <outlet property="apyInfoView" destination="8AN-XC-Lhr" id="AZk-zf-JGd"/>
+                <outlet property="backupIcon" destination="idQ-D8-sVZ" id="a5F-Sj-Xdl"/>
                 <outlet property="browsingView" destination="dNJ-ss-9hQ" id="XYe-Sw-4uh"/>
                 <outlet property="chainButton" destination="U4I-3q-BJY" id="vqb-7i-FGV"/>
                 <outlet property="chainIcon" destination="Laj-A9-yYy" id="9HQ-wU-CBl"/>
@@ -49,6 +50,8 @@
                 <outlet property="stakeTokenImageView" destination="OPS-mj-2RC" id="50c-S1-4Q7"/>
                 <outlet property="stakeTokenLabel" destination="Wlq-zP-dUB" id="XNd-1u-NZE"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="walletButton" destination="xsH-iT-2i8" id="nuq-w7-PkX"/>
+                <outlet property="walletView" destination="FXU-O2-5hG" id="ADT-yl-EKx"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
