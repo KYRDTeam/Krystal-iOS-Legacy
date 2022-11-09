@@ -9,6 +9,7 @@ import Foundation
 import TransactionModule
 import AppState
 import Dependencies
+import Result
 
 class AppTxProcessor: TxProcessorProtocol {
     

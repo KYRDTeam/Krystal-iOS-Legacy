@@ -85,6 +85,7 @@ def earnDependencies
   pod 'APIKit'
   pod 'lottie-ios'
   pod 'FittedSheets'
+  pod 'TrustCore'
 end
 
 def servicesDependencies

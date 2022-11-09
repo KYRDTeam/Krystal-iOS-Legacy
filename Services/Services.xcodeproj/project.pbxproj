@@ -61,6 +61,7 @@
 		A6B6FA1B2907D6B600109740 /* BaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6FA1A2907D6B600109740 /* BaseService.swift */; };
 		A6D1F7E6291B699800ABA52B /* TxObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7E5291B699800ABA52B /* TxObject.swift */; };
 		A6D1F7F5291B89AD00ABA52B /* EthereumServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7F4291B89AD00ABA52B /* EthereumServiceRequest.swift */; };
+		A6D1F802291BA98B00ABA52B /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D1F801291BA98B00ABA52B /* AppState.framework */; };
 		A6ED2D37291131F500845EF2 /* GasEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ED2D36291131F500845EF2 /* GasEndpoint.swift */; };
 		A6ED2D3A291133A800845EF2 /* GasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ED2D39291133A800845EF2 /* GasService.swift */; };
 		A6ED2D3C2911342600845EF2 /* GasPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ED2D3B2911342600845EF2 /* GasPrice.swift */; };
@@ -130,6 +131,7 @@
 		A6B6FA1A2907D6B600109740 /* BaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseService.swift; sourceTree = "<group>"; };
 		A6D1F7E5291B699800ABA52B /* TxObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxObject.swift; sourceTree = "<group>"; };
 		A6D1F7F4291B89AD00ABA52B /* EthereumServiceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumServiceRequest.swift; sourceTree = "<group>"; };
+		A6D1F801291BA98B00ABA52B /* AppState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6ED2D36291131F500845EF2 /* GasEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasEndpoint.swift; sourceTree = "<group>"; };
 		A6ED2D39291133A800845EF2 /* GasService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasService.swift; sourceTree = "<group>"; };
 		A6ED2D3B2911342600845EF2 /* GasPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPrice.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6D1F802291BA98B00ABA52B /* AppState.framework in Frameworks */,
 				DFBC1392A80048AF5E1D8B55 /* Pods_Services.framework in Frameworks */,
 				A64C2ED528F923BC002FD64C /* Utilities.framework in Frameworks */,
 				A673A6A728FFA29D00270DA7 /* BaseWallet.framework in Frameworks */,
@@ -154,6 +157,7 @@
 		518C82D1BF178221512112F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6D1F801291BA98B00ABA52B /* AppState.framework */,
 				A673A6A628FFA29D00270DA7 /* BaseWallet.framework */,
 				A64C2EDB28F92418002FD64C /* Dependencies.framework */,
 				A64C2ED828F92408002FD64C /* BaseWallet.framework */,

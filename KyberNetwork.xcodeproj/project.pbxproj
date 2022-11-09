@@ -800,6 +800,7 @@
 		A6CC317E2877F06800891200 /* ScanMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CC317D2877F06800891200 /* ScanMode.swift */; };
 		A6CECBA62875421E001F3563 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CECBA52875421E001F3563 /* UIView+.swift */; };
 		A6D1F7EB291B6C3A00ABA52B /* AppTxProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7EA291B6C3A00ABA52B /* AppTxProcessor.swift */; };
+		A6D1F806291BAC6700ABA52B /* AppBalanceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F805291BAC6700ABA52B /* AppBalanceStorage.swift */; };
 		A6D38BE72898DCCE003579F2 /* SolanaUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D38BE62898DCCE003579F2 /* SolanaUtils.swift */; };
 		A6D38BEB2898E8B5003579F2 /* SwapV2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D38BE92898E8B5003579F2 /* SwapV2ViewController.swift */; };
 		A6D38BEC2898E8B5003579F2 /* SwapV2ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6D38BEA2898E8B5003579F2 /* SwapV2ViewController.xib */; };
@@ -1097,7 +1098,7 @@
 		C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38E5D7825F63FC000E5FC48 /* TransactionHistory.swift */; };
 		C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */; };
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
-		C39A7EED24778B03003EA57D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		C39D311428F5645800EC26ED /* StakingPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D311228F5645800EC26ED /* StakingPortfolioViewController.swift */; };
 		C39D311528F5645800EC26ED /* StakingPortfolioViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C39D311328F5645800EC26ED /* StakingPortfolioViewController.xib */; };
 		C39D311928F5679700EC26ED /* StakingPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D311728F5679700EC26ED /* StakingPortfolioCell.swift */; };
@@ -2086,6 +2087,7 @@
 		A6CC317D2877F06800891200 /* ScanMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanMode.swift; sourceTree = "<group>"; };
 		A6CECBA52875421E001F3563 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		A6D1F7EA291B6C3A00ABA52B /* AppTxProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTxProcessor.swift; sourceTree = "<group>"; };
+		A6D1F805291BAC6700ABA52B /* AppBalanceStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppBalanceStorage.swift; sourceTree = "<group>"; };
 		A6D38BE62898DCCE003579F2 /* SolanaUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaUtils.swift; sourceTree = "<group>"; };
 		A6D38BE92898E8B5003579F2 /* SwapV2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapV2ViewController.swift; sourceTree = "<group>"; };
 		A6D38BEA2898E8B5003579F2 /* SwapV2ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwapV2ViewController.xib; sourceTree = "<group>"; };
@@ -5123,6 +5125,7 @@
 		A64C2EF328F94FB6002FD64C /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				A6D1F805291BAC6700ABA52B /* AppBalanceStorage.swift */,
 				A64C2EF428F94FC4002FD64C /* AppRouter.swift */,
 				A65D14DD28FD0B6000B12E84 /* AppTracker.swift */,
 				A65D14DF28FD0CFE00B12E84 /* AppErrorTracker.swift */,
@@ -7749,7 +7752,7 @@
 				7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */,
 				7EE92A0F286307E10050DC8D /* ShowAllCell.swift in Sources */,
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
-				C39A7EED24778B03003EA57D /* BuildFile in Sources */,
+				C39A7EED24778B03003EA57D /* (null) in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				C3233EFE2807DF4D0086C2BC /* CopyAddressCell.swift in Sources */,
 				A69C5BCE28D1B342000DE825 /* NotificationEndpoint.swift in Sources */,
@@ -7771,6 +7774,7 @@
 				257C9FC92078F6A600EE0128 /* KNCreatePasswordViewController.swift in Sources */,
 				29E2E33A1F7A008C000CF94A /* UIView.swift in Sources */,
 				25DBB57E205FB4E20020F19D /* UIViewController+Kyber.swift in Sources */,
+				A6D1F806291BAC6700ABA52B /* AppBalanceStorage.swift in Sources */,
 				A6B3CD84281258CD005D0D66 /* KrystalSolanaTransaction.swift in Sources */,
 				7E1EBE322834C7E900793B6D /* BridgeCoordinator.swift in Sources */,
 				299B5E491FD2C8900051361C /* ConfigureTransaction.swift in Sources */,
