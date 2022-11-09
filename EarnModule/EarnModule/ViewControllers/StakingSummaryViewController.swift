@@ -16,6 +16,7 @@ import DesignSystem
 import Services
 import Dependencies
 import TransactionModule
+import FittedSheets
 
 //protocol StakingSummaryViewControllerDelegate: class {
 //  func didSendTransaction(viewController: StakingSummaryViewController, internalTransaction: InternalHistoryTransaction)
@@ -45,6 +46,7 @@ class StakingSummaryViewModel {
     var processor: TxProcessorProtocol!
     var service: EthereumNodeService!
     var converter: TxObjectConverter!
+    var onSendTxSuccess: (() -> ())?
     
     init(txObject: TxObject, setting: TxSettingObject, displayInfo: StakeDisplayInfo) {
         self.txObject = txObject
@@ -159,7 +161,7 @@ class StakingSummaryViewModel {
                     AppDependencies.txProcessor.sendTxToNode(data: signedData, chain: self.currentChain) { result in
                         switch result {
                         case .success(let hash):
-                            ()
+                            self.onSendTxSuccess?()
                         case .failure(let error):
                             self.showError(errorMsg: TxErrorParser.parse(error: error).message)
                         }
@@ -195,7 +197,7 @@ class StakingSummaryViewModel {
                     AppDependencies.txProcessor.sendTxToNode(data: signedData, chain: self.currentChain) { result in
                         switch result {
                         case .success(let hash):
-                            ()
+                            self.onSendTxSuccess?()
                         case .failure(let error):
                             self.showError(errorMsg: TxErrorParser.parse(error: error).message)
                         }
@@ -263,9 +265,6 @@ class StakingSummaryViewModel {
     //    self.internalHistoryTransaction.value = transaction
     //  }
     
-    func openTxStatusPopup() {
-        
-    }
 }
 
 class StakingSummaryViewController: KNBaseViewController {
@@ -331,8 +330,9 @@ class StakingSummaryViewController: KNBaseViewController {
         tokenIconImageView.setImage(urlString: viewModel.displayInfo.stakeTokenIcon, symbol: "")
         tokenNameLabel.text = viewModel.displayInfo.amount
         platformNameLabel.text = "On " + viewModel.displayInfo.platform.uppercased()
-        
-        
+        viewModel.onSendTxSuccess = { [weak self] in
+            self?.openTxStatusPopup()
+        }
     }
     
     private func bindingViewModel() {
@@ -349,12 +349,20 @@ class StakingSummaryViewController: KNBaseViewController {
             self.showTopBannerView(message: value)
         }
         
-        //    viewModel.internalHistoryTransaction.observeAndFire(on: self) { value in
-        //      guard let value = value else {
-        //        return
-        //      }
-        //      self.delegate?.didSendTransaction(viewController: self, internalTransaction: value)
-        //    }
+//            viewModel.internalHistoryTransaction.observeAndFire(on: self) { value in
+//              guard let value = value else {
+//                return
+//              }
+//              self.delegate?.didSendTransaction(viewController: self, internalTransaction: value)
+//            }
+    }
+    
+    func openTxStatusPopup() {
+        let popup = StakingTrasactionProcessPopup()
+        let sheet = SheetViewController(controller: popup, sizes: [.fixed(420)], options: .init(pullBarHeight: 0))
+        dismiss(animated: true) {
+            UIApplication.shared.topMostViewController()?.present(sheet, animated: true)
+        }
     }
     
     @IBAction func confirmButtonTapped(_ sender: UIButton) {
