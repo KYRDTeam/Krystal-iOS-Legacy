@@ -50,6 +50,24 @@ public class AllowanceService: BaseService {
             }
         }
     }
+  
+    public func getTokenAllowanceDecodeData(_ data: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+      if data == "0x" {
+        // Fix: Can not decode 0x to uint
+        completion(.success(BigInt(0)))
+        return
+      }
+      let decodeRequest = KNGetTokenAllowanceDecode(data: data)
+      self.web3Swift.request(request: decodeRequest, completion: { decodeResult in
+        switch decodeResult {
+        case .success(let value):
+          let remain: BigInt = BigInt(value) ?? BigInt(0)
+          completion(.success(remain))
+        case .failure(let error):
+          completion(.failure(AnyError(error)))
+        }
+      })
+    }
     
     public func getAllowance(chain: ChainType, for address: String, networkAddress: String, tokenAddress: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
         

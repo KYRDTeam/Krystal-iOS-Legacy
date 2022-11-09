@@ -280,7 +280,7 @@ class StakingViewModel {
     let contractAddress = tx.to
 
     let allowanceService = AllowanceService()
-    allowanceService.getAllowance(for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: pool.token.address) { result in
+    allowanceService.getAllowance(chain: AppState.shared.currentChain,for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: pool.token.address) { result in
       switch result {
       case .success(let number):
         self.tokenAllowance = number
