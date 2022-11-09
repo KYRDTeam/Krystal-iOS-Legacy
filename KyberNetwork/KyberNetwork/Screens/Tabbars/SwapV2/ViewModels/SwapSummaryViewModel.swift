@@ -350,6 +350,12 @@ extension SwapSummaryViewModel {
             if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
               errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
             }
+            
+            if case let JSONRPCKit.JSONRPCError.missingBothResultAndError(errDic as [String: Any]) = apiKitError {
+              if let errData = errDic["error"] as? [String: Any], let errMsg = errData["message"] as? String {
+                errorMessage = errMsg
+              }
+            }
           }
           if errorMessage.lowercased().contains("INSUFFICIENT_OUTPUT_AMOUNT".lowercased()) || errorMessage.lowercased().contains("Return amount is not enough".lowercased()) {
             errorMessage = "Transaction will probably fail. There may be low liquidity, you can try a smaller amount or increase the slippage."

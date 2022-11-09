@@ -300,6 +300,12 @@ struct Strings {
   static let noRecordFound = "no.record.found".toBeLocalised()
   static let earnIsCurrentlyNotSupportedOnThisChainYet = "earn.is.currently.not.supported.on.this.chain.yet".toBeLocalised()
   static let emptyTokenDeposit = "no.tokens.deposited".toBeLocalised()
+  static let cheking = "Checking".toBeLocalised()
+  static let stakeNow = "Stake Now".toBeLocalised()
+  static let apyTitle = "APY (Est. Yield".toBeLocalised()
+  static let youWillReceive = "You will receive".toBeLocalised()
+  static let rate = "Rate".toBeLocalised()
+  static let networkFee = "Network Fee".toBeLocalised()
     
     // Approval
     static let approvalSearchPlaceholder = "approval.search.placeholder".toBeLocalised()

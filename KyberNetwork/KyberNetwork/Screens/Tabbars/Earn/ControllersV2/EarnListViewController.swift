@@ -11,6 +11,10 @@ import BaseModule
 import Dependencies
 import AppState
 
+protocol EarnListViewControllerDelegate: class {
+  func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel)
+}
+
 class EarnListViewController: InAppBrowsingViewController {
   @IBOutlet weak var searchTextField: UITextField!
   @IBOutlet weak var tableView: UITableView!
@@ -25,6 +29,8 @@ class EarnListViewController: InAppBrowsingViewController {
   var displayDataSource: [EarnPoolViewCellViewModel] = []
   var timer: Timer?
   var currentSelectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : KNGeneralProvider.shared.currentChain
+  weak var delegate: EarnListViewControllerDelegate?
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
@@ -129,6 +135,7 @@ extension EarnListViewController: UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(EarnPoolViewCell.self, indexPath: indexPath)!
     let viewModel = displayDataSource[indexPath.row]
     cell.updateUI(viewModel: viewModel, shouldShowChainIcon: currentSelectedChain == .all)
+    cell.delegate = self
     return cell
   }
 }
@@ -217,5 +224,11 @@ extension EarnListViewController: UITextFieldDelegate {
     } else {
       self.fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
     }
+  }
+}
+
+extension EarnListViewController: EarnPoolViewCellDelegate {
+  func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
+    delegate?.didSelectPlatform(platform: platform, pool: pool)
   }
 }
