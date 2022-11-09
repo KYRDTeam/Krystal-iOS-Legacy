@@ -154,9 +154,9 @@ class InvestCoordinator: Coordinator {
   }
   
   fileprivate func openStakeView() {
-    let viewModel = EarnOverViewModel()
-    let viewController = EarnOverviewV2Controller(viewModel: viewModel)
-    viewController.delegate = self
+//    let viewModel = EarnOverViewModel()
+//    let viewController = EarnOverviewV2Controller(viewModel: viewModel)
+//    viewController.delegate = self
     
     let viewController = AppDependencies.router.createEarnOverViewController()
     self.navigationController.pushViewController(viewController, animated: true)
@@ -353,8 +353,9 @@ extension InvestCoordinator: InvestViewControllerDelegate {
   func openStakeSummary(txObject: TxObject, settings: UserSettings, displayInfo: StakeDisplayInfo) {
     let vm = StakingSummaryViewModel(txObject: txObject, settings: settings, displayInfo: displayInfo)
     let vc = StakingSummaryViewController(viewModel: vm)
+    let sheet = SheetViewController(controller: vc, sizes: [.fixed(560)], options: .init(pullBarHeight: 0))
     vc.delegate = self
-    navigationController.present(vc, animated: true)
+    navigationController.present(sheet, animated: true)
   }
   
   func openStakeProcess(_ tx: InternalHistoryTransaction) {

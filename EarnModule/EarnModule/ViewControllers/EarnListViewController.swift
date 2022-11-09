@@ -13,6 +13,11 @@ import AppState
 import Services
 import DesignSystem
 
+
+protocol EarnListViewControllerDelegate: class {
+  func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel)
+}
+
 class EarnListViewController: InAppBrowsingViewController {
   @IBOutlet weak var searchTextField: UITextField!
   @IBOutlet weak var tableView: UITableView!
@@ -20,6 +25,7 @@ class EarnListViewController: InAppBrowsingViewController {
   @IBOutlet weak var searchViewRightConstraint: NSLayoutConstraint!
   @IBOutlet weak var cancelButton: UIButton!
   @IBOutlet weak var emptyView: UIView!
+  weak var delegate: EarnListViewControllerDelegate?
   
   @IBOutlet weak var emptyIcon: UIImageView!
   @IBOutlet weak var emptyLabel: UILabel!
@@ -114,8 +120,8 @@ class EarnListViewController: InAppBrowsingViewController {
       self.updateUIStartSearchingMode()
     }
       
-      let vc = UnstakeViewController.instantiateFromNib()
-      self.show(vc, sender: nil)
+//      let vc = UnstakeViewController.instantiateFromNib()
+//      self.show(vc, sender: nil)
   }
   
   @IBAction func cancelButtonTapped(_ sender: Any) {
@@ -134,6 +140,7 @@ extension EarnListViewController: UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(EarnPoolViewCell.self, indexPath: indexPath)!
     let viewModel = displayDataSource[indexPath.row]
     cell.updateUI(viewModel: viewModel, shouldShowChainIcon: currentSelectedChain == .all)
+    cell.delegate = self
     return cell
   }
 }
@@ -222,5 +229,11 @@ extension EarnListViewController: UITextFieldDelegate {
     } else {
       self.fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
     }
+  }
+}
+
+extension EarnListViewController: EarnPoolViewCellDelegate {
+  func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
+    delegate?.didSelectPlatform(platform: platform, pool: pool)
   }
 }

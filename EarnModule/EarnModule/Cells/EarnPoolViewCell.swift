@@ -10,6 +10,10 @@ import DesignSystem
 import Utilities
 import Services
 
+protocol EarnPoolViewCellDelegate: class {
+  func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel)
+}
+
 class EarnPoolViewCellViewModel {
   var isExpanse: Bool
   var earnPoolModel: EarnPoolModel
@@ -50,7 +54,7 @@ class EarnPoolViewCell: UITableViewCell {
   @IBOutlet weak var arrowUpImage: UIImageView!
   @IBOutlet weak var chainImageContaintView: UIView!
   var viewModel: EarnPoolViewCellViewModel?
-  
+  weak var delegate: EarnPoolViewCellDelegate?
   override func awakeFromNib() {
     super.awakeFromNib()
     tableViewHeightConstraint.constant = 0
@@ -101,6 +105,7 @@ extension EarnPoolViewCell: UITableViewDataSource {
     if let earnPlatform = self.viewModel?.platFormDataSource()[indexPath.row] {
       cell.updateUI(platform: earnPlatform)
     }
+    cell.delegate = self
     return cell
   }
 }
@@ -108,5 +113,12 @@ extension EarnPoolViewCell: UITableViewDataSource {
 extension EarnPoolViewCell: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return 74.0
+  }
+}
+
+extension EarnPoolViewCell: EarnPoolPlatformCellDelegate {
+  func didSelectStake(_ platform: EarnPlatform) {
+    guard let model = viewModel?.earnPoolModel else { return }
+    delegate?.didSelectPlatform(platform: platform, pool: model)
   }
 }

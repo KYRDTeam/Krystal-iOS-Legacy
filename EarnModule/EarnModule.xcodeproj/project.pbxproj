@@ -29,6 +29,13 @@
 		7E6EBD8B2909386900069B33 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD8A2909386900069B33 /* Images.swift */; };
 		7E987F262908E92500AA5F8F /* EarnOverviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E987F252908E92500AA5F8F /* EarnOverviewController.xib */; };
 		7E987F292908F17700AA5F8F /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E987F282908F17700AA5F8F /* BaseModule.framework */; };
+		7EAF4752291B567600BF5D00 /* StakingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF474C291B567400BF5D00 /* StakingViewController.swift */; };
+		7EAF4753291B567600BF5D00 /* StakingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EAF474D291B567500BF5D00 /* StakingViewController.xib */; };
+		7EAF4754291B567600BF5D00 /* StakingTrasactionProcessPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF474E291B567500BF5D00 /* StakingTrasactionProcessPopup.swift */; };
+		7EAF4755291B567600BF5D00 /* StakingSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF474F291B567500BF5D00 /* StakingSummaryViewController.swift */; };
+		7EAF4756291B567600BF5D00 /* StakingTrasactionProcessPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EAF4750291B567600BF5D00 /* StakingTrasactionProcessPopup.xib */; };
+		7EAF4757291B567600BF5D00 /* StakingSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EAF4751291B567600BF5D00 /* StakingSummaryViewController.xib */; };
+		7EAF475D291B60DC00BF5D00 /* TransactionModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EAF475C291B60DC00BF5D00 /* TransactionModule.framework */; };
 		7EB252B92907F25200648438 /* EarnOverviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252B72907F25200648438 /* EarnOverviewController.swift */; };
 		7EB252BE2907F30300648438 /* EarnModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252BD2907F30300648438 /* EarnModule.swift */; };
 		7EB252C12907F3E100648438 /* EarnOverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252C02907F3E100648438 /* EarnOverViewModel.swift */; };
@@ -63,6 +70,13 @@
 		7E6EBD8A2909386900069B33 /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		7E987F252908E92500AA5F8F /* EarnOverviewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EarnOverviewController.xib; sourceTree = "<group>"; };
 		7E987F282908F17700AA5F8F /* BaseModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EAF474C291B567400BF5D00 /* StakingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StakingViewController.swift; sourceTree = "<group>"; };
+		7EAF474D291B567500BF5D00 /* StakingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StakingViewController.xib; sourceTree = "<group>"; };
+		7EAF474E291B567500BF5D00 /* StakingTrasactionProcessPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StakingTrasactionProcessPopup.swift; sourceTree = "<group>"; };
+		7EAF474F291B567500BF5D00 /* StakingSummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StakingSummaryViewController.swift; sourceTree = "<group>"; };
+		7EAF4750291B567600BF5D00 /* StakingTrasactionProcessPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StakingTrasactionProcessPopup.xib; sourceTree = "<group>"; };
+		7EAF4751291B567600BF5D00 /* StakingSummaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StakingSummaryViewController.xib; sourceTree = "<group>"; };
+		7EAF475C291B60DC00BF5D00 /* TransactionModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TransactionModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EB252B72907F25200648438 /* EarnOverviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnOverviewController.swift; sourceTree = "<group>"; };
 		7EB252BD2907F30300648438 /* EarnModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnModule.swift; sourceTree = "<group>"; };
 		7EB252C02907F3E100648438 /* EarnOverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnOverViewModel.swift; sourceTree = "<group>"; };
@@ -87,6 +101,7 @@
 				7EF19ED8290B860B00358B66 /* DesignSystem.framework in Frameworks */,
 				7E5E7278290B7E5700156F3C /* Services.framework in Frameworks */,
 				724567E960E5EE407A35533D /* Pods_EarnModule.framework in Frameworks */,
+				7EAF475D291B60DC00BF5D00 /* TransactionModule.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +136,7 @@
 		7E987F272908F17700AA5F8F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7EAF475C291B60DC00BF5D00 /* TransactionModule.framework */,
 				7EF19EDB290B865300358B66 /* Utilities.framework */,
 				7EF19ED7290B860B00358B66 /* DesignSystem.framework */,
 				7E5E7277290B7E5700156F3C /* Services.framework */,
@@ -141,6 +157,12 @@
 				7EB252B72907F25200648438 /* EarnOverviewController.swift */,
 				7E36E367291A530A009BC8FE /* UnstakeViewController.swift */,
 				7E36E368291A530A009BC8FE /* UnstakeViewController.xib */,
+				7EAF474F291B567500BF5D00 /* StakingSummaryViewController.swift */,
+				7EAF4751291B567600BF5D00 /* StakingSummaryViewController.xib */,
+				7EAF474E291B567500BF5D00 /* StakingTrasactionProcessPopup.swift */,
+				7EAF4750291B567600BF5D00 /* StakingTrasactionProcessPopup.xib */,
+				7EAF474C291B567400BF5D00 /* StakingViewController.swift */,
+				7EAF474D291B567500BF5D00 /* StakingViewController.xib */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -278,8 +300,11 @@
 				7E6EBD6D2909280900069B33 /* EarnPoolViewCell.xib in Resources */,
 				7E6EBD72290929A400069B33 /* Localizable.strings in Resources */,
 				7E6EBD6529091F7A00069B33 /* Assets.xcassets in Resources */,
+				7EAF4756291B567600BF5D00 /* StakingTrasactionProcessPopup.xib in Resources */,
 				7E6EBD822909318E00069B33 /* SkeletonCell.xib in Resources */,
 				7E6EBD6E2909280900069B33 /* EarnPoolPlatformCell.xib in Resources */,
+				7EAF4753291B567600BF5D00 /* StakingViewController.xib in Resources */,
+				7EAF4757291B567600BF5D00 /* StakingSummaryViewController.xib in Resources */,
 				7E6EBD87290931E900069B33 /* StakingPortfolioCell.xib in Resources */,
 				7E987F262908E92500AA5F8F /* EarnOverviewController.xib in Resources */,
 			);
@@ -323,15 +348,18 @@
 				7E6EBD86290931E900069B33 /* StakingPortfolioCell.swift in Sources */,
 				7EB252C72907F7EC00648438 /* TypeAliases.swift in Sources */,
 				7EB252C12907F3E100648438 /* EarnOverViewModel.swift in Sources */,
+				7EAF4752291B567600BF5D00 /* StakingViewController.swift in Sources */,
 				7EB252C32907F43B00648438 /* Observer.swift in Sources */,
 				7E36E369291A530A009BC8FE /* UnstakeViewController.swift in Sources */,
 				7EB252C92907F8C300648438 /* NSObject.swift in Sources */,
 				7E6EBD8B2909386900069B33 /* Images.swift in Sources */,
 				7EB252B92907F25200648438 /* EarnOverviewController.swift in Sources */,
 				7EB252BE2907F30300648438 /* EarnModule.swift in Sources */,
+				7EAF4755291B567600BF5D00 /* StakingSummaryViewController.swift in Sources */,
 				7E6EBD70290928D400069B33 /* Strings.swift in Sources */,
 				7E6EBD6229091E0800069B33 /* StakingPortfolioViewController.swift in Sources */,
 				7E6EBD832909318E00069B33 /* SkeletonCell.swift in Sources */,
+				7EAF4754291B567600BF5D00 /* StakingTrasactionProcessPopup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

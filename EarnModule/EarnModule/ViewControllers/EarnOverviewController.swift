@@ -10,6 +10,7 @@ import BaseModule
 import Dependencies
 import AppState
 import DesignSystem
+import Services
 
 class EarnOverviewController: InAppBrowsingViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
@@ -55,6 +56,7 @@ class EarnOverviewController: InAppBrowsingViewController {
 
   func initChildViewControllers() {
     let earnPoolVC = EarnListViewController.instantiateFromNib()
+    earnPoolVC.delegate = self
     let portfolioVC = StakingPortfolioViewController.instantiateFromNib()
     childListViewControllers = [earnPoolVC, portfolioVC]
   }
@@ -127,5 +129,19 @@ extension EarnOverviewController: UIPageViewControllerDelegate {
     segmentedControl.selectedSegmentIndex = newIndex
     selectedPageIndex = newIndex
     segmentedControl.underlineCenterPosition()
+  }
+}
+
+extension EarnOverviewController: EarnListViewControllerDelegate {
+  func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
+//    delegate?.didSelectPlatform(platform: platform, pool: pool)
+    
+    
+    
+//    let vc = StakingViewController.instantiateFromNib()
+//    vc.viewModel = StakingViewModel(pool: pool, platform: platform)
+//    vc.delegate = self
+//    navigationController.pushViewController(vc, animated: true)
+//    stakingViewController = vc
   }
 }

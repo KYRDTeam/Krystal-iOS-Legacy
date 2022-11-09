@@ -98,6 +98,7 @@ end
 def designSystemDependencies
   pod 'SwiftMessages'
   pod 'FittedSheets'
+  pod 'MBProgressHUD', '~> 1.1.0'
 end
 
 def dependenciesDependencies
