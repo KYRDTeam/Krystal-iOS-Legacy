@@ -297,8 +297,10 @@ DEPENDENCIES:
   - Swinject
   - SwipeCellKit
   - TagListView (from `https://github.com/Expensify/TagListView.git`)
+  - TrustCore
   - TrustCore (~> 0.0.7)
   - TrustKeystore (~> 0.4.2)
+  - TrustWalletCore
   - TrustWalletCore (~> 2.9)
   - WalletConnectSwift
   - Web3
@@ -465,6 +467,6 @@ SPEC CHECKSUMS:
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: 769ca60cfeb72b3b0e0f121b4cbed055ab7c3a1b
+PODFILE CHECKSUM: 1825434afc8257a5b35389e5fc45e9062c5acf95
 
 COCOAPODS: 1.11.3
