@@ -10,6 +10,9 @@
 		0E81F6026D12F409B8F03625 /* Pods_TransactionModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2D410ED02563A76864D651 /* Pods_TransactionModule.framework */; };
 		A613BC8929124730006DD220 /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A613BC8829124730006DD220 /* Dependencies.framework */; };
 		A613BC8A29124730006DD220 /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A613BC8829124730006DD220 /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A622D6AA291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A622D6A9291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift */; };
+		A622D6AD291A6155006BBDD9 /* TxInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A622D6AB291A6155006BBDD9 /* TxInfoCell.swift */; };
+		A622D6AE291A6155006BBDD9 /* TxInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A622D6AC291A6155006BBDD9 /* TxInfoCell.xib */; };
 		A64F1D49290B8109000D4733 /* TransactionModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A64F1D48290B8109000D4733 /* TransactionModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A64F1D54290B8132000D4733 /* TransactionSettingPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D52290B8132000D4733 /* TransactionSettingPopup.swift */; };
 		A64F1D55290B8132000D4733 /* TransactionSettingPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A64F1D53290B8132000D4733 /* TransactionSettingPopup.xib */; };
@@ -28,10 +31,13 @@
 		A64F1D7C290BCC53000D4733 /* BaseTransactionSettingTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D7B290BCC53000D4733 /* BaseTransactionSettingTab.swift */; };
 		A64F1D82290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D81290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift */; };
 		A64F1D84290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */; };
+		A69B5084291A072200D992D6 /* TxConfirmPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69B5082291A072200D992D6 /* TxConfirmPopup.swift */; };
+		A69B5085291A072200D992D6 /* TxConfirmPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69B5083291A072200D992D6 /* TxConfirmPopup.xib */; };
 		A6B6ED2F290F82F200514A01 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED2E290F82F200514A01 /* AppState.framework */; };
 		A6B6ED32290F859700514A01 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED31290F859700514A01 /* Utilities.framework */; };
 		A6B6ED37290F9FE700514A01 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6ED36290F9FE700514A01 /* Constants.swift */; };
 		A6B6ED39290FBAAF00514A01 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED38290FBAAF00514A01 /* Services.framework */; };
+		A6C37A46291A485900AB81D3 /* TxInfoRowData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C37A45291A485900AB81D3 /* TxInfoRowData.swift */; };
 		A6ED2D3E2911354F00845EF2 /* GasPriceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ED2D3D2911354F00845EF2 /* GasPriceManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +57,9 @@
 
 /* Begin PBXFileReference section */
 		A613BC8829124730006DD220 /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A622D6A9291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxConfirmViewModelProtocol.swift; sourceTree = "<group>"; };
+		A622D6AB291A6155006BBDD9 /* TxInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxInfoCell.swift; sourceTree = "<group>"; };
+		A622D6AC291A6155006BBDD9 /* TxInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxInfoCell.xib; sourceTree = "<group>"; };
 		A64F1D45290B8109000D4733 /* TransactionModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TransactionModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A64F1D48290B8109000D4733 /* TransactionModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransactionModule.h; sourceTree = "<group>"; };
 		A64F1D52290B8132000D4733 /* TransactionSettingPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSettingPopup.swift; sourceTree = "<group>"; };
@@ -70,10 +79,13 @@
 		A64F1D7B290BCC53000D4733 /* BaseTransactionSettingTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionSettingTab.swift; sourceTree = "<group>"; };
 		A64F1D81290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionSettingTabViewModel.swift; sourceTree = "<group>"; };
 		A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSettingAdvancedTabViewModel.swift; sourceTree = "<group>"; };
+		A69B5082291A072200D992D6 /* TxConfirmPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxConfirmPopup.swift; sourceTree = "<group>"; };
+		A69B5083291A072200D992D6 /* TxConfirmPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxConfirmPopup.xib; sourceTree = "<group>"; };
 		A6B6ED2E290F82F200514A01 /* AppState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B6ED31290F859700514A01 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B6ED36290F9FE700514A01 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A6B6ED38290FBAAF00514A01 /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6C37A45291A485900AB81D3 /* TxInfoRowData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxInfoRowData.swift; sourceTree = "<group>"; };
 		A6ED2D3D2911354F00845EF2 /* GasPriceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPriceManager.swift; sourceTree = "<group>"; };
 		ACB68FEDF6F817D1BE1300AD /* Pods-TransactionModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TransactionModule.debug.xcconfig"; path = "Target Support Files/Pods-TransactionModule/Pods-TransactionModule.debug.xcconfig"; sourceTree = "<group>"; };
 		AE2D410ED02563A76864D651 /* Pods_TransactionModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TransactionModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -158,6 +170,8 @@
 		A64F1D4F290B8117000D4733 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				A6C37A40291A3FB400AB81D3 /* TransactionInfoView */,
+				A69B5081291A070F00D992D6 /* TxConfirm */,
 				A64F1D51290B8123000D4733 /* TxSettings */,
 			);
 			path = UI;
@@ -203,6 +217,26 @@
 				A64F1D81290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A69B5081291A070F00D992D6 /* TxConfirm */ = {
+			isa = PBXGroup;
+			children = (
+				A69B5082291A072200D992D6 /* TxConfirmPopup.swift */,
+				A69B5083291A072200D992D6 /* TxConfirmPopup.xib */,
+				A622D6A9291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift */,
+			);
+			path = TxConfirm;
+			sourceTree = "<group>";
+		};
+		A6C37A40291A3FB400AB81D3 /* TransactionInfoView */ = {
+			isa = PBXGroup;
+			children = (
+				A6C37A45291A485900AB81D3 /* TxInfoRowData.swift */,
+				A622D6AB291A6155006BBDD9 /* TxInfoCell.swift */,
+				A622D6AC291A6155006BBDD9 /* TxInfoCell.xib */,
+			);
+			path = TransactionInfoView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,10 +312,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				A64F1D76290BC06F000D4733 /* Localizable.strings in Resources */,
+				A69B5085291A072200D992D6 /* TxConfirmPopup.xib in Resources */,
 				A64F1D59290B817C000D4733 /* TransactionSettingBasicTab.xib in Resources */,
 				A64F1D5D290B818E000D4733 /* TransactionSettingAdvancedTab.xib in Resources */,
 				A64F1D64290B9351000D4733 /* Assets.xcassets in Resources */,
 				A64F1D55290B8132000D4733 /* TransactionSettingPopup.xib in Resources */,
+				A622D6AE291A6155006BBDD9 /* TxInfoCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,15 +354,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				A64F1D84290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift in Sources */,
+				A6C37A46291A485900AB81D3 /* TxInfoRowData.swift in Sources */,
 				A6B6ED37290F9FE700514A01 /* Constants.swift in Sources */,
 				A64F1D7C290BCC53000D4733 /* BaseTransactionSettingTab.swift in Sources */,
+				A622D6AD291A6155006BBDD9 /* TxInfoCell.swift in Sources */,
 				A64F1D82290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift in Sources */,
 				A64F1D58290B817C000D4733 /* TransactionSettingBasicTab.swift in Sources */,
 				A64F1D74290BBF19000D4733 /* TransactionSettingBasicTabViewModel.swift in Sources */,
 				A64F1D5F290B8992000D4733 /* TxSettingObject.swift in Sources */,
+				A622D6AA291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift in Sources */,
 				A64F1D54290B8132000D4733 /* TransactionSettingPopup.swift in Sources */,
 				A64F1D78290BC093000D4733 /* Strings.swift in Sources */,
 				A6ED2D3E2911354F00845EF2 /* GasPriceManager.swift in Sources */,
+				A69B5084291A072200D992D6 /* TxConfirmPopup.swift in Sources */,
 				A64F1D7A290BC0C4000D4733 /* String+.swift in Sources */,
 				A64F1D5C290B818E000D4733 /* TransactionSettingAdvancedTab.swift in Sources */,
 			);
