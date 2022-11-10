@@ -31,6 +31,7 @@ def uiPods
   pod 'TagListView', :git => 'https://github.com/Expensify/TagListView.git'
   pod 'SkeletonView'
   pod 'FittedSheets'
+  pod 'loady'
 end
 
 def cryptoHelperPods
@@ -115,6 +116,7 @@ def transactionModuleDependencies
   pod 'JSONRPCKit'
   pod 'APIKit'
   pod 'CryptoSwift'
+  pod 'loady'
 end
 
 target 'Dependencies' do
