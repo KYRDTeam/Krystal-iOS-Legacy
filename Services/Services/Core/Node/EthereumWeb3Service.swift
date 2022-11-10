@@ -12,6 +12,7 @@ import APIKit
 import JSONRPCKit
 import Web3
 import BaseWallet
+import AppState
 
 public class EthereumNodeService {
     
@@ -43,31 +44,31 @@ public class EthereumNodeService {
         }
     }
     
-    func getAllowance(for address: String, networkAddress: String, tokenAddress: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
-//        if tokenAddress == chain.quoteTokenObject().address {
-//            completion(.success(BigInt(2).power(255)))
-//            return
-//        }
-//        self.getTokenAllowanceEncodeData(for: address, networkAddress: networkAddress) { dataResult in
-//            switch dataResult {
-//            case .success(let data):
-//                let callRequest = CallRequest(to: tokenAddress, data: data)
-//                let request = EthereumNodeRequest(
-//                    batch: BatchFactory().create(callRequest),
-//                    nodeURL: self.baseURL
-//                )
-//                Session.send(request) { getAllowanceResult in
-//                    switch getAllowanceResult {
-//                    case .success(let data):
-//                        self.getTokenAllowanceDecodeData(data, completion: completion)
-//                    case .failure(let error):
-//                        completion(.failure(AnyError(error)))
-//                    }
-//                }
-//            case .failure(let error):
-//                completion(.failure(error))
-//            }
-//        }
+    public func getAllowance(for address: String, networkAddress: String, tokenAddress: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+      if tokenAddress.lowercased() == AppState.shared.currentChain.customRPC().quoteTokenAddress.lowercased() {
+            completion(.success(BigInt(2).power(255)))
+            return
+        }
+        self.getTokenAllowanceEncodeData(for: address, networkAddress: networkAddress) { dataResult in
+            switch dataResult {
+            case .success(let data):
+                let callRequest = CallRequest(to: tokenAddress, data: data)
+                let request = EthereumNodeRequest(
+                    batch: BatchFactory().create(callRequest),
+                    nodeURL: self.baseURL
+                )
+                Session.send(request) { getAllowanceResult in
+                    switch getAllowanceResult {
+                    case .success(let data):
+                        self.getTokenAllowanceDecodeData(data, completion: completion)
+                    case .failure(let error):
+                        completion(.failure(AnyError(error)))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
     
     func getTokenAllowanceEncodeData(for address: String, networkAddress: String, completion: @escaping (Result<String, AnyError>) -> Void) {

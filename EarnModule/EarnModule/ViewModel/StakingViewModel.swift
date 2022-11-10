@@ -244,9 +244,8 @@ class StakingViewModel {
     }
     
     let contractAddress = tx.to
-
-    let allowanceService = AllowanceService()
-    allowanceService.getAllowance(chain: AppState.shared.currentChain,for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: pool.token.address) { result in
+    let service = EthereumNodeService(chain: AppState.shared.currentChain)
+    service.getAllowance(for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: pool.token.address) { result in
       switch result {
       case .success(let number):
         self.tokenAllowance = number

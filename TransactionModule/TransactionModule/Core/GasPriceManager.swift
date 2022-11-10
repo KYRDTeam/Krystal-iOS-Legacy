@@ -45,6 +45,9 @@ public class GasPriceManager {
 }
 
 extension GasPriceManager: GasConfig {
+    public var defaultApproveGasLimit: BigInt {
+        return BigInt(160_000)
+    }
     
     public var defaultExchangeGasLimit: BigInt {
         return BigInt(650_000)

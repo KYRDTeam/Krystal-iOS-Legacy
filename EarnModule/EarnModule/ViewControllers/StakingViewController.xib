@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -13,15 +13,15 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
-            <string>Karla-Regular</string>
-        </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StakingViewController" customModule="Krystal" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StakingViewController" customModule="EarnModule" customModuleProvider="target">
             <connections>
                 <outlet property="amountFieldContainerView" destination="rfE-17-gYQ" id="Bm4-10-gH3"/>
                 <outlet property="amountReceiveInfoView" destination="UK8-lg-MT7" id="Wmy-jQ-YPL"/>
@@ -350,28 +350,28 @@
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="QKH-hD-w8o">
                             <rect key="frame" x="15" y="185.5" width="345" height="124"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8AN-XC-Lhr" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8AN-XC-Lhr" customClass="SwapInfoView" customModule="DesignSystem">
                                     <rect key="frame" x="0.0" y="0.0" width="345" height="28"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="28" id="76r-eh-TM4"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UK8-lg-MT7" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UK8-lg-MT7" customClass="SwapInfoView" customModule="DesignSystem">
                                     <rect key="frame" x="0.0" y="32" width="345" height="28"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="28" id="W0P-Dy-rvQ"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fd2-Pd-wBO" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fd2-Pd-wBO" customClass="SwapInfoView" customModule="DesignSystem">
                                     <rect key="frame" x="0.0" y="64" width="345" height="28"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="28" id="Kd0-rQ-TBh"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cyu-cp-C1e" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cyu-cp-C1e" customClass="SwapInfoView" customModule="DesignSystem">
                                     <rect key="frame" x="0.0" y="96" width="345" height="28"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
@@ -400,7 +400,7 @@
                                 <action selector="nextButtonTapped:" destination="-1" eventType="touchUpInside" id="mo5-o9-PtQ"/>
                             </connections>
                         </button>
-                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DXA-Eq-Vgp" customClass="StakingEarningTokensView" customModule="Krystal" customModuleProvider="target">
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DXA-Eq-Vgp" customClass="StakingEarningTokensView" customModule="EarnModule" customModuleProvider="target">
                             <rect key="frame" x="15" y="185.5" width="345" height="160"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>

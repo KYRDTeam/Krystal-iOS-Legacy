@@ -22,13 +22,11 @@ public class AllowanceService: BaseService {
     var currentWeb3: Web3Swift = Web3Swift()
     
     var web3Swift: Web3Swift {
-        if let path = URL(string: self.customRPC.endpoint) {
+        if let path = URL(string: self.customRPC.endpointAlchemy) {
             let web3 = Web3Swift(url: path)
             if web3.url != self.currentWeb3.url {
                 self.currentWeb3 = web3
-                DispatchQueue.main.async {
-                    self.currentWeb3.start()
-                }
+                self.currentWeb3.start()
             }
             return self.currentWeb3
         } else {
@@ -75,6 +73,15 @@ public class AllowanceService: BaseService {
             completion(.success(BigInt(2).power(255)))
             return
         }
+      
+      
+      
+      
+//      service.getAllowance(for: address, networkAddress: networkAddress, tokenAddress: tokenAddress) { dataResult in
+//        print("abc")
+//      }
+      
+      
         self.getTokenAllowanceEncodeData(for: address, networkAddress: networkAddress) { [weak self] dataResult in
             switch dataResult {
             case .success(let data):

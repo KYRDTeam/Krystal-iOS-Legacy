@@ -8,7 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0E81F6026D12F409B8F03625 /* Pods_TransactionModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2D410ED02563A76864D651 /* Pods_TransactionModule.framework */; };
+		7E0BBE80291CA4F60030EE44 /* TransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0BBE7F291CA4F60030EE44 /* TransitionDelegate.swift */; };
 		7EAF475B291B602300BF5D00 /* TxStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF475A291B602300BF5D00 /* TxStatus.swift */; };
+		7EAF4789291BB59100BF5D00 /* ApproveTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF4787291BB59100BF5D00 /* ApproveTokenViewController.swift */; };
+		7EAF478A291BB59100BF5D00 /* ApproveTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EAF4788291BB59100BF5D00 /* ApproveTokenViewController.xib */; };
 		A613BC8929124730006DD220 /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A613BC8829124730006DD220 /* Dependencies.framework */; };
 		A613BC8A29124730006DD220 /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A613BC8829124730006DD220 /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A64F1D49290B8109000D4733 /* TransactionModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A64F1D48290B8109000D4733 /* TransactionModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -62,7 +65,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7E0BBE7F291CA4F60030EE44 /* TransitionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionDelegate.swift; sourceTree = "<group>"; };
 		7EAF475A291B602300BF5D00 /* TxStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxStatus.swift; sourceTree = "<group>"; };
+		7EAF4787291BB59100BF5D00 /* ApproveTokenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApproveTokenViewController.swift; sourceTree = "<group>"; };
+		7EAF4788291BB59100BF5D00 /* ApproveTokenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ApproveTokenViewController.xib; sourceTree = "<group>"; };
 		A613BC8829124730006DD220 /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A64F1D45290B8109000D4733 /* TransactionModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TransactionModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A64F1D48290B8109000D4733 /* TransactionModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransactionModule.h; sourceTree = "<group>"; };
@@ -136,6 +142,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7EAF4786291BB4E800BF5D00 /* Approve */ = {
+			isa = PBXGroup;
+			children = (
+				7E0BBE7F291CA4F60030EE44 /* TransitionDelegate.swift */,
+				7EAF4787291BB59100BF5D00 /* ApproveTokenViewController.swift */,
+				7EAF4788291BB59100BF5D00 /* ApproveTokenViewController.xib */,
+			);
+			path = Approve;
+			sourceTree = "<group>";
+		};
 		7F6716B18D8DFC9ECD637CFF /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -182,6 +198,7 @@
 		A64F1D4F290B8117000D4733 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				7EAF4786291BB4E800BF5D00 /* Approve */,
 				A64F1D51290B8123000D4733 /* TxSettings */,
 			);
 			path = UI;
@@ -349,6 +366,7 @@
 				A64F1D59290B817C000D4733 /* TransactionSettingBasicTab.xib in Resources */,
 				A64F1D5D290B818E000D4733 /* TransactionSettingAdvancedTab.xib in Resources */,
 				A64F1D64290B9351000D4733 /* Assets.xcassets in Resources */,
+				7EAF478A291BB59100BF5D00 /* ApproveTokenViewController.xib in Resources */,
 				A64F1D55290B8132000D4733 /* TransactionSettingPopup.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,6 +409,7 @@
 				A6D1F7FE291B918200ABA52B /* TransactionSigner.swift in Sources */,
 				A6D1F7F3291B85BA00ABA52B /* TxConverter.swift in Sources */,
 				A64F1D7C290BCC53000D4733 /* BaseTransactionSettingTab.swift in Sources */,
+				7EAF4789291BB59100BF5D00 /* ApproveTokenViewController.swift in Sources */,
 				A64F1D82290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift in Sources */,
 				A6D1F7FA291B8DF800ABA52B /* EthereumTransactionSigner.swift in Sources */,
 				A64F1D58290B817C000D4733 /* TransactionSettingBasicTab.swift in Sources */,
@@ -398,6 +417,7 @@
 				A64F1D74290BBF19000D4733 /* TransactionSettingBasicTabViewModel.swift in Sources */,
 				A64F1D5F290B8992000D4733 /* TxSettingObject.swift in Sources */,
 				A64F1D54290B8132000D4733 /* TransactionSettingPopup.swift in Sources */,
+				7E0BBE80291CA4F60030EE44 /* TransitionDelegate.swift in Sources */,
 				A64F1D78290BC093000D4733 /* Strings.swift in Sources */,
 				A6D1F7E4291B690000ABA52B /* StakeTxObject.swift in Sources */,
 				A6D1F7ED291B814100ABA52B /* EIP1559Transaction.swift in Sources */,

@@ -11,6 +11,8 @@ import Dependencies
 import AppState
 import DesignSystem
 import Services
+import BigInt
+import TransactionModule
 
 class EarnOverviewController: InAppBrowsingViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
@@ -134,14 +136,19 @@ extension EarnOverviewController: UIPageViewControllerDelegate {
 
 extension EarnOverviewController: EarnListViewControllerDelegate {
   func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
-//    delegate?.didSelectPlatform(platform: platform, pool: pool)
+    let vc = StakingViewController.instantiateFromNib()
+    vc.viewModel = StakingViewModel(pool: pool, platform: platform)
+    vc.delegate = self
     
+    self.show(vc, sender: nil)
+  }
+}
+
+extension EarnOverviewController: StakingViewControllerDelegate {
+  func sendApprove(_ viewController: StakingViewController, tokenAddress: String, remain: BigInt, symbol: String, toAddress: String) {
     
-    
-//    let vc = StakingViewController.instantiateFromNib()
-//    vc.viewModel = StakingViewModel(pool: pool, platform: platform)
-//    vc.delegate = self
-//    navigationController.pushViewController(vc, animated: true)
-//    stakingViewController = vc
+    let vm = ApproveTokenViewModel(symbol: symbol, tokenAddress: tokenAddress, remain: remain, toAddress: toAddress)
+    let vc = ApproveTokenViewController(viewModel: vm)
+    self.present(vc, animated: true, completion: nil)
   }
 }
