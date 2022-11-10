@@ -17,7 +17,7 @@ import Services
 public class ApproveTokenViewModel {
   var showEditSettingButton: Bool = false
   var gasLimit: BigInt = AppDependencies.gasConfig.defaultApproveGasLimit
-  var value: BigInt = BigInt(2).power(256) - BigInt(1)
+  var value: BigInt = TransactionConstants.maxTokenAmount
   var headerTitle: String = "Approve Token"
   var chain: ChainType
   var tokenAddress: String
@@ -77,10 +77,10 @@ public class ApproveTokenViewModel {
       }
   }
   
-  func sendApproveRequest(onCompleted: @escaping (Error?) -> Void) {
+  func sendApproveRequest(value: BigInt, onCompleted: @escaping (Error?) -> Void) {
     let service = EthereumNodeService(chain: chain)
     let gasPrice = self.getGasPrice(chain: chain, setting: setting)
-    service.getSendApproveERC20TokenEncodeData(spender: toAddress, value: remain) { [weak self] result in
+    service.getSendApproveERC20TokenEncodeData(spender: toAddress, value: value) { [weak self] result in
         guard let self = self else { return }
         switch result {
         case .success(let hex):
@@ -215,8 +215,16 @@ public class ApproveTokenViewController: KNBaseViewController {
   }
 
   @IBAction func confirmButtonTapped(_ sender: UIButton) {
-    viewModel.sendApproveRequest { error in
-      self.dismiss(animated: true, completion: nil)
+    if viewModel.remain.isZero {
+      sendApprove()
+    } else {
+      resetAllowanceBeforeSend()
+    }
+  }
+  
+  func sendApprove() {
+    self.viewModel.sendApproveRequest(value: TransactionConstants.maxTokenAmount) { error in
+      self.dismiss(animated: true)
       if error != nil {
         if let onFailApprove = self.onFailApprove {
           onFailApprove()
@@ -225,6 +233,16 @@ public class ApproveTokenViewController: KNBaseViewController {
         if let onSuccessApprove = self.onSuccessApprove {
           onSuccessApprove()
         }
+      }
+    }
+  }
+  
+  func resetAllowanceBeforeSend() {
+    self.viewModel.sendApproveRequest(value: BigInt(0)) { error in
+      if error != nil {
+        self.sendApprove()
+      } else {
+        //TODO: Show error here
       }
     }
   }
