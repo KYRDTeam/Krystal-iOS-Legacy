@@ -10,32 +10,16 @@ import BigInt
 import AppState
 import Dependencies
 import BaseModule
+import BaseWallet
 import Utilities
-
-//protocol ApproveTokenViewModel {
-//  func getFee() -> BigInt
-//  func getFeeString() -> String
-//  func getFeeUSDString() -> String
-//  var subTitleText: String { get }
-//  var remain: BigInt { get }
-//  var state: Bool { get }
-//  var symbol: String { get }
-//  var toAddress: String { get }
-//  var tokenAddress: String { get }
-//  var gasLimit: BigInt { get set }
-//  var value: BigInt { get set }
-//
-//  var showEditSettingButton: Bool { get set }
-//  var gasPrice: BigInt { get set }
-//  var headerTitle: String { get set }
-//}
+import Services
 
 public class ApproveTokenViewModel {
   var showEditSettingButton: Bool = false
   var gasLimit: BigInt = AppDependencies.gasConfig.defaultApproveGasLimit
   var value: BigInt = BigInt(2).power(256) - BigInt(1)
   var headerTitle: String = "Approve Token"
-  
+  var chain: ChainType
   var tokenAddress: String
   let remain: BigInt
   var gasPrice: BigInt = AppDependencies.gasConfig.getStandardGasPrice(chain: AppState.shared.currentChain)
@@ -58,28 +42,113 @@ public class ApproveTokenViewModel {
 
   func getFeeString() -> String {
     let fee = self.getFee()
-    return "\(NumberFormatUtils.gasFeeFormat(number: fee)) \(AppState.shared.currentChain.quoteToken())"
+    return "\(NumberFormatUtils.gasFeeFormat(number: fee)) \(chain.quoteToken())"
   }
 
   func getFeeUSDString() -> String {
-    let quoteUSD = AppDependencies.priceStorage.getQuoteUsdRate(chain: AppState.shared.currentChain) ?? 0
+    let quoteUSD = AppDependencies.priceStorage.getQuoteUsdRate(chain: chain) ?? 0
     let feeUSD = self.getFee() * BigInt(quoteUSD * pow(10.0, 18.0)) / BigInt(10).power(18)
     let valueString: String =  feeUSD.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
     return "(~ \(valueString) USD)"
   }
 
-  public init(symbol: String, tokenAddress: String, remain: BigInt, toAddress: String) {
+  public init(symbol: String, tokenAddress: String, remain: BigInt, toAddress: String, chain: ChainType) {
     self.symbol = symbol
     self.tokenAddress = tokenAddress
     self.remain = remain
     self.toAddress = toAddress
+    self.chain = chain
   }
-}
-
-protocol ApproveTokenViewControllerDelegate: class {
-//  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt)
-//  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt)
-//  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: String, value: BigInt)
+  
+  func getGasPrice(chain: ChainType, setting: TxSettingObject) -> BigInt {
+      if let basic = setting.basic {
+          switch basic.gasType {
+          case .slow:
+              return AppDependencies.gasConfig.getLowGasPrice(chain: chain)
+          case .regular:
+              return AppDependencies.gasConfig.getStandardGasPrice(chain: chain)
+          case .fast:
+              return AppDependencies.gasConfig.getFastGasPrice(chain: chain)
+          case .superFast:
+              return AppDependencies.gasConfig.getSuperFastGasPrice(chain: chain)
+          }
+      } else {
+          return setting.advanced?.maxFee ?? .zero
+      }
+  }
+  
+  func sendApproveRequest(onCompleted: @escaping (Error?) -> Void) {
+    let service = EthereumNodeService(chain: chain)
+    let gasPrice = self.getGasPrice(chain: chain, setting: setting)
+    service.getSendApproveERC20TokenEncodeData(spender: toAddress, value: remain) { [weak self] result in
+        guard let self = self else { return }
+        switch result {
+        case .success(let hex):
+            self.getLatestNonce { nonce in
+              guard let nonce = nonce else {
+                return
+              }
+              let legacyTx = LegacyTransaction(
+                  value: BigInt(0),
+                  address: AppState.shared.currentAddress.addressString,
+                  to: self.tokenAddress,
+                  nonce: nonce,
+                  data: hex,
+                  gasPrice: gasPrice,
+                  gasLimit: self.setting.gasLimit,
+                  chainID: self.chain.getChainId()
+              )
+              let signResult = EthereumTransactionSigner().signTransaction(address: AppState.shared.currentAddress, transaction: legacyTx)
+              switch signResult {
+              case .success(let signedData):
+                  TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: self.chain) { result in
+                      switch result {
+                      case .success(let hash):
+                          print(hash)
+                          onCompleted(nil)
+//                          let pendingTx = PendingTxInfo(
+//                              type: .earn,
+//                              fromSymbol: self.displayInfo.fromSym,
+//                              toSymbol: self.displayInfo.toSym,
+//                              description: "\(self.displayInfo.amount) → \(self.displayInfo.receiveAmount)",
+//                              detail: "",
+//                              legacyTx: legacyTx,
+//                              eip1559Tx: nil,
+//                              chain: self.currentChain,
+//                              date: Date(),
+//                              hash: hash,
+//                              nonce: legacyTx.nonce
+//                          )
+//                          TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
+//                          self.onSendTxSuccess?(pendingTx)
+                      case .failure(let error):
+                          onCompleted(error)
+                      }
+                  }
+              case .failure(let error):
+                  onCompleted(error)
+              }
+              
+            }
+        case .failure(let error):
+            onCompleted(error)
+        }
+    }
+  }
+  
+  func getLatestNonce(completion: @escaping (Int?) -> Void) {
+      let address = AppState.shared.currentAddress.addressString
+      let web3Client = EthereumNodeService(chain: AppState.shared.currentChain)
+      web3Client.getTransactionCount(address: address) { result in
+          switch result {
+          case .success(let nonce):
+              AppDependencies.nonceStorage.updateNonce(chain: AppState.shared.currentChain, address: address, value: nonce)
+              completion(nonce)
+          default:
+              completion(nil)
+          }
+      }
+  }
 }
 
 public class ApproveTokenViewController: KNBaseViewController {
@@ -101,8 +170,8 @@ public class ApproveTokenViewController: KNBaseViewController {
   
   var viewModel: ApproveTokenViewModel
   let transitor = TransitionDelegate()
-  weak var delegate: ApproveTokenViewControllerDelegate?
-  
+  public var onSuccessApprove: (() -> Void)? = nil
+  public var onFailApprove: (() -> Void)? = nil
   var approveValue: BigInt {
     return self.viewModel.value
   }
@@ -132,11 +201,6 @@ public class ApproveTokenViewController: KNBaseViewController {
     self.confirmButton.rounded(radius: 16)
     self.descriptionLabel.text = self.viewModel.subTitleText
     self.contractAddressLabel.text = self.viewModel.toAddress
-    
-//    if let tokenAddress = self.viewModel.tokenAddress {
-//      self.delegate?.approveTokenViewControllerGetEstimateGas(self, tokenAddress: tokenAddress, value: self.viewModel.value)
-//    }
-    
     if !self.viewModel.showEditSettingButton {
       self.editIcon.isHidden = true
       self.editLabel.isHidden = true
@@ -146,27 +210,23 @@ public class ApproveTokenViewController: KNBaseViewController {
   }
   
   func setupChainInfo() {
-    chainIcon.image = AppState.shared.currentChain.squareIcon()
-    chainLabel.text = AppState.shared.currentChain.chainName()
+    chainIcon.image = viewModel.chain.squareIcon()
+    chainLabel.text = viewModel.chain.chainName()
   }
 
   @IBAction func confirmButtonTapped(_ sender: UIButton) {
-//    let ethBalance = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
-//    guard self.viewModel.getFee() < ethBalance else {
-//      self.showWarningTopBannerMessage(
-//        with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
-//        message: String(format: Strings.insufficientTokenForNetworkFee, KNGeneralProvider.shared.quoteTokenObject.symbol)
-//      )
-//      return
-//    }
-//    if let token = self.viewModel.token {
-//      self.delegate?.approveTokenViewControllerDidApproved(self, token: token, remain: self.viewModel.remain, gasLimit: self.viewModel.gasLimit)
-//    } else {
-//      self.delegate?.approveTokenViewControllerDidApproved(self, address: self.viewModel.address, remain: self.viewModel.remain, state: self.viewModel.state, toAddress: self.viewModel.toAddress, gasLimit: self.viewModel.gasLimit)
-//    }
-//    self.dismiss(animated: true, completion: {
-//
-//    })
+    viewModel.sendApproveRequest { error in
+      self.dismiss(animated: true, completion: nil)
+      if error != nil {
+        if let onFailApprove = self.onFailApprove {
+          onFailApprove()
+        }
+      } else {
+        if let onSuccessApprove = self.onSuccessApprove {
+          onSuccessApprove()
+        }
+      }
+    }
   }
 
   @IBAction func editButtonTapped(_ sender: Any) {
@@ -185,7 +245,7 @@ public class ApproveTokenViewController: KNBaseViewController {
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
     self.dismiss(animated: true, completion: nil)
   }
-  
+
   fileprivate func updateGasFeeUI() {
     self.gasFeeLabel.text = self.viewModel.getFeeString()
     self.gasFeeEstUSDLabel.text = self.viewModel.getFeeUSDString()

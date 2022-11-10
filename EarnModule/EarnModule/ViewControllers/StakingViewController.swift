@@ -20,11 +20,6 @@ typealias StakeDisplayInfo = (amount: String, apy: String, receiveAmount: String
 typealias ProjectionValue = (value: String, usd: String)
 typealias ProjectionValues = (p30: ProjectionValue, p60: ProjectionValue, p90: ProjectionValue)
 
-protocol StakingViewControllerDelegate: class {
-//  func didSelectNext(_ viewController: StakingViewController, settings: UserSettings, txObject: TxObject, displayInfo: StakeDisplayInfo)
-  func sendApprove(_ viewController: StakingViewController, tokenAddress: String, remain: BigInt, symbol: String, toAddress: String)
-}
-
 enum FormState: Equatable {
   case valid
   case error(msg: String)
@@ -79,8 +74,6 @@ class StakingViewController: InAppBrowsingViewController {
   
   var viewModel: StakingViewModel!
   var keyboardTimer: Timer?
-  
-  weak var delegate: StakingViewControllerDelegate?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -276,7 +269,7 @@ class StakingViewController: InAppBrowsingViewController {
       return
     }
     if viewModel.nextButtonStatus.value == .needApprove {
-      delegate?.sendApprove(self, tokenAddress: viewModel.pool.token.address, remain: viewModel.tokenAllowance ?? .zero, symbol: viewModel.pool.token.symbol, toAddress: viewModel.txObject.value?.to ?? "")
+      sendApprove(tokenAddress: viewModel.pool.token.address, remain: viewModel.tokenAllowance ?? .zero, symbol: viewModel.pool.token.symbol, toAddress: viewModel.txObject.value?.to ?? "")
     } else {
       guard viewModel.formState.value == .valid else { return }
       if let tx = viewModel.txObject.value {
@@ -293,15 +286,20 @@ class StakingViewController: InAppBrowsingViewController {
     viewModel.isExpandProjection.value = !viewModel.isExpandProjection.value
   }
   
-  func coordinatorSuccessApprove(address: String) {
-    viewModel.nextButtonStatus.value = .approved
-    viewModel.tokenAllowance = nil
+  func sendApprove(tokenAddress: String, remain: BigInt, symbol: String, toAddress: String) {
+    let vm = ApproveTokenViewModel(symbol: symbol, tokenAddress: tokenAddress, remain: remain, toAddress: toAddress, chain: AppState.shared.currentChain)
+    let vc = ApproveTokenViewController(viewModel: vm)
+    vc.onSuccessApprove = {
+      self.viewModel.nextButtonStatus.value = .approved
+    }
+    
+    vc.onFailApprove = {
+      self.viewModel.nextButtonStatus.value = .notApprove
+    }
+    
+    self.present(vc, animated: true, completion: nil)
   }
-  
-  func coordinatorFailApprove(address: String) {
-    viewModel.nextButtonStatus.value = .notApprove
-  }
-  
+
   func openStakeSummary(txObject: TxObject, settings: TxSettingObject, displayInfo: StakeDisplayInfo) {
 //    let vm = StakingSummaryViewModel(txObject: txObject, settings: settings, displayInfo: displayInfo)
 //    let vc = StakingSummaryViewController(viewModel: vm)
