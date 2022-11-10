@@ -12,6 +12,19 @@ import Dependencies
 import Result
 
 class AppTxProcessor: TxProcessorProtocol {
+    
+    func observePendingTxListChanged() {
+        NotificationCenter.default.addObserver(
+          self,
+          selector: #selector(pendingTxListUpdated),
+          name: Notification.Name(kTransactionDidUpdateNotificationKey),
+          object: nil
+        )
+    }
+    
+    @objc func pendingTxListUpdated() {
+        TransactionManager.onPendingTxListUpdated()
+    }
 
     func sendTxToNode(data: Data, chain: ChainType, completion: @escaping (Result<String, AnyError>) -> Void) {
         KNGeneralProvider.shared.sendSignedTransactionData(data, chain: chain, completion: completion)

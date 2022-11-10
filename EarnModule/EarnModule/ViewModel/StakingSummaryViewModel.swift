@@ -37,7 +37,7 @@ class StakingSummaryViewModel {
     let displayInfo: StakeDisplayInfo
     var shouldDiplayLoading: Observable<Bool> = .init(false)
     var errorMessage: Observable<String> = .init("")
-    var processor: TxProcessorProtocol!
+    var txManager: TxProcessorProtocol!
     var service: EthereumNodeService!
     var converter: TxObjectConverter!
     var onSendTxSuccess: ((PendingTxInfo) -> ())?

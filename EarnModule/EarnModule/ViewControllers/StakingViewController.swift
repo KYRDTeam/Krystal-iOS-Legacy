@@ -13,7 +13,7 @@ import Services
 import DesignSystem
 import Dependencies
 import TransactionModule
-
+import FittedSheets
 
 typealias StakeDisplayInfo = (amount: String, apy: String, receiveAmount: String, rate: String, fee: String, platform: String, stakeTokenIcon: String, fromSym: String, toSym: String)
 
@@ -301,11 +301,11 @@ class StakingViewController: InAppBrowsingViewController {
   }
 
   func openStakeSummary(txObject: TxObject, settings: TxSettingObject, displayInfo: StakeDisplayInfo) {
-//    let vm = StakingSummaryViewModel(txObject: txObject, settings: settings, displayInfo: displayInfo)
-//    let vc = StakingSummaryViewController(viewModel: vm)
-//    let sheet = SheetViewController(controller: vc, sizes: [.fixed(560)], options: .init(pullBarHeight: 0))
-//    vc.delegate = self
-//    navigationController.present(sheet, animated: true)
+      let viewModel = StakingSummaryViewModel(txObject: txObject, setting: settings, displayInfo: displayInfo)
+      let vc = StakingSummaryViewController.instantiateFromNib()
+      vc.viewModel = viewModel
+      let sheet = SheetViewController(controller: vc, sizes: [.fixed(560)], options: .init(pullBarHeight: 0))
+      present(sheet, animated: true)
   }
 }
 

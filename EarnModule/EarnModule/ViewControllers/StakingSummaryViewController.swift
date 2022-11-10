@@ -27,18 +27,7 @@ class StakingSummaryViewController: KNBaseViewController {
     @IBOutlet weak var rateInfoView: SwapInfoView!
     @IBOutlet weak var feeInfoView: SwapInfoView!
     
-    let viewModel: StakingSummaryViewModel
-    
-    init(viewModel: StakingSummaryViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: StakingSummaryViewController.className, bundle: nil)
-        
-        self.modalPresentationStyle = .custom
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    var viewModel: StakingSummaryViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()

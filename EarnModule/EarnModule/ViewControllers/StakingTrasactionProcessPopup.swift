@@ -60,21 +60,32 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
         super.viewDidLoad()
         setupUI()
         setupLoadingView()
+        observeEvents()
         state = .processing
-        
-        //    NotificationCenter.default.addObserver(
-        //      self,
-        //      selector: #selector(self.transactionStateDidUpdate(_:)),
-        //      name: Notification.Name(kTransactionDidUpdateNotificationKey),
-        //      object: nil
-        //    )
     }
     
-    @objc func transactionStateDidUpdate(_ sender: Notification) {
-        //    guard let transaction = sender.object as? InternalHistoryTransaction else { return }
-        //    if self.transaction.hash == transaction.hash {
-        //      self.updateView(with: transaction)
-        //    }
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .kTxStatusUpdated, object: nil)
+    }
+    
+    func observeEvents() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.txStatusUpdated(_:)),
+            name: .kTxStatusUpdated,
+            object: nil
+        )
+    }
+    
+    @objc func txStatusUpdated(_ notification: Notification) {
+        guard let hash = notification.userInfo?["hash"] as? String, let status = notification.userInfo?["status"] as? InternalTransactionState else {
+            return
+        }
+        guard hash == tx.hash else {
+            return
+        }
+        
+        updateView(status: status)
     }
     
     func updateUIForStateChange(_ state: TxStatus) {
@@ -132,25 +143,25 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
         self.loadingIndicatorView.isLabelHidden = true
     }
     
-//      func updateView(with tx: InternalHistoryTransaction) {
-//        switch tx.state {
-//        case .pending:
-//          self.state = .processing
-//        case .error, .drop:
-//          state = .failure
-//        case .done:
-//          state = .success
-//        default:
-//          state = .processing
-//        }
-//      }
+    func updateView(status: InternalTransactionState) {
+        switch status {
+        case .pending:
+            self.state = .processing
+        case .error, .drop:
+            state = .failure
+        case .done:
+            state = .success
+        default:
+            state = .processing
+        }
+    }
     
     @IBAction func secondButtonTapped(_ sender: UIButton) {
         switch state {
         case .processing:
             self.txHashButtonTapped(sender)
         case .success:
-            self.delegate?.stakingProcessPopup(self, action: .viewToken(sym: self.tx.toSymbol ?? ""))
+            self.delegate?.stakingProcessPopup(self, action: .viewToken(sym: self.tx.toSymbol))
         case .failure:
             self.delegate?.stakingProcessPopup(self, action: .goToSupport)
         }

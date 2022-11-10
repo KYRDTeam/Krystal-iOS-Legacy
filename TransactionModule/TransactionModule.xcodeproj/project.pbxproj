@@ -35,6 +35,7 @@
 		A69E8EA9291CA47B005B28CB /* PendingTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EA8291CA47B005B28CB /* PendingTxInfo.swift */; };
 		A69E8EAB291CABA6005B28CB /* TransactionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EAA291CABA6005B28CB /* TransactionManager.swift */; };
 		A69E8EAD291CABD6005B28CB /* TxProcessorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EAC291CABD6005B28CB /* TxProcessorProtocol.swift */; };
+		A69E8EAF291CEA1A005B28CB /* InternalTransactionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EAE291CEA1A005B28CB /* InternalTransactionState.swift */; };
 		A6B6ED2F290F82F200514A01 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED2E290F82F200514A01 /* AppState.framework */; };
 		A6B6ED32290F859700514A01 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED31290F859700514A01 /* Utilities.framework */; };
 		A6B6ED37290F9FE700514A01 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6ED36290F9FE700514A01 /* Constants.swift */; };
@@ -92,6 +93,7 @@
 		A69E8EA8291CA47B005B28CB /* PendingTxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTxInfo.swift; sourceTree = "<group>"; };
 		A69E8EAA291CABA6005B28CB /* TransactionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionManager.swift; sourceTree = "<group>"; };
 		A69E8EAC291CABD6005B28CB /* TxProcessorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TxProcessorProtocol.swift; sourceTree = "<group>"; };
+		A69E8EAE291CEA1A005B28CB /* InternalTransactionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalTransactionState.swift; sourceTree = "<group>"; };
 		A6B6ED2E290F82F200514A01 /* AppState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B6ED31290F859700514A01 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B6ED36290F9FE700514A01 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 				A6D1F7EC291B814100ABA52B /* EIP1559Transaction.swift */,
 				A6D1F7EE291B814B00ABA52B /* LegacyTransaction.swift */,
 				A69E8EA8291CA47B005B28CB /* PendingTxInfo.swift */,
+				A69E8EAE291CEA1A005B28CB /* InternalTransactionState.swift */,
 			);
 			path = Txs;
 			sourceTree = "<group>";
@@ -410,6 +413,7 @@
 				A6D1F7F3291B85BA00ABA52B /* TxConverter.swift in Sources */,
 				A64F1D7C290BCC53000D4733 /* BaseTransactionSettingTab.swift in Sources */,
 				7EAF4789291BB59100BF5D00 /* ApproveTokenViewController.swift in Sources */,
+				A69E8EAF291CEA1A005B28CB /* InternalTransactionState.swift in Sources */,
 				A64F1D82290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift in Sources */,
 				A6D1F7FA291B8DF800ABA52B /* EthereumTransactionSigner.swift in Sources */,
 				A64F1D58290B817C000D4733 /* TransactionSettingBasicTab.swift in Sources */,
