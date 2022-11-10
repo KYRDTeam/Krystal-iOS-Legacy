@@ -60,7 +60,7 @@ class StakingSummaryViewController: KNBaseViewController {
         tokenIconImageView.setImage(urlString: viewModel.displayInfo.stakeTokenIcon, symbol: "")
         tokenNameLabel.text = viewModel.displayInfo.amount
         platformNameLabel.text = "On " + viewModel.displayInfo.platform.uppercased()
-        viewModel.onSendTxSuccess = { [weak self] pendingTx in
+        viewModel.onSuccess = { [weak self] pendingTx in
             self?.openTxStatusPopup(tx: pendingTx)
         }
     }
@@ -73,11 +73,7 @@ class StakingSummaryViewController: KNBaseViewController {
                 self.hideLoading()
             }
         }
-        
-        viewModel.errorMessage.observeAndFire(on: self) { value in
-            guard !value.isEmpty else { return }
-            self.showTopBannerView(message: value)
-        }
+    
     }
     
     func openTxStatusPopup(tx: PendingTxInfo) {

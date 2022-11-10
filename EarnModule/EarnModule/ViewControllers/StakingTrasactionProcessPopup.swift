@@ -23,7 +23,6 @@ protocol StakingProcessPopupDelegate: class {
 }
 
 class StakingTrasactionProcessPopup: KNBaseViewController {
-    @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
     @IBOutlet weak var containerView: UIView!
     
     @IBOutlet weak var firstButton: UIButton!
@@ -50,10 +49,6 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
         didSet {
             self.updateUIForStateChange(self.state)
         }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {

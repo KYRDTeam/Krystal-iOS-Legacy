@@ -17,7 +17,7 @@ public struct TxInfoRowData {
     public var onTitleClick: () -> ()
     public var onValueClick: () -> ()
     
-    public init(title: String, value: String, isHighlighted: Bool, isTitleUnderlined: Bool, rightButtonTitle: String? = nil, rightButtonClick: @escaping (() -> ()) = {}, onTitleClick: @escaping () -> (), onValueClick: @escaping () -> ()) {
+    public init(title: String, value: String, isHighlighted: Bool = false, isTitleUnderlined: Bool = false, rightButtonTitle: String? = nil, rightButtonClick: @escaping (() -> ()) = {}, onTitleClick: @escaping () -> () = {}, onValueClick: @escaping () -> () = {}) {
         self.title = title
         self.value = value
         self.isHighlighted = isHighlighted
