@@ -15,5 +15,4 @@ public class AppDependencies {
     public static var nonceStorage: NonceStorage!
     public static var priceStorage: PriceStorage!
     public static var balancesStorage: BalancesStorage!
-    public static var txProcessor: TxProcessorProtocol!
 }

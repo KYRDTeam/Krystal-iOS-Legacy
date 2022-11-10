@@ -29,6 +29,8 @@ class Dependencies {
         NodeConfig.alchemyRopstenKey =  KNSecret.alchemyRopstenKey
         NodeConfig.nodeEndpoint = KNEnvironment.default.nodeEndpoint
         NodeConfig.solanaAppID = KNEnvironment.default.endpointName
+        
+        TransactionManager.txProcessor = AppTxProcessor()
     }
     
 }

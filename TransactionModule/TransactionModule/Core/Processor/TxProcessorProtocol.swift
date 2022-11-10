@@ -11,5 +11,6 @@ import Result
 
 public protocol TxProcessorProtocol {
     func sendTxToNode(data: Data, chain: ChainType, completion: @escaping (Result<String, AnyError>) -> Void)
+    func savePendingTx(txInfo: PendingTxInfo)
 }
 

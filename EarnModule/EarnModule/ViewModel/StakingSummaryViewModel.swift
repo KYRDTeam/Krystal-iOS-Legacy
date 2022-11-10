@@ -25,6 +25,10 @@ class StakingSummaryViewModel {
         return AppState.shared.currentChain
     }
     
+    var currentNonce: Int {
+        return AppDependencies.nonceStorage.currentNonce(chain: currentChain, address: currentAddress.addressString)
+    }
+    
     //  var gasPrice: BigInt
     var gasLimit: BigInt
     
@@ -36,7 +40,7 @@ class StakingSummaryViewModel {
     var processor: TxProcessorProtocol!
     var service: EthereumNodeService!
     var converter: TxObjectConverter!
-    var onSendTxSuccess: (() -> ())?
+    var onSendTxSuccess: ((PendingTxInfo) -> ())?
     
     init(txObject: TxObject, setting: TxSettingObject, displayInfo: StakeDisplayInfo) {
         self.txObject = txObject
@@ -71,10 +75,24 @@ class StakingSummaryViewModel {
             switch result {
             case .success:
                 if let signedData = EIP1559TransactionSigner().signTransaction(address: self.currentAddress, eip1559Tx: eip1559Tx) {
-                    AppDependencies.txProcessor.sendTxToNode(data: signedData, chain: self.currentChain) { result in
+                    TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: self.currentChain) { result in
                         switch result {
                         case .success(let hash):
-                            self.onSendTxSuccess?()
+                            let pendingTx = PendingTxInfo(
+                                type: .earn,
+                                fromSymbol: self.displayInfo.fromSym,
+                                toSymbol: self.displayInfo.toSym,
+                                description: "\(self.displayInfo.amount) → \(self.displayInfo.receiveAmount)",
+                                detail: "",
+                                legacyTx: nil,
+                                eip1559Tx: eip1559Tx,
+                                chain: self.currentChain,
+                                date: Date(),
+                                hash: hash,
+                                nonce: Int(eip1559Tx.nonce) ?? self.currentNonce
+                            )
+                            TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
+                            self.onSendTxSuccess?(pendingTx)
                         case .failure(let error):
                             self.showError(errorMsg: TxErrorParser.parse(error: error).message)
                         }
@@ -107,10 +125,24 @@ class StakingSummaryViewModel {
                 let signResult = EthereumTransactionSigner().signTransaction(address: self.currentAddress, transaction: legacyTx)
                 switch signResult {
                 case .success(let signedData):
-                    AppDependencies.txProcessor.sendTxToNode(data: signedData, chain: self.currentChain) { result in
+                    TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: self.currentChain) { result in
                         switch result {
                         case .success(let hash):
-                            self.onSendTxSuccess?()
+                            let pendingTx = PendingTxInfo(
+                                type: .earn,
+                                fromSymbol: self.displayInfo.fromSym,
+                                toSymbol: self.displayInfo.toSym,
+                                description: "\(self.displayInfo.amount) → \(self.displayInfo.receiveAmount)",
+                                detail: "",
+                                legacyTx: legacyTx,
+                                eip1559Tx: nil,
+                                chain: self.currentChain,
+                                date: Date(),
+                                hash: hash,
+                                nonce: legacyTx.nonce
+                            )
+                            TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
+                            self.onSendTxSuccess?(pendingTx)
                         case .failure(let error):
                             self.showError(errorMsg: TxErrorParser.parse(error: error).message)
                         }

@@ -6,24 +6,19 @@
 //
 
 import UIKit
-import KrystalWallets
 import BigInt
 import AppState
-import Result
-import APIKit
-import JSONRPCKit
 import DesignSystem
 import Services
-import Dependencies
-import TransactionModule
 import FittedSheets
+import TransactionModule
 
 class StakingSummaryViewController: KNBaseViewController {
     
     @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var chainIconImageView: UIImageView!
-    @IBOutlet weak var chainNameLabel: UILabel!    
+    @IBOutlet weak var chainNameLabel: UILabel!
     @IBOutlet weak var tokenIconImageView: UIImageView!
     @IBOutlet weak var tokenNameLabel: UILabel!
     @IBOutlet weak var platformNameLabel: UILabel!
@@ -76,8 +71,8 @@ class StakingSummaryViewController: KNBaseViewController {
         tokenIconImageView.setImage(urlString: viewModel.displayInfo.stakeTokenIcon, symbol: "")
         tokenNameLabel.text = viewModel.displayInfo.amount
         platformNameLabel.text = "On " + viewModel.displayInfo.platform.uppercased()
-        viewModel.onSendTxSuccess = { [weak self] in
-            self?.openTxStatusPopup()
+        viewModel.onSendTxSuccess = { [weak self] pendingTx in
+            self?.openTxStatusPopup(tx: pendingTx)
         }
     }
     
@@ -96,8 +91,8 @@ class StakingSummaryViewController: KNBaseViewController {
         }
     }
     
-    func openTxStatusPopup() {
-        let popup = StakingTrasactionProcessPopup()
+    func openTxStatusPopup(tx: PendingTxInfo) {
+        let popup = StakingTrasactionProcessPopup.instantiateFromNib()
         let sheet = SheetViewController(controller: popup, sizes: [.fixed(420)], options: .init(pullBarHeight: 0))
         dismiss(animated: true) {
             UIApplication.shared.topMostViewController()?.present(sheet, animated: true)
@@ -106,9 +101,5 @@ class StakingSummaryViewController: KNBaseViewController {
     
     @IBAction func confirmButtonTapped(_ sender: UIButton) {
         viewModel.sendTransaction()
-    }
-    
-    @IBAction func tapOutSidePopup(_ sender: UITapGestureRecognizer) {
-        dismiss(animated: true)
     }
 }

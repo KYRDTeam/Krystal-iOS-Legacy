@@ -29,6 +29,9 @@
 		A64F1D7C290BCC53000D4733 /* BaseTransactionSettingTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D7B290BCC53000D4733 /* BaseTransactionSettingTab.swift */; };
 		A64F1D82290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D81290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift */; };
 		A64F1D84290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */; };
+		A69E8EA9291CA47B005B28CB /* PendingTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EA8291CA47B005B28CB /* PendingTxInfo.swift */; };
+		A69E8EAB291CABA6005B28CB /* TransactionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EAA291CABA6005B28CB /* TransactionManager.swift */; };
+		A69E8EAD291CABD6005B28CB /* TxProcessorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EAC291CABD6005B28CB /* TxProcessorProtocol.swift */; };
 		A6B6ED2F290F82F200514A01 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED2E290F82F200514A01 /* AppState.framework */; };
 		A6B6ED32290F859700514A01 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED31290F859700514A01 /* Utilities.framework */; };
 		A6B6ED37290F9FE700514A01 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6ED36290F9FE700514A01 /* Constants.swift */; };
@@ -80,6 +83,9 @@
 		A64F1D7B290BCC53000D4733 /* BaseTransactionSettingTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionSettingTab.swift; sourceTree = "<group>"; };
 		A64F1D81290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionSettingTabViewModel.swift; sourceTree = "<group>"; };
 		A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSettingAdvancedTabViewModel.swift; sourceTree = "<group>"; };
+		A69E8EA8291CA47B005B28CB /* PendingTxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTxInfo.swift; sourceTree = "<group>"; };
+		A69E8EAA291CABA6005B28CB /* TransactionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionManager.swift; sourceTree = "<group>"; };
+		A69E8EAC291CABD6005B28CB /* TxProcessorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TxProcessorProtocol.swift; sourceTree = "<group>"; };
 		A6B6ED2E290F82F200514A01 /* AppState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B6ED31290F859700514A01 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B6ED36290F9FE700514A01 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -189,6 +195,7 @@
 				A6D1F7E2291B68F600ABA52B /* Models */,
 				A6ED2D3D2911354F00845EF2 /* GasPriceManager.swift */,
 				7EAF475A291B602300BF5D00 /* TxStatus.swift */,
+				A69E8EAA291CABA6005B28CB /* TransactionManager.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -227,12 +234,21 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		A6D1F7E2291B68F600ABA52B /* Models */ = {
+		A69E8EA1291C9F43005B28CB /* Txs */ = {
 			isa = PBXGroup;
 			children = (
 				A6D1F7E3291B690000ABA52B /* StakeTxObject.swift */,
 				A6D1F7EC291B814100ABA52B /* EIP1559Transaction.swift */,
 				A6D1F7EE291B814B00ABA52B /* LegacyTransaction.swift */,
+				A69E8EA8291CA47B005B28CB /* PendingTxInfo.swift */,
+			);
+			path = Txs;
+			sourceTree = "<group>";
+		};
+		A6D1F7E2291B68F600ABA52B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A69E8EA1291C9F43005B28CB /* Txs */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -240,6 +256,7 @@
 		A6D1F7E7291B6BEB00ABA52B /* Processor */ = {
 			isa = PBXGroup;
 			children = (
+				A69E8EAC291CABD6005B28CB /* TxProcessorProtocol.swift */,
 				A6D1F7F2291B85BA00ABA52B /* TxConverter.swift */,
 				A6D1F7F6291B8C3D00ABA52B /* TxErrorParser.swift */,
 			);
@@ -386,9 +403,12 @@
 				A6D1F7ED291B814100ABA52B /* EIP1559Transaction.swift in Sources */,
 				A6ED2D3E2911354F00845EF2 /* GasPriceManager.swift in Sources */,
 				7EAF475B291B602300BF5D00 /* TxStatus.swift in Sources */,
+				A69E8EAD291CABD6005B28CB /* TxProcessorProtocol.swift in Sources */,
 				A64F1D7A290BC0C4000D4733 /* String+.swift in Sources */,
 				A64F1D5C290B818E000D4733 /* TransactionSettingAdvancedTab.swift in Sources */,
+				A69E8EAB291CABA6005B28CB /* TransactionManager.swift in Sources */,
 				A6D1F7FC291B8EA400ABA52B /* EIP1559TransactionSigner.swift in Sources */,
+				A69E8EA9291CA47B005B28CB /* PendingTxInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

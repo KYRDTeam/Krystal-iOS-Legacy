@@ -12,21 +12,36 @@ import Dependencies
 import Result
 
 class AppTxProcessor: TxProcessorProtocol {
-    
-    var currentAddress: String {
-        return AppState.shared.currentAddress.addressString
-    }
-    
-    var currentChain: ChainType {
-        return AppState.shared.currentChain
-    }
-    
-    var currentNonce: Int {
-        return AppDependencies.nonceStorage.currentNonce(chain: currentChain, address: currentAddress)
-    }
 
     func sendTxToNode(data: Data, chain: ChainType, completion: @escaping (Result<String, AnyError>) -> Void) {
         KNGeneralProvider.shared.sendSignedTransactionData(data, chain: chain, completion: completion)
+    }
+    
+    func savePendingTx(txInfo: PendingTxInfo) {
+        let internalTx = InternalHistoryTransaction(
+            type: convertToInternalTxType(pendingTxType: txInfo.type),
+            state: .pending,
+            fromSymbol: txInfo.fromSymbol,
+            toSymbol: txInfo.toSymbol,
+            transactionDescription: txInfo.description,
+            transactionDetailDescription: txInfo.detail,
+            transactionObj: txInfo.legacyTx?.toSignTransactionObject(),
+            eip1559Tx: txInfo.eip1559Tx,
+            chain: txInfo.chain
+        )
+        internalTx.hash = txInfo.hash
+        internalTx.nonce = txInfo.nonce
+        internalTx.time = txInfo.date
+        EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalTx)
+    }
+    
+    func convertToInternalTxType(pendingTxType: TxType) -> HistoryModelType {
+        switch pendingTxType {
+        case .earn:
+            return .earn
+        case .approval:
+            return .allowance
+        }
     }
     
 }

@@ -18,7 +18,6 @@
 		A64C2EF028F944BF002FD64C /* PriceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EEF28F944BF002FD64C /* PriceStorage.swift */; };
 		A65D14D728FD058E00B12E84 /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A65D14D628FD058E00B12E84 /* BaseWallet.framework */; };
 		A66FC40F28F4F55500E49E86 /* Dependencies.h in Headers */ = {isa = PBXBuildFile; fileRef = A66FC40E28F4F55500E49E86 /* Dependencies.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A6D1F800291B9F6C00ABA52B /* TxProcessorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7FF291B9F6C00ABA52B /* TxProcessorProtocol.swift */; };
 		A6F6292428FD45750085AE67 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6F6292328FD45750085AE67 /* Services.framework */; };
 /* End PBXBuildFile section */
 
@@ -38,7 +37,6 @@
 		A65D14D628FD058E00B12E84 /* BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66FC40B28F4F55500E49E86 /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66FC40E28F4F55500E49E86 /* Dependencies.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dependencies.h; sourceTree = "<group>"; };
-		A6D1F7FF291B9F6C00ABA52B /* TxProcessorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxProcessorProtocol.swift; sourceTree = "<group>"; };
 		A6F6292328FD45750085AE67 /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -76,7 +74,6 @@
 				A64C2ED228F9220F002FD64C /* NonceStorage.swift */,
 				A64C2EEF28F944BF002FD64C /* PriceStorage.swift */,
 				7EAF477F291B804E00BF5D00 /* BalancesStorage.swift */,
-				A6D1F7FF291B9F6C00ABA52B /* TxProcessorProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -232,7 +229,6 @@
 				A64C2ED328F9220F002FD64C /* NonceStorage.swift in Sources */,
 				A64C2E3728F7BA12002FD64C /* Tracker.swift in Sources */,
 				A64C2E6A28F880EA002FD64C /* GasConfig.swift in Sources */,
-				A6D1F800291B9F6C00ABA52B /* TxProcessorProtocol.swift in Sources */,
 				A64C2EF028F944BF002FD64C /* PriceStorage.swift in Sources */,
 				A64C2E7128F90FB3002FD64C /* AppRouterProtocol.swift in Sources */,
 			);
