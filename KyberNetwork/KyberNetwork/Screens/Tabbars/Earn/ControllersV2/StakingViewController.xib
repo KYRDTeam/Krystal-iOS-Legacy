@@ -35,6 +35,8 @@
                 <outlet property="errorMsgLabel" destination="eXy-Nq-Sss" id="OOs-y4-2ba"/>
                 <outlet property="expandContainerViewHeightContraint" destination="ibA-g0-5LK" id="64Q-AQ-L4P"/>
                 <outlet property="expandProjectionButton" destination="7VS-cG-N4B" id="AJw-fm-SJI"/>
+                <outlet property="faqContainerHeightContraint" destination="0Hr-OD-j5X" id="211-H6-dk0"/>
+                <outlet property="faqContainerView" destination="pdc-D5-fGH" id="CQs-fl-0WZ"/>
                 <outlet property="infoAreaTopContraint" destination="8HI-i4-JNA" id="lET-P2-7Qy"/>
                 <outlet property="networkFeeInfoView" destination="cyu-cp-C1e" id="JWp-U2-iZB"/>
                 <outlet property="nextButton" destination="qRD-Uw-5YN" id="1oZ-Yu-iIJ"/>
@@ -607,12 +609,27 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pdc-D5-fGH" customClass="StakingFAQView" customModule="Krystal" customModuleProvider="target">
+                            <rect key="frame" x="15" y="825" width="345" height="300"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="300" id="0Hr-OD-j5X"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                    <real key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
                     </subviews>
                     <constraints>
                         <constraint firstItem="rfE-17-gYQ" firstAttribute="centerX" secondItem="mZ9-HU-8LJ" secondAttribute="centerX" id="3St-43-OsK"/>
+                        <constraint firstAttribute="trailing" secondItem="pdc-D5-fGH" secondAttribute="trailing" constant="15" id="6bY-Mw-QYn"/>
                         <constraint firstItem="QKH-hD-w8o" firstAttribute="top" secondItem="rfE-17-gYQ" secondAttribute="bottom" constant="40" id="8HI-i4-JNA"/>
                         <constraint firstItem="Wlq-zP-dUB" firstAttribute="leading" secondItem="SOS-I0-hAY" secondAttribute="trailing" constant="5" id="8ny-uA-A37"/>
+                        <constraint firstAttribute="bottom" secondItem="pdc-D5-fGH" secondAttribute="bottom" constant="15" id="9NO-05-kTO"/>
                         <constraint firstAttribute="trailing" secondItem="qRD-Uw-5YN" secondAttribute="trailing" constant="15" id="AqJ-MC-jrp"/>
+                        <constraint firstItem="pdc-D5-fGH" firstAttribute="leading" secondItem="mZ9-HU-8LJ" secondAttribute="leading" constant="15" id="Bew-Ga-pgx"/>
                         <constraint firstItem="QKH-hD-w8o" firstAttribute="leading" secondItem="mZ9-HU-8LJ" secondAttribute="leading" constant="15" id="COm-LR-sS6"/>
                         <constraint firstItem="Wlq-zP-dUB" firstAttribute="trailing" secondItem="rfE-17-gYQ" secondAttribute="trailing" id="CpB-n9-Wfl"/>
                         <constraint firstItem="qRD-Uw-5YN" firstAttribute="top" secondItem="QKH-hD-w8o" secondAttribute="bottom" constant="40" id="GLd-pH-2BY"/>
@@ -627,9 +644,9 @@
                         <constraint firstItem="UbE-D0-djG" firstAttribute="trailing" secondItem="rfE-17-gYQ" secondAttribute="trailing" id="XlZ-CY-t5T"/>
                         <constraint firstItem="uL6-Ya-9qb" firstAttribute="leading" secondItem="mZ9-HU-8LJ" secondAttribute="leading" constant="15" id="ZLc-WI-BV2"/>
                         <constraint firstItem="DXA-Eq-Vgp" firstAttribute="leading" secondItem="sKb-dZ-bQO" secondAttribute="leading" constant="15" id="a6e-FW-v6t"/>
+                        <constraint firstItem="pdc-D5-fGH" firstAttribute="top" secondItem="uL6-Ya-9qb" secondAttribute="bottom" constant="15" id="h5P-o7-VcW"/>
                         <constraint firstItem="qRD-Uw-5YN" firstAttribute="leading" secondItem="mZ9-HU-8LJ" secondAttribute="leading" constant="15" id="hCl-A8-VL7"/>
                         <constraint firstItem="uL6-Ya-9qb" firstAttribute="top" secondItem="qRD-Uw-5YN" secondAttribute="bottom" constant="15" id="hrF-0A-e3c"/>
-                        <constraint firstAttribute="bottom" secondItem="uL6-Ya-9qb" secondAttribute="bottom" constant="5" id="j0F-V9-q4U"/>
                         <constraint firstItem="rfE-17-gYQ" firstAttribute="top" secondItem="E6D-sW-5ed" secondAttribute="bottom" constant="55" id="rTm-qc-fLv"/>
                         <constraint firstItem="UbE-D0-djG" firstAttribute="centerY" secondItem="E6D-sW-5ed" secondAttribute="centerY" id="sMk-Bf-ZAR"/>
                         <constraint firstItem="rfE-17-gYQ" firstAttribute="top" secondItem="Wlq-zP-dUB" secondAttribute="bottom" constant="11" id="sNw-3w-c76"/>

@@ -1116,6 +1116,7 @@
 		C3A2419C2567AD610073703C /* WalletsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A2419A2567AD610073703C /* WalletsListViewController.xib */; };
 		C3A241A42567BEB50073703C /* WalletListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241A22567BEB50073703C /* WalletListTableViewCell.swift */; };
 		C3A241A52567BEB50073703C /* WalletListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A241A32567BEB50073703C /* WalletListTableViewCell.xib */; };
+		C3A33396291CBC970066712B /* SectionHeaderFAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A33395291CBC970066712B /* SectionHeaderFAQView.swift */; };
 		C3A58E2426D49BCF00EE3801 /* OverviewAddNFTViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A58E2226D49BCF00EE3801 /* OverviewAddNFTViewController.swift */; };
 		C3A58E2526D49BCF00EE3801 /* OverviewAddNFTViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A58E2326D49BCF00EE3801 /* OverviewAddNFTViewController.xib */; };
 		C3A6592025F1EC3300A89241 /* EarnOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A6591E25F1EC3300A89241 /* EarnOverviewViewController.swift */; };
@@ -2424,6 +2425,7 @@
 		C3A2419A2567AD610073703C /* WalletsListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletsListViewController.xib; sourceTree = "<group>"; };
 		C3A241A22567BEB50073703C /* WalletListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletListTableViewCell.swift; sourceTree = "<group>"; };
 		C3A241A32567BEB50073703C /* WalletListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletListTableViewCell.xib; sourceTree = "<group>"; };
+		C3A33395291CBC970066712B /* SectionHeaderFAQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderFAQView.swift; sourceTree = "<group>"; };
 		C3A58E2226D49BCF00EE3801 /* OverviewAddNFTViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewAddNFTViewController.swift; sourceTree = "<group>"; };
 		C3A58E2326D49BCF00EE3801 /* OverviewAddNFTViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewAddNFTViewController.xib; sourceTree = "<group>"; };
 		C3A6591E25F1EC3300A89241 /* EarnOverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnOverviewViewController.swift; sourceTree = "<group>"; };
@@ -6350,6 +6352,7 @@
 				C348E1AE290B8CB1001CE430 /* StakingEarningTokensView.xib */,
 				C358E707291B8EDA00446473 /* StakingFAQView.swift */,
 				C358E709291B8EFB00446473 /* StakingFAQView.xib */,
+				C3A33395291CBC970066712B /* SectionHeaderFAQView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -7752,6 +7755,7 @@
 				7E2A2EAA28F697FD00AB9A77 /* EarnPoolViewCell.swift in Sources */,
 				A6977DF1289BD08A00B2B6BD /* SwapRepository.swift in Sources */,
 				A65194392835F13D008F4AEB /* TransactionDetailModule.swift in Sources */,
+				C3A33396291CBC970066712B /* SectionHeaderFAQView.swift in Sources */,
 				C680C1202382958700A621CB /* KNVersionControlManager.swift in Sources */,
 				C31F152C23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift in Sources */,
 				C385D8C727BCD7A300BB226D /* MultiSendConfirmViewController.swift in Sources */,

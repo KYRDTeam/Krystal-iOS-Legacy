@@ -4,9 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -18,6 +16,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StakingFAQView" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="contentTableView" destination="PKe-sr-f3w" id="pQ6-0H-0Kl"/>
+                <outlet property="lineView" destination="eP4-yO-NUG" id="bZ6-e7-Zer"/>
                 <outlet property="mainExpandButton" destination="i9Y-5f-Ui8" id="RfU-Zv-nbV"/>
                 <outlet property="mainTitleLabel" destination="J7Z-Zj-37I" id="UOu-Ov-SZl"/>
             </connections>
@@ -31,7 +30,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="331" height="52"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Staking FAQ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J7Z-Zj-37I">
-                            <rect key="frame" x="20" y="15" width="99" height="22"/>
+                            <rect key="frame" x="20" y="15" width="100.5" height="22"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="22" id="Xpo-KB-MEV"/>
                             </constraints>
@@ -73,19 +72,23 @@
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="PKe-sr-f3w">
                     <rect key="frame" x="0.0" y="52" width="331" height="244"/>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <color key="backgroundColor" red="0.16078431372549018" green="0.1764705882352941" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="1I7-ot-y2n"/>
+                        <outlet property="delegate" destination="-1" id="MDh-41-rFR"/>
+                    </connections>
                 </tableView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="QxZ-cp-8oe"/>
-            <color key="backgroundColor" name="mainViewBgColor"/>
+            <color key="backgroundColor" red="0.16078431372549018" green="0.1764705882352941" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Aoq-e6-iM6" firstAttribute="leading" secondItem="QxZ-cp-8oe" secondAttribute="leading" id="4jk-KS-zPf"/>
                 <constraint firstItem="Aoq-e6-iM6" firstAttribute="trailing" secondItem="QxZ-cp-8oe" secondAttribute="trailing" id="Bvu-ke-jN1"/>
-                <constraint firstItem="PKe-sr-f3w" firstAttribute="bottom" secondItem="QxZ-cp-8oe" secondAttribute="bottom" id="Dqk-Ru-Kpw"/>
+                <constraint firstItem="PKe-sr-f3w" firstAttribute="bottom" secondItem="kuC-V9-BL0" secondAttribute="bottom" id="Dqk-Ru-Kpw"/>
                 <constraint firstItem="PKe-sr-f3w" firstAttribute="top" secondItem="Aoq-e6-iM6" secondAttribute="bottom" id="PYJ-ga-HWl"/>
-                <constraint firstItem="PKe-sr-f3w" firstAttribute="leading" secondItem="QxZ-cp-8oe" secondAttribute="leading" id="WgD-Jo-0aN"/>
+                <constraint firstItem="PKe-sr-f3w" firstAttribute="leading" secondItem="kuC-V9-BL0" secondAttribute="leading" id="WgD-Jo-0aN"/>
                 <constraint firstItem="Aoq-e6-iM6" firstAttribute="top" secondItem="kuC-V9-BL0" secondAttribute="top" id="nbg-ql-zKp"/>
-                <constraint firstItem="PKe-sr-f3w" firstAttribute="trailing" secondItem="QxZ-cp-8oe" secondAttribute="trailing" id="vrb-Ya-uk2"/>
+                <constraint firstItem="PKe-sr-f3w" firstAttribute="trailing" secondItem="kuC-V9-BL0" secondAttribute="trailing" id="vrb-Ya-uk2"/>
             </constraints>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -94,11 +97,5 @@
     </objects>
     <resources>
         <image name="circle_arrow_up" width="24" height="25"/>
-        <namedColor name="mainViewBgColor">
-            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

@@ -311,6 +311,9 @@ class StakingViewController: InAppBrowsingViewController {
   
   @IBOutlet weak var projectionContainerView: UIView!
   
+  @IBOutlet weak var faqContainerView: StakingFAQView!
+  @IBOutlet weak var faqContainerHeightContraint: NSLayoutConstraint!
+  
   var viewModel: StakingViewModel!
   var keyboardTimer: Timer?
   
@@ -479,6 +482,14 @@ class StakingViewController: InAppBrowsingViewController {
     
     viewModel.isUseReverseRate.observeAndFire(on: self) { _ in
       self.rateInfoView.setValue(value: self.viewModel.displayRate)
+    }
+    
+    faqContainerView.isExpand.observeAndFire(on: self) { value in
+      if value {
+        self.faqContainerHeightContraint.constant = 50
+      } else {
+        self.faqContainerHeightContraint.constant = 300
+      }
     }
   }
 
