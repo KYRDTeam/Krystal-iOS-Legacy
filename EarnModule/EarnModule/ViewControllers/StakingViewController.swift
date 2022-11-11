@@ -122,6 +122,8 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     private func setupUI() {
+        amountTextField.setPlaceholder(text: Strings.amount, color: AppTheme.current.secondaryTextColor)
+        
         apyInfoView.setTitle(title: Strings.apyTitle, underlined: false)
         
         amountReceiveInfoView.setTitle(title: Strings.youWillReceive, underlined: false)
@@ -215,11 +217,6 @@ class StakingViewController: InAppBrowsingViewController {
         viewModel.formState.observeAndFire(on: self) { _ in
             self.updateUIError()
         }
-        
-        viewModel.txObject.observeAndFire(on: self, observerBlock: { value in
-            guard let tx = value else { return }
-            print("[Stake] \(tx)")
-        })
         
         viewModel.isLoading.observeAndFire(on: self) { value in
             if value {

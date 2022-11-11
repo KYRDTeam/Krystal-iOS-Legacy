@@ -34,4 +34,5 @@ struct Strings {
     static let confirmStake = "confirm.stake".toBeLocalised()
     static let stakeSummary = "stake.summary".toBeLocalised()
     static let youAreStaking = "you.are.staking".toBeLocalised()
+    static let amount = "amount".toBeLocalised()
 }

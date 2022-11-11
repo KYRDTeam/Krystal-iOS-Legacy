@@ -185,9 +185,9 @@ class StakingViewModel: BaseViewModel {
     }
     
     var displayAmountReceive: String {
-        guard let detail = selectedEarningToken.value, !amount.value.isEmpty, let amountDouble = Double(amount.value) else { return "---" }
-        let receiveAmt = rate * amountDouble
-        return receiveAmt.description + " " + detail.symbol
+        guard let detail = selectedEarningToken.value, !amount.value.isEmpty, let amountDouble = amount.value.toDouble() else { return "---" }
+        let receiveAmt = BigInt(rate * amountDouble * pow(10.0, 18.0))
+        return NumberFormatUtils.amount(value: receiveAmt, decimals: 18) + " " + detail.symbol
     }
     
     var rate: Double {
