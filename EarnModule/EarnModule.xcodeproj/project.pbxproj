@@ -53,6 +53,7 @@
 		7EF19EDC290B865300358B66 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF19EDB290B865300358B66 /* Utilities.framework */; };
 		A66FC3FB28F4F52100E49E86 /* EarnModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A66FC3FA28F4F52100E49E86 /* EarnModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A69E8EB1291DDEBB005B28CB /* PendingStakingTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EB0291DDEBB005B28CB /* PendingStakingTxInfo.swift */; };
+		A69E8EB4291DEF23005B28CB /* StakeDisplayInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EB3291DEF23005B28CB /* StakeDisplayInfo.swift */; };
 		A6D1F7F1291B847800ABA52B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7F0291B847800ABA52B /* Constants.swift */; };
 		A6D1F808291BAF1E00ABA52B /* StakingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */; };
 		A6D1F80A291BB0F100ABA52B /* StakingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F809291BB0F100ABA52B /* StakingSummaryViewModel.swift */; };
@@ -106,6 +107,7 @@
 		A66FC3F728F4F52100E49E86 /* EarnModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EarnModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66FC3FA28F4F52100E49E86 /* EarnModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EarnModule.h; sourceTree = "<group>"; };
 		A69E8EB0291DDEBB005B28CB /* PendingStakingTxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingStakingTxInfo.swift; sourceTree = "<group>"; };
+		A69E8EB3291DEF23005B28CB /* StakeDisplayInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakeDisplayInfo.swift; sourceTree = "<group>"; };
 		A6D1F7F0291B847800ABA52B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingViewModel.swift; sourceTree = "<group>"; };
 		A6D1F809291BB0F100ABA52B /* StakingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingSummaryViewModel.swift; sourceTree = "<group>"; };
@@ -225,7 +227,6 @@
 				7EB252C02907F3E100648438 /* EarnOverViewModel.swift */,
 				A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */,
 				A6D1F809291BB0F100ABA52B /* StakingSummaryViewModel.swift */,
-				A69E8EB0291DDEBB005B28CB /* PendingStakingTxInfo.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -251,6 +252,7 @@
 		A66FC3F928F4F52100E49E86 /* EarnModule */ = {
 			isa = PBXGroup;
 			children = (
+				A69E8EB2291DEE91005B28CB /* Models */,
 				7EAF4760291B684900BF5D00 /* View */,
 				7E6EBD66290927F900069B33 /* Cells */,
 				7EB252BF2907F3C500648438 /* ViewModel */,
@@ -259,6 +261,15 @@
 				A66FC3FA28F4F52100E49E86 /* EarnModule.h */,
 			);
 			path = EarnModule;
+			sourceTree = "<group>";
+		};
+		A69E8EB2291DEE91005B28CB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A69E8EB0291DDEBB005B28CB /* PendingStakingTxInfo.swift */,
+				A69E8EB3291DEF23005B28CB /* StakeDisplayInfo.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -386,6 +397,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A69E8EB4291DEF23005B28CB /* StakeDisplayInfo.swift in Sources */,
 				7E6EBD6B2909280900069B33 /* EarnPoolPlatformCell.swift in Sources */,
 				A6D1F7F1291B847800ABA52B /* Constants.swift in Sources */,
 				7E6EBD6129091E0800069B33 /* EarnListViewController.swift in Sources */,

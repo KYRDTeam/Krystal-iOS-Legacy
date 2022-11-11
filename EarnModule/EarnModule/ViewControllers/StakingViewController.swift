@@ -15,8 +15,6 @@ import Dependencies
 import TransactionModule
 import FittedSheets
 
-typealias StakeDisplayInfo = (amount: String, apy: String, receiveAmount: String, rate: String, fee: String, platform: String, stakeTokenIcon: String, fromSym: String, toSym: String)
-
 typealias ProjectionValue = (value: String, usd: String)
 typealias ProjectionValues = (p30: ProjectionValue, p60: ProjectionValue, p90: ProjectionValue)
 
@@ -300,7 +298,17 @@ class StakingViewController: InAppBrowsingViewController {
         } else {
             guard viewModel.formState.value == .valid else { return }
             if let tx = viewModel.txObject.value {
-                let displayInfo = ("\(viewModel.amount.value) \(viewModel.pool.token.symbol)", viewModel.displayAPY, viewModel.displayAmountReceive, viewModel.displayRate, viewModel.displayFeeString, viewModel.selectedPlatform.name, viewModel.pool.token.logo, viewModel.pool.token.symbol, viewModel.selectedEarningToken.value?.symbol ?? "")
+                let displayInfo = StakeDisplayInfo(
+                    amount: "\(viewModel.amount.value) \(viewModel.pool.token.symbol)",
+                    apy: viewModel.displayAPY,
+                    receiveAmount: viewModel.displayAmountReceive,
+                    rate: viewModel.displayRate,
+                    fee: viewModel.displayFeeString,
+                    platform: viewModel.selectedPlatform.name,
+                    stakeTokenIcon: viewModel.pool.token.logo,
+                    fromSym: viewModel.pool.token.symbol,
+                    toSym: viewModel.selectedEarningToken.value?.symbol ?? ""
+                )
                 self.openStakeSummary(txObject: tx, settings: viewModel.setting, displayInfo: displayInfo)
             } else {
                 viewModel.requestBuildStakeTx(showLoading: true)
