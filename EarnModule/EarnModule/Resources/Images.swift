@@ -84,6 +84,9 @@ struct Images {
   static let connectSuccess = UIImage(named: "connect_success")!
   static let connectFailed = UIImage(named: "connect_fail")!
     
-    // Staking
-    static let revert = UIImage(named: "revert_icon")
+  // Staking
+  static let revert = UIImage(named: "revert_icon")!
+  static let greenPlus = UIImage(named: "green_plus_icon")!
+  static let greenSubtract = UIImage(named: "green_subtract_icon")!
+  static let redSubtract = UIImage(named: "red_subtract_icon")!
 }

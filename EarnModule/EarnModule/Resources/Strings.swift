@@ -21,6 +21,8 @@ struct Strings {
     static let searchPools = "search.pools".toBeLocalised()
     static let searchToken = "search.token".toBeLocalised()
     static let Staking = "Staking".toBeLocalised()
+    static let Stake = "Stake".toBeLocalised()
+    static let Unstake = "Unstake".toBeLocalised()
     static let noRecordFound = "no.record.found".toBeLocalised()
     static let earnIsCurrentlyNotSupportedOnThisChainYet = "earn.is.currently.not.supported.on.this.chain.yet".toBeLocalised()
     static let cheking = "checking".toBeLocalised()

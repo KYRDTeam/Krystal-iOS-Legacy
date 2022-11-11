@@ -198,14 +198,14 @@
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="OZD-CW-5ls">
                     <rect key="frame" x="30" y="294.33333333333331" width="315" height="124"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DdX-MI-5M5" customClass="SwapInfoView" customModule="DesignSystem">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DdX-MI-5M5" customClass="TxInfoView" customModule="DesignSystem">
                             <rect key="frame" x="0.0" y="0.0" width="315" height="28"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="28" id="gZD-Ve-abi"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XsL-2l-Vff" customClass="SwapInfoView" customModule="DesignSystem">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XsL-2l-Vff" customClass="TxInfoView" customModule="DesignSystem">
                             <rect key="frame" x="0.0" y="32" width="315" height="28"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
@@ -215,7 +215,7 @@
                                 <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtSlippage"/>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y6A-ga-6bJ" customClass="SwapInfoView" customModule="DesignSystem">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y6A-ga-6bJ" customClass="TxInfoView" customModule="DesignSystem">
                             <rect key="frame" x="0.0" y="64" width="315" height="28"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
@@ -225,7 +225,7 @@
                                 <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtMinReceive"/>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z8k-j5-eCz" customClass="SwapInfoView" customModule="DesignSystem">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z8k-j5-eCz" customClass="TxInfoView" customModule="DesignSystem">
                             <rect key="frame" x="0.0" y="96" width="315" height="28"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>

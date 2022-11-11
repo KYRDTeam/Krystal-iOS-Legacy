@@ -23,3 +23,5 @@
 "confirm.stake" = "Confirm Stake";
 "stake.summary" = "Stake Summary";
 "you.are.staking" = "You are staking";
+"Unstake" = "Unstake";
+"Stake" = "Stake";

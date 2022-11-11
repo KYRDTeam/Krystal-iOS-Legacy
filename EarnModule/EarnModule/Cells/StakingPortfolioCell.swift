@@ -9,6 +9,7 @@ import UIKit
 import BigInt
 import Utilities
 import Services
+import SwipeCellKit
 
 struct StakingPortfolioCellModel {
   let tokenLogo: String
@@ -54,11 +55,7 @@ struct StakingPortfolioCellModel {
   }
 }
 
-protocol StakingPortfolioCellDelegate: class {
-  func warningButtonTapped()
-}
-
-class StakingPortfolioCell: UITableViewCell {
+class StakingPortfolioCell: SwipeTableViewCell {
   @IBOutlet weak var tokenImageView: UIImageView!
   @IBOutlet weak var chainImageView: UIImageView!
   @IBOutlet weak var tokenNameLabel: UILabel!
@@ -82,7 +79,7 @@ class StakingPortfolioCell: UITableViewCell {
   @IBOutlet weak var apyTitleLabel: UILabel!
   @IBOutlet weak var balanceTitleLabel: UILabel!
   
-  weak var delegate: StakingPortfolioCellDelegate?
+  var viewControler: UIViewController?
   
   func updateCellModel(_ model: StakingPortfolioCellModel) {
     tokenImageView.loadImage(model.tokenLogo)
@@ -109,7 +106,7 @@ class StakingPortfolioCell: UITableViewCell {
   }
   
   @IBAction func inProcessButtonTapped(_ sender: UIButton) {
-    delegate?.warningButtonTapped()
+    viewControler?.showBottomBannerView(message: "It takes about x days to unstake. After that you can claim your rewards.")
   }
   
   @IBAction func claimButtonTapped(_ sender: UIButton) {
