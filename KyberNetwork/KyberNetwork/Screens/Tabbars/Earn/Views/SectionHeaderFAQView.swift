@@ -8,11 +8,25 @@
 import Foundation
 import UIKit
 
+protocol SectionHeaderFAQViewDelegate: class {
+  func didChangeExpandStatus(status: Bool, section: Int)
+}
+
 class SectionHeaderFAQView: UITableViewHeaderFooterView {
   let contentLabel = UILabel()
   let expandButton = UIButton()
   
-  var isExpand = false
+  var isExpand = false {
+    didSet {
+      if self.isExpand {
+        self.expandButton.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+      } else {
+        self.expandButton.transform = CGAffineTransform(rotationAngle: 0)
+      }
+    }
+  }
+  weak var delegate: SectionHeaderFAQViewDelegate?
+  var section = -1
   
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
@@ -47,6 +61,12 @@ class SectionHeaderFAQView: UITableViewHeaderFooterView {
       contentLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
       expandButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
     ])
+    
+    if self.isExpand {
+      self.expandButton.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+    } else {
+      self.expandButton.transform = CGAffineTransform(rotationAngle: 0)
+    }
   }
   
   func updateTitle(text: String) {
@@ -56,13 +76,7 @@ class SectionHeaderFAQView: UITableViewHeaderFooterView {
   @objc func pressed() {
     isExpand = !isExpand
     
-    UIView.animate(withDuration: 0.25) {
-      if self.isExpand {
-        self.expandButton.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
-      } else {
-        self.expandButton.transform = CGAffineTransform(rotationAngle: 0)
-      }
-    }
+    delegate?.didChangeExpandStatus(status: isExpand, section: section)
   }
   
   class func estimateHeightForSection(_ text: String) -> CGFloat {

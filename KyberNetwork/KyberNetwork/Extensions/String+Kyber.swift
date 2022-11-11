@@ -277,6 +277,7 @@ extension String {
                   font-family: 'Karla';
                   font-size: \(size)px;
                 }
+                a:link, a:visited { color: #1DE9B6; }
               </style>
             </head>
             <body>

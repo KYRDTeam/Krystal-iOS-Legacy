@@ -14,7 +14,7 @@ class FAQCellItem {
   
   init(_ model: FAQModel) {
     self.model = model
-    self.isExpand = true
+    self.isExpand = false
   }
 }
 
@@ -102,11 +102,22 @@ extension StakingFAQView: UITableViewDelegate {
     let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "sectionHeader") as! SectionHeaderFAQView
     let cm = viewModel.dataSource[section]
     view.updateTitle(text: cm.model.question)
+    view.section = section
+    view.isExpand = cm.isExpand
+    view.delegate = self
     return view
   }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     let cm = viewModel.dataSource[section]
     return SectionHeaderFAQView.estimateHeightForSection(cm.model.question)
+  }
+}
+
+extension StakingFAQView: SectionHeaderFAQViewDelegate {
+  func didChangeExpandStatus(status: Bool, section: Int) {
+    let cm = viewModel.dataSource[section]
+    cm.isExpand = status
+    contentTableView.reloadData()
   }
 }
