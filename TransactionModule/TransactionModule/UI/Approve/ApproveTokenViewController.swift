@@ -244,12 +244,12 @@ public class ApproveTokenViewController: KNBaseViewController {
   }
 
   @IBAction func editButtonTapped(_ sender: Any) {
-//    TransactionSettingPopup.show(on: self, chain: chain, currentSetting: viewModel.setting, onConfirmed: { [weak self] settingObject in
-//        self?.viewModel.setting = settingObject
-//        self?.reloadGasUI()
-//    }, onCancelled: {
-//        return
-//    })
+    TransactionSettingPopup.show(on: self, chain: viewModel.chain, currentSetting: viewModel.setting, onConfirmed: { [weak self] settingObject in
+        self?.viewModel.setting = settingObject
+        self?.updateGasFeeUI()
+    }, onCancelled: {
+        return
+    })
   }
 
   @IBAction func cancelButtonTapped(_ sender: UIButton) {

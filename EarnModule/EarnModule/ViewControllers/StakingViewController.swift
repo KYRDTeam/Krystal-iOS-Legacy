@@ -234,11 +234,6 @@ class StakingViewController: InAppBrowsingViewController {
         viewModel.gasLimit.observeAndFire(on: self) { _ in
             self.updateUIGasFee()
         }
-        
-        viewModel.gasPrice.observeAndFire(on: self) { _ in
-            self.updateUIGasFee()
-        }
-        
         viewModel.nextButtonStatus.observeAndFire(on: self) { value in
             switch value {
             case .notApprove:
@@ -279,6 +274,16 @@ class StakingViewController: InAppBrowsingViewController {
         }
     }
     
+    @IBAction func settingButtonTapped(_ sender: Any) {
+        let chainType = ChainType.make(chainID: viewModel.pool.chainID) ?? .eth
+        TransactionSettingPopup.show(on: self, chain: chainType, currentSetting: viewModel.setting, onConfirmed: { [weak self] settingObject in
+            self?.viewModel.setting = settingObject
+            self?.updateUIGasFee()
+        }, onCancelled: {
+            return
+        })
+    }
+
     @IBAction func historyTapped(_ sender: Any) {
         AppDependencies.router.openTransactionHistory()
     }

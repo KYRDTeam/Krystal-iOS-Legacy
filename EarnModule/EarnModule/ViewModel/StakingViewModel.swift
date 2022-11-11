@@ -23,7 +23,6 @@ class StakingViewModel: BaseViewModel {
     var amount: Observable<String> = .init("")
     var selectedEarningToken: Observable<EarningToken?> = .init(nil)
     var formState: Observable<FormState> = .init(.empty)
-    var gasPrice: Observable<BigInt> = .init(AppDependencies.gasConfig.getStandardGasPrice(chain: AppState.shared.currentChain))
     var gasLimit: Observable<BigInt> = .init(AppDependencies.gasConfig.earnGasLimitDefault)
     var baseGasLimit: BigInt = AppDependencies.gasConfig.earnGasLimitDefault
     var txObject: Observable<TxObject?> = .init(nil)
@@ -69,7 +68,12 @@ class StakingViewModel: BaseViewModel {
     }
     
     var transactionFee: BigInt {
-        return self.gasPrice.value * self.gasLimit.value
+        if let basic = setting.basic {
+            return setting.gasLimit * self.getGasPrice(gasType: basic.gasType)
+          } else if let advance = setting.advanced {
+            return setting.gasLimit * advance.maxFee
+          }
+        return BigInt(0)
     }
     
     var feeETHString: String {
@@ -89,6 +93,34 @@ class StakingViewModel: BaseViewModel {
     
     var displayFeeString: String {
         return "\(feeETHString) \(feeUSDString)"
+    }
+  
+    func getGasPrice(gasType: GasSpeed) -> BigInt {
+        guard let chain = ChainType.make(chainID: pool.chainID) else { return .zero }
+        switch gasType {
+        case .slow:
+            return AppDependencies.gasConfig.getLowGasPrice(chain: chain)
+        case .regular:
+            return AppDependencies.gasConfig.getStandardGasPrice(chain: chain)
+        case .fast:
+            return AppDependencies.gasConfig.getFastGasPrice(chain: chain)
+        case .superFast:
+            return AppDependencies.gasConfig.getSuperFastGasPrice(chain: chain)
+        }
+    }
+    
+    func getPriority(gasType: GasSpeed) -> BigInt? {
+        guard let chain = ChainType.make(chainID: pool.chainID) else { return .zero }
+        switch gasType {
+        case .slow:
+            return AppDependencies.gasConfig.getLowPriorityFee(chain: chain)
+        case .regular:
+            return AppDependencies.gasConfig.getStandardPriorityFee(chain: chain)
+        case .fast:
+            return AppDependencies.gasConfig.getFastPriorityFee(chain: chain)
+        case .superFast:
+            return AppDependencies.gasConfig.getSuperFastPriorityFee(chain: chain)
+        }
     }
     
     func requestOptionDetail() {
