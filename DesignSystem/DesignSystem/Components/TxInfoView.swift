@@ -65,7 +65,7 @@ public class TxInfoView: BaseXibView {
         valueLabel.text = value
         iconImageView.isHidden = !shouldShowIcon
         iconImageView.image = rightValueIcon
-        valueLabel.textColor = highlighted ? AppTheme.current.primaryColor : AppTheme.current.secondaryTextColor
+        valueLabel.textColor = highlighted ? AppTheme.current.primaryColor : AppTheme.current.primaryTextColor
         valueLabel.font = highlighted ? UIFont.karlaMedium(ofSize: 14) : UIFont.karlaReguler(ofSize: 14)
     }
 
@@ -77,7 +77,7 @@ public class TxInfoView: BaseXibView {
   
   public func setValue(value: String?, highlighted: Bool = false) {
     valueLabel.text = value
-    valueLabel.textColor = highlighted ? AppTheme.current.primaryColor : AppTheme.current.secondaryTextColor
+    valueLabel.textColor = highlighted ? AppTheme.current.primaryColor : AppTheme.current.primaryTextColor
     valueLabel.font = highlighted ? UIFont.karlaMedium(ofSize: 14) : UIFont.karlaReguler(ofSize: 14)
   }
   

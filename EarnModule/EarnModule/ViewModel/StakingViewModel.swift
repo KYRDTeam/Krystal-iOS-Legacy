@@ -12,8 +12,9 @@ import AppState
 import Services
 import Dependencies
 import TransactionModule
+import BaseModule
 
-class StakingViewModel {
+class StakingViewModel: BaseViewModel {
   let pool: EarnPoolModel
   let selectedPlatform: EarnPlatform
   let apiService = EarnServices()
@@ -28,28 +29,8 @@ class StakingViewModel {
   var txObject: Observable<TxObject?> = .init(nil)
   var isLoading: Observable<Bool> = .init(false)
   
-  
   var setting: TxSettingObject = .default
-  
-  
-//  var basicSetting: BasicTransactionSettings = BasicTransactionSettings(gasPriceType: .medium) {
-//    didSet {
-//      let gas = self.basicSetting.gasPriceType.getGasValue()
-//      self.gasPrice.value = gas
-//    }
-//  }
-//  var advancedSetting: AdvancedTransactionSettings? = nil {
-//    didSet {
-//      guard let setting = self.advancedSetting else { return }
-//      self.gasPrice.value = setting.maxFee
-//      self.gasLimit.value = setting.gasLimit
-//    }
-//  }
-  
-  
-  
-  
-  
+
   var isUseReverseRate: Observable<Bool> = .init(false)
   
   var nextButtonStatus: Observable<NextButtonState> = .init(.notApprove)
@@ -61,7 +42,11 @@ class StakingViewModel {
   }
   
   var isExpandProjection: Observable<Bool> = .init(false)
-  
+    
+    let tokenService = TokenService()
+    var quoteTokenDetail: TokenDetailInfo?
+    var onFetchedQuoteTokenPrice: (() -> ())?
+    
   init(pool: EarnPoolModel, platform: EarnPlatform) {
     self.pool = pool
     self.selectedPlatform = platform
@@ -91,13 +76,16 @@ class StakingViewModel {
     let string: String = self.transactionFee.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
     return "\(string) \(AppState.shared.currentChain.quoteToken())"
   }
-
-  var feeUSDString: String {
-    let quoteUSD = AppDependencies.priceStorage.getQuoteUsdRate(chain: AppState.shared.currentChain) ?? 0
-    let usd = self.transactionFee * BigInt(quoteUSD * pow(10.0, 18.0)) / BigInt(10).power(18)
-    let valueString: String =  usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
-    return "(~ \(valueString) USD)"
-  }
+    
+    var quoteTokenUsdPrice: Double {
+        return quoteTokenDetail?.markets["usd"]?.price ?? 0
+    }
+    
+    var feeUSDString: String {
+        let usd = self.transactionFee * BigInt(quoteTokenUsdPrice * pow(10, 18)) / BigInt(10).power(18)
+        let valueString = NumberFormatUtils.usdAmount(value: usd, decimals: 18)
+        return "(~ $\(valueString))"
+    }
   
   var displayFeeString: String {
     return "\(feeETHString) \(feeUSDString)"
@@ -244,7 +232,7 @@ class StakingViewModel {
     }
     
     let contractAddress = tx.to
-    let service = EthereumNodeService(chain: AppState.shared.currentChain)
+    let service = EthereumNodeService(chain: currentChain)
     service.getAllowance(for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: pool.token.address) { result in
       switch result {
       case .success(let number):
@@ -257,12 +245,19 @@ class StakingViewModel {
   }
   
   var isChainValid: Bool {
-    return AppState.shared.currentChain.customRPC().chainID == pool.chainID
+    return currentChain.customRPC().chainID == pool.chainID
   }
     
     func reloadData() {
         requestOptionDetail()
         getAllowance()
         amount.value = AppDependencies.balancesStorage.getBalanceBigInt(address: pool.token.address).fullString(decimals: pool.token.decimals)
+    }
+    
+    func getQuoteTokenPrice() {
+        tokenService.getTokenDetail(address: currentChain.customRPC().quoteTokenAddress, chainPath: currentChain.customRPC().apiChainPath) { [weak self] tokenDetail in
+            self?.quoteTokenDetail = tokenDetail
+            self?.onFetchedQuoteTokenPrice?()
+        }
     }
 }

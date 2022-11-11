@@ -85,6 +85,7 @@ class StakingViewController: InAppBrowsingViewController {
         bindingViewModel()
         viewModel.requestOptionDetail()
         viewModel.getAllowance()
+        viewModel.getQuoteTokenPrice()
         updateUIProjection()
     }
     
@@ -271,6 +272,10 @@ class StakingViewController: InAppBrowsingViewController {
         
         viewModel.isUseReverseRate.observeAndFire(on: self) { _ in
             self.rateInfoView.setValue(value: self.viewModel.displayRate)
+        }
+        
+        viewModel.onFetchedQuoteTokenPrice = { [weak self] in
+            self?.updateUIGasFee()
         }
     }
     
