@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4CFF1BE22E8800A59A9EB00D /* Pods_DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F23EBAA94EB71BAC3B317ABE /* Pods_DesignSystem.framework */; };
-		7E36E36D291A658D009BC8FE /* SwapInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E36E36B291A658C009BC8FE /* SwapInfoView.swift */; };
-		7E36E36E291A658D009BC8FE /* SwapInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E36E36C291A658C009BC8FE /* SwapInfoView.xib */; };
+		7E36E36D291A658D009BC8FE /* TxInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E36E36B291A658C009BC8FE /* TxInfoView.swift */; };
+		7E36E36E291A658D009BC8FE /* TxInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E36E36C291A658C009BC8FE /* TxInfoView.xib */; };
 		7EAF4759291B5CB500BF5D00 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF4758291B5CB500BF5D00 /* UIViewController.swift */; };
 		A64C2E1628F6F8AF002FD64C /* DashedLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E1528F6F8AF002FD64C /* DashedLineView.swift */; };
 		A64C2E1D28F6FA28002FD64C /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E1C28F6FA28002FD64C /* Font.swift */; };
@@ -35,8 +35,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7E36E36B291A658C009BC8FE /* SwapInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapInfoView.swift; sourceTree = "<group>"; };
-		7E36E36C291A658C009BC8FE /* SwapInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwapInfoView.xib; sourceTree = "<group>"; };
+		7E36E36B291A658C009BC8FE /* TxInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TxInfoView.swift; sourceTree = "<group>"; };
+		7E36E36C291A658C009BC8FE /* TxInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxInfoView.xib; sourceTree = "<group>"; };
 		7EAF4758291B5CB500BF5D00 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		A64C2E1528F6F8AF002FD64C /* DashedLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedLineView.swift; sourceTree = "<group>"; };
 		A64C2E1C28F6FA28002FD64C /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
@@ -91,8 +91,8 @@
 		A64C2E1428F6F891002FD64C /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				7E36E36B291A658C009BC8FE /* SwapInfoView.swift */,
-				7E36E36C291A658C009BC8FE /* SwapInfoView.xib */,
+				7E36E36B291A658C009BC8FE /* TxInfoView.swift */,
+				7E36E36C291A658C009BC8FE /* TxInfoView.xib */,
 				A66846112908DE16006BBE29 /* ListEmptyView.swift */,
 				A66846122908DE16006BBE29 /* ListEmptyView.xib */,
 				A64C2E2528F6FD28002FD64C /* CircleProgressView.swift */,
@@ -249,7 +249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A66846142908DE16006BBE29 /* ListEmptyView.xib in Resources */,
-				7E36E36E291A658D009BC8FE /* SwapInfoView.xib in Resources */,
+				7E36E36E291A658D009BC8FE /* TxInfoView.xib in Resources */,
 				A64C2E2328F6FCF0002FD64C /* CircularArrowProgressView.xib in Resources */,
 				A66846062907FBB0006BBE29 /* BottomMessagePopup.xib in Resources */,
 				A6B1FD3228F6BA2300894DCB /* Assets.xcassets in Resources */,
@@ -304,7 +304,7 @@
 				A64C2E5928F819E0002FD64C /* MessageBanner.swift in Sources */,
 				A64C2E2628F6FD28002FD64C /* PolygonView.swift in Sources */,
 				A64C2E4C28F7F978002FD64C /* UIButton+.swift in Sources */,
-				7E36E36D291A658D009BC8FE /* SwapInfoView.swift in Sources */,
+				7E36E36D291A658D009BC8FE /* TxInfoView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

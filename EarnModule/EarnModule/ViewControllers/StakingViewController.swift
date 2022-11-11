@@ -46,10 +46,10 @@ class StakingViewController: InAppBrowsingViewController {
     @IBOutlet weak var stakeTokenLabel: UILabel!
     @IBOutlet weak var stakeTokenImageView: UIImageView!
     @IBOutlet weak var amountTextField: UITextField!
-    @IBOutlet weak var apyInfoView: SwapInfoView!
-    @IBOutlet weak var amountReceiveInfoView: SwapInfoView!
-    @IBOutlet weak var rateInfoView: SwapInfoView!
-    @IBOutlet weak var networkFeeInfoView: SwapInfoView!
+    @IBOutlet weak var apyInfoView: TxInfoView!
+    @IBOutlet weak var amountReceiveInfoView: TxInfoView!
+    @IBOutlet weak var rateInfoView: TxInfoView!
+    @IBOutlet weak var networkFeeInfoView: TxInfoView!
     
     @IBOutlet weak var earningTokenContainerView: StakingEarningTokensView!
     @IBOutlet weak var infoAreaTopContraint: NSLayoutConstraint!
@@ -122,18 +122,15 @@ class StakingViewController: InAppBrowsingViewController {
     
     private func setupUI() {
         apyInfoView.setTitle(title: Strings.apyTitle, underlined: false)
-        //    apyInfoView.iconImageView.isHidden = true
         
         amountReceiveInfoView.setTitle(title: Strings.youWillReceive, underlined: false)
-        //    amountReceiveInfoView.iconImageView.isHidden = true
         
-        rateInfoView.setTitle(title: Strings.rate, underlined: false, shouldShowIcon: true)
+        rateInfoView.setInfo(title: Strings.rate, titleUnderlined: false, value: "", shouldShowIcon: true, rightValueIcon: Images.revert)
         rateInfoView.onTapRightIcon = {
             self.viewModel.isUseReverseRate.value = !self.viewModel.isUseReverseRate.value
         }
         
         networkFeeInfoView.setTitle(title: Strings.networkFee, underlined: false)
-        //    networkFeeInfoView.iconImageView.isHidden = true
         
         earningTokenContainerView.delegate = self
         updateUIGasFee()

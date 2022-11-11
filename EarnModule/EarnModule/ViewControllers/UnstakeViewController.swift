@@ -17,10 +17,10 @@ class UnstakeViewController: InAppBrowsingViewController {
     @IBOutlet weak var amountViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var amountView: UIView!
     
-    @IBOutlet weak var receiveInfoView: SwapInfoView!
-    @IBOutlet weak var rateView: SwapInfoView!
-    @IBOutlet weak var networkFeeView: SwapInfoView!
-    @IBOutlet weak var receiveTimeView: SwapInfoView!
+    @IBOutlet weak var receiveInfoView: TxInfoView!
+    @IBOutlet weak var rateView: TxInfoView!
+    @IBOutlet weak var networkFeeView: TxInfoView!
+    @IBOutlet weak var receiveTimeView: TxInfoView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +34,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         networkFeeView.setInfo(title: "Network Fee", value: "0 stMATIC")
         receiveTimeView.setInfo(title: "You will receive your MATIC in 2-3 days", value: "")
     }
-
+    
     @IBAction func settingButtonTapped(_ sender: Any) {
         
     }

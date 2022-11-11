@@ -357,28 +357,28 @@
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="QKH-hD-w8o">
                             <rect key="frame" x="15" y="185.5" width="345" height="124"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8AN-XC-Lhr" customClass="SwapInfoView" customModule="DesignSystem">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8AN-XC-Lhr" customClass="TxInfoView" customModule="DesignSystem">
                                     <rect key="frame" x="0.0" y="0.0" width="345" height="28"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="28" id="76r-eh-TM4"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UK8-lg-MT7" customClass="SwapInfoView" customModule="DesignSystem">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UK8-lg-MT7" customClass="TxInfoView" customModule="DesignSystem">
                                     <rect key="frame" x="0.0" y="32" width="345" height="28"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="28" id="W0P-Dy-rvQ"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fd2-Pd-wBO" customClass="SwapInfoView" customModule="DesignSystem">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fd2-Pd-wBO" customClass="TxInfoView" customModule="DesignSystem">
                                     <rect key="frame" x="0.0" y="64" width="345" height="28"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="28" id="Kd0-rQ-TBh"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cyu-cp-C1e" customClass="SwapInfoView" customModule="DesignSystem">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cyu-cp-C1e" customClass="TxInfoView" customModule="DesignSystem">
                                     <rect key="frame" x="0.0" y="96" width="345" height="28"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>

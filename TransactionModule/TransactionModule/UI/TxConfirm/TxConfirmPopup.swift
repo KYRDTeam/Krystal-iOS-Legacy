@@ -23,7 +23,6 @@ public class TxConfirmPopup: UIViewController {
     @IBOutlet weak var errorView: UIView!
     @IBOutlet weak var continueButton: LoadyButton!
     
-    
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tableViewToErrorConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewToBottomConstraint: NSLayoutConstraint!
