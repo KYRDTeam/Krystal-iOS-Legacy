@@ -8,22 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		A64C2DE728F6D5B1002FD64C /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DE628F6D5B1002FD64C /* Utilities.framework */; };
-		A64C2DE828F6D5B1002FD64C /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DE628F6D5B1002FD64C /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A64C2DEB28F6D5B5002FD64C /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DEA28F6D5B5002FD64C /* AppState.framework */; };
-		A64C2DEC28F6D5B5002FD64C /* AppState.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DEA28F6D5B5002FD64C /* AppState.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A64C2DEE28F6D5B8002FD64C /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DED28F6D5B8002FD64C /* BaseModule.framework */; };
-		A64C2DEF28F6D5B8002FD64C /* BaseModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DED28F6D5B8002FD64C /* BaseModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A64C2DF128F6D5C1002FD64C /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DF028F6D5C1002FD64C /* KrystalWallets.framework */; };
-		A64C2DF228F6D5C1002FD64C /* KrystalWallets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DF028F6D5C1002FD64C /* KrystalWallets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A64C2DF428F6D5C5002FD64C /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DF328F6D5C5002FD64C /* DesignSystem.framework */; };
-		A64C2DF528F6D5C5002FD64C /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2DF328F6D5C5002FD64C /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A64C2E3128F7B8AE002FD64C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A64C2E3028F7B8AE002FD64C /* Localizable.strings */; };
 		A64C2E3328F7B8D3002FD64C /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3228F7B8D3002FD64C /* Strings.swift */; };
 		A64C2E3528F7B8F7002FD64C /* SwapModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3428F7B8F7002FD64C /* SwapModule.swift */; };
 		A64C2E3C28F7BDEE002FD64C /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2E3B28F7BDEE002FD64C /* Services.framework */; };
-		A64C2E3D28F7BDEE002FD64C /* Services.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2E3B28F7BDEE002FD64C /* Services.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A64C2E4E28F7FEBC002FD64C /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2E4D28F7FEBC002FD64C /* Dependencies.framework */; };
-		A64C2E4F28F7FEBD002FD64C /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2E4D28F7FEBC002FD64C /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A64C2E5128F7FF55002FD64C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E5028F7FF55002FD64C /* Constants.swift */; };
 		A64C2E5528F812A5002FD64C /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E5428F812A5002FD64C /* Images.swift */; };
 		A64C2E5728F8132C002FD64C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A64C2E5628F8132C002FD64C /* Assets.xcassets */; };
@@ -48,26 +41,6 @@
 		A6512F6728F6D1C900A84BC2 /* SwapObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F5028F6D1C900A84BC2 /* SwapObject.swift */; };
 		A915E2B24411BEFE1D1E6646 /* Pods_SwapModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CADA989BD9B33A878DEA071 /* Pods_SwapModule.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		A64C2DE928F6D5B1002FD64C /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				A64C2DEC28F6D5B5002FD64C /* AppState.framework in Embed Frameworks */,
-				A64C2DEF28F6D5B8002FD64C /* BaseModule.framework in Embed Frameworks */,
-				A64C2E4F28F7FEBD002FD64C /* Dependencies.framework in Embed Frameworks */,
-				A64C2DF528F6D5C5002FD64C /* DesignSystem.framework in Embed Frameworks */,
-				A64C2DF228F6D5C1002FD64C /* KrystalWallets.framework in Embed Frameworks */,
-				A64C2E3D28F7BDEE002FD64C /* Services.framework in Embed Frameworks */,
-				A64C2DE828F6D5B1002FD64C /* Utilities.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0950F0FA5699EA3AAEFBDE5C /* Pods-SwapModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwapModule.debug.xcconfig"; path = "Target Support Files/Pods-SwapModule/Pods-SwapModule.debug.xcconfig"; sourceTree = "<group>"; };
@@ -286,7 +259,6 @@
 				A6512F1C28F6CBDB00A84BC2 /* Sources */,
 				A6512F1D28F6CBDB00A84BC2 /* Frameworks */,
 				A6512F1E28F6CBDB00A84BC2 /* Resources */,
-				A64C2DE928F6D5B1002FD64C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
