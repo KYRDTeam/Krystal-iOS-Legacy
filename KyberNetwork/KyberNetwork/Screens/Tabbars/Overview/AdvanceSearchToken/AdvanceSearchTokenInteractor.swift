@@ -10,6 +10,7 @@
 
 import UIKit
 import Moya
+import Services
 
 class AdvanceSearchTokenInteractor: AdvanceSearchTokenInteractorProtocol {
   weak var presenter: AdvanceSearchTokenPresenterProtocol?

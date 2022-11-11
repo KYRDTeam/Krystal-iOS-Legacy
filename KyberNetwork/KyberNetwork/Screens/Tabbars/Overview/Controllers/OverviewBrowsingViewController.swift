@@ -87,7 +87,7 @@ class OverviewBrowsingViewController: InAppBrowsingViewController {
     reloadUI()
   }
   
-  fileprivate func reloadUI() {
+  func reloadUI() {
     guard isViewLoaded else { return }
     self.updateUISortBar()
     self.updateCh24Button()

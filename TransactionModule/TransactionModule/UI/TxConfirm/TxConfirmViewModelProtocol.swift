@@ -21,7 +21,7 @@ public protocol TxConfirmViewModelProtocol: AnyObject {
     var rows: [TxInfoRowData] { get }
     var isRequesting: Bool { get set }
     var onError: (String) -> Void { get set }
-    var onSuccess: () -> Void { get set }
+    var onSuccess: (PendingTxInfo) -> Void { get set }
     var onSelectOpenSetting: (() -> ())? { get set }
     
     func onTapConfirm()

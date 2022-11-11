@@ -10,6 +10,10 @@ import BaseModule
 import Dependencies
 import AppState
 
+protocol EarnOverviewV2ControllerDelegate: class {
+  func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel)
+}
+
 class EarnOverviewV2Controller: InAppBrowsingViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
   @IBOutlet weak var pageContainer: UIView!
@@ -26,6 +30,7 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
     return true
   }
   var currentSelectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : KNGeneralProvider.shared.currentChain
+  weak var delegate: EarnOverviewV2ControllerDelegate?
   
   init(viewModel: EarnOverViewModel) {
     self.viewModel = viewModel
@@ -63,6 +68,7 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
   
   func initChildViewControllers() {
     let earnPoolVC = EarnListViewController.instantiateFromNib()
+    earnPoolVC.delegate = self
     let portfolioVC = StakingPortfolioViewController.instantiateFromNib()
     childListViewControllers = [earnPoolVC, portfolioVC]
   }
@@ -136,5 +142,11 @@ extension EarnOverviewV2Controller: UIPageViewControllerDelegate {
     segmentedControl.selectedSegmentIndex = newIndex
     selectedPageIndex = newIndex
     segmentedControl.underlineCenterPosition()
+  }
+}
+
+extension EarnOverviewV2Controller: EarnListViewControllerDelegate {
+  func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
+    delegate?.didSelectPlatform(platform: platform, pool: pool)
   }
 }

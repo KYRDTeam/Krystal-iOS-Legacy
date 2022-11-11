@@ -1,0 +1,25 @@
+/* 
+  Localizable.strings
+  EarnModule
+
+  Created by Com1 on 26/10/2022.
+  
+*/
+"no.record.found" = "No record found";
+"search.pools" = "Search pools";
+"Staking" = "Staking";
+"search.token" = "Search token";
+"earn.is.currently.not.supported.on.this.chain.yet" = "Earn is currently not supported on this chain yet.";
+"no.tokens.deposited" = "No tokens deposited yet.";
+"approve.token" = "Approve %@";
+"checking" = "Checking";
+"stake.now" = "Stake Now";
+"est.apy" = "APY (Est. Yield";
+"receive.title" = "You will receive";
+"rate" = "Rate";
+"network.fee" = "Network Fee";
+"ok" = "OK";
+"cancel" = "Cancel";
+"confirm.stake" = "Confirm Stake";
+"stake.summary" = "Stake Summary";
+"you.are.staking" = "You are staking";

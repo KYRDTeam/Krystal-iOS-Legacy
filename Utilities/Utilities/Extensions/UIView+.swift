@@ -213,6 +213,11 @@ public extension UIView {
         self.layer.add(animation, forKey: "position")
     }
     
+    func removeError() {
+        self.layer.borderColor = UIColor.clear.cgColor
+        self.layer.borderWidth = 1.0
+    }
+    
     @IBInspectable var kn_borderColor: UIColor {
         get {
             let color = self.layer.borderColor ?? UIColor.white.cgColor

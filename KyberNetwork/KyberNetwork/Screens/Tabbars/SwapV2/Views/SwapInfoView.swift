@@ -66,7 +66,7 @@ class SwapInfoView: BaseXibView {
   
   func setValue(value: String?, highlighted: Bool = false) {
     valueLabel.text = value
-    valueLabel.textColor = highlighted ? .Kyber.primaryGreenColor : .white.withAlphaComponent(0.5)
+    valueLabel.textColor = highlighted ? .Kyber.primaryGreenColor : .white
     valueLabel.font = highlighted ? UIFont(name: "Karla-Medium", size: 14) : UIFont(name: "Karla-Regular", size: 14)
   }
   

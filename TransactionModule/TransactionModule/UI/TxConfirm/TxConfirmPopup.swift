@@ -23,28 +23,33 @@ public class TxConfirmPopup: UIViewController {
     @IBOutlet weak var errorView: UIView!
     @IBOutlet weak var continueButton: LoadyButton!
     
-    
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tableViewToErrorConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewToBottomConstraint: NSLayoutConstraint!
 
     public var viewModel: TxConfirmViewModelProtocol!
+    var onSuccess: ((PendingTxInfo) -> ())? = nil
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupViews()
         setupTableView()
         
         continueButton.setAnimation(LoadyAnimationType.indicator(with: .init(indicatorViewStyle: .black)))
         
         viewModel.onError = { [weak self] message in
+            self?.viewModel.isRequesting = false
             self?.hideLoading()
             self?.displayError(message: message)
         }
         
-        viewModel.onSuccess = { [weak self] in
+        viewModel.onSuccess = { [weak self] pendingTx in
+            self?.viewModel.isRequesting = false
             self?.hideLoading()
-            self?.dismiss(animated: true)
+            self?.dismiss(animated: true) {
+                self?.onSuccess?(pendingTx)
+            }
         }
         
         viewModel.onSelectOpenSetting = { [weak self] in
@@ -60,6 +65,14 @@ public class TxConfirmPopup: UIViewController {
     public override func viewWillLayoutSubviews() {
         super.updateViewConstraints()
         self.tableViewHeight?.constant = self.tableView.contentSize.height
+    }
+    
+    func setupViews() {
+        chainIconImageView.image = viewModel.chain.squareIcon()
+        chainNameLabel.text = viewModel.chain.chainName()
+        tokenIconImageView.loadImage(viewModel.tokenIconURL)
+        tokenAmountLabel.text = viewModel.tokenAmountString
+        actionLabel.text = viewModel.action
     }
     
     func setupTableView() {
@@ -86,7 +99,7 @@ public class TxConfirmPopup: UIViewController {
         self.tableViewToBottomConstraint.isActive = true
         self.view.layoutIfNeeded()
         self.sheetViewController?.updateIntrinsicHeight()
-        self.sheetViewController?.animateIn(size: .intrinsic, duration: 0.5, completion: nil)
+        self.sheetViewController?.resize(to: .intrinsic)
     }
     
     func showLoading() {
@@ -101,14 +114,16 @@ public class TxConfirmPopup: UIViewController {
         if viewModel.isRequesting {
             return
         }
+        hideError()
         showLoading()
         viewModel.isRequesting = true
         viewModel.onTapConfirm()
     }
  
-    public static func show(onViewController vc: UIViewController, withViewModel viewModel: TxConfirmViewModelProtocol) {
+    public static func show(onViewController vc: UIViewController, withViewModel viewModel: TxConfirmViewModelProtocol, onSuccess: @escaping (PendingTxInfo) -> ()) {
         let popup = TxConfirmPopup.instantiateFromNib()
         popup.viewModel = viewModel
+        popup.onSuccess = onSuccess
         let sheet = SheetViewController(controller: popup, sizes: [.intrinsic],
                                         options: .init(pullBarHeight: 0))
         vc.present(sheet, animated: true)

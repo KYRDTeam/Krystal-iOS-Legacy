@@ -29,6 +29,10 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
   open var supportAllChainOption: Bool {
     return false
   }
+    
+    open var allowSwitchChain: Bool {
+        return true
+    }
   
   override open func viewDidLoad() {
     super.viewDidLoad()
@@ -45,7 +49,7 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
     gesture.cancelsTouchesInView = false
     walletView?.addGestureRecognizer(gesture)
   }
-  
+    
   deinit {
     unobserveNotifications()
   }
@@ -90,8 +94,10 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
   }
   
   open func reloadChain() {
-    chainIcon?.image = currentChain.squareIcon()
-    chainButton?.setTitle(currentChain.chainName(), for: .normal)
+      chainIcon?.image = currentChain.squareIcon()
+      chainButton?.setTitle(currentChain.chainName(), for: .normal)
+      chainButton?.setImage(allowSwitchChain ? .dropdown : nil, for: .normal)
+      chainButton?.isEnabled = allowSwitchChain
   }
   
   open func reloadAllNetworksChain() {

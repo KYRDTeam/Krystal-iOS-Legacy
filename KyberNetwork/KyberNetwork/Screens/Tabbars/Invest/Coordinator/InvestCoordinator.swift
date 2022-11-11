@@ -11,6 +11,8 @@ import BigInt
 import WalletConnectSwift
 import KrystalWallets
 import BaseModule
+import Dependencies
+import FittedSheets
 
 protocol InvestCoordinatorDelegate: class {
   func investCoordinatorDidSelectManageWallet()
@@ -49,6 +51,8 @@ class InvestCoordinator: Coordinator {
     coordinator.delegate = self
     return coordinator
   }()
+  
+  var stakingViewController: StakingViewController?
   
   init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
@@ -151,8 +155,11 @@ class InvestCoordinator: Coordinator {
   }
   
   fileprivate func openStakeView() {
-    let viewModel = EarnOverViewModel()
-    let viewController = EarnOverviewV2Controller(viewModel: viewModel)
+//    let viewModel = EarnOverViewModel()
+//    let viewController = EarnOverviewV2Controller(viewModel: viewModel)
+//    viewController.delegate = self
+    
+    let viewController = AppDependencies.router.createEarnOverViewController()
     self.navigationController.pushViewController(viewController, animated: true)
   }
   
@@ -194,6 +201,14 @@ class InvestCoordinator: Coordinator {
     coordinator.start()
     coordinator.delegate = self
     self.rewardHuntingCoordinator = coordinator
+  }
+  
+  private func openSetupStakeView(platform: EarnPlatform, pool: EarnPoolModel) {
+    let vc = StakingViewController.instantiateFromNib()
+    vc.viewModel = StakingViewModel(pool: pool, platform: platform)
+    vc.delegate = self
+    navigationController.pushViewController(vc, animated: true)
+    stakingViewController = vc
   }
   
   func appCoordinatorPendingTransactionsDidUpdate() {
@@ -336,6 +351,20 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         coordinate(coordinator: coordinator)
     }
   
+  func openStakeSummary(txObject: TxObject, settings: UserSettings, displayInfo: StakeDisplayInfo) {
+    let vm = StakingSummaryViewModel(txObject: txObject, settings: settings, displayInfo: displayInfo)
+    let vc = StakingSummaryViewController(viewModel: vm)
+    let sheet = SheetViewController(controller: vc, sizes: [.fixed(560)], options: .init(pullBarHeight: 0))
+    vc.delegate = self
+    navigationController.present(sheet, animated: true)
+  }
+  
+  func openStakeProcess(_ tx: InternalHistoryTransaction) {
+    let vc = StakingTrasactionProcessPopup(transaction: tx)
+    vc.delegate = self
+    navigationController.present(vc, animated: true)
+  }
+  
 }
 
 extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
@@ -430,4 +459,112 @@ extension InvestCoordinator: KNImportWalletCoordinatorDelegate {
     importWalletCoordinator = nil
   }
 
+}
+
+extension InvestCoordinator: EarnOverviewV2ControllerDelegate {
+  func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
+    openSetupStakeView(platform: platform, pool: pool)
+  }
+}
+
+extension InvestCoordinator: StakingViewControllerDelegate {
+  func sendApprove(_ viewController: StakingViewController, tokenAddress: String, remain: BigInt, symbol: String, toAddress: String) {
+    let vm = ApproveTokenViewModelForTokenAddress(address: tokenAddress, remain: remain, state: false, symbol: symbol)
+    vm.toAddress = toAddress
+    let vc = ApproveTokenViewController(viewModel: vm)
+
+    vc.delegate = self
+    navigationController.present(vc, animated: true, completion: nil)
+    
+  }
+  
+  func didSelectNext(_ viewController: StakingViewController, settings: UserSettings, txObject: TxObject, displayInfo: StakeDisplayInfo) {
+    openStakeSummary(txObject: txObject, settings: settings, displayInfo: displayInfo)
+  }
+  
+}
+
+extension InvestCoordinator: StakingSummaryViewControllerDelegate {
+  func didSendTransaction(viewController: StakingSummaryViewController, internalTransaction: InternalHistoryTransaction) {
+    viewController.dismiss(animated: true) {
+      self.openStakeProcess(internalTransaction)
+    }
+    
+  }
+}
+
+extension InvestCoordinator: StakingProcessPopupDelegate {
+  func stakingProcessPopup(_ controller: StakingTrasactionProcessPopup, action: StakingProcessPopupEvent) {
+    switch action {
+    case .openLink(let url):
+      navigationController.openSafari(with: url)
+    case .goToSupport:
+      navigationController.openSafari(with: Constants.supportURL)
+    case .viewToken(let sym):
+      if let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: sym) {
+        controller.dismiss(animated: false) {
+          AppDelegate.shared.coordinator.exchangeTokenCoordinatorDidSelectTokens(token: token)
+        }
+      }
+    case .close:
+      controller.dismiss(animated: true)
+    }
+  }
+}
+
+extension InvestCoordinator: ApproveTokenViewControllerDelegate {
+  func approveTokenViewControllerDidSelectGasSetting(_ controller: ApproveTokenViewController, gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?) {
+    
+  }
+  
+  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: String, value: BigInt) {
+    
+  }
+
+  fileprivate func sendApprove(_ tokenAddress: String, _ toAddress: String?, _ address: String, _ gasLimit: BigInt) {
+    let processor = EthereumTransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+    processor.sendApproveERCTokenAddress(owner: self.currentAddress, tokenAddress: tokenAddress, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
+      switch approveResult {
+      case .success:
+        self.stakingViewController?.coordinatorSuccessApprove(address: address)
+      case .failure(let error):
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: error.localizedDescription,
+          time: 1.5
+        )
+        self.stakingViewController?.coordinatorFailApprove(address: address)
+      }
+    }
+  }
+  
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt) {
+    if currentAddress.isWatchWallet {
+      return
+    }
+    guard remain.isZero else {
+      self.resetAllowanceBeforeSend(address, toAddress, address, gasLimit)
+      return
+    }
+    self.sendApprove(address, toAddress, address, gasLimit)
+  }
+
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt) {
+  }
+
+  fileprivate func resetAllowanceBeforeSend(_ tokenAddress: String, _ toAddress: String?, _ address: String, _ gasLimit: BigInt) {
+    let processor = EthereumTransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+    processor.sendApproveERCTokenAddress(owner: self.currentAddress, tokenAddress: tokenAddress, value: BigInt(0), gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
+      switch approveResult {
+      case .success:
+        self.sendApprove(tokenAddress, toAddress, address, gasLimit)
+      case .failure(let error):
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: error.localizedDescription,
+          time: 1.5
+        )
+      }
+    }
+  }
 }

@@ -207,14 +207,14 @@ extension ChainType {
 //    }
 //    return self.customRPC().name
 //  }
-
-  func chainIcon() -> UIImage? {
-    if self == .all {
-      return UIImage(named: "chain_all_icon")
-    }
-    return UIImage(named: self.customRPC().chainIcon)
-  }
-
+//
+//  func chainIcon() -> UIImage? {
+//    if self == .all {
+//      return UIImage(named: "chain_all_icon")
+//    }
+//    return UIImage(named: self.customRPC().chainIcon)
+//  }
+//
   func squareIcon() -> UIImage {
     switch self {
     case .all:

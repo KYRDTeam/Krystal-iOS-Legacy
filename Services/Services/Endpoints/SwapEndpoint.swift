@@ -7,6 +7,8 @@
 
 import Foundation
 import Moya
+import Utilities
+
 
 enum SwapEndpoint {
     case getExpectedRate(src: String, dst: String, srcAmount: String, hint: String, isCaching: Bool)
