@@ -9,8 +9,8 @@ import Foundation
 import Dependencies
 
 public extension Notification.Name {
-    public static let kTxStatusUpdated = Notification.Name("kTxStatusUpdated")
-    public static let kPendingTxListUpdated = Notification.Name("kPendingTxListUpdated")
+    static let kTxStatusUpdated = Notification.Name("kTxStatusUpdated")
+    static let kPendingTxListUpdated = Notification.Name("kPendingTxListUpdated")
 }
 
 public class TransactionManager {

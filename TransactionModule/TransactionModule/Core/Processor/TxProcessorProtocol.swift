@@ -10,6 +10,7 @@ import BaseWallet
 import Result
 
 public protocol TxProcessorProtocol {
+    func hasPendingTx() -> Bool
     func observePendingTxListChanged()
     func sendTxToNode(data: Data, chain: ChainType, completion: @escaping (Result<String, AnyError>) -> Void)
     func savePendingTx(txInfo: PendingTxInfo)

@@ -41,7 +41,7 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
     @IBOutlet weak var destTokenAmountLabel: UILabel!
     @IBOutlet weak var processStatusLabel: UILabel!
     
-    var tx: PendingTxInfo!
+    var tx: PendingStakingTxInfo!
     
     weak var delegate: StakingProcessPopupDelegate?
     
@@ -101,7 +101,7 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
             self.statusContainerView.bringSubviewToFront(self.transactionStateIcon)
             self.transactionStateIcon.image = UIImage(named: "tx_status_success")
             self.secondButton.setTitle("", for: .normal)
-            let buttonTitle = "View \(self.tx.toSymbol)"
+            let buttonTitle = "View \(self.tx.destSymbol ?? "")"
             self.secondButton.setTitle(buttonTitle, for: .normal)
             self.destTokenInfoContainerView.rounded(color: AppTheme.current.primaryColor, width: 1, radius: 16)
             self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
@@ -120,8 +120,8 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
     }
     
     func setupUI() {
-        self.sourceTokenIcon.setSymbolImage(symbol: self.tx.fromSymbol, size: sourceTokenIcon.frame.size)
-        self.destTokenIcon.setSymbolImage(symbol: self.tx.toSymbol, size: destTokenIcon.frame.size)
+        self.sourceTokenIcon.loadImage(tx.sourceIcon)
+        self.destTokenIcon.loadImage(tx.destIcon)
         self.txHashLabel.text = self.tx.hash
         let descriptions = self.tx.description.split(separator: "→").map { String($0) }
         self.sourceTokenAmountLabel.text = descriptions.first ?? ""
@@ -156,7 +156,7 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
         case .processing:
             self.txHashButtonTapped(sender)
         case .success:
-            self.delegate?.stakingProcessPopup(self, action: .viewToken(sym: self.tx.toSymbol))
+            self.delegate?.stakingProcessPopup(self, action: .viewToken(sym: tx.selectedDestToken.symbol))
         case .failure:
             self.delegate?.stakingProcessPopup(self, action: .goToSupport)
         }

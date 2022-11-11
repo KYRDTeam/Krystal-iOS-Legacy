@@ -72,6 +72,8 @@ class StakingViewController: InAppBrowsingViewController {
     
     @IBOutlet weak var projectionContainerView: UIView!
     
+    @IBOutlet weak var pendingTxIndicator: UIView!
+    
     var viewModel: StakingViewModel!
     var keyboardTimer: Timer?
     
@@ -82,6 +84,31 @@ class StakingViewController: InAppBrowsingViewController {
         viewModel.requestOptionDetail()
         viewModel.getAllowance()
         updateUIProjection()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        onPendingTxListUpdated()
+    }
+    
+    override func observeNotifications() {
+        super.observeNotifications()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(onPendingTxListUpdated),
+            name: .kPendingTxListUpdated,
+            object: nil
+        )
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .kPendingTxListUpdated, object: nil)
+    }
+    
+    @objc func onPendingTxListUpdated() {
+        pendingTxIndicator.isHidden = !TransactionManager.txProcessor.hasPendingTx()
     }
     
     private func setupUI() {
@@ -301,13 +328,14 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     func openStakeSummary(txObject: TxObject, settings: TxSettingObject, displayInfo: StakeDisplayInfo) {
-        let viewModel = StakingSummaryViewModel(txObject: txObject, setting: settings, pool: viewModel.pool, platform: viewModel.selectedPlatform, displayInfo: displayInfo)
+        guard let earningToken = viewModel.selectedEarningToken.value else { return }
+        let viewModel = StakingSummaryViewModel(earnToken: earningToken, txObject: txObject, setting: settings, pool: viewModel.pool, platform: viewModel.selectedPlatform, displayInfo: displayInfo)
         TxConfirmPopup.show(onViewController: self, withViewModel: viewModel) { [weak self] pendingTx in
-            self?.openTxStatusPopup(tx: pendingTx)
+            self?.openTxStatusPopup(tx: pendingTx as! PendingStakingTxInfo)
         }
     }
     
-    func openTxStatusPopup(tx: PendingTxInfo) {
+    func openTxStatusPopup(tx: PendingStakingTxInfo) {
         let popup = StakingTrasactionProcessPopup.instantiateFromNib()
         popup.tx = tx
         let sheet = SheetViewController(controller: popup, sizes: [.fixed(420)], options: .init(pullBarHeight: 0))

@@ -43,6 +43,7 @@
                 <outlet property="p60ValueLabel" destination="BKY-9s-cTt" id="rIp-rz-GPT"/>
                 <outlet property="p90USDValueLabel" destination="2ed-He-wvC" id="APP-L9-7JQ"/>
                 <outlet property="p90ValueLabel" destination="3XN-On-TKK" id="10s-93-Ana"/>
+                <outlet property="pendingTxIndicator" destination="vxh-Yo-TTM" id="av4-4x-eXs"/>
                 <outlet property="projectionContainerView" destination="uL6-Ya-9qb" id="Shd-aR-Q2p"/>
                 <outlet property="rateInfoView" destination="Fd2-Pd-wBO" id="cni-aj-eZ1"/>
                 <outlet property="stakeMainHeaderLabel" destination="E6D-sW-5ed" id="AFl-hG-SDQ"/>

@@ -13,6 +13,10 @@ import Result
 
 class AppTxProcessor: TxProcessorProtocol {
     
+    func hasPendingTx() -> Bool {
+        return !EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty
+    }
+    
     func observePendingTxListChanged() {
         NotificationCenter.default.addObserver(
           self,
@@ -34,8 +38,8 @@ class AppTxProcessor: TxProcessorProtocol {
         let internalTx = InternalHistoryTransaction(
             type: convertToInternalTxType(pendingTxType: txInfo.type),
             state: .pending,
-            fromSymbol: txInfo.fromSymbol,
-            toSymbol: txInfo.toSymbol,
+            fromSymbol: txInfo.sourceSymbol,
+            toSymbol: txInfo.destSymbol,
             transactionDescription: txInfo.description,
             transactionDetailDescription: txInfo.detail,
             transactionObj: txInfo.legacyTx?.toSignTransactionObject(),

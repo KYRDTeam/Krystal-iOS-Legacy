@@ -7,18 +7,15 @@
 
 import Foundation
 import BaseWallet
+import Services
 
 public enum TxType {
     case earn
     case approval
 }
 
-public struct PendingTxInfo {
+open class PendingTxInfo {
     public var type: TxType
-    public var fromSymbol: String
-    public var toSymbol: String
-    public var description: String
-    public var detail: String
     public var legacyTx: LegacyTransaction?
     public var eip1559Tx: EIP1559Transaction?
     public var chain: ChainType
@@ -26,17 +23,37 @@ public struct PendingTxInfo {
     public var hash: String
     public var nonce: Int
     
-    public init(type: TxType, fromSymbol: String, toSymbol: String, description: String, detail: String, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: ChainType, date: Date, hash: String, nonce: Int) {
+    public init(type: TxType, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: ChainType, date: Date, hash: String, nonce: Int) {
         self.type = type
-        self.fromSymbol = fromSymbol
-        self.toSymbol = toSymbol
-        self.description = description
-        self.detail = detail
         self.legacyTx = legacyTx
         self.eip1559Tx = eip1559Tx
         self.chain = chain
         self.date = date
         self.hash = hash
         self.nonce = nonce
+    }
+    
+    open var description: String {
+        fatalError("Must override this property")
+    }
+    
+    open var detail: String {
+        fatalError("Must override this property")
+    }
+    
+    open var sourceSymbol: String? {
+        fatalError("Must override this property")
+    }
+    
+    open var destSymbol: String? {
+        fatalError("Must override this property")
+    }
+    
+    open var sourceIcon: String? {
+        fatalError("Must override this property")
+    }
+    
+    open var destIcon: String? {
+        fatalError("Must override this property")
     }
 }

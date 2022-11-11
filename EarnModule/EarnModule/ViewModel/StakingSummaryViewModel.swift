@@ -29,6 +29,7 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
         return AppDependencies.nonceStorage.currentNonce(chain: currentChain, address: currentAddress.addressString)
     }
     
+    let earnToken: EarningToken
     let txObject: TxObject
     var setting: TxSettingObject
     let pool: EarnPoolModel
@@ -40,7 +41,8 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
     var service: EthereumNodeService!
     var converter: TxObjectConverter!
 
-    init(txObject: TxObject, setting: TxSettingObject, pool: EarnPoolModel, platform: EarnPlatform, displayInfo: StakeDisplayInfo) {
+    init(earnToken: EarningToken, txObject: TxObject, setting: TxSettingObject, pool: EarnPoolModel, platform: EarnPlatform, displayInfo: StakeDisplayInfo) {
+        self.earnToken = earnToken
         self.pool = pool
         self.platform = platform
         self.displayInfo = displayInfo
@@ -137,12 +139,12 @@ extension StakingSummaryViewModel {
                     TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: self.currentChain) { result in
                         switch result {
                         case .success(let hash):
-                            let pendingTx = PendingTxInfo(
-                                type: .earn,
-                                fromSymbol: self.pool.token.symbol,
-                                toSymbol: self.platform.name,
-                                description: "\(self.displayInfo.amount) → \(self.displayInfo.receiveAmount)",
-                                detail: "",
+                            let pendingTx = PendingStakingTxInfo(
+                                pool: self.pool,
+                                platform: self.platform,
+                                selectedDestToken: self.earnToken,
+                                sourceAmount: self.displayInfo.amount,
+                                destAmount: self.displayInfo.receiveAmount,
                                 legacyTx: nil,
                                 eip1559Tx: eip1559Tx,
                                 chain: self.currentChain,
@@ -187,12 +189,12 @@ extension StakingSummaryViewModel {
                     TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: self.currentChain) { result in
                         switch result {
                         case .success(let hash):
-                            let pendingTx = PendingTxInfo(
-                                type: .earn,
-                                fromSymbol: self.pool.token.symbol,
-                                toSymbol: self.platform.name,
-                                description: "\(self.displayInfo.amount) → \(self.displayInfo.receiveAmount)",
-                                detail: "",
+                            let pendingTx = PendingStakingTxInfo(
+                                pool: self.pool,
+                                platform: self.platform,
+                                selectedDestToken: self.earnToken,
+                                sourceAmount: self.displayInfo.amount,
+                                destAmount: self.displayInfo.receiveAmount,
                                 legacyTx: legacyTx,
                                 eip1559Tx: nil,
                                 chain: self.currentChain,
