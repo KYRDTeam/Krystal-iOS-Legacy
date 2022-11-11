@@ -36,4 +36,7 @@ struct Strings {
     static let youAreStaking = "you.are.staking".toBeLocalised()
     static let amount = "amount".toBeLocalised()
     static let insufficientBalance = "insufficient.balance".toBeLocalised()
+    static let shouldBeAtLeast = "not.enough.min.stake.amount".toBeLocalised()
+    static let shouldNoMoreThan = "higher.than.max.stake.amount".toBeLocalised()
+    static let shouldBeIntervalOf = "should.be.interval.of".toBeLocalised()
 }

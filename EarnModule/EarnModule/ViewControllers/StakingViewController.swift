@@ -20,7 +20,7 @@ typealias ProjectionValues = (p30: ProjectionValue, p60: ProjectionValue, p90: P
 
 enum FormState: Equatable {
     case valid
-    case error(msg: String)
+    case error(error: StakingValidationError)
     case empty
     
     static public func == (lhs: FormState, rhs: FormState) -> Bool {
@@ -146,7 +146,7 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     fileprivate func updateUIEarningTokenView() {
-        if let data = viewModel.optionDetail.value, data.count <= 1 {
+        if let data = viewModel.optionDetail.value?.earningTokens, data.count <= 1 {
             earningTokenContainerView.isHidden = true
             infoAreaTopContraint.constant = 40
         } else {
@@ -162,9 +162,9 @@ class StakingViewController: InAppBrowsingViewController {
             errorMsgLabel.text = ""
             nextButton.alpha = 1
             nextButton.isEnabled = true
-        case .error(let msg):
+        case .error(let error):
             amountFieldContainerView.rounded(color: AppTheme.current.errorTextColor, width: 1, radius: 16)
-            errorMsgLabel.text = msg
+            errorMsgLabel.text = viewModel.messageFor(validationError: error)
             nextButton.alpha = 0.2
         case .empty:
             amountFieldContainerView.rounded(radius: 16)
@@ -200,12 +200,13 @@ class StakingViewController: InAppBrowsingViewController {
         stakeTokenLabel.text = viewModel.displayStakeToken
         stakeTokenImageView.setImage(urlString: viewModel.pool.token.logo, symbol: viewModel.pool.token.symbol)
         apyInfoView.setValue(value: viewModel.displayAPY, highlighted: true)
+        
         viewModel.selectedEarningToken.observeAndFire(on: self) { _ in
             self.updateRateInfoView()
         }
         viewModel.optionDetail.observeAndFire(on: self) { data in
             if let unwrap = data {
-                self.earningTokenContainerView.updateData(unwrap)
+                self.earningTokenContainerView.updateData(unwrap.earningTokens)
             }
             self.updateUIEarningTokenView()
         }
@@ -224,7 +225,7 @@ class StakingViewController: InAppBrowsingViewController {
                 self.displayLoading()
             } else {
                 self.hideLoading()
-                guard !self.viewModel.amount.value.isEmpty else { return }
+                guard !self.viewModel.amount.value.isZero else { return }
                 self.nextButtonTapped(self.nextButton)
             }
         }
@@ -291,8 +292,9 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     @IBAction func maxButtonTapped(_ sender: UIButton) {
-        viewModel.amount.value = AppDependencies.balancesStorage.getBalanceBigInt(address: viewModel.pool.token.address).fullString(decimals: viewModel.pool.token.decimals)
-        amountTextField.text = viewModel.amount.value
+        let balance = AppDependencies.balancesStorage.getBalanceBigInt(address: viewModel.pool.token.address)
+        viewModel.amount.value = balance
+        amountTextField.text = NumberFormatUtils.amount(value: balance, decimals: viewModel.pool.token.decimals)
     }
     
     @IBAction func nextButtonTapped(_ sender: UIButton) {
@@ -318,8 +320,9 @@ class StakingViewController: InAppBrowsingViewController {
         } else {
             guard viewModel.formState.value == .valid else { return }
             if let tx = viewModel.txObject.value {
+                let amountString = NumberFormatUtils.amount(value: viewModel.amount.value, decimals: viewModel.pool.token.decimals)
                 let displayInfo = StakeDisplayInfo(
-                    amount: "\(viewModel.amount.value) \(viewModel.pool.token.symbol)",
+                    amount: "\(amountString) \(viewModel.pool.token.symbol)",
                     apy: viewModel.displayAPY,
                     receiveAmount: viewModel.displayAmountReceive,
                     rate: viewModel.displayRate,
@@ -377,7 +380,7 @@ class StakingViewController: InAppBrowsingViewController {
 extension StakingViewController: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         textField.text = ""
-        self.viewModel.amount.value = ""
+        self.viewModel.amount.value = .zero
         return false
     }
     
@@ -386,7 +389,7 @@ extension StakingViewController: UITextFieldDelegate {
         let cleanedText = text.cleanStringToNumber()
         if cleanedText.amountBigInt(decimals: self.viewModel.pool.token.decimals) == nil { return false }
         textField.text = cleanedText
-        self.viewModel.amount.value = cleanedText
+        self.viewModel.amount.value = BigInt((cleanedText.toDouble() ?? 0) * pow(10.0, Double(viewModel.pool.token.decimals)))
         self.keyboardTimer?.invalidate()
         self.keyboardTimer = Timer.scheduledTimer(
             timeInterval: 1,
@@ -407,19 +410,15 @@ extension StakingViewController: UITextFieldDelegate {
     }
     
     fileprivate func showWarningInvalidAmountDataIfNeeded() {
-        guard !self.viewModel.amount.value.isEmpty else {
+        guard !self.viewModel.amount.value.isZero else {
             viewModel.formState.value = .empty
             return
         }
-        guard !self.viewModel.isAmountTooSmall else {
-            viewModel.formState.value = .error(msg: "amount.to.send.greater.than.zero".toBeLocalised())
-            return
+        if let error = viewModel.validateAmount() {
+            viewModel.formState.value = .error(error: error)
+        } else {
+            viewModel.formState.value = .valid
         }
-        guard !self.viewModel.isAmountTooBig else {
-            viewModel.formState.value = .error(msg: Strings.insufficientBalance)
-            return
-        }
-        viewModel.formState.value = .valid
     }
 }
 
