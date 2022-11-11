@@ -14,7 +14,7 @@
 		7EAF478A291BB59100BF5D00 /* ApproveTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EAF4788291BB59100BF5D00 /* ApproveTokenViewController.xib */; };
 		7ED1AF1C291E055600BA7C75 /* ApprovePendingTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED1AF1B291E055600BA7C75 /* ApprovePendingTxInfo.swift */; };
 		A613BC8929124730006DD220 /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A613BC8829124730006DD220 /* Dependencies.framework */; };
-		A613BC8A29124730006DD220 /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A613BC8829124730006DD220 /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A61715DF291E2AF3001778C7 /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A61715DE291E2AF3001778C7 /* BaseModule.framework */; };
 		A622D6AA291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A622D6A9291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift */; };
 		A622D6AD291A6155006BBDD9 /* TxInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A622D6AB291A6155006BBDD9 /* TxInfoCell.swift */; };
 		A622D6AE291A6155006BBDD9 /* TxInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A622D6AC291A6155006BBDD9 /* TxInfoCell.xib */; };
@@ -58,20 +58,6 @@
 		A6ED2D3E2911354F00845EF2 /* GasPriceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ED2D3D2911354F00845EF2 /* GasPriceManager.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		A613BC8B29124730006DD220 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				A613BC8A29124730006DD220 /* Dependencies.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		7E0BBE7F291CA4F60030EE44 /* TransitionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionDelegate.swift; sourceTree = "<group>"; };
 		7EAF475A291B602300BF5D00 /* TxStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxStatus.swift; sourceTree = "<group>"; };
@@ -79,6 +65,7 @@
 		7EAF4788291BB59100BF5D00 /* ApproveTokenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ApproveTokenViewController.xib; sourceTree = "<group>"; };
 		7ED1AF1B291E055600BA7C75 /* ApprovePendingTxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovePendingTxInfo.swift; sourceTree = "<group>"; };
 		A613BC8829124730006DD220 /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A61715DE291E2AF3001778C7 /* BaseModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A622D6A9291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxConfirmViewModelProtocol.swift; sourceTree = "<group>"; };
 		A622D6AB291A6155006BBDD9 /* TxInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxInfoCell.swift; sourceTree = "<group>"; };
 		A622D6AC291A6155006BBDD9 /* TxInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxInfoCell.xib; sourceTree = "<group>"; };
@@ -132,6 +119,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6B6ED32290F859700514A01 /* Utilities.framework in Frameworks */,
+				A61715DF291E2AF3001778C7 /* BaseModule.framework in Frameworks */,
 				A6B6ED2F290F82F200514A01 /* AppState.framework in Frameworks */,
 				A613BC8929124730006DD220 /* Dependencies.framework in Frameworks */,
 				0E81F6026D12F409B8F03625 /* Pods_TransactionModule.framework in Frameworks */,
@@ -147,6 +135,7 @@
 		0EE45598E266B0540A9D667B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A61715DE291E2AF3001778C7 /* BaseModule.framework */,
 				A613BC8829124730006DD220 /* Dependencies.framework */,
 				A6B6ED38290FBAAF00514A01 /* Services.framework */,
 				A6B6ED31290F859700514A01 /* Utilities.framework */,
@@ -353,7 +342,6 @@
 				A64F1D41290B8109000D4733 /* Sources */,
 				A64F1D42290B8109000D4733 /* Frameworks */,
 				A64F1D43290B8109000D4733 /* Resources */,
-				A613BC8B29124730006DD220 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
