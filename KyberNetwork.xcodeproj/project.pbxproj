@@ -603,6 +603,21 @@
 		A6156B5328856E4F00276120 /* CustomSegmentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6156B5228856E4F00276120 /* CustomSegmentView.xib */; };
 		A6156B5528856E6800276120 /* BaseXibView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6156B5428856E6800276120 /* BaseXibView.swift */; };
 		A6156B572885A43400276120 /* CGPoint+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6156B562885A43400276120 /* CGPoint+.swift */; };
+		A61715E3291E4C86001778C7 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7328FD6A05001F4C40 /* DesignSystem.framework */; };
+		A61715E4291E4C86001778C7 /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7328FD6A05001F4C40 /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A61715E5291E4C87001778C7 /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EF628F95001002FD64C /* Dependencies.framework */; };
+		A61715E6291E4C87001778C7 /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EF628F95001002FD64C /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A61715E7291E4C88001778C7 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3D9517925FB97EC00DE3C05 /* CloudKit.framework */; };
+		A61715E9291E4C8A001778C7 /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6D28FD6930001F4C40 /* BaseWallet.framework */; };
+		A61715EA291E4C8A001778C7 /* BaseWallet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6D28FD6930001F4C40 /* BaseWallet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A61715EB291E4C8B001778C7 /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7028FD69B0001F4C40 /* BaseModule.framework */; };
+		A61715EC291E4C8B001778C7 /* BaseModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7028FD69B0001F4C40 /* BaseModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A61715ED291E4C8E001778C7 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6428FD67C8001F4C40 /* AppState.framework */; };
+		A61715EE291E4C8E001778C7 /* AppState.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6428FD67C8001F4C40 /* AppState.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A61715EF291E4C93001778C7 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; };
+		A61715F0291E4C93001778C7 /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A61715F1291E4C97001778C7 /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; };
+		A61715F2291E4C97001778C7 /* KrystalWallets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A63655552907A352003B66F0 /* ApprovalListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63655532907A352003B66F0 /* ApprovalListViewController.swift */; };
 		A63655562907A352003B66F0 /* ApprovalListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63655542907A352003B66F0 /* ApprovalListViewController.xib */; };
 		A63655592907B6BB003B66F0 /* ApprovedTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63655572907B6BB003B66F0 /* ApprovedTokenCell.swift */; };
@@ -680,15 +695,8 @@
 		A668461C29093D17006BBE29 /* RevokeConfirmPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A668461A29093D17006BBE29 /* RevokeConfirmPopup.xib */; };
 		A668461E290946B0006BBE29 /* RevokeConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668461D290946B0006BBE29 /* RevokeConfirmViewModel.swift */; };
 		A6684630290A27CA006BBE29 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
-		A6684636290A2D84006BBE29 /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7028FD69B0001F4C40 /* BaseModule.framework */; };
-		A6684639290A2DDF006BBE29 /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EF628F95001002FD64C /* Dependencies.framework */; };
-		A668463B290A2DE1006BBE29 /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6D28FD6930001F4C40 /* BaseWallet.framework */; };
-		A668463D290A2DE5006BBE29 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6428FD67C8001F4C40 /* AppState.framework */; };
-		A668463F290A2DE7006BBE29 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7328FD6A05001F4C40 /* DesignSystem.framework */; };
-		A6684641290A2DE9006BBE29 /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; };
 		A6684643290A2DEB006BBE29 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6728FD6820001F4C40 /* Services.framework */; };
 		A6684644290A2DEB006BBE29 /* Services.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6728FD6820001F4C40 /* Services.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A6684645290A2DED006BBE29 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; };
 		A66B9C6C280818F6001B7A3D /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B9C6B280818F6001B7A3D /* ValidationResult.swift */; };
 		A66EC312287D176200D15FE0 /* MultiSendSubTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66EC310287D176200D15FE0 /* MultiSendSubTransactionCell.swift */; };
 		A66EC313287D176200D15FE0 /* MultiSendSubTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66EC311287D176200D15FE0 /* MultiSendSubTransactionCell.xib */; };
@@ -1098,7 +1106,7 @@
 		C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38E5D7825F63FC000E5FC48 /* TransactionHistory.swift */; };
 		C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */; };
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
-		C39A7EED24778B03003EA57D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		C39D311428F5645800EC26ED /* StakingPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D311228F5645800EC26ED /* StakingPortfolioViewController.swift */; };
 		C39D311528F5645800EC26ED /* StakingPortfolioViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C39D311328F5645800EC26ED /* StakingPortfolioViewController.xib */; };
 		C39D311928F5679700EC26ED /* StakingPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D311728F5679700EC26ED /* StakingPortfolioCell.swift */; };
@@ -1137,7 +1145,6 @@
 		C3D560AA260C641E00408875 /* OverviewClaimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D560A8260C641E00408875 /* OverviewClaimViewController.swift */; };
 		C3D560AB260C641E00408875 /* OverviewClaimViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3D560A9260C641E00408875 /* OverviewClaimViewController.xib */; };
 		C3D6996E26410CCB004B34E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3D6996D26410CCB004B34E1 /* GoogleService-Info.plist */; };
-		C3D9517A25FB97EC00DE3C05 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3D9517925FB97EC00DE3C05 /* CloudKit.framework */; };
 		C3ED1DC82616EFDB0024970C /* NotificationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3ED1DC72616EFD50024970C /* NotificationCoordinator.swift */; };
 		C3ED1DCD2616F0090024970C /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3ED1DCB2616F0090024970C /* NotificationsViewController.swift */; };
 		C3ED1DCE2616F0090024970C /* NotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3ED1DCC2616F0090024970C /* NotificationsViewController.xib */; };
@@ -1257,7 +1264,14 @@
 			dstSubfolderSpec = 10;
 			files = (
 				A6684644290A2DEB006BBE29 /* Services.framework in Embed Frameworks */,
+				A61715EC291E4C8B001778C7 /* BaseModule.framework in Embed Frameworks */,
+				A61715EE291E4C8E001778C7 /* AppState.framework in Embed Frameworks */,
+				A61715E4291E4C86001778C7 /* DesignSystem.framework in Embed Frameworks */,
 				7EB252CC2907FD1100648438 /* EarnModule.framework in Embed Frameworks */,
+				A61715F0291E4C93001778C7 /* Utilities.framework in Embed Frameworks */,
+				A61715EA291E4C8A001778C7 /* BaseWallet.framework in Embed Frameworks */,
+				A61715E6291E4C87001778C7 /* Dependencies.framework in Embed Frameworks */,
+				A61715F2291E4C97001778C7 /* KrystalWallets.framework in Embed Frameworks */,
 				A64F1D62290B904E000D4733 /* TransactionModule.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -2519,17 +2533,17 @@
 			files = (
 				7EB252CB2907FD1100648438 /* EarnModule.framework in Frameworks */,
 				C626BEDE238D871700C96410 /* iAd.framework in Frameworks */,
-				A6684636290A2D84006BBE29 /* BaseModule.framework in Frameworks */,
-				C3D9517A25FB97EC00DE3C05 /* CloudKit.framework in Frameworks */,
 				A64F1D61290B904E000D4733 /* TransactionModule.framework in Frameworks */,
+				A61715EF291E4C93001778C7 /* Utilities.framework in Frameworks */,
 				A6684630290A27CA006BBE29 /* Pods_KyberNetwork.framework in Frameworks */,
-				A6684639290A2DDF006BBE29 /* Dependencies.framework in Frameworks */,
-				A668463B290A2DE1006BBE29 /* BaseWallet.framework in Frameworks */,
-				A668463D290A2DE5006BBE29 /* AppState.framework in Frameworks */,
-				A6684645290A2DED006BBE29 /* Utilities.framework in Frameworks */,
-				A668463F290A2DE7006BBE29 /* DesignSystem.framework in Frameworks */,
-				A6684641290A2DE9006BBE29 /* KrystalWallets.framework in Frameworks */,
+				A61715E3291E4C86001778C7 /* DesignSystem.framework in Frameworks */,
+				A61715E7291E4C88001778C7 /* CloudKit.framework in Frameworks */,
+				A61715E5291E4C87001778C7 /* Dependencies.framework in Frameworks */,
+				A61715EB291E4C8B001778C7 /* BaseModule.framework in Frameworks */,
+				A61715E9291E4C8A001778C7 /* BaseWallet.framework in Frameworks */,
+				A61715F1291E4C97001778C7 /* KrystalWallets.framework in Frameworks */,
 				A6684643290A2DEB006BBE29 /* Services.framework in Frameworks */,
+				A61715ED291E4C8E001778C7 /* AppState.framework in Frameworks */,
 				C626BEDC238D870F00C96410 /* AdSupport.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7754,7 +7768,7 @@
 				7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */,
 				7EE92A0F286307E10050DC8D /* ShowAllCell.swift in Sources */,
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
-				C39A7EED24778B03003EA57D /* BuildFile in Sources */,
+				C39A7EED24778B03003EA57D /* (null) in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				C3233EFE2807DF4D0086C2BC /* CopyAddressCell.swift in Sources */,
 				A69C5BCE28D1B342000DE825 /* NotificationEndpoint.swift in Sources */,

@@ -74,7 +74,8 @@ public struct IngToken: Codable {
 
 // MARK: - OptionDetailResponse
 public struct OptionDetailResponse: Codable {
-  public let earningTokens: [EarningToken]
+    public let earningTokens: [EarningToken]
+    public var validation: EarnOptionValidation?
 }
 // MARK: - EarningToken
 public struct EarningToken: Codable {
@@ -84,5 +85,12 @@ public struct EarningToken: Codable {
   public let tag: String
   public let exchangeRate: Double
   public let desc: String
+}
+
+public struct EarnOptionValidation: Codable {
+    public var minStakeAmount: Double?
+    public var maxStakeAmount: Double?
+    public var minUnstakeAmount: Double?
+    public var stakeInterval: Double?
 }
 

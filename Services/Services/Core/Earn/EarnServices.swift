@@ -86,7 +86,7 @@ public class EarnServices: BaseService {
     }
   }
   
-  public func getStakingOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String, completion: @escaping (Result<[EarningToken], AnyError>) -> Void) {
+  public func getStakingOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String, completion: @escaping (Result<OptionDetailResponse, AnyError>) -> Void) {
     
     provider.requestWithFilters(.getEarningOptionDetail(platform: platform, earningType: earningType, chainID: chainID, tokenAddress: tokenAddress)) { result in
       switch result {
@@ -94,7 +94,7 @@ public class EarnServices: BaseService {
         let decoder = JSONDecoder()
         do {
           let decoded = try decoder.decode(OptionDetailResponse.self, from: response.data)
-          completion(.success(decoded.earningTokens))
+          completion(.success(decoded))
         } catch let error {
           completion(.failure(AnyError(error)))
         }
