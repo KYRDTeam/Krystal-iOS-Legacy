@@ -488,7 +488,7 @@ class StakingViewController: InAppBrowsingViewController {
       if value {
         self.faqContainerHeightContraint.constant = 50
       } else {
-        self.faqContainerHeightContraint.constant = 300
+        self.faqContainerHeightContraint.constant = self.faqContainerView.getViewHeight()
       }
     }
   }

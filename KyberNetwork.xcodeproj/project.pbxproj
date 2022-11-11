@@ -1049,6 +1049,8 @@
 		C352A064290FC540008947A3 /* StakingSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C352A062290FC53F008947A3 /* StakingSummaryViewController.swift */; };
 		C352A065290FC540008947A3 /* StakingSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C352A063290FC53F008947A3 /* StakingSummaryViewController.xib */; };
 		C3554D89280E5E3F0043BC1B /* SolanaUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */; };
+		C356A5D7291E279900D3D905 /* FAQModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C356A5D6291E279800D3D905 /* FAQModel.swift */; };
+		C356A5D9291E28F100D3D905 /* Ankr-matic-eth.plist in Resources */ = {isa = PBXBuildFile; fileRef = C356A5D8291E28F100D3D905 /* Ankr-matic-eth.plist */; };
 		C358E708291B8EDB00446473 /* StakingFAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C358E707291B8EDA00446473 /* StakingFAQView.swift */; };
 		C358E70A291B8EFB00446473 /* StakingFAQView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C358E709291B8EFB00446473 /* StakingFAQView.xib */; };
 		C358E70D291B9D7000446473 /* StakingFAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C358E70B291B9D6F00446473 /* StakingFAQCell.swift */; };
@@ -2356,6 +2358,8 @@
 		C352A062290FC53F008947A3 /* StakingSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingSummaryViewController.swift; sourceTree = "<group>"; };
 		C352A063290FC53F008947A3 /* StakingSummaryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingSummaryViewController.xib; sourceTree = "<group>"; };
 		C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaUtil.swift; sourceTree = "<group>"; };
+		C356A5D6291E279800D3D905 /* FAQModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQModel.swift; sourceTree = "<group>"; };
+		C356A5D8291E28F100D3D905 /* Ankr-matic-eth.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Ankr-matic-eth.plist"; sourceTree = "<group>"; };
 		C358E707291B8EDA00446473 /* StakingFAQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingFAQView.swift; sourceTree = "<group>"; };
 		C358E709291B8EFB00446473 /* StakingFAQView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingFAQView.xib; sourceTree = "<group>"; };
 		C358E70B291B9D6F00446473 /* StakingFAQCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingFAQCell.swift; sourceTree = "<group>"; };
@@ -4912,6 +4916,8 @@
 			isa = PBXGroup;
 			children = (
 				7EAD2B1928F94ABD001FC888 /* EarnPoolModel.swift */,
+				C356A5D6291E279800D3D905 /* FAQModel.swift */,
+				C356A5D8291E28F100D3D905 /* Ankr-matic-eth.plist */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -6981,6 +6987,7 @@
 				25073D28211AF20D00833C92 /* Montserrat-ExtraLight.ttf in Resources */,
 				25FB472422CC939F00374CE8 /* config_env_staging2.json in Resources */,
 				C6FE41822383A0C10096AAD8 /* KNWalletConnectViewController.xib in Resources */,
+				C356A5D9291E28F100D3D905 /* Ankr-matic-eth.plist in Resources */,
 				25682ABF229FC3C7004AB452 /* KNApproveTokenViewController.xib in Resources */,
 				25929C9D20DA5CC10045CFA3 /* SFCompactDisplay-Ultralight.otf in Resources */,
 				A69C5BD928D1BA9C000DE825 /* NotificationListViewController.xib in Resources */,
@@ -8060,6 +8067,7 @@
 				7EA10B7C289A7B650036E696 /* SearchTokenViewCell.swift in Sources */,
 				2561454420C6442400FB00CF /* KNContact.swift in Sources */,
 				294DFBAE1FE6F254004CEB56 /* TokenObject.swift in Sources */,
+				C356A5D7291E279900D3D905 /* FAQModel.swift in Sources */,
 				C33DDBAF28ACEF9300D3041A /* WalletListV2ViewController.swift in Sources */,
 				A6B3CD602811CBBA005D0D66 /* ViewControllerAssembly.swift in Sources */,
 				A6F5DCAA2857129E00FD02C9 /* EthereumWeb3Service.swift in Sources */,

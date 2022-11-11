@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>question</key>
+		<string>What is liquid staking?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Liquid staking protocols allow users to earn staking rewards even without locking up their assets. Users can deposit tokens and receive tradable liquid tokens in return.&amp;nbsp;&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>Is there any risk from staking, like slashing or any penalties?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;The only risk for stakers is missing out on rewards any time a validator they staked with is slashed. Slashing is a protocol-level penalty associated with a validator failure if it validates an invalid transaction or goes offline. The delegated staked token is not slashed &amp;mdash; slashing impacts only the self-stake of the validator. Ankr only delegates to trusted and reputable validator nodes to avoid any validator that would act maliciously.&lt;br&gt;&lt;br&gt;&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>What is the minimum and maximum amount of MATIC I can stake?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;The only risk for stakers is missing out on rewards any time a validator they staked with is slashed. Slashing is a protocol-level penalty associated with a validator failure if it validates an invalid transaction or goes offline. The delegated staked token is not slashed &amp;mdash; slashing impacts only the self-stake of the validator. Ankr only delegates to trusted and reputable validator nodes to avoid any validator that would act maliciously.&lt;br&gt;&lt;br&gt;&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>How soon after staking will I begin to receive rewards?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;aMATICb rewards arrive in your wallet with every rebase. Rebasing occurs daily.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;aMATICc rewards are built into the token. Effectively, your rewards accumulate daily as aMATICc grows in value to the staked token.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>How do I receive rewards?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;aMATICb is a rebasing token. When holding aMATICb, your balance will increase in proportion to your MATIC staking rewards. A rebase runs daily, and rewards occur each time this runs. So each day, you will see the quantity of your ab increase by a small amount.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;aMATICc is a reward-bearing token, meaning its quantity stays the same from the moment of staking. Instead, it appreciates in value, as the redemption ratio grows because of reward accumulation.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>What is the unbonding period for aMATICb/aMATICc?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;80 epochs and more depending on the network congestion. Typically, it takes around 1&amp;ndash;2 days to receive your unstaked MATIC.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>What determines the amount of reward I receive each rebase of aMATICb or appreciation of aMATICc?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Staking rewards depend mostly on the voting power of the validator node that your stake is delegated to and how much MATIC is validated on the network. Ankr aims to spread delegations to only the most trustworthy and reliable nodes to increase staking rewards.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>Is there any liquidity for aMATICb/aMATICc tokens anywhere currently?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;You can trade them in the listed liquidity pools on ANKR DeFi:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;
+        &lt;p&gt;&lt;a style=&quot;color:#1DE9B6&quot; href=&quot;https://www.ankr.com/staking/defi/?assets=aMATICb&quot;&gt;aMATICb&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;p&gt;&lt;a style=&quot;color:#1DE9B6&quot; href=&quot;https://www.ankr.com/staking/defi/?assets=aMATICc&quot;&gt;aMATICc&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can also use your liquid tokens to:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;
+        &lt;p&gt;&lt;a style=&quot;color:#1DE9B6&quot; href=&quot;https://www.ankr.com/docs/staking/defi/provide-liquidity-to-dex&quot;&gt;Provide liquidity to DEXs&lt;/a&gt; and earn from commissions taken when users swap tokens, using the liquidity pool you&amp;apos;re a part of.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;p&gt;&lt;a style=&quot;color:#1DE9B6&quot; href=&quot;https://www.ankr.com/docs/staking/defi/yield-farm&quot;&gt;Yield farm&lt;/a&gt; and earn additional rewards in the form of other tokens.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;p&gt;&lt;a style=&quot;color:#1DE9B6&quot; href=&quot;https://www.ankr.com/docs/staking/defi/vaults/&quot;&gt;Put your tokens in a vault&lt;/a&gt; and automatically earn additional rewards in the form of one of both assets from the pair.&lt;/p&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>If I click Unstake, does my stake immediately stop accumulating rewards?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Your stake continues to accumulate rewards until the moment you receive them.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>Does Ankr charge for the service?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;When unstaking, the user pays a fee in ANKR that starts from 100 ANKR. A typical fee range is 500&amp;ndash;3500 ANKR.&lt;/p&gt;</string>
+	</dict>
+</array>
+</plist>

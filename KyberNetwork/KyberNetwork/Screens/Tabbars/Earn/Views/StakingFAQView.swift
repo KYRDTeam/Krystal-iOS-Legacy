@@ -7,6 +7,29 @@
 
 import Foundation
 import UIKit
+// swiftlint:disable all
+class FAQCellItem {
+  let model: FAQModel
+  var isExpand: Bool
+  
+  init(_ model: FAQModel) {
+    self.model = model
+    self.isExpand = true
+  }
+}
+
+class StakingFAQViewModel {
+  var dataSource: [FAQCellItem] = []
+  
+  func reloadDataSource() {
+    let decoder = PropertyListDecoder()
+    if let url = Bundle.main.url(forResource: "Ankr-matic-eth", withExtension: "plist"),
+        let data = try? Data(contentsOf: url),
+        let models = try? decoder.decode([FAQModel].self, from: data) {
+      dataSource = models.map { FAQCellItem($0) }
+    }
+  }
+}
 
 @IBDesignable
 class StakingFAQView: BaseXibView {
@@ -18,11 +41,15 @@ class StakingFAQView: BaseXibView {
   
   var isExpand: Observable<Bool> = .init(false)
   
+  let viewModel = StakingFAQViewModel()
+  
   override func commonInit() {
     super.commonInit()
-    
+    contentTableView.rowHeight = UITableView.automaticDimension
+    contentTableView.estimatedRowHeight = 300
     registerCell()
     mainExpandButton.addTarget(self, action: #selector(pressed), for: .touchUpInside)
+    viewModel.reloadDataSource()
   }
   
   private func registerCell() {
@@ -45,17 +72,23 @@ class StakingFAQView: BaseXibView {
         self.lineView.isHidden = false
       }
     }
+    contentTableView.reloadData()
+  }
+  
+  func getViewHeight() -> CGFloat {
+    return 52 + contentTableView.contentSize.height
   }
 }
 
 extension StakingFAQView: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 1
+    return viewModel.dataSource[section].isExpand ? 1 : 0
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(StakingFAQCell.self, indexPath: indexPath)!
-    
+    let cm = viewModel.dataSource[indexPath.section]
+    cell.updateHTMLContent(cm.model.answer)
     return cell
   }
   
@@ -65,17 +98,15 @@ extension StakingFAQView: UITableViewDataSource {
 }
 
 extension StakingFAQView: UITableViewDelegate {
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return 50
-  }
-  
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "sectionHeader") as! SectionHeaderFAQView
-    view.updateTitle(text: "[Firebase/Installations][I-FIS002001] -[FIRInstallationsIDController installationWithValidAuthTokenForcingRefresh:0]")
+    let cm = viewModel.dataSource[section]
+    view.updateTitle(text: cm.model.question)
     return view
   }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 44.0
+    let cm = viewModel.dataSource[section]
+    return SectionHeaderFAQView.estimateHeightForSection(cm.model.question)
   }
 }

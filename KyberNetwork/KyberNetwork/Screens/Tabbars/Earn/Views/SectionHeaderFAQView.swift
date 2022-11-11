@@ -64,4 +64,12 @@ class SectionHeaderFAQView: UITableViewHeaderFooterView {
       }
     }
   }
+  
+  class func estimateHeightForSection(_ text: String) -> CGFloat {
+    let screenWidth = UIScreen.main.bounds.size.width
+    let labelWidth  = screenWidth - 70 - 24 - 5
+    
+    let height = text.height(withConstrainedWidth: labelWidth, font: UIFont.Kyber.regular(with: 16))
+    return height + 30
+  }
 }
