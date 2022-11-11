@@ -44,6 +44,7 @@ class StakingViewModel: BaseViewModel {
     
     let tokenService = TokenService()
     var quoteTokenDetail: TokenDetailInfo?
+    var stakingTokenDetail: TokenDetailInfo?
     var onFetchedQuoteTokenPrice: (() -> ())?
     
     init(pool: EarnPoolModel, platform: EarnPlatform) {
@@ -83,6 +84,10 @@ class StakingViewModel: BaseViewModel {
     
     var quoteTokenUsdPrice: Double {
         return quoteTokenDetail?.markets["usd"]?.price ?? 0
+    }
+    
+    var stakingTokenUsdPrice: Double? {
+        return stakingTokenDetail?.markets["usd"]?.price
     }
     
     var feeUSDString: String {
@@ -233,22 +238,22 @@ class StakingViewModel: BaseViewModel {
         let p60 = amt * BigInt(p60Param * pow(10.0, 18.0)) / BigInt(10).power(18)
         let p90 = amt * BigInt(p90Param * pow(10.0, 18.0)) / BigInt(10).power(18)
         
-        let displayP30 = p30.shortString(decimals: decimal) + " \(symbol)"
-        let displayP60 = p60.shortString(decimals: decimal) + " \(symbol)"
-        let displayP90 = p90.shortString(decimals: decimal) + " \(symbol)"
+        let displayP30 = NumberFormatUtils.amount(value: p30, decimals: decimal) + " \(symbol)"
+        let displayP60 = NumberFormatUtils.amount(value: p60, decimals: decimal) + " \(symbol)"
+        let displayP90 = NumberFormatUtils.amount(value: p90, decimals: decimal) + " \(symbol)"
         
         var displayP30USD = ""
         var displayP60USD = ""
         var displayP90USD = ""
         
-        if let usdPrice = AppDependencies.priceStorage.getUsdPrice(address: pool.token.address) {
+        if let usdPrice = stakingTokenUsdPrice {
             let usd30 = p30 * BigInt(usdPrice * pow(10.0, 18.0)) / BigInt(10).power(decimal)
             let usd60 = p60 * BigInt(usdPrice * pow(10.0, 18.0)) / BigInt(10).power(decimal)
             let usd90 = p90 * BigInt(usdPrice * pow(10.0, 18.0)) / BigInt(10).power(decimal)
             
-            displayP30USD = "≈ " + usd30.string(units: EthereumUnit.ether, minFractionDigits: 0, maxFractionDigits: 4) + " USD"
-            displayP60USD = "≈ " + usd60.string(units: EthereumUnit.ether, minFractionDigits: 0, maxFractionDigits: 4) + " USD"
-            displayP90USD = "≈ " + usd90.string(units: EthereumUnit.ether, minFractionDigits: 0, maxFractionDigits: 4) + " USD"
+            displayP30USD = "≈ $" + NumberFormatUtils.usdAmount(value: usd30, decimals: 18)
+            displayP60USD = "≈ $" + NumberFormatUtils.usdAmount(value: usd60, decimals: 18)
+            displayP90USD = "≈ $" + NumberFormatUtils.usdAmount(value: usd90, decimals: 18)
         }
         
         return ( (displayP30, displayP30USD), (displayP60, displayP60USD), (displayP90, displayP90USD) )
@@ -294,6 +299,12 @@ class StakingViewModel: BaseViewModel {
         tokenService.getTokenDetail(address: currentChain.customRPC().quoteTokenAddress, chainPath: currentChain.customRPC().apiChainPath) { [weak self] tokenDetail in
             self?.quoteTokenDetail = tokenDetail
             self?.onFetchedQuoteTokenPrice?()
+        }
+    }
+    
+    func getStakingTokenDetail() {
+        tokenService.getTokenDetail(address: pool.token.address, chainPath: currentChain.customRPC().apiChainPath) { [weak self] tokenDetail in
+            self?.stakingTokenDetail = tokenDetail
         }
     }
 }

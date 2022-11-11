@@ -86,6 +86,7 @@ class StakingViewController: InAppBrowsingViewController {
         viewModel.requestOptionDetail()
         viewModel.getAllowance()
         viewModel.getQuoteTokenPrice()
+        viewModel.getStakingTokenDetail()
         updateUIProjection()
     }
     
@@ -410,20 +411,12 @@ extension StakingViewController: UITextFieldDelegate {
             viewModel.formState.value = .empty
             return
         }
-        //    guard self.viewModel.isEnoughFee else {
-        //      self.showWarningTopBannerMessage(
-        //        with: NSLocalizedString("Insufficient \(KNGeneralProvider.shared.quoteToken) for transaction", value: "Insufficient \(KNGeneralProvider.shared.quoteToken) for transaction", comment: ""),
-        //        message: String(format: "Deposit more \(KNGeneralProvider.shared.quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), self.viewModel.transactionFee.shortString(units: .ether, maxFractionDigits: 6))
-        //      )
-        //      return true
-        //    }
-        
         guard !self.viewModel.isAmountTooSmall else {
             viewModel.formState.value = .error(msg: "amount.to.send.greater.than.zero".toBeLocalised())
             return
         }
         guard !self.viewModel.isAmountTooBig else {
-            viewModel.formState.value = .error(msg: "balance.not.enough.to.make.transaction".toBeLocalised())
+            viewModel.formState.value = .error(msg: Strings.insufficientBalance)
             return
         }
         viewModel.formState.value = .valid

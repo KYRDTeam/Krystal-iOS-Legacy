@@ -24,3 +24,4 @@
 "stake.summary" = "Stake Summary";
 "you.are.staking" = "You are staking";
 "amount" = "Amount";
+"insufficient.balance" = "Your balance is not sufficient";

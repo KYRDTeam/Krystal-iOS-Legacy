@@ -35,4 +35,5 @@ struct Strings {
     static let stakeSummary = "stake.summary".toBeLocalised()
     static let youAreStaking = "you.are.staking".toBeLocalised()
     static let amount = "amount".toBeLocalised()
+    static let insufficientBalance = "insufficient.balance".toBeLocalised()
 }
