@@ -14,7 +14,7 @@
 "approve.token" = "Approve %@";
 "checking" = "Checking";
 "stake.now" = "Stake Now";
-"est.apy" = "APY (Est. Yield";
+"est.apy" = "APY (Est. Yield)";
 "receive.title" = "You will receive";
 "rate" = "Rate";
 "network.fee" = "Network Fee";
@@ -25,3 +25,6 @@
 "you.are.staking" = "You are staking";
 "amount" = "Amount";
 "insufficient.balance" = "Your balance is not sufficient";
+"not.enough.min.stake.amount" = "Should be at least %@";
+"higher.than.max.stake.amount" = "Should be no more than %@";
+"should.be.interval.of" = "Value must be multiple of %@";
