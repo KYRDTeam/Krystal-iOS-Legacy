@@ -10,17 +10,7 @@ import AppState
 import Utilities
 import DesignSystem
 import TransactionModule
-
-enum StakingProcessPopupEvent {
-    case openLink(url: String)
-    case goToSupport
-    case viewToken(sym: String)
-    case close
-}
-
-protocol StakingProcessPopupDelegate: class {
-    func stakingProcessPopup(_ controller: StakingTrasactionProcessPopup, action: StakingProcessPopupEvent)
-}
+import Dependencies
 
 class StakingTrasactionProcessPopup: KNBaseViewController {
     @IBOutlet weak var containerView: UIView!
@@ -42,8 +32,6 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
     @IBOutlet weak var processStatusLabel: UILabel!
     
     var tx: PendingStakingTxInfo!
-    
-    weak var delegate: StakingProcessPopupDelegate?
     
     var state: TxStatus = .processing {
         didSet {
@@ -156,20 +144,20 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
         case .processing:
             self.txHashButtonTapped(sender)
         case .success:
-            self.delegate?.stakingProcessPopup(self, action: .viewToken(sym: tx.selectedDestToken.symbol))
+            AppDependencies.router.openToken(symbol: tx.selectedDestToken.symbol)
         case .failure:
-            self.delegate?.stakingProcessPopup(self, action: .goToSupport)
+            AppDependencies.router.openSupportURL()
         }
     }
     
     @IBAction func firstButtonTapped(_ sender: UIButton) {
-        self.dismiss(animated: true) {
-            self.delegate?.stakingProcessPopup(self, action: .close)
-        }
+        self.dismiss(animated: true)
     }
     
     @IBAction func txHashButtonTapped(_ sender: UIButton) {
         let urlString = AppState.shared.currentChain.customRPC().etherScanEndpoint + "tx/\(self.tx.hash)"
-        self.delegate?.stakingProcessPopup(self, action: .openLink(url: urlString))
+        dismiss(animated: true) {
+            AppDependencies.router.openExternalURL(url: urlString)
+        }
     }
 }
