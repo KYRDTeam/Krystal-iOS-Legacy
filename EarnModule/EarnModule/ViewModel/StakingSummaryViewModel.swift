@@ -53,7 +53,7 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var title: String {
-        return "Stake Summary"
+        return Strings.stakeSummary
     }
     
     var chain: ChainType {
@@ -61,7 +61,7 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var action: String {
-        return "You are staking"
+        return Strings.youAreStaking
     }
     
     var tokenIconURL: String {
@@ -77,15 +77,15 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var buttonTitle: String {
-        return "Confirm Stake"
+        return Strings.confirmStake
     }
     
     var rows: [TxInfoRowData] {
         return [
-            .init(title: "APY (Est. Yield)", value: displayInfo.apy, isHighlighted: true),
-            .init(title: "You will receive", value: displayInfo.receiveAmount),
-            .init(title: "Rate", value: displayInfo.rate),
-            .init(title: "Network Fee", value: displayInfo.fee),
+            .init(title: Strings.apyTitle, value: displayInfo.apy, isHighlighted: true),
+            .init(title: Strings.youWillReceive, value: displayInfo.receiveAmount),
+            .init(title: Strings.rate, value: displayInfo.rate),
+            .init(title: Strings.networkFee, value: displayInfo.fee),
         ]
     }
     

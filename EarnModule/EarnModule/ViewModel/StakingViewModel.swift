@@ -259,4 +259,10 @@ class StakingViewModel {
   var isChainValid: Bool {
     return AppState.shared.currentChain.customRPC().chainID == pool.chainID
   }
+    
+    func reloadData() {
+        requestOptionDetail()
+        getAllowance()
+        amount.value = AppDependencies.balancesStorage.getBalanceBigInt(address: pool.token.address).fullString(decimals: pool.token.decimals)
+    }
 }

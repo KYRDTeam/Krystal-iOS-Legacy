@@ -135,18 +135,13 @@ extension EarnOverviewController: UIPageViewControllerDelegate {
 }
 
 extension EarnOverviewController: EarnListViewControllerDelegate {
-  func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
-    let vc = StakingViewController.instantiateFromNib()
-    vc.viewModel = StakingViewModel(pool: pool, platform: platform)
-    self.show(vc, sender: nil)
-  }
+    func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
+        guard let chain = ChainType.make(chainID: pool.chainID) else { return }
+        if chain != AppState.shared.currentChain {
+            AppState.shared.updateChain(chain: chain)
+        }
+        let vc = StakingViewController.instantiateFromNib()
+        vc.viewModel = StakingViewModel(pool: pool, platform: platform)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
-
-//extension EarnOverviewController: StakingViewControllerDelegate {
-//  func sendApprove(_ viewController: StakingViewController, tokenAddress: String, remain: BigInt, symbol: String, toAddress: String) {
-//
-//    let vm = ApproveTokenViewModel(symbol: symbol, tokenAddress: tokenAddress, remain: remain, toAddress: toAddress, chain: AppState.shared.currentChain)
-//    let vc = ApproveTokenViewController(viewModel: vm)
-//    self.present(vc, animated: true, completion: nil)
-//  }
-//}

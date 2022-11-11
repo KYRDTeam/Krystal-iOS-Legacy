@@ -75,6 +75,10 @@ class StakingViewController: InAppBrowsingViewController {
     var viewModel: StakingViewModel!
     var keyboardTimer: Timer?
     
+    override var allowSwitchChain: Bool {
+        return false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -99,6 +103,13 @@ class StakingViewController: InAppBrowsingViewController {
             name: .kPendingTxListUpdated,
             object: nil
         )
+    }
+    
+    override func onAppSwitchAddress(switchChain: Bool) {
+        if !switchChain {
+            super.onAppSwitchAddress(switchChain: switchChain)
+            viewModel.reloadData()
+        }
     }
     
     deinit {
@@ -264,6 +275,10 @@ class StakingViewController: InAppBrowsingViewController {
         viewModel.isUseReverseRate.observeAndFire(on: self) { _ in
             self.rateInfoView.setValue(value: self.viewModel.displayRate)
         }
+    }
+    
+    @IBAction func historyTapped(_ sender: Any) {
+        AppDependencies.router.openTransactionHistory()
     }
     
     @IBAction func backButtonTapped(_ sender: UIButton) {
