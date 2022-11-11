@@ -15,6 +15,7 @@
 		7E6EBD6129091E0800069B33 /* EarnListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5D29091E0700069B33 /* EarnListViewController.swift */; };
 		7E6EBD6229091E0800069B33 /* StakingPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5E29091E0700069B33 /* StakingPortfolioViewController.swift */; };
 		7E6EBD6329091E0800069B33 /* StakingPortfolioViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5F29091E0800069B33 /* StakingPortfolioViewController.xib */; };
+		7E6EBD6529091F7A00069B33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD6429091F7A00069B33 /* Assets.xcassets */; };
 		7E6EBD6B2909280900069B33 /* EarnPoolPlatformCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD672909280800069B33 /* EarnPoolPlatformCell.swift */; };
 		7E6EBD6C2909280900069B33 /* EarnPoolViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD682909280800069B33 /* EarnPoolViewCell.swift */; };
 		7E6EBD6D2909280900069B33 /* EarnPoolViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD692909280900069B33 /* EarnPoolViewCell.xib */; };
