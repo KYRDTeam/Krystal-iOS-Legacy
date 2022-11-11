@@ -12,6 +12,7 @@
 		7EAF475B291B602300BF5D00 /* TxStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF475A291B602300BF5D00 /* TxStatus.swift */; };
 		7EAF4789291BB59100BF5D00 /* ApproveTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF4787291BB59100BF5D00 /* ApproveTokenViewController.swift */; };
 		7EAF478A291BB59100BF5D00 /* ApproveTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EAF4788291BB59100BF5D00 /* ApproveTokenViewController.xib */; };
+		7ED1AF1C291E055600BA7C75 /* ApprovePendingTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED1AF1B291E055600BA7C75 /* ApprovePendingTxInfo.swift */; };
 		A613BC8929124730006DD220 /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A613BC8829124730006DD220 /* Dependencies.framework */; };
 		A613BC8A29124730006DD220 /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A613BC8829124730006DD220 /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A622D6AA291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A622D6A9291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift */; };
@@ -35,16 +36,17 @@
 		A64F1D7C290BCC53000D4733 /* BaseTransactionSettingTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D7B290BCC53000D4733 /* BaseTransactionSettingTab.swift */; };
 		A64F1D82290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D81290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift */; };
 		A64F1D84290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */; };
+		A69B5084291A072200D992D6 /* TxConfirmPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69B5082291A072200D992D6 /* TxConfirmPopup.swift */; };
+		A69B5085291A072200D992D6 /* TxConfirmPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69B5083291A072200D992D6 /* TxConfirmPopup.xib */; };
 		A69E8EA9291CA47B005B28CB /* PendingTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EA8291CA47B005B28CB /* PendingTxInfo.swift */; };
 		A69E8EAB291CABA6005B28CB /* TransactionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EAA291CABA6005B28CB /* TransactionManager.swift */; };
 		A69E8EAD291CABD6005B28CB /* TxProcessorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EAC291CABD6005B28CB /* TxProcessorProtocol.swift */; };
 		A69E8EAF291CEA1A005B28CB /* InternalTransactionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EAE291CEA1A005B28CB /* InternalTransactionState.swift */; };
-		A69B5084291A072200D992D6 /* TxConfirmPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69B5082291A072200D992D6 /* TxConfirmPopup.swift */; };
-		A69B5085291A072200D992D6 /* TxConfirmPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69B5083291A072200D992D6 /* TxConfirmPopup.xib */; };
 		A6B6ED2F290F82F200514A01 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED2E290F82F200514A01 /* AppState.framework */; };
 		A6B6ED32290F859700514A01 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED31290F859700514A01 /* Utilities.framework */; };
 		A6B6ED37290F9FE700514A01 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6ED36290F9FE700514A01 /* Constants.swift */; };
 		A6B6ED39290FBAAF00514A01 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED38290FBAAF00514A01 /* Services.framework */; };
+		A6C37A46291A485900AB81D3 /* TxInfoRowData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C37A45291A485900AB81D3 /* TxInfoRowData.swift */; };
 		A6D1F7E4291B690000ABA52B /* StakeTxObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7E3291B690000ABA52B /* StakeTxObject.swift */; };
 		A6D1F7ED291B814100ABA52B /* EIP1559Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7EC291B814100ABA52B /* EIP1559Transaction.swift */; };
 		A6D1F7EF291B814B00ABA52B /* LegacyTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7EE291B814B00ABA52B /* LegacyTransaction.swift */; };
@@ -53,7 +55,6 @@
 		A6D1F7FA291B8DF800ABA52B /* EthereumTransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7F9291B8DF800ABA52B /* EthereumTransactionSigner.swift */; };
 		A6D1F7FC291B8EA400ABA52B /* EIP1559TransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7FB291B8EA400ABA52B /* EIP1559TransactionSigner.swift */; };
 		A6D1F7FE291B918200ABA52B /* TransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7FD291B918200ABA52B /* TransactionSigner.swift */; };
-		A6C37A46291A485900AB81D3 /* TxInfoRowData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C37A45291A485900AB81D3 /* TxInfoRowData.swift */; };
 		A6ED2D3E2911354F00845EF2 /* GasPriceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ED2D3D2911354F00845EF2 /* GasPriceManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -76,6 +77,7 @@
 		7EAF475A291B602300BF5D00 /* TxStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxStatus.swift; sourceTree = "<group>"; };
 		7EAF4787291BB59100BF5D00 /* ApproveTokenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApproveTokenViewController.swift; sourceTree = "<group>"; };
 		7EAF4788291BB59100BF5D00 /* ApproveTokenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ApproveTokenViewController.xib; sourceTree = "<group>"; };
+		7ED1AF1B291E055600BA7C75 /* ApprovePendingTxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovePendingTxInfo.swift; sourceTree = "<group>"; };
 		A613BC8829124730006DD220 /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A622D6A9291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxConfirmViewModelProtocol.swift; sourceTree = "<group>"; };
 		A622D6AB291A6155006BBDD9 /* TxInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxInfoCell.swift; sourceTree = "<group>"; };
@@ -99,16 +101,17 @@
 		A64F1D7B290BCC53000D4733 /* BaseTransactionSettingTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionSettingTab.swift; sourceTree = "<group>"; };
 		A64F1D81290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionSettingTabViewModel.swift; sourceTree = "<group>"; };
 		A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSettingAdvancedTabViewModel.swift; sourceTree = "<group>"; };
+		A69B5082291A072200D992D6 /* TxConfirmPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxConfirmPopup.swift; sourceTree = "<group>"; };
+		A69B5083291A072200D992D6 /* TxConfirmPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxConfirmPopup.xib; sourceTree = "<group>"; };
 		A69E8EA8291CA47B005B28CB /* PendingTxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTxInfo.swift; sourceTree = "<group>"; };
 		A69E8EAA291CABA6005B28CB /* TransactionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionManager.swift; sourceTree = "<group>"; };
 		A69E8EAC291CABD6005B28CB /* TxProcessorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TxProcessorProtocol.swift; sourceTree = "<group>"; };
 		A69E8EAE291CEA1A005B28CB /* InternalTransactionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalTransactionState.swift; sourceTree = "<group>"; };
-		A69B5082291A072200D992D6 /* TxConfirmPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxConfirmPopup.swift; sourceTree = "<group>"; };
-		A69B5083291A072200D992D6 /* TxConfirmPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxConfirmPopup.xib; sourceTree = "<group>"; };
 		A6B6ED2E290F82F200514A01 /* AppState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B6ED31290F859700514A01 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B6ED36290F9FE700514A01 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A6B6ED38290FBAAF00514A01 /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6C37A45291A485900AB81D3 /* TxInfoRowData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxInfoRowData.swift; sourceTree = "<group>"; };
 		A6D1F7E3291B690000ABA52B /* StakeTxObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakeTxObject.swift; sourceTree = "<group>"; };
 		A6D1F7EC291B814100ABA52B /* EIP1559Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EIP1559Transaction.swift; sourceTree = "<group>"; };
 		A6D1F7EE291B814B00ABA52B /* LegacyTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyTransaction.swift; sourceTree = "<group>"; };
@@ -117,7 +120,6 @@
 		A6D1F7F9291B8DF800ABA52B /* EthereumTransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumTransactionSigner.swift; sourceTree = "<group>"; };
 		A6D1F7FB291B8EA400ABA52B /* EIP1559TransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EIP1559TransactionSigner.swift; sourceTree = "<group>"; };
 		A6D1F7FD291B918200ABA52B /* TransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSigner.swift; sourceTree = "<group>"; };
-		A6C37A45291A485900AB81D3 /* TxInfoRowData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxInfoRowData.swift; sourceTree = "<group>"; };
 		A6ED2D3D2911354F00845EF2 /* GasPriceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPriceManager.swift; sourceTree = "<group>"; };
 		ACB68FEDF6F817D1BE1300AD /* Pods-TransactionModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TransactionModule.debug.xcconfig"; path = "Target Support Files/Pods-TransactionModule/Pods-TransactionModule.debug.xcconfig"; sourceTree = "<group>"; };
 		AE2D410ED02563A76864D651 /* Pods_TransactionModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TransactionModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -267,6 +269,16 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		A69B5081291A070F00D992D6 /* TxConfirm */ = {
+			isa = PBXGroup;
+			children = (
+				A69B5082291A072200D992D6 /* TxConfirmPopup.swift */,
+				A69B5083291A072200D992D6 /* TxConfirmPopup.xib */,
+				A622D6A9291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift */,
+			);
+			path = TxConfirm;
+			sourceTree = "<group>";
+		};
 		A69E8EA1291C9F43005B28CB /* Txs */ = {
 			isa = PBXGroup;
 			children = (
@@ -275,8 +287,19 @@
 				A6D1F7EE291B814B00ABA52B /* LegacyTransaction.swift */,
 				A69E8EA8291CA47B005B28CB /* PendingTxInfo.swift */,
 				A69E8EAE291CEA1A005B28CB /* InternalTransactionState.swift */,
+				7ED1AF1B291E055600BA7C75 /* ApprovePendingTxInfo.swift */,
 			);
 			path = Txs;
+			sourceTree = "<group>";
+		};
+		A6C37A40291A3FB400AB81D3 /* TransactionInfoView */ = {
+			isa = PBXGroup;
+			children = (
+				A6C37A45291A485900AB81D3 /* TxInfoRowData.swift */,
+				A622D6AB291A6155006BBDD9 /* TxInfoCell.swift */,
+				A622D6AC291A6155006BBDD9 /* TxInfoCell.xib */,
+			);
+			path = TransactionInfoView;
 			sourceTree = "<group>";
 		};
 		A6D1F7E2291B68F600ABA52B /* Models */ = {
@@ -305,26 +328,6 @@
 				A6D1F7FD291B918200ABA52B /* TransactionSigner.swift */,
 			);
 			path = Signer;
-			sourceTree = "<group>";
-		};
-		A69B5081291A070F00D992D6 /* TxConfirm */ = {
-			isa = PBXGroup;
-			children = (
-				A69B5082291A072200D992D6 /* TxConfirmPopup.swift */,
-				A69B5083291A072200D992D6 /* TxConfirmPopup.xib */,
-				A622D6A9291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift */,
-			);
-			path = TxConfirm;
-			sourceTree = "<group>";
-		};
-		A6C37A40291A3FB400AB81D3 /* TransactionInfoView */ = {
-			isa = PBXGroup;
-			children = (
-				A6C37A45291A485900AB81D3 /* TxInfoRowData.swift */,
-				A622D6AB291A6155006BBDD9 /* TxInfoCell.swift */,
-				A622D6AC291A6155006BBDD9 /* TxInfoCell.xib */,
-			);
-			path = TransactionInfoView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -457,6 +460,7 @@
 				A64F1D58290B817C000D4733 /* TransactionSettingBasicTab.swift in Sources */,
 				A6D1F7F7291B8C3D00ABA52B /* TxErrorParser.swift in Sources */,
 				A64F1D74290BBF19000D4733 /* TransactionSettingBasicTabViewModel.swift in Sources */,
+				7ED1AF1C291E055600BA7C75 /* ApprovePendingTxInfo.swift in Sources */,
 				A64F1D5F290B8992000D4733 /* TxSettingObject.swift in Sources */,
 				A622D6AA291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift in Sources */,
 				A64F1D54290B8132000D4733 /* TransactionSettingPopup.swift in Sources */,

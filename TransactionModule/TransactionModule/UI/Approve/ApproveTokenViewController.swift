@@ -106,21 +106,17 @@ public class ApproveTokenViewModel {
                       case .success(let hash):
                           print(hash)
                           onCompleted(nil)
-//                          let pendingTx = PendingTxInfo(
-//                              type: .earn,
-//                              fromSymbol: self.displayInfo.fromSym,
-//                              toSymbol: self.displayInfo.toSym,
-//                              description: "\(self.displayInfo.amount) → \(self.displayInfo.receiveAmount)",
-//                              detail: "",
-//                              legacyTx: legacyTx,
-//                              eip1559Tx: nil,
-//                              chain: self.currentChain,
-//                              date: Date(),
-//                              hash: hash,
-//                              nonce: legacyTx.nonce
-//                          )
-//                          TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
-//                          self.onSendTxSuccess?(pendingTx)
+                          let pendingTx = ApprovePendingTxInfo(
+                              legacyTx: legacyTx,
+                              eip1559Tx: nil,
+                              chain: self.chain,
+                              date: Date(),
+                              hash: hash,
+                              nonce: legacyTx.nonce,
+                              walletAddress: AppState.shared.currentAddress.addressString,
+                              contractAddress: self.toAddress
+                          )
+                          TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
                       case .failure(let error):
                           onCompleted(error)
                       }
