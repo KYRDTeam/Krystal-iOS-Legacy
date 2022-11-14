@@ -295,6 +295,7 @@ class StakingViewController: InAppBrowsingViewController {
         let balance = AppDependencies.balancesStorage.getBalanceBigInt(address: viewModel.pool.token.address)
         viewModel.amount.value = balance
         amountTextField.text = NumberFormatUtils.amount(value: balance, decimals: viewModel.pool.token.decimals)
+        showWarningInvalidAmountDataIfNeeded()
     }
     
     @IBAction func nextButtonTapped(_ sender: UIButton) {

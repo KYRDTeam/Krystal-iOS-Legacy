@@ -104,3 +104,33 @@ extension GasPriceManager: GasConfig {
     }
     
 }
+
+public extension GasPriceManager {
+    
+    func getGasPrice(gasType: GasSpeed, chain: ChainType) -> BigInt {
+        switch gasType {
+        case .slow:
+            return getLowGasPrice(chain: chain)
+        case .regular:
+            return getStandardGasPrice(chain: chain)
+        case .fast:
+            return getFastGasPrice(chain: chain)
+        case .superFast:
+            return getSuperFastGasPrice(chain: chain)
+        }
+    }
+    
+    func getPriority(gasType: GasSpeed, chain: ChainType) -> BigInt? {
+        switch gasType {
+        case .slow:
+            return getLowPriorityFee(chain: chain)
+        case .regular:
+            return getStandardPriorityFee(chain: chain)
+        case .fast:
+            return getFastPriorityFee(chain: chain)
+        case .superFast:
+            return getSuperFastPriorityFee(chain: chain)
+        }
+    }
+    
+}
