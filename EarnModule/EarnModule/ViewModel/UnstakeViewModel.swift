@@ -9,6 +9,8 @@ import UIKit
 import Services
 import BigInt
 import Utilities
+import TransactionModule
+import AppState
 
 class UnstakeViewModel {
     let displayDepositedValue: String
@@ -18,6 +20,8 @@ class UnstakeViewModel {
     let balance: BigInt
     let platform: Platform
     var unstakeValue: BigInt = BigInt(0)
+    let chain: ChainType
+    var setting: TxSettingObject = .default
 
     init(earningBalance: EarningBalance) {
         self.displayDepositedValue = (BigInt(earningBalance.stakingToken.balance)?.shortString(decimals: earningBalance.stakingToken.decimals) ?? "---") + " " + earningBalance.stakingToken.symbol
@@ -26,6 +30,7 @@ class UnstakeViewModel {
         self.toTokenSymbol = earningBalance.toUnderlyingToken.symbol
         self.balance = BigInt(earningBalance.stakingToken.balance) ?? BigInt(0)
         self.platform = earningBalance.platform
+        self.chain = ChainType.make(chainID: earningBalance.chainID) ?? AppState.shared.currentChain
     }
     
     
@@ -67,4 +72,7 @@ class UnstakeViewModel {
         return "You will receive your \(toTokenSymbol) in \(time)"
     }
     
+    func transactionFeeString() -> String {
+        return NumberFormatUtils.gasFee(value: setting.transactionFee(chain: chain)) + " " + AppState.shared.currentChain.quoteToken()
+    }
 }

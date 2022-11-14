@@ -7,6 +7,8 @@
 
 import UIKit
 import DesignSystem
+import AppState
+import TransactionModule
 
 class UnstakeViewController: InAppBrowsingViewController {
     @IBOutlet weak var unstakePlatformLabel: UILabel!
@@ -30,17 +32,13 @@ class UnstakeViewController: InAppBrowsingViewController {
     }
     
     func setupUI() {
-        availableUnstakeValue.text = viewModel?.displayDepositedValue
+        guard let viewModel = viewModel else { return }
+        availableUnstakeValue.text = viewModel.displayDepositedValue
         amountTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
-
-        receiveInfoView.setInfo(title: "You will receive", value: viewModel?.receivedValueString() ?? "")
-        
-        rateView.setInfo(title: "Rate", value: viewModel?.showRateInfo() ?? "", shouldShowIcon: true)
-        
-        
-        
-        networkFeeView.setInfo(title: "Network Fee", value: "0 stMATIC")
-        receiveTimeView.setInfo(title: viewModel?.timeForUnstakeString() ?? "", value: "")
+        receiveInfoView.setInfo(title: "You will receive", value: viewModel.receivedValueString())
+        rateView.setInfo(title: "Rate", value: viewModel.showRateInfo(), shouldShowIcon: true)
+        networkFeeView.setInfo(title: "Network Fee", value: viewModel.transactionFeeString())
+        receiveTimeView.setInfo(title: viewModel.timeForUnstakeString(), value: "")
 
     }
     
@@ -49,7 +47,13 @@ class UnstakeViewController: InAppBrowsingViewController {
     }
 
     @IBAction func settingButtonTapped(_ sender: Any) {
-        
+        guard let viewModel = viewModel else { return }
+        TransactionSettingPopup.show(on: self, chain: viewModel.chain, currentSetting: viewModel.setting, onConfirmed: { [weak self] settingObject in
+            self?.viewModel?.setting = settingObject
+            self?.networkFeeView.setInfo(title: "Network Fee", value: viewModel.transactionFeeString())
+        }, onCancelled: {
+            return
+        })
     }
     
     @IBAction func maxButtonTapped(_ sender: Any) {
