@@ -95,7 +95,7 @@ class StakingViewModel: BaseViewModel {
     }
     
     var feeETHString: String {
-        let string: String = self.transactionFee.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
+        let string: String = NumberFormatUtils.gasFee(value: transactionFee)
         return "\(string) \(AppState.shared.currentChain.quoteToken())"
     }
     
@@ -171,10 +171,14 @@ class StakingViewModel: BaseViewModel {
     }
     
     var buildTxRequestParams: JSONDictionary {
+        var earningType: String = selectedPlatform.type
+        if pool.token.symbol.lowercased() == "MATIC".lowercased() {
+            earningType = "stakingMATIC"
+        }
         var params: JSONDictionary = [
             "tokenAmount": amount.value.description,
             "chainID": pool.chainID,
-            "earningType": selectedPlatform.type,
+            "earningType": earningType,
             "platform": selectedPlatform.name,
             "userAddress": AppState.shared.currentAddress.addressString,
             "tokenAddress": pool.token.address
