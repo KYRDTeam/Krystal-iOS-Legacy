@@ -12,6 +12,7 @@ import AppState
 
 typealias UserSettings = (BasicTransactionSettings, AdvancedTransactionSettings?)
 typealias StakeDisplayInfo = (amount: String, apy: String, receiveAmount: String, rate: String, fee: String, platform: String, stakeTokenIcon: String, fromSym: String, toSym: String)
+typealias FAQInput = (platform: String, token: String, chainID: Int)
 
 typealias ProjectionValue = (value: String, usd: String)
 typealias ProjectionValues = (p30: ProjectionValue, p60: ProjectionValue, p90: ProjectionValue)
@@ -86,6 +87,10 @@ class StakingViewModel {
   init(pool: EarnPoolModel, platform: EarnPlatform) {
     self.pool = pool
     self.selectedPlatform = platform
+  }
+  
+  var faqInput: FAQInput {
+    return (selectedPlatform.name.lowercased(), pool.token.symbol.lowercased(), pool.chainID)
   }
   
   var displayMainHeader: String {
@@ -326,6 +331,8 @@ class StakingViewController: InAppBrowsingViewController {
     viewModel.requestOptionDetail()
     viewModel.getAllowance()
     updateUIProjection()
+    faqContainerView.updateFAQInput(viewModel.faqInput)
+    faqContainerView.delegate = self
   }
   
   private func setupUI() {
@@ -409,6 +416,7 @@ class StakingViewController: InAppBrowsingViewController {
     apyInfoView.setValue(value: viewModel.displayAPY, highlighted: true)
     viewModel.selectedEarningToken.observeAndFire(on: self) { _ in
       self.updateRateInfoView()
+      self.faqContainerView.updateFAQInput(self.viewModel.faqInput)
     }
     viewModel.optionDetail.observeAndFire(on: self) { data in
       if let unwrap = data {
@@ -612,5 +620,12 @@ extension StakingViewController: UITextFieldDelegate {
 extension StakingViewController: StakingEarningTokensViewDelegate {
   func didSelectEarningToken(_ token: EarningToken) {
     viewModel.selectedEarningToken.value = token
+  }
+}
+
+
+extension StakingViewController: StakingFAQViewDelegate {
+  func viewShouldChangeHeight(height: CGFloat) {
+    faqContainerHeightContraint.constant = height
   }
 }

@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 // swiftlint:disable all
+protocol StakingFAQViewDelegate: class {
+  func viewShouldChangeHeight(height: CGFloat)
+}
+
 class FAQCellItem {
   let model: FAQModel
   var isExpand: Bool
@@ -20,10 +24,35 @@ class FAQCellItem {
 
 class StakingFAQViewModel {
   var dataSource: [FAQCellItem] = []
+  var input: FAQInput?
+  
+  var fileName: String {
+    guard let input = input else {
+      return ""
+    }
+
+    var name = "ankr-avax" //Test
+    if input.platform == "ankr" && input.token == "matic" && input.chainID == 1 {
+      name = "Ankr-matic-eth"
+    } else if input.platform == "ankr" && input.token == "matic" && input.chainID == 137 {
+      name = "ankr-matic-matic"
+    } else if input.platform == "ankr" && input.token == "eth" {
+      name = "ankr-eth"
+    } else if input.platform == "ankr" && input.token == "ftm" {
+      name = "ankr-ftm"
+    } else if input.platform == "ankr" && input.token == "bnb" {
+      name = "ankr-bnb"
+    } else if input.platform == "ankr" && input.token == "avax" {
+      name = "ankr-avax"
+    }
+    
+    return name
+  }
   
   func reloadDataSource() {
+    guard input != nil else { return }
     let decoder = PropertyListDecoder()
-    if let url = Bundle.main.url(forResource: "Ankr-matic-eth", withExtension: "plist"),
+    if let url = Bundle.main.url(forResource: fileName, withExtension: "plist"),
         let data = try? Data(contentsOf: url),
         let models = try? decoder.decode([FAQModel].self, from: data) {
       dataSource = models.map { FAQCellItem($0) }
@@ -42,6 +71,8 @@ class StakingFAQView: BaseXibView {
   var isExpand: Observable<Bool> = .init(false)
   
   let viewModel = StakingFAQViewModel()
+  
+  weak var delegate: StakingFAQViewDelegate?
   
   override func commonInit() {
     super.commonInit()
@@ -78,10 +109,20 @@ class StakingFAQView: BaseXibView {
   func getViewHeight() -> CGFloat {
     return 52 + contentTableView.contentSize.height
   }
+  
+  func updateFAQInput(_ input: FAQInput) {
+    viewModel.input = input
+    viewModel.reloadDataSource()
+    contentTableView.reloadData()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+      self.delegate?.viewShouldChangeHeight(height: self.getViewHeight())
+    }
+  }
 }
 
 extension StakingFAQView: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    guard viewModel.dataSource.isNotEmpty else { return 0 }
     return viewModel.dataSource[section].isExpand ? 1 : 0
   }
   
@@ -93,7 +134,7 @@ extension StakingFAQView: UITableViewDataSource {
   }
   
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 9
+    return viewModel.dataSource.count
   }
 }
 
@@ -119,5 +160,9 @@ extension StakingFAQView: SectionHeaderFAQViewDelegate {
     let cm = viewModel.dataSource[section]
     cm.isExpand = status
     contentTableView.reloadData()
+    contentTableView.sizeToFit()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+      self.delegate?.viewShouldChangeHeight(height: self.getViewHeight())
+    }
   }
 }

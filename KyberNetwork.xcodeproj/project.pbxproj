@@ -1148,6 +1148,11 @@
 		C3D560AB260C641E00408875 /* OverviewClaimViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3D560A9260C641E00408875 /* OverviewClaimViewController.xib */; };
 		C3D6996E26410CCB004B34E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3D6996D26410CCB004B34E1 /* GoogleService-Info.plist */; };
 		C3D9517A25FB97EC00DE3C05 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3D9517925FB97EC00DE3C05 /* CloudKit.framework */; };
+		C3DBB0E129221AB6005738F8 /* ankr-matic-matic.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3DBB0E029221AB6005738F8 /* ankr-matic-matic.plist */; };
+		C3DBB0E329222721005738F8 /* ankr-eth.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3DBB0E229222721005738F8 /* ankr-eth.plist */; };
+		C3DBB0E529222CD3005738F8 /* ankr-ftm.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3DBB0E429222CD3005738F8 /* ankr-ftm.plist */; };
+		C3DBB0E7292230ED005738F8 /* ankr-bnb.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3DBB0E6292230ED005738F8 /* ankr-bnb.plist */; };
+		C3DBB0E9292234DC005738F8 /* ankr-avax.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3DBB0E8292234DC005738F8 /* ankr-avax.plist */; };
 		C3ED1DC82616EFDB0024970C /* NotificationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3ED1DC72616EFD50024970C /* NotificationCoordinator.swift */; };
 		C3ED1DCD2616F0090024970C /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3ED1DCB2616F0090024970C /* NotificationsViewController.swift */; };
 		C3ED1DCE2616F0090024970C /* NotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3ED1DCC2616F0090024970C /* NotificationsViewController.xib */; };
@@ -2459,6 +2464,11 @@
 		C3D560A9260C641E00408875 /* OverviewClaimViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewClaimViewController.xib; sourceTree = "<group>"; };
 		C3D6996D26410CCB004B34E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C3D9517925FB97EC00DE3C05 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		C3DBB0E029221AB6005738F8 /* ankr-matic-matic.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ankr-matic-matic.plist"; sourceTree = "<group>"; };
+		C3DBB0E229222721005738F8 /* ankr-eth.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ankr-eth.plist"; sourceTree = "<group>"; };
+		C3DBB0E429222CD3005738F8 /* ankr-ftm.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ankr-ftm.plist"; sourceTree = "<group>"; };
+		C3DBB0E6292230ED005738F8 /* ankr-bnb.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ankr-bnb.plist"; sourceTree = "<group>"; };
+		C3DBB0E8292234DC005738F8 /* ankr-avax.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ankr-avax.plist"; sourceTree = "<group>"; };
 		C3ED1DC72616EFD50024970C /* NotificationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCoordinator.swift; sourceTree = "<group>"; };
 		C3ED1DCB2616F0090024970C /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		C3ED1DCC2616F0090024970C /* NotificationsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationsViewController.xib; sourceTree = "<group>"; };
@@ -4918,6 +4928,11 @@
 				7EAD2B1928F94ABD001FC888 /* EarnPoolModel.swift */,
 				C356A5D6291E279800D3D905 /* FAQModel.swift */,
 				C356A5D8291E28F100D3D905 /* Ankr-matic-eth.plist */,
+				C3DBB0E029221AB6005738F8 /* ankr-matic-matic.plist */,
+				C3DBB0E229222721005738F8 /* ankr-eth.plist */,
+				C3DBB0E429222CD3005738F8 /* ankr-ftm.plist */,
+				C3DBB0E6292230ED005738F8 /* ankr-bnb.plist */,
+				C3DBB0E8292234DC005738F8 /* ankr-avax.plist */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -6966,6 +6981,7 @@
 				25929C9620DA5CC10045CFA3 /* SFCompactDisplay-Semibold.otf in Resources */,
 				A636555A2907B6BB003B66F0 /* ApprovedTokenCell.xib in Resources */,
 				7E913AFA273CF6DA00B6E67C /* intro_reward.json in Resources */,
+				C3DBB0E529222CD3005738F8 /* ankr-ftm.plist in Resources */,
 				C3EE06BE267A15E50090B432 /* Karla-MediumItalic.ttf in Resources */,
 				7E29FEE8289B8693008D01BD /* CommonBaseTokenCell.xib in Resources */,
 				C37AF0C025CA5639006FB880 /* EarnConfirmViewController.xib in Resources */,
@@ -7088,6 +7104,7 @@
 				7E1EBE3A2834D65B00793B6D /* SelectChainCell.xib in Resources */,
 				C3114371249B1C2300084CD8 /* KNMigrationTutorialViewController.xib in Resources */,
 				7E1EBE3E2834D97D00793B6D /* SelectTokenCell.xib in Resources */,
+				C3DBB0E129221AB6005738F8 /* ankr-matic-matic.plist in Resources */,
 				7EC892D427DCE7A9000C5980 /* BifinityOrderViewController.xib in Resources */,
 				A6CC31732877E53200891200 /* KrystalScannerViewController.xib in Resources */,
 				25073D20211AF20D00833C92 /* Montserrat-BlackItalic.ttf in Resources */,
@@ -7247,6 +7264,7 @@
 				251ABCB220578F6E0069687F /* config_env_production.json in Resources */,
 				25929C5D20DA5C760045CFA3 /* SF-Pro-Display-Black.otf in Resources */,
 				A65C7A7A2818E877000FA9CE /* WebViewController.xib in Resources */,
+				C3DBB0E329222721005738F8 /* ankr-eth.plist in Resources */,
 				7E38C6ED28F6CD8700866390 /* EarnPoolPlatformCell.xib in Resources */,
 				255A70EB214F9ECE005D7A6A /* KNSettingsTabViewController.xib in Resources */,
 				C3EE06BA267A15E50090B432 /* Karla-Italic-VariableFont_wght.ttf in Resources */,
@@ -7266,6 +7284,7 @@
 				7E1EBE4A283500A800793B6D /* BridgeReminderCell.xib in Resources */,
 				C3A6911C25638DE700F57756 /* Lato-ThinItalic.ttf in Resources */,
 				C37CC092245803CA0081FB32 /* Roboto-Medium.ttf in Resources */,
+				C3DBB0E9292234DC005738F8 /* ankr-avax.plist in Resources */,
 				7EC892CE27DCD15B000C5980 /* WebBrowserViewController.xib in Resources */,
 				C33696112595A387000EDD5D /* ApproveTokenViewController.xib in Resources */,
 				C34A2266277AE64300F240B8 /* BrowserOptionsViewController.xib in Resources */,
@@ -7284,6 +7303,7 @@
 				A6595C86289D2C3100CE7E42 /* rocket.json in Resources */,
 				C3A6911825638DE700F57756 /* Lato-BlackItalic.ttf in Resources */,
 				C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */,
+				C3DBB0E7292230ED005738F8 /* ankr-bnb.plist in Resources */,
 				7E921A0E28589B8D00CA6F5C /* AdvanceSearchTokenCell.xib in Resources */,
 				7EA381DC28C6068E000D8FBB /* OverviewBrowsingViewController.xib in Resources */,
 				25F96F8121537B6400D7F927 /* KNHoldingDocumentInfoPopUp.xib in Resources */,
