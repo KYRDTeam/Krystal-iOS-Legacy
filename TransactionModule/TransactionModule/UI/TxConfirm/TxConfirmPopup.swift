@@ -68,11 +68,14 @@ public class TxConfirmPopup: UIViewController {
     }
     
     func setupViews() {
+        titleLabel.text = viewModel.title
         chainIconImageView.image = viewModel.chain.squareIcon()
         chainNameLabel.text = viewModel.chain.chainName()
         tokenIconImageView.loadImage(viewModel.tokenIconURL)
         tokenAmountLabel.text = viewModel.tokenAmountString
         actionLabel.text = viewModel.action
+        continueButton.setTitle(viewModel.buttonTitle, for: .normal)
+        platformLabel.text = viewModel.platformName
     }
     
     func setupTableView() {
