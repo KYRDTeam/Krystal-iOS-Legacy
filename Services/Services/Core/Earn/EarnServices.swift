@@ -37,7 +37,7 @@ public class EarnServices: BaseService {
     } as? Cancellable
   }
   
-  public func getStakingPortfolio(address: String, completion: @escaping (Result<([EarningBalance], [PendingUnstake]), AnyError>) -> Void) {
+  public func getStakingPortfolio(address: String, chainId: String?, completion: @escaping (Result<([EarningBalance], [PendingUnstake]), AnyError>) -> Void) {
     let group = DispatchGroup()
     var eb: [EarningBalance]?
     var pu: [PendingUnstake]?
@@ -46,7 +46,7 @@ public class EarnServices: BaseService {
     
     group.enter()
     
-    provider.requestWithFilters(.getEarningBalances(address: address)) { result in
+    provider.requestWithFilters(.getEarningBalances(address: address, chainId: chainId)) { result in
       switch result {
       case .success(let response):
         let decoder = JSONDecoder()

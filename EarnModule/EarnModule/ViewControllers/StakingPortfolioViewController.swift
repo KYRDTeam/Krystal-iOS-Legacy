@@ -277,25 +277,29 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
   }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        guard orientation == .right else { return nil }
+        guard orientation == .right, indexPath.section == 0 else { return nil }
 
-        let revokeAction = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
-            let vc = UnstakeViewController.instantiateFromNib()
-            self?.show(vc, sender: nil)
+        let unstakeAction = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
+            if let earningBalance = self?.viewModel.portfolio?.0[indexPath.row] {
+                let viewModel = UnstakeViewModel(earningBalance: earningBalance)
+                let viewController = UnstakeViewController.instantiateFromNib()
+                viewController.viewModel = viewModel
+                self?.show(viewController, sender: nil)
+            }
         }
-        let image = swipeCellImageView(title: Strings.Unstake, icon: Images.greenSubtract, color: AppTheme.current.errorTextColor)
-        revokeAction.image = image
-        revokeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
+        let image = swipeCellImageView(title: Strings.Unstake, icon: Images.redSubtract, color: AppTheme.current.errorTextColor)
+        unstakeAction.image = image
+        unstakeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
       
         let stakeAction = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
-        let vc = UnstakeViewController.instantiateFromNib()
-        self?.show(vc, sender: nil)
+            let vc = UnstakeViewController.instantiateFromNib()
+            self?.show(vc, sender: nil)
         }
         let stakeImage = swipeCellImageView(title: Strings.Stake, icon: Images.greenPlus, color: AppTheme.current.primaryColor)
         stakeAction.image = stakeImage
         stakeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
         
-        return [revokeAction, stakeAction]
+        return [unstakeAction, stakeAction]
     }
     
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {

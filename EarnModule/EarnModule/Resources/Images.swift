@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct Images {
+class Images {
   
   // Explore screen
   static let exploreSwapIcon = UIImage(named: "swap_inverst_icon")!
@@ -88,5 +88,11 @@ struct Images {
   static let revert = UIImage(named: "revert_icon")!
   static let greenPlus = UIImage(named: "green_plus_icon")!
   static let greenSubtract = UIImage(named: "green_subtract_icon")!
-  static let redSubtract = UIImage(named: "red_subtract_icon")!
+  static let redSubtract =   UIImage(imageName: "red_subtract_icon")!
+}
+
+extension UIImage {
+    convenience init?(imageName: String) {
+        self.init(named: imageName, in: Bundle(for: Images.self), compatibleWith: nil)
+    }
 }

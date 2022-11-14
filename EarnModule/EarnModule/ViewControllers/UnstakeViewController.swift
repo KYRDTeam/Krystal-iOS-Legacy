@@ -22,25 +22,41 @@ class UnstakeViewController: InAppBrowsingViewController {
     @IBOutlet weak var networkFeeView: TxInfoView!
     @IBOutlet weak var receiveTimeView: TxInfoView!
     
+    var viewModel: UnstakeViewModel?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
     func setupUI() {
-        self.amountTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
-        receiveInfoView.setInfo(title: "You will receive", value: "0 stMATIC")
-        rateView.setInfo(title: "Rate", value: "0 stMATIC", shouldShowIcon: true)
+        availableUnstakeValue.text = viewModel?.displayDepositedValue
+        amountTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
+
+        receiveInfoView.setInfo(title: "You will receive", value: viewModel?.receivedValueString() ?? "")
+        
+        rateView.setInfo(title: "Rate", value: viewModel?.showRateInfo() ?? "", shouldShowIcon: true)
+        
+        
+        
         networkFeeView.setInfo(title: "Network Fee", value: "0 stMATIC")
-        receiveTimeView.setInfo(title: "You will receive your MATIC in 2-3 days", value: "")
+        receiveTimeView.setInfo(title: viewModel?.timeForUnstakeString() ?? "", value: "")
+
     }
     
+    @IBAction func onBackButtonTapped(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
+
     @IBAction func settingButtonTapped(_ sender: Any) {
         
     }
     
     @IBAction func maxButtonTapped(_ sender: Any) {
-        hideError()
+        guard let viewModel = viewModel else { return }
+        viewModel.unstakeValue = viewModel.balance
+        amountTextField.text = viewModel.receivedValueMaxString()
+        receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.toTokenSymbol)
     }
     
     @IBAction func unstakeButtonTapped(_ sender: Any) {
@@ -58,4 +74,23 @@ class UnstakeViewController: InAppBrowsingViewController {
         amountViewBottomConstraint.constant = 24
         receiveTimeView.isHidden = false
     }
+    
+    func updateReceivedAmount() {
+        guard let viewModel = viewModel else { return }
+//        let inputValue = amountTextField.text?.doubleValue ?? 0
+        receiveInfoView.setValue(value: viewModel.receivedValueString() + " " + viewModel.toTokenSymbol)
+    }
+}
+
+extension UnstakeViewController: UITextFieldDelegate {
+  
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        updateReceivedAmount()
+        return true
+    }
+  
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        updateReceivedAmount()
+    }
+
 }

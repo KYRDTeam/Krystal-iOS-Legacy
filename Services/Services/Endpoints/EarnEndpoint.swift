@@ -11,7 +11,7 @@ import Utilities
 
 enum EarnEndpoint {
   case listOption(chainId: String?)
-  case getEarningBalances(address: String)
+  case getEarningBalances(address: String, chainId: String?)
   case getPendingUnstakes(address: String)
   case getEarningOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String)
   case buildStakeTx(params: JSONDictionary)
@@ -58,10 +58,13 @@ extension EarnEndpoint: TargetType {
         json["chainID"] = chainId
       }
       return json.isEmpty ? .requestPlain : .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getEarningBalances(address: let address):
+    case .getEarningBalances(address: let address, chainId: let chainId):
       var json: JSONDictionary = [
         "address": address
       ]
+      if let chainId = chainId {
+        json["chainId"] = chainId
+      }  
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getPendingUnstakes(address: let address):
       var json: JSONDictionary = [

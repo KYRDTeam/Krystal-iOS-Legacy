@@ -15,7 +15,6 @@
 		7E6EBD6129091E0800069B33 /* EarnListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5D29091E0700069B33 /* EarnListViewController.swift */; };
 		7E6EBD6229091E0800069B33 /* StakingPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5E29091E0700069B33 /* StakingPortfolioViewController.swift */; };
 		7E6EBD6329091E0800069B33 /* StakingPortfolioViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5F29091E0800069B33 /* StakingPortfolioViewController.xib */; };
-		7E6EBD6529091F7A00069B33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD6429091F7A00069B33 /* Assets.xcassets */; };
 		7E6EBD6B2909280900069B33 /* EarnPoolPlatformCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD672909280800069B33 /* EarnPoolPlatformCell.swift */; };
 		7E6EBD6C2909280900069B33 /* EarnPoolViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD682909280800069B33 /* EarnPoolViewCell.swift */; };
 		7E6EBD6D2909280900069B33 /* EarnPoolViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD692909280900069B33 /* EarnPoolViewCell.xib */; };
@@ -27,6 +26,7 @@
 		7E6EBD86290931E900069B33 /* StakingPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD84290931E800069B33 /* StakingPortfolioCell.swift */; };
 		7E6EBD87290931E900069B33 /* StakingPortfolioCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD85290931E900069B33 /* StakingPortfolioCell.xib */; };
 		7E6EBD8B2909386900069B33 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD8A2909386900069B33 /* Images.swift */; };
+		7E71FA7A2921E9BD0021E67D /* UnstakeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E71FA792921E9BC0021E67D /* UnstakeViewModel.swift */; };
 		7E987F262908E92500AA5F8F /* EarnOverviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E987F252908E92500AA5F8F /* EarnOverviewController.xib */; };
 		7E987F292908F17700AA5F8F /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E987F282908F17700AA5F8F /* BaseModule.framework */; };
 		7EAF4752291B567600BF5D00 /* StakingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF474C291B567400BF5D00 /* StakingViewController.swift */; };
@@ -81,6 +81,7 @@
 		7E6EBD84290931E800069B33 /* StakingPortfolioCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StakingPortfolioCell.swift; sourceTree = "<group>"; };
 		7E6EBD85290931E900069B33 /* StakingPortfolioCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StakingPortfolioCell.xib; sourceTree = "<group>"; };
 		7E6EBD8A2909386900069B33 /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		7E71FA792921E9BC0021E67D /* UnstakeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnstakeViewModel.swift; sourceTree = "<group>"; };
 		7E987F252908E92500AA5F8F /* EarnOverviewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EarnOverviewController.xib; sourceTree = "<group>"; };
 		7E987F282908F17700AA5F8F /* BaseModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EAF474C291B567400BF5D00 /* StakingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StakingViewController.swift; sourceTree = "<group>"; };
@@ -227,6 +228,7 @@
 				A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */,
 				A6D1F809291BB0F100ABA52B /* StakingSummaryViewModel.swift */,
 				7ED1AF1D291E29AD00BA7C75 /* StakingPortfolioViewModel.swift */,
+				7E71FA792921E9BC0021E67D /* UnstakeViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -403,6 +405,7 @@
 				7E6EBD6129091E0800069B33 /* EarnListViewController.swift in Sources */,
 				7E6EBD6C2909280900069B33 /* EarnPoolViewCell.swift in Sources */,
 				7E6EBD86290931E900069B33 /* StakingPortfolioCell.swift in Sources */,
+				7E71FA7A2921E9BD0021E67D /* UnstakeViewModel.swift in Sources */,
 				7EB252C72907F7EC00648438 /* TypeAliases.swift in Sources */,
 				A6D1F808291BAF1E00ABA52B /* StakingViewModel.swift in Sources */,
 				7EB252C12907F3E100648438 /* EarnOverViewModel.swift in Sources */,
