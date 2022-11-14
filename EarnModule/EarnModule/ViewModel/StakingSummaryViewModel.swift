@@ -73,7 +73,7 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var platformName: String {
-        return platform.name
+        return platform.name.uppercased()
     }
     
     var buttonTitle: String {
