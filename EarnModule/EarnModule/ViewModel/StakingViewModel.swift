@@ -166,7 +166,7 @@ class StakingViewModel: BaseViewModel {
         ]
         if selectedPlatform.name.lowercased() == "ankr" {
             var useC = false
-            if selectedEarningToken.value?.name.suffix(1).description.lowercased() == "c" {
+            if selectedEarningToken.value?.symbol.suffix(1).description.lowercased() == "c" {
                 useC = true
             }
             

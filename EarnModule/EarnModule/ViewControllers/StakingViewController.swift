@@ -426,5 +426,6 @@ extension StakingViewController: UITextFieldDelegate {
 extension StakingViewController: StakingEarningTokensViewDelegate {
     func didSelectEarningToken(_ token: EarningToken) {
         viewModel.selectedEarningToken.value = token
+        viewModel.requestBuildStakeTx()
     }
 }
