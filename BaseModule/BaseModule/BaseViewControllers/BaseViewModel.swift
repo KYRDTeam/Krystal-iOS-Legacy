@@ -8,6 +8,7 @@
 import Foundation
 import BaseWallet
 import AppState
+import KrystalWallets
 
 open class BaseViewModel {
     
@@ -15,6 +16,10 @@ open class BaseViewModel {
     
     open var currentChain: ChainType {
         return AppState.shared.currentChain
+    }
+    
+    open var currentAddress: KAddress {
+        return AppState.shared.currentAddress
     }
     
 }
