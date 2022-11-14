@@ -9,6 +9,7 @@ import UIKit
 import DesignSystem
 import AppState
 import TransactionModule
+import BigInt
 
 class UnstakeViewController: InAppBrowsingViewController {
     @IBOutlet weak var unstakePlatformLabel: UILabel!
@@ -59,7 +60,7 @@ class UnstakeViewController: InAppBrowsingViewController {
     @IBAction func maxButtonTapped(_ sender: Any) {
         guard let viewModel = viewModel else { return }
         viewModel.unstakeValue = viewModel.balance
-        amountTextField.text = viewModel.receivedValueMaxString()
+        amountTextField.text = viewModel.unstakeValueString()
         receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.toTokenSymbol)
     }
     
@@ -81,18 +82,13 @@ class UnstakeViewController: InAppBrowsingViewController {
     
     func updateReceivedAmount() {
         guard let viewModel = viewModel else { return }
-//        let inputValue = amountTextField.text?.doubleValue ?? 0
-        receiveInfoView.setValue(value: viewModel.receivedValueString() + " " + viewModel.toTokenSymbol)
+        viewModel.unstakeValue = amountTextField.text?.amountBigInt(decimals: 18) ?? BigInt(0)
+        receiveInfoView.setValue(value: viewModel.receivedValueString())
     }
 }
 
 extension UnstakeViewController: UITextFieldDelegate {
-  
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        updateReceivedAmount()
-        return true
-    }
-  
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         updateReceivedAmount()
     }

@@ -33,6 +33,9 @@ class UnstakeViewModel {
         self.chain = ChainType.make(chainID: earningBalance.chainID) ?? AppState.shared.currentChain
     }
     
+    func unstakeValueString() -> String {
+        NumberFormatUtils.balanceFormat(value: unstakeValue, decimals: 18)
+    }
     
     func receivedValue() -> BigInt {
         return unstakeValue * self.ratio / BigInt(10).power(18)
