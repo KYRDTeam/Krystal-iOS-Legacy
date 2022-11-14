@@ -14,9 +14,9 @@ protocol BalanceProtocol {
     var amountFull: String { get }
 }
 
-struct Balance: BalanceProtocol {
+public struct Balance: BalanceProtocol {
 
-    let value: BigInt
+    public let value: BigInt
 
     init(value: BigInt) {
         self.value = value

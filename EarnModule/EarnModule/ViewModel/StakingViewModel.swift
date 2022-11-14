@@ -29,6 +29,7 @@ class StakingViewModel: BaseViewModel {
     var setting: TxSettingObject = .default
     var isUseReverseRate: Observable<Bool> = .init(false)
     var nextButtonStatus: Observable<NextButtonState> = .init(.notApprove)
+    var balance: Observable<BigInt> = .init(0)
     
     var tokenAllowance: BigInt? {
         didSet {
@@ -43,19 +44,16 @@ class StakingViewModel: BaseViewModel {
     var stakingTokenDetail: TokenDetailInfo?
     var onFetchedQuoteTokenPrice: (() -> ())?
     
-    var balance: BigInt {
-        return AppDependencies.balancesStorage.getBalanceBigInt(address: pool.token.address)
-    }
-    
     init(pool: EarnPoolModel, platform: EarnPlatform) {
         self.pool = pool
         self.selectedPlatform = platform
+        self.balance.value = AppDependencies.balancesStorage.getBalanceBigInt(address: pool.token.address)
         super.init()
     }
     
     func validateAmount() -> StakingValidationError? {
         let amount = self.amount.value
-        if amount > balance {
+        if amount > balance.value {
             return .insufficient
         } else if let validation = self.optionDetail.value?.validation {
             if let min = validation.minStakeAmount, amount < BigInt(min * pow(10.0, Double(self.pool.token.decimals))) {
@@ -77,7 +75,7 @@ class StakingViewModel: BaseViewModel {
     }
     
     var displayStakeToken: String {
-        return AppDependencies.balancesStorage.getBalanceBigInt(address: pool.token.address).shortString(decimals: pool.token.decimals) + " " + pool.token.symbol.uppercased()
+        return NumberFormatUtils.balanceFormat(value: balance.value, decimals: pool.token.decimals) + " " + pool.token.symbol.uppercased()
     }
     
     var displayAPY: String {
@@ -125,19 +123,7 @@ class StakingViewModel: BaseViewModel {
         guard let chain = ChainType.make(chainID: pool.chainID) else { return .zero }
         return GasPriceManager.shared.getPriority(gasType: gasType, chain: chain)
     }
-    
-    func requestOptionDetail() {
-        apiService.getStakingOptionDetail(platform: selectedPlatform.name, earningType: selectedPlatform.type, chainID: "\(pool.chainID)", tokenAddress: pool.token.address) { result in
-            switch result {
-            case .success(let detail):
-                self.optionDetail.value = detail
-                self.selectedEarningToken.value = detail.earningTokens.first
-            case .failure(let error):
-                self.error.value = error
-            }
-        }
-    }
-    
+
     func checkNextButtonStatus() {
         guard let tokenAllowance = tokenAllowance else {
             self.nextButtonStatus.value = .notApprove
@@ -173,21 +159,6 @@ class StakingViewModel: BaseViewModel {
             params["extraData"] = ["ankr": ["useTokenC": useC]]
         }
         return params
-    }
-    
-    func requestBuildStakeTx(showLoading: Bool = false, completion: @escaping () -> () = {}) {
-        if showLoading { isLoading.value = true }
-        apiService.buildStakeTx(param: buildTxRequestParams) { result in
-            switch result {
-            case .success(let tx):
-                self.txObject.value = tx
-                self.gasLimit.value = BigInt(tx.gasLimit.drop0x, radix: 16) ?? AppDependencies.gasConfig.earnGasLimitDefault
-                completion()
-            case .failure(let error):
-                self.error.value = error
-            }
-            if showLoading { self.isLoading.value = false }
-        }
     }
     
     var displayAmountReceive: String {
@@ -226,39 +197,100 @@ class StakingViewModel: BaseViewModel {
         guard amount.value > 0 else {
             return nil
         }
-        let amt = amount.value
-        let apy = selectedPlatform.apy
+        return (calculateReward(dayPeriod: 30), calculateReward(dayPeriod: 60), calculateReward(dayPeriod: 90))
+    }
+    
+    var isChainValid: Bool {
+        return currentChain.customRPC().chainID == pool.chainID
+    }
+    
+    func calculateReward(dayPeriod: Int) -> (String, String) {
         let decimal = pool.token.decimals
         let symbol = pool.token.symbol
         
-        let p30Param = apy * 30.0 / 365
-        let p60Param = apy * 60.0 / 365
-        let p90Param = apy * 90.0 / 365
+        let periodReward = selectedPlatform.apy * Double(dayPeriod) / 365
+        let tokenAmount = amount.value * BigInt(periodReward * pow(10.0, 18.0)) / BigInt(10).power(18)
+        let amountString = NumberFormatUtils.amount(value: tokenAmount, decimals: decimal) + " \(symbol)"
         
-        let p30 = amt * BigInt(p30Param * pow(10.0, 18.0)) / BigInt(10).power(18)
-        let p60 = amt * BigInt(p60Param * pow(10.0, 18.0)) / BigInt(10).power(18)
-        let p90 = amt * BigInt(p90Param * pow(10.0, 18.0)) / BigInt(10).power(18)
-        
-        let displayP30 = NumberFormatUtils.amount(value: p30, decimals: decimal) + " \(symbol)"
-        let displayP60 = NumberFormatUtils.amount(value: p60, decimals: decimal) + " \(symbol)"
-        let displayP90 = NumberFormatUtils.amount(value: p90, decimals: decimal) + " \(symbol)"
-        
-        var displayP30USD = ""
-        var displayP60USD = ""
-        var displayP90USD = ""
-        
+        var usdAmountString = ""
         if let usdPrice = stakingTokenUsdPrice {
-            let usd30 = p30 * BigInt(usdPrice * pow(10.0, 18.0)) / BigInt(10).power(decimal)
-            let usd60 = p60 * BigInt(usdPrice * pow(10.0, 18.0)) / BigInt(10).power(decimal)
-            let usd90 = p90 * BigInt(usdPrice * pow(10.0, 18.0)) / BigInt(10).power(decimal)
-            
-            displayP30USD = "≈ $" + NumberFormatUtils.usdAmount(value: usd30, decimals: 18)
-            displayP60USD = "≈ $" + NumberFormatUtils.usdAmount(value: usd60, decimals: 18)
-            displayP90USD = "≈ $" + NumberFormatUtils.usdAmount(value: usd90, decimals: 18)
+            let usdAmount = tokenAmount * BigInt(usdPrice * pow(10.0, 18.0)) / BigInt(10).power(decimal)
+            usdAmountString = "≈ $" + NumberFormatUtils.usdAmount(value: usdAmount, decimals: 18)
         }
-        
-        return ( (displayP30, displayP30USD), (displayP60, displayP60USD), (displayP90, displayP90USD) )
-        
+        return (amountString, usdAmountString)
+    }
+    
+    func reloadData() {
+        getBalance()
+        requestOptionDetail()
+        getAllowance()
+    }
+    
+    func messageFor(validationError: StakingValidationError) -> String {
+        switch validationError {
+        case .insufficient:
+            return Strings.insufficientBalance
+        case .notEnoughMin(let minValue):
+            let bigIntValue = BigInt(minValue * pow(10.0, 18))
+            return String(format: Strings.shouldBeAtLeast, NumberFormatUtils.amount(value: bigIntValue, decimals: 18))
+        case .higherThanMax(let maxValue):
+            let bigIntValue = BigInt(maxValue * pow(10.0, 18))
+            return String(format: Strings.shouldNoMoreThan, NumberFormatUtils.amount(value: bigIntValue, decimals: 18))
+        case .notIntervalOf(let interval):
+            let bigIntValue = BigInt(interval * pow(10.0, 18))
+            return String(format: Strings.shouldBeIntervalOf, NumberFormatUtils.amount(value: bigIntValue, decimals: 18))
+        case .empty:
+            return ""
+        }
+    }
+}
+
+extension StakingViewModel {
+    
+    func getBalance() {
+        EthereumNodeService(chain: currentChain).getBalance(address: currentAddress.addressString, tokenAddress: pool.token.address) { balance in
+            self.balance.value = balance
+        }
+    }
+    
+    func getQuoteTokenPrice() {
+        tokenService.getTokenDetail(address: currentChain.customRPC().quoteTokenAddress, chainPath: currentChain.customRPC().apiChainPath) { [weak self] tokenDetail in
+            self?.quoteTokenDetail = tokenDetail
+            self?.onFetchedQuoteTokenPrice?()
+        }
+    }
+    
+    func getStakingTokenDetail() {
+        tokenService.getTokenDetail(address: pool.token.address, chainPath: currentChain.customRPC().apiChainPath) { [weak self] tokenDetail in
+            self?.stakingTokenDetail = tokenDetail
+        }
+    }
+    
+    func requestOptionDetail() {
+        apiService.getStakingOptionDetail(platform: selectedPlatform.name, earningType: selectedPlatform.type, chainID: "\(pool.chainID)", tokenAddress: pool.token.address) { result in
+            switch result {
+            case .success(let detail):
+                self.optionDetail.value = detail
+                self.selectedEarningToken.value = detail.earningTokens.first
+            case .failure(let error):
+                self.error.value = error
+            }
+        }
+    }
+    
+    func requestBuildStakeTx(showLoading: Bool = false, completion: @escaping () -> () = {}) {
+        if showLoading { isLoading.value = true }
+        apiService.buildStakeTx(param: buildTxRequestParams) { result in
+            switch result {
+            case .success(let tx):
+                self.txObject.value = tx
+                self.gasLimit.value = BigInt(tx.gasLimit.drop0x, radix: 16) ?? AppDependencies.gasConfig.earnGasLimitDefault
+                completion()
+            case .failure(let error):
+                self.error.value = error
+            }
+            if showLoading { self.isLoading.value = false }
+        }
     }
     
     func getAllowance() {
@@ -286,43 +318,4 @@ class StakingViewModel: BaseViewModel {
         }
     }
     
-    var isChainValid: Bool {
-        return currentChain.customRPC().chainID == pool.chainID
-    }
-    
-    func reloadData() {
-        requestOptionDetail()
-        getAllowance()
-    }
-    
-    func getQuoteTokenPrice() {
-        tokenService.getTokenDetail(address: currentChain.customRPC().quoteTokenAddress, chainPath: currentChain.customRPC().apiChainPath) { [weak self] tokenDetail in
-            self?.quoteTokenDetail = tokenDetail
-            self?.onFetchedQuoteTokenPrice?()
-        }
-    }
-    
-    func getStakingTokenDetail() {
-        tokenService.getTokenDetail(address: pool.token.address, chainPath: currentChain.customRPC().apiChainPath) { [weak self] tokenDetail in
-            self?.stakingTokenDetail = tokenDetail
-        }
-    }
-    
-    func messageFor(validationError: StakingValidationError) -> String {
-        switch validationError {
-        case .insufficient:
-            return Strings.insufficientBalance
-        case .notEnoughMin(let minValue):
-            let bigIntValue = BigInt(minValue * pow(10.0, 18))
-            return String(format: Strings.shouldBeAtLeast, NumberFormatUtils.amount(value: bigIntValue, decimals: 18))
-        case .higherThanMax(let maxValue):
-            let bigIntValue = BigInt(maxValue * pow(10.0, 18))
-            return String(format: Strings.shouldNoMoreThan, NumberFormatUtils.amount(value: bigIntValue, decimals: 18))
-        case .notIntervalOf(let interval):
-            let bigIntValue = BigInt(interval * pow(10.0, 18))
-            return String(format: Strings.shouldBeIntervalOf, NumberFormatUtils.amount(value: bigIntValue, decimals: 18))
-        case .empty:
-            return ""
-        }
-    }
 }

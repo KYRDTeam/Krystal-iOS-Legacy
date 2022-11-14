@@ -197,9 +197,12 @@ class StakingViewController: InAppBrowsingViewController {
     
     private func bindingViewModel() {
         stakeMainHeaderLabel.text = viewModel.displayMainHeader
-        stakeTokenLabel.text = viewModel.displayStakeToken
         stakeTokenImageView.setImage(urlString: viewModel.pool.token.logo, symbol: viewModel.pool.token.symbol)
         apyInfoView.setValue(value: viewModel.displayAPY, highlighted: true)
+        
+        viewModel.balance.observeAndFire(on: self) { [weak self] _ in
+            self?.stakeTokenLabel.text = self?.viewModel.displayStakeToken
+        }
         
         viewModel.selectedEarningToken.observeAndFire(on: self) { _ in
             self.updateRateInfoView()
