@@ -71,7 +71,7 @@
 		<key>question</key>
 		<string>Does Ankr charge for the service?</string>
 		<key>answer</key>
-		<string>&lt;p&gt;&lt;span style=&quot;font-size: 10.5pt; font-family: Arial; color: rgb(31, 34, 38); background-color: rgb(255, 255, 255); font-variant-ligatures: normal; font-variant-east-asian: normal; font-variant-position: normal; vertical-align: baseline; white-space: pre-wrap;&quot;&gt;ANKR does not charge any service fees for ETH Liquid Staking. However, validators charge a fee deducted from your rewards (Ankr&amp;rsquo;s validator node charges 10%), representing an indirect cost for liquid staking token holders. Ankr&amp;apos;s income comes from running one of the several validator nodes that will be used to stake ETH.&lt;/span&gt;&lt;/p&gt;</string>
+		<string>&lt;p dir=&quot;ltr&quot; style=&quot;line-height: 1.38; margin-top: 0pt; margin-bottom: 0pt;&quot;&gt;ANKR does not charge any service fees for ETH Liquid Staking. However, validators charge a fee deducted from your rewards (Ankr&amp;rsquo;s validator node charges 10%), representing an indirect cost for liquid staking token holders. Ankr&amp;apos;s income comes from running one of the several validator nodes that will be used to stake ETH.&lt;/p&gt;</string>
 	</dict>
 </array>
 </plist>

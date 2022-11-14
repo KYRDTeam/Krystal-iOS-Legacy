@@ -31,7 +31,7 @@ class StakingFAQViewModel {
       return ""
     }
 
-    var name = "ankr-avax" //Test
+    var name = ""
     if input.platform == "ankr" && input.token == "matic" && input.chainID == 1 {
       name = "Ankr-matic-eth"
     } else if input.platform == "ankr" && input.token == "matic" && input.chainID == 137 {
@@ -50,12 +50,17 @@ class StakingFAQViewModel {
   }
   
   func reloadDataSource() {
-    guard input != nil else { return }
+    guard input != nil, !fileName.isEmpty else {
+      dataSource = []
+      return
+    }
     let decoder = PropertyListDecoder()
     if let url = Bundle.main.url(forResource: fileName, withExtension: "plist"),
         let data = try? Data(contentsOf: url),
         let models = try? decoder.decode([FAQModel].self, from: data) {
       dataSource = models.map { FAQCellItem($0) }
+    } else {
+      dataSource = []
     }
   }
 }
@@ -116,6 +121,7 @@ class StakingFAQView: BaseXibView {
     contentTableView.reloadData()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
       self.delegate?.viewShouldChangeHeight(height: self.getViewHeight())
+      self.isHidden = self.viewModel.dataSource.isEmpty
     }
   }
 }
