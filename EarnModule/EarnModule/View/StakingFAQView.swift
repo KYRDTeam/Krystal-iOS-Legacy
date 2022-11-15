@@ -78,6 +78,7 @@ class StakingFAQView: BaseXibView {
   @IBOutlet weak var lineView: UIView!
   
   var isExpand: Observable<Bool> = .init(false)
+  var currentHeight: CGFloat?
   
   let viewModel = StakingFAQViewModel()
   
@@ -172,7 +173,9 @@ extension StakingFAQView: SectionHeaderFAQViewDelegate {
     contentTableView.reloadData()
     contentTableView.sizeToFit()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-      self.delegate?.viewShouldChangeHeight(height: self.getViewHeight())
+      let height = self.getViewHeight()
+      self.delegate?.viewShouldChangeHeight(height: height)
+      self.currentHeight = height
     }
   }
 }
