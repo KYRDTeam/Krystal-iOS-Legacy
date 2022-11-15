@@ -208,7 +208,7 @@ class StakingViewModel: BaseViewModel {
         let decimal = pool.token.decimals
         let symbol = pool.token.symbol
         
-        let periodReward = selectedPlatform.apy * Double(dayPeriod) / 365
+        let periodReward = selectedPlatform.apy / 100.0 * Double(dayPeriod) / 365
         let tokenAmount = amount.value * BigInt(periodReward * pow(10.0, 18.0)) / BigInt(10).power(18)
         let amountString = NumberFormatUtils.amount(value: tokenAmount, decimals: decimal) + " \(symbol)"
         
