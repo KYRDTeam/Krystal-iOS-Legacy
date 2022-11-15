@@ -35,8 +35,8 @@ public struct EIP1559Transaction: Codable {
     
     public func signContractGenericWithPK(_ key: Data) -> Data {
         let input = EthereumSigningInput.with {
-            $0.chainID = Data(hexString: self.chainID)!
-            $0.nonce = Data(hexString: self.nonce)!
+            $0.chainID = Data(hex: self.chainID)
+            $0.nonce = Data(hex: self.nonce)
             $0.txMode = .enveloped
             $0.gasLimit = Data(hexString: self.gasLimit)!
             $0.maxInclusionFeePerGas = Data(hexString: self.maxInclusionFeePerGas)!
@@ -58,8 +58,8 @@ public struct EIP1559Transaction: Codable {
     
     public func signTransferWithPK(_ key: Data) -> Data {
         let input = EthereumSigningInput.with {
-            $0.chainID = Data(hexString: self.chainID)!
-            $0.nonce = Data(hexString: self.nonce)!
+            $0.chainID = Data(hex: self.chainID)
+            $0.nonce = Data(hex: self.nonce)
             $0.txMode = .enveloped
             $0.gasLimit = Data(hexString: self.gasLimit)!
             $0.maxInclusionFeePerGas = Data(hexString: self.maxInclusionFeePerGas)!

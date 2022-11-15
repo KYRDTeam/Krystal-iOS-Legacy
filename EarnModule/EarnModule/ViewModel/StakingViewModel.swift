@@ -110,7 +110,7 @@ class StakingViewModel: BaseViewModel {
     
     var feeUSDString: String {
         let usd = self.transactionFee * BigInt(quoteTokenUsdPrice * pow(10, 18)) / BigInt(10).power(18)
-        let valueString = NumberFormatUtils.usdAmount(value: usd, decimals: 18)
+        let valueString = NumberFormatUtils.gasFee(value: usd)
         return "(~ $\(valueString))"
     }
     

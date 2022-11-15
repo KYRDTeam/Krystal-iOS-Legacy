@@ -32,6 +32,7 @@
                 <outlet property="chainButton" destination="U4I-3q-BJY" id="vqb-7i-FGV"/>
                 <outlet property="chainIcon" destination="Laj-A9-yYy" id="9HQ-wU-CBl"/>
                 <outlet property="earningTokenContainerView" destination="DXA-Eq-Vgp" id="aO3-Dg-RHJ"/>
+                <outlet property="earningTokensHeightConstraint" destination="IaB-Dv-P1P" id="LFP-Pe-KbG"/>
                 <outlet property="errorMsgLabel" destination="eXy-Nq-Sss" id="OOs-y4-2ba"/>
                 <outlet property="expandContainerViewHeightContraint" destination="ibA-g0-5LK" id="64Q-AQ-L4P"/>
                 <outlet property="expandProjectionButton" destination="7VS-cG-N4B" id="AJw-fm-SJI"/>

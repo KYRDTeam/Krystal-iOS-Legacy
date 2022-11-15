@@ -27,11 +27,13 @@ class StakingEarningTokensView: BaseXibView {
   let viewModel = StakingEarningTokensViewModel()
   weak var delegate: StakingEarningTokensViewDelegate?
   
-  override func commonInit() {
-    super.commonInit()
-    
-    registerCell()
-  }
+    override func commonInit() {
+        super.commonInit()
+        
+        tokensCollectionView.delegate = self
+        tokensCollectionView.dataSource = self
+        registerCell()
+    }
   
   private func registerCell() {
     tokensCollectionView.registerCellNib(EarningTokenCell.self)
@@ -63,4 +65,20 @@ extension StakingEarningTokensView: UICollectionViewDelegate {
     tokensCollectionView.reloadData()
     delegate?.didSelectEarningToken(viewModel.dataSource[indexPath.row])
   }
+}
+
+extension StakingEarningTokensView: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return .init(width: (UIScreen.main.bounds.width - 56) / 2, height: collectionView.frame.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 16
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 16
+    }
+    
 }
