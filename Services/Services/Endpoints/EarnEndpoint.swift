@@ -15,6 +15,7 @@ enum EarnEndpoint {
   case getPendingUnstakes(address: String)
   case getEarningOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String)
   case buildStakeTx(params: JSONDictionary)
+  case buildUnstakeTx(params: JSONDictionary)
 }
 
 extension EarnEndpoint: TargetType {
@@ -34,12 +35,14 @@ extension EarnEndpoint: TargetType {
       return "/v1/earning/optionDetail"
     case .buildStakeTx(params: _):
       return "/v1/earning/buildStakeTx"
+    case .buildUnstakeTx:
+        return "/v1/earning/buildUnstakeTx"
     }
   }
   
   var method: Moya.Method {
     switch self {
-      case .buildStakeTx(params: _):
+    case .buildStakeTx, .buildUnstakeTx:
       return .post
     default:
       return .get
@@ -80,6 +83,8 @@ extension EarnEndpoint: TargetType {
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .buildStakeTx(params: let params):
+      return .requestParameters(parameters: params, encoding: JSONEncoding.default)
+    case .buildUnstakeTx(params: let params):
       return .requestParameters(parameters: params, encoding: JSONEncoding.default)
     }
   }

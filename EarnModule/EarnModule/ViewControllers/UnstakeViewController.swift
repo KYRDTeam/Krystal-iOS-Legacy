@@ -10,6 +10,7 @@ import DesignSystem
 import AppState
 import TransactionModule
 import BigInt
+import FittedSheets
 
 enum UnstakeButtonState {
     case normal
@@ -38,12 +39,14 @@ class UnstakeViewController: InAppBrowsingViewController {
                 case .normal:
                     unstakeButton.isUserInteractionEnabled = true
                     unstakeButton.setBackgroundColor(AppTheme.current.primaryColor, forState: .normal)
+                    unstakeButton.setTitle(String(format: Strings.unstakeToken,viewModel?.stakingTokenSymbol ?? ""), for: .normal)
                 case .disable:
                     unstakeButton.isUserInteractionEnabled = false
                     unstakeButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .normal)
                 case .approve:
                     unstakeButton.isUserInteractionEnabled = true
                     unstakeButton.setBackgroundColor(AppTheme.current.primaryColor, forState: .normal)
+                    unstakeButton.setTitle(String(format: Strings.approveToken,viewModel?.stakingTokenSymbol ?? ""), for: .normal)
             }
         }
     }
@@ -55,9 +58,10 @@ class UnstakeViewController: InAppBrowsingViewController {
     }
     
     func initializeData() {
+        unstakeButtonState = .disable
         if let viewModel = viewModel {
             viewModel.delegate = self
-            viewModel.fetchData()
+            viewModel.fetchData(controller: self)
         }
     }
     
@@ -95,7 +99,7 @@ class UnstakeViewController: InAppBrowsingViewController {
     @IBAction func unstakeButtonTapped(_ sender: Any) {
         switch unstakeButtonState {
             case .normal:
-                unstake()
+                openUnStakeSummary()
             default:
                 approve()
         }
@@ -119,12 +123,53 @@ class UnstakeViewController: InAppBrowsingViewController {
         receiveInfoView.setValue(value: viewModel.receivedValueString())
     }
     
-    func unstake() {
-        
+    func openUnStakeSummary() {
+        guard let viewModel = viewModel else { return }
+        viewModel.requestBuildUnstakeTx(completion: {
+            if let tx = viewModel.txObject {
+                
+                let displayInfo = UnstakeDisplayInfo(amount: viewModel.unstakeValueString() + " " + viewModel.stakingTokenSymbol,
+                                                     receiveAmount: viewModel.receivedValueString(),
+                                                     rate: viewModel.showRateInfo(),
+                                                     fee: viewModel.transactionFeeString(),
+                                                     stakeTokenIcon: viewModel.stakingTokenLogo,
+                                                     fromSym: viewModel.stakingTokenSymbol,
+                                                     toSym: viewModel.toTokenSymbol)
+                
+                
+                let viewModel = UnstakeSummaryViewModel(setting: viewModel.setting, txObject: tx, platform: viewModel.platform, displayInfo: displayInfo)
+                
+                TxConfirmPopup.show(onViewController: self, withViewModel: viewModel) { [weak self] pendingTx in
+                    self?.openTxStatusPopup(tx: pendingTx as! PendingStakingTxInfo)
+                }
+            }
+        })
+    }
+    
+    func openTxStatusPopup(tx: PendingStakingTxInfo) {
+        let popup = StakingTrasactionProcessPopup.instantiateFromNib()
+        popup.tx = tx
+        let sheet = SheetViewController(controller: popup, sizes: [.fixed(420)], options: .init(pullBarHeight: 0))
+        dismiss(animated: true) {
+            UIApplication.shared.topMostViewController()?.present(sheet, animated: true)
+        }
     }
     
     func approve() {
+        guard let viewModel = viewModel, let contractAddress = viewModel.contractAddress else { return }
+        let vm = ApproveTokenViewModel(symbol: viewModel.stakingTokenSymbol, tokenAddress: viewModel.stakingTokenAddress, remain: viewModel.stakingTokenAllowance, toAddress: contractAddress, chain: viewModel.chain)
+        let vc = ApproveTokenViewController(viewModel: vm)
+        vc.onSuccessApprove = {
+            self.unstakeButtonState = .normal
+        }
         
+        vc.onFailApprove = {
+            //TODO: show error approve here
+            self.showErrorTopBannerMessage(message: "Approve fail")
+            self.unstakeButtonState = .normal
+        }
+        
+        self.present(vc, animated: true, completion: nil)
     }
 }
 

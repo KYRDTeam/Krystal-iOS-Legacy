@@ -22,7 +22,9 @@
 "cancel" = "Cancel";
 "confirm.stake" = "Confirm Stake";
 "stake.summary" = "Stake Summary";
+"unStake.summary" = "Unstake Summary";
 "you.are.staking" = "You are staking";
+"you.are.unStaking" = "You are unstaking";
 "amount" = "Amount";
 "insufficient.balance" = "Your balance is not sufficient";
 "not.enough.min.stake.amount" = "Should be at least %@";
@@ -30,3 +32,5 @@
 "should.be.interval.of" = "Value must be multiple of %@";
 "Unstake" = "Unstake";
 "Stake" = "Stake";
+"Unstake.token" = "Unstake %@";
+"confirm.unstake" = "Confirm Unstake";
