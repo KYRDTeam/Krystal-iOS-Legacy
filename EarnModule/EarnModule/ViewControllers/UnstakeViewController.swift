@@ -11,6 +11,12 @@ import AppState
 import TransactionModule
 import BigInt
 
+enum UnstakeButtonState {
+    case normal
+    case disable
+    case approve
+}
+
 class UnstakeViewController: InAppBrowsingViewController {
     @IBOutlet weak var unstakePlatformLabel: UILabel!
     @IBOutlet weak var availableUnstakeValue: UILabel!
@@ -26,10 +32,33 @@ class UnstakeViewController: InAppBrowsingViewController {
     @IBOutlet weak var receiveTimeView: TxInfoView!
     
     var viewModel: UnstakeViewModel?
+    var unstakeButtonState: UnstakeButtonState = .disable {
+        didSet {
+            switch self.unstakeButtonState {
+                case .normal:
+                    unstakeButton.isUserInteractionEnabled = true
+                    unstakeButton.setBackgroundColor(AppTheme.current.primaryColor, forState: .normal)
+                case .disable:
+                    unstakeButton.isUserInteractionEnabled = false
+                    unstakeButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .normal)
+                case .approve:
+                    unstakeButton.isUserInteractionEnabled = true
+                    unstakeButton.setBackgroundColor(AppTheme.current.primaryColor, forState: .normal)
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        initializeData()
         setupUI()
+    }
+    
+    func initializeData() {
+        if let viewModel = viewModel {
+            viewModel.delegate = self
+            viewModel.fetchData()
+        }
     }
     
     func setupUI() {
@@ -40,7 +69,6 @@ class UnstakeViewController: InAppBrowsingViewController {
         rateView.setInfo(title: "Rate", value: viewModel.showRateInfo(), shouldShowIcon: true)
         networkFeeView.setInfo(title: "Network Fee", value: viewModel.transactionFeeString())
         receiveTimeView.setInfo(title: viewModel.timeForUnstakeString(), value: "")
-
     }
     
     @IBAction func onBackButtonTapped(_ sender: Any) {
@@ -65,7 +93,12 @@ class UnstakeViewController: InAppBrowsingViewController {
     }
     
     @IBAction func unstakeButtonTapped(_ sender: Any) {
-        showError()
+        switch unstakeButtonState {
+            case .normal:
+                unstake()
+            default:
+                approve()
+        }
     }
     
     func showError() {
@@ -84,6 +117,28 @@ class UnstakeViewController: InAppBrowsingViewController {
         guard let viewModel = viewModel else { return }
         viewModel.unstakeValue = amountTextField.text?.amountBigInt(decimals: 18) ?? BigInt(0)
         receiveInfoView.setValue(value: viewModel.receivedValueString())
+    }
+    
+    func unstake() {
+        
+    }
+    
+    func approve() {
+        
+    }
+}
+
+extension UnstakeViewController: UnstakeViewModelDelegate {
+    func didGetDataSuccess() {
+        unstakeButtonState = .normal
+    }
+    
+    func didGetDataNeedApproveToken() {
+        unstakeButtonState = .approve
+    }
+    
+    func didGetDataFail(errMsg: String) {
+        self.showErrorTopBannerMessage(message: errMsg)
     }
 }
 

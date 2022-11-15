@@ -12,6 +12,12 @@ import Utilities
 import TransactionModule
 import AppState
 
+protocol UnstakeViewModelDelegate: class {
+    func didGetDataSuccess()
+    func didGetDataNeedApproveToken()
+    func didGetDataFail(errMsg: String)
+}
+
 class UnstakeViewModel {
     let displayDepositedValue: String
     let ratio: BigInt
@@ -19,9 +25,18 @@ class UnstakeViewModel {
     let toTokenSymbol: String
     let balance: BigInt
     let platform: Platform
-    var unstakeValue: BigInt = BigInt(0)
+    var unstakeValue: BigInt = BigInt(0) {
+        didSet {
+            self.configAllowance()
+        }
+    }
     let chain: ChainType
     var setting: TxSettingObject = .default
+    let stakingTokenAddress: String
+    let toUnderlyingTokenAddress: String
+    var stakingTokenAllowance: BigInt = BigInt(0)
+    
+    weak var delegate: UnstakeViewModelDelegate?
 
     init(earningBalance: EarningBalance) {
         self.displayDepositedValue = (BigInt(earningBalance.stakingToken.balance)?.shortString(decimals: earningBalance.stakingToken.decimals) ?? "---") + " " + earningBalance.stakingToken.symbol
@@ -31,6 +46,8 @@ class UnstakeViewModel {
         self.balance = BigInt(earningBalance.stakingToken.balance) ?? BigInt(0)
         self.platform = earningBalance.platform
         self.chain = ChainType.make(chainID: earningBalance.chainID) ?? AppState.shared.currentChain
+        self.toUnderlyingTokenAddress = earningBalance.toUnderlyingToken.address
+        self.stakingTokenAddress = earningBalance.stakingToken.address
     }
     
     func unstakeValueString() -> String {
@@ -77,5 +94,48 @@ class UnstakeViewModel {
     
     func transactionFeeString() -> String {
         return NumberFormatUtils.gasFee(value: setting.transactionFee(chain: chain)) + " " + AppState.shared.currentChain.quoteToken()
+    }
+    
+    func fetchData() {
+        let service = EarnServices()
+        service.getStakingOptionDetail(platform: platform.name, earningType: platform.type, chainID: "\(chain.getChainId())", tokenAddress: toUnderlyingTokenAddress) { result in
+            switch result {
+            case .success(let detail):
+                if let earningToken = detail.earningTokens.first(where: { $0.address.lowercased() == self.stakingTokenAddress.lowercased() }) {
+                    self.checkNeedApprove(earningToken: earningToken, contractAddress: detail.poolAddress)
+                } else {
+                    self.delegate?.didGetDataSuccess()
+                }
+            case .failure(let error):
+                self.delegate?.didGetDataFail(errMsg: error.localizedDescription)
+            }
+        }
+    }
+    
+    func checkNeedApprove(earningToken: EarningToken, contractAddress: String) {
+        let service = EthereumNodeService(chain: chain)
+        if earningToken.requireApprove {
+            service.getAllowance(for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: earningToken.address) { result in
+                switch result {
+                case .success(let number):
+                    self.stakingTokenAllowance = number
+                    self.configAllowance()
+                case .failure(let error):
+                    self.delegate?.didGetDataFail(errMsg: error.localizedDescription)
+                }
+            }
+        } else {
+            self.delegate?.didGetDataSuccess()
+        }
+    }
+    
+    func configAllowance() {
+        if stakingTokenAllowance < unstakeValue {
+            //need approve more
+            self.delegate?.didGetDataNeedApproveToken()
+        } else {
+            // can make transaction
+            self.delegate?.didGetDataSuccess()
+        }
     }
 }
