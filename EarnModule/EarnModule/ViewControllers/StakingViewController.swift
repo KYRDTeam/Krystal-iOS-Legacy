@@ -197,9 +197,12 @@ class StakingViewController: InAppBrowsingViewController {
     
     private func bindingViewModel() {
         stakeMainHeaderLabel.text = viewModel.displayMainHeader
-        stakeTokenLabel.text = viewModel.displayStakeToken
         stakeTokenImageView.setImage(urlString: viewModel.pool.token.logo, symbol: viewModel.pool.token.symbol)
         apyInfoView.setValue(value: viewModel.displayAPY, highlighted: true)
+        
+        viewModel.balance.observeAndFire(on: self) { [weak self] _ in
+            self?.stakeTokenLabel.text = self?.viewModel.displayStakeToken
+        }
         
         viewModel.selectedEarningToken.observeAndFire(on: self) { _ in
             self.updateRateInfoView()
@@ -295,6 +298,7 @@ class StakingViewController: InAppBrowsingViewController {
         let balance = AppDependencies.balancesStorage.getBalanceBigInt(address: viewModel.pool.token.address)
         viewModel.amount.value = balance
         amountTextField.text = NumberFormatUtils.amount(value: balance, decimals: viewModel.pool.token.decimals)
+        showWarningInvalidAmountDataIfNeeded()
     }
     
     @IBAction func nextButtonTapped(_ sender: UIButton) {
@@ -425,5 +429,6 @@ extension StakingViewController: UITextFieldDelegate {
 extension StakingViewController: StakingEarningTokensViewDelegate {
     func didSelectEarningToken(_ token: EarningToken) {
         viewModel.selectedEarningToken.value = token
+        viewModel.requestBuildStakeTx()
     }
 }
