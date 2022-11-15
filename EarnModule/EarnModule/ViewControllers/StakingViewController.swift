@@ -61,16 +61,14 @@ class StakingViewController: InAppBrowsingViewController {
     
     @IBOutlet weak var p30ValueLabel: UILabel!
     @IBOutlet weak var p30USDValueLabel: UILabel!
-    
     @IBOutlet weak var p60ValueLabel: UILabel!
     @IBOutlet weak var p60USDValueLabel: UILabel!
-    
     @IBOutlet weak var p90ValueLabel: UILabel!
     @IBOutlet weak var p90USDValueLabel: UILabel!
-    
     @IBOutlet weak var projectionContainerView: UIView!
-    
     @IBOutlet weak var pendingTxIndicator: UIView!
+    
+    @IBOutlet weak var earningTokensHeightConstraint: NSLayoutConstraint!
     
     var viewModel: StakingViewModel!
     var keyboardTimer: Timer?
@@ -147,12 +145,18 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     fileprivate func updateUIEarningTokenView() {
-        if let data = viewModel.optionDetail.value?.earningTokens, data.count <= 1 {
+        let data = viewModel.optionDetail.value?.earningTokens
+        if data == nil || data!.count <= 1 {
             earningTokenContainerView.isHidden = true
             infoAreaTopContraint.constant = 40
         } else {
+            let maxEarningTokenCellHeight: CGFloat = viewModel.optionDetail.value?.earningTokens.map {
+                return getEarningTokenHeight(text: $0.desc)
+            }.max() ?? 0
             earningTokenContainerView.isHidden = false
-            infoAreaTopContraint.constant = 211
+            infoAreaTopContraint.constant = maxEarningTokenCellHeight + 40 + 52
+            earningTokensHeightConstraint.constant = maxEarningTokenCellHeight + 32
+            view.layoutIfNeeded()
         }
     }
     
@@ -172,6 +176,11 @@ class StakingViewController: InAppBrowsingViewController {
             errorMsgLabel.text = ""
             nextButton.alpha = 0.2
         }
+    }
+    
+    private func getEarningTokenHeight(text: String) -> CGFloat {
+        let width = (view.frame.width - 56) / 2 - 40
+        return text.height(withConstrainedWidth: width, font: .karlaReguler(ofSize: 14)) + 68
     }
     
     fileprivate func updateUIGasFee() {
