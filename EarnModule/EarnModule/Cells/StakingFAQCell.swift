@@ -16,6 +16,7 @@ class StakingFAQCell: UITableViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     // Initialization code
+    contentTextView.linkTextAttributes = [.foregroundColor: UIColor(hex: "1DE9B6"), .underlineColor: UIColor.clear]
   }
   
   func updateContent(_ text: String) {
