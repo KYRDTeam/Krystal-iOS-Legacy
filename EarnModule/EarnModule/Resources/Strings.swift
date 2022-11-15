@@ -6,11 +6,47 @@
 //
 
 import Foundation
+import UIKit
 
 extension String {
     
     func toBeLocalised() -> String {
         return NSLocalizedString(self, tableName: nil, bundle: EarnModule.bundle, value: "", comment: "")
+    }
+  
+  func htmlAttributedString(size: CGFloat) -> NSAttributedString? {
+      let htmlTemplate = """
+            <!doctype html>
+            <html>
+              <head>
+                <style>
+                  body {
+                    color: rgba(255, 255, 255, 0.5);
+                    font-family: 'Karla';
+                    font-size: \(size)px;
+                  }
+                  a:link, a:visited { color: #1DE9B6; }
+                </style>
+              </head>
+              <body>
+                \(self)
+              </body>
+            </html>
+            """
+      
+      guard let data = htmlTemplate.data(using: .utf8) else {
+        return nil
+      }
+      
+      guard let attributedString = try? NSAttributedString(
+        data: data,
+        options: [.documentType: NSAttributedString.DocumentType.html],
+        documentAttributes: nil
+      ) else {
+        return nil
+      }
+      
+      return attributedString
     }
     
 }

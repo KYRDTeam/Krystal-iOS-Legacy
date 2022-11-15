@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 import Utilities
+
+typealias FAQInput = (platform: String, token: String, chainID: Int)
 // swiftlint:disable all
 protocol StakingFAQViewDelegate: class {
   func viewShouldChangeHeight(height: CGFloat)
@@ -129,7 +131,7 @@ class StakingFAQView: BaseXibView {
 
 extension StakingFAQView: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    guard viewModel.dataSource.isNotEmpty else { return 0 }
+    guard !viewModel.dataSource.isEmpty else { return 0 }
     return viewModel.dataSource[section].isExpand ? 1 : 0
   }
   
