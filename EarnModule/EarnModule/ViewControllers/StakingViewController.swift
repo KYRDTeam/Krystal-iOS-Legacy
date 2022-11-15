@@ -71,6 +71,9 @@ class StakingViewController: InAppBrowsingViewController {
     @IBOutlet weak var projectionContainerView: UIView!
     
     @IBOutlet weak var pendingTxIndicator: UIView!
+  
+    @IBOutlet weak var faqContainerView: StakingFAQView!
+    @IBOutlet weak var faqContainerHeightContraint: NSLayoutConstraint!
     
     var viewModel: StakingViewModel!
     var keyboardTimer: Timer?
@@ -88,6 +91,8 @@ class StakingViewController: InAppBrowsingViewController {
         viewModel.getQuoteTokenPrice()
         viewModel.getStakingTokenDetail()
         updateUIProjection()
+        faqContainerView.updateFAQInput(viewModel.faqInput)
+        faqContainerView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -180,6 +185,7 @@ class StakingViewController: InAppBrowsingViewController {
     fileprivate func updateUIProjection() {
         guard let projectionData = viewModel.displayProjectionValues else {
             projectionContainerView.isHidden = true
+            viewModel.isExpandProjection.value = false
             return
         }
         p30ValueLabel.text = projectionData.p30.value
@@ -206,6 +212,7 @@ class StakingViewController: InAppBrowsingViewController {
         
         viewModel.selectedEarningToken.observeAndFire(on: self) { _ in
             self.updateRateInfoView()
+            self.faqContainerView.updateFAQInput(self.viewModel.faqInput)
         }
         viewModel.optionDetail.observeAndFire(on: self) { data in
             if let unwrap = data {
@@ -273,6 +280,14 @@ class StakingViewController: InAppBrowsingViewController {
         
         viewModel.onFetchedQuoteTokenPrice = { [weak self] in
             self?.updateUIGasFee()
+        }
+        
+        faqContainerView.isExpand.observeAndFire(on: self) { value in
+            if value {
+                self.faqContainerHeightContraint.constant = 50
+            } else {
+                self.faqContainerHeightContraint.constant = self.faqContainerView.getViewHeight()
+            }
         }
     }
     
@@ -431,4 +446,10 @@ extension StakingViewController: StakingEarningTokensViewDelegate {
         viewModel.selectedEarningToken.value = token
         viewModel.requestBuildStakeTx()
     }
+}
+
+extension StakingViewController: StakingFAQViewDelegate {
+  func viewShouldChangeHeight(height: CGFloat) {
+    faqContainerHeightContraint.constant = height
+  }
 }

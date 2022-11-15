@@ -58,7 +58,8 @@ class StakingFAQViewModel {
       return
     }
     let decoder = PropertyListDecoder()
-    if let url = Bundle.main.url(forResource: fileName, withExtension: "plist"),
+      let bundle = Bundle(for: type(of: self))
+    if let url = bundle.url(forResource: fileName, withExtension: "plist"),
         let data = try? Data(contentsOf: url),
         let models = try? decoder.decode([FAQModel].self, from: data) {
       dataSource = models.map { FAQCellItem($0) }

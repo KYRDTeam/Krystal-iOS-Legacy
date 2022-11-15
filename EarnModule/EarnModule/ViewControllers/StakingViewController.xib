@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -35,6 +35,8 @@
                 <outlet property="errorMsgLabel" destination="eXy-Nq-Sss" id="OOs-y4-2ba"/>
                 <outlet property="expandContainerViewHeightContraint" destination="ibA-g0-5LK" id="64Q-AQ-L4P"/>
                 <outlet property="expandProjectionButton" destination="7VS-cG-N4B" id="AJw-fm-SJI"/>
+                <outlet property="faqContainerHeightContraint" destination="2eR-M1-xwK" id="Nf6-E4-Es4"/>
+                <outlet property="faqContainerView" destination="4aU-ZU-sEM" id="tjC-bc-GfZ"/>
                 <outlet property="infoAreaTopContraint" destination="8HI-i4-JNA" id="lET-P2-7Qy"/>
                 <outlet property="networkFeeInfoView" destination="cyu-cp-C1e" id="JWp-U2-iZB"/>
                 <outlet property="nextButton" destination="qRD-Uw-5YN" id="1oZ-Yu-iIJ"/>
@@ -611,6 +613,18 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4aU-ZU-sEM" customClass="StakingFAQView" customModule="EarnModule" customModuleProvider="target">
+                            <rect key="frame" x="15" y="825" width="345" height="84"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="84" id="2eR-M1-xwK"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                    <real key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
                     </subviews>
                     <constraints>
                         <constraint firstItem="rfE-17-gYQ" firstAttribute="centerX" secondItem="mZ9-HU-8LJ" secondAttribute="centerX" id="3St-43-OsK"/>
@@ -619,6 +633,7 @@
                         <constraint firstAttribute="trailing" secondItem="qRD-Uw-5YN" secondAttribute="trailing" constant="15" id="AqJ-MC-jrp"/>
                         <constraint firstItem="QKH-hD-w8o" firstAttribute="leading" secondItem="mZ9-HU-8LJ" secondAttribute="leading" constant="15" id="COm-LR-sS6"/>
                         <constraint firstItem="Wlq-zP-dUB" firstAttribute="trailing" secondItem="rfE-17-gYQ" secondAttribute="trailing" id="CpB-n9-Wfl"/>
+                        <constraint firstItem="4aU-ZU-sEM" firstAttribute="leading" secondItem="mZ9-HU-8LJ" secondAttribute="leading" constant="15" id="E7x-Y2-qhp"/>
                         <constraint firstItem="qRD-Uw-5YN" firstAttribute="top" secondItem="QKH-hD-w8o" secondAttribute="bottom" constant="40" id="GLd-pH-2BY"/>
                         <constraint firstItem="eXy-Nq-Sss" firstAttribute="top" secondItem="rfE-17-gYQ" secondAttribute="bottom" constant="10" id="HYY-Fh-48Z"/>
                         <constraint firstItem="sKb-dZ-bQO" firstAttribute="trailing" secondItem="DXA-Eq-Vgp" secondAttribute="trailing" constant="15" id="J6V-XB-OTE"/>
@@ -626,14 +641,16 @@
                         <constraint firstAttribute="trailing" secondItem="uL6-Ya-9qb" secondAttribute="trailing" constant="15" id="LqY-hP-r70"/>
                         <constraint firstItem="rfE-17-gYQ" firstAttribute="leading" secondItem="mZ9-HU-8LJ" secondAttribute="leading" constant="15" id="Ogx-QQ-fYI"/>
                         <constraint firstItem="Wlq-zP-dUB" firstAttribute="centerY" secondItem="SOS-I0-hAY" secondAttribute="centerY" id="PcO-3I-0CR"/>
+                        <constraint firstAttribute="bottom" secondItem="4aU-ZU-sEM" secondAttribute="bottom" id="Rjo-xT-XIn"/>
                         <constraint firstItem="E6D-sW-5ed" firstAttribute="leading" secondItem="mZ9-HU-8LJ" secondAttribute="leading" constant="15" id="TR1-l2-bAB"/>
                         <constraint firstItem="eXy-Nq-Sss" firstAttribute="leading" secondItem="rfE-17-gYQ" secondAttribute="leading" id="Vz7-VA-vQk"/>
+                        <constraint firstItem="4aU-ZU-sEM" firstAttribute="top" secondItem="uL6-Ya-9qb" secondAttribute="bottom" constant="15" id="WiO-iF-pff"/>
                         <constraint firstItem="UbE-D0-djG" firstAttribute="trailing" secondItem="rfE-17-gYQ" secondAttribute="trailing" id="XlZ-CY-t5T"/>
                         <constraint firstItem="uL6-Ya-9qb" firstAttribute="leading" secondItem="mZ9-HU-8LJ" secondAttribute="leading" constant="15" id="ZLc-WI-BV2"/>
                         <constraint firstItem="DXA-Eq-Vgp" firstAttribute="leading" secondItem="sKb-dZ-bQO" secondAttribute="leading" constant="15" id="a6e-FW-v6t"/>
                         <constraint firstItem="qRD-Uw-5YN" firstAttribute="leading" secondItem="mZ9-HU-8LJ" secondAttribute="leading" constant="15" id="hCl-A8-VL7"/>
+                        <constraint firstAttribute="trailing" secondItem="4aU-ZU-sEM" secondAttribute="trailing" constant="15" id="hOI-rH-JF1"/>
                         <constraint firstItem="uL6-Ya-9qb" firstAttribute="top" secondItem="qRD-Uw-5YN" secondAttribute="bottom" constant="15" id="hrF-0A-e3c"/>
-                        <constraint firstAttribute="bottom" secondItem="uL6-Ya-9qb" secondAttribute="bottom" constant="5" id="j0F-V9-q4U"/>
                         <constraint firstItem="rfE-17-gYQ" firstAttribute="top" secondItem="E6D-sW-5ed" secondAttribute="bottom" constant="55" id="rTm-qc-fLv"/>
                         <constraint firstItem="UbE-D0-djG" firstAttribute="centerY" secondItem="E6D-sW-5ed" secondAttribute="centerY" id="sMk-Bf-ZAR"/>
                         <constraint firstItem="rfE-17-gYQ" firstAttribute="top" secondItem="Wlq-zP-dUB" secondAttribute="bottom" constant="11" id="sNw-3w-c76"/>

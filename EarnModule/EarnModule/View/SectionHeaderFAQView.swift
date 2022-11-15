@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import DesignSystem
+import Utilities
 
 protocol SectionHeaderFAQViewDelegate: class {
   func didChangeExpandStatus(status: Bool, section: Int)
@@ -44,9 +45,9 @@ class SectionHeaderFAQView: UITableViewHeaderFooterView {
     
     expandButton.setImage(UIImage(named: "circle_arrow_up"), for: .normal)
     contentLabel.font = UIFont.karlaReguler(ofSize: 16)
-    contentLabel.textColor = AppTheme.current.secondaryTextColor
+    contentLabel.textColor = AppTheme.current.primaryTextColor
     contentLabel.numberOfLines = 0
-    contentView.backgroundColor = AppTheme.current.popupBackgroundColor
+   contentView.backgroundColor = UIColor(hex: "292D2C")
     
     expandButton.addTarget(self, action: #selector(pressed), for: .touchUpInside)
     
