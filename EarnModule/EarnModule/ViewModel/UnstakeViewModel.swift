@@ -35,6 +35,7 @@ class UnstakeViewModel {
     var setting: TxSettingObject = .default
     let stakingTokenAddress: String
     let stakingTokenLogo: String
+    let toTokenLogo: String
     let toUnderlyingTokenAddress: String
     var stakingTokenAllowance: BigInt = BigInt(0)
     var contractAddress: String?
@@ -78,6 +79,7 @@ class UnstakeViewModel {
         self.toUnderlyingTokenAddress = earningBalance.toUnderlyingToken.address
         self.stakingTokenAddress = earningBalance.stakingToken.address
         self.stakingTokenLogo = earningBalance.stakingToken.logo
+        self.toTokenLogo = earningBalance.toUnderlyingToken.logo
     }
     
     func unstakeValueString() -> String {

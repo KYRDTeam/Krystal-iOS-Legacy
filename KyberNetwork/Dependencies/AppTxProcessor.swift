@@ -58,6 +58,8 @@ class AppTxProcessor: TxProcessorProtocol {
             return .earn
         case .approval:
             return .allowance
+        case .unstake:
+            return .withdraw
         }
     }
     

@@ -13,6 +13,7 @@ struct UnstakeDisplayInfo {
     var rate: String
     var fee: String
     var stakeTokenIcon: String
+    var toTokenIcon: String
     var fromSym: String
     var toSym: String
 }

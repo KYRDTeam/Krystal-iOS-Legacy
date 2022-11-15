@@ -130,22 +130,21 @@ extension UnstakeSummaryViewModel {
                     TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: self.currentChain) { result in
                         switch result {
                         case .success(let hash):
-//                            let pendingTx = PendingStakingTxInfo(
-//                                pool: self.pool,
-//                                platform: self.platform,
-//                                selectedDestToken: self.earnToken,
-//                                sourceAmount: self.displayInfo.amount,
-//                                destAmount: self.displayInfo.receiveAmount,
-//                                legacyTx: nil,
-//                                eip1559Tx: eip1559Tx,
-//                                chain: self.currentChain,
-//                                date: Date(),
-//                                hash: hash,
-//                                nonce: Int(eip1559Tx.nonce) ?? self.currentNonce
-//                            )
-//                            TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
-//                            self.onSuccess(pendingTx)
-                                print("")
+                            let pendingTx = PendingUnstakeTxInfo(platform: self.platform,
+                                                                 stakingTokenAmount: self.displayInfo.amount,
+                                                                 toTokenAmount: self.displayInfo.receiveAmount,
+                                                                 stakingTokenSymbol: self.displayInfo.fromSym,
+                                                                 toTokenSymbol: self.displayInfo.toSym,
+                                                                 stakingTokenLogo: self.displayInfo.stakeTokenIcon,
+                                                                 toTokenLogo: self.displayInfo.toTokenIcon,
+                                                                 legacyTx: nil,
+                                                                 eip1559Tx: eip1559Tx,
+                                                                 chain: self.currentChain,
+                                                                 date: Date(),
+                                                                 hash: hash,
+                                                                 nonce: Int(eip1559Tx.nonce) ?? self.currentNonce)
+                            TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
+                            self.onSuccess(pendingTx)
                         case .failure(let error):
                             self.onError(TxErrorParser.parse(error: error).message)
                         }
@@ -181,22 +180,21 @@ extension UnstakeSummaryViewModel {
                     TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: self.currentChain) { result in
                         switch result {
                         case .success(let hash):
-//                            let pendingTx = PendingStakingTxInfo(
-//                                pool: self.pool,
-//                                platform: self.platform,
-//                                selectedDestToken: self.earnToken,
-//                                sourceAmount: self.displayInfo.amount,
-//                                destAmount: self.displayInfo.receiveAmount,
-//                                legacyTx: legacyTx,
-//                                eip1559Tx: nil,
-//                                chain: self.currentChain,
-//                                date: Date(),
-//                                hash: hash,
-//                                nonce: legacyTx.nonce
-//                            )
-//                            TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
-//                            self.onSuccess(pendingTx)
-                                print("")
+                            let pendingTx = PendingUnstakeTxInfo(platform: self.platform,
+                                                                 stakingTokenAmount: self.displayInfo.amount,
+                                                                 toTokenAmount: self.displayInfo.receiveAmount,
+                                                                 stakingTokenSymbol: self.displayInfo.fromSym,
+                                                                 toTokenSymbol: self.displayInfo.toSym,
+                                                                 stakingTokenLogo: self.displayInfo.stakeTokenIcon,
+                                                                 toTokenLogo: self.displayInfo.toTokenIcon,
+                                                                 legacyTx: legacyTx,
+                                                                 eip1559Tx: nil,
+                                                                 chain: self.currentChain,
+                                                                 date: Date(),
+                                                                 hash: hash,
+                                                                 nonce: legacyTx.nonce)
+                            TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
+                            self.onSuccess(pendingTx)
                         case .failure(let error):
                             self.onError(TxErrorParser.parse(error: error).message)
                         }

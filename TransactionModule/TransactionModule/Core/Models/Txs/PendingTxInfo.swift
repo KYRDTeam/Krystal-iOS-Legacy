@@ -12,6 +12,7 @@ import Services
 public enum TxType {
     case earn
     case approval
+    case unstake
 }
 
 open class PendingTxInfo {

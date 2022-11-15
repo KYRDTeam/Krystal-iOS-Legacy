@@ -133,6 +133,7 @@ class UnstakeViewController: InAppBrowsingViewController {
                                                      rate: viewModel.showRateInfo(),
                                                      fee: viewModel.transactionFeeString(),
                                                      stakeTokenIcon: viewModel.stakingTokenLogo,
+                                                     toTokenIcon: viewModel.toTokenLogo,
                                                      fromSym: viewModel.stakingTokenSymbol,
                                                      toSym: viewModel.toTokenSymbol)
                 
@@ -140,13 +141,13 @@ class UnstakeViewController: InAppBrowsingViewController {
                 let viewModel = UnstakeSummaryViewModel(setting: viewModel.setting, txObject: tx, platform: viewModel.platform, displayInfo: displayInfo)
                 
                 TxConfirmPopup.show(onViewController: self, withViewModel: viewModel) { [weak self] pendingTx in
-                    self?.openTxStatusPopup(tx: pendingTx as! PendingStakingTxInfo)
+                    self?.openTxStatusPopup(tx: pendingTx as! PendingUnstakeTxInfo)
                 }
             }
         })
     }
     
-    func openTxStatusPopup(tx: PendingStakingTxInfo) {
+    func openTxStatusPopup(tx: PendingUnstakeTxInfo) {
         let popup = StakingTrasactionProcessPopup.instantiateFromNib()
         popup.tx = tx
         let sheet = SheetViewController(controller: popup, sizes: [.fixed(420)], options: .init(pullBarHeight: 0))

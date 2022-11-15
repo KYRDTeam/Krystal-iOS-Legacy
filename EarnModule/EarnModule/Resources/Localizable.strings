@@ -30,7 +30,12 @@
 "not.enough.min.stake.amount" = "Should be at least %@";
 "higher.than.max.stake.amount" = "Should be no more than %@";
 "should.be.interval.of" = "Value must be multiple of %@";
+"staking.in.progress" = "Staking In Progress";
+"success" = "Success";
+"tx.failed" = "Transaction failed";
+"view.my.pool" = "View my pool";
 "Unstake" = "Unstake";
 "Stake" = "Stake";
 "Unstake.token" = "Unstake %@";
 "confirm.unstake" = "Confirm Unstake";
+"support" = "Support";
