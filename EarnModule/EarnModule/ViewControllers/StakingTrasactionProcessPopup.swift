@@ -150,7 +150,9 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
                 self?.onSelectViewPool?()
             }
         case .failure:
-            AppDependencies.router.openSupportURL()
+            dismiss(animated: true) {
+                AppDependencies.router.openSupportURL()
+            }
         }
     }
     
