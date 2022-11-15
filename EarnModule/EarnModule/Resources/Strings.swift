@@ -39,4 +39,9 @@ struct Strings {
     static let shouldBeAtLeast = "not.enough.min.stake.amount".toBeLocalised()
     static let shouldNoMoreThan = "higher.than.max.stake.amount".toBeLocalised()
     static let shouldBeIntervalOf = "should.be.interval.of".toBeLocalised()
+    static let stakingInProgress = "staking.in.progress".toBeLocalised()
+    static let success = "success".toBeLocalised()
+    static let txFailed = "tx.failed".toBeLocalised()
+    static let viewMyPool = "view.my.pool".toBeLocalised()
+    static let support = "support".toBeLocalised()
 }
