@@ -57,4 +57,8 @@ class PendingUnstakeTxInfo: PendingTxInfo {
     override var detail: String {
         return ""
     }
+    
+    override var amount: String? {
+        return platform.name.uppercased()
+    }
 }

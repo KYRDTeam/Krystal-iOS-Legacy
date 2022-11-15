@@ -50,4 +50,7 @@ class PendingStakingTxInfo: PendingTxInfo {
         return ""
     }
 
+    override var amount: String? {
+        return platform.name.uppercased()
+    }
 }

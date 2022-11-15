@@ -10,6 +10,7 @@
 		724567E960E5EE407A35533D /* Pods_EarnModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5969EB6F30F2999141BBB05 /* Pods_EarnModule.framework */; };
 		7E181E5F2923713700C661CD /* UnstakeSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E181E5E2923713700C661CD /* UnstakeSummaryViewModel.swift */; };
 		7E181E6129237A5E00C661CD /* UnstakeDisplayInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E181E6029237A5E00C661CD /* UnstakeDisplayInfo.swift */; };
+		7E181E652923A6E400C661CD /* PendingUnstakeTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E181E642923A6E400C661CD /* PendingUnstakeTxInfo.swift */; };
 		7E36E369291A530A009BC8FE /* UnstakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E36E367291A530A009BC8FE /* UnstakeViewController.swift */; };
 		7E36E36A291A530A009BC8FE /* UnstakeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E36E368291A530A009BC8FE /* UnstakeViewController.xib */; };
 		7E5E7278290B7E5700156F3C /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5E7277290B7E5700156F3C /* Services.framework */; };
@@ -66,6 +67,7 @@
 		60E45F03C79752ACE005A2BE /* Pods-EarnModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EarnModule.release.xcconfig"; path = "Target Support Files/Pods-EarnModule/Pods-EarnModule.release.xcconfig"; sourceTree = "<group>"; };
 		7E181E5E2923713700C661CD /* UnstakeSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnstakeSummaryViewModel.swift; sourceTree = "<group>"; };
 		7E181E6029237A5E00C661CD /* UnstakeDisplayInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnstakeDisplayInfo.swift; sourceTree = "<group>"; };
+		7E181E642923A6E400C661CD /* PendingUnstakeTxInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingUnstakeTxInfo.swift; sourceTree = "<group>"; };
 		7E36E367291A530A009BC8FE /* UnstakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnstakeViewController.swift; sourceTree = "<group>"; };
 		7E36E368291A530A009BC8FE /* UnstakeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnstakeViewController.xib; sourceTree = "<group>"; };
 		7E5E7277290B7E5700156F3C /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -273,6 +275,7 @@
 		A69E8EB2291DEE91005B28CB /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				7E181E642923A6E400C661CD /* PendingUnstakeTxInfo.swift */,
 				A69E8EB0291DDEBB005B28CB /* PendingStakingTxInfo.swift */,
 				A69E8EB3291DEF23005B28CB /* StakeDisplayInfo.swift */,
 				A61715E1291E343C001778C7 /* StakingValidationError.swift */,
@@ -418,6 +421,7 @@
 				7EB252C12907F3E100648438 /* EarnOverViewModel.swift in Sources */,
 				7EAF4768291B68C100BF5D00 /* EarningTokenCell.swift in Sources */,
 				7EAF477E291B7CDB00BF5D00 /* TransitionDelegate.swift in Sources */,
+				7E181E652923A6E400C661CD /* PendingUnstakeTxInfo.swift in Sources */,
 				7EAF4752291B567600BF5D00 /* StakingViewController.swift in Sources */,
 				7EB252C32907F43B00648438 /* Observer.swift in Sources */,
 				7E36E369291A530A009BC8FE /* UnstakeViewController.swift in Sources */,

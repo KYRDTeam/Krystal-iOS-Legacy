@@ -57,4 +57,8 @@ open class PendingTxInfo {
     open var destIcon: String? {
         fatalError("Must override this property")
     }
+    
+    open var amount: String? {
+        fatalError("Must override this property")
+    }
 }
