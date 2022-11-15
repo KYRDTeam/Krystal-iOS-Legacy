@@ -146,7 +146,9 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
         case .processing:
             self.txHashButtonTapped(sender)
         case .success:
-            self.onSelectViewPool?()
+            dismiss(animated: true) { [weak self] in
+                self?.onSelectViewPool?()
+            }
         case .failure:
             AppDependencies.router.openSupportURL()
         }

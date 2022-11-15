@@ -374,7 +374,10 @@ class StakingViewController: InAppBrowsingViewController {
     func openTxStatusPopup(tx: PendingStakingTxInfo) {
         let popup = StakingTrasactionProcessPopup.instantiateFromNib()
         popup.tx = tx
-        popup.onSelectViewPool = onSelectViewPool
+        popup.onSelectViewPool = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+            self?.onSelectViewPool?()
+        }
         let sheet = SheetViewController(controller: popup, sizes: [.fixed(450)], options: .init(pullBarHeight: 0))
         dismiss(animated: true) {
             UIApplication.shared.topMostViewController()?.present(sheet, animated: true)
