@@ -33,6 +33,8 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
     
     var tx: PendingStakingTxInfo!
     
+    var onSelectViewPool: (() -> ())?
+    
     var state: TxStatus = .processing {
         didSet {
             self.updateUIForStateChange(self.state)
@@ -82,38 +84,38 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
             self.secondButton.setTitle(buttonTitle, for: .normal)
             self.sourceTokenInfoContainerView.rounded(color: AppTheme.current.primaryColor, width: 1, radius: 16)
             self.destTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
-            self.processStatusLabel.text = "Staking in process"
+            self.processStatusLabel.text = Strings.stakingInProgress
         case .success:
             self.loadingIndicatorView.isHidden = true
             self.transactionStateIcon.isHidden = false
             self.statusContainerView.bringSubviewToFront(self.transactionStateIcon)
             self.transactionStateIcon.image = UIImage(named: "tx_status_success")
             self.secondButton.setTitle("", for: .normal)
-            let buttonTitle = "View \(self.tx.destSymbol ?? "")"
+            let buttonTitle = Strings.viewMyPool
             self.secondButton.setTitle(buttonTitle, for: .normal)
             self.destTokenInfoContainerView.rounded(color: AppTheme.current.primaryColor, width: 1, radius: 16)
             self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
-            self.processStatusLabel.text = "Success"
+            self.processStatusLabel.text = Strings.success
         case .failure:
             self.loadingIndicatorView.isHidden = true
             self.transactionStateIcon.isHidden = false
             self.statusContainerView.bringSubviewToFront(self.transactionStateIcon)
             self.transactionStateIcon.image = UIImage(named: "tx_status_fail")
-            let buttonTitle = "Go to support"
+            let buttonTitle = Strings.support
             self.secondButton.setTitle(buttonTitle, for: .normal)
             self.destTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
             self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
-            self.processStatusLabel.text = "Transaction Failed"
+            self.processStatusLabel.text = Strings.txFailed
         }
     }
     
     func setupUI() {
         self.sourceTokenIcon.loadImage(tx.sourceIcon)
-        self.destTokenIcon.loadImage(tx.destIcon)
+        self.destTokenIcon.loadImage(tx.platform.logo)
         self.txHashLabel.text = self.tx.hash
         let descriptions = self.tx.description.split(separator: "→").map { String($0) }
         self.sourceTokenAmountLabel.text = descriptions.first ?? ""
-        self.destTokenAmountLabel.text = descriptions.last ?? ""
+        self.destTokenAmountLabel.text = tx.platform.name.uppercased()
         
     }
     
@@ -144,7 +146,9 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
         case .processing:
             self.txHashButtonTapped(sender)
         case .success:
-            AppDependencies.router.openToken(symbol: tx.selectedDestToken.symbol)
+            dismiss(animated: true) { [weak self] in
+                self?.onSelectViewPool?()
+            }
         case .failure:
             AppDependencies.router.openSupportURL()
         }
