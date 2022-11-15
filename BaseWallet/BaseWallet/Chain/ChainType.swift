@@ -174,7 +174,12 @@ public extension ChainType {
     }
     
     func getChainId() -> Int {
-        return self.customRPC().chainID
+        switch self {
+        case .all:
+            return 0
+        default:
+            return self.customRPC().chainID
+        }
     }
   
     func chainIcon() -> UIImage? {
