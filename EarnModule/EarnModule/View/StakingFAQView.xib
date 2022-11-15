@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StakingFAQView" customModule="Krystal" customModuleProvider="target">
+            <connections>
+                <outlet property="contentTableView" destination="PKe-sr-f3w" id="pQ6-0H-0Kl"/>
+                <outlet property="lineView" destination="eP4-yO-NUG" id="bZ6-e7-Zer"/>
+                <outlet property="mainExpandButton" destination="i9Y-5f-Ui8" id="RfU-Zv-nbV"/>
+                <outlet property="mainTitleLabel" destination="J7Z-Zj-37I" id="UOu-Ov-SZl"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="kuC-V9-BL0">
+            <rect key="frame" x="0.0" y="0.0" width="331" height="296"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aoq-e6-iM6">
+                    <rect key="frame" x="0.0" y="0.0" width="331" height="52"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Staking FAQ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J7Z-Zj-37I">
+                            <rect key="frame" x="20" y="15" width="100.5" height="22"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="22" id="Xpo-KB-MEV"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
+                            <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i9Y-5f-Ui8">
+                            <rect key="frame" x="287" y="14" width="24" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="24" id="IR5-qJ-mr5"/>
+                                <constraint firstAttribute="height" constant="24" id="QRP-pA-ifQ"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="circle_arrow_up"/>
+                            <connections>
+                                <action selector="expandButtonTapped:" destination="-1" eventType="touchUpInside" id="Pqr-wB-BKM"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eP4-yO-NUG">
+                            <rect key="frame" x="20" y="51" width="291" height="1"/>
+                            <color key="backgroundColor" red="0.29803921570000003" green="0.40000000000000002" blue="0.43921568630000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="iKe-cG-6kr"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="eP4-yO-NUG" firstAttribute="leading" secondItem="Aoq-e6-iM6" secondAttribute="leading" constant="20" id="1nW-ZC-qVh"/>
+                        <constraint firstAttribute="height" constant="52" id="3Ml-gk-ogW"/>
+                        <constraint firstItem="i9Y-5f-Ui8" firstAttribute="centerY" secondItem="J7Z-Zj-37I" secondAttribute="centerY" id="PKP-JS-R9p"/>
+                        <constraint firstAttribute="bottom" secondItem="eP4-yO-NUG" secondAttribute="bottom" id="XtC-4J-xxr"/>
+                        <constraint firstItem="J7Z-Zj-37I" firstAttribute="centerY" secondItem="Aoq-e6-iM6" secondAttribute="centerY" id="ajS-Pt-AaU"/>
+                        <constraint firstAttribute="trailing" secondItem="eP4-yO-NUG" secondAttribute="trailing" constant="20" id="dZb-YR-fhX"/>
+                        <constraint firstItem="J7Z-Zj-37I" firstAttribute="leading" secondItem="Aoq-e6-iM6" secondAttribute="leading" constant="20" id="fvi-Ih-hNb"/>
+                        <constraint firstAttribute="trailing" secondItem="i9Y-5f-Ui8" secondAttribute="trailing" constant="20" id="l0A-x3-cAK"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="PKe-sr-f3w">
+                    <rect key="frame" x="0.0" y="52" width="331" height="244"/>
+                    <color key="backgroundColor" red="0.16078431372549018" green="0.1764705882352941" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="1I7-ot-y2n"/>
+                        <outlet property="delegate" destination="-1" id="MDh-41-rFR"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="QxZ-cp-8oe"/>
+            <color key="backgroundColor" red="0.16078431372549018" green="0.1764705882352941" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Aoq-e6-iM6" firstAttribute="leading" secondItem="QxZ-cp-8oe" secondAttribute="leading" id="4jk-KS-zPf"/>
+                <constraint firstItem="Aoq-e6-iM6" firstAttribute="trailing" secondItem="QxZ-cp-8oe" secondAttribute="trailing" id="Bvu-ke-jN1"/>
+                <constraint firstItem="PKe-sr-f3w" firstAttribute="bottom" secondItem="kuC-V9-BL0" secondAttribute="bottom" id="Dqk-Ru-Kpw"/>
+                <constraint firstItem="PKe-sr-f3w" firstAttribute="top" secondItem="Aoq-e6-iM6" secondAttribute="bottom" id="PYJ-ga-HWl"/>
+                <constraint firstItem="PKe-sr-f3w" firstAttribute="leading" secondItem="kuC-V9-BL0" secondAttribute="leading" id="WgD-Jo-0aN"/>
+                <constraint firstItem="Aoq-e6-iM6" firstAttribute="top" secondItem="kuC-V9-BL0" secondAttribute="top" id="nbg-ql-zKp"/>
+                <constraint firstItem="PKe-sr-f3w" firstAttribute="trailing" secondItem="kuC-V9-BL0" secondAttribute="trailing" id="vrb-Ya-uk2"/>
+            </constraints>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-428.26086956521743" y="-40.848214285714285"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="circle_arrow_up" width="24" height="25"/>
+    </resources>
+</document>
