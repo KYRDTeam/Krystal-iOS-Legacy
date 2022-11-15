@@ -10,11 +10,12 @@ import Moya
 import Utilities
 
 enum EarnEndpoint {
-  case listOption(chainId: String?)
-  case getEarningBalances(address: String)
-  case getPendingUnstakes(address: String)
-  case getEarningOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String)
-  case buildStakeTx(params: JSONDictionary)
+    case listOption(chainId: String?)
+    case getEarningBalances(address: String)
+    case getPendingUnstakes(address: String)
+    case getEarningOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String)
+    case buildStakeTx(params: JSONDictionary)
+    case buildClaimTx(params: JSONDictionary)
 }
 
 extension EarnEndpoint: TargetType {
@@ -23,18 +24,20 @@ extension EarnEndpoint: TargetType {
   }
   
   var path: String {
-    switch self {
-    case .listOption:
-      return "v1/earning/options"
-    case .getEarningBalances:
-      return "/v1/earning/earningBalances"
-    case .getPendingUnstakes:
-      return "/v1/earning/pendingUnstakes"
-    case .getEarningOptionDetail:
-      return "/v1/earning/optionDetail"
-    case .buildStakeTx(params: _):
-      return "/v1/earning/buildStakeTx"
-    }
+      switch self {
+      case .listOption:
+          return "v1/earning/options"
+      case .getEarningBalances:
+          return "/v1/earning/earningBalances"
+      case .getPendingUnstakes:
+          return "/v1/earning/pendingUnstakes"
+      case .getEarningOptionDetail:
+          return "/v1/earning/optionDetail"
+      case .buildStakeTx(params: _):
+          return "/v1/earning/buildStakeTx"
+      case .buildClaimTx:
+          return "/v1/earning/buildClaimTx"
+      }
   }
   
   var method: Moya.Method {
@@ -78,11 +81,12 @@ extension EarnEndpoint: TargetType {
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .buildStakeTx(params: let params):
       return .requestParameters(parameters: params, encoding: JSONEncoding.default)
+    case .buildClaimTx(let params):
+        return .requestParameters(parameters: params, encoding: JSONEncoding.default)
     }
   }
   
   var headers: [String : String]? {
-    var json: [String: String] = ["client": "com.kyrd.krystal.ios"]
-    return json
+    return ["client": "com.kyrd.krystal.ios"]
   }
 }

@@ -50,6 +50,7 @@
 		7EF19ED8290B860B00358B66 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF19ED7290B860B00358B66 /* DesignSystem.framework */; };
 		7EF19EDC290B865300358B66 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF19EDB290B865300358B66 /* Utilities.framework */; };
 		A61715E2291E343C001778C7 /* StakingValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61715E1291E343C001778C7 /* StakingValidationError.swift */; };
+		A61B297729236F2E0064C3FE /* StakingConfirmClaimPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61B297629236F2E0064C3FE /* StakingConfirmClaimPopup.swift */; };
 		A66FC3FB28F4F52100E49E86 /* EarnModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A66FC3FA28F4F52100E49E86 /* EarnModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A69E8EB1291DDEBB005B28CB /* PendingStakingTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EB0291DDEBB005B28CB /* PendingStakingTxInfo.swift */; };
 		A69E8EB4291DEF23005B28CB /* StakeDisplayInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EB3291DEF23005B28CB /* StakeDisplayInfo.swift */; };
@@ -102,6 +103,7 @@
 		7EF19ED7290B860B00358B66 /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EF19EDB290B865300358B66 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A61715E1291E343C001778C7 /* StakingValidationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingValidationError.swift; sourceTree = "<group>"; };
+		A61B297629236F2E0064C3FE /* StakingConfirmClaimPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingConfirmClaimPopup.swift; sourceTree = "<group>"; };
 		A66FC3F728F4F52100E49E86 /* EarnModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EarnModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66FC3FA28F4F52100E49E86 /* EarnModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EarnModule.h; sourceTree = "<group>"; };
 		A69E8EB0291DDEBB005B28CB /* PendingStakingTxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingStakingTxInfo.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 				7EB252C02907F3E100648438 /* EarnOverViewModel.swift */,
 				A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */,
 				A6D1F809291BB0F100ABA52B /* StakingSummaryViewModel.swift */,
+				A61B297629236F2E0064C3FE /* StakingConfirmClaimPopup.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 				7EB252BE2907F30300648438 /* EarnModule.swift in Sources */,
 				A69E8EB1291DDEBB005B28CB /* PendingStakingTxInfo.swift in Sources */,
 				7EAF477B291B7C5800BF5D00 /* KNPrettyAlertController.swift in Sources */,
+				A61B297729236F2E0064C3FE /* StakingConfirmClaimPopup.swift in Sources */,
 				7E6EBD70290928D400069B33 /* Strings.swift in Sources */,
 				A61715E2291E343C001778C7 /* StakingValidationError.swift in Sources */,
 				7E6EBD6229091E0800069B33 /* StakingPortfolioViewController.swift in Sources */,
