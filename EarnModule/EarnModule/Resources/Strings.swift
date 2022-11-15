@@ -39,4 +39,7 @@ struct Strings {
     static let shouldBeAtLeast = "not.enough.min.stake.amount".toBeLocalised()
     static let shouldNoMoreThan = "higher.than.max.stake.amount".toBeLocalised()
     static let shouldBeIntervalOf = "should.be.interval.of".toBeLocalised()
+    static let confirmClaim = "confirm.claim".toBeLocalised()
+    static let youAreClaiming = "you.are.claiming".toBeLocalised()
+    static let confirm = "confirm".toBeLocalised()
 }

@@ -10,11 +10,12 @@ import TransactionModule
 import Services
 import Utilities
 import BigInt
+import AppState
 
 class StakingConfirmClaimPopup: TxConfirmViewModelProtocol {
     
     var title: String {
-        return "Claim Confirm"
+        return Strings.confirmClaim
     }
     
     var chain: ChainType {
@@ -22,7 +23,7 @@ class StakingConfirmClaimPopup: TxConfirmViewModelProtocol {
     }
     
     var action: String {
-        return "You are claiming"
+        return Strings.youAreClaiming
     }
     
     var tokenIconURL: String {
@@ -45,7 +46,7 @@ class StakingConfirmClaimPopup: TxConfirmViewModelProtocol {
     
     var rows: [TxInfoRowData] {
         return [
-            .init(title: "Network Fee",
+            .init(title: Strings.networkFee,
                   value: "0,0 MATIC ($0,00)",
                   rightButtonTitle: "EDIT",
                   rightButtonClick: { [weak self] in
@@ -68,13 +69,12 @@ class StakingConfirmClaimPopup: TxConfirmViewModelProtocol {
     init(pendingUnstake: PendingUnstake) {
         self.pendingUnstake = pendingUnstake
     }
-    
-    private func buildClaimTxParams() -> JSONDictionary {
-        return [:]
-    }
-    
+
     func onTapConfirm() {
-        earnService.buildClaimTx(param: buildClaimTxParams()) { [weak self] result in
+        let param = EarnParamBuilderFactory
+            .create(platform: .init(name: pendingUnstake.platform.name))
+            .buildClaimTxParam(pendingUnstake: pendingUnstake)
+        earnService.buildClaimTx(param: param) { [weak self] result in
             switch result {
             case .success(let txObject):
                 ()
