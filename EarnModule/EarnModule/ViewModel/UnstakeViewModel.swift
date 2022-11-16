@@ -159,7 +159,8 @@ class UnstakeViewModel {
     
     func openTxStatusPopup(tx: PendingUnstakeTxInfo, controller: UIViewController) {
         let popup = StakingTrasactionProcessPopup.instantiateFromNib()
-        popup.tx = tx
+        let viewModel = UnstakeTransactionProcessPopupViewModel(pendingStakingTx: tx)
+        popup.viewModel = viewModel
         let sheet = SheetViewController(controller: popup, sizes: [.fixed(420)], options: .init(pullBarHeight: 0))
         controller.navigationController?.popViewController(animated: true)
         UIApplication.shared.topMostViewController()?.present(sheet, animated: true)

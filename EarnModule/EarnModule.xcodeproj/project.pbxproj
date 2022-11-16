@@ -44,6 +44,7 @@
 		7EAF477B291B7C5800BF5D00 /* KNPrettyAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF4779291B7C5800BF5D00 /* KNPrettyAlertController.swift */; };
 		7EAF477C291B7C5800BF5D00 /* KNPrettyAlertController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EAF477A291B7C5800BF5D00 /* KNPrettyAlertController.xib */; };
 		7EAF477E291B7CDB00BF5D00 /* TransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF477D291B7CDB00BF5D00 /* TransitionDelegate.swift */; };
+		7EB00DE72924F463001B2136 /* TrasactionProcessPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB00DE62924F463001B2136 /* TrasactionProcessPopupViewModel.swift */; };
 		7EB252B92907F25200648438 /* EarnOverviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252B72907F25200648438 /* EarnOverviewController.swift */; };
 		7EB252BE2907F30300648438 /* EarnModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252BD2907F30300648438 /* EarnModule.swift */; };
 		7EB252C12907F3E100648438 /* EarnOverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252C02907F3E100648438 /* EarnOverViewModel.swift */; };
@@ -114,6 +115,7 @@
 		7EAF4779291B7C5800BF5D00 /* KNPrettyAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNPrettyAlertController.swift; sourceTree = "<group>"; };
 		7EAF477A291B7C5800BF5D00 /* KNPrettyAlertController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KNPrettyAlertController.xib; sourceTree = "<group>"; };
 		7EAF477D291B7CDB00BF5D00 /* TransitionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionDelegate.swift; sourceTree = "<group>"; };
+		7EB00DE62924F463001B2136 /* TrasactionProcessPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrasactionProcessPopupViewModel.swift; sourceTree = "<group>"; };
 		7EB252B72907F25200648438 /* EarnOverviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnOverviewController.swift; sourceTree = "<group>"; };
 		7EB252BD2907F30300648438 /* EarnModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnModule.swift; sourceTree = "<group>"; };
 		7EB252C02907F3E100648438 /* EarnOverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnOverViewModel.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 				7ED1AF1D291E29AD00BA7C75 /* StakingPortfolioViewModel.swift */,
 				7E71FA792921E9BC0021E67D /* UnstakeViewModel.swift */,
 				7E181E5E2923713700C661CD /* UnstakeSummaryViewModel.swift */,
+				7EB00DE62924F463001B2136 /* TrasactionProcessPopupViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -403,7 +406,6 @@
 				7E6EBD72290929A400069B33 /* Localizable.strings in Resources */,
 				C3A4080D2923416A008C1220 /* ankr-matic-eth.plist in Resources */,
 				C3A408102923416A008C1220 /* ankr-avax.plist in Resources */,
-				7E6EBD6529091F7A00069B33 /* Assets.xcassets in Resources */,
 				7EAF4756291B567600BF5D00 /* StakingTrasactionProcessPopup.xib in Resources */,
 				7E6EBD822909318E00069B33 /* SkeletonCell.xib in Resources */,
 				7EAF477C291B7C5800BF5D00 /* KNPrettyAlertController.xib in Resources */,
@@ -457,6 +459,7 @@
 				7E6EBD6B2909280900069B33 /* EarnPoolPlatformCell.swift in Sources */,
 				A6D1F7F1291B847800ABA52B /* Constants.swift in Sources */,
 				7E6EBD6129091E0800069B33 /* EarnListViewController.swift in Sources */,
+				7EB00DE72924F463001B2136 /* TrasactionProcessPopupViewModel.swift in Sources */,
 				7E6EBD6C2909280900069B33 /* EarnPoolViewCell.swift in Sources */,
 				7E6EBD86290931E900069B33 /* StakingPortfolioCell.swift in Sources */,
 				7E71FA7A2921E9BD0021E67D /* UnstakeViewModel.swift in Sources */,
