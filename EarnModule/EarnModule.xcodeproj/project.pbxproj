@@ -56,6 +56,18 @@
 		A6D1F7F1291B847800ABA52B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7F0291B847800ABA52B /* Constants.swift */; };
 		A6D1F808291BAF1E00ABA52B /* StakingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */; };
 		A6D1F80A291BB0F100ABA52B /* StakingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F809291BB0F100ABA52B /* StakingSummaryViewModel.swift */; };
+		C3A407FD292340EB008C1220 /* StakingFAQCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A407FB292340EB008C1220 /* StakingFAQCell.xib */; };
+		C3A407FE292340EB008C1220 /* StakingFAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A407FC292340EB008C1220 /* StakingFAQCell.swift */; };
+		C3A408022923411C008C1220 /* SectionHeaderFAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A407FF2923411C008C1220 /* SectionHeaderFAQView.swift */; };
+		C3A408032923411C008C1220 /* StakingFAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A408002923411C008C1220 /* StakingFAQView.swift */; };
+		C3A408042923411C008C1220 /* StakingFAQView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A408012923411C008C1220 /* StakingFAQView.xib */; };
+		C3A4080C2923416A008C1220 /* ankr-matic-matic.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3A4080529234168008C1220 /* ankr-matic-matic.plist */; };
+		C3A4080D2923416A008C1220 /* ankr-matic-eth.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3A4080629234169008C1220 /* ankr-matic-eth.plist */; };
+		C3A4080E2923416A008C1220 /* ankr-bnb.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3A4080729234169008C1220 /* ankr-bnb.plist */; };
+		C3A4080F2923416A008C1220 /* FAQModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A4080829234169008C1220 /* FAQModel.swift */; };
+		C3A408102923416A008C1220 /* ankr-avax.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3A4080929234169008C1220 /* ankr-avax.plist */; };
+		C3A408112923416A008C1220 /* ankr-ftm.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3A4080A29234169008C1220 /* ankr-ftm.plist */; };
+		C3A408122923416A008C1220 /* ankr-eth.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3A4080B2923416A008C1220 /* ankr-eth.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +122,18 @@
 		A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingViewModel.swift; sourceTree = "<group>"; };
 		A6D1F809291BB0F100ABA52B /* StakingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingSummaryViewModel.swift; sourceTree = "<group>"; };
 		B5969EB6F30F2999141BBB05 /* Pods_EarnModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EarnModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C3A407FB292340EB008C1220 /* StakingFAQCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StakingFAQCell.xib; sourceTree = "<group>"; };
+		C3A407FC292340EB008C1220 /* StakingFAQCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StakingFAQCell.swift; sourceTree = "<group>"; };
+		C3A407FF2923411C008C1220 /* SectionHeaderFAQView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderFAQView.swift; sourceTree = "<group>"; };
+		C3A408002923411C008C1220 /* StakingFAQView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StakingFAQView.swift; sourceTree = "<group>"; };
+		C3A408012923411C008C1220 /* StakingFAQView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StakingFAQView.xib; sourceTree = "<group>"; };
+		C3A4080529234168008C1220 /* ankr-matic-matic.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ankr-matic-matic.plist"; sourceTree = "<group>"; };
+		C3A4080629234169008C1220 /* ankr-matic-eth.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ankr-matic-eth.plist"; sourceTree = "<group>"; };
+		C3A4080729234169008C1220 /* ankr-bnb.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ankr-bnb.plist"; sourceTree = "<group>"; };
+		C3A4080829234169008C1220 /* FAQModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQModel.swift; sourceTree = "<group>"; };
+		C3A4080929234169008C1220 /* ankr-avax.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ankr-avax.plist"; sourceTree = "<group>"; };
+		C3A4080A29234169008C1220 /* ankr-ftm.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ankr-ftm.plist"; sourceTree = "<group>"; };
+		C3A4080B2923416A008C1220 /* ankr-eth.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ankr-eth.plist"; sourceTree = "<group>"; };
 		F185B69AD2CDE54B8542A46E /* Pods-EarnModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EarnModule.debug.xcconfig"; path = "Target Support Files/Pods-EarnModule/Pods-EarnModule.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -143,6 +167,8 @@
 		7E6EBD66290927F900069B33 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				C3A407FC292340EB008C1220 /* StakingFAQCell.swift */,
+				C3A407FB292340EB008C1220 /* StakingFAQCell.xib */,
 				7EAF4766291B68C100BF5D00 /* EarningTokenCell.swift */,
 				7EAF4765291B68C100BF5D00 /* EarningTokenCell.xib */,
 				7E6EBD84290931E800069B33 /* StakingPortfolioCell.swift */,
@@ -173,6 +199,9 @@
 		7EAF4760291B684900BF5D00 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C3A407FF2923411C008C1220 /* SectionHeaderFAQView.swift */,
+				C3A408002923411C008C1220 /* StakingFAQView.swift */,
+				C3A408012923411C008C1220 /* StakingFAQView.xib */,
 				7EAF4762291B685500BF5D00 /* StakingEarningTokensView.swift */,
 				7EAF4761291B685500BF5D00 /* StakingEarningTokensView.xib */,
 			);
@@ -262,6 +291,13 @@
 		A69E8EB2291DEE91005B28CB /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C3A4080929234169008C1220 /* ankr-avax.plist */,
+				C3A4080729234169008C1220 /* ankr-bnb.plist */,
+				C3A4080B2923416A008C1220 /* ankr-eth.plist */,
+				C3A4080A29234169008C1220 /* ankr-ftm.plist */,
+				C3A4080629234169008C1220 /* ankr-matic-eth.plist */,
+				C3A4080529234168008C1220 /* ankr-matic-matic.plist */,
+				C3A4080829234169008C1220 /* FAQModel.swift */,
 				A69E8EB0291DDEBB005B28CB /* PendingStakingTxInfo.swift */,
 				A69E8EB3291DEF23005B28CB /* StakeDisplayInfo.swift */,
 				A61715E1291E343C001778C7 /* StakingValidationError.swift */,
@@ -349,15 +385,23 @@
 				7EAF4763291B685500BF5D00 /* StakingEarningTokensView.xib in Resources */,
 				7E6EBD6D2909280900069B33 /* EarnPoolViewCell.xib in Resources */,
 				7E6EBD72290929A400069B33 /* Localizable.strings in Resources */,
+				C3A4080D2923416A008C1220 /* ankr-matic-eth.plist in Resources */,
+				C3A408102923416A008C1220 /* ankr-avax.plist in Resources */,
 				7E6EBD6529091F7A00069B33 /* Assets.xcassets in Resources */,
 				7EAF4756291B567600BF5D00 /* StakingTrasactionProcessPopup.xib in Resources */,
 				7E6EBD822909318E00069B33 /* SkeletonCell.xib in Resources */,
 				7EAF477C291B7C5800BF5D00 /* KNPrettyAlertController.xib in Resources */,
 				7E6EBD6E2909280900069B33 /* EarnPoolPlatformCell.xib in Resources */,
 				7EAF4753291B567600BF5D00 /* StakingViewController.xib in Resources */,
+				C3A408112923416A008C1220 /* ankr-ftm.plist in Resources */,
+				C3A407FD292340EB008C1220 /* StakingFAQCell.xib in Resources */,
 				7E6EBD87290931E900069B33 /* StakingPortfolioCell.xib in Resources */,
+				C3A4080E2923416A008C1220 /* ankr-bnb.plist in Resources */,
+				C3A4080C2923416A008C1220 /* ankr-matic-matic.plist in Resources */,
+				C3A408042923411C008C1220 /* StakingFAQView.xib in Resources */,
 				7EAF4767291B68C100BF5D00 /* EarningTokenCell.xib in Resources */,
 				7E987F262908E92500AA5F8F /* EarnOverviewController.xib in Resources */,
+				C3A408122923416A008C1220 /* ankr-eth.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,9 +448,12 @@
 				7EB252C12907F3E100648438 /* EarnOverViewModel.swift in Sources */,
 				7EAF4768291B68C100BF5D00 /* EarningTokenCell.swift in Sources */,
 				7EAF477E291B7CDB00BF5D00 /* TransitionDelegate.swift in Sources */,
+				C3A408022923411C008C1220 /* SectionHeaderFAQView.swift in Sources */,
+				C3A4080F2923416A008C1220 /* FAQModel.swift in Sources */,
 				7EAF4752291B567600BF5D00 /* StakingViewController.swift in Sources */,
 				7EB252C32907F43B00648438 /* Observer.swift in Sources */,
 				7E36E369291A530A009BC8FE /* UnstakeViewController.swift in Sources */,
+				C3A408032923411C008C1220 /* StakingFAQView.swift in Sources */,
 				A6D1F80A291BB0F100ABA52B /* StakingSummaryViewModel.swift in Sources */,
 				7EB252C92907F8C300648438 /* NSObject.swift in Sources */,
 				7E6EBD8B2909386900069B33 /* Images.swift in Sources */,
@@ -417,6 +464,7 @@
 				7EAF477B291B7C5800BF5D00 /* KNPrettyAlertController.swift in Sources */,
 				7E6EBD70290928D400069B33 /* Strings.swift in Sources */,
 				A61715E2291E343C001778C7 /* StakingValidationError.swift in Sources */,
+				C3A407FE292340EB008C1220 /* StakingFAQCell.swift in Sources */,
 				7E6EBD6229091E0800069B33 /* StakingPortfolioViewController.swift in Sources */,
 				7E6EBD832909318E00069B33 /* SkeletonCell.swift in Sources */,
 				7EAF4754291B567600BF5D00 /* StakingTrasactionProcessPopup.swift in Sources */,

@@ -70,6 +70,10 @@ class StakingViewModel: BaseViewModel {
         return nil
     }
     
+    var faqInput: FAQInput {
+        return (selectedPlatform.name.lowercased(), pool.token.symbol.lowercased(), pool.chainID)
+    }
+    
     var displayMainHeader: String {
         return "Stake \(pool.token.symbol.uppercased()) on \(selectedPlatform.name.uppercased())"
     }
