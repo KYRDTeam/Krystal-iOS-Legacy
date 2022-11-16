@@ -70,7 +70,11 @@ class UnstakeViewController: InAppBrowsingViewController {
         availableUnstakeValue.text = viewModel.displayDepositedValue
         amountTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
         receiveInfoView.setInfo(title: Strings.youWillReceive, value: viewModel.receivedValueString())
-        rateView.setInfo(title: Strings.rate, value: viewModel.showRateInfo(), shouldShowIcon: true)
+        rateView.setInfo(title: Strings.rate, value: viewModel.showRateInfo(), shouldShowIcon: true, rightValueIcon: Images.revert)
+        rateView.onTapRightIcon = { [weak self] in
+            self?.viewModel?.showRevertedRate.toggle()
+            self?.rateView.setValue(value: viewModel.showRateInfo())
+        }
         networkFeeView.setInfo(title: Strings.networkFee, value: viewModel.transactionFeeString())
         receiveTimeView.setInfo(title: viewModel.timeForUnstakeString(), value: "")
         unstakePlatformLabel.text = Strings.Unstake + " " + viewModel.stakingTokenSymbol + " on " + viewModel.platform.name

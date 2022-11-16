@@ -39,6 +39,7 @@ class UnstakeViewModel {
     let toUnderlyingTokenAddress: String
     var stakingTokenAllowance: BigInt = BigInt(0)
     var contractAddress: String?
+    var showRevertedRate: Bool = false
     weak var delegate: UnstakeViewModelDelegate?
     
     let apiService = EarnServices()
@@ -100,9 +101,16 @@ class UnstakeViewModel {
     }
     
     func showRateInfo() -> String {
-        let ratioString = NumberFormatUtils.balanceFormat(value: ratio, decimals: 18)
-        return "1 \(stakingTokenSymbol) = \(ratioString) \(toTokenSymbol)"
+        if showRevertedRate {
+            let ratioString = NumberFormatUtils.balanceFormat(value: BigInt(10).power(36) / ratio, decimals: 18)
+            return "1 \(toTokenSymbol) = \(ratioString) \(stakingTokenSymbol)"
+        } else {
+            let ratioString = NumberFormatUtils.balanceFormat(value: ratio, decimals: 18)
+            return "1 \(stakingTokenSymbol) = \(ratioString) \(toTokenSymbol)"
+        }
     }
+    
+    
     
     func timeForUnstakeString() -> String {
         let isAnkr = platform.name.lowercased() == "ANKR".lowercased()

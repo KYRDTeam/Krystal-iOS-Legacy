@@ -85,7 +85,7 @@ class Images {
   static let connectFailed = UIImage(named: "connect_fail")!
     
   // Staking
-  static let revert = UIImage(named: "revert_icon")!
+  static let revert = UIImage(imageName: "revert_icon")!
   static let greenPlus = UIImage(named: "green_plus_icon")!
   static let greenSubtract = UIImage(named: "green_subtract_icon")!
   static let redSubtract =   UIImage(imageName: "red_subtract_icon")!
