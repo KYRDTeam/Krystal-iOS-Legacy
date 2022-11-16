@@ -46,7 +46,7 @@ class UnstakeViewModel {
     let apiService = EarnServices()
     var buildTxRequestParams: JSONDictionary {
         var earningType: String = platform.type
-        if stakingTokenSymbol.lowercased() == "MATIC".lowercased() {
+        if toTokenSymbol.lowercased() == "MATIC".lowercased() {
             earningType = "stakingMATIC"
         }
         var params: JSONDictionary = [
