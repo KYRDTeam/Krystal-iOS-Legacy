@@ -132,7 +132,7 @@ class BridgeTransactionStatusPopup: KNBaseViewController {
       self.transaction.acceptExtraData(extraData: extraData)
       self.reloadData()
       if extraData.isCompleted {
-        MixPanelManager.track("bridge_done_pop_up_open", properties: ["screenid": "bridge_done_pop_up"])
+          MixPanelManager.track("bridge_done_pop_up_open", properties: ["screenid": "bridge_done_pop_up", "source_hash": extraData.from?.tx ?? ""])
       }
     }
   }

@@ -34,6 +34,7 @@
 		A6B1FD0828F69EC500894DCB /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FD0728F69EC500894DCB /* Storage.swift */; };
 		A6B1FD1728F6B40800894DCB /* UIScreen+statusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FD1628F6B40800894DCB /* UIScreen+statusBar.swift */; };
 		A6E433C428F54F6F00782F7D /* Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = A6E433C328F54F6F00782F7D /* Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C3A408142923536E008C1220 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A408132923536E008C1220 /* UIColor+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		A6B1FD1628F6B40800894DCB /* UIScreen+statusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+statusBar.swift"; sourceTree = "<group>"; };
 		A6E433C028F54F6F00782F7D /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6E433C328F54F6F00782F7D /* Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
+		C3A408132923536E008C1220 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +136,7 @@
 				A64C2E8B28F91540002FD64C /* BigInt+.swift */,
 				A66846152908EA60006BBE29 /* Collection+.swift */,
 				7E6EBD88290937BD00069B33 /* UIFont+.swift */,
+				C3A408132923536E008C1220 /* UIColor+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 				A64C2E1828F6F95B002FD64C /* UIView+accessiblityID.swift in Sources */,
 				A6B1FD1728F6B40800894DCB /* UIScreen+statusBar.swift in Sources */,
 				A64C2E5D28F8779C002FD64C /* JSONDictionary.swift in Sources */,
+				C3A408142923536E008C1220 /* UIColor+.swift in Sources */,
 				A64C2E1A28F6F9EC002FD64C /* UIImage+kf.swift in Sources */,
 				A64C2E4928F7F938002FD64C /* UIButton.swift in Sources */,
 			);

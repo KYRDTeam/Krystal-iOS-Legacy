@@ -17,6 +17,8 @@ public extension String {
         attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range: NSMakeRange(0, attributedString.length))
         return attributedString
     }
+  
+  
     
 }
 

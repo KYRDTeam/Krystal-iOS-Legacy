@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>question</key>
+		<string>What is liquid staking?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Liquid staking protocols allow users to earn staking rewards even without locking up their assets. Users can deposit tokens and receive tradable liquid tokens in return.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>Is there any risk from staking, like slashing or any penalties?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;The only risk for stakers is missing out on rewards any time a validator they staked with is slashed. Slashing is a protocol-level penalty associated with a validator failure if it validates an invalid transaction or goes offline. The delegated staked token is not slashed — slashing impacts only the self-stake of the validator. Ankr only delegates to trusted and reputable validator nodes to avoid any validator that would act maliciously.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>What is the minimum amount of ETH I can stake?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;0.5 ETH&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>What is the maximum amount of ETH I can stake?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;No, you can stake at your discretion, unlimited. You should know that currently staking starts once 32 ETH are accumulated, so if your stake is &gt; 32 ETH, it’ll be divided into chunks and the rule will apply to each of them.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>In what denominations can I stake ETH on Ankr?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;You can stake ETH on Ankr in denominations of 0.5 ETH, e.g. 0.5 ETH, 1.0 ETH, 1.5 ETH and so on.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;You won&amp;rsquo;t be able to stake other denominations, including 0.55, 1.1, 1.88 ETH.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>When can I unstake my staked ETH?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Currently, unstaking is not available, as this functionality is not yet supported on the Ethereum network.&lt;/p&gt;
+&lt;p&gt;Unstaking will be enabled after the Shanghai upgrade that will follow The Merge in approximately 6-12 months.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>How long does it take to unstake my ETH?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Currently, there is no unbonding period, as there is no unstaking for ETH. This functionality is to be implemented by the Ethereum team in future updates.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>How do I receive my rewards?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;aETHb is a rebasing token. When holding aETHb, your balance will increase in proportion to your ETH staking rewards. A rebase runs daily, and rewards occur each time this runs. So each day, you will see the quantity of your aETHb increase by a small amount. &lt;br&gt;&lt;br&gt;aETHc is a reward-bearing token, meaning its quantity stays the same from the moment of staking. Instead, it appreciates in value everyday, as the redemption ratio grows because of reward accumulation.&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;To redeem your rewards, you&amp;rsquo;ll need to sell aETHb/aETHc on Ankr DeFi, as Ethereum hasn&amp;rsquo;t implemented the unstaking functionality yet.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>Is there any liquidity for my Liquid Staking tokens?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;You can trade them in the listed liquidity pools on ANKR DeFi:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://www.ankr.com/staking/defi/?assets=aETHb&quot;&gt;aETHb&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://www.ankr.com/staking/defi/?assets=aETHc&quot;&gt;aETHc&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>Does Ankr charge for the service?</string>
+		<key>answer</key>
+		<string>&lt;p dir=&quot;ltr&quot; style=&quot;line-height: 1.38; margin-top: 0pt; margin-bottom: 0pt;&quot;&gt;ANKR does not charge any service fees for ETH Liquid Staking. However, validators charge a fee deducted from your rewards (Ankr&amp;rsquo;s validator node charges 10%), representing an indirect cost for liquid staking token holders. Ankr&amp;apos;s income comes from running one of the several validator nodes that will be used to stake ETH.&lt;/p&gt;</string>
+	</dict>
+</array>
+</plist>
