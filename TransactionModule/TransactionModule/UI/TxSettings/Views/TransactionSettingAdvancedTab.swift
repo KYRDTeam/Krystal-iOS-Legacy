@@ -119,6 +119,11 @@ class TransactionSettingAdvancedTab: UIViewController {
         reloadNonceUI()
     }
     
+    func onGasPriceUpdated() {
+        resetUI()
+        reloadEstimatedGasUI()
+    }
+    
     func reloadSettingUI() {
         reloadGasLimitUI()
         reloadPriorityUI()
