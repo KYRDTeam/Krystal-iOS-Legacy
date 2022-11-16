@@ -43,7 +43,7 @@ class PendingStakingTxInfo: PendingTxInfo {
     }
     
     override var description: String {
-        return "\(sourceAmount) \(pool.token.symbol) → \(destAmount) \(pool.token.symbol)"
+        return "\(sourceAmount) → \(destAmount)"
     }
         
     override var detail: String {
