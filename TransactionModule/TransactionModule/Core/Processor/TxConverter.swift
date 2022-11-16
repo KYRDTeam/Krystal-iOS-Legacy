@@ -64,7 +64,7 @@ public class TxObjectConverter {
         let priorityFeeBigIntDefault = maxGas - baseFeeBigInt
         return EIP1559Transaction(
           chainID: chainID.hexSigned2Complement,
-          nonce: nonceHex,
+          nonce: nonceHex.hexSigned2Complement,
           gasLimit: gasLimit.hexEncoded.hexSigned2Complement,
           maxInclusionFeePerGas: priorityFee?.hexEncoded.hexSigned2Complement ?? priorityFeeBigIntDefault.hexEncoded.hexSigned2Complement,
           maxGasFee: maxGas.hexEncoded.hexSigned2Complement,
