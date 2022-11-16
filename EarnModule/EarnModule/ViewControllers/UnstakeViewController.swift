@@ -69,10 +69,12 @@ class UnstakeViewController: InAppBrowsingViewController {
         guard let viewModel = viewModel else { return }
         availableUnstakeValue.text = viewModel.displayDepositedValue
         amountTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
-        receiveInfoView.setInfo(title: "You will receive", value: viewModel.receivedValueString())
-        rateView.setInfo(title: "Rate", value: viewModel.showRateInfo(), shouldShowIcon: true)
-        networkFeeView.setInfo(title: "Network Fee", value: viewModel.transactionFeeString())
+        receiveInfoView.setInfo(title: Strings.youWillReceive, value: viewModel.receivedValueString())
+        rateView.setInfo(title: Strings.rate, value: viewModel.showRateInfo(), shouldShowIcon: true)
+        networkFeeView.setInfo(title: Strings.networkFee, value: viewModel.transactionFeeString())
         receiveTimeView.setInfo(title: viewModel.timeForUnstakeString(), value: "")
+        unstakePlatformLabel.text = Strings.Unstake + " " + viewModel.stakingTokenSymbol + " on " + viewModel.platform.name
+        tokenIcon.setImage(urlString: viewModel.stakingTokenLogo, symbol: viewModel.stakingTokenSymbol)
     }
     
     @IBAction func onBackButtonTapped(_ sender: Any) {
@@ -119,7 +121,14 @@ class UnstakeViewController: InAppBrowsingViewController {
     
     func updateReceivedAmount() {
         guard let viewModel = viewModel else { return }
-        viewModel.unstakeValue = amountTextField.text?.amountBigInt(decimals: 18) ?? BigInt(0)
+        let inputValue = amountTextField.text?.amountBigInt(decimals: 18) ?? BigInt(0)
+        if inputValue > viewModel.balance {
+            showError()
+            return
+        } else {
+            hideError()
+        }
+        viewModel.unstakeValue = inputValue
         receiveInfoView.setValue(value: viewModel.receivedValueString())
     }
     
