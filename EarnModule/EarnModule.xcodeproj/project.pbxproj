@@ -56,6 +56,8 @@
 		A6D1F7F1291B847800ABA52B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7F0291B847800ABA52B /* Constants.swift */; };
 		A6D1F808291BAF1E00ABA52B /* StakingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */; };
 		A6D1F80A291BB0F100ABA52B /* StakingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F809291BB0F100ABA52B /* StakingSummaryViewModel.swift */; };
+		C36AD4B12924F2680031770E /* lido-eth.plist in Resources */ = {isa = PBXBuildFile; fileRef = C36AD4B02924F2680031770E /* lido-eth.plist */; };
+		C36AD4B32924F8DC0031770E /* lido-matic.plist in Resources */ = {isa = PBXBuildFile; fileRef = C36AD4B22924F8DC0031770E /* lido-matic.plist */; };
 		C3A407FD292340EB008C1220 /* StakingFAQCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A407FB292340EB008C1220 /* StakingFAQCell.xib */; };
 		C3A407FE292340EB008C1220 /* StakingFAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A407FC292340EB008C1220 /* StakingFAQCell.swift */; };
 		C3A408022923411C008C1220 /* SectionHeaderFAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A407FF2923411C008C1220 /* SectionHeaderFAQView.swift */; };
@@ -122,6 +124,8 @@
 		A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingViewModel.swift; sourceTree = "<group>"; };
 		A6D1F809291BB0F100ABA52B /* StakingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingSummaryViewModel.swift; sourceTree = "<group>"; };
 		B5969EB6F30F2999141BBB05 /* Pods_EarnModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EarnModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C36AD4B02924F2680031770E /* lido-eth.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "lido-eth.plist"; sourceTree = "<group>"; };
+		C36AD4B22924F8DC0031770E /* lido-matic.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "lido-matic.plist"; sourceTree = "<group>"; };
 		C3A407FB292340EB008C1220 /* StakingFAQCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StakingFAQCell.xib; sourceTree = "<group>"; };
 		C3A407FC292340EB008C1220 /* StakingFAQCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StakingFAQCell.swift; sourceTree = "<group>"; };
 		C3A407FF2923411C008C1220 /* SectionHeaderFAQView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderFAQView.swift; sourceTree = "<group>"; };
@@ -301,6 +305,8 @@
 				A69E8EB0291DDEBB005B28CB /* PendingStakingTxInfo.swift */,
 				A69E8EB3291DEF23005B28CB /* StakeDisplayInfo.swift */,
 				A61715E1291E343C001778C7 /* StakingValidationError.swift */,
+				C36AD4B02924F2680031770E /* lido-eth.plist */,
+				C36AD4B22924F8DC0031770E /* lido-matic.plist */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -385,6 +391,7 @@
 				7EAF4763291B685500BF5D00 /* StakingEarningTokensView.xib in Resources */,
 				7E6EBD6D2909280900069B33 /* EarnPoolViewCell.xib in Resources */,
 				7E6EBD72290929A400069B33 /* Localizable.strings in Resources */,
+				C36AD4B12924F2680031770E /* lido-eth.plist in Resources */,
 				C3A4080D2923416A008C1220 /* ankr-matic-eth.plist in Resources */,
 				C3A408102923416A008C1220 /* ankr-avax.plist in Resources */,
 				7E6EBD6529091F7A00069B33 /* Assets.xcassets in Resources */,
@@ -401,6 +408,7 @@
 				C3A408042923411C008C1220 /* StakingFAQView.xib in Resources */,
 				7EAF4767291B68C100BF5D00 /* EarningTokenCell.xib in Resources */,
 				7E987F262908E92500AA5F8F /* EarnOverviewController.xib in Resources */,
+				C36AD4B32924F8DC0031770E /* lido-matic.plist in Resources */,
 				C3A408122923416A008C1220 /* ankr-eth.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

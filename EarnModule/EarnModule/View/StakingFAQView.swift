@@ -47,6 +47,10 @@ class StakingFAQViewModel {
       name = "ankr-bnb"
     } else if input.platform == "ankr" && input.token == "avax" {
       name = "ankr-avax"
+    } else if input.platform == "lido" && input.token == "eth" {
+        name = "lido-eth"
+    } else if input.platform == "lido" && input.token == "matic" {
+       name = "lido-matic"
     }
     
     return name
