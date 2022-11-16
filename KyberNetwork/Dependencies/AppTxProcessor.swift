@@ -47,7 +47,11 @@ class AppTxProcessor: TxProcessorProtocol {
             chain: txInfo.chain
         )
         internalTx.hash = txInfo.hash
-        internalTx.nonce = txInfo.nonce
+        if let eip1559Nonce = txInfo.eip1559Tx?.nonce, let nonceInt = Int(eip1559Nonce) {
+            internalTx.nonce = nonceInt
+        } else {
+            internalTx.nonce = txInfo.legacyTx?.nonce ?? 0
+        }
         internalTx.time = txInfo.date
         EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalTx)
     }
@@ -58,6 +62,8 @@ class AppTxProcessor: TxProcessorProtocol {
             return .earn
         case .approval:
             return .allowance
+        case .claimStakingReward:
+            return .contractInteraction
         }
     }
     

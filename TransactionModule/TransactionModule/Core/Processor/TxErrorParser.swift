@@ -10,10 +10,11 @@ import Result
 import APIKit
 import JSONRPCKit
 
-public enum TxError {
+public enum TxError: Error {
     case insuffienceBalance
     case unknown
     case unexpected(message: String)
+    case undefined
     
     public var message: String {
         switch self {
@@ -23,6 +24,8 @@ public enum TxError {
             return "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
         case .unexpected(let message):
             return message
+        case .undefined:
+            return "Something went wrong, please try again"
         }
     }
 }
@@ -42,7 +45,11 @@ public class TxErrorParser {
         if errorMessage.lowercased().contains("Unknown(0x)".lowercased()) {
             return .unknown
         }
-        return .unexpected(message: errorMessage)
+        if errorMessage.isEmpty {
+            return .undefined
+        } else {
+            return .unexpected(message: errorMessage)
+        }
     }
     
 }

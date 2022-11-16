@@ -42,4 +42,12 @@ struct Strings {
     static let confirmClaim = "confirm.claim".toBeLocalised()
     static let youAreClaiming = "you.are.claiming".toBeLocalised()
     static let confirm = "confirm".toBeLocalised()
+    static let defaultErrorMessage = "default.error.message".toBeLocalised()
+    static let claimInProgress = "claim.in.progress".toBeLocalised()
+    static let success = "success".toBeLocalised()
+    static let txFailed = "tx.failed".toBeLocalised()
+    static let myPortfolio = "my.portfolio".toBeLocalised()
+    static let support = "support".toBeLocalised()
+    static let close = "close".toBeLocalised()
+    static let edit = "edit".toBeLocalised()
 }

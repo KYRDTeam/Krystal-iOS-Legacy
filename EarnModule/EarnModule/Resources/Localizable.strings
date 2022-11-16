@@ -31,3 +31,11 @@
 "confirm.claim" = "Confirm Claim";
 "you.are.claiming" = "You are claiming";
 "confirm" = "Confirm";
+"default.error.message" = "Something went wrong, please try again later";
+"claim.in.progress" = "Claim In Progress";
+"success" = "Success";
+"tx.failed" = "Transaction Failed";
+"my.portfolio" = "My Portfolio";
+"support" = "Support";
+"close" = "Close";
+"edit" = "Edit";

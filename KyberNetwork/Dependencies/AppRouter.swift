@@ -101,6 +101,12 @@ class AppRouter: AppRouterProtocol, Coordinator {
     func openSupportURL() {
         UIApplication.shared.topMostViewController()?.openSafari(with: Constants.supportURL)
     }
+    
+    func openTxHash(txHash: String, chainID: Int) {
+        guard let chain = ChainType.make(chainID: chainID) else { return }
+        guard let url = URL(string: chain.customRPC().etherScanEndpoint + "tx/" + txHash) else { return }
+        UIApplication.shared.topMostViewController()?.openSafari(with: url)
+    }
 }
 
 extension AppRouter: KNHistoryCoordinatorDelegate {

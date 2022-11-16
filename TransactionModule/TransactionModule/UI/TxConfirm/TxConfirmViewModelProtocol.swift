@@ -23,6 +23,7 @@ public protocol TxConfirmViewModelProtocol: AnyObject {
     var onError: (String) -> Void { get set }
     var onSuccess: (PendingTxInfo) -> Void { get set }
     var onSelectOpenSetting: (() -> ())? { get set }
+    var onDataChanged: (() -> ())? { get set }
     
     func onTapConfirm()
     func onSettingChanged(settingObject: TxSettingObject)

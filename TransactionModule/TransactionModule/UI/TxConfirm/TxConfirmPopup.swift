@@ -60,6 +60,12 @@ public class TxConfirmPopup: UIViewController {
             }
 
         }
+        
+        viewModel.onDataChanged = { [weak self] in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
     }
     
     public override func viewWillLayoutSubviews() {
