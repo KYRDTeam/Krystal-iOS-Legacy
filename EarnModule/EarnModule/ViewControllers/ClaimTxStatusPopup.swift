@@ -37,6 +37,17 @@ class ClaimTxStatusPopup: UIViewController {
         tokenIconImageView.loadImage(viewModel.pendingTx.pendingUnstake.logo)
         tokenAmountLabel.text = viewModel.tokenAmountString
         hashLabel.text = viewModel.hashString
+        setupLoadingView()
+    }
+    
+    func setupLoadingView() {
+        loadingView.lineWidth = 2
+        loadingView.lineColor = AppTheme.current.primaryColor
+        loadingView.labelTextColor = AppTheme.current.primaryColor
+        loadingView.trailLineColor = AppTheme.current.primaryColor.withAlphaComponent(0.2)
+        loadingView.isLoadingIndicator = true
+        loadingView.isLabelHidden = true
+        loadingView.start(beginingValue: 1)
     }
     
     func bindViewModel() {
