@@ -44,6 +44,14 @@ class TransactionSettingBasicTab: BaseTransactionSettingTab {
         if !viewModel.chain.isSupportedEIP1559() {
             totalGasView.removeFromSuperview()
         }
+        
+        resetUI()
+        if viewModel.setting.advanced != nil {
+            self.uncheckAll()
+        }
+    }
+    
+    func resetUI() {
         superFastGasFee.attributedText = viewModel.getGasOptionText(gasType: .superFast)
         fastGasFee.attributedText = viewModel.getGasOptionText(gasType: .fast)
         regularGasFee.attributedText = viewModel.getGasOptionText(gasType: .regular)
@@ -53,10 +61,11 @@ class TransactionSettingBasicTab: BaseTransactionSettingTab {
         fastGasAmount.text = viewModel.getEstimatedGasFee(gasType: .fast)
         regularGasAmount.text = viewModel.getEstimatedGasFee(gasType: .regular)
         slowGasAmount.text = viewModel.getEstimatedGasFee(gasType: .slow)
-        
-        if viewModel.setting.advanced != nil {
-            self.uncheckAll()
-        }
+    }
+    
+    func onGasPriceUpdated() {
+        resetUI()
+        reloadEstimatedGasUI()
     }
     
     func uncheckAll() {

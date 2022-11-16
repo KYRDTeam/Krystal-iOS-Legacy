@@ -19,7 +19,6 @@ public class AppState {
   public private(set) var currentChain: ChainType = Storage.retrieve(Constants.StorageKeys.currentChain, as: ChainType.self) ?? Constants.defaultChain {
     didSet {
       Storage.store(self.currentChain, as: Constants.StorageKeys.currentChain)
-      
     }
   }
   

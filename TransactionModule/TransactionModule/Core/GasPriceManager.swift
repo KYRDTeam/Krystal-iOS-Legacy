@@ -12,6 +12,10 @@ import Dependencies
 import BigInt
 import Utilities
 
+public extension Notification.Name {
+    static let kGasPriceUpdated = Notification.Name("kGasPriceUpdated")
+}
+
 public class GasPriceManager {
     
     public static let shared = GasPriceManager()
@@ -29,16 +33,24 @@ public class GasPriceManager {
     }
     
     func fetchAllNetworkGasPrice() {
+        let group = DispatchGroup()
         ChainType.allCases.forEach { chain in
-            fetchGasPrice(chain: chain)
+            group.enter()
+            fetchGasPrice(chain: chain) {
+                group.leave()
+            }
+        }
+        group.notify(queue: .main) {
+            NotificationCenter.default.post(name: .kGasPriceUpdated, object: nil)
         }
     }
     
-    func fetchGasPrice(chain: ChainType) {
+    func fetchGasPrice(chain: ChainType, completion: @escaping () -> ()) {
         gasService.getGasPrice(chain: chain) { [weak self] gasResponse in
             if let gasResponse = gasResponse {
                 self?.gasConfig[chain] = gasResponse
             }
+            completion()
         }
     }
     
