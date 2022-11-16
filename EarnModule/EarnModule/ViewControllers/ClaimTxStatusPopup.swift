@@ -29,6 +29,7 @@ class ClaimTxStatusPopup: UIViewController {
         
         setupViews()
         bindViewModel()
+        observeEvents()
     }
     
     func setupViews() {
