@@ -53,6 +53,24 @@ struct StakingPortfolioCellModel {
     self.displayPlatformName = pendingUnstake.platform.name.uppercased()
     self.isClaimable = pendingUnstake.extraData.status == "claimable"
   }
+    
+    func timeForUnstakeString() -> String {
+        let isAnkr = displayPlatformName.uppercased() == "ANKR"
+        let isLido = displayPlatformName.uppercased() == "LIDO"
+        var time = ""
+        if displayTokenName.uppercased() == "AVAX".lowercased() && isAnkr {
+            time = Strings.avaxUnstakeTime
+        } else if displayTokenName.uppercased() == "BNB" && isAnkr {
+            time = Strings.bnbUnstakeTime
+        } else if displayTokenName.uppercased() == "FTM" && isAnkr {
+            time = Strings.ftmUnstakeTime
+        } else if displayTokenName.uppercased() == "MATIC" && isAnkr {
+            time = Strings.maticUnstakeTime
+        } else if displayTokenName.uppercased() == "SOL" && isLido {
+            time = Strings.solUnstakeTime
+        }
+        return String(format: Strings.itTakeAboutXDaysToUnstake, time)
+    }
 }
 
 class StakingPortfolioCell: SwipeTableViewCell {
@@ -78,8 +96,7 @@ class StakingPortfolioCell: SwipeTableViewCell {
   @IBOutlet weak var depositTitleLabelContraintWithAPYTitle: NSLayoutConstraint!
   @IBOutlet weak var apyTitleLabel: UILabel!
   @IBOutlet weak var balanceTitleLabel: UILabel!
-  
-  var viewControler: UIViewController?
+  var onTapHint: (() -> Void)? = nil
   
   func updateCellModel(_ model: StakingPortfolioCellModel) {
     tokenImageView.loadImage(model.tokenLogo)
@@ -106,7 +123,9 @@ class StakingPortfolioCell: SwipeTableViewCell {
   }
   
   @IBAction func inProcessButtonTapped(_ sender: UIButton) {
-    viewControler?.showBottomBannerView(message: "It takes about x days to unstake. After that you can claim your rewards.")
+      if let onTapHint = onTapHint {
+          onTapHint()
+      }
   }
   
   @IBAction func claimButtonTapped(_ sender: UIButton) {

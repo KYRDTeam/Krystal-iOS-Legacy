@@ -87,5 +87,12 @@ struct Strings {
     static let txFailed = "tx.failed".toBeLocalised()
     static let viewMyPool = "view.my.pool".toBeLocalised()
     static let support = "support".toBeLocalised()
-    static let unstakeToken = "Unstake.token".toBeLocalised()
+    static let unstakeToken = "unstake.token".toBeLocalised()
+    static let itTakeAboutXDaysToUnstake = "it.take.about.x.days.to.unstake".toBeLocalised()
+    static let avaxUnstakeTime = "avax.unstake.time".toBeLocalised()
+    static let bnbUnstakeTime = "bnb.unstake.time".toBeLocalised()
+    static let ftmUnstakeTime = "ftm.unstake.time".toBeLocalised()
+    static let maticUnstakeTime = "matic.unstake.time".toBeLocalised()
+    static let solUnstakeTime = "sol.unstake.time".toBeLocalised()
+    static let youWillReceiveYourIn = "you.will.receive.your.in".toBeLocalised()
 }

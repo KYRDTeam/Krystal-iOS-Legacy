@@ -88,7 +88,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         guard let viewModel = viewModel else { return }
         TransactionSettingPopup.show(on: self, chain: viewModel.chain, currentSetting: viewModel.setting, onConfirmed: { [weak self] settingObject in
             self?.viewModel?.setting = settingObject
-            self?.networkFeeView.setInfo(title: "Network Fee", value: viewModel.transactionFeeString())
+            self?.networkFeeView.setInfo(title: Strings.networkFee, value: viewModel.transactionFeeString())
         }, onCancelled: {
             return
         })

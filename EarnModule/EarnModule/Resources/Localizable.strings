@@ -38,6 +38,13 @@
 "view.my.pool" = "View my pool";
 "Unstake" = "Unstake";
 "Stake" = "Stake";
-"Unstake.token" = "Unstake %@";
+"unstake.token" = "Unstake %@";
 "confirm.unstake" = "Confirm Unstake";
 "support" = "Support";
+"it.take.about.x.days.to.unstake" = "It takes about %@ days to unstake. After that you can claim your rewards.";
+"avax.unstake.time" = "4 weeks";
+"bnb.unstake.time" = "7-14 days";
+"ftm.unstake.time" = "35 days";
+"matic.unstake.time" = "3-4 days";
+"sol.unstake.time" = "2-3 days";
+"you.will.receive.your.in" = "You will receive your %@ in %@";

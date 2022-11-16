@@ -168,6 +168,9 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
     let cm = items[indexPath.row]
     cell.updateCellModel(cm)
     cell.delegate = self
+    cell.onTapHint = {
+        self.showBottomBannerView(message: cm.timeForUnstakeString())
+    }
     cell.chainImageView.isHidden = viewModel.chainID != nil
     return cell
   }

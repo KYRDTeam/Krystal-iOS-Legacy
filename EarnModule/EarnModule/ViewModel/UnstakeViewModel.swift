@@ -130,27 +130,30 @@ class UnstakeViewModel {
     }
     
     func openUnStakeSummary(controller: UIViewController) {
-        requestBuildUnstakeTx(completion: {
-            if let tx = self.txObject {
-                
-                let displayInfo = UnstakeDisplayInfo(amount: self.unstakeValueString(),
-                                                     receiveAmount: self.receivedValueString(),
-                                                     rate: self.showRateInfo(),
-                                                     fee: self.transactionFeeString(),
-                                                     stakeTokenIcon: self.stakingTokenLogo,
-                                                     toTokenIcon:self.toTokenLogo,
-                                                     fromSym: self.stakingTokenSymbol,
-                                                     toSym: self.toTokenSymbol)
-                
-                
-                let viewModel = UnstakeSummaryViewModel(setting: self.setting, txObject: tx, platform: self.platform, displayInfo: displayInfo)
-                
-                TxConfirmPopup.show(onViewController: controller, withViewModel: viewModel) { pendingTx in
-                    if let pendingTx = pendingTx as? PendingUnstakeTxInfo {
-                        self.openTxStatusPopup(tx: pendingTx, controller: controller)
+        requestBuildUnstakeTx(completion: { error in
+            guard let error = error else {
+                if let tx = self.txObject {
+                    let displayInfo = UnstakeDisplayInfo(amount: self.unstakeValueString(),
+                                                         receiveAmount: self.receivedValueString(),
+                                                         rate: self.showRateInfo(),
+                                                         fee: self.transactionFeeString(),
+                                                         stakeTokenIcon: self.stakingTokenLogo,
+                                                         toTokenIcon:self.toTokenLogo,
+                                                         fromSym: self.stakingTokenSymbol,
+                                                         toSym: self.toTokenSymbol)
+                    
+                    
+                    let viewModel = UnstakeSummaryViewModel(setting: self.setting, txObject: tx, platform: self.platform, displayInfo: displayInfo)
+                    
+                    TxConfirmPopup.show(onViewController: controller, withViewModel: viewModel) { pendingTx in
+                        if let pendingTx = pendingTx as? PendingUnstakeTxInfo {
+                            self.openTxStatusPopup(tx: pendingTx, controller: controller)
+                        }
                     }
                 }
+                return
             }
+            controller.showErrorTopBannerMessage(message: error.localizedDescription)
         })
     }
     
@@ -168,18 +171,17 @@ class UnstakeViewModel {
         
         var time = ""
         if toTokenSymbol.lowercased() == "AVAX".lowercased() && isAnkr {
-            time = "4 weeks"
+            time = Strings.avaxUnstakeTime
         } else if toTokenSymbol.lowercased() == "BNB".lowercased() && isAnkr {
-            time = "7-14 days"
+            time = Strings.bnbUnstakeTime
         } else if toTokenSymbol.lowercased() == "FTM".lowercased() && isAnkr {
-            time = "35 days"
+            time = Strings.ftmUnstakeTime
         } else if toTokenSymbol.lowercased() == "MATIC".lowercased() && isAnkr {
-            time = "3-4 days"
+            time = Strings.maticUnstakeTime
         } else if toTokenSymbol.lowercased() == "SOL".lowercased() && isLido {
-            time = "2-3 days"
+            time =  Strings.solUnstakeTime
         }
-        
-        return "You will receive your \(toTokenSymbol) in \(time)"
+        return String(format: Strings.youWillReceiveYourIn, toTokenSymbol, time)
     }
     
     func transactionFeeString() -> String {
@@ -226,19 +228,16 @@ class UnstakeViewModel {
         }
     }
     
-    func requestBuildUnstakeTx(showLoading: Bool = false, completion: @escaping () -> () = {}) {
-        
+    func requestBuildUnstakeTx(showLoading: Bool = false, completion: @escaping ((Error?) -> Void) = {_ in }) {
         apiService.buildUnstakeTx(param: buildTxRequestParams) { result in
             switch result {
             case .success(let tx):
                 self.txObject = tx
                 self.gasLimit = BigInt(tx.gasLimit.drop0x, radix: 16) ?? AppDependencies.gasConfig.earnGasLimitDefault
-                completion()
+                completion(nil)
             case .failure(let error):
-                //TODO : Show error here
-                print(error.localizedDescription)
+                completion(error)
             }
-            
         }
     }
     
