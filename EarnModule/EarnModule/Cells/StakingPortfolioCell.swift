@@ -24,6 +24,7 @@ struct StakingPortfolioCellModel {
   
   let isInProcess: Bool
   let isClaimable: Bool
+      var pendingUnstake: PendingUnstake?
   
   init(earnBalance: EarningBalance) {
     self.isInProcess = false
@@ -40,6 +41,7 @@ struct StakingPortfolioCellModel {
   }
   
   init(pendingUnstake: PendingUnstake) {
+      self.pendingUnstake = pendingUnstake
     self.isInProcess = true
     self.tokenLogo = pendingUnstake.logo
     self.chainLogo = ChainType.eth.chainIcon()//ChainType.make(chainID: pendingUnstake.chainID ?? 1)?.chainIcon()
@@ -55,7 +57,7 @@ struct StakingPortfolioCellModel {
 }
 
 protocol StakingPortfolioCellDelegate: class {
-  func warningButtonTapped()
+    func warningButtonTapped()
 }
 
 class StakingPortfolioCell: UITableViewCell {
@@ -83,6 +85,7 @@ class StakingPortfolioCell: UITableViewCell {
   @IBOutlet weak var balanceTitleLabel: UILabel!
   
   weak var delegate: StakingPortfolioCellDelegate?
+    var claimTapped: (() -> ())?
   
   func updateCellModel(_ model: StakingPortfolioCellModel) {
     tokenImageView.loadImage(model.tokenLogo)
@@ -113,6 +116,6 @@ class StakingPortfolioCell: UITableViewCell {
   }
   
   @IBAction func claimButtonTapped(_ sender: UIButton) {
-    //TODO: process next sprint
+      claimTapped?()
   }
 }

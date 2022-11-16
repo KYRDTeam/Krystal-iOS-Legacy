@@ -45,7 +45,7 @@ extension EarnParamBuilder {
             "platform": pendingUnstake.platform.name,
             "userAddress": AppState.shared.currentAddress.addressString,
             "tokenAddress": pendingUnstake.address,
-            "extraData": claimExtraData
+            "extraData": claimExtraData(pendingUnstake: pendingUnstake)
         ]
         return params
     }

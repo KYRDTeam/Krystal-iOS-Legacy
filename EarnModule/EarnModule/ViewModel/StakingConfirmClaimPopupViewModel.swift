@@ -130,6 +130,7 @@ class StakingConfirmClaimPopupViewModel: BaseViewModel, TxConfirmViewModelProtoc
     
     func onSettingChanged(settingObject: TxSettingObject) {
         setting = settingObject
+        onDataChanged?()
     }
 
     func getQuoteTokenPrice() {

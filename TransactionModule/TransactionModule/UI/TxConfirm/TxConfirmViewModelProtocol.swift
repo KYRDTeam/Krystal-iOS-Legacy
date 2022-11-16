@@ -12,6 +12,7 @@ import UIKit
 
 public protocol TxConfirmViewModelProtocol: AnyObject {
     var title: String { get }
+    var setting: TxSettingObject { get }
     var chain: ChainType { get }
     var action: String { get }
     var tokenIconURL: String { get }
