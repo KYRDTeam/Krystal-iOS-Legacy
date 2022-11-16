@@ -53,7 +53,7 @@ class UnstakeViewModel {
             "earningType": earningType,
             "platform": platform.name,
             "userAddress": AppState.shared.currentAddress.addressString,
-            "tokenAddress": stakingTokenAddress
+            "tokenAddress": toUnderlyingTokenAddress
         ]
         if platform.name.lowercased() == "ankr" {
             var useC = false
