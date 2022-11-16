@@ -41,12 +41,12 @@ extension EarnEndpoint: TargetType {
   }
   
   var method: Moya.Method {
-    switch self {
-      case .buildStakeTx(params: _):
-      return .post
-    default:
-      return .get
-    }
+      switch self {
+      case .buildStakeTx, .buildClaimTx:
+          return .post
+      default:
+          return .get
+      }
   }
   
   var sampleData: Data {
