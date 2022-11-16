@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import AppState
 
 enum KNTransactionStatusPopUpEvent {
   case dismiss
@@ -147,9 +148,9 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       self.view.layoutSubviews()
     } else if self.transaction.state == .done {
       if transaction.type == .transferETH || transaction.type == .transferToken || transaction.type == .selfTransfer {
-        MixPanelManager.track("transfer_done_pop_up_open", properties: ["screenid": "transfer_done_pop_up"])
+        MixPanelManager.track("transfer_done_pop_up_open", properties: ["screenid": "transfer_done_pop_up", "txn_hash": transaction.hash, "chain_id": AppState.shared.currentChain.getChainId()])
       } else if transaction.type == .multiSend {
-        MixPanelManager.track("multisend_done_pop_up_open", properties: ["screenid": "multisend_done_pop_up"])
+        MixPanelManager.track("multisend_done_pop_up_open", properties: ["screenid": "multisend_done_pop_up", "txn_hash": transaction.hash, "chain_id": AppState.shared.currentChain.getChainId()])
       } else if transaction.type == .bridge {
         MixPanelManager.track("bridge_done_pop_up_open", properties: ["screenid": "bridge_done_pop_up"])
       } else if transaction.type == .earn {
