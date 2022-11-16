@@ -31,6 +31,8 @@
 "higher.than.max.stake.amount" = "Should be no more than %@";
 "should.be.interval.of" = "Value must be multiple of %@";
 "staking.in.progress" = "Staking In Progress";
+"unstake.in.progress" = "Unstaking In Progress";
+"approve.in.progress" = "Approving In Progress";
 "success" = "Success";
 "tx.failed" = "Transaction failed";
 "view.my.pool" = "View my pool";

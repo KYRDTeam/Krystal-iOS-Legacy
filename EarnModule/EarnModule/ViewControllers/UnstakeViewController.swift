@@ -69,7 +69,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         guard let viewModel = viewModel else { return }
         availableUnstakeValue.text = viewModel.displayDepositedValue
         amountTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
-        receiveInfoView.setInfo(title: Strings.youWillReceive, value: viewModel.receivedValueString())
+        receiveInfoView.setInfo(title: Strings.youWillReceive, value: viewModel.receivedInfoString())
         rateView.setInfo(title: Strings.rate, value: viewModel.showRateInfo(), shouldShowIcon: true, rightValueIcon: Images.revert)
         rateView.onTapRightIcon = { [weak self] in
             self?.viewModel?.showRevertedRate.toggle()
@@ -133,7 +133,7 @@ class UnstakeViewController: InAppBrowsingViewController {
             hideError()
         }
         viewModel.unstakeValue = inputValue
-        receiveInfoView.setValue(value: viewModel.receivedValueString())
+        receiveInfoView.setValue(value: viewModel.receivedInfoString())
     }
     
     func openUnStakeSummary() {
@@ -141,7 +141,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         viewModel.requestBuildUnstakeTx(completion: {
             if let tx = viewModel.txObject {
                 
-                let displayInfo = UnstakeDisplayInfo(amount: viewModel.unstakeValueString() + " " + viewModel.stakingTokenSymbol,
+                let displayInfo = UnstakeDisplayInfo(amount: viewModel.unstakeValueString(),
                                                      receiveAmount: viewModel.receivedValueString(),
                                                      rate: viewModel.showRateInfo(),
                                                      fee: viewModel.transactionFeeString(),

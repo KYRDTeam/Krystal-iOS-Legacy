@@ -41,6 +41,17 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
         }
     }
     
+    var processingString: String {
+        switch tx.type {
+            case .earn:
+                return Strings.stakingInProgress
+            case .unstake:
+                return Strings.unstakeInProgress
+            case .approval:
+                return Strings.approveInProgress
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -84,7 +95,7 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
             self.secondButton.setTitle(buttonTitle, for: .normal)
             self.sourceTokenInfoContainerView.rounded(color: AppTheme.current.primaryColor, width: 1, radius: 16)
             self.destTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
-            self.processStatusLabel.text = Strings.stakingInProgress
+            self.processStatusLabel.text = processingString
         case .success:
             self.loadingIndicatorView.isHidden = true
             self.transactionStateIcon.isHidden = false

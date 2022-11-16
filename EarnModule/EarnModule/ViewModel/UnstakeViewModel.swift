@@ -92,7 +92,11 @@ class UnstakeViewModel {
     }
     
     func receivedValueString() -> String {
-        return NumberFormatUtils.balanceFormat(value: receivedValue(), decimals: 18) + " " + toTokenSymbol
+        return NumberFormatUtils.balanceFormat(value: receivedValue(), decimals: 18)
+    }
+    
+    func receivedInfoString() -> String {
+        return receivedValueString() + " " + toTokenSymbol
     }
     
     func receivedValueMaxString() -> String {
