@@ -164,9 +164,8 @@ class UnstakeViewController: InAppBrowsingViewController {
         let popup = StakingTrasactionProcessPopup.instantiateFromNib()
         popup.tx = tx
         let sheet = SheetViewController(controller: popup, sizes: [.fixed(420)], options: .init(pullBarHeight: 0))
-        dismiss(animated: true) {
-            UIApplication.shared.topMostViewController()?.present(sheet, animated: true)
-        }
+        self.navigationController?.popViewController(animated: true)
+        UIApplication.shared.topMostViewController()?.present(sheet, animated: true)
     }
     
     func approve() {
