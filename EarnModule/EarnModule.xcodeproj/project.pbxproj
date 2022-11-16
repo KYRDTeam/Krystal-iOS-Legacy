@@ -62,7 +62,7 @@
 		C3A408032923411C008C1220 /* StakingFAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A408002923411C008C1220 /* StakingFAQView.swift */; };
 		C3A408042923411C008C1220 /* StakingFAQView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A408012923411C008C1220 /* StakingFAQView.xib */; };
 		C3A4080C2923416A008C1220 /* ankr-matic-matic.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3A4080529234168008C1220 /* ankr-matic-matic.plist */; };
-		C3A4080D2923416A008C1220 /* Ankr-matic-eth.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3A4080629234169008C1220 /* Ankr-matic-eth.plist */; };
+		C3A4080D2923416A008C1220 /* ankr-matic-eth.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3A4080629234169008C1220 /* ankr-matic-eth.plist */; };
 		C3A4080E2923416A008C1220 /* ankr-bnb.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3A4080729234169008C1220 /* ankr-bnb.plist */; };
 		C3A4080F2923416A008C1220 /* FAQModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A4080829234169008C1220 /* FAQModel.swift */; };
 		C3A408102923416A008C1220 /* ankr-avax.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3A4080929234169008C1220 /* ankr-avax.plist */; };
@@ -128,7 +128,7 @@
 		C3A408002923411C008C1220 /* StakingFAQView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StakingFAQView.swift; sourceTree = "<group>"; };
 		C3A408012923411C008C1220 /* StakingFAQView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StakingFAQView.xib; sourceTree = "<group>"; };
 		C3A4080529234168008C1220 /* ankr-matic-matic.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ankr-matic-matic.plist"; sourceTree = "<group>"; };
-		C3A4080629234169008C1220 /* Ankr-matic-eth.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Ankr-matic-eth.plist"; sourceTree = "<group>"; };
+		C3A4080629234169008C1220 /* ankr-matic-eth.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ankr-matic-eth.plist"; sourceTree = "<group>"; };
 		C3A4080729234169008C1220 /* ankr-bnb.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ankr-bnb.plist"; sourceTree = "<group>"; };
 		C3A4080829234169008C1220 /* FAQModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQModel.swift; sourceTree = "<group>"; };
 		C3A4080929234169008C1220 /* ankr-avax.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ankr-avax.plist"; sourceTree = "<group>"; };
@@ -295,7 +295,7 @@
 				C3A4080729234169008C1220 /* ankr-bnb.plist */,
 				C3A4080B2923416A008C1220 /* ankr-eth.plist */,
 				C3A4080A29234169008C1220 /* ankr-ftm.plist */,
-				C3A4080629234169008C1220 /* Ankr-matic-eth.plist */,
+				C3A4080629234169008C1220 /* ankr-matic-eth.plist */,
 				C3A4080529234168008C1220 /* ankr-matic-matic.plist */,
 				C3A4080829234169008C1220 /* FAQModel.swift */,
 				A69E8EB0291DDEBB005B28CB /* PendingStakingTxInfo.swift */,
@@ -385,7 +385,7 @@
 				7EAF4763291B685500BF5D00 /* StakingEarningTokensView.xib in Resources */,
 				7E6EBD6D2909280900069B33 /* EarnPoolViewCell.xib in Resources */,
 				7E6EBD72290929A400069B33 /* Localizable.strings in Resources */,
-				C3A4080D2923416A008C1220 /* Ankr-matic-eth.plist in Resources */,
+				C3A4080D2923416A008C1220 /* ankr-matic-eth.plist in Resources */,
 				C3A408102923416A008C1220 /* ankr-avax.plist in Resources */,
 				7E6EBD6529091F7A00069B33 /* Assets.xcassets in Resources */,
 				7EAF4756291B567600BF5D00 /* StakingTrasactionProcessPopup.xib in Resources */,

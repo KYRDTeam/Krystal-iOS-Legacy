@@ -36,7 +36,7 @@ class StakingFAQViewModel {
 
     var name = ""
     if input.platform == "ankr" && input.token == "matic" && input.chainID == 1 {
-      name = "Ankr-matic-eth"
+      name = "ankr-matic-eth"
     } else if input.platform == "ankr" && input.token == "matic" && input.chainID == 137 {
       name = "ankr-matic-matic"
     } else if input.platform == "ankr" && input.token == "eth" {
@@ -58,7 +58,7 @@ class StakingFAQViewModel {
       return
     }
     let decoder = PropertyListDecoder()
-      let bundle = Bundle(for: type(of: self))
+    let bundle = Bundle(for: type(of: self))
     if let url = bundle.url(forResource: fileName, withExtension: "plist"),
         let data = try? Data(contentsOf: url),
         let models = try? decoder.decode([FAQModel].self, from: data) {
@@ -98,9 +98,6 @@ class StakingFAQView: BaseXibView {
     contentTableView.register(SectionHeaderFAQView.self,
                               forHeaderFooterViewReuseIdentifier: "sectionHeader")
   }
-  
-  @IBAction func expandButtonTapped(_ sender: UIButton) {
-  }
 
   @objc func pressed() {
     isExpand.value = !isExpand.value
@@ -139,8 +136,8 @@ extension StakingFAQView: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(StakingFAQCell.self, indexPath: indexPath)!
-    let cm = viewModel.dataSource[indexPath.section]
-    cell.updateHTMLContent(cm.model.answer)
+    let cellModel = viewModel.dataSource[indexPath.section]
+    cell.updateHTMLContent(cellModel.model.answer)
     return cell
   }
   
@@ -152,10 +149,10 @@ extension StakingFAQView: UITableViewDataSource {
 extension StakingFAQView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "sectionHeader") as! SectionHeaderFAQView
-    let cm = viewModel.dataSource[section]
-    view.updateTitle(text: cm.model.question)
+    let cellModel = viewModel.dataSource[section]
+    view.updateTitle(text: cellModel.model.question)
     view.section = section
-    view.isExpand = cm.isExpand
+    view.isExpand = cellModel.isExpand
     view.delegate = self
     return view
   }
@@ -168,8 +165,8 @@ extension StakingFAQView: UITableViewDelegate {
 
 extension StakingFAQView: SectionHeaderFAQViewDelegate {
   func didChangeExpandStatus(status: Bool, section: Int) {
-    let cm = viewModel.dataSource[section]
-    cm.isExpand = status
+    let cellModel = viewModel.dataSource[section]
+    cellModel.isExpand = status
     contentTableView.reloadData()
     contentTableView.sizeToFit()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
