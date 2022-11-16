@@ -122,11 +122,11 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
     
     func setupUI() {
         self.sourceTokenIcon.loadImage(tx.sourceIcon)
-        self.destTokenIcon.loadImage(tx.platform.logo)
+        self.destTokenIcon.loadImage(tx.destIcon)
         self.txHashLabel.text = self.tx.hash
         let descriptions = self.tx.description.split(separator: "→").map { String($0) }
         self.sourceTokenAmountLabel.text = descriptions.first ?? ""
-        self.destTokenAmountLabel.text = tx.platform.name.uppercased()
+        self.destTokenAmountLabel.text = tx.amount
         
     }
     

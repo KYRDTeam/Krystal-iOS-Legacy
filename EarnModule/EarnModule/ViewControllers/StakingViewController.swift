@@ -73,8 +73,6 @@ class StakingViewController: InAppBrowsingViewController {
     
     @IBOutlet weak var earningTokensHeightConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var earningTokensHeightConstraint: NSLayoutConstraint!
-    
     var viewModel: StakingViewModel!
     var keyboardTimer: Timer?
     var onSelectViewPool: (() -> ())?
