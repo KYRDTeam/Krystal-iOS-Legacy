@@ -78,6 +78,14 @@ class UnstakeViewController: InAppBrowsingViewController {
         receiveTimeView.setInfo(title: viewModel.timeForUnstakeString(), value: "")
         unstakePlatformLabel.text = Strings.Unstake + " " + viewModel.stakingTokenSymbol + " on " + viewModel.platform.name
         tokenIcon.setImage(urlString: viewModel.stakingTokenLogo, symbol: viewModel.stakingTokenSymbol)
+        viewModel.onGasSettingUpdated = { [weak self] in
+            self?.updateUIGasFee()
+        }
+    }
+    
+    fileprivate func updateUIGasFee() {
+        guard let viewModel = viewModel else { return }
+        networkFeeView.setValue(value: viewModel.transactionFeeString())
     }
     
     @IBAction func onBackButtonTapped(_ sender: Any) {

@@ -29,6 +29,7 @@ class UnstakeViewModel {
     let platform: Platform
     var unstakeValue: BigInt = BigInt(0) {
         didSet {
+            self.requestBuildUnstakeTx()
             self.configAllowance()
         }
     }
@@ -68,7 +69,7 @@ class UnstakeViewModel {
         return params
     }
     var txObject: TxObject?
-    var gasLimit: BigInt = AppDependencies.gasConfig.earnGasLimitDefault
+    var onGasSettingUpdated: (() -> ())?
 
     init(earningBalance: EarningBalance) {
         self.displayDepositedValue = (BigInt(earningBalance.stakingToken.balance)?.shortString(decimals: earningBalance.stakingToken.decimals) ?? "---") + " " + earningBalance.stakingToken.symbol
@@ -230,11 +231,13 @@ class UnstakeViewModel {
     }
     
     func requestBuildUnstakeTx(showLoading: Bool = false, completion: @escaping ((Error?) -> Void) = {_ in }) {
-        apiService.buildUnstakeTx(param: buildTxRequestParams) { result in
+        apiService.buildUnstakeTx(param: buildTxRequestParams) { [weak self] result in
             switch result {
             case .success(let tx):
-                self.txObject = tx
-                self.gasLimit = BigInt(tx.gasLimit.drop0x, radix: 16) ?? AppDependencies.gasConfig.earnGasLimitDefault
+                self?.txObject = tx
+                if let gasLimit = BigInt(tx.gasLimit.drop0x, radix: 16), gasLimit > 0 {
+                    self?.didGetTxGasLimit(gasLimit: gasLimit)
+                }
                 completion(nil)
             case .failure(let error):
                 completion(error)
@@ -250,5 +253,13 @@ class UnstakeViewModel {
             // can make transaction
             self.delegate?.didGetDataSuccess()
         }
+    }
+    
+    func didGetTxGasLimit(gasLimit: BigInt) {
+        if setting.advanced != nil {
+            return
+        }
+        setting.basic?.gasLimit = gasLimit
+        onGasSettingUpdated?()
     }
 }
