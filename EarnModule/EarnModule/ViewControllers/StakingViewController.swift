@@ -119,6 +119,12 @@ class StakingViewController: InAppBrowsingViewController {
         }
     }
     
+    override func onAppSwitchChain() {
+        super.onAppSwitchChain()
+        
+        navigationController?.popViewController(animated: true)
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self, name: .kPendingTxListUpdated, object: nil)
     }
