@@ -115,7 +115,7 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
         self.txHashLabel.text = viewModel.hash
         let descriptions = viewModel.description.split(separator: "→").map { String($0) }
         self.sourceTokenAmountLabel.text = descriptions.first ?? ""
-        self.destTokenAmountLabel.text = viewModel.amountValue
+        self.destTokenAmountLabel.text = viewModel.destTitle
         
     }
     

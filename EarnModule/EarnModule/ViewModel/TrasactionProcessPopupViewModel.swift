@@ -8,7 +8,7 @@
 import Foundation
 
 protocol TrasactionProcessPopupViewModel: class {
-    var amountValue: String { get }
+    var destTitle: String { get }
     var hash: String { get }
     var description: String { get }
     var sourceIcon: String { get }
@@ -24,7 +24,7 @@ class StakingTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
         self.pendingStakingTx = pendingStakingTx
     }
     
-    var amountValue: String {
+    var destTitle: String {
         return pendingStakingTx.platform.name.uppercased()
     }
     
@@ -60,7 +60,7 @@ class UnstakeTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
         self.pendingUnstakeTx = pendingStakingTx
     }
     
-    var amountValue: String {
+    var destTitle: String {
         return pendingUnstakeTx.sourceSymbol ?? ""
     }
     
