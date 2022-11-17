@@ -220,7 +220,7 @@ class StakingViewController: InAppBrowsingViewController {
     
     private func bindingViewModel() {
         stakeMainHeaderLabel.text = viewModel.displayMainHeader
-        stakeTokenImageView.setImage(urlString: viewModel.pool.token.logo, symbol: viewModel.pool.token.symbol)
+        stakeTokenImageView.setImage(urlString: viewModel.token.logo, symbol: viewModel.token.symbol)
         apyInfoView.setValue(value: viewModel.displayAPY, highlighted: true)
         
         viewModel.balance.observeAndFire(on: self) { [weak self] _ in
@@ -263,11 +263,11 @@ class StakingViewController: InAppBrowsingViewController {
         viewModel.nextButtonStatus.observeAndFire(on: self) { value in
             switch value {
             case .notApprove:
-                self.nextButton.setTitle(String(format: Strings.cheking, self.viewModel.pool.token.symbol), for: .normal)
+                self.nextButton.setTitle(String(format: Strings.cheking, self.viewModel.token.symbol), for: .normal)
                 self.nextButton.alpha = 0.2
                 self.nextButton.isEnabled = false
             case .needApprove:
-                self.nextButton.setTitle(String(format: Strings.approveToken, self.viewModel.pool.token.symbol), for: .normal)
+                self.nextButton.setTitle(String(format: Strings.approveToken, self.viewModel.token.symbol), for: .normal)
                 self.nextButton.alpha = 1
                 self.nextButton.isEnabled = true
             case .approved:
@@ -313,7 +313,7 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     @IBAction func settingButtonTapped(_ sender: Any) {
-        let chainType = ChainType.make(chainID: viewModel.pool.chainID) ?? .eth
+        let chainType = ChainType.make(chainID: viewModel.chainId) ?? .eth
         TransactionSettingPopup.show(on: self, chain: chainType, currentSetting: viewModel.setting, onConfirmed: { [weak self] settingObject in
             self?.viewModel.setting = settingObject
             self?.updateUIGasFee()
@@ -331,16 +331,15 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     @IBAction func maxButtonTapped(_ sender: UIButton) {
-        let balance = AppDependencies.balancesStorage.getBalanceBigInt(address: viewModel.pool.token.address)
-        viewModel.amount.value = balance
-        amountTextField.text = NumberFormatUtils.amount(value: balance, decimals: viewModel.pool.token.decimals)
+        viewModel.amount.value = viewModel.maxStakableAmount
+        amountTextField.text = NumberFormatUtils.amount(value: viewModel.maxStakableAmount, decimals: viewModel.token.decimals)
         showWarningInvalidAmountDataIfNeeded()
         viewModel.requestBuildStakeTx()
     }
     
     @IBAction func nextButtonTapped(_ sender: UIButton) {
         guard viewModel.isChainValid else {
-            let chainType = ChainType.make(chainID: viewModel.pool.chainID) ?? .eth
+            let chainType = ChainType.make(chainID: viewModel.chainId) ?? .eth
             let alertController = KNPrettyAlertController(
                 title: "",
                 message: "Please switch to \(chainType.chainName()) to continue".toBeLocalised(),
@@ -357,20 +356,20 @@ class StakingViewController: InAppBrowsingViewController {
             return
         }
         if viewModel.nextButtonStatus.value == .needApprove {
-            sendApprove(tokenAddress: viewModel.pool.token.address, remain: viewModel.tokenAllowance ?? .zero, symbol: viewModel.pool.token.symbol, toAddress: viewModel.txObject.value?.to ?? "")
+            sendApprove(tokenAddress: viewModel.token.address, remain: viewModel.tokenAllowance ?? .zero, symbol: viewModel.token.symbol, toAddress: viewModel.txObject.value?.to ?? "")
         } else {
             guard viewModel.formState.value == .valid else { return }
             if let tx = viewModel.txObject.value {
-                let amountString = NumberFormatUtils.amount(value: viewModel.amount.value, decimals: viewModel.pool.token.decimals)
+                let amountString = NumberFormatUtils.amount(value: viewModel.amount.value, decimals: viewModel.token.decimals)
                 let displayInfo = StakeDisplayInfo(
-                    amount: "\(amountString) \(viewModel.pool.token.symbol)",
+                    amount: "\(amountString) \(viewModel.token.symbol)",
                     apy: viewModel.displayAPY,
                     receiveAmount: viewModel.displayAmountReceive,
                     rate: viewModel.displayRate,
                     fee: viewModel.displayFeeString,
                     platform: viewModel.selectedPlatform.name,
-                    stakeTokenIcon: viewModel.pool.token.logo,
-                    fromSym: viewModel.pool.token.symbol,
+                    stakeTokenIcon: viewModel.token.logo,
+                    fromSym: viewModel.token.symbol,
                     toSym: viewModel.selectedEarningToken.value?.symbol ?? ""
                 )
                 self.openStakeSummary(txObject: tx, settings: viewModel.setting, displayInfo: displayInfo)
@@ -401,7 +400,7 @@ class StakingViewController: InAppBrowsingViewController {
     
     func openStakeSummary(txObject: TxObject, settings: TxSettingObject, displayInfo: StakeDisplayInfo) {
         guard let earningToken = viewModel.selectedEarningToken.value else { return }
-        let viewModel = StakingSummaryViewModel(earnToken: earningToken, txObject: txObject, setting: settings, pool: viewModel.pool, platform: viewModel.selectedPlatform, displayInfo: displayInfo)
+        let viewModel = StakingSummaryViewModel(earnToken: earningToken, txObject: txObject, setting: settings, token: viewModel.token, platform: viewModel.selectedPlatform, displayInfo: displayInfo)
         TxConfirmPopup.show(onViewController: self, withViewModel: viewModel) { [weak self] pendingTx in
             self?.openTxStatusPopup(tx: pendingTx as! PendingStakingTxInfo)
         }
@@ -433,9 +432,9 @@ extension StakingViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
         let cleanedText = text.cleanStringToNumber()
-        if cleanedText.amountBigInt(decimals: self.viewModel.pool.token.decimals) == nil { return false }
+        if cleanedText.amountBigInt(decimals: self.viewModel.token.decimals) == nil { return false }
         textField.text = cleanedText
-        self.viewModel.amount.value = BigInt((cleanedText.toDouble() ?? 0) * pow(10.0, Double(viewModel.pool.token.decimals)))
+        self.viewModel.amount.value = BigInt((cleanedText.toDouble() ?? 0) * pow(10.0, Double(viewModel.token.decimals)))
         self.keyboardTimer?.invalidate()
         self.keyboardTimer = Timer.scheduledTimer(
             timeInterval: 1,

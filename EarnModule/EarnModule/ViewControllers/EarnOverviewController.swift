@@ -60,6 +60,7 @@ class EarnOverviewController: InAppBrowsingViewController {
     let earnPoolVC = EarnListViewController.instantiateFromNib()
     earnPoolVC.delegate = self
     let portfolioVC = StakingPortfolioViewController.instantiateFromNib()
+    portfolioVC.delegate = self
     childListViewControllers = [earnPoolVC, portfolioVC]
   }
 
@@ -146,7 +147,7 @@ extension EarnOverviewController: EarnListViewControllerDelegate {
             AppState.shared.updateChain(chain: chain)
         }
         let vc = StakingViewController.instantiateFromNib()
-        vc.viewModel = StakingViewModel(pool: pool, platform: platform)
+        vc.viewModel = StakingViewModel(token: pool.token, platform: platform, chainId: pool.chainID)
         vc.onSelectViewPool = { [weak self] in
             self?.openPortfolio()
         }
@@ -157,5 +158,20 @@ extension EarnOverviewController: EarnListViewControllerDelegate {
         segmentedControl.selectedSegmentIndex = 1
         segmentedControl.underlineCenterPosition()
         selectPage(index: 1)
+    }
+}
+
+extension EarnOverviewController: StakingPortfolioViewControllerDelegate {
+    func didSelectPlatform(token: Token, platform: EarnPlatform, chainId: Int) {
+        guard let chain = ChainType.make(chainID: chainId) else { return }
+        if chain != AppState.shared.currentChain {
+            AppState.shared.updateChain(chain: chain)
+        }
+        let vc = StakingViewController.instantiateFromNib()
+        vc.viewModel = StakingViewModel(token: token, platform: platform, chainId: chainId)
+        vc.onSelectViewPool = { [weak self] in
+            self?.openPortfolio()
+        }
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

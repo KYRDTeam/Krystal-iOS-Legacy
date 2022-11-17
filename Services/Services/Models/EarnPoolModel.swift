@@ -62,4 +62,13 @@ public class EarnPlatform {
     self.apy = json["apy"] as? Double ?? 0
     self.tvl = json["tvl"] as? Double ?? 0
   }
+    
+   public init (platform: Platform, apy: Double, tvl: Double) {
+        self.name = platform.name
+        self.logo = platform.logo
+        self.type = platform.type
+        self.desc = platform.desc
+        self.apy = apy
+        self.tvl = tvl
+    }
 }
