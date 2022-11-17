@@ -425,8 +425,7 @@ public class EthereumNodeService {
             switch encodeResult {
             case .success(let data):
                 let request = EtherServiceAlchemyRequest(batch: BatchFactory().create(CallRequest(to: tokenAddress, data: data)), chain: self.chain)
-                Session.send(request) { [weak self] result in
-                    guard let `self` = self else { return }
+                Session.send(request) { result in
                     switch result {
                     case .success(let balance):
                         self.getTokenBalanceDecodeData(from: balance, completion: completion)
