@@ -15,6 +15,10 @@ import Services
 import DesignSystem
 import SwipeCellKit
 
+protocol StakingPortfolioViewControllerDelegate: class {
+    func didSelectPlatform(token: Token, platform: EarnPlatform, chainId: Int)
+}
+
 class SkeletonBlankSectionHeader: UITableViewHeaderFooterView {
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
@@ -37,6 +41,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
   @IBOutlet weak var searchViewRightConstraint: NSLayoutConstraint!
   @IBOutlet weak var cancelButton: UIButton!
   @IBOutlet weak var searchTextField: UITextField!
+  weak var delegate: StakingPortfolioViewControllerDelegate?
   
   let viewModel: StakingPortfolioViewModel = StakingPortfolioViewModel()
   var timer: Timer?
@@ -295,8 +300,19 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         unstakeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
       
         let stakeAction = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
-            let vc = UnstakeViewController.instantiateFromNib()
-            self?.show(vc, sender: nil)
+            
+            if let earningBalance = self?.viewModel.portfolio?.0[indexPath.row] {
+                guard let chain = ChainType.make(chainID: earningBalance.chainID) else { return }
+                if chain != AppState.shared.currentChain {
+                    AppState.shared.updateChain(chain: chain)
+                }
+                let token = Token(name: earningBalance.toUnderlyingToken.symbol, symbol: earningBalance.toUnderlyingToken.symbol, address: earningBalance.toUnderlyingToken.address, decimals: earningBalance.toUnderlyingToken.decimals, logo: earningBalance.toUnderlyingToken.logo)
+                let earnPlatform = EarnPlatform(platform: earningBalance.platform, apy: earningBalance.apy, tvl: 0)
+                
+                
+                self?.delegate?.didSelectPlatform(token: token, platform: earnPlatform, chainId: earningBalance.chainID)
+            }
+
         }
         let stakeImage = swipeCellImageView(title: Strings.stake, icon: Images.greenPlus, color: AppTheme.current.primaryColor)
         stakeAction.image = stakeImage

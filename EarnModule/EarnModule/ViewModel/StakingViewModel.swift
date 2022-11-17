@@ -15,7 +15,8 @@ import TransactionModule
 import BaseModule
 
 class StakingViewModel: BaseViewModel {
-    let pool: EarnPoolModel
+    let token: Token
+    let chainId: Int
     let selectedPlatform: EarnPlatform
     let apiService = EarnServices()
     var optionDetail: Observable<OptionDetailResponse?> = .init(nil)
@@ -45,10 +46,11 @@ class StakingViewModel: BaseViewModel {
     var onFetchedQuoteTokenPrice: (() -> ())?
     var onGasSettingUpdated: (() -> ())?
     
-    init(pool: EarnPoolModel, platform: EarnPlatform) {
-        self.pool = pool
+    init(token: Token, platform: EarnPlatform, chainId: Int) {
+        self.token = token
         self.selectedPlatform = platform
-        self.balance.value = AppDependencies.balancesStorage.getBalanceBigInt(address: pool.token.address)
+        self.chainId = chainId
+        self.balance.value = AppDependencies.balancesStorage.getBalanceBigInt(address: token.address)
         super.init()
     }
     
@@ -74,13 +76,13 @@ class StakingViewModel: BaseViewModel {
         if amount > balance.value {
             return .insufficient
         } else if let validation = self.optionDetail.value?.validation {
-            if let min = validation.minStakeAmount, amount < BigInt(min * pow(10.0, Double(self.pool.token.decimals))) {
+            if let min = validation.minStakeAmount, amount < BigInt(min * pow(10.0, Double(self.token.decimals))) {
                 return .notEnoughMin(minValue: min)
-            } else if let max = validation.maxStakeAmount, amount > BigInt(max * pow(10.0, Double(self.pool.token.decimals))) {
+            } else if let max = validation.maxStakeAmount, amount > BigInt(max * pow(10.0, Double(self.token.decimals))) {
                 return .higherThanMax(maxValue: max)
             } else if let interval = validation.stakeInterval {
-                let dividend = amount / BigInt(interval * pow(10.0, Double(self.pool.token.decimals)))
-                if dividend * BigInt(interval * pow(10.0, Double(self.pool.token.decimals))) != amount {
+                let dividend = amount / BigInt(interval * pow(10.0, Double(self.token.decimals)))
+                if dividend * BigInt(interval * pow(10.0, Double(self.token.decimals))) != amount {
                     return .notIntervalOf(interval: interval)
                 }
             }
@@ -89,15 +91,15 @@ class StakingViewModel: BaseViewModel {
     }
     
     var faqInput: FAQInput {
-        return (selectedPlatform.name.lowercased(), pool.token.symbol.lowercased(), pool.chainID)
+        return (selectedPlatform.name.lowercased(), token.symbol.lowercased(), chainId)
     }
     
     var displayMainHeader: String {
-        return "Stake \(pool.token.symbol.uppercased()) on \(selectedPlatform.name.uppercased())"
+        return "Stake \(token.symbol.uppercased()) on \(selectedPlatform.name.uppercased())"
     }
     
     var displayStakeToken: String {
-        return NumberFormatUtils.balanceFormat(value: balance.value, decimals: pool.token.decimals) + " " + pool.token.symbol.uppercased()
+        return NumberFormatUtils.balanceFormat(value: balance.value, decimals: token.decimals) + " " + token.symbol.uppercased()
     }
     
     var displayAPY: String {
@@ -137,12 +139,12 @@ class StakingViewModel: BaseViewModel {
     }
   
     func getGasPrice(gasType: GasSpeed) -> BigInt {
-        guard let chain = ChainType.make(chainID: pool.chainID) else { return .zero }
+        guard let chain = ChainType.make(chainID: chainId) else { return .zero }
         return GasPriceManager.shared.getGasPrice(gasType: gasType, chain: chain)
     }
     
     func getPriority(gasType: GasSpeed) -> BigInt? {
-        guard let chain = ChainType.make(chainID: pool.chainID) else { return .zero }
+        guard let chain = ChainType.make(chainID: chainId) else { return .zero }
         return GasPriceManager.shared.getPriority(gasType: gasType, chain: chain)
     }
 
@@ -161,16 +163,16 @@ class StakingViewModel: BaseViewModel {
     
     var buildTxRequestParams: JSONDictionary {
         var earningType: String = selectedPlatform.type
-        if pool.token.symbol.lowercased() == "MATIC".lowercased() {
+        if token.symbol.lowercased() == "MATIC".lowercased() {
             earningType = "stakingMATIC"
         }
         var params: JSONDictionary = [
             "tokenAmount": amount.value.description,
-            "chainID": pool.chainID,
+            "chainID": chainId,
             "earningType": earningType,
             "platform": selectedPlatform.name,
             "userAddress": AppState.shared.currentAddress.addressString,
-            "tokenAddress": pool.token.address
+            "tokenAddress": token.address
         ]
         if selectedPlatform.name.lowercased() == "ankr" {
             var useC = false
@@ -200,10 +202,10 @@ class StakingViewModel: BaseViewModel {
         if isUseReverseRate.value {
             let revertedRate = bigIntRate.isZero ? 0 : (BigInt(10).power(36) / bigIntRate)
             let rateString = NumberFormatUtils.rate(value: revertedRate, decimals: 18)
-            return "1 \(detail.symbol) = \(rateString) \(pool.token.symbol)"
+            return "1 \(detail.symbol) = \(rateString) \(token.symbol)"
         } else {
             let rateString = NumberFormatUtils.rate(value: bigIntRate, decimals: 18)
-            return "1 \(pool.token.symbol) = \(rateString) \(detail.symbol)"
+            return "1 \(token.symbol) = \(rateString) \(detail.symbol)"
         }
     }
     
@@ -212,7 +214,7 @@ class StakingViewModel: BaseViewModel {
     }
     
     var isAmountTooBig: Bool {
-        return self.amount.value > AppDependencies.balancesStorage.getBalanceBigInt(address: pool.token.address)
+        return self.amount.value > AppDependencies.balancesStorage.getBalanceBigInt(address: token.address)
     }
     
     var displayProjectionValues: ProjectionValues? {
@@ -223,12 +225,12 @@ class StakingViewModel: BaseViewModel {
     }
     
     var isChainValid: Bool {
-        return currentChain.customRPC().chainID == pool.chainID
+        return currentChain.customRPC().chainID == chainId
     }
     
     func calculateReward(dayPeriod: Int) -> (String, String) {
-        let decimal = pool.token.decimals
-        let symbol = pool.token.symbol
+        let decimal = token.decimals
+        let symbol = token.symbol
         
         let periodReward = selectedPlatform.apy / 100.0 * Double(dayPeriod) / 365
         let tokenAmount = amount.value * BigInt(periodReward * pow(10.0, 18.0)) / BigInt(10).power(18)
@@ -278,7 +280,7 @@ class StakingViewModel: BaseViewModel {
 extension StakingViewModel {
     
     func getBalance() {
-        EthereumNodeService(chain: currentChain).getBalance(address: currentAddress.addressString, tokenAddress: pool.token.address) { balance in
+        EthereumNodeService(chain: currentChain).getBalance(address: currentAddress.addressString, tokenAddress: token.address) { balance in
             self.balance.value = balance
         }
     }
@@ -291,13 +293,13 @@ extension StakingViewModel {
     }
     
     func getStakingTokenDetail() {
-        tokenService.getTokenDetail(address: pool.token.address, chainPath: currentChain.customRPC().apiChainPath) { [weak self] tokenDetail in
+        tokenService.getTokenDetail(address: token.address, chainPath: currentChain.customRPC().apiChainPath) { [weak self] tokenDetail in
             self?.stakingTokenDetail = tokenDetail
         }
     }
     
     func requestOptionDetail() {
-        apiService.getStakingOptionDetail(platform: selectedPlatform.name, earningType: selectedPlatform.type, chainID: "\(pool.chainID)", tokenAddress: pool.token.address) { result in
+        apiService.getStakingOptionDetail(platform: selectedPlatform.name, earningType: selectedPlatform.type, chainID: "\(chainId)", tokenAddress: token.address) { result in
             switch result {
             case .success(let detail):
                 self.optionDetail.value = detail
@@ -326,7 +328,7 @@ extension StakingViewModel {
     }
     
     func getAllowance() {
-        guard !pool.token.isQuoteToken() else {
+        guard !token.isQuoteToken() else {
             nextButtonStatus.value = .noNeed
             return
         }
@@ -339,7 +341,7 @@ extension StakingViewModel {
         
         let contractAddress = tx.to
         let service = EthereumNodeService(chain: currentChain)
-        service.getAllowance(for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: pool.token.address) { result in
+        service.getAllowance(for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: token.address) { result in
             switch result {
             case .success(let number):
                 self.tokenAllowance = number

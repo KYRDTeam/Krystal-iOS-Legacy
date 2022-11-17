@@ -32,7 +32,7 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
     let earnToken: EarningToken
     let txObject: TxObject
     var setting: TxSettingObject
-    let pool: EarnPoolModel
+    let token: Token
     let platform: EarnPlatform
     let displayInfo: StakeDisplayInfo
     
@@ -41,9 +41,9 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
     var service: EthereumNodeService!
     var converter: TxObjectConverter!
 
-    init(earnToken: EarningToken, txObject: TxObject, setting: TxSettingObject, pool: EarnPoolModel, platform: EarnPlatform, displayInfo: StakeDisplayInfo) {
+    init(earnToken: EarningToken, txObject: TxObject, setting: TxSettingObject, token: Token, platform: EarnPlatform, displayInfo: StakeDisplayInfo) {
         self.earnToken = earnToken
-        self.pool = pool
+        self.token = token
         self.platform = platform
         self.displayInfo = displayInfo
         self.txObject = txObject
@@ -65,7 +65,7 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var tokenIconURL: String {
-        return pool.token.logo
+        return token.logo
     }
     
     var tokenAmountString: String {
@@ -140,7 +140,7 @@ extension StakingSummaryViewModel {
                         switch result {
                         case .success(let hash):
                             let pendingTx = PendingStakingTxInfo(
-                                pool: self.pool,
+                                token: self.token,
                                 platform: self.platform,
                                 selectedDestToken: self.earnToken,
                                 sourceAmount: self.displayInfo.amount,
@@ -190,7 +190,7 @@ extension StakingSummaryViewModel {
                         switch result {
                         case .success(let hash):
                             let pendingTx = PendingStakingTxInfo(
-                                pool: self.pool,
+                                token: self.token,
                                 platform: self.platform,
                                 selectedDestToken: self.earnToken,
                                 sourceAmount: self.displayInfo.amount,
