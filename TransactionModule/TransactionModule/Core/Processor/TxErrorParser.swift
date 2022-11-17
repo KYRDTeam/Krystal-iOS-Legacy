@@ -11,14 +11,17 @@ import APIKit
 import JSONRPCKit
 
 public enum TxError {
-    case insuffienceBalance
+    case insufficientBalance
+    case insufficientGasFee
     case unknown
     case unexpected(message: String)
     
     public var message: String {
         switch self {
-        case .insuffienceBalance:
+        case .insufficientBalance:
             return "Transaction will probably fail. There may be low liquidity, you can try a smaller amount or increase the slippage."
+        case .insufficientGasFee:
+            return "Insufficient gas fee"
         case .unknown:
             return "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
         case .unexpected(let message):
@@ -32,12 +35,15 @@ public class TxErrorParser {
     public static func parse(error: AnyError) -> TxError {
         var errorMessage = ""
         if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-          if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+          if case let JSONRPCKit.JSONRPCError.responseError(code, message, _) = apiKitError {
+              if code == -32000 && message == "execution reverted" {
+                  return .insufficientGasFee
+              }
               errorMessage = message
           }
         }
         if errorMessage.lowercased().contains("INSUFFICIENT_OUTPUT_AMOUNT".lowercased()) || errorMessage.lowercased().contains("Return amount is not enough".lowercased()) {
-            return .insuffienceBalance
+            return .insufficientBalance
         }
         if errorMessage.lowercased().contains("Unknown(0x)".lowercased()) {
             return .unknown
