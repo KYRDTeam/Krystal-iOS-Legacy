@@ -224,10 +224,7 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
 extension StakingPortfolioViewController: SkeletonTableViewDelegate {
     
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-      let items = indexPath.section == 0 ? viewModel.dataSource.value.0 : viewModel.dataSource.value.1
-      let cm = items[indexPath.row]
-      guard let pendingUnstake = cm.pendingUnstake else { return }
-      requestClaim(pendingUnstake: pendingUnstake)
+      
   }
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
