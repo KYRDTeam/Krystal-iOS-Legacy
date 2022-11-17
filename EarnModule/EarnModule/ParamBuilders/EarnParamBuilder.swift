@@ -38,10 +38,14 @@ extension EarnParamBuilder {
     }
     
     func buildClaimTxParam(pendingUnstake: PendingUnstake) -> JSONDictionary {
+        var earningType = pendingUnstake.platform.type
+        if pendingUnstake.symbol.uppercased() == "MATIC" {
+            earningType = "stakingMATIC"
+        }
         let params: JSONDictionary = [
             "tokenAmount": pendingUnstake.balance,
             "chainID": pendingUnstake.chainID,
-            "earningType": pendingUnstake.platform.type,
+            "earningType": earningType,
             "platform": pendingUnstake.platform.name,
             "userAddress": AppState.shared.currentAddress.addressString,
             "tokenAddress": pendingUnstake.address,

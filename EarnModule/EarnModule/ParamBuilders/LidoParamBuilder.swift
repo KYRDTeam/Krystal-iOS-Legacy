@@ -16,7 +16,10 @@ class LidoParamBuilder: EarnParamBuilder {
     }
     
     func claimExtraData(pendingUnstake: PendingUnstake) -> JSONDictionary {
-        return ["lido": ["nftTokenID": pendingUnstake.extraData.nftID]]
+        if let nftID = pendingUnstake.extraData.nftID, let nftIDInt = Int(nftID) {
+            return ["lido": ["nftTokenID": nftIDInt]]
+        }
+        return [:]
     }
     
 }
