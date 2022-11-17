@@ -66,6 +66,8 @@ public class TxConfirmPopup: UIViewController {
                 self?.tableView.reloadData()
             }
         }
+        
+        viewModel.onViewLoaded()
     }
     
     public override func viewWillLayoutSubviews() {

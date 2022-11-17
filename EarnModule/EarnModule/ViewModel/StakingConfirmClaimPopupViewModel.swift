@@ -78,16 +78,16 @@ class StakingConfirmClaimPopupViewModel: BaseViewModel, TxConfirmViewModelProtoc
     
     var transactionFee: BigInt {
         if let basic = setting.basic {
-            return setting.gasLimit * GasPriceManager.shared.getGasPrice(gasType: basic.gasType, chain: currentChain)
-          } else if let advance = setting.advanced {
+            return setting.gasLimit * GasPriceManager.shared.getGasPrice(gasType: basic.gasType, chain: chain)
+        } else if let advance = setting.advanced {
             return setting.gasLimit * advance.maxFee
-          }
+        }
         return BigInt(0)
     }
     
     var feeString: String {
         let string: String = NumberFormatUtils.gasFee(value: transactionFee)
-        return "\(string) \(AppState.shared.currentChain.quoteToken())"
+        return "\(string) \(chain.quoteToken())"
     }
     
     var quoteTokenUsdPrice: Double {
@@ -99,27 +99,46 @@ class StakingConfirmClaimPopupViewModel: BaseViewModel, TxConfirmViewModelProtoc
         let valueString = NumberFormatUtils.gasFee(value: usd)
         return "(~ $\(valueString))"
     }
-
-    func onTapConfirm() {
+    
+    func onViewLoaded() {
+        getQuoteTokenPrice()
+        requestBuildTx { [weak self] txObject in
+            if let gasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16), gasLimit > 0 {
+                if self?.setting.advanced != nil {
+                    return
+                }
+                self?.setting.basic?.gasLimit = gasLimit
+                self?.onDataChanged?()
+            }
+        }
+    }
+    
+    func requestBuildTx(completion: @escaping (TxObject) -> ()) {
         let param = EarnParamBuilderFactory
             .create(platform: .init(name: pendingUnstake.platform.name))
             .buildClaimTxParam(pendingUnstake: pendingUnstake)
         earnService.buildClaimTx(param: param) { [weak self] result in
             switch result {
             case .success(let txObject):
-                self?.sendTx(txObject: txObject)
+                completion(txObject)
             case .failure(let error):
                 self?.onError(TxErrorParser.parse(error: error).message)
             }
         }
     }
+
+    func onTapConfirm() {
+        requestBuildTx { [weak self] txObject in
+            self?.sendTx(txObject: txObject)
+        }
+    }
     
     func sendTx(txObject: TxObject) {
-        TransactionManager.txProcessor.process(address: currentAddress, chain: currentChain, txObject: txObject, setting: setting) { [weak self] result in
+        TransactionManager.txProcessor.process(address: currentAddress, chain: chain, txObject: txObject, setting: setting) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let txResult):
-                let pendingTx = PendingClaimTxInfo(pendingUnstake: self.pendingUnstake, legacyTx: txResult.legacyTx, eip1559Tx: txResult.eip1559Tx, chain: self.currentChain, date: Date(), hash: txResult.hash)
+                let pendingTx = PendingClaimTxInfo(pendingUnstake: self.pendingUnstake, legacyTx: txResult.legacyTx, eip1559Tx: txResult.eip1559Tx, chain: self.chain, date: Date(), hash: txResult.hash)
                 TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
                 self.onSuccess(pendingTx)
             case .failure(let error):
@@ -134,7 +153,7 @@ class StakingConfirmClaimPopupViewModel: BaseViewModel, TxConfirmViewModelProtoc
     }
 
     func getQuoteTokenPrice() {
-        TokenService().getTokenDetail(address: currentChain.customRPC().quoteTokenAddress, chainPath: currentChain.customRPC().apiChainPath) { [weak self] tokenDetail in
+        TokenService().getTokenDetail(address: chain.customRPC().quoteTokenAddress, chainPath: chain.customRPC().apiChainPath) { [weak self] tokenDetail in
             self?.quoteTokenDetail = tokenDetail
             self?.onDataChanged?()
         }

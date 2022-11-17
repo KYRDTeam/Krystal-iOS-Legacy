@@ -26,11 +26,16 @@ public protocol TxConfirmViewModelProtocol: AnyObject {
     var onSelectOpenSetting: (() -> ())? { get set }
     var onDataChanged: (() -> ())? { get set }
     
+    func onViewLoaded()
     func onTapConfirm()
     func onSettingChanged(settingObject: TxSettingObject)
 }
 
 public extension TxConfirmViewModelProtocol {
+    
+    func onViewLoaded() {
+        
+    }
     
     var chainIcon: UIImage {
         return chain.squareIcon()
