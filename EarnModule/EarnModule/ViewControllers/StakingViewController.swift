@@ -331,9 +331,8 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     @IBAction func maxButtonTapped(_ sender: UIButton) {
-        let balance = AppDependencies.balancesStorage.getBalanceBigInt(address: viewModel.token.address)
-        viewModel.amount.value = balance
-        amountTextField.text = NumberFormatUtils.amount(value: balance, decimals: viewModel.token.decimals)
+        viewModel.amount.value = viewModel.maxStakableAmount
+        amountTextField.text = NumberFormatUtils.amount(value: viewModel.maxStakableAmount, decimals: viewModel.token.decimals)
         showWarningInvalidAmountDataIfNeeded()
         viewModel.requestBuildStakeTx()
     }
