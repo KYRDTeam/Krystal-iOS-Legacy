@@ -49,5 +49,4 @@ class PendingStakingTxInfo: PendingTxInfo {
     override var detail: String {
         return ""
     }
-
 }

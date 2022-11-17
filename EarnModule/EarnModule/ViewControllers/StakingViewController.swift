@@ -409,7 +409,8 @@ class StakingViewController: InAppBrowsingViewController {
     
     func openTxStatusPopup(tx: PendingStakingTxInfo) {
         let popup = StakingTrasactionProcessPopup.instantiateFromNib()
-        popup.tx = tx
+        let viewModel = StakingTransactionProcessPopupViewModel(pendingStakingTx: tx)
+        popup.viewModel = viewModel
         popup.onSelectViewPool = { [weak self] in
             self?.navigationController?.popViewController(animated: true)
             self?.onSelectViewPool?()

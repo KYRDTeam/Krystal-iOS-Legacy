@@ -13,6 +13,7 @@ import AppState
 import Utilities
 import Services
 import DesignSystem
+import SwipeCellKit
 
 class SkeletonBlankSectionHeader: UITableViewHeaderFooterView {
   override init(reuseIdentifier: String?) {
@@ -23,80 +24,6 @@ class SkeletonBlankSectionHeader: UITableViewHeaderFooterView {
   }
   required init(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-}
-
-class StakingPortfolioViewModel {
-  var portfolio: ([EarningBalance], [PendingUnstake])?
-  let apiService = EarnServices()
-  var searchText = ""
-  var chainID: Int?
-  
-  var dataSource: Observable<([StakingPortfolioCellModel], [StakingPortfolioCellModel])> = .init(([], []))
-  var error: Observable<Error?> = .init(nil)
-  var isLoading: Observable<Bool> = .init(true)
-  
-  fileprivate func cleanAllData() {
-    dataSource.value.0.removeAll()
-    dataSource.value.1.removeAll()
-  }
-  
-  fileprivate func isEmpty() -> Bool {
-    return dataSource.value.0.isEmpty && dataSource.value.1.isEmpty
-  }
-  
-  func reloadDataSource() {
-    cleanAllData()
-    guard let data = portfolio else {
-      return
-    }
-    var output: [StakingPortfolioCellModel] = []
-    var pending: [StakingPortfolioCellModel] = []
-    
-    var pendingUnstakeData = data.1
-    var earningBalanceData = data.0
-    
-    if !searchText.isEmpty {
-      pendingUnstakeData = pendingUnstakeData.filter({ item in
-        return item.symbol.lowercased().contains(searchText)
-      })
-      
-      earningBalanceData = earningBalanceData.filter({ item in
-        return item.stakingToken.symbol.lowercased().contains(searchText) || item.toUnderlyingToken.symbol.lowercased().contains(searchText)
-      })
-    }
-    
-    if let unwrap = chainID {
-      pendingUnstakeData = pendingUnstakeData.filter({ item in
-        return item.chainID == unwrap
-      })
-      
-      earningBalanceData = earningBalanceData.filter({ item in
-        return item.chainID == unwrap
-      })
-    }
-    
-    pendingUnstakeData.forEach({ item in
-      pending.append(StakingPortfolioCellModel(pendingUnstake: item))
-    })
-    earningBalanceData.forEach { item in
-      output.append(StakingPortfolioCellModel(earnBalance: item))
-    }
-    dataSource.value = (output, pending)
-  }
-  
-  func requestData() {
-    isLoading.value = true
-    apiService.getStakingPortfolio(address: AppState.shared.currentAddress.addressString) { result in
-      self.isLoading.value = false
-      switch result {
-      case .success(let portfolio):
-        self.portfolio = portfolio
-        self.reloadDataSource()
-      case .failure(let error):
-        self.error.value = error
-      }
-    }
   }
 }
 
@@ -241,6 +168,9 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
     let cm = items[indexPath.row]
     cell.updateCellModel(cm)
     cell.delegate = self
+    cell.onTapHint = {
+        self.showBottomBannerView(message: cm.timeForUnstakeString())
+    }
     cell.chainImageView.isHidden = viewModel.chainID != nil
     return cell
   }
@@ -294,12 +224,6 @@ extension StakingPortfolioViewController: SkeletonTableViewDelegate {
   }
 }
 
-extension StakingPortfolioViewController: StakingPortfolioCellDelegate {
-  func warningButtonTapped() {
-    self.showBottomBannerView(message: "It takes about x days to unstake. After that you can claim your rewards.")
-  }
-}
-
 extension StakingPortfolioViewController: UITextFieldDelegate {
   func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
     self.updateUIStartSearchingMode()
@@ -324,4 +248,69 @@ extension StakingPortfolioViewController: UITextFieldDelegate {
     }
     reloadUI()
   }
+}
+
+extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
+  
+  func swipeCellImageView(title: String, icon: UIImage, color: UIColor) -> UIImage {
+    let containView = UIView(frame: CGRect(x: 0, y: 0, width: 102, height: 84))
+    containView.backgroundColor = .clear
+    
+    let view = UIView(frame: CGRect(x: 0, y: 0, width: 84, height: 84))
+    view.layer.cornerRadius = 16
+    view.backgroundColor = color.withAlphaComponent(0.1)
+    
+    let imageView = UIImageView(frame: CGRect(x: 30, y: 20, width: 24, height: 24))
+    imageView.image = icon
+    view.addSubview(imageView)
+    
+    let label = UILabel(frame: CGRect(x: 15, y: 52, width: 54, height: 16))
+    label.text = title
+    label.textColor = color
+    label.font = .karlaReguler(ofSize: 14)
+    label.textAlignment = .center
+    view.addSubview(label)
+    
+    containView.addSubview(view)
+    
+    let renderer = UIGraphicsImageRenderer(bounds: containView.bounds)
+    return renderer.image { rendererContext in
+      containView.layer.render(in: rendererContext.cgContext)
+    }
+  }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right, indexPath.section == 0 else { return nil }
+
+        let unstakeAction = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
+            if let earningBalance = self?.viewModel.portfolio?.0[indexPath.row] {
+                let viewModel = UnstakeViewModel(earningBalance: earningBalance)
+                let viewController = UnstakeViewController.instantiateFromNib()
+                viewController.viewModel = viewModel
+                self?.show(viewController, sender: nil)
+            }
+        }
+        let image = swipeCellImageView(title: Strings.unstake, icon: Images.redSubtract, color: AppTheme.current.errorTextColor)
+        unstakeAction.image = image
+        unstakeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
+      
+        let stakeAction = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
+            let vc = UnstakeViewController.instantiateFromNib()
+            self?.show(vc, sender: nil)
+        }
+        let stakeImage = swipeCellImageView(title: Strings.stake, icon: Images.greenPlus, color: AppTheme.current.primaryColor)
+        stakeAction.image = stakeImage
+        stakeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
+        
+        return [unstakeAction, stakeAction]
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = .selection
+        options.minimumButtonWidth = 102
+        options.maximumButtonWidth = 102
+        
+        return options
+    }
 }

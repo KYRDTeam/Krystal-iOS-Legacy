@@ -75,16 +75,18 @@ public struct IngToken: Codable {
 // MARK: - OptionDetailResponse
 public struct OptionDetailResponse: Codable {
     public let earningTokens: [EarningToken]
+    public let poolAddress: String
     public var validation: EarnOptionValidation?
 }
 // MARK: - EarningToken
 public struct EarningToken: Codable {
-  public let addressStr, address, symbol, name: String
-  public let decimals: Int
-  public let logo: String
-  public let tag: String
-  public let exchangeRate: Double
-  public let desc: String
+    public let addressStr, address, symbol, name: String
+    public let decimals: Int
+    public let logo: String
+    public let tag: String
+    public let exchangeRate: Double
+    public let desc: String
+    public let requireApprove: Bool
 }
 
 public struct EarnOptionValidation: Codable {
