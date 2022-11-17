@@ -67,11 +67,15 @@ class StakingViewController: InAppBrowsingViewController {
     @IBOutlet weak var p90USDValueLabel: UILabel!
     @IBOutlet weak var projectionContainerView: UIView!
     @IBOutlet weak var pendingTxIndicator: UIView!
+  
+    @IBOutlet weak var faqContainerView: StakingFAQView!
+    @IBOutlet weak var faqContainerHeightContraint: NSLayoutConstraint!
     
     @IBOutlet weak var earningTokensHeightConstraint: NSLayoutConstraint!
     
     var viewModel: StakingViewModel!
     var keyboardTimer: Timer?
+    var onSelectViewPool: (() -> ())?
     
     override var allowSwitchChain: Bool {
         return false
@@ -81,11 +85,14 @@ class StakingViewController: InAppBrowsingViewController {
         super.viewDidLoad()
         setupUI()
         bindingViewModel()
+        viewModel.observeEvents()
         viewModel.requestOptionDetail()
         viewModel.getAllowance()
         viewModel.getQuoteTokenPrice()
         viewModel.getStakingTokenDetail()
         updateUIProjection()
+        faqContainerView.updateFAQInput(viewModel.faqInput)
+        faqContainerView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -110,6 +117,12 @@ class StakingViewController: InAppBrowsingViewController {
             super.onAppSwitchAddress(switchChain: switchChain)
             viewModel.reloadData()
         }
+    }
+    
+    override func onAppSwitchChain() {
+        super.onAppSwitchChain()
+        
+        navigationController?.popViewController(animated: true)
     }
     
     deinit {
@@ -189,6 +202,7 @@ class StakingViewController: InAppBrowsingViewController {
     fileprivate func updateUIProjection() {
         guard let projectionData = viewModel.displayProjectionValues else {
             projectionContainerView.isHidden = true
+            viewModel.isExpandProjection.value = false
             return
         }
         p30ValueLabel.text = projectionData.p30.value
@@ -215,6 +229,7 @@ class StakingViewController: InAppBrowsingViewController {
         
         viewModel.selectedEarningToken.observeAndFire(on: self) { _ in
             self.updateRateInfoView()
+            self.faqContainerView.updateFAQInput(self.viewModel.faqInput)
         }
         viewModel.optionDetail.observeAndFire(on: self) { data in
             if let unwrap = data {
@@ -283,6 +298,18 @@ class StakingViewController: InAppBrowsingViewController {
         viewModel.onFetchedQuoteTokenPrice = { [weak self] in
             self?.updateUIGasFee()
         }
+        
+        faqContainerView.isExpand.observeAndFire(on: self) { value in
+            if value {
+                self.faqContainerHeightContraint.constant = 50
+            } else {
+              self.faqContainerHeightContraint.constant = self.faqContainerView.currentHeight ?? self.faqContainerView.getViewHeight()
+            }
+        }
+        
+        viewModel.onGasSettingUpdated = { [weak self] in
+            self?.updateUIGasFee()
+        }
     }
     
     @IBAction func settingButtonTapped(_ sender: Any) {
@@ -308,6 +335,7 @@ class StakingViewController: InAppBrowsingViewController {
         viewModel.amount.value = balance
         amountTextField.text = NumberFormatUtils.amount(value: balance, decimals: viewModel.pool.token.decimals)
         showWarningInvalidAmountDataIfNeeded()
+        viewModel.requestBuildStakeTx()
     }
     
     @IBAction func nextButtonTapped(_ sender: UIButton) {
@@ -382,7 +410,11 @@ class StakingViewController: InAppBrowsingViewController {
     func openTxStatusPopup(tx: PendingStakingTxInfo) {
         let popup = StakingTrasactionProcessPopup.instantiateFromNib()
         popup.tx = tx
-        let sheet = SheetViewController(controller: popup, sizes: [.fixed(420)], options: .init(pullBarHeight: 0))
+        popup.onSelectViewPool = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+            self?.onSelectViewPool?()
+        }
+        let sheet = SheetViewController(controller: popup, sizes: [.fixed(450)], options: .init(pullBarHeight: 0))
         dismiss(animated: true) {
             UIApplication.shared.topMostViewController()?.present(sheet, animated: true)
         }
@@ -440,4 +472,10 @@ extension StakingViewController: StakingEarningTokensViewDelegate {
         viewModel.selectedEarningToken.value = token
         viewModel.requestBuildStakeTx()
     }
+}
+
+extension StakingViewController: StakingFAQViewDelegate {
+  func viewShouldChangeHeight(height: CGFloat) {
+    faqContainerHeightContraint.constant = height
+  }
 }

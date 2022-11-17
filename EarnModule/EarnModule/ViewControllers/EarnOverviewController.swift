@@ -91,15 +91,19 @@ class EarnOverviewController: InAppBrowsingViewController {
   @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
     segmentedControl.underlineCenterPosition()
     if sender.selectedSegmentIndex != selectedPageIndex {
-      let direction: UIPageViewController.NavigationDirection = sender.selectedSegmentIndex < selectedPageIndex ? .reverse : .forward
-      selectedPageIndex = sender.selectedSegmentIndex
-      pageViewController.setViewControllers([childListViewControllers[sender.selectedSegmentIndex]], direction: direction, animated: true)
+        selectPage(index: sender.selectedSegmentIndex)
     }
   }
 
   @IBAction func historyButtonWasTapped(_ sender: Any) {
     viewModel.didTapHistoryButton()
   }
+    
+    func selectPage(index: Int) {
+        let direction: UIPageViewController.NavigationDirection = index < selectedPageIndex ? .reverse : .forward
+        selectedPageIndex = index
+        pageViewController.setViewControllers([childListViewControllers[index]], direction: direction, animated: true)
+    }
 }
 
 extension EarnOverviewController: UIPageViewControllerDataSource {
@@ -135,6 +139,7 @@ extension EarnOverviewController: UIPageViewControllerDelegate {
 }
 
 extension EarnOverviewController: EarnListViewControllerDelegate {
+    
     func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
         guard let chain = ChainType.make(chainID: pool.chainID) else { return }
         if chain != AppState.shared.currentChain {
@@ -142,6 +147,15 @@ extension EarnOverviewController: EarnListViewControllerDelegate {
         }
         let vc = StakingViewController.instantiateFromNib()
         vc.viewModel = StakingViewModel(pool: pool, platform: platform)
+        vc.onSelectViewPool = { [weak self] in
+            self?.openPortfolio()
+        }
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func openPortfolio() {
+        segmentedControl.selectedSegmentIndex = 1
+        segmentedControl.underlineCenterPosition()
+        selectPage(index: 1)
     }
 }

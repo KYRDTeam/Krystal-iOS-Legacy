@@ -29,7 +29,7 @@ class BaseTransactionSettingTabViewModel {
         if let advance = setting.advanced {
             return advance.gasLimit
         }
-        return remoteGasLimit
+        return setting.basic?.gasLimit ?? remoteGasLimit
     }
     
     var priorityFee: BigInt {

@@ -39,3 +39,5 @@
 "support" = "Support";
 "close" = "Close";
 "edit" = "Edit";
+"staking.in.progress" = "Staking In Progress";
+"view.my.pool" = "View my pool";
