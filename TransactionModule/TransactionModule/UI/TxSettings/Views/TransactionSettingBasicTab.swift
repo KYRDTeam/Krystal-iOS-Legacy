@@ -132,11 +132,13 @@ class TransactionSettingBasicTab: BaseTransactionSettingTab {
     func selectGasType(gasType: GasSpeed) {
         viewModel.selectGasType(gasType: gasType)
         onUpdateSettings?(viewModel.setting)
+        resetUI()
         reloadEstimatedGasUI()
     }
     
     func updateSettings(settings: TxSettingObject) {
         viewModel.setting = settings
+        resetUI()
         reloadEstimatedGasUI()
         if viewModel.setting.advanced != nil {
             self.uncheckAll()
