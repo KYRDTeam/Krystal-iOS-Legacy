@@ -10,12 +10,13 @@ import Moya
 import Utilities
 
 enum EarnEndpoint {
-    case listOption(chainId: String?)
-    case getEarningBalances(address: String)
-    case getPendingUnstakes(address: String)
-    case getEarningOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String)
-    case buildStakeTx(params: JSONDictionary)
-    case buildClaimTx(params: JSONDictionary)
+  case listOption(chainId: String?)
+  case getEarningBalances(address: String, chainId: String?)
+  case getPendingUnstakes(address: String)
+  case getEarningOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String)
+  case buildStakeTx(params: JSONDictionary)
+  case buildUnstakeTx(params: JSONDictionary)
+  case buildClaimTx(params: JSONDictionary)
 }
 
 extension EarnEndpoint: TargetType {
@@ -24,29 +25,31 @@ extension EarnEndpoint: TargetType {
   }
   
   var path: String {
-      switch self {
-      case .listOption:
-          return "v1/earning/options"
-      case .getEarningBalances:
-          return "/v1/earning/earningBalances"
-      case .getPendingUnstakes:
-          return "/v1/earning/pendingUnstakes"
-      case .getEarningOptionDetail:
-          return "/v1/earning/optionDetail"
-      case .buildStakeTx(params: _):
-          return "/v1/earning/buildStakeTx"
-      case .buildClaimTx:
-          return "/v1/earning/buildClaimTx"
-      }
+    switch self {
+    case .listOption:
+      return "v1/earning/options"
+    case .getEarningBalances:
+      return "/v1/earning/earningBalances"
+    case .getPendingUnstakes:
+      return "/v1/earning/pendingUnstakes"
+    case .getEarningOptionDetail:
+      return "/v1/earning/optionDetail"
+    case .buildStakeTx:
+      return "/v1/earning/buildStakeTx"
+    case .buildUnstakeTx:
+        return "/v1/earning/buildUnstakeTx"
+    case .buildClaimTx:
+        return "/v1/earning/buildClaimTx"
+    }
   }
   
   var method: Moya.Method {
-      switch self {
-      case .buildStakeTx, .buildClaimTx:
-          return .post
-      default:
-          return .get
-      }
+    switch self {
+    case .buildStakeTx, .buildUnstakeTx, .buildClaimTx:
+      return .post
+    default:
+      return .get
+    }
   }
   
   var sampleData: Data {
@@ -61,10 +64,13 @@ extension EarnEndpoint: TargetType {
         json["chainID"] = chainId
       }
       return json.isEmpty ? .requestPlain : .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getEarningBalances(address: let address):
+    case .getEarningBalances(address: let address, chainId: let chainId):
       var json: JSONDictionary = [
         "address": address
       ]
+      if let chainId = chainId {
+        json["chainId"] = chainId
+      }  
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getPendingUnstakes(address: let address):
       var json: JSONDictionary = [
@@ -83,6 +89,8 @@ extension EarnEndpoint: TargetType {
       return .requestParameters(parameters: params, encoding: JSONEncoding.default)
     case .buildClaimTx(let params):
         return .requestParameters(parameters: params, encoding: JSONEncoding.default)
+    case .buildUnstakeTx(params: let params):
+      return .requestParameters(parameters: params, encoding: JSONEncoding.default)
     }
   }
   

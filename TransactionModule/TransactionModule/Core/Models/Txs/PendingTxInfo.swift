@@ -13,6 +13,7 @@ public enum TxType {
     case earn
     case approval
     case claimStakingReward
+    case unstake
 }
 
 open class PendingTxInfo {

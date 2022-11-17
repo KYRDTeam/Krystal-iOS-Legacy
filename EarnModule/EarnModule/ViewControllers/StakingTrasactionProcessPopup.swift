@@ -30,8 +30,8 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
     @IBOutlet weak var destTokenIcon: UIImageView!
     @IBOutlet weak var destTokenAmountLabel: UILabel!
     @IBOutlet weak var processStatusLabel: UILabel!
-    
-    var tx: PendingStakingTxInfo!
+
+    var viewModel: TrasactionProcessPopupViewModel!
     
     var onSelectViewPool: (() -> ())?
     
@@ -40,7 +40,7 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
             self.updateUIForStateChange(self.state)
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -66,7 +66,7 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
         guard let hash = notification.userInfo?["hash"] as? String, let status = notification.userInfo?["status"] as? InternalTransactionState else {
             return
         }
-        guard hash == tx.hash else {
+        guard hash == viewModel.hash else {
             return
         }
         
@@ -84,14 +84,14 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
             self.secondButton.setTitle(buttonTitle, for: .normal)
             self.sourceTokenInfoContainerView.rounded(color: AppTheme.current.primaryColor, width: 1, radius: 16)
             self.destTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
-            self.processStatusLabel.text = Strings.stakingInProgress
+                self.processStatusLabel.text = viewModel.processingString
         case .success:
             self.loadingIndicatorView.isHidden = true
             self.transactionStateIcon.isHidden = false
             self.statusContainerView.bringSubviewToFront(self.transactionStateIcon)
             self.transactionStateIcon.image = UIImage(named: "tx_status_success")
             self.secondButton.setTitle("", for: .normal)
-            let buttonTitle = Strings.viewMyPool
+                let buttonTitle = viewModel.finishButtonString
             self.secondButton.setTitle(buttonTitle, for: .normal)
             self.destTokenInfoContainerView.rounded(color: AppTheme.current.primaryColor, width: 1, radius: 16)
             self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
@@ -110,12 +110,12 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
     }
     
     func setupUI() {
-        self.sourceTokenIcon.loadImage(tx.sourceIcon)
-        self.destTokenIcon.loadImage(tx.platform.logo)
-        self.txHashLabel.text = self.tx.hash
-        let descriptions = self.tx.description.split(separator: "→").map { String($0) }
+        self.sourceTokenIcon.loadImage(viewModel.sourceIcon)
+        self.destTokenIcon.loadImage(viewModel.destIcon)
+        self.txHashLabel.text = viewModel.hash
+        let descriptions = viewModel.description.split(separator: "→").map { String($0) }
         self.sourceTokenAmountLabel.text = descriptions.first ?? ""
-        self.destTokenAmountLabel.text = tx.platform.name.uppercased()
+        self.destTokenAmountLabel.text = viewModel.destTitle
         
     }
     
@@ -161,7 +161,7 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
     }
     
     @IBAction func txHashButtonTapped(_ sender: UIButton) {
-        let urlString = AppState.shared.currentChain.customRPC().etherScanEndpoint + "tx/\(self.tx.hash)"
+        let urlString = AppState.shared.currentChain.customRPC().etherScanEndpoint + "tx/\(viewModel.hash)"
         dismiss(animated: true) {
             AppDependencies.router.openExternalURL(url: urlString)
         }

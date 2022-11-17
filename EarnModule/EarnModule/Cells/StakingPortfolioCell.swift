@@ -9,6 +9,7 @@ import UIKit
 import BigInt
 import Utilities
 import Services
+import SwipeCellKit
 
 struct StakingPortfolioCellModel {
   let tokenLogo: String
@@ -54,13 +55,27 @@ struct StakingPortfolioCellModel {
     self.displayPlatformName = pendingUnstake.platform.name.uppercased()
     self.isClaimable = pendingUnstake.extraData.status == "claimable"
   }
+    
+    func timeForUnstakeString() -> String {
+        let isAnkr = displayPlatformName.uppercased() == "ANKR"
+        let isLido = displayPlatformName.uppercased() == "LIDO"
+        var time = ""
+        if displayTokenName.uppercased() == "AVAX".lowercased() && isAnkr {
+            time = Strings.avaxUnstakeTime
+        } else if displayTokenName.uppercased() == "BNB" && isAnkr {
+            time = Strings.bnbUnstakeTime
+        } else if displayTokenName.uppercased() == "FTM" && isAnkr {
+            time = Strings.ftmUnstakeTime
+        } else if displayTokenName.uppercased() == "MATIC" && isAnkr {
+            time = Strings.maticUnstakeTime
+        } else if displayTokenName.uppercased() == "SOL" && isLido {
+            time = Strings.solUnstakeTime
+        }
+        return String(format: Strings.itTakeAboutXDaysToUnstake, time)
+    }
 }
 
-protocol StakingPortfolioCellDelegate: class {
-    func warningButtonTapped()
-}
-
-class StakingPortfolioCell: UITableViewCell {
+class StakingPortfolioCell: SwipeTableViewCell {
   @IBOutlet weak var tokenImageView: UIImageView!
   @IBOutlet weak var chainImageView: UIImageView!
   @IBOutlet weak var tokenNameLabel: UILabel!
@@ -83,9 +98,9 @@ class StakingPortfolioCell: UITableViewCell {
   @IBOutlet weak var depositTitleLabelContraintWithAPYTitle: NSLayoutConstraint!
   @IBOutlet weak var apyTitleLabel: UILabel!
   @IBOutlet weak var balanceTitleLabel: UILabel!
-  
-  weak var delegate: StakingPortfolioCellDelegate?
-    var claimTapped: (() -> ())?
+
+  var onTapHint: (() -> Void)? = nil
+  var claimTapped: (() -> ())?
   
   func updateCellModel(_ model: StakingPortfolioCellModel) {
     tokenImageView.loadImage(model.tokenLogo)
@@ -112,7 +127,9 @@ class StakingPortfolioCell: UITableViewCell {
   }
   
   @IBAction func inProcessButtonTapped(_ sender: UIButton) {
-    delegate?.warningButtonTapped()
+      if let onTapHint = onTapHint {
+          onTapHint()
+      }
   }
   
   @IBAction func claimButtonTapped(_ sender: UIButton) {

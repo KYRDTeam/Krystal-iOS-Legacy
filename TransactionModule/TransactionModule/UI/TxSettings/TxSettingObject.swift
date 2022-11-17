@@ -7,6 +7,8 @@
 
 import Foundation
 import BigInt
+import BaseWallet
+import Dependencies
 
 public enum GasSpeed {
     case slow
@@ -26,6 +28,28 @@ public struct TxSettingObject {
             return advance.gasLimit
         }
         return basic?.gasLimit ?? TransactionConstants.defaultGasLimit
+    }
+    
+    public func transactionFee(chain: ChainType) -> BigInt {
+        if let basic = basic {
+            return gasLimit * getGasPrice(gasType: basic.gasType, chain: chain)
+          } else if let advance = advanced {
+            return gasLimit * advance.maxFee
+          }
+        return BigInt(0)
+    }
+    
+    func getGasPrice(gasType: GasSpeed, chain: ChainType) -> BigInt {
+        switch gasType {
+        case .slow:
+            return AppDependencies.gasConfig.getLowGasPrice(chain: chain)
+        case .regular:
+            return AppDependencies.gasConfig.getStandardGasPrice(chain: chain)
+        case .fast:
+            return AppDependencies.gasConfig.getFastGasPrice(chain: chain)
+        case .superFast:
+            return AppDependencies.gasConfig.getSuperFastGasPrice(chain: chain)
+        }
     }
     
 }

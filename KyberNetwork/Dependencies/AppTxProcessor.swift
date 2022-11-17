@@ -64,6 +64,8 @@ class AppTxProcessor: TxProcessorProtocol {
             return .allowance
         case .claimStakingReward:
             return .contractInteraction
+        case .unstake:
+            return .withdraw
         }
     }
     
