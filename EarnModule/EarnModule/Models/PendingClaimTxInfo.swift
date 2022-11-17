@@ -9,6 +9,8 @@ import Foundation
 import Services
 import TransactionModule
 import BaseWallet
+import Utilities
+import BigInt
 
 class PendingClaimTxInfo: PendingTxInfo {
     
@@ -20,27 +22,28 @@ class PendingClaimTxInfo: PendingTxInfo {
     }
     
     override var description: String {
-        return ""
+        let amount = BigInt(pendingUnstake.balance) ?? .zero
+        return "+" + NumberFormatUtils.amount(value: amount, decimals: pendingUnstake.decimals) + " " + pendingUnstake.symbol
     }
     
     override var detail: String {
-        return ""
+        return "From: " + pendingUnstake.platform.name
     }
     
     override var sourceSymbol: String? {
-        return ""
+        return nil
     }
     
     override var destSymbol: String? {
-        return ""
+        return nil
     }
     
     override var sourceIcon: String? {
-        return ""
+        return nil
     }
     
     override var destIcon: String? {
-        return ""
+        return nil
     }
     
 }

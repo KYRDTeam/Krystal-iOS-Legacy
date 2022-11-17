@@ -347,7 +347,6 @@
 		A69E8EB2291DEE91005B28CB /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A61B29892924BA040064C3FE /* PendingClaimTxInfo.swift */,
 				C3A4080929234169008C1220 /* ankr-avax.plist */,
 				C3A4080729234169008C1220 /* ankr-bnb.plist */,
 				C3A4080B2923416A008C1220 /* ankr-eth.plist */,
@@ -355,6 +354,7 @@
 				C3A4080629234169008C1220 /* ankr-matic-eth.plist */,
 				C3A4080529234168008C1220 /* ankr-matic-matic.plist */,
 				C3A4080829234169008C1220 /* FAQModel.swift */,
+				A61B29892924BA040064C3FE /* PendingClaimTxInfo.swift */,
 				7E181E642923A6E400C661CD /* PendingUnstakeTxInfo.swift */,
 				A69E8EB0291DDEBB005B28CB /* PendingStakingTxInfo.swift */,
 				A69E8EB3291DEF23005B28CB /* StakeDisplayInfo.swift */,
