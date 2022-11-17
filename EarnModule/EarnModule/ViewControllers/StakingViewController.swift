@@ -299,6 +299,10 @@ class StakingViewController: InAppBrowsingViewController {
               self.faqContainerHeightContraint.constant = self.faqContainerView.currentHeight ?? self.faqContainerView.getViewHeight()
             }
         }
+        
+        viewModel.onGasSettingUpdated = { [weak self] in
+            self?.updateUIGasFee()
+        }
     }
     
     @IBAction func settingButtonTapped(_ sender: Any) {
@@ -324,6 +328,7 @@ class StakingViewController: InAppBrowsingViewController {
         viewModel.amount.value = balance
         amountTextField.text = NumberFormatUtils.amount(value: balance, decimals: viewModel.pool.token.decimals)
         showWarningInvalidAmountDataIfNeeded()
+        viewModel.requestBuildStakeTx()
     }
     
     @IBAction func nextButtonTapped(_ sender: UIButton) {

@@ -43,6 +43,7 @@ class StakingViewModel: BaseViewModel {
     var quoteTokenDetail: TokenDetailInfo?
     var stakingTokenDetail: TokenDetailInfo?
     var onFetchedQuoteTokenPrice: (() -> ())?
+    var onGasSettingUpdated: (() -> ())?
     
     init(pool: EarnPoolModel, platform: EarnPlatform) {
         self.pool = pool
@@ -247,6 +248,14 @@ class StakingViewModel: BaseViewModel {
             return ""
         }
     }
+    
+    func didGetTxGasLimit(gasLimit: BigInt) {
+        if setting.advanced != nil {
+            return
+        }
+        setting.basic?.gasLimit = gasLimit
+        onGasSettingUpdated?()
+    }
 }
 
 extension StakingViewModel {
@@ -284,16 +293,18 @@ extension StakingViewModel {
     
     func requestBuildStakeTx(showLoading: Bool = false, completion: @escaping () -> () = {}) {
         if showLoading { isLoading.value = true }
-        apiService.buildStakeTx(param: buildTxRequestParams) { result in
+        apiService.buildStakeTx(param: buildTxRequestParams) { [weak self] result in
             switch result {
             case .success(let tx):
-                self.txObject.value = tx
-                self.gasLimit.value = BigInt(tx.gasLimit.drop0x, radix: 16) ?? AppDependencies.gasConfig.earnGasLimitDefault
+                self?.txObject.value = tx
+                if let gasLimit = BigInt(tx.gasLimit.drop0x, radix: 16), gasLimit > 0 {
+                    self?.didGetTxGasLimit(gasLimit: gasLimit)
+                }
                 completion()
             case .failure(let error):
-                self.error.value = error
+                self?.error.value = error
             }
-            if showLoading { self.isLoading.value = false }
+            if showLoading { self?.isLoading.value = false }
         }
     }
     
