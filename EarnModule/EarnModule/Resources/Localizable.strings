@@ -36,6 +36,7 @@
 "success" = "Success";
 "tx.failed" = "Transaction failed";
 "view.my.pool" = "View my pool";
+"view.my.portfolio" = "View my portfolio";
 "unstake" = "Unstake";
 "stake" = "Stake";
 "unstake.token" = "Unstake %@";

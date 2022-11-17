@@ -86,6 +86,7 @@ struct Strings {
     static let success = "success".toBeLocalised()
     static let txFailed = "tx.failed".toBeLocalised()
     static let viewMyPool = "view.my.pool".toBeLocalised()
+    static let viewMyPortfolio = "view.my.portfolio".toBeLocalised()
     static let support = "support".toBeLocalised()
     static let unstakeToken = "unstake.token".toBeLocalised()
     static let itTakeAboutXDaysToUnstake = "it.take.about.x.days.to.unstake".toBeLocalised()

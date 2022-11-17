@@ -14,6 +14,7 @@ protocol TrasactionProcessPopupViewModel: class {
     var sourceIcon: String { get }
     var destIcon: String { get }
     var processingString: String { get }
+    var finishButtonString: String { get }
 }
 
 class StakingTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
@@ -46,6 +47,10 @@ class StakingTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
     var processingString: String {
         return Strings.stakingInProgress
     }
+    
+    var finishButtonString: String {
+        return Strings.viewMyPool
+    }
 }
 
 class UnstakeTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
@@ -56,7 +61,7 @@ class UnstakeTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
     }
     
     var amountValue: String {
-        return pendingUnstakeTx.platform.name.uppercased()
+        return pendingUnstakeTx.sourceSymbol ?? ""
     }
     
     var hash: String {
@@ -77,5 +82,9 @@ class UnstakeTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
     
     var processingString: String {
         return Strings.unstakeInProgress
+    }
+    
+    var finishButtonString: String {
+        return Strings.viewMyPortfolio
     }
 }

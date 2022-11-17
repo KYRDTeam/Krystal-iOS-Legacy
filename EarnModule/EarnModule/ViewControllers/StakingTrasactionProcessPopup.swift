@@ -91,7 +91,7 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
             self.statusContainerView.bringSubviewToFront(self.transactionStateIcon)
             self.transactionStateIcon.image = UIImage(named: "tx_status_success")
             self.secondButton.setTitle("", for: .normal)
-            let buttonTitle = Strings.viewMyPool
+                let buttonTitle = viewModel.finishButtonString
             self.secondButton.setTitle(buttonTitle, for: .normal)
             self.destTokenInfoContainerView.rounded(color: AppTheme.current.primaryColor, width: 1, radius: 16)
             self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
