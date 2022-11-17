@@ -85,6 +85,7 @@ class StakingViewController: InAppBrowsingViewController {
         super.viewDidLoad()
         setupUI()
         bindingViewModel()
+        viewModel.observeEvents()
         viewModel.requestOptionDetail()
         viewModel.getAllowance()
         viewModel.getQuoteTokenPrice()

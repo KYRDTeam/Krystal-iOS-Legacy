@@ -52,6 +52,23 @@ class StakingViewModel: BaseViewModel {
         super.init()
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .kTxStatusUpdated, object: nil)
+    }
+    
+    func observeEvents() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.txStatusUpdated(_:)),
+            name: .kTxStatusUpdated,
+            object: nil
+        )
+    }
+    
+    @objc func txStatusUpdated(_ notification: Notification) {
+        getBalance()
+    }
+    
     func validateAmount() -> StakingValidationError? {
         let amount = self.amount.value
         if amount > balance.value {
