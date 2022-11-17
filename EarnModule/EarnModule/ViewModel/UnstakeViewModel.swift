@@ -12,7 +12,6 @@ import Utilities
 import TransactionModule
 import AppState
 import Dependencies
-import FittedSheets
 
 protocol UnstakeViewModelDelegate: class {
     func didGetDataSuccess()
@@ -115,58 +114,7 @@ class UnstakeViewModel {
             return "1 \(stakingTokenSymbol) = \(ratioString) \(toTokenSymbol)"
         }
     }
-    
-    func approve(controller: UIViewController, onSuccess: @escaping (() -> Void), onFail: @escaping (() -> Void)) {
-        let vm = ApproveTokenViewModel(symbol: stakingTokenSymbol, tokenAddress: stakingTokenAddress, remain: stakingTokenAllowance, toAddress: contractAddress ?? "", chain: chain)
-        let vc = ApproveTokenViewController(viewModel: vm)
-        vc.onSuccessApprove = {
-            onSuccess()
-        }
-        
-        vc.onFailApprove = {
-            onFail()
-        }
-        
-        controller.present(vc, animated: true, completion: nil)
-    }
-    
-    func openUnStakeSummary(controller: UIViewController) {
-        requestBuildUnstakeTx(completion: { error in
-            guard let error = error else {
-                if let tx = self.txObject {
-                    let displayInfo = UnstakeDisplayInfo(amount: self.unstakeValueString(),
-                                                         receiveAmount: self.receivedValueString(),
-                                                         rate: self.showRateInfo(),
-                                                         fee: self.transactionFeeString(),
-                                                         stakeTokenIcon: self.stakingTokenLogo,
-                                                         toTokenIcon:self.toTokenLogo,
-                                                         fromSym: self.stakingTokenSymbol,
-                                                         toSym: self.toTokenSymbol)
-                    
-                    
-                    let viewModel = UnstakeSummaryViewModel(setting: self.setting, txObject: tx, platform: self.platform, displayInfo: displayInfo)
-                    
-                    TxConfirmPopup.show(onViewController: controller, withViewModel: viewModel) { pendingTx in
-                        if let pendingTx = pendingTx as? PendingUnstakeTxInfo {
-                            self.openTxStatusPopup(tx: pendingTx, controller: controller)
-                        }
-                    }
-                }
-                return
-            }
-            controller.showErrorTopBannerMessage(message: error.localizedDescription)
-        })
-    }
-    
-    func openTxStatusPopup(tx: PendingUnstakeTxInfo, controller: UIViewController) {
-        let popup = StakingTrasactionProcessPopup.instantiateFromNib()
-        let viewModel = UnstakeTransactionProcessPopupViewModel(pendingStakingTx: tx)
-        popup.viewModel = viewModel
-        let sheet = SheetViewController(controller: popup, sizes: [.fixed(420)], options: .init(pullBarHeight: 0))
-        controller.navigationController?.popViewController(animated: true)
-        UIApplication.shared.topMostViewController()?.present(sheet, animated: true)
-    }
-    
+
     func timeForUnstakeString() -> String {
         let isAnkr = platform.name.lowercased() == "ANKR".lowercased()
         let isLido = platform.name.lowercased() == "LIDO".lowercased()
@@ -185,7 +133,7 @@ class UnstakeViewModel {
         }
         return String(format: Strings.youWillReceiveYourIn, toTokenSymbol, time)
     }
-    
+
     func transactionFeeString() -> String {
         return NumberFormatUtils.gasFee(value: setting.transactionFee(chain: chain)) + " " + AppState.shared.currentChain.quoteToken()
     }
