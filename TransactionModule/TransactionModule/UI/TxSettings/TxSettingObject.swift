@@ -21,13 +21,13 @@ public struct TxSettingObject {
     public var basic: TxBasicSetting?
     public var advanced: TxAdvancedSetting?
     
-    public static let `default`: TxSettingObject = .init(basic: .init(gasType: .regular), advanced: nil)
+    public static let `default`: TxSettingObject = .init(basic: .init(), advanced: nil)
     
     public var gasLimit: BigInt {
         if let advance = advanced {
             return advance.gasLimit
         }
-        return TransactionConstants.defaultGasLimit
+        return basic?.gasLimit ?? TransactionConstants.defaultGasLimit
     }
     
     public func transactionFee(chain: ChainType) -> BigInt {
@@ -55,6 +55,7 @@ public struct TxSettingObject {
 }
 
 public struct TxBasicSetting {
+    public var gasLimit: BigInt = TransactionConstants.defaultGasLimit
     public var gasType: GasSpeed = .regular
 }
 
