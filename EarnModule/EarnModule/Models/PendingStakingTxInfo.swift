@@ -11,15 +11,15 @@ import Services
 import BaseWallet
 
 class PendingStakingTxInfo: PendingTxInfo {
-    var pool: EarnPoolModel
+    var token: Token
     var platform: EarnPlatform
     var selectedDestToken: EarningToken
     var sourceAmount: String
     var destAmount: String
     
-    init(pool: EarnPoolModel, platform: EarnPlatform, selectedDestToken: EarningToken, sourceAmount: String, destAmount: String, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: BaseWallet.ChainType, date: Date, hash: String) {
+    init(token: Token, platform: EarnPlatform, selectedDestToken: EarningToken, sourceAmount: String, destAmount: String, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: BaseWallet.ChainType, date: Date, hash: String, nonce: Int) {
         self.platform = platform
-        self.pool = pool
+        self.token = token
         self.selectedDestToken = selectedDestToken
         self.sourceAmount = sourceAmount
         self.destAmount = destAmount
@@ -31,11 +31,11 @@ class PendingStakingTxInfo: PendingTxInfo {
     }
      
     override var sourceSymbol: String? {
-        return pool.token.symbol
+        return token.symbol
     }
     
     override var sourceIcon: String? {
-        return pool.token.logo
+        return token.logo
     }
     
     override var destIcon: String? {
