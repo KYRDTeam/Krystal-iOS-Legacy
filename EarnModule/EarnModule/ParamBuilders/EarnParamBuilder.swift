@@ -14,24 +14,24 @@ import BigInt
 protocol EarnParamBuilder {
     func stakeExtraData(earningToken: EarningToken?) -> JSONDictionary
     func claimExtraData(pendingUnstake: PendingUnstake) -> JSONDictionary
-    func buildStakingTxParam(amount: BigInt, pool: EarnPoolModel, platform: EarnPlatform, earningToken: EarningToken?) -> JSONDictionary
+    func buildStakingTxParam(amount: BigInt, token: Token, chainID: Int, platform: EarnPlatform, earningToken: EarningToken?) -> JSONDictionary
     func buildClaimTxParam(pendingUnstake: PendingUnstake) -> JSONDictionary
 }
 
 extension EarnParamBuilder {
     
-    func buildStakingTxParam(amount: BigInt, pool: EarnPoolModel, platform: EarnPlatform, earningToken: EarningToken?) -> JSONDictionary {
+    func buildStakingTxParam(amount: BigInt, token: Token, chainID: Int, platform: EarnPlatform, earningToken: EarningToken?) -> JSONDictionary {
         var earningType = platform.type
-        if pool.token.symbol.uppercased() == "MATIC" {
+        if token.symbol.uppercased() == "MATIC" {
             earningType = "stakingMATIC"
         }
         let params: JSONDictionary = [
             "tokenAmount": amount.description,
-            "chainID": pool.chainID,
+            "chainID": chainID,
             "earningType": earningType,
             "platform": platform.name,
             "userAddress": AppState.shared.currentAddress.addressString,
-            "tokenAddress": pool.token.address,
+            "tokenAddress": token.address,
             "extraData": stakeExtraData(earningToken: earningToken)
         ]
         return params

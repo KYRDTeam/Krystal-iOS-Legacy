@@ -163,7 +163,7 @@ class StakingViewModel: BaseViewModel {
     
     var buildTxRequestParams: JSONDictionary {
         let paramBuilder = EarnParamBuilderFactory.create(platform: .init(name: selectedPlatform.name))
-        return paramBuilder.buildStakingTxParam(amount: amount.value, pool: pool, platform: selectedPlatform, earningToken: selectedEarningToken.value)
+        return paramBuilder.buildStakingTxParam(amount: amount.value, token: token, chainID: chainId, platform: selectedPlatform, earningToken: selectedEarningToken.value)
     }
     
     var displayAmountReceive: String {

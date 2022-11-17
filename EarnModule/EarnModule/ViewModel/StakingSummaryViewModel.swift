@@ -108,7 +108,7 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
             switch result {
             case .success(let txResult):
                 let pendingTx = PendingStakingTxInfo(
-                    pool: self.pool,
+                    token: self.token,
                     platform: self.platform,
                     selectedDestToken: self.earnToken,
                     sourceAmount: self.displayInfo.amount,
