@@ -7,7 +7,7 @@
 */
 "no.record.found" = "No record found";
 "search.pools" = "Search pools";
-"Staking" = "Staking";
+"staking" = "Staking";
 "search.token" = "Search token";
 "earn.is.currently.not.supported.on.this.chain.yet" = "Earn is currently not supported on this chain yet.";
 "no.tokens.deposited" = "No tokens deposited yet.";
@@ -36,8 +36,8 @@
 "success" = "Success";
 "tx.failed" = "Transaction failed";
 "view.my.pool" = "View my pool";
-"Unstake" = "Unstake";
-"Stake" = "Stake";
+"unstake" = "Unstake";
+"stake" = "Stake";
 "unstake.token" = "Unstake %@";
 "confirm.unstake" = "Confirm Unstake";
 "support" = "Support";

@@ -60,7 +60,10 @@ class UnstakeViewController: InAppBrowsingViewController {
         unstakeButtonState = .disable
         if let viewModel = viewModel {
             viewModel.delegate = self
-            viewModel.fetchData(controller: self)
+            self.showLoadingHUD()
+            viewModel.fetchData {
+                self.hideLoading()
+            }
         }
     }
     
@@ -76,7 +79,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         }
         networkFeeView.setInfo(title: Strings.networkFee, value: viewModel.transactionFeeString())
         receiveTimeView.setInfo(title: viewModel.timeForUnstakeString(), value: "")
-        unstakePlatformLabel.text = Strings.Unstake + " " + viewModel.stakingTokenSymbol + " on " + viewModel.platform.name
+        unstakePlatformLabel.text = Strings.unstake + " " + viewModel.stakingTokenSymbol + " on " + viewModel.platform.name
         tokenIcon.setImage(urlString: viewModel.stakingTokenLogo, symbol: viewModel.stakingTokenSymbol)
         viewModel.onGasSettingUpdated = { [weak self] in
             self?.updateUIGasFee()

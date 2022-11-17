@@ -290,7 +290,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
                 self?.show(viewController, sender: nil)
             }
         }
-        let image = swipeCellImageView(title: Strings.Unstake, icon: Images.redSubtract, color: AppTheme.current.errorTextColor)
+        let image = swipeCellImageView(title: Strings.unstake, icon: Images.redSubtract, color: AppTheme.current.errorTextColor)
         unstakeAction.image = image
         unstakeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
       
@@ -298,7 +298,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
             let vc = UnstakeViewController.instantiateFromNib()
             self?.show(vc, sender: nil)
         }
-        let stakeImage = swipeCellImageView(title: Strings.Stake, icon: Images.greenPlus, color: AppTheme.current.primaryColor)
+        let stakeImage = swipeCellImageView(title: Strings.stake, icon: Images.greenPlus, color: AppTheme.current.primaryColor)
         stakeAction.image = stakeImage
         stakeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
         

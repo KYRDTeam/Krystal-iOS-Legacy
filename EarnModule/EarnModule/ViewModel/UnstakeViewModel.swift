@@ -190,31 +190,30 @@ class UnstakeViewModel {
         return NumberFormatUtils.gasFee(value: setting.transactionFee(chain: chain)) + " " + AppState.shared.currentChain.quoteToken()
     }
     
-    func fetchData(controller: UIViewController) {
-        controller.showLoadingHUD()
+    func fetchData(completion: @escaping () -> ()) {
         apiService.getStakingOptionDetail(platform: platform.name, earningType: platform.type, chainID: "\(chain.getChainId())", tokenAddress: toUnderlyingTokenAddress) { result in
             switch result {
             case .success(let detail):
                 if let earningToken = detail.earningTokens.first(where: { $0.address.lowercased() == self.stakingTokenAddress.lowercased() }) {
                     self.contractAddress = detail.poolAddress
-                    self.checkNeedApprove(earningToken: earningToken, controller: controller)
+                    self.checkNeedApprove(earningToken: earningToken, completion: completion)
                 } else {
-                    controller.hideLoading()
+                    completion()
                     self.delegate?.didGetDataSuccess()
                 }
             case .failure(let error):
-                controller.hideLoading()
+                completion()
                 self.delegate?.didGetDataFail(errMsg: error.localizedDescription)
             }
         }
     }
     
-    func checkNeedApprove(earningToken: EarningToken, controller: UIViewController) {
+    func checkNeedApprove(earningToken: EarningToken, completion: @escaping () -> ()) {
         guard let contractAddress = contractAddress else { return }
         let service = EthereumNodeService(chain: chain)
         if earningToken.requireApprove {
             service.getAllowance(for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: earningToken.address) { result in
-                controller.hideLoading()
+                completion()
                 switch result {
                 case .success(let number):
                     self.stakingTokenAllowance = number
@@ -224,7 +223,7 @@ class UnstakeViewModel {
                 }
             }
         } else {
-            controller.hideLoading()
+            completion()
             self.stakingTokenAllowance = TransactionConstants.maxTokenAmount
             self.delegate?.didGetDataSuccess()
         }
