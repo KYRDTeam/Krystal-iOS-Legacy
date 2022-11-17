@@ -85,6 +85,7 @@ class StakingViewController: InAppBrowsingViewController {
         super.viewDidLoad()
         setupUI()
         bindingViewModel()
+        viewModel.observeEvents()
         viewModel.requestOptionDetail()
         viewModel.getAllowance()
         viewModel.getQuoteTokenPrice()
@@ -116,6 +117,12 @@ class StakingViewController: InAppBrowsingViewController {
             super.onAppSwitchAddress(switchChain: switchChain)
             viewModel.reloadData()
         }
+    }
+    
+    override func onAppSwitchChain() {
+        super.onAppSwitchChain()
+        
+        navigationController?.popViewController(animated: true)
     }
     
     deinit {
@@ -299,6 +306,10 @@ class StakingViewController: InAppBrowsingViewController {
               self.faqContainerHeightContraint.constant = self.faqContainerView.currentHeight ?? self.faqContainerView.getViewHeight()
             }
         }
+        
+        viewModel.onGasSettingUpdated = { [weak self] in
+            self?.updateUIGasFee()
+        }
     }
     
     @IBAction func settingButtonTapped(_ sender: Any) {
@@ -324,6 +335,7 @@ class StakingViewController: InAppBrowsingViewController {
         viewModel.amount.value = balance
         amountTextField.text = NumberFormatUtils.amount(value: balance, decimals: viewModel.pool.token.decimals)
         showWarningInvalidAmountDataIfNeeded()
+        viewModel.requestBuildStakeTx()
     }
     
     @IBAction func nextButtonTapped(_ sender: UIButton) {
@@ -397,7 +409,8 @@ class StakingViewController: InAppBrowsingViewController {
     
     func openTxStatusPopup(tx: PendingStakingTxInfo) {
         let popup = StakingTrasactionProcessPopup.instantiateFromNib()
-        popup.tx = tx
+        let viewModel = StakingTransactionProcessPopupViewModel(pendingStakingTx: tx)
+        popup.viewModel = viewModel
         popup.onSelectViewPool = { [weak self] in
             self?.navigationController?.popViewController(animated: true)
             self?.onSelectViewPool?()

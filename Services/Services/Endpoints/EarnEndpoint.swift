@@ -11,10 +11,11 @@ import Utilities
 
 enum EarnEndpoint {
   case listOption(chainId: String?)
-  case getEarningBalances(address: String)
+  case getEarningBalances(address: String, chainId: String?)
   case getPendingUnstakes(address: String)
   case getEarningOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String)
   case buildStakeTx(params: JSONDictionary)
+  case buildUnstakeTx(params: JSONDictionary)
 }
 
 extension EarnEndpoint: TargetType {
@@ -34,12 +35,14 @@ extension EarnEndpoint: TargetType {
       return "/v1/earning/optionDetail"
     case .buildStakeTx(params: _):
       return "/v1/earning/buildStakeTx"
+    case .buildUnstakeTx:
+        return "/v1/earning/buildUnstakeTx"
     }
   }
   
   var method: Moya.Method {
     switch self {
-      case .buildStakeTx(params: _):
+    case .buildStakeTx, .buildUnstakeTx:
       return .post
     default:
       return .get
@@ -58,10 +61,13 @@ extension EarnEndpoint: TargetType {
         json["chainID"] = chainId
       }
       return json.isEmpty ? .requestPlain : .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getEarningBalances(address: let address):
+    case .getEarningBalances(address: let address, chainId: let chainId):
       var json: JSONDictionary = [
         "address": address
       ]
+      if let chainId = chainId {
+        json["chainId"] = chainId
+      }  
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getPendingUnstakes(address: let address):
       var json: JSONDictionary = [
@@ -77,6 +83,8 @@ extension EarnEndpoint: TargetType {
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .buildStakeTx(params: let params):
+      return .requestParameters(parameters: params, encoding: JSONEncoding.default)
+    case .buildUnstakeTx(params: let params):
       return .requestParameters(parameters: params, encoding: JSONEncoding.default)
     }
   }
