@@ -61,7 +61,7 @@ class UnstakeTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
     }
     
     var destTitle: String {
-        return pendingUnstakeTx.sourceSymbol ?? ""
+        return pendingUnstakeTx.stakingTokenAmount + " " + ( pendingUnstakeTx.sourceSymbol ?? "" )
     }
     
     var hash: String {
