@@ -51,6 +51,9 @@ class UnstakeViewController: InAppBrowsingViewController {
             }
         }
     }
+    override var allowSwitchChain: Bool {
+        return false
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
