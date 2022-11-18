@@ -80,11 +80,12 @@ public extension WalletManager {
   
   func getAllAddresses(addresses: [String]) -> [KAddress] {
     let realm = try! Realm()
-    return realm.objects(AddressObject.self)
-      .filter("%K IN %@", "address", addresses)
-      .map { $0.toAddress() }
+    let kAddresses = realm.objects(AddressObject.self)
+          .filter("%K IN %@", "address", addresses + addresses.map { $0.lowercased() })
+          .map { $0.toAddress() }
+    return kAddresses.map { $0 }
   }
-  
+
   func wallet(forAddress address: KAddress) -> KWallet? {
     let realm = try! Realm()
     return realm.objects(WalletObject.self)
