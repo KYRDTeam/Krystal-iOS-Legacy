@@ -116,7 +116,7 @@ class UnstakeViewController: InAppBrowsingViewController {
     
     @IBAction func unstakeButtonTapped(_ sender: Any) {
         updateReceivedAmount()
-        if isvalidateInput() {
+        if validateInput() {
             switch unstakeButtonState {
                 case .normal:
                     openUnStakeSummary()
@@ -149,7 +149,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         receiveInfoView.setValue(value: viewModel.receivedInfoString())
     }
     
-    func isvalidateInput() -> Bool {
+    func validateInput() -> Bool {
         guard let viewModel = viewModel else { return false }
         let inputValue = amountTextField.text?.amountBigInt(decimals: 18) ?? BigInt(0)
         let convertedMax = viewModel.balance
@@ -244,7 +244,7 @@ extension UnstakeViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         updateReceivedAmount()
-        isvalidateInput()
+        validateInput()
     }
 
 }
