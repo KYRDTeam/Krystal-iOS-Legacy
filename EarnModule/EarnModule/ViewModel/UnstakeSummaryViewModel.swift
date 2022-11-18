@@ -61,7 +61,7 @@ class UnstakeSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var tokenAmountString: String {
-        return displayInfo.amount
+        return displayInfo.amount + " " + displayInfo.fromSym
     }
     
     var platformName: String {

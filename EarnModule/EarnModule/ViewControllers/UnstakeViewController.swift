@@ -11,6 +11,7 @@ import AppState
 import TransactionModule
 import BigInt
 import FittedSheets
+import Utilities
 
 enum UnstakeButtonState {
     case normal
@@ -26,7 +27,7 @@ class UnstakeViewController: InAppBrowsingViewController {
     @IBOutlet weak var tokenIcon: UIImageView!
     @IBOutlet weak var amountViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var amountView: UIView!
-    
+    @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var receiveInfoView: TxInfoView!
     @IBOutlet weak var rateView: TxInfoView!
     @IBOutlet weak var networkFeeView: TxInfoView!
@@ -114,37 +115,61 @@ class UnstakeViewController: InAppBrowsingViewController {
     }
     
     @IBAction func unstakeButtonTapped(_ sender: Any) {
-        switch unstakeButtonState {
-            case .normal:
-                openUnStakeSummary()
-            default:
-                approve()
+        updateReceivedAmount()
+        if validateInput() {
+            switch unstakeButtonState {
+                case .normal:
+                    openUnStakeSummary()
+                default:
+                    approve()
+            }
         }
     }
     
-    func showError() {
+    func showError(msg: String) {
         amountView.shakeViewError()
         amountViewBottomConstraint.constant = 54
         receiveTimeView.isHidden = true
+        errorLabel.text = msg
+        errorLabel.isHidden = false
     }
     
     func hideError() {
         amountView.removeError()
         amountViewBottomConstraint.constant = 24
         receiveTimeView.isHidden = false
+        errorLabel.text = ""
+        errorLabel.isHidden = false
     }
     
     func updateReceivedAmount() {
         guard let viewModel = viewModel else { return }
         let inputValue = amountTextField.text?.amountBigInt(decimals: 18) ?? BigInt(0)
-        if inputValue > viewModel.balance {
-            showError()
-            return
-        } else {
-            hideError()
-        }
         viewModel.unstakeValue = inputValue
         receiveInfoView.setValue(value: viewModel.receivedInfoString())
+    }
+    
+    func validateInput() -> Bool {
+        guard let viewModel = viewModel else { return false }
+        let inputValue = amountTextField.text?.amountBigInt(decimals: 18) ?? BigInt(0)
+        let convertedMax = viewModel.balance
+        let convertedMin = viewModel.minUnstakeAmount * BigInt(10).power(18) / viewModel.ratio
+        
+        //convert and round up last number < copy logic android>
+        let convertedMinString = String(format: "%6f", convertedMin.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).doubleValue)
+        let convertedMinDouble = convertedMinString.doubleValue
+        let inputDouble = inputValue.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).doubleValue
+        
+        if inputValue > convertedMax {
+            showError(msg: String(format: Strings.shouldNoMoreThan, NumberFormatUtils.amount(value: convertedMax, decimals: 18)) + " " + viewModel.stakingTokenSymbol)
+            return false
+        } else if inputDouble < convertedMinDouble {
+            showError(msg: String(format: Strings.shouldBeAtLeast, convertedMinString) + " " + viewModel.stakingTokenSymbol)
+            return false
+        } else {
+            hideError()
+            return true
+        }
     }
     
     func approve() {
@@ -219,6 +244,7 @@ extension UnstakeViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         updateReceivedAmount()
+        validateInput()
     }
 
 }
