@@ -37,7 +37,7 @@ class EarnListViewController: InAppBrowsingViewController {
     super.viewDidLoad()
     fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
     Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { [weak self] _ in
-        self?.fetchData(chainId: self?.currentSelectedChain == .all ? nil : self?.currentSelectedChain.getChainId())
+        self?.fetchData(chainId: self?.currentSelectedChain == .all ? nil : self?.currentSelectedChain.getChainId(), shouldShowLoading: false)
     }
     setupUI()
   }
@@ -66,13 +66,16 @@ class EarnListViewController: InAppBrowsingViewController {
     self.tableView.reloadData()
   }
   
-  func fetchData(chainId: Int? = nil) {
+  func fetchData(chainId: Int? = nil, shouldShowLoading: Bool = true) {
     self.displayDataSource.forEach { viewModel in
       viewModel.isExpanse = false
     }
     reloadUI()
     let service = EarnServices()
-    showLoading()
+    if shouldShowLoading {
+        showLoading()
+    }
+    
     var chainIdString: String?
     if let chainId = chainId {
       chainIdString = "\(chainId)"
@@ -89,7 +92,11 @@ class EarnListViewController: InAppBrowsingViewController {
 
       self.dataSource = data
       self.displayDataSource = data
-      self.hideLoading()
+      
+        
+      if shouldShowLoading {
+        self.hideLoading()
+      }
       self.reloadUI()
     }
   }
