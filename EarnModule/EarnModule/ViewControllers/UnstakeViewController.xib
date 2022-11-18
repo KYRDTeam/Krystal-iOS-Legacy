@@ -28,6 +28,7 @@
                 <outlet property="availableUnstakeValue" destination="Hvr-2v-Cae" id="hIc-Cc-amm"/>
                 <outlet property="chainButton" destination="ttY-jz-PFc" id="qh6-OT-Zsv"/>
                 <outlet property="chainIcon" destination="Vq2-OZ-KMi" id="8HW-Ci-7tE"/>
+                <outlet property="errorLabel" destination="utK-f4-eqE" id="baN-g3-yiB"/>
                 <outlet property="networkFeeView" destination="y6A-ga-6bJ" id="7sT-R1-ZF0"/>
                 <outlet property="rateView" destination="XsL-2l-Vff" id="P0B-oy-tCM"/>
                 <outlet property="receiveInfoView" destination="DdX-MI-5M5" id="K8R-B8-K91"/>
@@ -260,6 +261,12 @@
                         <action selector="unstakeButtonTapped:" destination="-1" eventType="touchUpInside" id="OK1-rS-pFg"/>
                     </connections>
                 </button>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="utK-f4-eqE">
+                    <rect key="frame" x="31" y="281.33333333333331" width="31" height="16.666666666666686"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                    <color key="textColor" name="textRedColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
@@ -277,9 +284,11 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="jxF-2d-6ta" secondAttribute="trailing" constant="17" id="Whj-0N-zP4"/>
                 <constraint firstItem="SQp-ti-rCR" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="YN5-Id-HE7"/>
                 <constraint firstItem="jxF-2d-6ta" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="17" id="YhP-rc-2rF"/>
+                <constraint firstItem="utK-f4-eqE" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="31" id="ZAL-ys-A06"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="wFc-Tg-Mi2" secondAttribute="trailing" constant="19" id="ZC5-72-eO3"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Hvr-2v-Cae" secondAttribute="trailing" constant="32" id="abw-mY-BYs"/>
                 <constraint firstItem="Hvr-2v-Cae" firstAttribute="top" secondItem="wFc-Tg-Mi2" secondAttribute="bottom" constant="19" id="dbe-GJ-y9Z"/>
+                <constraint firstItem="utK-f4-eqE" firstAttribute="top" secondItem="jxF-2d-6ta" secondAttribute="bottom" constant="11" id="djY-eH-FAO"/>
                 <constraint firstItem="u1U-LM-sz2" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="28" id="rRE-lS-hby"/>
                 <constraint firstItem="Hvr-2v-Cae" firstAttribute="centerY" secondItem="SzS-8L-7lc" secondAttribute="centerY" id="tYm-en-ccG"/>
                 <constraint firstItem="OZD-CW-5ls" firstAttribute="top" secondItem="jxF-2d-6ta" secondAttribute="bottom" constant="24" id="yJJ-DW-5hu"/>
@@ -304,6 +313,9 @@
         </namedColor>
         <namedColor name="normalTextColor">
             <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textRedColor">
+            <color red="0.95686274509803926" green="0.33333333333333331" blue="0.19607843137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="toolbarBgColor">
             <color red="0.13333333333333333" green="0.13333333333333333" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

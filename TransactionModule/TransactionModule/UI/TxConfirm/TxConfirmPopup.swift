@@ -55,11 +55,19 @@ public class TxConfirmPopup: UIViewController {
         viewModel.onSelectOpenSetting = { [weak self] in
             guard let self = self else { return }
             
-            TransactionSettingPopup.show(on: self, chain: .eth) { settingObject in
+            TransactionSettingPopup.show(on: self, chain: self.viewModel.chain, currentSetting: self.viewModel.setting) { settingObject in
                 self.viewModel.onSettingChanged(settingObject: settingObject)
             }
 
         }
+        
+        viewModel.onDataChanged = { [weak self] in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
+        
+        viewModel.onViewLoaded()
     }
     
     public override func viewWillLayoutSubviews() {
