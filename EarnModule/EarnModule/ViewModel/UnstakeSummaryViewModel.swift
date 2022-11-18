@@ -75,7 +75,7 @@ class UnstakeSummaryViewModel: TxConfirmViewModelProtocol {
     
     var rows: [TxInfoRowData] {
         return [
-            .init(title: Strings.youWillReceive, value: displayInfo.receiveAmount),
+            .init(title: Strings.youWillReceive, value: displayInfo.receiveAmount + " " + displayInfo.toSym),
             .init(title: Strings.rate, value: displayInfo.rate),
             .init(title: Strings.networkFee, value: displayInfo.fee),
         ]
