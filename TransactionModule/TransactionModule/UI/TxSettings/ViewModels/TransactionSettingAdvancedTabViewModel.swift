@@ -30,11 +30,11 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
     }
     
     var priorityText: String {
-        return priorityFee.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1)
+        return NumberFormatUtils.gwei(value: priorityFee)
     }
     
     var maxFeeText: String {
-        return maxFee.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1)
+        return NumberFormatUtils.gwei(value: maxFee)
     }
     
     var nonceText: String {
