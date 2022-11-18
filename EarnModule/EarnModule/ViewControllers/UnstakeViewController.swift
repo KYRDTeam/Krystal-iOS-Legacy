@@ -85,7 +85,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         }
         networkFeeView.setInfo(title: Strings.networkFee, value: viewModel.transactionFeeString())
         receiveTimeView.setInfo(title: viewModel.timeForUnstakeString(), value: "")
-        unstakePlatformLabel.text = Strings.unstake + " " + viewModel.stakingTokenSymbol + " on " + viewModel.platform.name
+        unstakePlatformLabel.text = Strings.unstake + " " + viewModel.stakingTokenSymbol + " on " + viewModel.platform.name.uppercased()
         tokenIcon.setImage(urlString: viewModel.stakingTokenLogo, symbol: viewModel.stakingTokenSymbol)
         viewModel.onGasSettingUpdated = { [weak self] in
             self?.updateUIGasFee()

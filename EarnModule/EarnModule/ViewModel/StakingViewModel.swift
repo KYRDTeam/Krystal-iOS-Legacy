@@ -138,8 +138,12 @@ class StakingViewModel: BaseViewModel {
         return "\(feeETHString) \(feeUSDString)"
     }
     
+    var isUsingQuoteToken: Bool {
+        return token.address.lowercased() == currentChain.customRPC().quoteTokenAddress.lowercased()
+    }
+    
     var maxStakableAmount: BigInt {
-        if token.address.lowercased() == currentChain.customRPC().quoteTokenAddress.lowercased() {
+        if isUsingQuoteToken {
             return max(0, balance.value - transactionFee)
         }
         return balance.value
@@ -169,27 +173,8 @@ class StakingViewModel: BaseViewModel {
     }
     
     var buildTxRequestParams: JSONDictionary {
-        var earningType: String = selectedPlatform.type
-        if token.symbol.lowercased() == "MATIC".lowercased() {
-            earningType = "stakingMATIC"
-        }
-        var params: JSONDictionary = [
-            "tokenAmount": amount.value.description,
-            "chainID": chainId,
-            "earningType": earningType,
-            "platform": selectedPlatform.name,
-            "userAddress": AppState.shared.currentAddress.addressString,
-            "tokenAddress": token.address
-        ]
-        if selectedPlatform.name.lowercased() == "ankr" {
-            var useC = false
-            if selectedEarningToken.value?.symbol.suffix(1).description.lowercased() == "c" {
-                useC = true
-            }
-            
-            params["extraData"] = ["ankr": ["useTokenC": useC]]
-        }
-        return params
+        let paramBuilder = EarnParamBuilderFactory.create(platform: .init(name: selectedPlatform.name))
+        return paramBuilder.buildStakingTxParam(amount: amount.value, token: token, chainID: chainId, platform: selectedPlatform, earningToken: selectedEarningToken.value)
     }
     
     var displayAmountReceive: String {
