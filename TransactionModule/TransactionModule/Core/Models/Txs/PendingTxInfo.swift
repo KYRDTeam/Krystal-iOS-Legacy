@@ -12,6 +12,7 @@ import Services
 public enum TxType {
     case earn
     case approval
+    case claimStakingReward
     case unstake
 }
 
@@ -22,16 +23,14 @@ open class PendingTxInfo {
     public var chain: ChainType
     public var date: Date
     public var hash: String
-    public var nonce: Int
     
-    public init(type: TxType, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: ChainType, date: Date, hash: String, nonce: Int) {
+    public init(type: TxType, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: ChainType, date: Date, hash: String) {
         self.type = type
         self.legacyTx = legacyTx
         self.eip1559Tx = eip1559Tx
         self.chain = chain
         self.date = date
         self.hash = hash
-        self.nonce = nonce
     }
     
     open var description: String {

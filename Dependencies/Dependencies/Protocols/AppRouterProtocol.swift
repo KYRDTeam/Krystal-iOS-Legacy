@@ -22,4 +22,5 @@ public protocol AppRouterProtocol {
     func openExternalURL(url: String)
     func openSupportURL()
     func openToken(symbol: String)
+    func openTxHash(txHash: String, chainID: Int)
 }

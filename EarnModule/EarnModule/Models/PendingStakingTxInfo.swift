@@ -17,13 +17,13 @@ class PendingStakingTxInfo: PendingTxInfo {
     var sourceAmount: String
     var destAmount: String
     
-    init(token: Token, platform: EarnPlatform, selectedDestToken: EarningToken, sourceAmount: String, destAmount: String, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: BaseWallet.ChainType, date: Date, hash: String, nonce: Int) {
+    init(token: Token, platform: EarnPlatform, selectedDestToken: EarningToken, sourceAmount: String, destAmount: String, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: BaseWallet.ChainType, date: Date, hash: String) {
         self.platform = platform
         self.token = token
         self.selectedDestToken = selectedDestToken
         self.sourceAmount = sourceAmount
         self.destAmount = destAmount
-        super.init(type: .earn, legacyTx: legacyTx, eip1559Tx: eip1559Tx, chain: chain, date: date, hash: hash, nonce: nonce)
+        super.init(type: .earn, legacyTx: legacyTx, eip1559Tx: eip1559Tx, chain: chain, date: date, hash: hash)
     }
     
     override var destSymbol: String? {

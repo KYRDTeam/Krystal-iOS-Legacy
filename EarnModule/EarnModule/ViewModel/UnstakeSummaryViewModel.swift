@@ -34,7 +34,6 @@ class UnstakeSummaryViewModel: TxConfirmViewModelProtocol {
     let txObject: TxObject
     var service: EthereumNodeService!
     var converter: TxObjectConverter!
-
     
     init(setting: TxSettingObject, txObject: TxObject, platform: Platform, displayInfo: UnstakeDisplayInfo) {
         self.setting = setting
@@ -88,6 +87,8 @@ class UnstakeSummaryViewModel: TxConfirmViewModelProtocol {
     var onSuccess: (TransactionModule.PendingTxInfo) -> Void = { _ in }
     
     var onSelectOpenSetting: (() -> ())? = nil
+    
+    var onDataChanged: (() -> ())?
     
     func onTapConfirm() {
         sendTransaction()
