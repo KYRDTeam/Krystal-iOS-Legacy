@@ -43,6 +43,7 @@ class UnstakeViewModel: BaseViewModel {
     var stakingTokenAllowance: BigInt = BigInt(0)
     var contractAddress: String?
     var minUnstakeAmount: BigInt = BigInt(0)
+    var maxUnstakeAmount: BigInt = BigInt(0)
     var showRevertedRate: Bool = false
     var quoteTokenDetail: TokenDetailInfo?
     weak var delegate: UnstakeViewModelDelegate?
@@ -162,7 +163,9 @@ class UnstakeViewModel: BaseViewModel {
                 if let earningToken = detail.earningTokens.first(where: { $0.address.lowercased() == self.stakingTokenAddress.lowercased() }) {
                     self.contractAddress = detail.poolAddress
                     let minAmount = detail.validation?.minUnstakeAmount ?? 0
-                    self.minUnstakeAmount = BigInt(minAmount * pow(10.0, 18.0)) ?? BigInt(0)
+                    self.minUnstakeAmount = BigInt(minAmount * pow(10.0, 18.0))
+                    let maxAmount = detail.validation?.maxUnstakeAmount ?? 0
+                    self.maxUnstakeAmount = BigInt(minAmount * pow(10.0, 18.0))
                     self.checkNeedApprove(earningToken: earningToken, completion: completion)
                 } else {
                     completion()

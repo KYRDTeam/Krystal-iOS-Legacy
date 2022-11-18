@@ -96,4 +96,5 @@ struct Strings {
     static let maticUnstakeTime = "matic.unstake.time".toBeLocalised()
     static let solUnstakeTime = "sol.unstake.time".toBeLocalised()
     static let youWillReceiveYourIn = "you.will.receive.your.in".toBeLocalised()
+    static let yourStakingBalanceIsNotSufficient = "your.staking.balance.is.not.suffcient".toBeLocalised()
 }
