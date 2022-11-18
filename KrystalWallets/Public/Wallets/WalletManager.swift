@@ -150,10 +150,15 @@ public extension WalletManager {
       let address = AddressObject(walletID: wallet.id, addressType: addressType, address: account.address, name: name)
       
       let existedAddresses = self.getAllAddresses(addresses: [account.address])
-      
-      guard existedAddresses.isEmpty else {
-        throw WalletManagerError.duplicatedWallet
-      }
+        
+        if existedAddresses.count > 0, !existedAddresses[0].isWatchWallet {
+            throw WalletManagerError.duplicatedWallet
+        }
+        
+        existedAddresses.forEach { address in
+            try? removeAddress(address: address)
+        }
+        
       let realm = try! Realm()
       try realm.write {
         realm.add(wallet)
@@ -180,9 +185,14 @@ public extension WalletManager {
       
       let existedAddresses = self.getAllAddresses(addresses: [address])
       
-      guard existedAddresses.isEmpty else {
-        throw WalletManagerError.duplicatedWallet
-      }
+        if existedAddresses.count > 0, !existedAddresses[0].isWatchWallet {
+            throw WalletManagerError.duplicatedWallet
+        }
+        
+        existedAddresses.forEach { address in
+            try? removeAddress(address: address)
+        }
+        
       let realm = try! Realm()
       try realm.write {
         realm.add(wallet)
@@ -208,9 +218,14 @@ public extension WalletManager {
       
       let existedAddresses = self.getAllAddresses(addresses: addresses.map(\.address))
       
-      guard existedAddresses.isEmpty else {
-        throw WalletManagerError.duplicatedWallet
-      }
+        if existedAddresses.count > 0, !existedAddresses[0].isWatchWallet {
+            throw WalletManagerError.duplicatedWallet
+        }
+        
+        existedAddresses.forEach { address in
+            try? removeAddress(address: address)
+        }
+        
       let realm = try! Realm()
       try realm.write {
         realm.add(walletObject)
