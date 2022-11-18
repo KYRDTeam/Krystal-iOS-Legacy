@@ -56,6 +56,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         super.viewDidLoad()
         initializeData()
         setupUI()
+        updateUINextButton()
     }
     
     func initializeData() {
@@ -112,6 +113,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         viewModel.unstakeValue = viewModel.balance
         amountTextField.text = viewModel.unstakeValueString()
         receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.toTokenSymbol)
+        updateUINextButton()
     }
     
     @IBAction func unstakeButtonTapped(_ sender: Any) {
@@ -169,6 +171,17 @@ class UnstakeViewController: InAppBrowsingViewController {
         } else {
             hideError()
             return true
+        }
+    }
+    
+    private func updateUINextButton() {
+        let inputValue = amountTextField.text?.amountBigInt(decimals: 18) ?? .zero
+        if inputValue.isZero {
+            unstakeButton.alpha = 0.2
+            unstakeButton.isEnabled = false
+        } else {
+            unstakeButton.alpha = 1
+            unstakeButton.isEnabled = true
         }
     }
     
@@ -245,6 +258,7 @@ extension UnstakeViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         updateReceivedAmount()
         validateInput()
+        updateUINextButton()
     }
 
 }
