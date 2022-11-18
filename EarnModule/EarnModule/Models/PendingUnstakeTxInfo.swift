@@ -31,7 +31,7 @@ class PendingUnstakeTxInfo: PendingTxInfo {
         self.toTokenSymbol = toTokenSymbol
         self.stakingTokenLogo = stakingTokenLogo
         self.toTokenLogo = toTokenLogo
-        super.init(type: .unstake, legacyTx: legacyTx, eip1559Tx: eip1559Tx, chain: chain, date: date, hash: hash, nonce: nonce)
+        super.init(type: .unstake, legacyTx: legacyTx, eip1559Tx: eip1559Tx, chain: chain, date: date, hash: hash)
     }
 
     override var destSymbol: String? {

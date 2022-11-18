@@ -13,6 +13,7 @@ import AppState
 import Utilities
 import Services
 import DesignSystem
+import TransactionModule
 import SwipeCellKit
 
 protocol StakingPortfolioViewControllerDelegate: class {
@@ -156,6 +157,19 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     viewModel.chainID = nil
     reloadUI()
   }
+    
+    func requestClaim(pendingUnstake: PendingUnstake) {
+        let viewModel = StakingConfirmClaimPopupViewModel(pendingUnstake: pendingUnstake)
+        TxConfirmPopup.show(onViewController: self, withViewModel: viewModel) { [weak self] pendingTx in
+            let vc = ClaimTxStatusPopup.instantiateFromNib()
+            vc.onOpenPortfolio = { [weak self] in
+                self?.viewModel.requestData()
+            }
+            vc.viewModel = ClaimTxStatusViewModel(pendingTx: pendingTx as! PendingClaimTxInfo)
+            self?.present(vc, animated: true)
+        }
+    }
+    
 }
 
 extension StakingPortfolioViewController: SkeletonTableViewDataSource {
@@ -177,6 +191,11 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
         self.showBottomBannerView(message: cm.timeForUnstakeString())
     }
     cell.chainImageView.isHidden = viewModel.chainID != nil
+      cell.claimTapped = { [weak self] in
+          guard let self = self else { return }
+          guard let pendingUnstake = cm.pendingUnstake else { return }
+          self.requestClaim(pendingUnstake: pendingUnstake)
+      }
     return cell
   }
   
@@ -203,8 +222,9 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
 }
 
 extension StakingPortfolioViewController: SkeletonTableViewDelegate {
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+      
   }
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
