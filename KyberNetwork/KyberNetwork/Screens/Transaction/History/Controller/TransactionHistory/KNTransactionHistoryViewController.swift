@@ -4,8 +4,9 @@ import UIKit
 import SwipeCellKit
 import Swinject
 import KrystalWallets
+import BaseModule
 
-class KNTransactionHistoryViewController: KNBaseViewController {
+class KNTransactionHistoryViewController: BaseWalletOrientedViewController {
 
   weak var delegate: KNHistoryViewControllerDelegate?
   var viewModel: KNTransactionHistoryViewModel!
@@ -14,7 +15,6 @@ class KNTransactionHistoryViewController: KNBaseViewController {
   @IBOutlet weak var transactionsTextLabel: UILabel!
   @IBOutlet weak var pageContainer: UIView!
   @IBOutlet weak var filterButton: UIButton!
-  @IBOutlet weak var walletSelectButton: UIButton!
   @IBOutlet weak var segmentedControl: SegmentedControl!
   
   let pageViewController: UIPageViewController = {
@@ -68,8 +68,6 @@ class KNTransactionHistoryViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.setupNavigationBar()
     self.filterButton.rounded(radius: 10)
-    self.walletSelectButton.rounded(radius: self.walletSelectButton.frame.size.height / 2)
-    self.walletSelectButton.setTitle(self.viewModel.address.addressString, for: .normal)
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
     segmentedControl.selectedSegmentIndex = viewModel.hasPendingTransactions ? 1 : 0
   }
@@ -93,12 +91,11 @@ class KNTransactionHistoryViewController: KNBaseViewController {
     pageViewController.setViewControllers([childListViewControllers[sender.selectedSegmentIndex]], direction: direction, animated: true)
   }
   
-  @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
-    viewModel.didTapSelectWallet()
-  }
+//  @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
+//    viewModel.didTapSelectWallet()
+//  }
   
   func updateWallet(address: KAddress) {
-    self.walletSelectButton.setTitle(address.addressString, for: .normal)
     self.childListViewControllers.forEach { $0.updateAddress(address: address) }
   }
 }
