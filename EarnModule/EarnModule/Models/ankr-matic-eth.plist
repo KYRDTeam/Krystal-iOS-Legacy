@@ -12,7 +12,7 @@
 		<key>question</key>
 		<string>Is there any risk from staking, like slashing or any penalties?</string>
 		<key>answer</key>
-		<string>&lt;p&gt;The only risk for stakers is missing out on rewards any time a validator they staked with is slashed. Slashing is a protocol-level penalty associated with a validator failure if it validates an invalid transaction or goes offline. The delegated staked token is not slashed &amp;mdash; slashing impacts only the self-stake of the validator. Ankr only delegates to trusted and reputable validator nodes to avoid any validator that would act maliciously.&lt;br&gt;&lt;br&gt;&lt;/p&gt;</string>
+		<string>&lt;p&gt;The only risk for stakers is missing out on rewards any time a validator they staked with is slashed. Slashing is a protocol-level penalty associated with a validator failure if it validates an invalid transaction or goes offline. The delegated staked token is not slashed &amp;mdash; slashing impacts only the self-stake of the validator. Ankr only delegates to trusted and reputable validator nodes to avoid any validator that would act maliciously.&lt;/p&gt;</string>
 	</dict>
 	<dict>
 		<key>question</key>
@@ -26,9 +26,7 @@
 		<key>answer</key>
 		<string>&lt;p&gt;aMATICb rewards arrive in your wallet with every rebase. Rebasing occurs daily.&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
-&lt;p&gt;aMATICc rewards are built into the token. Effectively, your rewards accumulate daily as aMATICc grows in value to the staked token.&lt;/p&gt;
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;
-&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;</string>
+&lt;p&gt;aMATICc rewards are built into the token. Effectively, your rewards accumulate daily as aMATICc grows in value to the staked token.&lt;/p&gt;</string>
 	</dict>
 	<dict>
 		<key>question</key>
