@@ -173,8 +173,8 @@ class UnstakeViewController: InAppBrowsingViewController {
         if inputValue > convertedMaxBalance {
             showError(msg: Strings.yourStakingBalanceIsNotSufficient)
             return false
-        } else if inputValue > convertedMax, convertedMax > 0 {
-            showError(msg: String(format: Strings.shouldNoMoreThan, convertedMax.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18)) + " " + viewModel.stakingTokenSymbol)
+        } else if inputValue > convertedMax, convertedMax > BigInt(0) {
+            showError(msg: String(format: Strings.shouldNoMoreThan, NumberFormatUtils.amount(value: convertedMax, decimals: 18)) + " " + viewModel.stakingTokenSymbol)
             return false
         }  else if inputDouble < convertedMinDouble {
             showError(msg: String(format: Strings.shouldBeAtLeast, convertedMinString) + " " + viewModel.stakingTokenSymbol)
