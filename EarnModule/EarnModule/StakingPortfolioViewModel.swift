@@ -68,18 +68,23 @@ class StakingPortfolioViewModel {
     dataSource.value = (output, pending)
   }
   
-  func requestData() {
-      isLoading.value = true
+    func requestData(shouldShowLoading: Bool = true) {
+      if shouldShowLoading {
+        isLoading.value = true
+      }
+      
       let chainIdString: String? = AppState.shared.currentChain == . all ? nil : "\(AppState.shared.currentChain.getChainId())"
       apiService.getStakingPortfolio(address: AppState.shared.currentAddress.addressString, chainId: chainIdString) { result in
-      self.isLoading.value = false
-      switch result {
-      case .success(let portfolio):
-        self.portfolio = portfolio
-        self.reloadDataSource()
-      case .failure(let error):
-        self.error.value = error
-      }
+          if shouldShowLoading {
+              self.isLoading.value = false
+          }
+          switch result {
+          case .success(let portfolio):
+            self.portfolio = portfolio
+            self.reloadDataSource()
+          case .failure(let error):
+            self.error.value = error
+          }
     }
   }
 }
