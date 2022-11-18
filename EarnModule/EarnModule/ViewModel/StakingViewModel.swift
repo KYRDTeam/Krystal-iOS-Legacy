@@ -137,6 +137,13 @@ class StakingViewModel: BaseViewModel {
     var displayFeeString: String {
         return "\(feeETHString) \(feeUSDString)"
     }
+    
+    var maxStakableAmount: BigInt {
+        if token.address.lowercased() == currentChain.customRPC().quoteTokenAddress.lowercased() {
+            return max(0, balance.value - transactionFee)
+        }
+        return balance.value
+    }
   
     func getGasPrice(gasType: GasSpeed) -> BigInt {
         guard let chain = ChainType.make(chainID: chainId) else { return .zero }
