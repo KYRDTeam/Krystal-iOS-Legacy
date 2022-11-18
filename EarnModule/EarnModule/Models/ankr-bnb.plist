@@ -38,7 +38,7 @@
 		<key>question</key>
 		<string>How long does it take to unstake BNB from Ankr?</string>
 		<key>answer</key>
-		<string>&lt;p&gt;You will receive the unstaked BNB after the unbonding period of up to 7–14 days.&lt;/p&gt;</string>
+		<string>&lt;p&gt;You will receive the unstaked BNB after the unbonding period of up to 7&amp;ndash;14 days&lt;/p&gt;</string>
 	</dict>
 	<dict>
 		<key>question</key>
