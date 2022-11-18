@@ -346,7 +346,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         options.expansionStyle = .selection
         options.minimumButtonWidth = 102
         options.maximumButtonWidth = 102
-        
+        options.backgroundColor = AppTheme.current.sectionBackgroundColor
         return options
     }
 }
