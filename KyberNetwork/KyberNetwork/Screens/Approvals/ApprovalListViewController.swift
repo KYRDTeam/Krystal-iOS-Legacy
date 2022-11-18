@@ -262,7 +262,7 @@ extension ApprovalListViewController: SwipeTableViewCellDelegate {
         options.expansionStyle = .selection
         options.minimumButtonWidth = 84
         options.maximumButtonWidth = 84
-        
+        options.backgroundColor = AppTheme.current.mainViewBackgroundColor
         return options
     }
 }
