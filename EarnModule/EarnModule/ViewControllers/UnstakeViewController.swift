@@ -130,6 +130,7 @@ class UnstakeViewController: InAppBrowsingViewController {
                     openUnStakeSummary()
                 default:
                     approve()
+                    unstakeButtonState = .disable
             }
         }
     }

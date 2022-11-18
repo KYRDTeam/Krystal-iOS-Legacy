@@ -38,6 +38,7 @@ class UnstakeViewModel: BaseViewModel {
     let stakingTokenAddress: String
     let stakingTokenLogo: String
     let toTokenLogo: String
+    let stakingTokenDecimal: Int
     let toUnderlyingTokenAddress: String
     var stakingTokenAllowance: BigInt = BigInt(0)
     var contractAddress: String?
@@ -92,6 +93,7 @@ class UnstakeViewModel: BaseViewModel {
         self.chain = ChainType.make(chainID: earningBalance.chainID) ?? AppState.shared.currentChain
         self.toUnderlyingTokenAddress = earningBalance.toUnderlyingToken.address
         self.stakingTokenAddress = earningBalance.stakingToken.address
+        self.stakingTokenDecimal = earningBalance.stakingToken.decimals
         self.stakingTokenLogo = earningBalance.stakingToken.logo
         self.toTokenLogo = earningBalance.toUnderlyingToken.logo
     }
