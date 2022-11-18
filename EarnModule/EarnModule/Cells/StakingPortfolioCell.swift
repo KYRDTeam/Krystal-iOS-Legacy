@@ -30,7 +30,7 @@ struct StakingPortfolioCellModel {
   init(earnBalance: EarningBalance) {
     self.isInProcess = false
     self.tokenLogo = earnBalance.toUnderlyingToken.logo
-    self.chainLogo = ChainType.eth.chainIcon()//ChainType.make(chainID: earnBalance.chainID)?.chainIcon()
+    self.chainLogo = ChainType.make(chainID: earnBalance.chainID)?.chainIcon()
     self.platformLogo = earnBalance.platform.logo
     self.displayAPYValue = StringFormatter.percentString(value: earnBalance.apy / 100)
     self.displayDepositedValue = (BigInt(earnBalance.stakingToken.balance)?.shortString(decimals: earnBalance.stakingToken.decimals) ?? "---") + " " + earnBalance.stakingToken.symbol
@@ -45,7 +45,7 @@ struct StakingPortfolioCellModel {
       self.pendingUnstake = pendingUnstake
     self.isInProcess = true
     self.tokenLogo = pendingUnstake.logo
-    self.chainLogo = ChainType.eth.chainIcon()//ChainType.make(chainID: pendingUnstake.chainID ?? 1)?.chainIcon()
+    self.chainLogo = ChainType.make(chainID: pendingUnstake.chainID ?? 1)?.chainIcon()
     self.platformLogo = pendingUnstake.platform.logo
     self.displayAPYValue = "---"
     self.displayDepositedValue = (BigInt(pendingUnstake.balance)?.shortString(decimals: pendingUnstake.decimals) ?? "---") + " " + pendingUnstake.symbol
