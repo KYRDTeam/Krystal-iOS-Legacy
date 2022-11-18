@@ -25,6 +25,7 @@ struct StakingPortfolioCellModel {
   
   let isInProcess: Bool
   let isClaimable: Bool
+      var pendingUnstake: PendingUnstake?
   
   init(earnBalance: EarningBalance) {
     self.isInProcess = false
@@ -41,6 +42,7 @@ struct StakingPortfolioCellModel {
   }
   
   init(pendingUnstake: PendingUnstake) {
+      self.pendingUnstake = pendingUnstake
     self.isInProcess = true
     self.tokenLogo = pendingUnstake.logo
     self.chainLogo = ChainType.eth.chainIcon()//ChainType.make(chainID: pendingUnstake.chainID ?? 1)?.chainIcon()
@@ -96,7 +98,9 @@ class StakingPortfolioCell: SwipeTableViewCell {
   @IBOutlet weak var depositTitleLabelContraintWithAPYTitle: NSLayoutConstraint!
   @IBOutlet weak var apyTitleLabel: UILabel!
   @IBOutlet weak var balanceTitleLabel: UILabel!
+
   var onTapHint: (() -> Void)? = nil
+  var claimTapped: (() -> ())?
   
   func updateCellModel(_ model: StakingPortfolioCellModel) {
     tokenImageView.loadImage(model.tokenLogo)
@@ -129,6 +133,6 @@ class StakingPortfolioCell: SwipeTableViewCell {
   }
   
   @IBAction func claimButtonTapped(_ sender: UIButton) {
-    //TODO: process next sprint
+      claimTapped?()
   }
 }
