@@ -65,6 +65,9 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     let currentChain = AppState.shared.currentChain
     viewModel.chainID = AppState.shared.isSelectedAllChain ? nil : currentChain.getChainId()
     viewModel.requestData()
+    Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { [weak self] _ in
+        self?.viewModel.requestData()
+    }
   }
   
   override func viewWillAppear(_ animated: Bool) {
