@@ -49,3 +49,4 @@
 "matic.unstake.time" = "3-4 days";
 "sol.unstake.time" = "2-3 days";
 "you.will.receive.your.in" = "You will receive your %@ in %@";
+"use.amount.of.quote.token.for.fee.message" = "A small amount of %@ will be used for transaction fee";
