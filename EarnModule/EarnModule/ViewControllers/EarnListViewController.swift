@@ -36,6 +36,9 @@ class EarnListViewController: InAppBrowsingViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
+    Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { [weak self] _ in
+        self?.fetchData(chainId: self?.currentSelectedChain == .all ? nil : self?.currentSelectedChain.getChainId())
+    }
     setupUI()
   }
   
@@ -182,7 +185,7 @@ extension EarnListViewController: SkeletonTableViewDelegate, SkeletonTableViewDa
   }
 
   func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 5
+    return 2
   }
 
   func collectionSkeletonView(_ skeletonView: UITableView, skeletonCellForRowAt indexPath: IndexPath) -> UITableViewCell? {
