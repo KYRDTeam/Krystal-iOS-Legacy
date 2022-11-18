@@ -66,6 +66,9 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     let currentChain = AppState.shared.currentChain
     viewModel.chainID = AppState.shared.isSelectedAllChain ? nil : currentChain.getChainId()
     viewModel.requestData()
+    Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { [weak self] _ in
+        self?.viewModel.requestData(shouldShowLoading: false)
+    }
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -346,7 +349,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         options.expansionStyle = .selection
         options.minimumButtonWidth = 102
         options.maximumButtonWidth = 102
-        
+        options.backgroundColor = AppTheme.current.sectionBackgroundColor
         return options
     }
 }

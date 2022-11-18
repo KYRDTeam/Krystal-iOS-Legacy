@@ -219,8 +219,9 @@ public class ApproveTokenViewController: KNBaseViewController {
   }
   
   func sendApprove() {
+    self.showLoadingHUD()
     self.viewModel.sendApproveRequest(value: TransactionConstants.maxTokenAmount) { error in
-      self.dismiss(animated: true)
+      self.hideLoading()
       if error != nil {
         if let onFailApprove = self.onFailApprove {
           onFailApprove()
@@ -230,6 +231,7 @@ public class ApproveTokenViewController: KNBaseViewController {
           onSuccessApprove()
         }
       }
+      self.dismiss(animated: true)
     }
   }
   
