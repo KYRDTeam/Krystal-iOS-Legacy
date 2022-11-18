@@ -104,4 +104,5 @@ struct Strings {
     static let maticUnstakeTime = "matic.unstake.time".toBeLocalised()
     static let solUnstakeTime = "sol.unstake.time".toBeLocalised()
     static let youWillReceiveYourIn = "you.will.receive.your.in".toBeLocalised()
+    static let amountQuoteTokenUsedForFee = "use.amount.of.quote.token.for.fee.message".toBeLocalised()
 }

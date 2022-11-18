@@ -138,8 +138,12 @@ class StakingViewModel: BaseViewModel {
         return "\(feeETHString) \(feeUSDString)"
     }
     
+    var isUsingQuoteToken: Bool {
+        return token.address.lowercased() == currentChain.customRPC().quoteTokenAddress.lowercased()
+    }
+    
     var maxStakableAmount: BigInt {
-        if token.address.lowercased() == currentChain.customRPC().quoteTokenAddress.lowercased() {
+        if isUsingQuoteToken {
             return max(0, balance.value - transactionFee)
         }
         return balance.value
