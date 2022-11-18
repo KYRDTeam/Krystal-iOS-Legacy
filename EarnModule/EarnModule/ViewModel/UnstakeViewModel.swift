@@ -143,6 +143,9 @@ class UnstakeViewModel: BaseViewModel {
         } else if toTokenSymbol.lowercased() == "SOL".lowercased() && isLido {
             time =  Strings.solUnstakeTime
         }
+        if time.isEmpty {
+            return ""
+        }
         return String(format: Strings.youWillReceiveYourIn, toTokenSymbol, time)
     }
 
