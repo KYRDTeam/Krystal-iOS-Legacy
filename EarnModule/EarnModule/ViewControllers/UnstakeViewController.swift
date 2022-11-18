@@ -51,6 +51,9 @@ class UnstakeViewController: InAppBrowsingViewController {
             }
         }
     }
+    override var allowSwitchChain: Bool {
+        return false
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +70,7 @@ class UnstakeViewController: InAppBrowsingViewController {
             viewModel.fetchData {
                 self.hideLoading()
             }
+            viewModel.getQuoteTokenPrice()
         }
     }
     
@@ -82,9 +86,13 @@ class UnstakeViewController: InAppBrowsingViewController {
         }
         networkFeeView.setInfo(title: Strings.networkFee, value: viewModel.transactionFeeString())
         receiveTimeView.setInfo(title: viewModel.timeForUnstakeString(), value: "")
-        unstakePlatformLabel.text = Strings.unstake + " " + viewModel.stakingTokenSymbol + " on " + viewModel.platform.name
+        unstakePlatformLabel.text = Strings.unstake + " " + viewModel.stakingTokenSymbol + " on " + viewModel.platform.name.uppercased()
         tokenIcon.setImage(urlString: viewModel.stakingTokenLogo, symbol: viewModel.stakingTokenSymbol)
         viewModel.onGasSettingUpdated = { [weak self] in
+            self?.updateUIGasFee()
+        }
+        
+        viewModel.onFetchedQuoteTokenPrice = { [weak self] in
             self?.updateUIGasFee()
         }
     }
@@ -124,6 +132,7 @@ class UnstakeViewController: InAppBrowsingViewController {
                     openUnStakeSummary()
                 default:
                     approve()
+                    unstakeButtonState = .disable
             }
         }
     }
@@ -154,18 +163,22 @@ class UnstakeViewController: InAppBrowsingViewController {
     func validateInput() -> Bool {
         guard let viewModel = viewModel else { return false }
         let inputValue = amountTextField.text?.amountBigInt(decimals: 18) ?? BigInt(0)
-        let convertedMax = viewModel.balance
+        let convertedMaxBalance = viewModel.balance
         let convertedMin = viewModel.minUnstakeAmount * BigInt(10).power(18) / viewModel.ratio
+        let convertedMax = viewModel.maxUnstakeAmount * BigInt(10).power(18) / viewModel.ratio
         
         //convert and round up last number < copy logic android>
         let convertedMinString = String(format: "%6f", convertedMin.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).doubleValue)
         let convertedMinDouble = convertedMinString.doubleValue
         let inputDouble = inputValue.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).doubleValue
         
-        if inputValue > convertedMax {
+        if inputValue > convertedMaxBalance {
+            showError(msg: Strings.yourStakingBalanceIsNotSufficient)
+            return false
+        } else if inputValue > convertedMax, convertedMax > BigInt(0) {
             showError(msg: String(format: Strings.shouldNoMoreThan, NumberFormatUtils.amount(value: convertedMax, decimals: 18)) + " " + viewModel.stakingTokenSymbol)
             return false
-        } else if inputDouble < convertedMinDouble {
+        }  else if inputDouble < convertedMinDouble {
             showError(msg: String(format: Strings.shouldBeAtLeast, convertedMinString) + " " + viewModel.stakingTokenSymbol)
             return false
         } else {

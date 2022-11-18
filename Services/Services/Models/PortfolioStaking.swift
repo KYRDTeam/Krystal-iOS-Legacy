@@ -93,6 +93,7 @@ public struct EarnOptionValidation: Codable {
     public var minStakeAmount: Double?
     public var maxStakeAmount: Double?
     public var minUnstakeAmount: Double?
+    public var maxUnstakeAmount: Double?
     public var stakeInterval: Double?
 }
 
