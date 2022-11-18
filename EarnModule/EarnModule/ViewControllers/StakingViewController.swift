@@ -335,6 +335,11 @@ class StakingViewController: InAppBrowsingViewController {
         amountTextField.text = NumberFormatUtils.amount(value: viewModel.maxStakableAmount, decimals: viewModel.token.decimals)
         showWarningInvalidAmountDataIfNeeded()
         viewModel.requestBuildStakeTx()
+        if viewModel.isUsingQuoteToken {
+            showSuccessTopBannerMessage(
+                message: String(format: Strings.amountQuoteTokenUsedForFee, viewModel.currentChain.quoteToken())
+            )
+        }
     }
     
     @IBAction func nextButtonTapped(_ sender: UIButton) {
