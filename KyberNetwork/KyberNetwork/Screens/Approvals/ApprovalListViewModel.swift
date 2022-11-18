@@ -67,8 +67,7 @@ class ApprovalListViewModel {
     var totalAllowanceString: String?
     var sendingRequest: Cancellable?
     
-    @UserDefault(key: "user_has_interact_approval", defaultValue: false)
-    var userHasInteractApproval: Bool
+    var userHasInteractApproval: Bool = false
     
     var isRevokeAllowed: Bool {
         return !AppState.shared.currentAddress.isWatchWallet
