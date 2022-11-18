@@ -18,7 +18,7 @@
 		<key>question</key>
 		<string>What is the minimum and maximum amount of MATIC I can stake?</string>
 		<key>answer</key>
-		<string>&lt;p&gt;The only risk for stakers is missing out on rewards any time a validator they staked with is slashed. Slashing is a protocol-level penalty associated with a validator failure if it validates an invalid transaction or goes offline. The delegated staked token is not slashed &amp;mdash; slashing impacts only the self-stake of the validator. Ankr only delegates to trusted and reputable validator nodes to avoid any validator that would act maliciously.&lt;br&gt;&lt;br&gt;&lt;/p&gt;</string>
+		<string>&lt;p&gt;The minimum amount to stake is 1 MATIC, and there is no maximum cap on the amount of MATIC you can stake.&lt;/p&gt;</string>
 	</dict>
 	<dict>
 		<key>question</key>
