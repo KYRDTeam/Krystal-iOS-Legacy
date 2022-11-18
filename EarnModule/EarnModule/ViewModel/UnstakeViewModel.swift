@@ -12,6 +12,7 @@ import Utilities
 import TransactionModule
 import AppState
 import Dependencies
+import BaseModule
 
 protocol UnstakeViewModelDelegate: class {
     func didGetDataSuccess()
@@ -19,7 +20,7 @@ protocol UnstakeViewModelDelegate: class {
     func didGetDataFail(errMsg: String)
 }
 
-class UnstakeViewModel {
+class UnstakeViewModel: BaseViewModel {
     let displayDepositedValue: String
     let ratio: BigInt
     let stakingTokenSymbol: String
@@ -42,6 +43,7 @@ class UnstakeViewModel {
     var contractAddress: String?
     var minUnstakeAmount: BigInt = BigInt(0)
     var showRevertedRate: Bool = false
+    var quoteTokenDetail: TokenDetailInfo?
     weak var delegate: UnstakeViewModelDelegate?
     
     let apiService = EarnServices()
@@ -68,8 +70,17 @@ class UnstakeViewModel {
         }
         return params
     }
+    var quoteTokenUsdPrice: Double {
+        return quoteTokenDetail?.markets["usd"]?.price ?? 0
+    }
+    var feeUSDString: String {
+        let usd = setting.transactionFee(chain: chain) * BigInt(quoteTokenUsdPrice * pow(10, 18)) / BigInt(10).power(18)
+        let valueString = NumberFormatUtils.gasFee(value: usd)
+        return " (~ $\(valueString))"
+    }
     var txObject: TxObject?
     var onGasSettingUpdated: (() -> ())?
+    var onFetchedQuoteTokenPrice: (() -> ())?
 
     init(earningBalance: EarningBalance) {
         self.displayDepositedValue = (BigInt(earningBalance.stakingToken.balance)?.shortString(decimals: earningBalance.stakingToken.decimals) ?? "---") + " " + earningBalance.stakingToken.symbol
@@ -136,7 +147,7 @@ class UnstakeViewModel {
     }
 
     func transactionFeeString() -> String {
-        return NumberFormatUtils.gasFee(value: setting.transactionFee(chain: chain)) + " " + AppState.shared.currentChain.quoteToken()
+        return NumberFormatUtils.gasFee(value: setting.transactionFee(chain: chain)) + " " + AppState.shared.currentChain.quoteToken() + feeUSDString
     }
     
     func fetchData(completion: @escaping () -> ()) {
@@ -211,5 +222,15 @@ class UnstakeViewModel {
         }
         setting.basic?.gasLimit = gasLimit
         onGasSettingUpdated?()
+    }
+}
+
+extension UnstakeViewModel {
+    func getQuoteTokenPrice() {
+        let tokenService = TokenService()
+        tokenService.getTokenDetail(address: currentChain.customRPC().quoteTokenAddress, chainPath: currentChain.customRPC().apiChainPath) { [weak self] tokenDetail in
+            self?.quoteTokenDetail = tokenDetail
+            self?.onFetchedQuoteTokenPrice?()
+        }
     }
 }

@@ -66,6 +66,7 @@ class UnstakeViewController: InAppBrowsingViewController {
             viewModel.fetchData {
                 self.hideLoading()
             }
+            viewModel.getQuoteTokenPrice()
         }
     }
     
@@ -84,6 +85,10 @@ class UnstakeViewController: InAppBrowsingViewController {
         unstakePlatformLabel.text = Strings.unstake + " " + viewModel.stakingTokenSymbol + " on " + viewModel.platform.name
         tokenIcon.setImage(urlString: viewModel.stakingTokenLogo, symbol: viewModel.stakingTokenSymbol)
         viewModel.onGasSettingUpdated = { [weak self] in
+            self?.updateUIGasFee()
+        }
+        
+        viewModel.onFetchedQuoteTokenPrice = { [weak self] in
             self?.updateUIGasFee()
         }
     }
