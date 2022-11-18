@@ -30,6 +30,14 @@
 "not.enough.min.stake.amount" = "Should be at least %@";
 "higher.than.max.stake.amount" = "Should be no more than %@";
 "should.be.interval.of" = "Value must be multiple of %@";
+"confirm.claim" = "Confirm Claim";
+"you.are.claiming" = "You are claiming";
+"confirm" = "Confirm";
+"default.error.message" = "Something went wrong, please try again later";
+"claim.in.progress" = "Claim In Progress";
+"my.portfolio" = "My Portfolio";
+"close" = "Close";
+"edit" = "Edit";
 "staking.in.progress" = "Staking In Progress";
 "unstake.in.progress" = "Unstaking In Progress";
 "approve.in.progress" = "Approving In Progress";

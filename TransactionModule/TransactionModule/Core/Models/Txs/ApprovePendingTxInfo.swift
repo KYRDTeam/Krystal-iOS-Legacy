@@ -16,9 +16,8 @@ class ApprovePendingTxInfo: PendingTxInfo {
   public init(legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: ChainType, date: Date, hash: String, nonce: Int, walletAddress: String, contractAddress: String) {
     self.walletAddress = walletAddress
     self.contractAddress = contractAddress
-    super.init(type: .approval, legacyTx: legacyTx, eip1559Tx: eip1559Tx, chain: chain, date: date, hash: hash, nonce: nonce)
+    super.init(type: .approval, legacyTx: legacyTx, eip1559Tx: eip1559Tx, chain: chain, date: date, hash: hash)
   }
-  
   
   override public var destSymbol: String? {
       return contractAddress

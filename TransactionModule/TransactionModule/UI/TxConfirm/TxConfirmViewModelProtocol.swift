@@ -12,6 +12,7 @@ import UIKit
 
 public protocol TxConfirmViewModelProtocol: AnyObject {
     var title: String { get }
+    var setting: TxSettingObject { get }
     var chain: ChainType { get }
     var action: String { get }
     var tokenIconURL: String { get }
@@ -23,12 +24,18 @@ public protocol TxConfirmViewModelProtocol: AnyObject {
     var onError: (String) -> Void { get set }
     var onSuccess: (PendingTxInfo) -> Void { get set }
     var onSelectOpenSetting: (() -> ())? { get set }
+    var onDataChanged: (() -> ())? { get set }
     
+    func onViewLoaded()
     func onTapConfirm()
     func onSettingChanged(settingObject: TxSettingObject)
 }
 
 public extension TxConfirmViewModelProtocol {
+    
+    func onViewLoaded() {
+        
+    }
     
     var chainIcon: UIImage {
         return chain.squareIcon()
