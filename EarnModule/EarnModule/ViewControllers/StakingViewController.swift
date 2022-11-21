@@ -14,6 +14,7 @@ import DesignSystem
 import Dependencies
 import TransactionModule
 import FittedSheets
+import AppState
 
 typealias ProjectionValue = (value: String, usd: String)
 typealias ProjectionValues = (p30: ProjectionValue, p60: ProjectionValue, p90: ProjectionValue)
@@ -261,6 +262,12 @@ class StakingViewController: InAppBrowsingViewController {
             self.updateUIGasFee()
         }
         viewModel.nextButtonStatus.observeAndFire(on: self) { value in
+            guard !AppState.shared.isBrowsingMode else {
+                self.nextButton.setTitle(String(format: Strings.connectWallet, self.viewModel.token.symbol), for: .normal)
+                self.nextButton.alpha = 1
+                self.nextButton.isEnabled = true
+                return
+            }
             switch value {
             case .notApprove:
                 self.nextButton.setTitle(String(format: Strings.cheking, self.viewModel.token.symbol), for: .normal)
@@ -343,6 +350,10 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     @IBAction func nextButtonTapped(_ sender: UIButton) {
+        guard !AppState.shared.isBrowsingMode else {
+          onAddWalletButtonTapped(sender)
+          return
+        }
         guard viewModel.isChainValid else {
             let chainType = ChainType.make(chainID: viewModel.chainId) ?? .eth
             let alertController = KNPrettyAlertController(
