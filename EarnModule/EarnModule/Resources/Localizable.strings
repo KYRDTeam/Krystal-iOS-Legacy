@@ -62,7 +62,8 @@
 "your.staking.balance.is.not.suffcient" = "Your staking balance is not sufficient";
 "connect.wallet" = "Connect Wallet";
 "insufficient.quote.balance" = "Insufficient %@ balance";
-"supply" = "supply";
+
+"supply" = "Supply";
 "withdraw" = "Withdraw";
 
 "stake.x.on.y" = "Stake %@ on %@";
