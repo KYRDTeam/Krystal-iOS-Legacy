@@ -73,8 +73,7 @@ class StakingPortfolioViewModel {
         isLoading.value = true
       }
       
-      let chainIdString: String? = AppState.shared.currentChain == . all ? nil : "\(AppState.shared.currentChain.getChainId())"
-      apiService.getStakingPortfolio(address: AppState.shared.currentAddress.addressString, chainId: chainIdString) { result in
+      apiService.getStakingPortfolio(address: AppState.shared.currentAddress.addressString, chainId: nil) { result in
           if shouldShowLoading {
               self.isLoading.value = false
           }
