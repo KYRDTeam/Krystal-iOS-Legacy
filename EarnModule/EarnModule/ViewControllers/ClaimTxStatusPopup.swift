@@ -55,6 +55,7 @@ class ClaimTxStatusPopup: UIViewController {
             self?.titleLabel.text = self?.viewModel.statusString
             self?.loadingView.isHidden = self?.viewModel.isInProgress == false
             self?.statusIconImageView.isHidden = self?.viewModel.isInProgress == true
+            self?.primaryButton.setTitle(self?.viewModel.primaryButtonTitle, for: .normal)
         }
     }
     
@@ -102,13 +103,17 @@ class ClaimTxStatusPopup: UIViewController {
     @IBAction func primaryButtonTapped(sender: UIButton) {
         switch viewModel.status {
         case .processing:
-            AppDependencies.router.openTxHash(txHash: viewModel.hashString, chainID: viewModel.pendingTx.pendingUnstake.chainID)
+            dismiss(animated: true) {
+                AppDependencies.router.openTxHash(txHash: self.viewModel.hashString, chainID: self.viewModel.pendingTx.pendingUnstake.chainID)
+            }
         case .success:
             dismiss(animated: true) { [weak self] in
                 self?.onOpenPortfolio?()
             }
         case .failure:
-            AppDependencies.router.openSupportURL()
+            dismiss(animated: true) {
+                AppDependencies.router.openSupportURL()
+            }
         }
     }
     
