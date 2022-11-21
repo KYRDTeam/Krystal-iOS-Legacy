@@ -15,6 +15,7 @@ import Services
 import DesignSystem
 import TransactionModule
 import SwipeCellKit
+import FittedSheets
 
 protocol StakingPortfolioViewControllerDelegate: class {
     func didSelectPlatform(token: Token, platform: EarnPlatform, chainId: Int)
@@ -160,7 +161,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     viewModel.chainID = nil
     reloadUI()
   }
-    
+  
     func requestClaim(pendingUnstake: PendingUnstake) {
         let viewModel = StakingConfirmClaimPopupViewModel(pendingUnstake: pendingUnstake)
         TxConfirmPopup.show(onViewController: self, withViewModel: viewModel) { [weak self] pendingTx in
@@ -169,7 +170,8 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
                 self?.viewModel.requestData()
             }
             vc.viewModel = ClaimTxStatusViewModel(pendingTx: pendingTx as! PendingClaimTxInfo)
-            self?.present(vc, animated: true)
+            let sheet = SheetViewController(controller: vc, sizes: [.intrinsic], options: .init(pullBarHeight: 0))
+            self?.present(sheet, animated: true)
         }
     }
     

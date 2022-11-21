@@ -404,7 +404,7 @@ public class EthereumNodeService {
         }
     }
     
-    func getQuoteBalanace(address: String, completion: @escaping (Result<Balance, AnyError>) -> Void) {
+    public func getQuoteBalanace(address: String, completion: @escaping (Result<Balance, AnyError>) -> Void) {
         let request = EtherServiceAlchemyRequest(batch: BatchFactory().create(BalanceRequest(address: address)), chain: chain)
         Session.send(request) { result in
             switch result {

@@ -226,6 +226,10 @@ public extension ChainType {
   func quoteToken() -> String {
     return self.customRPC().quoteToken
   }
+    
+  func quoteTokenAddress() -> String {
+    return self.customRPC().quoteTokenAddress
+  }
   
   static func make(chainID: Int) -> ChainType? {
     return ChainType.getAllChain().first { $0.getChainId() == chainID }

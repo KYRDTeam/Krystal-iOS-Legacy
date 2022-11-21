@@ -60,3 +60,4 @@
 "use.amount.of.quote.token.for.fee.message" = "A small amount of %@ will be used for transaction fee";
 "your.staking.balance.is.not.suffcient" = "Your staking balance is not sufficient";
 "connect.wallet" = "Connect Wallet";
+"insufficient.quote.balance" = "Insufficient %@ balance";
