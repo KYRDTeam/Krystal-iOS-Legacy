@@ -121,6 +121,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         viewModel.unstakeValue = viewModel.balance
         amountTextField.text = viewModel.unstakeValueString()
         receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.toTokenSymbol)
+        validateInput()
         updateUINextButton()
     }
     
@@ -169,7 +170,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         
         //convert and round up last number < copy logic android>
         let convertedMinString = String(format: "%6f", convertedMin.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).doubleValue)
-        let convertedMinDouble = convertedMinString.doubleValue
+        let convertedMinDouble = Double(convertedMinString) ?? 0
         let inputDouble = inputValue.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).doubleValue
         
         if inputValue > convertedMaxBalance {
@@ -179,7 +180,7 @@ class UnstakeViewController: InAppBrowsingViewController {
             showError(msg: String(format: Strings.shouldNoMoreThan, NumberFormatUtils.amount(value: convertedMax, decimals: 18)) + " " + viewModel.stakingTokenSymbol)
             return false
         }  else if inputDouble < convertedMinDouble {
-            showError(msg: String(format: Strings.shouldBeAtLeast, convertedMinString) + " " + viewModel.stakingTokenSymbol)
+            showError(msg: String(format: Strings.shouldBeAtLeast, NumberFormatUtils.amount(value: convertedMin, decimals: 18)) + " " + viewModel.stakingTokenSymbol)
             return false
         } else {
             hideError()
@@ -269,6 +270,7 @@ extension UnstakeViewController: UnstakeViewModelDelegate {
 extension UnstakeViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let text = textField.text, !text.isEmpty else { return }
         updateReceivedAmount()
         validateInput()
         updateUINextButton()

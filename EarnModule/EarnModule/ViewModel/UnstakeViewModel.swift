@@ -165,7 +165,7 @@ class UnstakeViewModel: BaseViewModel {
                     let minAmount = detail.validation?.minUnstakeAmount ?? 0
                     self.minUnstakeAmount = BigInt(minAmount * pow(10.0, 18.0))
                     let maxAmount = detail.validation?.maxUnstakeAmount ?? 0
-                    self.maxUnstakeAmount = BigInt(minAmount * pow(10.0, 18.0))
+                    self.maxUnstakeAmount = BigInt(maxAmount * pow(10.0, 18.0))
                     self.checkNeedApprove(earningToken: earningToken, completion: completion)
                 } else {
                     completion()
