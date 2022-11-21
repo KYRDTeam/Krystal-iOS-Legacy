@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -32,11 +32,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="psj-iT-vNr">
-            <rect key="frame" x="0.0" y="0.0" width="395" height="448"/>
+            <rect key="frame" x="0.0" y="0.0" width="395" height="406"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UN6-7H-iDP">
-                    <rect key="frame" x="0.0" y="44" width="395" height="404"/>
+                    <rect key="frame" x="0.0" y="44" width="395" height="362"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DOp-tG-tw6">
                             <rect key="frame" x="69" y="32" width="257" height="32"/>
@@ -88,7 +88,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VpB-ca-V1z">
-                            <rect key="frame" x="134" y="206" width="127" height="42"/>
+                            <rect key="frame" x="134" y="164" width="127" height="42"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="bnb" translatesAutoresizingMaskIntoConstraints="NO" id="f3r-0y-kkY">
                                     <rect key="frame" x="17" y="9" width="24" height="24"/>
@@ -128,7 +128,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OTh-rx-EMV">
-                            <rect key="frame" x="37" y="272" width="321" height="46"/>
+                            <rect key="frame" x="37" y="230" width="321" height="46"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="TxHash" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nll-XM-ast">
                                     <rect key="frame" x="20" y="15" width="46.5" height="16.5"/>
@@ -172,7 +172,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q6C-1G-wB1">
-                            <rect key="frame" x="205" y="342" width="153" height="38"/>
+                            <rect key="frame" x="205" y="300" width="153" height="38"/>
                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="EIh-qC-gaN"/>
@@ -191,7 +191,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Vl-Kz-4UX">
-                            <rect key="frame" x="37" y="342" width="153" height="38"/>
+                            <rect key="frame" x="37" y="300" width="153" height="38"/>
                             <color key="backgroundColor" red="0.29411764709999999" green="0.30980392159999998" blue="0.30588235289999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="fvN-TK-qok"/>
@@ -239,7 +239,7 @@
                 <constraint firstItem="UN6-7H-iDP" firstAttribute="leading" secondItem="2Jp-PE-UVx" secondAttribute="leading" id="r6Y-wl-ejh"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="148.55072463768118" y="4.6875"/>
+            <point key="canvasLocation" x="148.55072463768118" y="18.75"/>
         </view>
     </objects>
     <resources>
