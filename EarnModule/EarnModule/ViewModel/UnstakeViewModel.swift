@@ -18,6 +18,7 @@ protocol UnstakeViewModelDelegate: class {
     func didGetDataSuccess()
     func didGetDataNeedApproveToken()
     func didGetDataFail(errMsg: String)
+    func didCheckNotEnoughFeeForTx(errMsg: String)
 }
 
 class UnstakeViewModel: BaseViewModel {
@@ -31,6 +32,7 @@ class UnstakeViewModel: BaseViewModel {
         didSet {
             self.requestBuildUnstakeTx()
             self.configAllowance()
+            self.checkEnoughFeeForTx()
         }
     }
     let chain: ChainType
@@ -129,6 +131,21 @@ class UnstakeViewModel: BaseViewModel {
             return "1 \(stakingTokenSymbol) = \(ratioString) \(toTokenSymbol)"
         }
     }
+    
+    func checkEnoughFeeForTx() {
+        let fee = setting.transactionFee(chain: chain)
+        let nodeService = EthereumNodeService(chain: chain)
+        nodeService.getQuoteBalanace(address: currentAddress.addressString) { result in
+            switch result {
+            case .success(let balance):
+                if balance.value < fee {
+                    self.delegate?.didCheckNotEnoughFeeForTx(errMsg: "")
+                }
+            case .failure(let err):
+                self.delegate?.didCheckNotEnoughFeeForTx(errMsg: err.localizedDescription)
+            }
+        }
+    }
 
     func timeForUnstakeString() -> String {
         let isAnkr = platform.name.lowercased() == "ANKR".lowercased()
@@ -165,7 +182,7 @@ class UnstakeViewModel: BaseViewModel {
                     let minAmount = detail.validation?.minUnstakeAmount ?? 0
                     self.minUnstakeAmount = BigInt(minAmount * pow(10.0, 18.0))
                     let maxAmount = detail.validation?.maxUnstakeAmount ?? 0
-                    self.maxUnstakeAmount = BigInt(minAmount * pow(10.0, 18.0))
+                    self.maxUnstakeAmount = BigInt(maxAmount * pow(10.0, 18.0))
                     self.checkNeedApprove(earningToken: earningToken, completion: completion)
                 } else {
                     completion()

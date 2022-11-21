@@ -17,6 +17,7 @@ enum UnstakeButtonState {
     case normal
     case disable
     case approve
+    case insufficientFee
 }
 
 class UnstakeViewController: InAppBrowsingViewController {
@@ -44,6 +45,11 @@ class UnstakeViewController: InAppBrowsingViewController {
                 case .disable:
                     unstakeButton.isUserInteractionEnabled = false
                     unstakeButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .normal)
+                    unstakeButton.setTitle(String(format: Strings.unstakeToken,viewModel?.stakingTokenSymbol ?? ""), for: .normal)
+                case .insufficientFee:
+                    unstakeButton.isUserInteractionEnabled = false
+                    unstakeButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .normal)
+                    unstakeButton.setTitle(String(format: Strings.insufficientQuoteBalance,viewModel?.chain.quoteToken() ?? ""), for: .normal)
                 case .approve:
                     unstakeButton.isUserInteractionEnabled = true
                     unstakeButton.setBackgroundColor(AppTheme.current.primaryColor, forState: .normal)
@@ -121,6 +127,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         viewModel.unstakeValue = viewModel.balance
         amountTextField.text = viewModel.unstakeValueString()
         receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.toTokenSymbol)
+        validateInput()
         updateUINextButton()
     }
     
@@ -169,7 +176,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         
         //convert and round up last number < copy logic android>
         let convertedMinString = String(format: "%6f", convertedMin.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).doubleValue)
-        let convertedMinDouble = convertedMinString.doubleValue
+        let convertedMinDouble = Double(convertedMinString) ?? 0
         let inputDouble = inputValue.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).doubleValue
         
         if inputValue > convertedMaxBalance {
@@ -179,7 +186,7 @@ class UnstakeViewController: InAppBrowsingViewController {
             showError(msg: String(format: Strings.shouldNoMoreThan, NumberFormatUtils.amount(value: convertedMax, decimals: 18)) + " " + viewModel.stakingTokenSymbol)
             return false
         }  else if inputDouble < convertedMinDouble {
-            showError(msg: String(format: Strings.shouldBeAtLeast, convertedMinString) + " " + viewModel.stakingTokenSymbol)
+            showError(msg: String(format: Strings.shouldBeAtLeast, NumberFormatUtils.amount(value: convertedMin, decimals: 18)) + " " + viewModel.stakingTokenSymbol)
             return false
         } else {
             hideError()
@@ -208,7 +215,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         
         vc.onFailApprove = {
             self.showErrorTopBannerMessage(message: "Approve fail")
-            self.unstakeButtonState = .normal
+            self.unstakeButtonState = .approve
         }
         self.present(vc, animated: true, completion: nil)
     }
@@ -264,11 +271,20 @@ extension UnstakeViewController: UnstakeViewModelDelegate {
     func didGetDataFail(errMsg: String) {
         self.showErrorTopBannerMessage(message: errMsg)
     }
+    
+    func didCheckNotEnoughFeeForTx(errMsg: String) {
+        if errMsg.isEmpty {
+            unstakeButtonState = .insufficientFee
+        } else {
+            self.showErrorTopBannerMessage(message: errMsg)
+        }
+    }
 }
 
 extension UnstakeViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let text = textField.text, !text.isEmpty else { return }
         updateReceivedAmount()
         validateInput()
         updateUINextButton()
