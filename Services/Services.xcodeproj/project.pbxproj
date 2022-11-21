@@ -20,7 +20,7 @@
 		A64C2E4028F7C101002FD64C /* ServiceConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3F28F7C101002FD64C /* ServiceConfig.swift */; };
 		A64C2E6F28F90B00002FD64C /* MoyaProvider+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E6E28F90B00002FD64C /* MoyaProvider+.swift */; };
 		A64C2E7F28F9129A002FD64C /* Error+pretty.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E7E28F9129A002FD64C /* Error+pretty.swift */; };
-		A64C2E9328F919F3002FD64C /* EthereumWeb3Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E9228F919F3002FD64C /* EthereumWeb3Service.swift */; };
+		A64C2E9328F919F3002FD64C /* EthereumNodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E9228F919F3002FD64C /* EthereumNodeService.swift */; };
 		A64C2E9928F91ADA002FD64C /* EthereumNodeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E9828F91ADA002FD64C /* EthereumNodeRequest.swift */; };
 		A64C2E9B28F91B2B002FD64C /* RPCServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E9A28F91B2B002FD64C /* RPCServer.swift */; };
 		A64C2E9D28F91B3A002FD64C /* RPCConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E9C28F91B3A002FD64C /* RPCConfig.swift */; };
@@ -87,7 +87,7 @@
 		A64C2E3F28F7C101002FD64C /* ServiceConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceConfig.swift; sourceTree = "<group>"; };
 		A64C2E6E28F90B00002FD64C /* MoyaProvider+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoyaProvider+.swift"; sourceTree = "<group>"; };
 		A64C2E7E28F9129A002FD64C /* Error+pretty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+pretty.swift"; sourceTree = "<group>"; };
-		A64C2E9228F919F3002FD64C /* EthereumWeb3Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumWeb3Service.swift; sourceTree = "<group>"; };
+		A64C2E9228F919F3002FD64C /* EthereumNodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumNodeService.swift; sourceTree = "<group>"; };
 		A64C2E9828F91ADA002FD64C /* EthereumNodeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumNodeRequest.swift; sourceTree = "<group>"; };
 		A64C2E9A28F91B2B002FD64C /* RPCServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPCServer.swift; sourceTree = "<group>"; };
 		A64C2E9C28F91B3A002FD64C /* RPCConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPCConfig.swift; sourceTree = "<group>"; };
@@ -269,7 +269,7 @@
 			children = (
 				A64C2EAF28F91C9F002FD64C /* Command */,
 				A64C2E9E28F91BE6002FD64C /* Request */,
-				A64C2E9228F919F3002FD64C /* EthereumWeb3Service.swift */,
+				A64C2E9228F919F3002FD64C /* EthereumNodeService.swift */,
 				A64C2E9A28F91B2B002FD64C /* RPCServer.swift */,
 				A64C2E9C28F91B3A002FD64C /* RPCConfig.swift */,
 				A64C2EBC28F91CDE002FD64C /* Web3Swift.swift */,
@@ -493,7 +493,7 @@
 				A64C2E0A28F6F204002FD64C /* Rate.swift in Sources */,
 				A64C2EBD28F91CDE002FD64C /* Web3Swift.swift in Sources */,
 				A6B6FA142907D56600109740 /* Approval.swift in Sources */,
-				A64C2E9328F919F3002FD64C /* EthereumWeb3Service.swift in Sources */,
+				A64C2E9328F919F3002FD64C /* EthereumNodeService.swift in Sources */,
 				A6ED2D3C2911342600845EF2 /* GasPrice.swift in Sources */,
 				A6F6292728FD49030085AE67 /* ErrorTracker.swift in Sources */,
 				A64C2EA928F91BF1002FD64C /* KNGetTokenAllowance.swift in Sources */,

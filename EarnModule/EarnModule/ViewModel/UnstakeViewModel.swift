@@ -18,6 +18,7 @@ protocol UnstakeViewModelDelegate: class {
     func didGetDataSuccess()
     func didGetDataNeedApproveToken()
     func didGetDataFail(errMsg: String)
+    func didCheckNotEnoughFeeForTx(errMsg: String)
 }
 
 class UnstakeViewModel: BaseViewModel {
@@ -31,6 +32,7 @@ class UnstakeViewModel: BaseViewModel {
         didSet {
             self.requestBuildUnstakeTx()
             self.configAllowance()
+            self.checkEnoughFeeForTx()
         }
     }
     let chain: ChainType
@@ -127,6 +129,21 @@ class UnstakeViewModel: BaseViewModel {
         } else {
             let ratioString = NumberFormatUtils.balanceFormat(value: ratio, decimals: 18)
             return "1 \(stakingTokenSymbol) = \(ratioString) \(toTokenSymbol)"
+        }
+    }
+    
+    func checkEnoughFeeForTx() {
+        let fee = setting.transactionFee(chain: chain)
+        let nodeService = EthereumNodeService(chain: chain)
+        nodeService.getQuoteBalanace(address: currentAddress.addressString) { result in
+            switch result {
+            case .success(let balance):
+                if balance.value < fee {
+                    self.delegate?.didCheckNotEnoughFeeForTx(errMsg: "")
+                }
+            case .failure(let err):
+                self.delegate?.didCheckNotEnoughFeeForTx(errMsg: err.localizedDescription)
+            }
         }
     }
 

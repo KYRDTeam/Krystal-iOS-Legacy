@@ -17,6 +17,7 @@ enum UnstakeButtonState {
     case normal
     case disable
     case approve
+    case insufficientFee
 }
 
 class UnstakeViewController: InAppBrowsingViewController {
@@ -44,6 +45,11 @@ class UnstakeViewController: InAppBrowsingViewController {
                 case .disable:
                     unstakeButton.isUserInteractionEnabled = false
                     unstakeButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .normal)
+                    unstakeButton.setTitle(String(format: Strings.unstakeToken,viewModel?.stakingTokenSymbol ?? ""), for: .normal)
+                case .insufficientFee:
+                    unstakeButton.isUserInteractionEnabled = false
+                    unstakeButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .normal)
+                    unstakeButton.setTitle(String(format: Strings.insufficientQuoteBalance,viewModel?.chain.quoteToken() ?? ""), for: .normal)
                 case .approve:
                     unstakeButton.isUserInteractionEnabled = true
                     unstakeButton.setBackgroundColor(AppTheme.current.primaryColor, forState: .normal)
@@ -209,7 +215,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         
         vc.onFailApprove = {
             self.showErrorTopBannerMessage(message: "Approve fail")
-            self.unstakeButtonState = .normal
+            self.unstakeButtonState = .approve
         }
         self.present(vc, animated: true, completion: nil)
     }
@@ -264,6 +270,14 @@ extension UnstakeViewController: UnstakeViewModelDelegate {
     
     func didGetDataFail(errMsg: String) {
         self.showErrorTopBannerMessage(message: errMsg)
+    }
+    
+    func didCheckNotEnoughFeeForTx(errMsg: String) {
+        if errMsg.isEmpty {
+            unstakeButtonState = .insufficientFee
+        } else {
+            self.showErrorTopBannerMessage(message: errMsg)
+        }
     }
 }
 
