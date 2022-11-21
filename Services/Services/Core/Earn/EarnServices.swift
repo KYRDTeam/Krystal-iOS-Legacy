@@ -27,6 +27,8 @@ public class EarnServices: BaseService {
           jsonResults.forEach { jsonResult in
             earnPools.append(EarnPoolModel(json: jsonResult))
           }
+            
+          earnPools = earnPools.sorted(by: { return $0.tvl > $1.tvl })
           completion(earnPools)
         } else {
           completion([])
@@ -80,9 +82,11 @@ public class EarnServices: BaseService {
     }
     
     group.notify(queue: .main) {
-      let uw_eb = eb ?? []
-      let uw_pu = pu ?? []
-      completion(.success((uw_eb, uw_pu)))
+      var unwrapEarningBalances = eb ?? []
+      var unwrapPendingUnstake = pu ?? []
+      unwrapEarningBalances = unwrapEarningBalances.sorted(by: { return $0.underlyingUsd > $1.underlyingUsd })
+      unwrapPendingUnstake = unwrapPendingUnstake.sorted(by: { return $0.priceUsd > $1.priceUsd })
+      completion(.success((unwrapEarningBalances, unwrapPendingUnstake)))
     }
   }
   
