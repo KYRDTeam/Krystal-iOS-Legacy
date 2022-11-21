@@ -268,6 +268,12 @@ class StakingViewController: InAppBrowsingViewController {
                 self.nextButton.isEnabled = true
                 return
             }
+            guard !AppState.shared.currentAddress.isWatchWallet else {
+                self.nextButton.setTitle(Strings.stakeNow, for: .normal)
+                self.nextButton.alpha = 0.2
+                self.nextButton.isEnabled = false
+                return
+            }
             switch value {
             case .notApprove:
                 self.nextButton.setTitle(String(format: Strings.cheking, self.viewModel.token.symbol), for: .normal)
