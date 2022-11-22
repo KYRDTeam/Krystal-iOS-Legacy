@@ -240,7 +240,7 @@ class KNLoadBalanceCoordinator {
   }
 
   func loadTokenBalancesFromApi(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [])
     var addressString:[String] = []
     if AppDelegate.session.address.addressType == .evm {
       addressString.append("ethereum:\(AppDelegate.session.address.addressString)")
@@ -295,7 +295,7 @@ class KNLoadBalanceCoordinator {
   }
 
   func loadTotalBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [])
     let addresses = AppDelegate.session.getCurrentWalletAddresses().map(\.addressString)
     provider.requestWithFilter(.getTotalBalance(address: addresses, forceSync: forceSync, KNEnvironment.allChainPath)) { (result) in
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let data = json["data"] as? JSONDictionary, let balances = data["balances"] as? [JSONDictionary] {

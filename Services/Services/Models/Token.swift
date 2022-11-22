@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppState
 
 public struct Token: Codable, Equatable, Hashable {
     public private(set) var address: String
@@ -14,7 +15,7 @@ public struct Token: Codable, Equatable, Hashable {
     public private(set) var decimals: Int
     public private(set) var logo: String
     public private(set) var tag: String?
-    
+
     public init(dictionary: [String: Any]) {
         self.name = dictionary["name"] as? String ?? ""
         self.symbol = dictionary["symbol"] as? String ?? ""
@@ -25,7 +26,7 @@ public struct Token: Codable, Equatable, Hashable {
             self.tag = tag
         }
     }
-    
+
     public init(name: String, symbol: String, address: String, decimals: Int, logo: String) {
         self.name = name
         self.symbol = symbol
@@ -33,5 +34,13 @@ public struct Token: Codable, Equatable, Hashable {
         self.decimals = decimals
         self.logo = logo
     }
+  
+    public func isQuoteToken() -> Bool {
+        return self.symbol.lowercased() == AppState.shared.currentChain.quoteToken().lowercased()
+    }
     
+//  func getBalanceBigInt() -> BigInt {
+//    let balance = BalanceStorage.shared.balanceForAddress(self.address)
+//    return BigInt(balance?.balance ?? "") ?? BigInt(0)
+//  }
 }

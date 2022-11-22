@@ -12,6 +12,7 @@
 		A64C2E6328F87973002FD64C /* InAppBrowsingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E6228F87973002FD64C /* InAppBrowsingViewController.swift */; };
 		A6512F2B28F6CDF800A84BC2 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6512F2A28F6CDF800A84BC2 /* AppState.framework */; };
 		A673A68928FE949400270DA7 /* ChainType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A673A68828FE949400270DA7 /* ChainType+.swift */; };
+		A69E8EB6291E1452005B28CB /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EB5291E1452005B28CB /* BaseViewModel.swift */; };
 		A6B1FCF928F69CCE00894DCB /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B1FCF828F69CCE00894DCB /* BaseWallet.framework */; };
 		A6B1FCFE28F69D0600894DCB /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B1FCFD28F69D0600894DCB /* KrystalWallets.framework */; };
 		A6B1FD0128F69D3000894DCB /* BaseWalletOrientedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FD0028F69D3000894DCB /* BaseWalletOrientedViewController.swift */; };
@@ -30,6 +31,7 @@
 		A64C2E6228F87973002FD64C /* InAppBrowsingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppBrowsingViewController.swift; sourceTree = "<group>"; };
 		A6512F2A28F6CDF800A84BC2 /* AppState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A673A68828FE949400270DA7 /* ChainType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChainType+.swift"; sourceTree = "<group>"; };
+		A69E8EB5291E1452005B28CB /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		A6B1FCF828F69CCE00894DCB /* BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B1FCFD28F69D0600894DCB /* KrystalWallets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KrystalWallets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B1FD0028F69D3000894DCB /* BaseWalletOrientedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseWalletOrientedViewController.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				A6B1FD0028F69D3000894DCB /* BaseWalletOrientedViewController.swift */,
 				A6B1FD0228F69D5700894DCB /* KNBaseViewController.swift */,
 				A64C2E6228F87973002FD64C /* InAppBrowsingViewController.swift */,
+				A69E8EB5291E1452005B28CB /* BaseViewModel.swift */,
 			);
 			path = BaseViewControllers;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 				A6B1FD0328F69D5700894DCB /* KNBaseViewController.swift in Sources */,
 				A64C2DFD28F6D7DB002FD64C /* BaseCoordinator.swift in Sources */,
 				A6F6291A28FD303F0085AE67 /* UIImage.swift in Sources */,
+				A69E8EB6291E1452005B28CB /* BaseViewModel.swift in Sources */,
 				A6B1FD0128F69D3000894DCB /* BaseWalletOrientedViewController.swift in Sources */,
 				A64C2E6328F87973002FD64C /* InAppBrowsingViewController.swift in Sources */,
 			);

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7AF0F9DD3CC978A37BF121EA /* Pods_Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A24B6E36190B9757D206062 /* Pods_Utilities.framework */; };
+		7E6EBD89290937BD00069B33 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD88290937BD00069B33 /* UIFont+.swift */; };
+		7EAF476A291B695000BF5D00 /* UICollectionView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF4769291B695000BF5D00 /* UICollectionView+register.swift */; };
 		A64C2DE528F6D57A002FD64C /* BaseXibView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2DE428F6D57A002FD64C /* BaseXibView.swift */; };
 		A64C2DFA28F6D657002FD64C /* NumberFormatUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2DF928F6D657002FD64C /* NumberFormatUtils.swift */; };
 		A64C2E0128F6D833002FD64C /* UIViewController+nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E0028F6D833002FD64C /* UIViewController+nib.swift */; };
@@ -32,12 +34,16 @@
 		A6B1FD0828F69EC500894DCB /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FD0728F69EC500894DCB /* Storage.swift */; };
 		A6B1FD1728F6B40800894DCB /* UIScreen+statusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FD1628F6B40800894DCB /* UIScreen+statusBar.swift */; };
 		A6E433C428F54F6F00782F7D /* Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = A6E433C328F54F6F00782F7D /* Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C3A408142923536E008C1220 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A408132923536E008C1220 /* UIColor+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		34361B3DFDF550B35AFD80F4 /* Pods-Utilities.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Utilities.release.xcconfig"; path = "Target Support Files/Pods-Utilities/Pods-Utilities.release.xcconfig"; sourceTree = "<group>"; };
 		69F7F536D0AB43CE458A6802 /* Pods-Utilities.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Utilities.debug.xcconfig"; path = "Target Support Files/Pods-Utilities/Pods-Utilities.debug.xcconfig"; sourceTree = "<group>"; };
 		7A24B6E36190B9757D206062 /* Pods_Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E6EBD88290937BD00069B33 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
+		7EAF4769291B695000BF5D00 /* UICollectionView+register.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+register.swift"; sourceTree = "<group>"; };
+		7EAF4770291B6C1000BF5D00 /* BaseModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A64C2DE428F6D57A002FD64C /* BaseXibView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseXibView.swift; sourceTree = "<group>"; };
 		A64C2DF928F6D657002FD64C /* NumberFormatUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatUtils.swift; sourceTree = "<group>"; };
 		A64C2E0028F6D833002FD64C /* UIViewController+nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+nib.swift"; sourceTree = "<group>"; };
@@ -63,6 +69,7 @@
 		A6B1FD1628F6B40800894DCB /* UIScreen+statusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+statusBar.swift"; sourceTree = "<group>"; };
 		A6E433C028F54F6F00782F7D /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6E433C328F54F6F00782F7D /* Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
+		C3A408132923536E008C1220 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +118,7 @@
 		A6B1FD1528F6B3F100894DCB /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				7EAF4769291B695000BF5D00 /* UICollectionView+register.swift */,
 				A6B1FD1628F6B40800894DCB /* UIScreen+statusBar.swift */,
 				A64C2E0028F6D833002FD64C /* UIViewController+nib.swift */,
 				A64C2E0228F6D845002FD64C /* UITableView+register.swift */,
@@ -127,6 +135,8 @@
 				A64C2E7828F91165002FD64C /* Data+hex.swift */,
 				A64C2E8B28F91540002FD64C /* BigInt+.swift */,
 				A66846152908EA60006BBE29 /* Collection+.swift */,
+				7E6EBD88290937BD00069B33 /* UIFont+.swift */,
+				C3A408132923536E008C1220 /* UIColor+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -163,6 +173,7 @@
 		AFDE4E7B70A8BD4DF6A3B3A6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7EAF4770291B6C1000BF5D00 /* BaseModule.framework */,
 				7A24B6E36190B9757D206062 /* Pods_Utilities.framework */,
 			);
 			name = Frameworks;
@@ -280,11 +291,13 @@
 				A6B1FD0828F69EC500894DCB /* Storage.swift in Sources */,
 				A64C2E7928F91165002FD64C /* Data+hex.swift in Sources */,
 				A64C2E0328F6D845002FD64C /* UITableView+register.swift in Sources */,
+				7EAF476A291B695000BF5D00 /* UICollectionView+register.swift in Sources */,
 				A64C2E7728F9113C002FD64C /* String+number.swift in Sources */,
 				A64C2E0528F6F159002FD64C /* Observable.swift in Sources */,
 				A64C2E4228F7F3FE002FD64C /* UIView+.swift in Sources */,
 				A64C2E9128F9166C002FD64C /* StringFormatter.swift in Sources */,
 				A64C2DFA28F6D657002FD64C /* NumberFormatUtils.swift in Sources */,
+				7E6EBD89290937BD00069B33 /* UIFont+.swift in Sources */,
 				A64C2E6828F87EF2002FD64C /* String+.swift in Sources */,
 				A64C2DE528F6D57A002FD64C /* BaseXibView.swift in Sources */,
 				A64C2E7B28F911B8002FD64C /* EtherNumberFormatter.swift in Sources */,
@@ -295,6 +308,7 @@
 				A64C2E1828F6F95B002FD64C /* UIView+accessiblityID.swift in Sources */,
 				A6B1FD1728F6B40800894DCB /* UIScreen+statusBar.swift in Sources */,
 				A64C2E5D28F8779C002FD64C /* JSONDictionary.swift in Sources */,
+				C3A408142923536E008C1220 /* UIColor+.swift in Sources */,
 				A64C2E1A28F6F9EC002FD64C /* UIImage+kf.swift in Sources */,
 				A64C2E4928F7F938002FD64C /* UIButton.swift in Sources */,
 			);

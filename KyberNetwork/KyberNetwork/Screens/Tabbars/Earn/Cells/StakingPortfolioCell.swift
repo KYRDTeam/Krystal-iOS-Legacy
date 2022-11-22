@@ -120,4 +120,12 @@ class StakingPortfolioCell: UITableViewCell {
   @IBAction func claimButtonTapped(_ sender: UIButton) {
     //TODO: process next sprint
   }
+  
+  @IBAction func addButtonTapped(_ sender: UIButton) {
+    
+  }
+  
+  @IBAction func minusButtonTapped(_ sender: UIButton) {
+  }
+  
 }

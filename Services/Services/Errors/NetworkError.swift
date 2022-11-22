@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum NetworkError: Error {
+public enum NetworkError: Error {
     case backendError(reponse: ErrorResponse)
     case unknow(description: String)
     
@@ -25,7 +25,7 @@ enum NetworkError: Error {
     }
 }
 
-struct ErrorResponse: Codable {
+public struct ErrorResponse: Codable {
     let timestamp: Int
     let error: String
 }

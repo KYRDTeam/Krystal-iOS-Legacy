@@ -338,7 +338,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
         let signedData = try signer.signMessageHash(address: address, data: data, addPrefix: false)
         result = .success(signedData)
       case .personalMessage(let data):
-        let signedData = try signer.signMessageHash(address: address, data: data, addPrefix: false)
+        let signedData = try signer.signMessageHash(address: address, data: data, addPrefix: true)
         result = .success(signedData)
       case .typedMessage(let typedData):
         if typedData.isEmpty {

@@ -9,7 +9,7 @@ import Foundation
 import BaseWallet
 import UIKit
 
-extension ChainType {
+public extension ChainType {
   
   func squareIcon() -> UIImage {
     switch self {

@@ -52,7 +52,7 @@ class ClaimRewardsViewModel {
   }
 
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
-  fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.claimRewardGasLimitDefault
+  fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.earnGasLimitDefault
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var baseGasLimit: BigInt
   var txObject: TxObject

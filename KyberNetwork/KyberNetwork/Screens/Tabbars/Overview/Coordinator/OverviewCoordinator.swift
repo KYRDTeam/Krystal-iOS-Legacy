@@ -185,6 +185,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   //TODO: coordinator update balance, coordinator change wallet
   func appCoordinatorDidUpdateTokenList() {
     self.sendCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
+    self.browsingRootViewController.reloadUI()
   }
 
   func appCoordinatorTokensTransactionsDidUpdate() {

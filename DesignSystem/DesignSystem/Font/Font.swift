@@ -11,11 +11,15 @@ import UIKit
 public extension UIFont {
     
     static func karlaMedium(ofSize: CGFloat) -> UIFont {
-        return UIFont(name: "Karla-Medium", size: 14)!
+        return UIFont(name: "Karla-Medium", size: ofSize)!
     }
     
     static func karlaReguler(ofSize: CGFloat) -> UIFont {
-        return UIFont(name: "Karla-Regular", size: 14)!
+        return UIFont(name: "Karla-Regular", size: ofSize)!
     }
+  
+  static func karlaBold(ofSize: CGFloat) -> UIFont {
+      return UIFont(name: "Karla-Bold", size: ofSize)!
+  }
     
 }

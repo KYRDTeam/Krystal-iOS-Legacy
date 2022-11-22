@@ -80,7 +80,7 @@ class ExploreMenuItemViewModel {
     
     var isNewFeature: Bool {
         switch item {
-        case .approvals:
+        case .approvals, .stake:
             return true
         default:
             return false

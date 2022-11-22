@@ -11,7 +11,7 @@ import BaseWallet
 
 public class TokenService: BaseService {
     
-    let provider = MoyaProvider<TokenEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<TokenEndpoint>(plugins: [])
     
     public func getTokenDetail(address: String, chainPath: String, completion: @escaping (TokenDetailInfo?) -> ()) {
         provider.request(.getTokenDetail(chainPath: chainPath, address: address)) { result in

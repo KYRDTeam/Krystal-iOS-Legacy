@@ -12,6 +12,10 @@ import Dependencies
 import BigInt
 import Utilities
 
+public extension Notification.Name {
+    static let kGasPriceUpdated = Notification.Name("kGasPriceUpdated")
+}
+
 public class GasPriceManager {
     
     public static let shared = GasPriceManager()
@@ -29,28 +33,43 @@ public class GasPriceManager {
     }
     
     func fetchAllNetworkGasPrice() {
+        let group = DispatchGroup()
         ChainType.allCases.forEach { chain in
-            fetchGasPrice(chain: chain)
+            group.enter()
+            fetchGasPrice(chain: chain) {
+                group.leave()
+            }
+        }
+        group.notify(queue: .main) {
+            NotificationCenter.default.post(name: .kGasPriceUpdated, object: nil)
         }
     }
     
-    func fetchGasPrice(chain: ChainType) {
+    func fetchGasPrice(chain: ChainType, completion: @escaping () -> ()) {
         gasService.getGasPrice(chain: chain) { [weak self] gasResponse in
             if let gasResponse = gasResponse {
                 self?.gasConfig[chain] = gasResponse
             }
+            completion()
         }
     }
     
 }
 
 extension GasPriceManager: GasConfig {
+    public var defaultApproveGasLimit: BigInt {
+        return BigInt(160_000)
+    }
     
     public var defaultExchangeGasLimit: BigInt {
         return BigInt(650_000)
     }
     public var defaultTransferGasLimit: BigInt {
         return BigInt(180_000)
+    }
+  
+    public var earnGasLimitDefault: BigInt {
+        BigInt(1_140_000)
     }
     
     public func getLowGasPrice(chain: ChainType) -> BigInt {
@@ -94,6 +113,36 @@ extension GasPriceManager: GasConfig {
     
     public func getBaseFee(chain: ChainType) -> BigInt? {
         return gasConfig[chain]?.baseFee?.shortBigInt(units: UnitConfiguration.gasPriceUnit)
+    }
+    
+}
+
+public extension GasPriceManager {
+    
+    func getGasPrice(gasType: GasSpeed, chain: ChainType) -> BigInt {
+        switch gasType {
+        case .slow:
+            return getLowGasPrice(chain: chain)
+        case .regular:
+            return getStandardGasPrice(chain: chain)
+        case .fast:
+            return getFastGasPrice(chain: chain)
+        case .superFast:
+            return getSuperFastGasPrice(chain: chain)
+        }
+    }
+    
+    func getPriority(gasType: GasSpeed, chain: ChainType) -> BigInt? {
+        switch gasType {
+        case .slow:
+            return getLowPriorityFee(chain: chain)
+        case .regular:
+            return getStandardPriorityFee(chain: chain)
+        case .fast:
+            return getFastPriorityFee(chain: chain)
+        case .superFast:
+            return getSuperFastPriorityFee(chain: chain)
+        }
     }
     
 }

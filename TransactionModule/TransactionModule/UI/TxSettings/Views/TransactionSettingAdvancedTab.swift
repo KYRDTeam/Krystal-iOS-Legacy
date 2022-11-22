@@ -75,8 +75,16 @@ class TransactionSettingAdvancedTab: UIViewController {
     
     func updateSettings(settings: TxSettingObject) {
         viewModel.setting = settings
+        resetUI()
         reloadEstimatedGasUI()
         reloadSettingUI()
+    }
+    
+    func resetUI() {
+        gasLimitField?.text = viewModel.gasLimitText
+        priorityField?.text = viewModel.priorityText
+        maxFeeField?.text = viewModel.maxFeeText
+        nonceField?.text = viewModel.nonceText
     }
     
     func reloadEstimatedGasUI() {
@@ -109,6 +117,11 @@ class TransactionSettingAdvancedTab: UIViewController {
         viewModel.updateNonce(value: value)
         onUpdateSettings?(viewModel.setting)
         reloadNonceUI()
+    }
+    
+    func onGasPriceUpdated() {
+        resetUI()
+        reloadEstimatedGasUI()
     }
     
     func reloadSettingUI() {

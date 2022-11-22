@@ -24,6 +24,7 @@ public protocol ThemeProtocol {
     var errorTextColor: UIColor { get }
     var warningTextColor: UIColor { get }
     var infoTextColor: UIColor { get }
+    var orangeColor: UIColor { get }
 }
 
 

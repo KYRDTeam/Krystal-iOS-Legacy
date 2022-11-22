@@ -12,6 +12,7 @@ import APIKit
 import JSONRPCKit
 import Web3
 import BaseWallet
+import AppState
 
 public class EthereumNodeService {
     
@@ -43,31 +44,31 @@ public class EthereumNodeService {
         }
     }
     
-    func getAllowance(for address: String, networkAddress: String, tokenAddress: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
-//        if tokenAddress == chain.quoteTokenObject().address {
-//            completion(.success(BigInt(2).power(255)))
-//            return
-//        }
-//        self.getTokenAllowanceEncodeData(for: address, networkAddress: networkAddress) { dataResult in
-//            switch dataResult {
-//            case .success(let data):
-//                let callRequest = CallRequest(to: tokenAddress, data: data)
-//                let request = EthereumNodeRequest(
-//                    batch: BatchFactory().create(callRequest),
-//                    nodeURL: self.baseURL
-//                )
-//                Session.send(request) { getAllowanceResult in
-//                    switch getAllowanceResult {
-//                    case .success(let data):
-//                        self.getTokenAllowanceDecodeData(data, completion: completion)
-//                    case .failure(let error):
-//                        completion(.failure(AnyError(error)))
-//                    }
-//                }
-//            case .failure(let error):
-//                completion(.failure(error))
-//            }
-//        }
+    public func getAllowance(for address: String, networkAddress: String, tokenAddress: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+      if tokenAddress.lowercased() == AppState.shared.currentChain.customRPC().quoteTokenAddress.lowercased() {
+            completion(.success(BigInt(2).power(255)))
+            return
+        }
+        self.getTokenAllowanceEncodeData(for: address, networkAddress: networkAddress) { dataResult in
+            switch dataResult {
+            case .success(let data):
+                let callRequest = CallRequest(to: tokenAddress, data: data)
+                let request = EthereumNodeRequest(
+                    batch: BatchFactory().create(callRequest),
+                    nodeURL: self.baseURL
+                )
+                Session.send(request) { getAllowanceResult in
+                    switch getAllowanceResult {
+                    case .success(let data):
+                        self.getTokenAllowanceDecodeData(data, completion: completion)
+                    case .failure(let error):
+                        completion(.failure(AnyError(error)))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
     
     func getTokenAllowanceEncodeData(for address: String, networkAddress: String, completion: @escaping (Result<String, AnyError>) -> Void) {
@@ -338,18 +339,106 @@ public class EthereumNodeService {
             }
         }
     }
-    //
-    //  private func valueToSend(_ transaction: UnconfirmedTransaction) -> BigInt {
-    //    return transaction.transferType.isETHTransfer() ? transaction.value : BigInt(0)
-    //  }
-    //
-    //  private func addressToSend(_ transaction: UnconfirmedTransaction) -> String? {
-    //    switch transaction.transferType {
-    //    case .ether:
-    //      return transaction.to
-    //    case .token(let token):
-    //      return token.contract
-    //    }
-    //  }
-    //
+    
+    func getTokenBalanceEncodeData(for address: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+        let request = GetERC20BalanceEncode(address: address)
+        web3?.request(request: request) { result in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(AnyError(error)))
+            }
+        }
+    }
+    
+    func getTokenBalanceDecodeData(from balance: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+        if balance == "0x" {
+            // Fix: Can not decode 0x to uint
+            completion(.success(BigInt(0)))
+            return
+        }
+        let request = GetERC20BalanceDecode(data: balance)
+        web3?.request(request: request) { result in
+            switch result {
+            case .success(let res):
+                completion(.success(BigInt(res) ?? BigInt()))
+            case .failure(let error):
+                completion(.failure(AnyError(error)))
+            }
+        }
+    }
+    
+    public func getEstimateGasLimit(request: KNEstimateGasLimitRequest, chain: ChainType, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+        Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request), chain: chain)) { result in
+            switch result {
+            case .success(let value):
+                var limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+                limit += (limit * 20 / 100)
+                completion(.success(limit))
+            case .failure(let error):
+                completion(.failure(AnyError(error)))
+            }
+        }
+    }
+    
+    public func getBalance(address: String, tokenAddress: String, completion: @escaping (BigInt) -> ()) {
+        if tokenAddress.lowercased() == chain.customRPC().quoteTokenAddress.lowercased() {
+            getQuoteBalanace(address: address) { result in
+                switch result {
+                case .success(let balance):
+                    completion(balance.value)
+                case .failure:
+                    completion(0)
+                }
+            }
+        } else {
+            getTokenBalance(address: address, tokenAddress: tokenAddress) { result in
+                switch result {
+                case .success(let balance):
+                    completion(balance)
+                case .failure:
+                    completion(0)
+                }
+            }
+        }
+    }
+    
+    public func getQuoteBalanace(address: String, completion: @escaping (Result<Balance, AnyError>) -> Void) {
+        let request = EtherServiceAlchemyRequest(batch: BatchFactory().create(BalanceRequest(address: address)), chain: chain)
+        Session.send(request) { result in
+            switch result {
+            case .success(let balance):
+                completion(.success(balance))
+            case .failure(let error):
+                completion(.failure(AnyError(error)))
+            }
+        }
+    }
+    
+    func getTokenBalance(address: String, tokenAddress: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+        guard !address.isEmpty else {
+            completion(.success(BigInt(0)))
+            return
+        }
+        self.getTokenBalanceEncodeData(for: address) { encodeResult in
+            switch encodeResult {
+            case .success(let data):
+                let request = EtherServiceAlchemyRequest(batch: BatchFactory().create(CallRequest(to: tokenAddress, data: data)), chain: self.chain)
+                Session.send(request) { result in
+                    switch result {
+                    case .success(let balance):
+                        self.getTokenBalanceDecodeData(from: balance, completion: completion)
+                    case .failure(let error):
+                        completion(.failure(AnyError(error)))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+
+    
 }

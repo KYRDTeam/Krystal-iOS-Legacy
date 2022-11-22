@@ -7,6 +7,7 @@
 
 import Foundation
 
+typealias BlankBlock = () -> Void
 public class BaseService {
     
     public init() {

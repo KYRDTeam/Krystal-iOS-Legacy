@@ -7,6 +7,7 @@
 
 import Foundation
 import KrystalWallets
+import UIKit
 
 public enum ChainType: Codable, CaseIterable {
     case all
@@ -173,7 +174,19 @@ public extension ChainType {
     }
     
     func getChainId() -> Int {
-        return self.customRPC().chainID
+        switch self {
+        case .all:
+            return 0
+        default:
+            return self.customRPC().chainID
+        }
+    }
+  
+    func chainIcon() -> UIImage? {
+        if self == .all {
+          return UIImage(named: "chain_all_icon")
+        }
+        return UIImage(named: self.customRPC().chainIcon)
     }
     
     func chainName() -> String {
@@ -209,6 +222,47 @@ public extension ChainType {
             return true
         }
     }
+  
+  func quoteToken() -> String {
+    return self.customRPC().quoteToken
+  }
+    
+  func quoteTokenAddress() -> String {
+    return self.customRPC().quoteTokenAddress
+  }
+  
+  static func make(chainID: Int) -> ChainType? {
+    return ChainType.getAllChain().first { $0.getChainId() == chainID }
+  }
+  
+  static func getAllChain(includeAll: Bool = false) -> [ChainType] {
+    var allChains = ChainType.allCases
+
+//    if KNEnvironment.default == .production {
+//      allChains = allChains.filter { $0 != .ropsten && $0 != .bscTestnet && $0 != .polygonTestnet && $0 != .avalancheTestnet }
+//    }
+//
+//    let shouldShowAurora = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.auroraChainIntegration)
+//    if !shouldShowAurora && KNGeneralProvider.shared.currentChain != .aurora {
+//      allChains = allChains.filter { $0 != .aurora }
+//    }
+//
+//    let shouldShowSolana = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.solanaChainIntegration)
+//    if !shouldShowSolana && KNGeneralProvider.shared.currentChain != .solana {
+//      allChains = allChains.filter { $0 != .solana }
+//    }
+//
+//    let shouldShowKlaytn = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.klaytnChainIntegration)
+//    if !shouldShowKlaytn && KNGeneralProvider.shared.currentChain != .klaytn {
+//      allChains = allChains.filter { $0 != .klaytn }
+//    }
+//    if !includeAll {
+//      allChains = allChains.filter { $0 != .all }
+//    } else {
+//      allChains.bringToFront(item: .all)
+//    }
+    return allChains
+  }
     
     func isSupportedBridge() -> Bool {
         switch self {
@@ -218,7 +272,6 @@ public extension ChainType {
             return true
         }
     }
-    
     var isEVM: Bool {
         switch self {
         case .solana:

@@ -404,6 +404,8 @@
 		29FF130D1F7626E800AFD326 /* FakeNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FF130C1F7626E800AFD326 /* FakeNavigationController.swift */; };
 		29FF6D6B2011D2AF00A3011C /* InCoordinatorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FF6D6A2011D2AF00A3011C /* InCoordinatorError.swift */; };
 		42F7E78AA6AFC645C7C8FE98 /* Pods_KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9BE5F7DFD20E386557D762B /* Pods_KrystalWallets.framework */; };
+		438FC3D129128F27007CBCCE /* StakingTrasactionProcessPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438FC3CF29128F27007CBCCE /* StakingTrasactionProcessPopup.swift */; };
+		438FC3D229128F28007CBCCE /* StakingTrasactionProcessPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 438FC3D029128F27007CBCCE /* StakingTrasactionProcessPopup.xib */; };
 		60450A79718C1E1276FC2E43 /* Pods_KyberNetworkUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF2D4C0FA288695E7C897F46 /* Pods_KyberNetworkUITests.framework */; };
 		61C359E02002AA5A0097B04D /* TransactionSigning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C359DF2002AA590097B04D /* TransactionSigning.swift */; };
 		61C359E22002AC9D0097B04D /* TransactionSigningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C359E12002AC9D0097B04D /* TransactionSigningTests.swift */; };
@@ -534,6 +536,8 @@
 		7EB2199627C5DD1500CF243C /* BuyCryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */; };
 		7EB2199727C5DD1500CF243C /* BuyCryptoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */; };
 		7EB2199927C6177300CF243C /* BuyCryptoCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */; };
+		7EB252CB2907FD1100648438 /* EarnModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EB252CA2907FD1100648438 /* EarnModule.framework */; };
+		7EB252CC2907FD1100648438 /* EarnModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7EB252CA2907FD1100648438 /* EarnModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7EB47FF427C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB47FF227C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift */; };
 		7EB47FF527C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB47FF327C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib */; };
 		7EB47FF827CCDDDB00FB28D9 /* FeatureFlagManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB47FF727CCDDDB00FB28D9 /* FeatureFlagManager.swift */; };
@@ -599,6 +603,21 @@
 		A6156B5328856E4F00276120 /* CustomSegmentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6156B5228856E4F00276120 /* CustomSegmentView.xib */; };
 		A6156B5528856E6800276120 /* BaseXibView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6156B5428856E6800276120 /* BaseXibView.swift */; };
 		A6156B572885A43400276120 /* CGPoint+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6156B562885A43400276120 /* CGPoint+.swift */; };
+		A61715E3291E4C86001778C7 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7328FD6A05001F4C40 /* DesignSystem.framework */; };
+		A61715E4291E4C86001778C7 /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7328FD6A05001F4C40 /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A61715E5291E4C87001778C7 /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EF628F95001002FD64C /* Dependencies.framework */; };
+		A61715E6291E4C87001778C7 /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EF628F95001002FD64C /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A61715E7291E4C88001778C7 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3D9517925FB97EC00DE3C05 /* CloudKit.framework */; };
+		A61715E9291E4C8A001778C7 /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6D28FD6930001F4C40 /* BaseWallet.framework */; };
+		A61715EA291E4C8A001778C7 /* BaseWallet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6D28FD6930001F4C40 /* BaseWallet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A61715EB291E4C8B001778C7 /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7028FD69B0001F4C40 /* BaseModule.framework */; };
+		A61715EC291E4C8B001778C7 /* BaseModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7028FD69B0001F4C40 /* BaseModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A61715ED291E4C8E001778C7 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6428FD67C8001F4C40 /* AppState.framework */; };
+		A61715EE291E4C8E001778C7 /* AppState.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6428FD67C8001F4C40 /* AppState.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A61715EF291E4C93001778C7 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; };
+		A61715F0291E4C93001778C7 /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A61715F1291E4C97001778C7 /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; };
+		A61715F2291E4C97001778C7 /* KrystalWallets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A63655552907A352003B66F0 /* ApprovalListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63655532907A352003B66F0 /* ApprovalListViewController.swift */; };
 		A63655562907A352003B66F0 /* ApprovalListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63655542907A352003B66F0 /* ApprovalListViewController.xib */; };
 		A63655592907B6BB003B66F0 /* ApprovedTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63655572907B6BB003B66F0 /* ApprovedTokenCell.swift */; };
@@ -676,22 +695,8 @@
 		A668461C29093D17006BBE29 /* RevokeConfirmPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A668461A29093D17006BBE29 /* RevokeConfirmPopup.xib */; };
 		A668461E290946B0006BBE29 /* RevokeConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668461D290946B0006BBE29 /* RevokeConfirmViewModel.swift */; };
 		A6684630290A27CA006BBE29 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
-		A6684636290A2D84006BBE29 /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7028FD69B0001F4C40 /* BaseModule.framework */; };
-		A6684637290A2D84006BBE29 /* BaseModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7028FD69B0001F4C40 /* BaseModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A6684639290A2DDF006BBE29 /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EF628F95001002FD64C /* Dependencies.framework */; };
-		A668463A290A2DDF006BBE29 /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2EF628F95001002FD64C /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A668463B290A2DE1006BBE29 /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6D28FD6930001F4C40 /* BaseWallet.framework */; };
-		A668463C290A2DE1006BBE29 /* BaseWallet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6D28FD6930001F4C40 /* BaseWallet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A668463D290A2DE5006BBE29 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6428FD67C8001F4C40 /* AppState.framework */; };
-		A668463E290A2DE5006BBE29 /* AppState.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6428FD67C8001F4C40 /* AppState.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A668463F290A2DE7006BBE29 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7328FD6A05001F4C40 /* DesignSystem.framework */; };
-		A6684640290A2DE7006BBE29 /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C7328FD6A05001F4C40 /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A6684641290A2DE9006BBE29 /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; };
-		A6684642290A2DE9006BBE29 /* KrystalWallets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A6684643290A2DEB006BBE29 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6728FD6820001F4C40 /* Services.framework */; };
 		A6684644290A2DEB006BBE29 /* Services.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6728FD6820001F4C40 /* Services.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A6684645290A2DED006BBE29 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; };
-		A6684646290A2DED006BBE29 /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A66B9C6C280818F6001B7A3D /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B9C6B280818F6001B7A3D /* ValidationResult.swift */; };
 		A66EC312287D176200D15FE0 /* MultiSendSubTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66EC310287D176200D15FE0 /* MultiSendSubTransactionCell.swift */; };
 		A66EC313287D176200D15FE0 /* MultiSendSubTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66EC311287D176200D15FE0 /* MultiSendSubTransactionCell.xib */; };
@@ -802,6 +807,8 @@
 		A6CC317C2877ED8700891200 /* OcrDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CC317B2877ED8700891200 /* OcrDetector.swift */; };
 		A6CC317E2877F06800891200 /* ScanMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CC317D2877F06800891200 /* ScanMode.swift */; };
 		A6CECBA62875421E001F3563 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CECBA52875421E001F3563 /* UIView+.swift */; };
+		A6D1F7EB291B6C3A00ABA52B /* AppTxProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7EA291B6C3A00ABA52B /* AppTxProcessor.swift */; };
+		A6D1F806291BAC6700ABA52B /* AppBalanceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F805291BAC6700ABA52B /* AppBalanceStorage.swift */; };
 		A6D38BE72898DCCE003579F2 /* SolanaUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D38BE62898DCCE003579F2 /* SolanaUtils.swift */; };
 		A6D38BEB2898E8B5003579F2 /* SwapV2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D38BE92898E8B5003579F2 /* SwapV2ViewController.swift */; };
 		A6D38BEC2898E8B5003579F2 /* SwapV2ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6D38BEA2898E8B5003579F2 /* SwapV2ViewController.xib */; };
@@ -1034,10 +1041,18 @@
 		C347DA3925C02BE3000D6E81 /* EarnMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C347DA3725C02BE3000D6E81 /* EarnMenuViewController.xib */; };
 		C347DA3F25C03144000D6E81 /* EarnMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C347DA3D25C03144000D6E81 /* EarnMenuTableViewCell.swift */; };
 		C347DA4025C03144000D6E81 /* EarnMenuTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C347DA3E25C03144000D6E81 /* EarnMenuTableViewCell.xib */; };
+		C348E1AD290B8C70001CE430 /* StakingEarningTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348E1AC290B8C70001CE430 /* StakingEarningTokensView.swift */; };
+		C348E1AF290B8CB1001CE430 /* StakingEarningTokensView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C348E1AE290B8CB1001CE430 /* StakingEarningTokensView.xib */; };
+		C348E1B2290B99B1001CE430 /* EarningTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348E1B0290B99B1001CE430 /* EarningTokenCell.swift */; };
+		C348E1B3290B99B1001CE430 /* EarningTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C348E1B1290B99B1001CE430 /* EarningTokenCell.xib */; };
 		C34A2265277AE64300F240B8 /* BrowserOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34A2263277AE64200F240B8 /* BrowserOptionsViewController.swift */; };
 		C34A2266277AE64300F240B8 /* BrowserOptionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C34A2264277AE64300F240B8 /* BrowserOptionsViewController.xib */; };
+		C3502D9029090D2700C48391 /* StakingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3502D8E29090D2700C48391 /* StakingViewController.swift */; };
+		C3502D9129090D2700C48391 /* StakingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3502D8F29090D2700C48391 /* StakingViewController.xib */; };
 		C35136E626CCE53D006A55F4 /* OverviewNFTTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35136E426CCE53D006A55F4 /* OverviewNFTTableViewCell.swift */; };
 		C35136E726CCE53D006A55F4 /* OverviewNFTTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C35136E526CCE53D006A55F4 /* OverviewNFTTableViewCell.xib */; };
+		C352A064290FC540008947A3 /* StakingSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C352A062290FC53F008947A3 /* StakingSummaryViewController.swift */; };
+		C352A065290FC540008947A3 /* StakingSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C352A063290FC53F008947A3 /* StakingSummaryViewController.xib */; };
 		C3554D89280E5E3F0043BC1B /* SolanaUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */; };
 		C35A133326F1CEBA002B627C /* SRCountdownTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35A133226F1CEBA002B627C /* SRCountdownTimer.swift */; };
 		C35E9DEC27DB2BE000E1E7CE /* PromoCodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E9DEB27DB2BE000E1E7CE /* PromoCodeCoordinator.swift */; };
@@ -1130,7 +1145,6 @@
 		C3D560AA260C641E00408875 /* OverviewClaimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D560A8260C641E00408875 /* OverviewClaimViewController.swift */; };
 		C3D560AB260C641E00408875 /* OverviewClaimViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3D560A9260C641E00408875 /* OverviewClaimViewController.xib */; };
 		C3D6996E26410CCB004B34E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3D6996D26410CCB004B34E1 /* GoogleService-Info.plist */; };
-		C3D9517A25FB97EC00DE3C05 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3D9517925FB97EC00DE3C05 /* CloudKit.framework */; };
 		C3ED1DC82616EFDB0024970C /* NotificationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3ED1DC72616EFD50024970C /* NotificationCoordinator.swift */; };
 		C3ED1DCD2616F0090024970C /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3ED1DCB2616F0090024970C /* NotificationsViewController.swift */; };
 		C3ED1DCE2616F0090024970C /* NotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3ED1DCC2616F0090024970C /* NotificationsViewController.xib */; };
@@ -1250,13 +1264,14 @@
 			dstSubfolderSpec = 10;
 			files = (
 				A6684644290A2DEB006BBE29 /* Services.framework in Embed Frameworks */,
-				A668463E290A2DE5006BBE29 /* AppState.framework in Embed Frameworks */,
-				A6684637290A2D84006BBE29 /* BaseModule.framework in Embed Frameworks */,
-				A6684646290A2DED006BBE29 /* Utilities.framework in Embed Frameworks */,
-				A6684640290A2DE7006BBE29 /* DesignSystem.framework in Embed Frameworks */,
-				A668463A290A2DDF006BBE29 /* Dependencies.framework in Embed Frameworks */,
-				A6684642290A2DE9006BBE29 /* KrystalWallets.framework in Embed Frameworks */,
-				A668463C290A2DE1006BBE29 /* BaseWallet.framework in Embed Frameworks */,
+				A61715EC291E4C8B001778C7 /* BaseModule.framework in Embed Frameworks */,
+				A61715EE291E4C8E001778C7 /* AppState.framework in Embed Frameworks */,
+				A61715E4291E4C86001778C7 /* DesignSystem.framework in Embed Frameworks */,
+				7EB252CC2907FD1100648438 /* EarnModule.framework in Embed Frameworks */,
+				A61715F0291E4C93001778C7 /* Utilities.framework in Embed Frameworks */,
+				A61715EA291E4C8A001778C7 /* BaseWallet.framework in Embed Frameworks */,
+				A61715E6291E4C87001778C7 /* Dependencies.framework in Embed Frameworks */,
+				A61715F2291E4C97001778C7 /* KrystalWallets.framework in Embed Frameworks */,
 				A64F1D62290B904E000D4733 /* TransactionModule.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -1685,6 +1700,8 @@
 		3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KyberNetworkTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		33D83D674C923CAB687DA690 /* Pods-KyberNetworkUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KyberNetworkUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KyberNetworkUITests/Pods-KyberNetworkUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KyberNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		438FC3CF29128F27007CBCCE /* StakingTrasactionProcessPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingTrasactionProcessPopup.swift; sourceTree = "<group>"; };
+		438FC3D029128F27007CBCCE /* StakingTrasactionProcessPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingTrasactionProcessPopup.xib; sourceTree = "<group>"; };
 		477899BEAA4489DA423E8857 /* Pods-TrustUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrustUITests/Pods-TrustUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4DB8204016307EAFC079EA48 /* Pods-Trust.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trust.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Trust/Pods-Trust.debug.xcconfig"; sourceTree = "<group>"; };
 		61C359DF2002AA590097B04D /* TransactionSigning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionSigning.swift; sourceTree = "<group>"; };
@@ -1819,6 +1836,7 @@
 		7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyCryptoViewController.swift; sourceTree = "<group>"; };
 		7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BuyCryptoViewController.xib; sourceTree = "<group>"; };
 		7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyCryptoCoordinator.swift; sourceTree = "<group>"; };
+		7EB252CA2907FD1100648438 /* EarnModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EarnModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EB47FF227C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBuyCryptoViewController.swift; sourceTree = "<group>"; };
 		7EB47FF327C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmBuyCryptoViewController.xib; sourceTree = "<group>"; };
 		7EB47FF727CCDDDB00FB28D9 /* FeatureFlagManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagManager.swift; sourceTree = "<group>"; };
@@ -2082,6 +2100,8 @@
 		A6CC317B2877ED8700891200 /* OcrDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OcrDetector.swift; sourceTree = "<group>"; };
 		A6CC317D2877F06800891200 /* ScanMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanMode.swift; sourceTree = "<group>"; };
 		A6CECBA52875421E001F3563 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		A6D1F7EA291B6C3A00ABA52B /* AppTxProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTxProcessor.swift; sourceTree = "<group>"; };
+		A6D1F805291BAC6700ABA52B /* AppBalanceStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppBalanceStorage.swift; sourceTree = "<group>"; };
 		A6D38BE62898DCCE003579F2 /* SolanaUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaUtils.swift; sourceTree = "<group>"; };
 		A6D38BE92898E8B5003579F2 /* SwapV2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapV2ViewController.swift; sourceTree = "<group>"; };
 		A6D38BEA2898E8B5003579F2 /* SwapV2ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwapV2ViewController.xib; sourceTree = "<group>"; };
@@ -2326,10 +2346,18 @@
 		C347DA3725C02BE3000D6E81 /* EarnMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnMenuViewController.xib; sourceTree = "<group>"; };
 		C347DA3D25C03144000D6E81 /* EarnMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnMenuTableViewCell.swift; sourceTree = "<group>"; };
 		C347DA3E25C03144000D6E81 /* EarnMenuTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnMenuTableViewCell.xib; sourceTree = "<group>"; };
+		C348E1AC290B8C70001CE430 /* StakingEarningTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingEarningTokensView.swift; sourceTree = "<group>"; };
+		C348E1AE290B8CB1001CE430 /* StakingEarningTokensView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingEarningTokensView.xib; sourceTree = "<group>"; };
+		C348E1B0290B99B1001CE430 /* EarningTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarningTokenCell.swift; sourceTree = "<group>"; };
+		C348E1B1290B99B1001CE430 /* EarningTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarningTokenCell.xib; sourceTree = "<group>"; };
 		C34A2263277AE64200F240B8 /* BrowserOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserOptionsViewController.swift; sourceTree = "<group>"; };
 		C34A2264277AE64300F240B8 /* BrowserOptionsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BrowserOptionsViewController.xib; sourceTree = "<group>"; };
+		C3502D8E29090D2700C48391 /* StakingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingViewController.swift; sourceTree = "<group>"; };
+		C3502D8F29090D2700C48391 /* StakingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingViewController.xib; sourceTree = "<group>"; };
 		C35136E426CCE53D006A55F4 /* OverviewNFTTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewNFTTableViewCell.swift; sourceTree = "<group>"; };
 		C35136E526CCE53D006A55F4 /* OverviewNFTTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewNFTTableViewCell.xib; sourceTree = "<group>"; };
+		C352A062290FC53F008947A3 /* StakingSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingSummaryViewController.swift; sourceTree = "<group>"; };
+		C352A063290FC53F008947A3 /* StakingSummaryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StakingSummaryViewController.xib; sourceTree = "<group>"; };
 		C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaUtil.swift; sourceTree = "<group>"; };
 		C35A133226F1CEBA002B627C /* SRCountdownTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRCountdownTimer.swift; sourceTree = "<group>"; };
 		C35E9DEB27DB2BE000E1E7CE /* PromoCodeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoCodeCoordinator.swift; sourceTree = "<group>"; };
@@ -2503,18 +2531,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7EB252CB2907FD1100648438 /* EarnModule.framework in Frameworks */,
 				C626BEDE238D871700C96410 /* iAd.framework in Frameworks */,
-				A6684636290A2D84006BBE29 /* BaseModule.framework in Frameworks */,
-				C3D9517A25FB97EC00DE3C05 /* CloudKit.framework in Frameworks */,
 				A64F1D61290B904E000D4733 /* TransactionModule.framework in Frameworks */,
+				A61715EF291E4C93001778C7 /* Utilities.framework in Frameworks */,
 				A6684630290A27CA006BBE29 /* Pods_KyberNetwork.framework in Frameworks */,
-				A6684639290A2DDF006BBE29 /* Dependencies.framework in Frameworks */,
-				A668463B290A2DE1006BBE29 /* BaseWallet.framework in Frameworks */,
-				A668463D290A2DE5006BBE29 /* AppState.framework in Frameworks */,
-				A6684645290A2DED006BBE29 /* Utilities.framework in Frameworks */,
-				A668463F290A2DE7006BBE29 /* DesignSystem.framework in Frameworks */,
-				A6684641290A2DE9006BBE29 /* KrystalWallets.framework in Frameworks */,
+				A61715E3291E4C86001778C7 /* DesignSystem.framework in Frameworks */,
+				A61715E7291E4C88001778C7 /* CloudKit.framework in Frameworks */,
+				A61715E5291E4C87001778C7 /* Dependencies.framework in Frameworks */,
+				A61715EB291E4C8B001778C7 /* BaseModule.framework in Frameworks */,
+				A61715E9291E4C8A001778C7 /* BaseWallet.framework in Frameworks */,
+				A61715F1291E4C97001778C7 /* KrystalWallets.framework in Frameworks */,
 				A6684643290A2DEB006BBE29 /* Services.framework in Frameworks */,
+				A61715ED291E4C8E001778C7 /* AppState.framework in Frameworks */,
 				C626BEDC238D870F00C96410 /* AdSupport.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4766,6 +4795,8 @@
 				7E2A2EA928F697FD00AB9A77 /* EarnPoolViewCell.xib */,
 				7E38C6EA28F6CD8700866390 /* EarnPoolPlatformCell.swift */,
 				7E38C6EB28F6CD8700866390 /* EarnPoolPlatformCell.xib */,
+				C348E1B0290B99B1001CE430 /* EarningTokenCell.swift */,
+				C348E1B1290B99B1001CE430 /* EarningTokenCell.xib */,
 			);
 			path = CellsV2;
 			sourceTree = "<group>";
@@ -4841,6 +4872,12 @@
 				7E79FB5128F5624400306FC0 /* EarnOverviewV2Controller.xib */,
 				7E2A2EA328F66E4E00AB9A77 /* EarnListViewController.swift */,
 				7E2A2EA428F66E4E00AB9A77 /* EarnListViewController.xib */,
+				C3502D8E29090D2700C48391 /* StakingViewController.swift */,
+				C3502D8F29090D2700C48391 /* StakingViewController.xib */,
+				C352A062290FC53F008947A3 /* StakingSummaryViewController.swift */,
+				C352A063290FC53F008947A3 /* StakingSummaryViewController.xib */,
+				438FC3CF29128F27007CBCCE /* StakingTrasactionProcessPopup.swift */,
+				438FC3D029128F27007CBCCE /* StakingTrasactionProcessPopup.xib */,
 			);
 			path = ControllersV2;
 			sourceTree = "<group>";
@@ -5102,6 +5139,7 @@
 		A64C2EF328F94FB6002FD64C /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				A6D1F805291BAC6700ABA52B /* AppBalanceStorage.swift */,
 				A64C2EF428F94FC4002FD64C /* AppRouter.swift */,
 				A65D14DD28FD0B6000B12E84 /* AppTracker.swift */,
 				A65D14DF28FD0CFE00B12E84 /* AppErrorTracker.swift */,
@@ -5109,6 +5147,7 @@
 				A673A68A28FEA6B600270DA7 /* TypeAliases.swift */,
 				A64F1D7D290BE187000D4733 /* AppPriceTracker.swift */,
 				A6B6ED34290F8BF600514A01 /* AppNonceStorage.swift */,
+				A6D1F7EA291B6C3A00ABA52B /* AppTxProcessor.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -6248,6 +6287,7 @@
 		C347DA2D25C0298F000D6E81 /* Earn */ = {
 			isa = PBXGroup;
 			children = (
+				C348E1AB290B8B7C001CE430 /* Views */,
 				7E7EC8EF28FFE4EB005BB579 /* ViewModels */,
 				7EAD2B1828F94A7E001FC888 /* Models */,
 				7EAD2B1528F9391C001FC888 /* Services */,
@@ -6302,6 +6342,15 @@
 				C3F71C99261B27B800285935 /* EarnTutorialCell.xib */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		C348E1AB290B8B7C001CE430 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C348E1AC290B8C70001CE430 /* StakingEarningTokensView.swift */,
+				C348E1AE290B8CB1001CE430 /* StakingEarningTokensView.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		C360D21B255E94DB00B166E0 /* CustomTransition */ = {
@@ -6622,6 +6671,7 @@
 			isa = PBXGroup;
 			children = (
 				A64F1D60290B904E000D4733 /* TransactionModule.framework */,
+				7EB252CA2907FD1100648438 /* EarnModule.framework */,
 				A6042C7328FD6A05001F4C40 /* DesignSystem.framework */,
 				A6042C7028FD69B0001F4C40 /* BaseModule.framework */,
 				A6042C6D28FD6930001F4C40 /* BaseWallet.framework */,
@@ -6982,6 +7032,7 @@
 				C3377AD025E650B00035A18D /* ChartViewController.xib in Resources */,
 				25929C6220DA5C760045CFA3 /* SF-Pro-Text-Bold.otf in Resources */,
 				25968732211DEC1D0080A33F /* KConfirmSwapViewController.xib in Resources */,
+				C352A065290FC540008947A3 /* StakingSummaryViewController.xib in Resources */,
 				C3EDDCC325C1829400A99CC8 /* EarnViewController.xib in Resources */,
 				C3285AAE277EC2A600D28BC6 /* RecentlyHistoryViewController.xib in Resources */,
 				25929C8D20DA5CC10045CFA3 /* SFCompactText-BoldItalic.otf in Resources */,
@@ -7090,6 +7141,7 @@
 				7E62A41728AB4FC100319436 /* CreateWalletViewController.xib in Resources */,
 				7E59E5812872E80C00DFD01C /* Settings.bundle in Resources */,
 				C308BC1626D897290030022B /* ConfirmSendNFTViewController.xib in Resources */,
+				C348E1AF290B8CB1001CE430 /* StakingEarningTokensView.xib in Resources */,
 				C3F367BF25C3F63E003207B7 /* EarnSelectTableViewCell.xib in Resources */,
 				A651945028362E54008F4AEB /* TxInfoCell.xib in Resources */,
 				C35E9DFD27E1BDF500E1E7CE /* PromoCodeDetailViewController.xib in Resources */,
@@ -7180,6 +7232,7 @@
 				C30568AC2670B87700F331CE /* OverviewMainViewController.xib in Resources */,
 				C32D6E022784620A002886F1 /* KrystalWallet-min.js in Resources */,
 				7E2A2EAB28F697FD00AB9A77 /* EarnPoolViewCell.xib in Resources */,
+				438FC3D229128F28007CBCCE /* StakingTrasactionProcessPopup.xib in Resources */,
 				251ABCB220578F6E0069687F /* config_env_production.json in Resources */,
 				25929C5D20DA5C760045CFA3 /* SF-Pro-Display-Black.otf in Resources */,
 				A65C7A7A2818E877000FA9CE /* WebViewController.xib in Resources */,
@@ -7208,6 +7261,7 @@
 				7E16B8D42769DB3300F9A234 /* ReferralTiersCell.xib in Resources */,
 				A65C7A762818E3D5000FA9CE /* NavigationBar.xib in Resources */,
 				C3053AF92685D2990079B505 /* OverviewSearchTokenViewController.xib in Resources */,
+				C3502D9129090D2700C48391 /* StakingViewController.xib in Resources */,
 				C32649DC26CF81BE001B6E11 /* OverviewNFTDetailViewController.xib in Resources */,
 				25073D2A211AF20D00833C92 /* Montserrat-BoldItalic.ttf in Resources */,
 				C37CC098245803CA0081FB32 /* Roboto-LightItalic.ttf in Resources */,
@@ -7253,6 +7307,7 @@
 				C3EE06BD267A15E50090B432 /* Karla-ExtraBold.ttf in Resources */,
 				C347DA4025C03144000D6E81 /* EarnMenuTableViewCell.xib in Resources */,
 				25929C9B20DA5CC10045CFA3 /* SFCompactText-Regular.otf in Resources */,
+				C348E1B3290B99B1001CE430 /* EarningTokenCell.xib in Resources */,
 				25929C7120DA5C820045CFA3 /* SF Pro Font License.rtf in Resources */,
 				C3A58E2526D49BCF00EE3801 /* OverviewAddNFTViewController.xib in Resources */,
 				25929C5320DA5C760045CFA3 /* SF-Pro-Display-Regular.otf in Resources */,
@@ -7537,6 +7592,7 @@
 				"${PODS_ROOT}/Target Support Files/Pods-KyberNetwork/Pods-KyberNetwork-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/FittedSheets/FittedSheets.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftMessages/SwiftMessages.framework",
 				"${BUILT_PRODUCTS_DIR}/APIKit/APIKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
@@ -7548,10 +7604,24 @@
 				"${BUILT_PRODUCTS_DIR}/Web3/Web3.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1.swift/secp256k1.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
-				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/TrezorCrypto/TrezorCrypto.framework",
+				"${BUILT_PRODUCTS_DIR}/TrustCore/TrustCore.framework",
+				"${BUILT_PRODUCTS_DIR}/TrustWalletCore/WalletCore.framework",
+				"${BUILT_PRODUCTS_DIR}/loady/Loady.framework",
 				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/FSPagerView/FSPagerView.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
+				"${BUILT_PRODUCTS_DIR}/JdenticonSwift/JdenticonSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/QRCodeReaderViewController/QRCodeReaderViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/SeedStackViewController/StackViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/SkeletonView/SkeletonView.framework",
+				"${BUILT_PRODUCTS_DIR}/StatefulViewController/StatefulViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftAlgorithms/Algorithms.framework",
+				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
+				"${BUILT_PRODUCTS_DIR}/TagListView/TagListView.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseABTesting/FirebaseABTesting.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCoreDiagnostics/FirebaseCoreDiagnostics.framework",
@@ -7563,33 +7633,19 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleDataTransport/GoogleDataTransport.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
-				"${BUILT_PRODUCTS_DIR}/JdenticonSwift/JdenticonSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/LDSwiftEventSource/LDSwiftEventSource.framework",
 				"${BUILT_PRODUCTS_DIR}/LaunchDarkly/LaunchDarkly.framework",
-				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
 				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
-				"${BUILT_PRODUCTS_DIR}/QRCodeReaderViewController/QRCodeReaderViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SAMKeychain/SAMKeychain.framework",
-				"${BUILT_PRODUCTS_DIR}/SeedStackViewController/StackViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
-				"${BUILT_PRODUCTS_DIR}/SkeletonView/SkeletonView.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
-				"${BUILT_PRODUCTS_DIR}/StatefulViewController/StatefulViewController.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftAlgorithms/Algorithms.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/Swinject/Swinject.framework",
-				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
-				"${BUILT_PRODUCTS_DIR}/TagListView/TagListView.framework",
-				"${BUILT_PRODUCTS_DIR}/TrezorCrypto/TrezorCrypto.framework",
-				"${BUILT_PRODUCTS_DIR}/TrustCore/TrustCore.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustKeystore/TrustKeystore.framework",
-				"${BUILT_PRODUCTS_DIR}/TrustWalletCore/WalletCore.framework",
 				"${BUILT_PRODUCTS_DIR}/WalletConnectSwift/WalletConnectSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -7597,6 +7653,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FittedSheets.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftMessages.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/APIKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
@@ -7608,10 +7665,24 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Web3.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftProtobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrezorCrypto.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WalletCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Loady.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSPagerView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JdenticonSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QRCodeReaderViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/StackViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SkeletonView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/StatefulViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Algorithms.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TagListView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseABTesting.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreDiagnostics.framework",
@@ -7623,33 +7694,19 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleDataTransport.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JdenticonSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LDSwiftEventSource.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LaunchDarkly.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mixpanel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QRCodeReaderViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SAMKeychain.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/StackViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SkeletonView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/StatefulViewController.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Algorithms.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftProtobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Swinject.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TagListView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrezorCrypto.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKeystore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WalletCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WalletConnectSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -7733,6 +7790,7 @@
 				257C9FC92078F6A600EE0128 /* KNCreatePasswordViewController.swift in Sources */,
 				29E2E33A1F7A008C000CF94A /* UIView.swift in Sources */,
 				25DBB57E205FB4E20020F19D /* UIViewController+Kyber.swift in Sources */,
+				A6D1F806291BAC6700ABA52B /* AppBalanceStorage.swift in Sources */,
 				A6B3CD84281258CD005D0D66 /* KrystalSolanaTransaction.swift in Sources */,
 				7E1EBE322834C7E900793B6D /* BridgeCoordinator.swift in Sources */,
 				299B5E491FD2C8900051361C /* ConfigureTransaction.swift in Sources */,
@@ -7802,6 +7860,7 @@
 				A685D4AA2849F2620066E177 /* KAddress+Codable.swift in Sources */,
 				A6DA410227F974B50078C58E /* ThreadProtectedObject.swift in Sources */,
 				A66EC316287D20D400D15FE0 /* TxApplicationInfoCell.swift in Sources */,
+				C348E1AD290B8C70001CE430 /* StakingEarningTokensView.swift in Sources */,
 				C3409E1A25AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift in Sources */,
 				255C40EB2092D64F00475871 /* KNTokenStorage.swift in Sources */,
 				C3EEA45B2671EF840011DB97 /* OverviewMainViewCell.swift in Sources */,
@@ -7850,6 +7909,7 @@
 				7E4D7FAB28AE2EC300375016 /* ConfirmBackupViewController.swift in Sources */,
 				29C0FCE5200EBAF6004A13CB /* TokenType.swift in Sources */,
 				7E1EBE452834F82A00793B6D /* BridgeSendToCell.swift in Sources */,
+				C348E1B2290B99B1001CE430 /* EarningTokenCell.swift in Sources */,
 				257740CF20579CE0003323EB /* KNSplashScreenCoordinator.swift in Sources */,
 				7E29FEE7289B8693008D01BD /* CommonBaseTokenCell.swift in Sources */,
 				C3ED1DCD2616F0090024970C /* NotificationsViewController.swift in Sources */,
@@ -7944,6 +8004,7 @@
 				A6B3CD582811C07C005D0D66 /* PendingHistoryTransactonViewModel.swift in Sources */,
 				A6F6292D28FD4C5C0085AE67 /* DeleteWalletCoordinator.swift in Sources */,
 				25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */,
+				C352A064290FC540008947A3 /* StakingSummaryViewController.swift in Sources */,
 				A6DA40EF27F6E1450078C58E /* ExploreBannersCell.swift in Sources */,
 				A608C45228B726A600B0B867 /* KQRCodeReaderDelegate.swift in Sources */,
 				7ECCB1FC2861711800499FA0 /* SearchResult.swift in Sources */,
@@ -8065,6 +8126,7 @@
 				A685D4A32848B78F0066E177 /* KWallet+Codable.swift in Sources */,
 				257A377A205B013E00E86794 /* String+Kyber.swift in Sources */,
 				A6CC31772877E7AD00891200 /* TextDetector.swift in Sources */,
+				C3502D9029090D2700C48391 /* StakingViewController.swift in Sources */,
 				C33CCB2D23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift in Sources */,
 				C32EA22B246934AA00866968 /* KNPrettyAlertController.swift in Sources */,
 				25369F1020F88C3E007231FE /* KNWelcomeScreenCollectionView.swift in Sources */,
@@ -8255,6 +8317,7 @@
 				7E38C6EC28F6CD8700866390 /* EarnPoolPlatformCell.swift in Sources */,
 				C337E15A27743118001C8B03 /* DappCommand.swift in Sources */,
 				29BB94951F6FC54C009B09CC /* EthereumUnit.swift in Sources */,
+				A6D1F7EB291B6C3A00ABA52B /* AppTxProcessor.swift in Sources */,
 				29C70C712016C7780072E454 /* SentTransaction.swift in Sources */,
 				C344975F28A24E5B00028AFB /* SettingSegmentedCell.swift in Sources */,
 				A6BAD3D4287446F30016E127 /* TradingViewController.swift in Sources */,
@@ -8299,6 +8362,7 @@
 				257740CB205794CE003323EB /* KNAppCoordinator.swift in Sources */,
 				73ED85A520349BE400593BF3 /* StringFormatter.swift in Sources */,
 				2543D864223A0E8D0085F40E /* NumberFormatterUtil.swift in Sources */,
+				438FC3D129128F27007CBCCE /* StakingTrasactionProcessPopup.swift in Sources */,
 				A6D38BEB2898E8B5003579F2 /* SwapV2ViewController.swift in Sources */,
 				293112351FC9A0D500966EEA /* CallRequest.swift in Sources */,
 				C33BB80727955C9A00851BC6 /* Function.swift in Sources */,
@@ -8692,7 +8756,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "KyberNetwork/KyberSwap - Crypto ExchangeDebug.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -8905,7 +8968,6 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -9035,7 +9097,6 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
