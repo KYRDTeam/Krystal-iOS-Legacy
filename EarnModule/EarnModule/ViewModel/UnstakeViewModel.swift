@@ -19,6 +19,7 @@ protocol UnstakeViewModelDelegate: class {
     func didGetDataNeedApproveToken()
     func didGetDataFail(errMsg: String)
     func didCheckNotEnoughFeeForTx(errMsg: String)
+    func didApproveToken(success: Bool)
 }
 
 class UnstakeViewModel: BaseViewModel {
@@ -49,6 +50,7 @@ class UnstakeViewModel: BaseViewModel {
     var showRevertedRate: Bool = false
     var quoteTokenDetail: TokenDetailInfo?
     weak var delegate: UnstakeViewModelDelegate?
+    var approveHash: String?
     
     let apiService = EarnServices()
     var buildTxRequestParams: JSONDictionary {
@@ -99,6 +101,36 @@ class UnstakeViewModel: BaseViewModel {
         self.stakingTokenDecimal = earningBalance.stakingToken.decimals
         self.stakingTokenLogo = earningBalance.stakingToken.logo
         self.toTokenLogo = earningBalance.toUnderlyingToken.logo
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .kTxStatusUpdated, object: nil)
+    }
+    
+    func observeEvents() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.txStatusUpdated(_:)),
+            name: .kTxStatusUpdated,
+            object: nil
+        )
+    }
+    
+    @objc func txStatusUpdated(_ notification: Notification) {
+        guard let hash = notification.userInfo?["hash"] as? String, let status = notification.userInfo?["status"] as? InternalTransactionState else {
+            return
+        }
+        guard let approveHash = approveHash, approveHash == hash else {
+            return
+        }
+        
+        switch status {
+        case .error, .drop:
+            self.delegate?.didApproveToken(success: false)
+        case .done:
+            self.delegate?.didApproveToken(success: true)
+        default:
+            print(status)
+        }
     }
     
     func unstakeValueString() -> String {
