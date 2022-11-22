@@ -16,7 +16,8 @@ import Utilities
 enum UnstakeButtonState {
     case normal
     case disable
-    case approve
+    case needApprove
+    case approving
     case insufficientFee
 }
 
@@ -37,24 +38,7 @@ class UnstakeViewController: InAppBrowsingViewController {
     var viewModel: UnstakeViewModel?
     var unstakeButtonState: UnstakeButtonState = .disable {
         didSet {
-            switch self.unstakeButtonState {
-                case .normal:
-                    unstakeButton.isUserInteractionEnabled = true
-                    unstakeButton.setBackgroundColor(AppTheme.current.primaryColor, forState: .normal)
-                    unstakeButton.setTitle(String(format: Strings.unstakeToken,viewModel?.stakingTokenSymbol ?? ""), for: .normal)
-                case .disable:
-                    unstakeButton.isUserInteractionEnabled = false
-                    unstakeButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .normal)
-                    unstakeButton.setTitle(String(format: Strings.unstakeToken,viewModel?.stakingTokenSymbol ?? ""), for: .normal)
-                case .insufficientFee:
-                    unstakeButton.isUserInteractionEnabled = false
-                    unstakeButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .normal)
-                    unstakeButton.setTitle(String(format: Strings.insufficientQuoteBalance,viewModel?.chain.quoteToken() ?? ""), for: .normal)
-                case .approve:
-                    unstakeButton.isUserInteractionEnabled = true
-                    unstakeButton.setBackgroundColor(AppTheme.current.primaryColor, forState: .normal)
-                    unstakeButton.setTitle(String(format: Strings.approveToken,viewModel?.stakingTokenSymbol ?? ""), for: .normal)
-            }
+            self.configUnstakeButtonUI()
         }
     }
     override var allowSwitchChain: Bool {
@@ -72,6 +56,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         unstakeButtonState = .disable
         if let viewModel = viewModel {
             viewModel.delegate = self
+            viewModel.observeEvents()
             self.showLoadingHUD()
             viewModel.fetchData {
                 self.hideLoading()
@@ -100,6 +85,31 @@ class UnstakeViewController: InAppBrowsingViewController {
         
         viewModel.onFetchedQuoteTokenPrice = { [weak self] in
             self?.updateUIGasFee()
+        }
+    }
+    
+    func configUnstakeButtonUI() {
+        switch self.unstakeButtonState {
+            case .normal:
+                unstakeButton.isUserInteractionEnabled = true
+                unstakeButton.setBackgroundColor(AppTheme.current.primaryColor, forState: .normal)
+                unstakeButton.setTitle(String(format: Strings.unstakeToken,viewModel?.stakingTokenSymbol ?? ""), for: .normal)
+            case .disable:
+                unstakeButton.isUserInteractionEnabled = false
+                unstakeButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .normal)
+                unstakeButton.setTitle(String(format: Strings.unstakeToken,viewModel?.stakingTokenSymbol ?? ""), for: .normal)
+            case .insufficientFee:
+                unstakeButton.isUserInteractionEnabled = false
+                unstakeButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .normal)
+                unstakeButton.setTitle(String(format: Strings.insufficientQuoteBalance,viewModel?.chain.quoteToken() ?? ""), for: .normal)
+            case .needApprove:
+                unstakeButton.isUserInteractionEnabled = true
+                unstakeButton.setBackgroundColor(AppTheme.current.primaryColor, forState: .normal)
+                unstakeButton.setTitle(String(format: Strings.approveToken,viewModel?.stakingTokenSymbol ?? ""), for: .normal)
+            case .approving:
+                unstakeButton.isUserInteractionEnabled = false
+                unstakeButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .normal)
+                unstakeButton.setTitle(Strings.approveInProgress, for: .normal)
         }
     }
     
@@ -139,7 +149,7 @@ class UnstakeViewController: InAppBrowsingViewController {
                     openUnStakeSummary()
                 default:
                     approve()
-                    unstakeButtonState = .disable
+                    unstakeButtonState = .approving
             }
         }
     }
@@ -209,13 +219,16 @@ class UnstakeViewController: InAppBrowsingViewController {
         guard let viewModel = viewModel, let contractAddress = viewModel.contractAddress else { return }
         let vm = ApproveTokenViewModel(symbol: viewModel.stakingTokenSymbol, tokenAddress: viewModel.stakingTokenAddress, remain: viewModel.stakingTokenAllowance, toAddress: contractAddress, chain: viewModel.chain)
         let vc = ApproveTokenViewController(viewModel: vm)
-        vc.onSuccessApprove = {
-            self.unstakeButtonState = .normal
+        vc.onDismiss = {
+            self.unstakeButtonState = .needApprove
         }
-        
+        vc.onApproveSent = { hash in
+            self.viewModel?.approveHash = hash
+            self.unstakeButtonState = .approving
+        }
         vc.onFailApprove = {
-            self.showErrorTopBannerMessage(message: "Approve fail")
-            self.unstakeButtonState = .approve
+            self.showErrorTopBannerMessage(message: Strings.approveFail)
+            self.unstakeButtonState = .needApprove
         }
         self.present(vc, animated: true, completion: nil)
     }
@@ -260,12 +273,21 @@ class UnstakeViewController: InAppBrowsingViewController {
 }
 
 extension UnstakeViewController: UnstakeViewModelDelegate {
+    func didApproveToken(success: Bool) {
+        if success {
+            self.unstakeButtonState = .normal
+        } else {
+            self.showErrorTopBannerMessage(message: Strings.approveFail)
+            self.unstakeButtonState = .needApprove
+        }
+    }
+    
     func didGetDataSuccess() {
         unstakeButtonState = .normal
     }
     
     func didGetDataNeedApproveToken() {
-        unstakeButtonState = .approve
+        unstakeButtonState = .needApprove
     }
     
     func didGetDataFail(errMsg: String) {

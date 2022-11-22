@@ -38,6 +38,7 @@
 "my.portfolio" = "My Portfolio";
 "close" = "Close";
 "edit" = "Edit";
+"supplying.in.progress" = "Supplying In Progress";
 "staking.in.progress" = "Staking In Progress";
 "unstake.in.progress" = "Unstaking In Progress";
 "approve.in.progress" = "Approving In Progress";
@@ -59,5 +60,22 @@
 "you.will.receive.your.in" = "You will receive your %@ in %@";
 "use.amount.of.quote.token.for.fee.message" = "A small amount of %@ will be used for transaction fee";
 "your.staking.balance.is.not.suffcient" = "Your staking balance is not sufficient";
+"connect.wallet" = "Connect Wallet";
 "insufficient.quote.balance" = "Insufficient %@ balance";
 "All Networks" = "All Networks";
+
+"supply" = "Supply";
+"withdraw" = "Withdraw";
+
+"stake.x.on.y" = "Stake %@ on %@";
+"supply.x.on.y" = "Supply %@ on %@";
+
+"confirm.supply" = "Confirm Supply";
+"supply.now" = "Supply Now";
+"available.to.supply" = "Available to supply: ";
+"available.to.stake" = "Available to stake: ";
+"staking.projections" = "Staking Projections";
+"supplying.projections" = "Supplying Projections";
+"you.are.supplying" = "You are supplying";
+"approve.fail" = "Approve fail";
+"supply.summary" = "Supply Summary";
