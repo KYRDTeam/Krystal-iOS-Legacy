@@ -16,3 +16,5 @@ typealias InAppBrowsingViewController = BaseModule.InAppBrowsingViewController
 typealias EIP1559Transaction = TransactionModule.EIP1559Transaction
 typealias SignTransaction = TransactionModule.LegacyTransaction
 typealias InternalTransactionState = TransactionModule.InternalTransactionState
+
+typealias CurrencyMode = AppState.CurrencyMode

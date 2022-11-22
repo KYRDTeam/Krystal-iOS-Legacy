@@ -11,6 +11,7 @@ import Services
 import AppState
 import BaseWallet
 import TransactionModule
+import TokenModule
 
 class Dependencies {
     
@@ -21,6 +22,9 @@ class Dependencies {
         AppDependencies.priceStorage = AppPriceStorage()
         AppDependencies.nonceStorage = AppNonceStorage()
         AppDependencies.balancesStorage = AppBalanceStorage()
+      AppDependencies.featureFlag = AppFeatureFlag()
+      
+        TransactionManager.txProcessor = AppTxProcessor()
         
         ServiceConfig.baseAPIURL = KNEnvironment.default.krystalEndpoint
         ServiceConfig.errorTracker = AppErrorTracker()
@@ -29,8 +33,8 @@ class Dependencies {
         NodeConfig.alchemyRopstenKey =  KNSecret.alchemyRopstenKey
         NodeConfig.nodeEndpoint = KNEnvironment.default.nodeEndpoint
         NodeConfig.solanaAppID = KNEnvironment.default.endpointName
-        
-        TransactionManager.txProcessor = AppTxProcessor()
+      
+        TokenModule.apiURL = KNEnvironment.default.krystalEndpoint
     }
     
 }

@@ -697,6 +697,10 @@
 		A6684630290A27CA006BBE29 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
 		A6684643290A2DEB006BBE29 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6728FD6820001F4C40 /* Services.framework */; };
 		A6684644290A2DEB006BBE29 /* Services.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6728FD6820001F4C40 /* Services.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A668BF98292CB860001A110D /* TokenModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A668BF97292CB860001A110D /* TokenModule.framework */; };
+		A668BF99292CB860001A110D /* TokenModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A668BF97292CB860001A110D /* TokenModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A668BFDD292CCA99001A110D /* AppTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFDC292CCA99001A110D /* AppTokenStorage.swift */; };
+		A668BFEB292CD9CD001A110D /* AppFeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFEA292CD9CD001A110D /* AppFeatureFlag.swift */; };
 		A66B9C6C280818F6001B7A3D /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B9C6B280818F6001B7A3D /* ValidationResult.swift */; };
 		A66EC312287D176200D15FE0 /* MultiSendSubTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66EC310287D176200D15FE0 /* MultiSendSubTransactionCell.swift */; };
 		A66EC313287D176200D15FE0 /* MultiSendSubTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66EC311287D176200D15FE0 /* MultiSendSubTransactionCell.xib */; };
@@ -1267,6 +1271,7 @@
 				A61715EC291E4C8B001778C7 /* BaseModule.framework in Embed Frameworks */,
 				A61715EE291E4C8E001778C7 /* AppState.framework in Embed Frameworks */,
 				A61715E4291E4C86001778C7 /* DesignSystem.framework in Embed Frameworks */,
+				A668BF99292CB860001A110D /* TokenModule.framework in Embed Frameworks */,
 				7EB252CC2907FD1100648438 /* EarnModule.framework in Embed Frameworks */,
 				A61715F0291E4C93001778C7 /* Utilities.framework in Embed Frameworks */,
 				A61715EA291E4C8A001778C7 /* BaseWallet.framework in Embed Frameworks */,
@@ -1990,6 +1995,9 @@
 		A668461929093D17006BBE29 /* RevokeConfirmPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevokeConfirmPopup.swift; sourceTree = "<group>"; };
 		A668461A29093D17006BBE29 /* RevokeConfirmPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RevokeConfirmPopup.xib; sourceTree = "<group>"; };
 		A668461D290946B0006BBE29 /* RevokeConfirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevokeConfirmViewModel.swift; sourceTree = "<group>"; };
+		A668BF97292CB860001A110D /* TokenModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TokenModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A668BFDC292CCA99001A110D /* AppTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTokenStorage.swift; sourceTree = "<group>"; };
+		A668BFEA292CD9CD001A110D /* AppFeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeatureFlag.swift; sourceTree = "<group>"; };
 		A66B9C6B280818F6001B7A3D /* ValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationResult.swift; sourceTree = "<group>"; };
 		A66EC310287D176200D15FE0 /* MultiSendSubTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendSubTransactionCell.swift; sourceTree = "<group>"; };
 		A66EC311287D176200D15FE0 /* MultiSendSubTransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSendSubTransactionCell.xib; sourceTree = "<group>"; };
@@ -2531,6 +2539,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A668BF98292CB860001A110D /* TokenModule.framework in Frameworks */,
 				7EB252CB2907FD1100648438 /* EarnModule.framework in Frameworks */,
 				C626BEDE238D871700C96410 /* iAd.framework in Frameworks */,
 				A64F1D61290B904E000D4733 /* TransactionModule.framework in Frameworks */,
@@ -5148,6 +5157,8 @@
 				A64F1D7D290BE187000D4733 /* AppPriceTracker.swift */,
 				A6B6ED34290F8BF600514A01 /* AppNonceStorage.swift */,
 				A6D1F7EA291B6C3A00ABA52B /* AppTxProcessor.swift */,
+				A668BFDC292CCA99001A110D /* AppTokenStorage.swift */,
+				A668BFEA292CD9CD001A110D /* AppFeatureFlag.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -6670,6 +6681,7 @@
 		FAD3F374A5C639BD900944DB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A668BF97292CB860001A110D /* TokenModule.framework */,
 				A64F1D60290B904E000D4733 /* TransactionModule.framework */,
 				7EB252CA2907FD1100648438 /* EarnModule.framework */,
 				A6042C7328FD6A05001F4C40 /* DesignSystem.framework */,
@@ -7590,9 +7602,9 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-KyberNetwork/Pods-KyberNetwork-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
+				"${BUILT_PRODUCTS_DIR}/BigInt-framework/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/FittedSheets/FittedSheets.framework",
-				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD-framework/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftMessages/SwiftMessages.framework",
 				"${BUILT_PRODUCTS_DIR}/APIKit/APIKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
@@ -7609,7 +7621,7 @@
 				"${BUILT_PRODUCTS_DIR}/TrustCore/TrustCore.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustWalletCore/WalletCore.framework",
 				"${BUILT_PRODUCTS_DIR}/loady/Loady.framework",
-				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts-framework/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/FSPagerView/FSPagerView.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
@@ -7618,7 +7630,7 @@
 				"${BUILT_PRODUCTS_DIR}/SeedStackViewController/StackViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/SkeletonView/SkeletonView.framework",
 				"${BUILT_PRODUCTS_DIR}/StatefulViewController/StatefulViewController.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftAlgorithms/Algorithms.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftAlgorithms-framework/Algorithms.framework",
 				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
 				"${BUILT_PRODUCTS_DIR}/TagListView/TagListView.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
@@ -7913,6 +7925,7 @@
 				257740CF20579CE0003323EB /* KNSplashScreenCoordinator.swift in Sources */,
 				7E29FEE7289B8693008D01BD /* CommonBaseTokenCell.swift in Sources */,
 				C3ED1DCD2616F0090024970C /* NotificationsViewController.swift in Sources */,
+				A668BFDD292CCA99001A110D /* AppTokenStorage.swift in Sources */,
 				A6E6C9D128171A1400EEB2E6 /* SolanaTransactionListViewModel.swift in Sources */,
 				C322EB0B25B1A3D8009746FB /* CreateWalletMenuViewController.swift in Sources */,
 				A69C5BE928D1E07D000DE825 /* NotificationListEmptyView.swift in Sources */,
@@ -8319,6 +8332,7 @@
 				29BB94951F6FC54C009B09CC /* EthereumUnit.swift in Sources */,
 				A6D1F7EB291B6C3A00ABA52B /* AppTxProcessor.swift in Sources */,
 				29C70C712016C7780072E454 /* SentTransaction.swift in Sources */,
+				A668BFEB292CD9CD001A110D /* AppFeatureFlag.swift in Sources */,
 				C344975F28A24E5B00028AFB /* SettingSegmentedCell.swift in Sources */,
 				A6BAD3D4287446F30016E127 /* TradingViewController.swift in Sources */,
 				C325984626D345A100F87D25 /* OverviewShareNFTViewController.swift in Sources */,

@@ -21,6 +21,6 @@ public protocol AppRouterProtocol {
     func openTransactionHistory()
     func openExternalURL(url: String)
     func openSupportURL()
-    func openToken(symbol: String)
     func openTxHash(txHash: String, chainID: Int)
+    func openToken(address: String, chainID: Int)
 }

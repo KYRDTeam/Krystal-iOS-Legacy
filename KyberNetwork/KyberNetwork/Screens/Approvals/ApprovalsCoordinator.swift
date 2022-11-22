@@ -41,7 +41,7 @@ class ApprovalsCoordinator: Coordinator {
                 onOpenStatus: onOpenTxStatusPopup,
                 onTapTokenSymbol: { [weak self] approval in
                     if let tokenAddress = approval.tokenAddress {
-                        self?.rootViewController.openAddress(address: tokenAddress, chainID: approval.chainId)
+                      AppDependencies.router.openToken(address: tokenAddress, chainID: approval.chainId)
                     }
                 },
                 onTapSpenderAddress: { [weak self] approval in

@@ -170,6 +170,14 @@ target 'Utilities' do
   pod 'Kingfisher'
 end
 
+target 'TokenModule' do
+  project 'TokenModule/TokenModule.xcodeproj'
+  
+  pod 'BigInt'
+  pod 'MBProgressHUD'
+  pod 'Charts'
+end
+
 target 'KyberNetwork' do
   use_frameworks!
   

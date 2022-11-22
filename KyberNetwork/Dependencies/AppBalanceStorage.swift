@@ -11,9 +11,10 @@ import BaseWallet
 import BigInt
 
 class AppBalanceStorage: BalancesStorage {
-  func getBalanceBigInt(address: String) -> BigInt {
+  
+  func getBalanceBigInt(address: String) -> BigInt? {
     let balance = BalanceStorage.shared.balanceForAddress(address)
-    return BigInt(balance?.balance ?? "") ?? BigInt(0)
+    return BigInt(balance?.balance ?? "")
   }
 
 }
