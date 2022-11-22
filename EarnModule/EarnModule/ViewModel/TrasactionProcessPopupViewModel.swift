@@ -19,9 +19,11 @@ protocol TrasactionProcessPopupViewModel: class {
 
 class StakingTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
     let pendingStakingTx: PendingStakingTxInfo
+    let earningType: EarningType
     
     init(pendingStakingTx: PendingStakingTxInfo) {
         self.pendingStakingTx = pendingStakingTx
+        self.earningType = .init(value: pendingStakingTx.platform.type)
     }
     
     var destTitle: String {
@@ -41,11 +43,16 @@ class StakingTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
     }
 
     var destIcon: String {
-        return pendingStakingTx.destIcon ?? ""
+        return pendingStakingTx.platform.logo
     }
     
     var processingString: String {
-        return Strings.stakingInProgress
+        switch earningType {
+        case .staking:
+            return Strings.stakingInProgress
+        case .lending:
+            return Strings.supplyingInProgress
+        }
     }
     
     var finishButtonString: String {

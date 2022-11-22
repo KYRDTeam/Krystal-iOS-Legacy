@@ -297,7 +297,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
     let label = UILabel(frame: CGRect(x: 15, y: 52, width: 54, height: 16))
     label.text = title
     label.textColor = color
-    label.font = .karlaReguler(ofSize: 14)
+    label.font = .karlaReguler(ofSize: 12)
     label.textAlignment = .center
     view.addSubview(label)
     
@@ -309,18 +309,37 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
     }
   }
     
+    func plusTitleFor(earningType: EarningType) -> String {
+        switch earningType {
+        case .staking:
+            return Strings.stake
+        case .lending:
+            return Strings.supply
+        }
+    }
+    
+    func minusTitleFor(earningType: EarningType) -> String {
+        switch earningType {
+        case .staking:
+            return Strings.unstake
+        case .lending:
+            return Strings.withdraw
+        }
+    }
+    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard orientation == .right, indexPath.section == 0 else { return nil }
-
+        guard let earningBalance: EarningBalance = self.viewModel.portfolio?.0[indexPath.row] else { return nil }
+        
+        let earningType = EarningType(value: earningBalance.platform.type)
+        
         let unstakeAction = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
-            if let earningBalance = self?.viewModel.portfolio?.0[indexPath.row] {
-                let viewModel = UnstakeViewModel(earningBalance: earningBalance)
-                let viewController = UnstakeViewController.instantiateFromNib()
-                viewController.viewModel = viewModel
-                self?.show(viewController, sender: nil)
-            }
+            let viewModel = UnstakeViewModel(earningBalance: earningBalance)
+            let viewController = UnstakeViewController.instantiateFromNib()
+            viewController.viewModel = viewModel
+            self?.show(viewController, sender: nil)
         }
-        let image = swipeCellImageView(title: Strings.unstake, icon: Images.redSubtract, color: AppTheme.current.errorTextColor)
+        let image = swipeCellImageView(title: minusTitleFor(earningType: earningType), icon: Images.redSubtract, color: AppTheme.current.errorTextColor)
         unstakeAction.image = image
         unstakeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
       
@@ -339,7 +358,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
             }
 
         }
-        let stakeImage = swipeCellImageView(title: Strings.stake, icon: Images.greenPlus, color: AppTheme.current.primaryColor)
+        let stakeImage = swipeCellImageView(title: plusTitleFor(earningType: earningType), icon: Images.greenPlus, color: AppTheme.current.primaryColor)
         stakeAction.image = stakeImage
         stakeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
         
