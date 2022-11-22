@@ -227,7 +227,7 @@ class UnstakeViewController: InAppBrowsingViewController {
             self.unstakeButtonState = .approving
         }
         vc.onFailApprove = {
-            self.showErrorTopBannerMessage(message: "Approve fail")
+            self.showErrorTopBannerMessage(message: Strings.approveFail)
             self.unstakeButtonState = .needApprove
         }
         self.present(vc, animated: true, completion: nil)
@@ -277,7 +277,7 @@ extension UnstakeViewController: UnstakeViewModelDelegate {
         if success {
             self.unstakeButtonState = .normal
         } else {
-            self.showErrorTopBannerMessage(message: "Approve fail")
+            self.showErrorTopBannerMessage(message: Strings.approveFail)
             self.unstakeButtonState = .needApprove
         }
     }
