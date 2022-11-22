@@ -156,9 +156,9 @@ class StakingViewModel: BaseViewModel {
     var titleString: String {
         switch earningType {
         case .staking:
-            return String(format: Strings.stakeXOnY, token.symbol, selectedPlatform.name)
+            return String(format: Strings.stakeXOnY, token.symbol, selectedPlatform.name.uppercased())
         case .lending:
-            return String(format: Strings.supplyXOnY, token.symbol, selectedPlatform.name)
+            return String(format: Strings.supplyXOnY, token.symbol, selectedPlatform.name.uppercased())
         }
     }
     
