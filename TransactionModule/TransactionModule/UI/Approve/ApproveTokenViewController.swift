@@ -227,12 +227,10 @@ public class ApproveTokenViewController: KNBaseViewController {
     self.viewModel.sendApproveRequest(value: TransactionConstants.maxTokenAmount) { error in
       self.hideLoading()
       if error != nil {
-        if let onFailApprove = self.onFailApprove {
-          onFailApprove()
-        }
+        self.onFailApprove?()
       } else {
-        if let onApproveSent = self.onApproveSent, let hash = self.viewModel.hash {
-            onApproveSent(hash)
+        if let hash = self.viewModel.hash {
+            self.onApproveSent?(hash)
         }
       }
       self.dismiss(animated: true)
@@ -259,16 +257,12 @@ public class ApproveTokenViewController: KNBaseViewController {
   }
 
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
-    if let onDismiss = onDismiss {
-        onDismiss()
-    }
+    onDismiss?()
     self.dismiss(animated: true, completion: nil)
   }
 
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
-    if let onDismiss = onDismiss {
-        onDismiss()
-    }
+    onDismiss?()
     self.dismiss(animated: true, completion: nil)
   }
 
