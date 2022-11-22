@@ -289,6 +289,7 @@ struct Strings {
   static let wcDisconnectConfirm = "wc.disconnect.confirm".toBeLocalised()
   static let wcCancel = "wc.cancel".toBeLocalised()
   static let wcNotSupportWatchWallet = "wc.not.support.watch.wallet".toBeLocalised()
+  static let wcNotSupportedNetwork = "wc.not.support.this.network".toBeLocalised()
   
   // Wallet list
   static let backupWalletWarningMessage = "backup.wallet.warning.message".toBeLocalised()
