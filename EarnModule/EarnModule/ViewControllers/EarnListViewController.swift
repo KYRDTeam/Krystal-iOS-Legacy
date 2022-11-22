@@ -65,8 +65,27 @@ class EarnListViewController: InAppBrowsingViewController {
   }
   
   func reloadUI() {
-    self.emptyView.isHidden = !self.displayDataSource.isEmpty
-    self.tableView.reloadData()
+      displayDataSource = dataSource
+      if let text = self.searchTextField.text, !text.isEmpty {
+          self.displayDataSource = self.dataSource.filter({ viewModel in
+            let containSymbol = viewModel.earnPoolModel.token.symbol.lowercased().contains(text.lowercased())
+            let containName = viewModel.earnPoolModel.token.name.lowercased().contains(text.lowercased())
+            return containSymbol || containName
+          })
+          if self.displayDataSource.isEmpty {
+            self.emptyIcon.image = UIImage(named: "empty-search-token")
+            self.emptyLabel.text = Strings.noRecordFound
+          }
+      }
+      
+      if let selectedPlatform = selectedPlatform {
+          self.displayDataSource = self.displayDataSource.filter { element in
+              return element.earnPoolModel.platforms.contains(selectedPlatform)
+          }
+      }
+      
+      self.emptyView.isHidden = !self.displayDataSource.isEmpty
+      self.tableView.reloadData()
   }
   
   func fetchData(chainId: Int? = nil, shouldShowLoading: Bool = true) {
@@ -117,9 +136,6 @@ class EarnListViewController: InAppBrowsingViewController {
         }
     }
     
-    private func reloadDataSource() {
-        
-    }
   
   func updateUIStartSearchingMode() {
     self.view.layoutIfNeeded()
@@ -160,10 +176,18 @@ class EarnListViewController: InAppBrowsingViewController {
         let viewModel = PlatformFilterViewModel(dataSource: allPlatforms, selected: selectedPlatform)
         let viewController = PlatformFilterViewController.instantiateFromNib()
         viewController.viewModel = viewModel
-        
+        viewController.delegate = self
         let sheetOptions = SheetOptions(pullBarHeight: 0)
         let sheet = SheetViewController(controller: viewController, sizes: [.intrinsic], options: sheetOptions)
         present(sheet, animated: true)
+    }
+    
+    private func updateUIPlatformFilterButton() {
+        guard let selectedPlatform = selectedPlatform else {
+            platformFilterButton.setTitle("All Networks", for: .normal)
+            return
+        }
+        platformFilterButton.setTitle(selectedPlatform.name.capitalized, for: .normal)
     }
 }
 
@@ -253,15 +277,6 @@ extension EarnListViewController: UITextFieldDelegate {
   
   @objc func doSearch() {
     if let text = self.searchTextField.text, !text.isEmpty {
-      self.displayDataSource = self.dataSource.filter({ viewModel in
-        let containSymbol = viewModel.earnPoolModel.token.symbol.lowercased().contains(text.lowercased())
-        let containName = viewModel.earnPoolModel.token.name.lowercased().contains(text.lowercased())
-        return containSymbol || containName
-      })
-      if self.displayDataSource.isEmpty {
-        self.emptyIcon.image = UIImage(named: "empty-search-token")
-        self.emptyLabel.text = Strings.noRecordFound
-      }
       self.reloadUI()
     } else {
       self.fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
@@ -273,4 +288,14 @@ extension EarnListViewController: EarnPoolViewCellDelegate {
   func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
     delegate?.didSelectPlatform(platform: platform, pool: pool)
   }
+}
+
+extension EarnListViewController: PlatformFilterViewControllerDelegate {
+    func didSelectPlatform(viewController: PlatformFilterViewController, selected: EarnPlatform?) {
+        selectedPlatform = selected
+        viewController.dismiss(animated: true) {
+            self.updateUIPlatformFilterButton()
+            self.reloadUI()
+        }
+    }
 }

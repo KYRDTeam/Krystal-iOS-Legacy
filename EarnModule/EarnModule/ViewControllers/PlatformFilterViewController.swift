@@ -9,7 +9,7 @@ import UIKit
 import Services
 
 protocol PlatformFilterViewControllerDelegate: class {
-    func didSelectPlatform(_ selected: EarnPlatform?)
+    func didSelectPlatform(viewController: PlatformFilterViewController, selected: EarnPlatform?)
 }
 
 class PlatformFilterViewModel {
@@ -75,6 +75,6 @@ extension PlatformFilterViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let platform = viewModel.platformForRow(row: indexPath.row)
-        delegate?.didSelectPlatform(platform)
+        delegate?.didSelectPlatform(viewController: self, selected: platform)
     }
 }

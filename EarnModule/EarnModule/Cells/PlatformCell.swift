@@ -20,15 +20,14 @@ class PlatformCell: UITableViewCell {
     }
     
     func updateCell(platform: EarnPlatform?, isSelected: Bool) {
-        guard iconImageView != nil else { return }
         guard let platform = platform else {
-            iconImageView.image = UIImage(named: "all_platform_icon")
-            nameLabel.text = "All Networks"
+            iconImageView.image = Images.allNetworkIcon
+            nameLabel.text = Strings.allNetworks
             selectedIcon.isHidden = !isSelected
             return
         }
         iconImageView.setImage(urlString: platform.logo, symbol: "")
-        nameLabel.text = platform.name.uppercased()
+        nameLabel.text = platform.name.capitalized
         selectedIcon.isHidden = !isSelected
     }
 }

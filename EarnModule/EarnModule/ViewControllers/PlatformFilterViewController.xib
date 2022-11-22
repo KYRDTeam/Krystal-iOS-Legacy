@@ -34,6 +34,9 @@
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="9mz-mU-9X7">
                     <rect key="frame" x="0.0" y="87.5" width="375" height="579.5"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="300" id="gx4-e9-PnM"/>
+                    </constraints>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="1xj-Qw-Ueh"/>
                         <outlet property="delegate" destination="-1" id="amF-03-jYr"/>
