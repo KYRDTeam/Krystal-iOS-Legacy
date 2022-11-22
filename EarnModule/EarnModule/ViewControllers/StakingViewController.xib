@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -13,11 +13,11 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
-            <string>Karla-Regular</string>
-        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -28,6 +28,7 @@
                 <outlet property="amountTextField" destination="XNk-hV-r3b" id="eVH-MZ-MBU"/>
                 <outlet property="apyInfoView" destination="8AN-XC-Lhr" id="AZk-zf-JGd"/>
                 <outlet property="backupIcon" destination="idQ-D8-sVZ" id="zvj-Ol-bGz"/>
+                <outlet property="balanceTitleLabel" destination="SOS-I0-hAY" id="xdp-DC-pSS"/>
                 <outlet property="browsingView" destination="dNJ-ss-9hQ" id="XYe-Sw-4uh"/>
                 <outlet property="chainButton" destination="U4I-3q-BJY" id="vqb-7i-FGV"/>
                 <outlet property="chainIcon" destination="Laj-A9-yYy" id="9HQ-wU-CBl"/>
@@ -49,6 +50,7 @@
                 <outlet property="p90ValueLabel" destination="3XN-On-TKK" id="10s-93-Ana"/>
                 <outlet property="pendingTxIndicator" destination="vxh-Yo-TTM" id="av4-4x-eXs"/>
                 <outlet property="projectionContainerView" destination="uL6-Ya-9qb" id="Shd-aR-Q2p"/>
+                <outlet property="projectionTitleLabel" destination="9sj-ST-PbS" id="dxR-y8-He8"/>
                 <outlet property="rateInfoView" destination="Fd2-Pd-wBO" id="cni-aj-eZ1"/>
                 <outlet property="stakeMainHeaderLabel" destination="E6D-sW-5ed" id="AFl-hG-SDQ"/>
                 <outlet property="stakeTokenImageView" destination="OPS-mj-2RC" id="50c-S1-4Q7"/>

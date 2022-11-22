@@ -148,6 +148,46 @@ class StakingViewModel: BaseViewModel {
         }
         return balance.value
     }
+    
+    var earningType: EarningType {
+        return EarningType(value: selectedPlatform.type)
+    }
+    
+    var titleString: String {
+        switch earningType {
+        case .staking:
+            return String(format: Strings.stakeXOnY, token.symbol, selectedPlatform.name.uppercased())
+        case .lending:
+            return String(format: Strings.supplyXOnY, token.symbol, selectedPlatform.name.uppercased())
+        }
+    }
+    
+    var balanceTitleString: String {
+        switch earningType {
+        case .staking:
+            return Strings.availableToStake
+        case .lending:
+            return Strings.availableToSupply
+        }
+    }
+    
+    var actionButtonTitle: String {
+        switch earningType {
+        case .staking:
+            return Strings.stakeNow
+        case .lending:
+            return Strings.supplyNow
+        }
+    }
+    
+    var projectionTitleString: String {
+        switch earningType {
+        case .staking:
+            return Strings.stakingProjections
+        case .lending:
+            return Strings.supplyingProjections
+        }
+    }
   
     func getGasPrice(gasType: GasSpeed) -> BigInt {
         guard let chain = ChainType.make(chainID: chainId) else { return .zero }
@@ -302,7 +342,7 @@ extension StakingViewModel {
         }
     }
     
-    func requestBuildStakeTx(showLoading: Bool = false, completion: @escaping () -> () = {}) {
+    func requestBuildStakeTx(showLoading: Bool = false, completion: @escaping (Bool) -> () = { _ in }) {
         if showLoading { isLoading.value = true }
         apiService.buildStakeTx(param: buildTxRequestParams) { [weak self] result in
             switch result {
@@ -311,9 +351,10 @@ extension StakingViewModel {
                 if let gasLimit = BigInt(tx.gasLimit.drop0x, radix: 16), gasLimit > 0 {
                     self?.didGetTxGasLimit(gasLimit: gasLimit)
                 }
-                completion()
+                completion(true)
             case .failure(let error):
                 self?.error.value = error
+                completion(false)
             }
             if showLoading { self?.isLoading.value = false }
         }
@@ -325,7 +366,7 @@ extension StakingViewModel {
             return
         }
         guard let tx = txObject.value else {
-            requestBuildStakeTx(showLoading: false, completion: {
+            requestBuildStakeTx(showLoading: false, completion: { _ in
                 self.getAllowance()
             })
             return
