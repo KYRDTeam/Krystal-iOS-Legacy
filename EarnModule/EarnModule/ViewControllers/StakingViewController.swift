@@ -37,6 +37,7 @@ enum FormState: Equatable {
 enum NextButtonState {
     case notApprove
     case needApprove
+    case approving
     case approved
     case noNeed
 }
@@ -293,6 +294,10 @@ class StakingViewController: InAppBrowsingViewController {
             case .approved:
                 self.nextButton.setTitle(self.viewModel.actionButtonTitle, for: .normal)
                 self.updateUIError()
+            case .approving:
+                self.nextButton.setTitle(Strings.approveInProgress, for: .normal)
+                self.nextButton.alpha = 0.2
+                self.nextButton.isEnabled = false
             case .noNeed:
                 self.nextButton.setTitle(self.viewModel.actionButtonTitle, for: .normal)
                 self.updateUIError()
@@ -424,10 +429,10 @@ class StakingViewController: InAppBrowsingViewController {
     func sendApprove(tokenAddress: String, remain: BigInt, symbol: String, toAddress: String) {
         let vm = ApproveTokenViewModel(symbol: symbol, tokenAddress: tokenAddress, remain: remain, toAddress: toAddress, chain: AppState.shared.currentChain)
         let vc = ApproveTokenViewController(viewModel: vm)
-        vc.onSuccessApprove = {
-            self.viewModel.nextButtonStatus.value = .approved
+        vc.onApproveSent = { hash in
+            self.viewModel?.approveHash = hash
+            self.viewModel.nextButtonStatus.value = .approving
         }
-        
         vc.onFailApprove = {
             self.viewModel.nextButtonStatus.value = .notApprove
         }
