@@ -76,4 +76,5 @@
 "staking.projections" = "Staking Projections";
 "supplying.projections" = "Supplying Projections";
 "you.are.supplying" = "You are supplying";
+"approve.fail" = "Approve fail";
 "supply.summary" = "Supply Summary";
