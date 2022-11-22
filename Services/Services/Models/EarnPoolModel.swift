@@ -46,7 +46,7 @@ public class EarnPoolModel {
   }
 }
 
-public class EarnPlatform {
+public class EarnPlatform: Equatable, Hashable {
   public let name: String
   public let logo: String
   public let type: String
@@ -70,5 +70,13 @@ public class EarnPlatform {
         self.desc = platform.desc
         self.apy = apy
         self.tvl = tvl
+    }
+    
+    public static func ==(lhs: EarnPlatform, rhs: EarnPlatform) -> Bool {
+        return lhs.name == rhs.name && lhs.type == rhs.type && lhs.logo == rhs.logo
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+      hasher.combine(name)
     }
 }

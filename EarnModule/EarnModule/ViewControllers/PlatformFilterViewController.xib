@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlatformFilterViewController" customModule="EarnModule" customModuleProvider="target">
+            <connections>
+                <outlet property="platformTableView" destination="9mz-mU-9X7" id="dMG-7P-J6R"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Platform" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rE1-hY-7cm">
+                    <rect key="frame" x="114.5" y="32" width="146.5" height="23.5"/>
+                    <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                    <color key="textColor" name="textWhiteColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="9mz-mU-9X7">
+                    <rect key="frame" x="0.0" y="87.5" width="375" height="579.5"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="1xj-Qw-Ueh"/>
+                        <outlet property="delegate" destination="-1" id="amF-03-jYr"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.16078431372549018" green="0.1764705882352941" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="9mz-mU-9X7" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="DBT-T6-wZK"/>
+                <constraint firstItem="9mz-mU-9X7" firstAttribute="top" secondItem="rE1-hY-7cm" secondAttribute="bottom" constant="32" id="L0g-aZ-ZyB"/>
+                <constraint firstItem="rE1-hY-7cm" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="32" id="MFV-W0-ZJ0"/>
+                <constraint firstItem="9mz-mU-9X7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Vbd-w8-bxn"/>
+                <constraint firstItem="9mz-mU-9X7" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="WcW-60-3Ef"/>
+                <constraint firstItem="rE1-hY-7cm" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="qv4-xm-87l"/>
+            </constraints>
+            <point key="canvasLocation" x="138.40000000000001" y="113.79310344827587"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

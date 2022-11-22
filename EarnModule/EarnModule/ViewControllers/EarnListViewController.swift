@@ -12,7 +12,7 @@ import Dependencies
 import AppState
 import Services
 import DesignSystem
-
+import FittedSheets
 
 protocol EarnListViewControllerDelegate: class {
   func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel)
@@ -27,7 +27,8 @@ class EarnListViewController: InAppBrowsingViewController {
   @IBOutlet weak var emptyView: UIView!
   weak var delegate: EarnListViewControllerDelegate?
   
-  @IBOutlet weak var emptyIcon: UIImageView!
+    @IBOutlet weak var platformFilterButton: UIButton!
+    @IBOutlet weak var emptyIcon: UIImageView!
   @IBOutlet weak var emptyLabel: UILabel!
   var dataSource: [EarnPoolViewCellViewModel] = []
   var displayDataSource: [EarnPoolViewCellViewModel] = []
@@ -41,6 +42,8 @@ class EarnListViewController: InAppBrowsingViewController {
     }
     setupUI()
   }
+    
+    var selectedPlatform: EarnPlatform?
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -100,6 +103,23 @@ class EarnListViewController: InAppBrowsingViewController {
       self.reloadUI()
     }
   }
+    
+    private func getAllPlatform() -> [EarnPlatform] {
+        var platformSet = Set<EarnPlatform>()
+        
+        dataSource.forEach { item in
+            item.earnPoolModel.platforms.forEach { element in
+                platformSet.insert(element)
+            }
+        }
+        return Array(platformSet).sorted { (left, right) -> Bool in
+            return left.name > right.name
+        }
+    }
+    
+    private func reloadDataSource() {
+        
+    }
   
   func updateUIStartSearchingMode() {
     self.view.layoutIfNeeded()
@@ -134,7 +154,17 @@ class EarnListViewController: InAppBrowsingViewController {
   @IBAction func cancelButtonTapped(_ sender: Any) {
     self.updateUIEndSearchingMode()
   }
-
+    
+    @IBAction func platformFilterButtonTapped(_ sender: UIButton) {
+        let allPlatforms = getAllPlatform()
+        let viewModel = PlatformFilterViewModel(dataSource: allPlatforms, selected: selectedPlatform)
+        let viewController = PlatformFilterViewController.instantiateFromNib()
+        viewController.viewModel = viewModel
+        
+        let sheetOptions = SheetOptions(pullBarHeight: 0)
+        let sheet = SheetViewController(controller: viewController, sizes: [.intrinsic], options: sheetOptions)
+        present(sheet, animated: true)
+    }
 }
 
 extension EarnListViewController: UITableViewDataSource {
