@@ -76,6 +76,8 @@ class StakingViewController: InAppBrowsingViewController {
     @IBOutlet weak var faqContainerHeightContraint: NSLayoutConstraint!
     
     @IBOutlet weak var earningTokensHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var ethWarningView: UIView!
+    @IBOutlet weak var nextButtonTopContraint: NSLayoutConstraint!
     
     var viewModel: StakingViewModel!
     var keyboardTimer: Timer?
@@ -97,6 +99,7 @@ class StakingViewController: InAppBrowsingViewController {
         updateUIProjection()
         faqContainerView.updateFAQInput(viewModel.faqInput)
         faqContainerView.delegate = self
+        updateUIETHWarningView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -161,6 +164,15 @@ class StakingViewController: InAppBrowsingViewController {
     fileprivate func updateRateInfoView() {
         self.amountReceiveInfoView.setValue(value: self.viewModel.displayAmountReceive)
         self.rateInfoView.setValue(value: self.viewModel.displayRate)
+    }
+    
+    fileprivate func updateUIETHWarningView() {
+        guard viewModel.token.address == "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" else {
+            return
+        }
+        
+        ethWarningView.isHidden = false
+        nextButtonTopContraint.constant = 150
     }
     
     fileprivate func updateUIEarningTokenView() {
