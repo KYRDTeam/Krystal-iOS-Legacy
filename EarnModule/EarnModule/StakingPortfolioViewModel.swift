@@ -37,24 +37,16 @@ class StakingPortfolioViewModel {
     var pending: [StakingPortfolioCellModel] = []
     
     var pendingUnstakeData = data.1
-    var earningBalanceData = data.0
+    var earningBalanceData = filterEarningBalanceData(data: data.0)
     
     if !searchText.isEmpty {
       pendingUnstakeData = pendingUnstakeData.filter({ item in
         return item.symbol.lowercased().contains(searchText)
       })
-      
-      earningBalanceData = earningBalanceData.filter({ item in
-        return item.stakingToken.symbol.lowercased().contains(searchText) || item.toUnderlyingToken.symbol.lowercased().contains(searchText)
-      })
     }
     
     if let unwrap = chainID {
       pendingUnstakeData = pendingUnstakeData.filter({ item in
-        return item.chainID == unwrap
-      })
-      
-      earningBalanceData = earningBalanceData.filter({ item in
         return item.chainID == unwrap
       })
     }
@@ -67,6 +59,22 @@ class StakingPortfolioViewModel {
     }
     dataSource.value = (output, pending)
   }
+    
+    func filterEarningBalanceData(data: [EarningBalance]) -> [EarningBalance] {
+        var earningBalanceData = data
+        if !searchText.isEmpty {
+          earningBalanceData = earningBalanceData.filter({ item in
+            return item.stakingToken.symbol.lowercased().contains(searchText) || item.toUnderlyingToken.symbol.lowercased().contains(searchText)
+          })
+        }
+        
+        if let unwrap = chainID {
+          earningBalanceData = earningBalanceData.filter({ item in
+            return item.chainID == unwrap
+          })
+        }
+        return earningBalanceData
+    }
   
     func requestData(shouldShowLoading: Bool = true) {
       if shouldShowLoading {

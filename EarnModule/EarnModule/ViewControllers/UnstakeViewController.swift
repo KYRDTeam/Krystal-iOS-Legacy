@@ -34,7 +34,8 @@ class UnstakeViewController: InAppBrowsingViewController {
     @IBOutlet weak var rateView: TxInfoView!
     @IBOutlet weak var networkFeeView: TxInfoView!
     @IBOutlet weak var receiveTimeView: TxInfoView!
-    
+    @IBOutlet weak var unstakeBalanceTitleLabel: UILabel!
+
     var viewModel: UnstakeViewModel?
     var unstakeButtonState: UnstakeButtonState = .disable {
         didSet {
@@ -77,7 +78,8 @@ class UnstakeViewController: InAppBrowsingViewController {
         }
         networkFeeView.setInfo(title: Strings.networkFee, value: viewModel.transactionFeeString())
         receiveTimeView.setInfo(title: viewModel.timeForUnstakeString(), value: "")
-        unstakePlatformLabel.text = Strings.unstake + " " + viewModel.stakingTokenSymbol + " on " + viewModel.platform.name.uppercased()
+        unstakePlatformLabel.text = viewModel.platformTitleString
+        unstakeBalanceTitleLabel.text = viewModel.availableBalanceTitleString
         tokenIcon.setImage(urlString: viewModel.stakingTokenLogo, symbol: viewModel.stakingTokenSymbol)
         viewModel.onGasSettingUpdated = { [weak self] in
             self?.updateUIGasFee()
@@ -89,23 +91,24 @@ class UnstakeViewController: InAppBrowsingViewController {
     }
     
     func configUnstakeButtonUI() {
+        guard let viewModel = viewModel else { return }
         switch self.unstakeButtonState {
             case .normal:
                 unstakeButton.isUserInteractionEnabled = true
                 unstakeButton.setBackgroundColor(AppTheme.current.primaryColor, forState: .normal)
-                unstakeButton.setTitle(String(format: Strings.unstakeToken,viewModel?.stakingTokenSymbol ?? ""), for: .normal)
+                unstakeButton.setTitle(viewModel.buttonTitleString, for: .normal)
             case .disable:
                 unstakeButton.isUserInteractionEnabled = false
                 unstakeButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .normal)
-                unstakeButton.setTitle(String(format: Strings.unstakeToken,viewModel?.stakingTokenSymbol ?? ""), for: .normal)
+                unstakeButton.setTitle(viewModel.buttonTitleString, for: .normal)
             case .insufficientFee:
                 unstakeButton.isUserInteractionEnabled = false
                 unstakeButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .normal)
-                unstakeButton.setTitle(String(format: Strings.insufficientQuoteBalance,viewModel?.chain.quoteToken() ?? ""), for: .normal)
+                unstakeButton.setTitle(String(format: Strings.insufficientQuoteBalance,viewModel.chain.quoteToken()), for: .normal)
             case .needApprove:
                 unstakeButton.isUserInteractionEnabled = true
                 unstakeButton.setBackgroundColor(AppTheme.current.primaryColor, forState: .normal)
-                unstakeButton.setTitle(String(format: Strings.approveToken,viewModel?.stakingTokenSymbol ?? ""), for: .normal)
+                unstakeButton.setTitle(String(format: Strings.approveToken,viewModel.stakingTokenSymbol), for: .normal)
             case .approving:
                 unstakeButton.isUserInteractionEnabled = false
                 unstakeButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .normal)
@@ -172,31 +175,32 @@ class UnstakeViewController: InAppBrowsingViewController {
     
     func updateReceivedAmount() {
         guard let viewModel = viewModel else { return }
-        let inputValue = amountTextField.text?.amountBigInt(decimals: 18) ?? BigInt(0)
+        let inputValue = amountTextField.text?.amountBigInt(decimals: viewModel.stakingTokenDecimal) ?? BigInt(0)
         viewModel.unstakeValue = inputValue
         receiveInfoView.setValue(value: viewModel.receivedInfoString())
     }
     
     func validateInput() -> Bool {
         guard let viewModel = viewModel else { return false }
-        let inputValue = amountTextField.text?.amountBigInt(decimals: 18) ?? BigInt(0)
+        let decimal = viewModel.stakingTokenDecimal
+        let inputValue = amountTextField.text?.amountBigInt(decimals: decimal) ?? BigInt(0)
         let convertedMaxBalance = viewModel.balance
-        let convertedMin = viewModel.minUnstakeAmount * BigInt(10).power(18) / viewModel.ratio
-        let convertedMax = viewModel.maxUnstakeAmount * BigInt(10).power(18) / viewModel.ratio
+        let convertedMin = viewModel.minUnstakeAmount * BigInt(10).power(decimal) / viewModel.ratio
+        let convertedMax = viewModel.maxUnstakeAmount * BigInt(10).power(decimal) / viewModel.ratio
         
         //convert and round up last number < copy logic android>
-        let convertedMinString = String(format: "%6f", convertedMin.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).doubleValue)
+        let convertedMinString = String(format: "%6f", convertedMin.string(decimals: decimal, minFractionDigits: 0, maxFractionDigits: decimal).doubleValue)
         let convertedMinDouble = Double(convertedMinString) ?? 0
-        let inputDouble = inputValue.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).doubleValue
+        let inputDouble = inputValue.string(decimals: decimal, minFractionDigits: 0, maxFractionDigits: decimal).doubleValue
         
         if inputValue > convertedMaxBalance {
             showError(msg: Strings.yourStakingBalanceIsNotSufficient)
             return false
         } else if inputValue > convertedMax, convertedMax > BigInt(0) {
-            showError(msg: String(format: Strings.shouldNoMoreThan, NumberFormatUtils.amount(value: convertedMax, decimals: 18)) + " " + viewModel.stakingTokenSymbol)
+            showError(msg: String(format: Strings.shouldNoMoreThan, NumberFormatUtils.amount(value: convertedMax, decimals: decimal)) + " " + viewModel.stakingTokenSymbol)
             return false
         }  else if inputDouble < convertedMinDouble {
-            showError(msg: String(format: Strings.shouldBeAtLeast, NumberFormatUtils.amount(value: convertedMin, decimals: 18)) + " " + viewModel.stakingTokenSymbol)
+            showError(msg: String(format: Strings.shouldBeAtLeast, NumberFormatUtils.amount(value: convertedMin, decimals: decimal)) + " " + viewModel.stakingTokenSymbol)
             return false
         } else {
             hideError()
@@ -205,7 +209,8 @@ class UnstakeViewController: InAppBrowsingViewController {
     }
     
     private func updateUINextButton() {
-        let inputValue = amountTextField.text?.amountBigInt(decimals: 18) ?? .zero
+        guard let viewModel = viewModel else { return }
+        let inputValue = amountTextField.text?.amountBigInt(decimals: viewModel.stakingTokenDecimal) ?? .zero
         if inputValue.isZero {
             unstakeButton.alpha = 0.2
             unstakeButton.isEnabled = false
@@ -245,7 +250,8 @@ class UnstakeViewController: InAppBrowsingViewController {
                                                          stakeTokenIcon: viewModel.stakingTokenLogo,
                                                          toTokenIcon:viewModel.toTokenLogo,
                                                          fromSym: viewModel.stakingTokenSymbol,
-                                                         toSym: viewModel.toTokenSymbol)
+                                                         toSym: viewModel.toTokenSymbol,
+                                                         earningType: viewModel.earningType)
                     
                     
                     let popupViewModel = UnstakeSummaryViewModel(setting: viewModel.setting, txObject: tx, platform: viewModel.platform, displayInfo: displayInfo)

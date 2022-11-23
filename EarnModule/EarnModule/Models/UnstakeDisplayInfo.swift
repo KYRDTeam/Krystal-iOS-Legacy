@@ -16,4 +16,5 @@ struct UnstakeDisplayInfo {
     var toTokenIcon: String
     var fromSym: String
     var toSym: String
+    var earningType: EarningType
 }

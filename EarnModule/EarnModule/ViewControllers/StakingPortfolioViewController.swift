@@ -329,7 +329,9 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard orientation == .right, indexPath.section == 0 else { return nil }
-        guard let earningBalance: EarningBalance = self.viewModel.portfolio?.0[indexPath.row] else { return nil }
+        guard let portfolios = self.viewModel.portfolio else { return nil }
+        let data = self.viewModel.filterEarningBalanceData(data: portfolios.0)
+        let earningBalance: EarningBalance = data[indexPath.row]
         
         let earningType = EarningType(value: earningBalance.platform.type)
         

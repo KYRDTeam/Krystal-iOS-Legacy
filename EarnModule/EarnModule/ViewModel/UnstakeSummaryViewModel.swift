@@ -45,7 +45,12 @@ class UnstakeSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var title: String {
-        return Strings.unStakeSummary
+        switch displayInfo.earningType {
+        case .staking:
+            return Strings.unStakeSummary
+        case .lending:
+            return Strings.withdrawSummary
+        }
     }
     
     var chain: ChainType {
@@ -53,7 +58,12 @@ class UnstakeSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var action: String {
-        return Strings.youAreUnstaking
+        switch displayInfo.earningType {
+        case .staking:
+            return Strings.youAreUnstaking
+        case .lending:
+            return Strings.youAreWithdrawing
+        }
     }
     
     var tokenIconURL: String {
@@ -69,7 +79,12 @@ class UnstakeSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var buttonTitle: String {
-        return Strings.confirmUnstake
+        switch displayInfo.earningType {
+        case .staking:
+            return Strings.confirmUnstake
+        case .lending:
+            return Strings.confirmWithdraw
+        }
     }
     
     var rows: [TxInfoRowData] {

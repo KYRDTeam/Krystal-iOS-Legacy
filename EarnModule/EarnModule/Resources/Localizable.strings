@@ -78,3 +78,8 @@
 "you.are.supplying" = "You are supplying";
 "approve.fail" = "Approve fail";
 "supply.summary" = "Supply Summary";
+"available.to.unstake" = "Available to unstake";
+"available.to.withdraw" = "Available to withdraw";
+"withdraw.summary" = "Withdraw Summary";
+"you.are.withdrawing" = "You are withdrawing";
+"confirm.withdraw" = "Confirm withdraw";
