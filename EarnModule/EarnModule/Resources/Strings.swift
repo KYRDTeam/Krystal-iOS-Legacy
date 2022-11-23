@@ -63,7 +63,7 @@ struct Strings {
     static let availableToWithdraw = "available.to.withdraw".toBeLocalised()
     static let noRecordFound = "no.record.found".toBeLocalised()
     static let earnIsCurrentlyNotSupportedOnThisChainYet = "earn.is.currently.not.supported.on.this.chain.yet".toBeLocalised()
-    static let cheking = "checking".toBeLocalised()
+    static let checking = "checking".toBeLocalised()
     static let stakeNow = "stake.now".toBeLocalised()
     static let emptyTokenDeposit = "no.tokens.deposited".toBeLocalised()
     static let apyTitle = "est.apy".toBeLocalised()
