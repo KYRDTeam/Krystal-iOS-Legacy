@@ -57,8 +57,11 @@ class AdvanceSearchTokenCell: UITableViewCell {
     
     if let chainType = ChainType.make(chainID: token.chainId) {
       chainIcon.image = chainType.chainIcon()
+      totalValueLabel.text = currencyMode.symbol() + NumberFormatUtils.volFormat(number: token.tvl) + currencyMode.suffixSymbol(chain: chainType)
+    } else {
+      totalValueLabel.text = currencyMode.symbol() + NumberFormatUtils.volFormat(number: token.tvl)
     }
     addressLabel.text = "\(token.id.prefix(7))...\(token.id.suffix(4))"
-    totalValueLabel.text = currencyMode.symbol() + NumberFormatUtils.volFormat(number: token.tvl) + currencyMode.suffixSymbol()
+    
   }
 }

@@ -1,8 +1,8 @@
 //
 //  CurrencyMode.swift
-//  AppState
+//  BaseWallet
 //
-//  Created by Tung Nguyen on 22/11/2022.
+//  Created by Tung Nguyen on 23/11/2022.
 //
 
 import Foundation
@@ -26,16 +26,16 @@ public enum CurrencyMode: Int {
     }
   }
 
-  public func suffixSymbol() -> String {
+  public func suffixSymbol(chain: ChainType) -> String {
     switch self {
     case .quote:
-      return " \(AppState.shared.currentChain.customRPC().quoteToken)"
+      return " \(chain.customRPC().quoteToken)"
     default:
       return ""
     }
   }
 
-  public func toString() -> String {
+  public func toString(chain: ChainType) -> String {
     switch self {
     case .eth:
       return "eth"
@@ -44,7 +44,7 @@ public enum CurrencyMode: Int {
     case .btc:
       return "btc"
     case .quote:
-      return AppState.shared.currentChain.customRPC().quoteToken.lowercased()
+      return chain.customRPC().quoteToken.lowercased()
     }
   }
 

@@ -12,7 +12,7 @@ import BigInt
 
 class AppBalanceStorage: BalancesStorage {
   
-  func getBalanceBigInt(address: String) -> BigInt? {
+  func getBalance(address: String) -> BigInt? {
     let balance = BalanceStorage.shared.balanceForAddress(address)
     return BigInt(balance?.balance ?? "")
   }

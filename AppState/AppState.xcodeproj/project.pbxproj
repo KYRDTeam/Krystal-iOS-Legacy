@@ -10,7 +10,6 @@
 		A64C2E4628F7F818002FD64C /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64C2E4528F7F818002FD64C /* KrystalWallets.framework */; };
 		A6512F1528F6C68600A84BC2 /* AppEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F1428F6C68600A84BC2 /* AppEvent.swift */; };
 		A6512F3328F6CEB900A84BC2 /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3228F6CEB900A84BC2 /* UserDefault.swift */; };
-		A668BFE3292CD1AD001A110D /* CurrencyMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFE2292CD1AD001A110D /* CurrencyMode.swift */; };
 		A66FC3E728F4F4F600E49E86 /* AppState.h in Headers */ = {isa = PBXBuildFile; fileRef = A66FC3E628F4F4F600E49E86 /* AppState.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6B1FD0528F69D9D00894DCB /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FD0428F69D9D00894DCB /* AppState.swift */; };
 		A6B1FD0B28F69EF300894DCB /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B1FD0A28F69EF300894DCB /* Utilities.framework */; };
@@ -23,7 +22,6 @@
 		A64C2E4528F7F818002FD64C /* KrystalWallets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KrystalWallets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6512F1428F6C68600A84BC2 /* AppEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEvent.swift; sourceTree = "<group>"; };
 		A6512F3228F6CEB900A84BC2 /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
-		A668BFE2292CD1AD001A110D /* CurrencyMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyMode.swift; sourceTree = "<group>"; };
 		A66FC3E328F4F4F600E49E86 /* AppState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66FC3E628F4F4F600E49E86 /* AppState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppState.h; sourceTree = "<group>"; };
 		A6B1FD0428F69D9D00894DCB /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -80,7 +78,6 @@
 				A6B1FD0428F69D9D00894DCB /* AppState.swift */,
 				A6B1FD1028F69F3000894DCB /* Constants.swift */,
 				A6512F1428F6C68600A84BC2 /* AppEvent.swift */,
-				A668BFE2292CD1AD001A110D /* CurrencyMode.swift */,
 				A66FC3E628F4F4F600E49E86 /* AppState.h */,
 			);
 			path = AppState;
@@ -177,7 +174,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6512F3328F6CEB900A84BC2 /* UserDefault.swift in Sources */,
-				A668BFE3292CD1AD001A110D /* CurrencyMode.swift in Sources */,
 				A6F6291E28FD3AE20085AE67 /* KAddress+Codable.swift in Sources */,
 				A6B1FD0528F69D9D00894DCB /* AppState.swift in Sources */,
 				A6512F1528F6C68600A84BC2 /* AppEvent.swift in Sources */,

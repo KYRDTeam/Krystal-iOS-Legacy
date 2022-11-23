@@ -108,7 +108,12 @@ class AppRouter: AppRouterProtocol, Coordinator {
   func openToken(address: String, chainID: Int) {
     guard let chain = ChainType.make(chainID: chainID) else { return }
     let vc = TokenModule.createTokenDetailViewController(address: address, chain: chain)
-    UIApplication.shared.topMostViewController()?.navigationController?.pushViewController(vc, animated: true)
+    let topViewController = UIApplication.shared.topMostViewController()
+    if let nav = topViewController as? UINavigationController {
+      nav.pushViewController(vc, animated: true)
+    } else {
+      topViewController?.navigationController?.pushViewController(vc, animated: true)
+    }
   }
   
 }
