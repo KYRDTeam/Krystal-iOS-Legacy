@@ -107,13 +107,26 @@ class AppRouter: AppRouterProtocol, Coordinator {
   
   func openToken(address: String, chainID: Int) {
     guard let chain = ChainType.make(chainID: chainID) else { return }
-    let vc = TokenModule.createTokenDetailViewController(address: address, chain: chain)
+    let currencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .quote
+    guard let vc = TokenModule.createTokenDetailViewController(address: address, chain: chain, currencyMode: currencyMode) else { return }
     let topViewController = UIApplication.shared.topMostViewController()
     if let nav = topViewController as? UINavigationController {
       nav.pushViewController(vc, animated: true)
     } else {
       topViewController?.navigationController?.pushViewController(vc, animated: true)
     }
+  }
+  
+  func openTokenTransfer(token: Token) {
+    
+  }
+  
+  func openSwap(token: Token) {
+    
+  }
+  
+  func openInvest(token: Token) {
+    
   }
   
 }

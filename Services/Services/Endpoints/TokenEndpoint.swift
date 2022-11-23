@@ -12,7 +12,7 @@ enum TokenEndpoint {
   case getTokenDetail(chainPath: String, address: String)
   case getCommonBaseToken
   case getPoolList(tokenAddress: String, chainID: Int, limit: Int)
-  case getChartData(chainPath: String, address: String, quote: String, from: Int)
+  case getChartData(chainPath: String, address: String, quote: String, from: Int, to: Int)
 }
 
 extension TokenEndpoint: TargetType {
@@ -29,7 +29,7 @@ extension TokenEndpoint: TargetType {
       return "/v1/token/commonBase"
     case .getPoolList:
       return "/v1/pool/list"
-    case .getChartData(let chainPath, _, _, _):
+    case .getChartData(let chainPath, _, _, _, _):
       return "/\(chainPath)/v1/market/priceSeries"
     }
   }
@@ -61,11 +61,12 @@ extension TokenEndpoint: TargetType {
         "limit": limit
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getChartData(_, let address, let quote, let from):
+    case .getChartData(_, let address, let quote, let from, let to):
       let json: [String: Any] = [
         "token": address,
         "quoteCurrency": quote,
-        "from": from
+        "from": from,
+        "to": to
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }

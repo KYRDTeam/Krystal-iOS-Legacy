@@ -24,7 +24,7 @@ class TokenPoolCell: UITableViewCell {
   @IBOutlet weak var pairNameLabelWidth: NSLayoutConstraint!
   @IBOutlet weak var containerView: UIView!
   
-  func updateUI(isSelecting: Bool, poolDetail: TokenPoolDetail, baseTokenAddress: String, currencyMode: CurrencyMode) {
+  func updateUI(isSelecting: Bool, chain: ChainType, poolDetail: TokenPoolDetail, baseTokenAddress: String, currencyMode: CurrencyMode) {
     containerView.backgroundColor = isSelecting ? AppTheme.current.primaryColor.withAlphaComponent(0.2) : AppTheme.current.sectionBackgroundColor
     
     var baseToken = poolDetail.token0
@@ -44,7 +44,7 @@ class TokenPoolCell: UITableViewCell {
     self.chainIcon.image = ChainType.make(chainID: poolDetail.chainId)?.chainIcon()
     self.addressLabel.text = poolDetail.address.shortTypeAddress
     
-    let totalValueString = currencyMode.symbol() + NumberFormatUtils.volFormat(number: poolDetail.tvl) + currencyMode.suffixSymbol()
+    let totalValueString = currencyMode.symbol() + NumberFormatUtils.volFormat(number: poolDetail.tvl) + currencyMode.suffixSymbol(chain: chain)
     self.totalValueLabel.text = totalValueString
   }
 }

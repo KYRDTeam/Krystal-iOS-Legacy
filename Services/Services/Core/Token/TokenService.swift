@@ -12,7 +12,7 @@ import Utilities
 
 public class TokenService: BaseService {
   
-  let provider = MoyaProvider<TokenEndpoint>(plugins: [])
+  let provider = MoyaProvider<TokenEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
   
   public func getTokenDetail(address: String, chainPath: String, completion: @escaping (TokenDetailInfo?) -> ()) {
     provider.request(.getTokenDetail(chainPath: chainPath, address: address)) { result in
@@ -67,8 +67,8 @@ public class TokenService: BaseService {
     }
   }
   
-  public func getChartData(chainPath: String, tokenAddress: String, quote: String, from: Int, completion: @escaping ([[Double]]) -> ()) {
-    provider.request(.getChartData(chainPath: chainPath, address: tokenAddress, quote: quote, from: from)) { result in
+  public func getChartData(chainPath: String, tokenAddress: String, quote: String, from: Int, to: Int, completion: @escaping ([[Double]]) -> ()) {
+    provider.request(.getChartData(chainPath: chainPath, address: tokenAddress, quote: quote, from: from, to: to)) { result in
       switch result {
       case .failure:
         completion([])

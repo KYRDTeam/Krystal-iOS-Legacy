@@ -172,9 +172,10 @@ end
 
 target 'TokenModule' do
   project 'TokenModule/TokenModule.xcodeproj'
+  use_frameworks!
   
   pod 'BigInt'
-  pod 'MBProgressHUD'
+  pod 'MBProgressHUD', '~> 1.1.0'
   pod 'Charts'
 end
 

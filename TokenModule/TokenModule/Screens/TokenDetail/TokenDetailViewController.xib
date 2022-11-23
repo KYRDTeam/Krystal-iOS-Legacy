@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -23,7 +23,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChartViewController" customModule="Krystal" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TokenDetailViewController" customModule="TokenModule" customModuleProvider="target">
             <connections>
                 <outlet property="aboutTitleLabel" destination="ezX-2z-dQI" id="637-Hw-caK"/>
                 <outlet property="addressLeading" destination="1Gl-mI-iFx" id="C6C-R9-ukq"/>
@@ -99,6 +99,9 @@
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                            </userDefinedRuntimeAttributes>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r3Q-Ff-reg">
                             <rect key="frame" x="23" y="45.333333333333336" width="46" height="36.000000000000007"/>
@@ -413,7 +416,7 @@
                                                 <constraint firstItem="dII-6D-EMA" firstAttribute="centerY" secondItem="O0Z-IH-nRe" secondAttribute="centerY" id="s77-PQ-klg"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LXN-Tz-rz3" userLabel="TradingView" customClass="TradingView" customModule="Krystal" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LXN-Tz-rz3" userLabel="TradingView" customClass="TradingView" customModule="TokenModule" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="27" width="375" height="285"/>
                                             <color key="backgroundColor" red="0.094117647060000004" green="0.1019607843" blue="0.13725490200000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
@@ -726,7 +729,7 @@
                                         <constraint firstAttribute="height" constant="36" id="ijB-qa-TzD"/>
                                     </constraints>
                                 </stackView>
-                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yx2-K4-ikS" customClass="GrowingTextView" customModule="Krystal" customModuleProvider="target">
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yx2-K4-ikS" customClass="GrowingTextView" customModule="TokenModule" customModuleProvider="target">
                                     <rect key="frame" x="20" y="22" width="335" height="363"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
@@ -797,7 +800,7 @@
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Lq3-Hn-cfD" customClass="SegmentedControl" customModule="Krystal" customModuleProvider="target">
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Lq3-Hn-cfD" customClass="SegmentedControl" customModule="DesignSystem">
                             <rect key="frame" x="16" y="532.66666666666663" width="197" height="32"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <segments>
@@ -887,8 +890,8 @@
         </view>
     </objects>
     <designables>
-        <designable name="yx2-K4-ikS">
-            <size key="intrinsicContentSize" width="-1" height="200"/>
+        <designable name="Lq3-Hn-cfD">
+            <size key="intrinsicContentSize" width="197" height="31"/>
         </designable>
     </designables>
     <resources>

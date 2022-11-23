@@ -7,7 +7,7 @@
 
 import UIKit
 import BigInt
-//import MBProgressHUD
+import MBProgressHUD
 import Charts
 import Dependencies
 import BaseModule
@@ -15,25 +15,6 @@ import DesignSystem
 import Services
 import BaseWallet
 import AppState
-
-enum ChartViewEvent {
-  case getChartData(address: String, from: Int, to: Int, currency: String)
-  case getTokenDetailInfo(address: String)
-  case transfer(token: Token)
-  case swap(token: Token)
-  case invest(token: Token)
-  case openEtherscan(address: String, chain: ChainType)
-  case openWebsite(url: String)
-  case openTwitter(name: String)
-  case getPoolList(address: String, chainId: Int)
-  case selectPool(source: String, quote: String)
-  case openDiscord(link: String)
-  case openTelegram(link: String)
-}
-
-protocol ChartViewControllerDelegate: class {
-  func chartViewController(_ controller: TokenDetailViewController, run event: ChartViewEvent)
-}
 
 class TokenDetailViewController: KNBaseViewController {
   @IBOutlet weak var containScrollView: UIScrollView!
@@ -92,14 +73,9 @@ class TokenDetailViewController: KNBaseViewController {
   @IBOutlet weak var discordButton: UIButton!
   @IBOutlet weak var telegramButton: UIButton!
   
-  weak var delegate: ChartViewControllerDelegate?
-  var viewModel: ChartViewModel!
+  var viewModel: TokenDetailViewModel!
   fileprivate var tokenPoolTimer: Timer?
-  
-  var tokenChain: ChainType {
-    return ChainType.make(chainID: viewModel.chainId) ?? AppState.shared.currentChain
-  }
-  
+
   var isSelectingLineChart: Bool = true {
     didSet {
       self.reloadCharts()
@@ -116,7 +92,8 @@ class TokenDetailViewController: KNBaseViewController {
     self.setupButtons()
     self.setupChartViews()
     self.setupTradingView()
-    self.loadTokenChartData()
+    self.bindViewModel()
+    self.viewModel.loadChartData()
     self.reloadCharts()
     self.updateUISocialButtons()
   }
@@ -146,7 +123,7 @@ class TokenDetailViewController: KNBaseViewController {
     self.swapButton.rounded(radius: 16)
     self.investButton.rounded(radius: 16)
     self.favButton.setImage(self.viewModel.displayFavIcon, for: .normal)
-    self.favButton.isHidden = self.viewModel.chainId != AppState.shared.currentChain.getChainId()
+    self.favButton.isHidden = self.viewModel.chainID != AppState.shared.currentChain.getChainId()
     periodChartSelectButtons.forEach { (button) in
       button.rounded(radius: 7)
     }
@@ -207,10 +184,10 @@ class TokenDetailViewController: KNBaseViewController {
   
   @objc func copyTokenAddress() {
     UIPasteboard.general.string = self.viewModel.token.address
-//    let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-//    hud.mode = .text
-//    hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
-//    hud.hide(animated: true, afterDelay: 1.5)
+    let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+    hud.mode = .text
+    hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
+    hud.hide(animated: true, afterDelay: 1.5)
     AppDependencies.tracker.track("token_detail_copy_address", properties: ["screenid": "token_detail"])
   }
 
@@ -227,8 +204,9 @@ class TokenDetailViewController: KNBaseViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.getPoolList()
-    self.loadTokenDetailInfo()
+    
+    self.viewModel.loadPoolList()
+    self.viewModel.loadTokenDetailInfo(isFirstLoad: true)
     self.updateUIChartInfo()
     self.updateUITokenInfo()
   }
@@ -237,6 +215,39 @@ class TokenDetailViewController: KNBaseViewController {
     super.viewWillDisappear(animated)
     self.tokenPoolTimer?.invalidate()
     self.tokenPoolTimer = nil
+  }
+  
+  func bindViewModel() {
+    viewModel.onTokenInfoUpdated = { [weak self] in
+      self?.updateUITokenInfo()
+      self?.updateUIChartInfo()
+      self?.updateUISocialButtons()
+    }
+    viewModel.onTokenInfoLoadedFail = { [weak self] in
+      // TODO: Show not found view
+    }
+    viewModel.onChartDataUpdated = { [weak self] in
+      self?.noDataImageView.isHidden = self?.viewModel.chartData?.isEmpty == false
+      self?.updateUIChartInfo()
+      if let data = self?.viewModel.lineChartData {
+        self?.tokenChartView.data = data
+        self?.tokenChartView.setNeedsDisplay()
+      }
+    }
+    viewModel.onPoolListUpdated = { [weak self] in
+      guard let self = self else { return }
+      if self.viewModel.poolData.isEmpty {
+        self.infoSegment.isHidden = true
+        self.aboutTitleLabel.isHidden = false
+        self.hidePoolView(false)
+        return
+      }
+      self.infoSegment.isHidden = false
+      self.aboutTitleLabel.isHidden = true
+      self.showAllPoolButton.isHidden = self.viewModel.poolData.count <= 5
+      self.poolTableView.reloadData()
+      self.updatePoolTableHeight()
+    }
   }
   
   func showPoolView() {
@@ -288,7 +299,7 @@ class TokenDetailViewController: KNBaseViewController {
       return
     }
     self.viewModel.periodType = type
-    self.loadTokenChartData()
+    self.viewModel.loadChartData()
     self.updateUIPeriodSelectButtons()
     self.updateUITokenInfo()
   }
@@ -298,38 +309,50 @@ class TokenDetailViewController: KNBaseViewController {
   }
   
   @IBAction func transferButtonTapped(_ sender: UIButton) {
-    self.delegate?.chartViewController(self, run: .transfer(token: self.viewModel.token))
+    AppDependencies.router.openTokenTransfer(token: viewModel.token)
     AppDependencies.tracker.track("token_detail_transfer", properties: ["screenid": "token_detail"])
   }
   
   @IBAction func swapButtonTapped(_ sender: UIButton) {
-    self.delegate?.chartViewController(self, run: .swap(token: self.viewModel.token))
+    AppDependencies.router.openSwap(token: viewModel.token)
     AppDependencies.tracker.track("token_detail_swap", properties: ["screenid": "token_detail"])
   }
   
   @IBAction func investButtonTapped(_ sender: UIButton) {
-    self.delegate?.chartViewController(self, run: .invest(token: self.viewModel.token))
+    AppDependencies.router.openInvest(token: viewModel.token)
     AppDependencies.tracker.track("token_detail_earn", properties: ["screenid": "token_detail"])
   }
   
   @IBAction func etherscanButtonTapped(_ sender: UIButton) {
-    self.delegate?.chartViewController(self, run: .openEtherscan(address: self.viewModel.token.address, chain: tokenChain))
+    AppDependencies.router.openToken(address: viewModel.token.address, chainID: viewModel.chainID)
   }
   
   @IBAction func websiteButtonTapped(_ sender: UIButton) {
-    self.delegate?.chartViewController(self, run: .openWebsite(url: self.viewModel.detailInfo?.links.homepage ?? ""))
+    guard let websiteURL = viewModel.detailInfo?.links.homepage else {
+      return
+    }
+    AppDependencies.router.openExternalURL(url: websiteURL)
   }
   
   @IBAction func twitterButtonTapped(_ sender: UIButton) {
-    self.delegate?.chartViewController(self, run: .openTwitter(name: self.viewModel.detailInfo?.links.twitterScreenName ?? ""))
+    guard let twitterName = viewModel.detailInfo?.links.twitterScreenName else {
+      return
+    }
+    AppDependencies.router.openExternalURL(url: "https://twitter.com/\(twitterName)/")
   }
   
   @IBAction func dicordButtonTapped(_ sender: UIButton) {
-    self.delegate?.chartViewController(self, run: .openDiscord(link: self.viewModel.detailInfo?.links.discord ?? ""))
+    guard let discordURL = viewModel.detailInfo?.links.discord else {
+      return
+    }
+    AppDependencies.router.openExternalURL(url: discordURL)
   }
   
   @IBAction func telegramButtonTapped(_ sender: UIButton) {
-    self.delegate?.chartViewController(self, run: .openTelegram(link: self.viewModel.detailInfo?.links.telegram ?? ""))
+    guard let telegramURL = viewModel.detailInfo?.links.telegram else {
+      return
+    }
+    AppDependencies.router.openExternalURL(url: telegramURL)
   }
   
   @IBAction func favButtonTapped(_ sender: UIButton) {
@@ -384,43 +407,8 @@ class TokenDetailViewController: KNBaseViewController {
       self.addressLeading.isActive = false
     }
     
-    if let chain = ChainType.make(chainID: self.viewModel.chainId) {
-      self.chainIcon.image = chain.chainIcon()
-    } else {
-      self.chainIcon.image = AppState.shared.currentChain.chainIcon()
-    }
-
+    self.chainIcon.image = viewModel.chain.chainIcon()
     self.chainAddressLabel.text = self.viewModel.token.address.shortTypeAddress
-  }
-  
-  func loadTokenChartData() {
-    let current = NSDate().timeIntervalSince1970
-    self.delegate?.chartViewController(self, run: .getChartData(address: self.viewModel.token.address, from: self.viewModel.periodType.getFromTimeStamp(), to: Int(current), currency: self.viewModel.currency))
-  }
-
-  fileprivate func loadTokenDetailInfo() {
-    self.delegate?.chartViewController(self, run: .getTokenDetailInfo(address: self.viewModel.token.address))
-  }
-  
-  fileprivate func getPoolList() {
-    var address = self.viewModel.token.address
-    if self.viewModel.token.isQuoteToken() {
-      // incase current token is native token, find wrap token instead
-      let wsymbol = "W" + self.viewModel.token.symbol
-      if let wtoken = AppDependencies.tokenStorage.getAllSupportedTokens().first(where: { $0.symbol == wsymbol }) {
-        address = wtoken.address
-      }
-    }
-    self.delegate?.chartViewController(self, run: .getPoolList(address: address, chainId: self.viewModel.chainId ))
-    self.tokenPoolTimer = Timer.scheduledTimer(
-      withTimeInterval: 15.0,
-      repeats: true,
-      block: { [weak self] _ in
-        guard let `self` = self else { return }
-        self.delegate?.chartViewController(self, run: .getPoolList(address: address, chainId: self.viewModel.chainId ))
-      }
-    )
-    
   }
 
   fileprivate func updateUIPeriodSelectButtons() {
@@ -467,50 +455,8 @@ class TokenDetailViewController: KNBaseViewController {
     self.updateUIChartInfo()
     if let data = self.viewModel.lineChartData {
       self.tokenChartView.data = data
-      
       self.tokenChartView.setNeedsDisplay()
     }
-  }
-
-  func coordinatorFailUpdateApi(_ error: NetworkError) {
-//    self.showErrorTopBannerMessage(with: "", message: error.localizedDescription())
-  }
-
-  func coordinatorDidUpdateTokenDetailInfo(_ detailInfo: TokenDetailInfo?) {
-//    guard let detailInfo = detailInfo else {
-//      let chainDBPath = ChainType.make(chainID: self.viewModel.chainId)?.getChainDBPath() ?? ""
-//      let supportedTokens = Storage.retrieve(chainDBPath + Constants.tokenStoreFileName, as: [Token].self) ?? []
-//      let customTokens = Storage.retrieve(chainDBPath + Constants.customTokenStoreFileName, as: [Token].self) ?? []
-//      let allFoundTokens = supportedTokens + customTokens
-//      if let foundToken = allFoundTokens.first{ $0.address ==  self.viewModel.token.address } {
-//        let attributedString = NSMutableAttributedString()
-//        let titleAttributes: [NSAttributedString.Key: Any] = [
-//          NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor")!,
-//          NSAttributedString.Key.font: UIFont.karlaBold(ofSize: 20),
-//          NSAttributedString.Key.kern: 0.0,
-//        ]
-//        let subTitleAttributes: [NSAttributedString.Key: Any] = [
-//          NSAttributedString.Key.foregroundColor: UIColor(named: "normalTextColor")!,
-//          NSAttributedString.Key.font: UIFont.karlaReguler(ofSize: 18),
-//          NSAttributedString.Key.kern: 0.0,
-//        ]
-//        let titleString = foundToken.symbol.uppercased()
-//        let subTitleString = foundToken.name.uppercased()
-//        attributedString.append(NSAttributedString(string: "\(titleString) ", attributes: titleAttributes))
-//        attributedString.append(NSAttributedString(string: "\(subTitleString)", attributes: subTitleAttributes))
-//        self.titleView.attributedText = attributedString
-//        return
-//      }
-//      self.navigationController?.popToRootViewController(animated: true)
-//      let errorVC = ErrorViewController()
-//      errorVC.modalPresentationStyle = .fullScreen
-//      self.present(errorVC, animated: false)
-//      return
-//    }
-//    self.viewModel.detailInfo = detailInfo
-//    self.updateUITokenInfo()
-//    self.updateUIChartInfo()
-//    self.updateUISocialButtons()
   }
   
   fileprivate func updateUISocialButtons() {
@@ -581,7 +527,7 @@ extension TokenDetailViewController: UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(TokenPoolCell.self, indexPath: indexPath)!
     let poolData = self.viewModel.poolData[indexPath.row]
     let isSelecting = poolData.address == viewModel.selectedPoolDetail?.address
-    cell.updateUI(isSelecting: isSelecting, poolDetail: poolData, baseTokenAddress: viewModel.baseTokenAddress, currencyMode: .usd)
+    cell.updateUI(isSelecting: isSelecting, chain: viewModel.chain, poolDetail: poolData, baseTokenAddress: viewModel.baseTokenAddress, currencyMode: .usd)
     return cell
   }
 }

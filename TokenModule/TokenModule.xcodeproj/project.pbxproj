@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		A668BF91292CB849001A110D /* TokenModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A668BF90292CB849001A110D /* TokenModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A668BFA0292CB8B9001A110D /* ChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A668BF9E292CB8B9001A110D /* ChartViewController.xib */; };
-		A668BFA1292CB8B9001A110D /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BF9F292CB8B9001A110D /* ChartViewController.swift */; };
+		A668BFA0292CB8B9001A110D /* TokenDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A668BF9E292CB8B9001A110D /* TokenDetailViewController.xib */; };
+		A668BFA1292CB8B9001A110D /* TokenDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BF9F292CB8B9001A110D /* TokenDetailViewController.swift */; };
 		A668BFA3292CB8F3001A110D /* TokenDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFA2292CB8F3001A110D /* TokenDetailViewModel.swift */; };
 		A668BFA9292CBD57001A110D /* ChartPeriodType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFA8292CBD57001A110D /* ChartPeriodType.swift */; };
 		A668BFAB292CBD82001A110D /* TokenModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFAA292CBD82001A110D /* TokenModule.swift */; };
@@ -31,15 +31,15 @@
 		A668BFD9292CC650001A110D /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFD8292CC650001A110D /* String+.swift */; };
 		A668BFDF292CCEAD001A110D /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFDE292CCEAD001A110D /* String.swift */; };
 		A668BFE5292CD46B001A110D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFE4292CD46B001A110D /* Constants.swift */; };
-		CD0F5D1212C907323A3C4ED6 /* libPods-TokenModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D335D22031DF8417CAC0AEE /* libPods-TokenModule.a */; };
+		A6B4A6A9292E139900F6F0F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6B4A6A8292E139900F6F0F5 /* Assets.xcassets */; };
+		F9A227AEF3E7FA65E153EC7E /* Pods_TokenModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B80AE15B9D1F9B99D8DA7934 /* Pods_TokenModule.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1D335D22031DF8417CAC0AEE /* libPods-TokenModule.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokenModule.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A668BF8D292CB849001A110D /* TokenModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TokenModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A668BF90292CB849001A110D /* TokenModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TokenModule.h; sourceTree = "<group>"; };
-		A668BF9E292CB8B9001A110D /* ChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChartViewController.xib; sourceTree = "<group>"; };
-		A668BF9F292CB8B9001A110D /* ChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
+		A668BF9E292CB8B9001A110D /* TokenDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokenDetailViewController.xib; sourceTree = "<group>"; };
+		A668BF9F292CB8B9001A110D /* TokenDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenDetailViewController.swift; sourceTree = "<group>"; };
 		A668BFA2292CB8F3001A110D /* TokenDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailViewModel.swift; sourceTree = "<group>"; };
 		A668BFA8292CBD57001A110D /* ChartPeriodType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPeriodType.swift; sourceTree = "<group>"; };
 		A668BFAA292CBD82001A110D /* TokenModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenModule.swift; sourceTree = "<group>"; };
@@ -61,6 +61,8 @@
 		A668BFD8292CC650001A110D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		A668BFDE292CCEAD001A110D /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		A668BFE4292CD46B001A110D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A6B4A6A8292E139900F6F0F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B80AE15B9D1F9B99D8DA7934 /* Pods_TokenModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokenModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C10B00C3C97E49A742A85D59 /* Pods-TokenModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenModule.release.xcconfig"; path = "Target Support Files/Pods-TokenModule/Pods-TokenModule.release.xcconfig"; sourceTree = "<group>"; };
 		D465846A183AABBCF04E5485 /* Pods-TokenModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenModule.debug.xcconfig"; path = "Target Support Files/Pods-TokenModule/Pods-TokenModule.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -76,7 +78,7 @@
 				A668BFBD292CBE4E001A110D /* Utilities.framework in Frameworks */,
 				A668BFBA292CBE45001A110D /* DesignSystem.framework in Frameworks */,
 				A668BFB7292CBE42001A110D /* Dependencies.framework in Frameworks */,
-				CD0F5D1212C907323A3C4ED6 /* libPods-TokenModule.a in Frameworks */,
+				F9A227AEF3E7FA65E153EC7E /* Pods_TokenModule.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,6 +148,7 @@
 			children = (
 				A668BFDE292CCEAD001A110D /* String.swift */,
 				A668BFE4292CD46B001A110D /* Constants.swift */,
+				A6B4A6A8292E139900F6F0F5 /* Assets.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -153,8 +156,8 @@
 		A668BF9D292CB890001A110D /* TokenDetail */ = {
 			isa = PBXGroup;
 			children = (
-				A668BF9F292CB8B9001A110D /* ChartViewController.swift */,
-				A668BF9E292CB8B9001A110D /* ChartViewController.xib */,
+				A668BF9F292CB8B9001A110D /* TokenDetailViewController.swift */,
+				A668BF9E292CB8B9001A110D /* TokenDetailViewController.xib */,
 				A668BFA2292CB8F3001A110D /* TokenDetailViewModel.swift */,
 				A668BFA8292CBD57001A110D /* ChartPeriodType.swift */,
 				A668BFD3292CC26B001A110D /* TokenPoolCell.swift */,
@@ -193,7 +196,7 @@
 				A668BFB3292CBE3F001A110D /* BaseWallet.framework */,
 				A668BFB0292CBE3B001A110D /* BaseModule.framework */,
 				A668BFAC292CBE39001A110D /* AppState.framework */,
-				1D335D22031DF8417CAC0AEE /* libPods-TokenModule.a */,
+				B80AE15B9D1F9B99D8DA7934 /* Pods_TokenModule.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -269,7 +272,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A668BFA0292CB8B9001A110D /* ChartViewController.xib in Resources */,
+				A668BFA0292CB8B9001A110D /* TokenDetailViewController.xib in Resources */,
+				A6B4A6A9292E139900F6F0F5 /* Assets.xcassets in Resources */,
 				A668BFD4292CC26B001A110D /* TokenPoolCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -306,7 +310,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A668BFA1292CB8B9001A110D /* ChartViewController.swift in Sources */,
+				A668BFA1292CB8B9001A110D /* TokenDetailViewController.swift in Sources */,
 				A668BFD5292CC26B001A110D /* TokenPoolCell.swift in Sources */,
 				A668BFC9292CBE92001A110D /* TradingViewController.swift in Sources */,
 				A668BFCE292CBE92001A110D /* ChartLoadRequest.swift in Sources */,
@@ -475,7 +479,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -507,7 +511,7 @@
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

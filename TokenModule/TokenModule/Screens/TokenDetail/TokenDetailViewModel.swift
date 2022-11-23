@@ -16,7 +16,7 @@ import Dependencies
 import AppState
 import BaseWallet
 
-class ChartViewModel {
+class TokenDetailViewModel {
   var dataSource: [(x: Double, y: Double)] = []
   var poolData: [TokenPoolDetail] = []
   var xLabels: [Double] = []
@@ -29,7 +29,8 @@ class ChartViewModel {
   var currency: String
   let currencyMode: CurrencyMode
   
-  var chainId = AppState.shared.currentChain.getChainId()
+  var chain: ChainType
+  var chainID: Int
   
   var hideBalanceStatus: Bool {
     get {
@@ -55,13 +56,21 @@ class ChartViewModel {
   }()
   
   var selectedPoolDetail: TokenPoolDetail?
-  
   var lineChartData: LineChartData?
+  
+  var onTokenInfoUpdated: (() -> ())?
+  var onTokenInfoLoadedFail: (() -> ())?
+  var onChartDataUpdated: (() -> ())?
+  var onPoolListUpdated: (() -> ())?
+  
+  let service = TokenService()
 
-  init(token: Token, currencyMode: CurrencyMode) {
+  init(token: Token, chainID: Int, currencyMode: CurrencyMode) {
     self.token = token
     self.currencyMode = currencyMode
-    self.currency = currencyMode.toString()
+    self.chainID = chainID
+    self.chain = ChainType.make(chainID: chainID) ?? AppState.shared.currentChain
+    self.currency = currencyMode.toString(chain: chain)
   }
   
   func updateChartData(_ data: [[Double]]) {
@@ -126,7 +135,7 @@ class ChartViewModel {
 
   var display24hVol: String {
     let volume24H = self.detailInfo?.markets[self.currency]?.volume24H ?? 0
-    return self.currencyMode.symbol() + NumberFormatUtils.volFormat(number: volume24H) + self.currencyMode.suffixSymbol()
+    return self.currencyMode.symbol() + NumberFormatUtils.volFormat(number: volume24H) + self.currencyMode.suffixSymbol(chain: chain)
   }
 
   var diffPercent: Double {
@@ -180,17 +189,17 @@ class ChartViewModel {
   }
   
   var displayMarketCap: String {
-    return self.currencyMode.symbol() + NumberFormatUtils.volFormat(number: self.marketCap) + self.currencyMode.suffixSymbol()
+    return self.currencyMode.symbol() + NumberFormatUtils.volFormat(number: self.marketCap) + self.currencyMode.suffixSymbol(chain: chain)
   }
   
   var displayAllTimeHigh: String {
     let ath = self.detailInfo?.markets[self.currency]?.ath ?? 0
-    return self.currencyMode.symbol() + NumberFormatUtils.allTimeHighAndLowFormat(number: ath) + self.currencyMode.suffixSymbol()
+    return self.currencyMode.symbol() + NumberFormatUtils.allTimeHighAndLowFormat(number: ath) + self.currencyMode.suffixSymbol(chain: chain)
   }
 
   var displayAllTimeLow: String {
     let atl = self.detailInfo?.markets[self.currency]?.atl ?? 0
-    return self.currencyMode.symbol() + NumberFormatUtils.allTimeHighAndLowFormat(number: atl) + self.currencyMode.suffixSymbol()
+    return self.currencyMode.symbol() + NumberFormatUtils.allTimeHighAndLowFormat(number: atl) + self.currencyMode.suffixSymbol(chain: chain)
   }
 
   var displayDescription: String {
@@ -292,7 +301,7 @@ class ChartViewModel {
     attributedText.append(NSAttributedString(string: "  Price" + ": ", attributes: boldAttributes))
 
     let valueString = NumberFormatUtils.usdValueFormat(value: priceBigInt, decimals: 18)
-    let displayString = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
+    let displayString = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol(chain: chain)
     
     attributedText.append(NSAttributedString(string: displayString, attributes: normalAttributes))
 
@@ -341,10 +350,42 @@ class ChartViewModel {
     case .btc:
       return detailInfo?.markets["btc"]?.price ?? 0
     default:
-      guard let chain = ChainType.make(chainID: chainId) else {
-        return 0
-      }
       return detailInfo?.markets[chain.quoteToken().lowercased()]?.price ?? 0
     }
   }
+  
+  func loadTokenDetailInfo(isFirstLoad: Bool) {
+    service.getTokenDetail(address: token.address, chainPath: chain.apiChainPath()) { [weak self] tokenDetail in
+      if let tokenDetail = tokenDetail {
+        self?.detailInfo = tokenDetail
+        self?.onTokenInfoUpdated?()
+      } else {
+        if isFirstLoad {
+          self?.onTokenInfoLoadedFail?()
+        }
+      }
+    }
+  }
+  
+  func loadChartData() {
+    service.getChartData(chainPath: chain.customRPC().apiChainPath, tokenAddress: token.address, quote: currency, from: periodType.getFromTimeStamp(), to: Int(Date().timeIntervalSince1970)) { [weak self] data in
+      self?.updateChartData(data)
+      self?.onChartDataUpdated?()
+    }
+  }
+  
+  func loadPoolList() {
+    var address = token.address
+    if token.isQuoteToken() {
+      let wsymbol = "W" + token.symbol
+      if let wtoken = AppDependencies.tokenStorage.getAllSupportedTokens().first(where: { $0.symbol == wsymbol }) {
+        address = wtoken.address
+      }
+    }
+    service.getPoolList(tokenAddress: address, chainID: chainID) { [weak self] pools in
+      self?.poolData = pools
+      self?.onPoolListUpdated?()
+    }
+  }
+  
 }
