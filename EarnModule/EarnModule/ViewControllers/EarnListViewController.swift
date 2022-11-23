@@ -161,6 +161,7 @@ extension EarnListViewController: UITableViewDelegate {
       animateCellHeight(cell: cell, viewModel: cellViewModel)
     }
     self.tableView.endUpdates()
+      AppDependencies.tracker.track("mob_earn_select_token", properties: ["screenid": "earn"])
   }
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
