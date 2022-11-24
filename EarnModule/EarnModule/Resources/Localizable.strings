@@ -83,3 +83,4 @@
 "withdraw.summary" = "Withdraw Summary";
 "you.are.withdrawing" = "You are withdrawing";
 "confirm.withdraw" = "Confirm withdraw";
+"unwrap.token" = "Unwrap %@";

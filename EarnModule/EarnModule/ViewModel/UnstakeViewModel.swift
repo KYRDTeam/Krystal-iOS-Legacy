@@ -20,13 +20,14 @@ protocol UnstakeViewModelDelegate: class {
     func didGetDataFail(errMsg: String)
     func didCheckNotEnoughFeeForTx(errMsg: String)
     func didApproveToken(success: Bool)
+    func didGetWrapInfo(wrap: WrapInfo)
 }
 
 class UnstakeViewModel: BaseViewModel {
     let displayDepositedValue: String
     let ratio: BigInt
     let stakingTokenSymbol: String
-    let toTokenSymbol: String
+    var toTokenSymbol: String
     let balance: BigInt
     let platform: Platform
     var unstakeValue: BigInt = BigInt(0) {
@@ -43,7 +44,7 @@ class UnstakeViewModel: BaseViewModel {
     let stakingTokenLogo: String
     let toTokenLogo: String
     let stakingTokenDecimal: Int
-    let toUnderlyingTokenAddress: String
+    var toUnderlyingTokenAddress: String
     var stakingTokenAllowance: BigInt = BigInt(0)
     var contractAddress: String?
     var minUnstakeAmount: BigInt = BigInt(0)
@@ -52,11 +53,20 @@ class UnstakeViewModel: BaseViewModel {
     var quoteTokenDetail: TokenDetailInfo?
     weak var delegate: UnstakeViewModelDelegate?
     var approveHash: String?
-    
+    var wrapInfo: WrapInfo?
     let apiService = EarnServices()
+    
+    var isLido: Bool {
+        return platform.name.lowercased() == "LIDO".lowercased()
+    }
+    
+    var isAnkr: Bool {
+        return platform.name.lowercased() == "ANKR".lowercased()
+    }
     var buildTxRequestParams: JSONDictionary {
+        
         var earningType: String = platform.type
-        if toTokenSymbol.lowercased() == "MATIC".lowercased() {
+        if toTokenSymbol.lowercased() == "MATIC".lowercased() && ( isLido || isAnkr ) {
             earningType = "stakingMATIC"
         }
         var params: JSONDictionary = [
@@ -209,9 +219,6 @@ class UnstakeViewModel: BaseViewModel {
     }
 
     func timeForUnstakeString() -> String {
-        let isAnkr = platform.name.lowercased() == "ANKR".lowercased()
-        let isLido = platform.name.lowercased() == "LIDO".lowercased()
-        
         var time = ""
         if toTokenSymbol.lowercased() == "AVAX".lowercased() && isAnkr {
             time = Strings.avaxUnstakeTime
@@ -234,12 +241,38 @@ class UnstakeViewModel: BaseViewModel {
         return NumberFormatUtils.gasFee(value: setting.transactionFee(chain: chain)) + " " + AppState.shared.currentChain.quoteToken() + feeUSDString
     }
     
-    func fetchData(completion: @escaping () -> ()) {
-        apiService.getStakingOptionDetail(platform: platform.name, earningType: platform.type, chainID: "\(chain.getChainId())", tokenAddress: toUnderlyingTokenAddress) { result in
+    func updateWrapInfo(isUseWrap: Bool) {
+        if isUseWrap && toTokenSymbol.first?.uppercased() == "W" {
+            toTokenSymbol.removeFirst()
+        } else {
+            toTokenSymbol = "W" + toTokenSymbol
+        }
+        
+        if let wrapInfo = wrapInfo {
+            toUnderlyingTokenAddress = wrapInfo.wrapAddress
+        }
+        requestBuildUnstakeTx()
+    }
+    
+    func fetchData(isUseWrapTokenAddress: Bool = false, completion: @escaping () -> ()) {
+        var tokenAddress = toUnderlyingTokenAddress
+        if isUseWrapTokenAddress {
+            if let wrapInfo = wrapInfo {
+                tokenAddress = wrapInfo.wrapAddress
+            }
+        }
+        
+        
+        apiService.getStakingOptionDetail(platform: platform.name, earningType: platform.type, chainID: "\(chain.getChainId())", tokenAddress: tokenAddress) { result in
             switch result {
             case .success(let detail):
                 if let earningToken = detail.earningTokens.first(where: { $0.address.lowercased() == self.stakingTokenAddress.lowercased() }) {
                     self.contractAddress = detail.poolAddress
+                    if let wrap = detail.wrap {
+                        self.wrapInfo = wrap
+                        self.delegate?.didGetWrapInfo(wrap: wrap)
+                    }
+                    
                     let minAmount = detail.validation?.minUnstakeAmount ?? 0
                     self.minUnstakeAmount = BigInt(minAmount * pow(10.0, Double(self.stakingTokenDecimal)))
                     let maxAmount = detail.validation?.maxUnstakeAmount ?? 0

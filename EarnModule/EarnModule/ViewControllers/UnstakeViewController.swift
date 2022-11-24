@@ -12,6 +12,7 @@ import TransactionModule
 import BigInt
 import FittedSheets
 import Utilities
+import Services
 
 enum UnstakeButtonState {
     case normal
@@ -35,6 +36,7 @@ class UnstakeViewController: InAppBrowsingViewController {
     @IBOutlet weak var networkFeeView: TxInfoView!
     @IBOutlet weak var receiveTimeView: TxInfoView!
     @IBOutlet weak var unstakeBalanceTitleLabel: UILabel!
+    @IBOutlet weak var toggleUnwrapView: TxToggleInfoView!
 
     var viewModel: UnstakeViewModel?
     var unstakeButtonState: UnstakeButtonState = .disable {
@@ -76,6 +78,19 @@ class UnstakeViewController: InAppBrowsingViewController {
             self?.viewModel?.showRevertedRate.toggle()
             self?.rateView.setValue(value: viewModel.showRateInfo())
         }
+        toggleUnwrapView.setTitle(title: String(format: Strings.unwrapToken,viewModel.toTokenSymbol))
+        toggleUnwrapView.onSwitchValue = { isOn in
+            if let viewModel = self.viewModel {
+                viewModel.updateWrapInfo(isUseWrap: isOn)
+                self.receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.toTokenSymbol)
+                self.rateView.setValue(value: viewModel.showRateInfo())
+                self.showLoadingHUD()
+                viewModel.fetchData(isUseWrapTokenAddress: true, completion: {
+                    self.hideLoading()
+                })
+            }
+        }
+        
         networkFeeView.setInfo(title: Strings.networkFee, value: viewModel.transactionFeeString())
         receiveTimeView.setInfo(title: viewModel.timeForUnstakeString(), value: "")
         unstakePlatformLabel.text = viewModel.platformTitleString
@@ -306,6 +321,10 @@ extension UnstakeViewController: UnstakeViewModelDelegate {
         } else {
             self.showErrorTopBannerMessage(message: errMsg)
         }
+    }
+    
+    func didGetWrapInfo(wrap: WrapInfo) {
+        toggleUnwrapView.isHidden = !wrap.isWrappable
     }
 }
 
