@@ -97,6 +97,7 @@ struct Strings {
     static let supplyingInProgress = "supplying.in.progress".toBeLocalised()
     static let stakingInProgress = "staking.in.progress".toBeLocalised()
     static let unstakeInProgress = "unstake.in.progress".toBeLocalised()
+    static let withdrawInProgress = "withdraw.in.progress".toBeLocalised()
     static let approveInProgress = "approve.in.progress".toBeLocalised()
     static let approveFail = "approve.fail".toBeLocalised()
     static let success = "success".toBeLocalised()
