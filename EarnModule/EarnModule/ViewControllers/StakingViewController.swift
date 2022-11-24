@@ -167,6 +167,9 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     fileprivate func updateUIETHWarningView() {
+        guard AppDependencies.featureFlag.showFeature(forKey: FeatureFlagKeys.unstakeWarning) else {
+            return
+        }
         guard viewModel.token.address == "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" else {
             return
         }

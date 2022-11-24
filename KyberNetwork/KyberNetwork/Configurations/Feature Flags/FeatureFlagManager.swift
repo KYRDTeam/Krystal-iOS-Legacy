@@ -6,6 +6,7 @@
 //
 
 import LaunchDarkly
+import Dependencies
 
 struct FeatureFlagKeys {
   static let promotionCodeIntegration = "promotion-code"
@@ -22,7 +23,7 @@ struct FeatureFlagKeys {
     static let tokenApproval = "token-approval"
 }
 
-class FeatureFlagManager {
+class FeatureFlagManager: FeatureFlag {
   static let shared = FeatureFlagManager()
 
   func configClient(session: KNSession?) {

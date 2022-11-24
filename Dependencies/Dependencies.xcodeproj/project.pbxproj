@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0DEA8C01D840AF55B630B4FD /* Pods_Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A564EBBC2D3B1EF3B4D97A /* Pods_Dependencies.framework */; };
+		433C7511292F6EE300B5A2CC /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433C7510292F6EE300B5A2CC /* FeatureFlag.swift */; };
 		7EAF4780291B804E00BF5D00 /* BalancesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF477F291B804E00BF5D00 /* BalancesStorage.swift */; };
 		A64C2E3728F7BA12002FD64C /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3628F7BA12002FD64C /* Tracker.swift */; };
 		A64C2E3928F7BAA1002FD64C /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3828F7BAA1002FD64C /* Dependencies.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		433C7510292F6EE300B5A2CC /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
 		49F3A3EBEEF754D1B5309B6E /* Pods-Dependencies.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dependencies.debug.xcconfig"; path = "Target Support Files/Pods-Dependencies/Pods-Dependencies.debug.xcconfig"; sourceTree = "<group>"; };
 		7EAF477F291B804E00BF5D00 /* BalancesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesStorage.swift; sourceTree = "<group>"; };
 		85A564EBBC2D3B1EF3B4D97A /* Pods_Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
