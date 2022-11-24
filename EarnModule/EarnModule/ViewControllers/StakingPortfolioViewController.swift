@@ -237,9 +237,9 @@ extension StakingPortfolioViewController: SkeletonTableViewDelegate {
     view.backgroundColor = AppTheme.current.sectionBackgroundColor
     let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: 100, height: 40))
     titleLabel.center.y = view.center.y
-    titleLabel.text = section == 0 ? "STAKING" : "UNSTAKING"
-    titleLabel.font = UIFont(name: "Karla-Regular", size: 14)!//UIFont.Kyber.regular(with: 14)
-    titleLabel.textColor = UIColor(named: "textWhiteColor")
+    titleLabel.text = section == 0 ? Strings.mySupply.uppercased() : Strings.unstakingInProgress.uppercased()
+    titleLabel.font = .karlaReguler(ofSize: 14)
+    titleLabel.textColor = AppTheme.current.primaryTextColor
     view.addSubview(titleLabel)
     
     return view

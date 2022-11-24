@@ -128,4 +128,6 @@ struct Strings {
     static let supplyingProjections = "supplying.projections".toBeLocalised()
     static let confirmSupply = "confirm.supply".toBeLocalised()
     static let supplySummary = "supply.summary".toBeLocalised()
+    static let mySupply = "my.supply".toBeLocalised()
+    static let unstakingInProgress = "unstaking.in.progress".toBeLocalised()
 }
