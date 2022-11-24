@@ -54,6 +54,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         initializeData()
         setupUI()
         updateUINextButton()
+        updateUIETHWarningView()
     }
     
     func initializeData() {
