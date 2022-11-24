@@ -19,6 +19,7 @@ protocol UnstakeViewModelDelegate: class {
     func didGetDataNeedApproveToken()
     func didGetDataFail(errMsg: String)
     func didCheckNotEnoughFeeForTx(errMsg: String)
+    func didApproveToken(success: Bool)
 }
 
 class UnstakeViewModel: BaseViewModel {
@@ -36,6 +37,7 @@ class UnstakeViewModel: BaseViewModel {
         }
     }
     let chain: ChainType
+    let earningType: EarningType
     var setting: TxSettingObject = .default
     let stakingTokenAddress: String
     let stakingTokenLogo: String
@@ -49,6 +51,7 @@ class UnstakeViewModel: BaseViewModel {
     var showRevertedRate: Bool = false
     var quoteTokenDetail: TokenDetailInfo?
     weak var delegate: UnstakeViewModelDelegate?
+    var approveHash: String?
     
     let apiService = EarnServices()
     var buildTxRequestParams: JSONDictionary {
@@ -85,6 +88,33 @@ class UnstakeViewModel: BaseViewModel {
     var txObject: TxObject?
     var onGasSettingUpdated: (() -> ())?
     var onFetchedQuoteTokenPrice: (() -> ())?
+    
+    var platformTitleString: String {
+        switch earningType {
+        case .staking:
+            return Strings.unstake + " " + stakingTokenSymbol + " on " + platform.name.uppercased()
+        case .lending:
+            return Strings.withdraw + " " + stakingTokenSymbol + " on " + platform.name.uppercased()
+        }
+    }
+    
+    var availableBalanceTitleString: String {
+        switch earningType {
+        case .staking:
+            return Strings.availableToUnstake
+        case .lending:
+            return Strings.availableToWithdraw
+        }
+    }
+    
+    var buttonTitleString: String {
+        switch earningType {
+        case .staking:
+            return Strings.unstake + " " + stakingTokenSymbol
+        case .lending:
+            return Strings.withdraw + " " + stakingTokenSymbol
+        }
+    }
 
     init(earningBalance: EarningBalance) {
         self.displayDepositedValue = (BigInt(earningBalance.stakingToken.balance)?.shortString(decimals: earningBalance.stakingToken.decimals) ?? "---") + " " + earningBalance.stakingToken.symbol
@@ -99,10 +129,41 @@ class UnstakeViewModel: BaseViewModel {
         self.stakingTokenDecimal = earningBalance.stakingToken.decimals
         self.stakingTokenLogo = earningBalance.stakingToken.logo
         self.toTokenLogo = earningBalance.toUnderlyingToken.logo
+        self.earningType = EarningType(value: earningBalance.platform.type)
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .kTxStatusUpdated, object: nil)
+    }
+    
+    func observeEvents() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.txStatusUpdated(_:)),
+            name: .kTxStatusUpdated,
+            object: nil
+        )
+    }
+    
+    @objc func txStatusUpdated(_ notification: Notification) {
+        guard let hash = notification.userInfo?["hash"] as? String, let status = notification.userInfo?["status"] as? InternalTransactionState else {
+            return
+        }
+        guard let approveHash = approveHash, approveHash == hash else {
+            return
+        }
+        
+        switch status {
+        case .error, .drop:
+            self.delegate?.didApproveToken(success: false)
+        case .done:
+            self.delegate?.didApproveToken(success: true)
+        default:
+            print(status)
+        }
     }
     
     func unstakeValueString() -> String {
-        NumberFormatUtils.balanceFormat(value: unstakeValue, decimals: 18)
+        NumberFormatUtils.balanceFormat(value: unstakeValue, decimals: stakingTokenDecimal)
     }
     
     func receivedValue() -> BigInt {
@@ -110,7 +171,7 @@ class UnstakeViewModel: BaseViewModel {
     }
     
     func receivedValueString() -> String {
-        return NumberFormatUtils.balanceFormat(value: receivedValue(), decimals: 18)
+        return NumberFormatUtils.balanceFormat(value: receivedValue(), decimals: stakingTokenDecimal)
     }
     
     func receivedInfoString() -> String {
@@ -119,7 +180,7 @@ class UnstakeViewModel: BaseViewModel {
     
     func receivedValueMaxString() -> String {
         let maxValue = balance * self.ratio / BigInt(10).power(18)
-        return NumberFormatUtils.balanceFormat(value: maxValue, decimals: 18)
+        return NumberFormatUtils.balanceFormat(value: maxValue, decimals: stakingTokenDecimal)
     }
     
     func showRateInfo() -> String {
@@ -180,9 +241,9 @@ class UnstakeViewModel: BaseViewModel {
                 if let earningToken = detail.earningTokens.first(where: { $0.address.lowercased() == self.stakingTokenAddress.lowercased() }) {
                     self.contractAddress = detail.poolAddress
                     let minAmount = detail.validation?.minUnstakeAmount ?? 0
-                    self.minUnstakeAmount = BigInt(minAmount * pow(10.0, 18.0))
+                    self.minUnstakeAmount = BigInt(minAmount * pow(10.0, Double(self.stakingTokenDecimal)))
                     let maxAmount = detail.validation?.maxUnstakeAmount ?? 0
-                    self.maxUnstakeAmount = BigInt(maxAmount * pow(10.0, 18.0))
+                    self.maxUnstakeAmount = BigInt(maxAmount * pow(10.0, Double(self.stakingTokenDecimal)))
                     self.checkNeedApprove(earningToken: earningToken, completion: completion)
                 } else {
                     completion()
@@ -247,6 +308,7 @@ class UnstakeViewModel: BaseViewModel {
         }
         setting.basic?.gasLimit = gasLimit
         onGasSettingUpdated?()
+        checkEnoughFeeForTx()
     }
 }
 

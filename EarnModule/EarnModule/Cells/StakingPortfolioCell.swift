@@ -25,16 +25,36 @@ struct StakingPortfolioCellModel {
   
   let isInProcess: Bool
   let isClaimable: Bool
-      var pendingUnstake: PendingUnstake?
+  var pendingUnstake: PendingUnstake?
+  var earnBalance: EarningBalance?
   
   init(earnBalance: EarningBalance) {
+    self.earnBalance = earnBalance
     self.isInProcess = false
     self.tokenLogo = earnBalance.toUnderlyingToken.logo
     self.chainLogo = ChainType.make(chainID: earnBalance.chainID)?.chainIcon()
     self.platformLogo = earnBalance.platform.logo
     self.displayAPYValue = StringFormatter.percentString(value: earnBalance.apy / 100)
-    self.displayDepositedValue = (BigInt(earnBalance.stakingToken.balance)?.shortString(decimals: earnBalance.stakingToken.decimals) ?? "---") + " " + earnBalance.stakingToken.symbol
-    self.displayDeposited2Value = (BigInt(earnBalance.toUnderlyingToken.balance)?.shortString(decimals: earnBalance.toUnderlyingToken.decimals) ?? "---") + " " + earnBalance.toUnderlyingToken.symbol
+
+    var stakingBalanceString = (BigInt(earnBalance.stakingToken.balance)?.shortString(decimals: earnBalance.stakingToken.decimals) ?? "---") + " " + earnBalance.stakingToken.symbol
+    var toUnderlyingBalanceString = (BigInt(earnBalance.toUnderlyingToken.balance)?.shortString(decimals: earnBalance.toUnderlyingToken.decimals) ?? "---") + " " + earnBalance.toUnderlyingToken.symbol
+
+    if let stakingBalanceBigInt = BigInt(earnBalance.stakingToken.balance), let toUnderlyingBalanceBigInt = BigInt(earnBalance.toUnderlyingToken.balance) {
+      if toUnderlyingBalanceBigInt < BigInt(pow(10.0, Double(earnBalance.toUnderlyingToken.decimals - 6))) {
+        toUnderlyingBalanceString = "< 0.000001 \(earnBalance.toUnderlyingToken.symbol)"
+      }
+      if stakingBalanceBigInt < BigInt(pow(10.0, Double(earnBalance.stakingToken.decimals - 6))) {
+          stakingBalanceString = "< 0.000001 \(earnBalance.stakingToken.symbol)"
+      }
+      if stakingBalanceBigInt > BigInt(0) {
+        let usdBigIntValue = BigInt(earnBalance.underlyingUsd * pow(10.0 , Double(earnBalance.toUnderlyingToken.decimals))) * toUnderlyingBalanceBigInt / BigInt(pow(10.0 , Double(earnBalance.toUnderlyingToken.decimals)))
+        let usdString = usdBigIntValue < BigInt(pow(10.0, Double(earnBalance.toUnderlyingToken.decimals - 2))) ? " | < $0.01" : " | $\(usdBigIntValue.shortString(decimals: earnBalance.toUnderlyingToken.decimals, maxFractionDigits: 2))"
+        stakingBalanceString = stakingBalanceString + usdString
+      }
+    }
+
+    self.displayDepositedValue = toUnderlyingBalanceString
+    self.displayDeposited2Value = stakingBalanceString
     self.displayType = "| " + earnBalance.platform.type.capitalized
     self.displayTokenName = earnBalance.toUnderlyingToken.symbol
     self.displayPlatformName = earnBalance.platform.name.uppercased()

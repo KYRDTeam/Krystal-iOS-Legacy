@@ -15,6 +15,7 @@ import Dependencies
 import TransactionModule
 import FittedSheets
 import AppState
+import Result
 
 typealias ProjectionValue = (value: String, usd: String)
 typealias ProjectionValues = (p30: ProjectionValue, p60: ProjectionValue, p90: ProjectionValue)
@@ -37,12 +38,13 @@ enum FormState: Equatable {
 enum NextButtonState {
     case notApprove
     case needApprove
+    case approving
     case approved
     case noNeed
 }
 
 class StakingViewController: InAppBrowsingViewController {
-    
+    @IBOutlet weak var balanceTitleLabel: UILabel!
     @IBOutlet weak var stakeMainHeaderLabel: UILabel!
     @IBOutlet weak var stakeTokenLabel: UILabel!
     @IBOutlet weak var stakeTokenImageView: UIImageView!
@@ -60,6 +62,7 @@ class StakingViewController: InAppBrowsingViewController {
     @IBOutlet weak var expandProjectionButton: UIButton!
     @IBOutlet weak var expandContainerViewHeightContraint: NSLayoutConstraint!
     
+    @IBOutlet weak var projectionTitleLabel: UILabel!
     @IBOutlet weak var p30ValueLabel: UILabel!
     @IBOutlet weak var p30USDValueLabel: UILabel!
     @IBOutlet weak var p60ValueLabel: UILabel!
@@ -135,6 +138,10 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     private func setupUI() {
+        balanceTitleLabel.text = viewModel.balanceTitleString
+        stakeMainHeaderLabel.text = viewModel.titleString
+        projectionTitleLabel.text = viewModel.projectionTitleString
+        
         amountTextField.setPlaceholder(text: Strings.amount, color: AppTheme.current.secondaryTextColor)
         
         apyInfoView.setTitle(title: Strings.apyTitle, underlined: false)
@@ -220,7 +227,6 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     private func bindingViewModel() {
-        stakeMainHeaderLabel.text = viewModel.displayMainHeader
         stakeTokenImageView.setImage(urlString: viewModel.token.logo, symbol: viewModel.token.symbol)
         apyInfoView.setValue(value: viewModel.displayAPY, highlighted: true)
         
@@ -253,15 +259,18 @@ class StakingViewController: InAppBrowsingViewController {
                 self.displayLoading()
             } else {
                 self.hideLoading()
-                guard !self.viewModel.amount.value.isZero else { return }
-                self.nextButtonTapped(self.nextButton)
             }
+        }
+        
+        viewModel.error.observe(on: self) { [weak self] value in
+            self?.showTopBannerView(message: value?.localizedDescription ?? Strings.defaultErrorMessage)
         }
         
         viewModel.gasLimit.observeAndFire(on: self) { _ in
             self.updateUIGasFee()
         }
-        viewModel.nextButtonStatus.observeAndFire(on: self) { value in
+        viewModel.nextButtonStatus.observeAndFire(on: self) { [weak self] value in
+            guard let self = self else { return }
             guard !AppState.shared.isBrowsingMode else {
                 self.nextButton.setTitle(String(format: Strings.connectWallet, self.viewModel.token.symbol), for: .normal)
                 self.nextButton.alpha = 1
@@ -276,7 +285,7 @@ class StakingViewController: InAppBrowsingViewController {
             }
             switch value {
             case .notApprove:
-                self.nextButton.setTitle(String(format: Strings.cheking, self.viewModel.token.symbol), for: .normal)
+                self.nextButton.setTitle(String(format: Strings.checking, self.viewModel.token.symbol), for: .normal)
                 self.nextButton.alpha = 0.2
                 self.nextButton.isEnabled = false
             case .needApprove:
@@ -284,10 +293,14 @@ class StakingViewController: InAppBrowsingViewController {
                 self.nextButton.alpha = 1
                 self.nextButton.isEnabled = true
             case .approved:
-                self.nextButton.setTitle(Strings.stakeNow, for: .normal)
+                self.nextButton.setTitle(self.viewModel.actionButtonTitle, for: .normal)
                 self.updateUIError()
+            case .approving:
+                self.nextButton.setTitle(Strings.approveInProgress, for: .normal)
+                self.nextButton.alpha = 0.2
+                self.nextButton.isEnabled = false
             case .noNeed:
-                self.nextButton.setTitle(Strings.stakeNow, for: .normal)
+                self.nextButton.setTitle(self.viewModel.actionButtonTitle, for: .normal)
                 self.updateUIError()
             }
         }
@@ -355,48 +368,56 @@ class StakingViewController: InAppBrowsingViewController {
         }
     }
     
+    func showSwitchChainPopup() {
+        let chainType = ChainType.make(chainID: viewModel.chainId) ?? .eth
+        let alertController = KNPrettyAlertController(
+            title: "",
+            message: "Please switch to \(chainType.chainName()) to continue".toBeLocalised(),
+            secondButtonTitle: Strings.ok,
+            firstButtonTitle: Strings.cancel,
+            secondButtonAction: {
+                AppState.shared.updateChain(chain: chainType)
+            },
+            firstButtonAction: {
+            }
+        )
+        alertController.popupHeight = 220
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func openStakeSummary(txObject: TxObject) {
+        let amountString = NumberFormatUtils.amount(value: viewModel.amount.value, decimals: viewModel.token.decimals)
+        let displayInfo = StakeDisplayInfo(
+            amount: "\(amountString) \(viewModel.token.symbol)",
+            apy: viewModel.displayAPY,
+            receiveAmount: viewModel.displayAmountReceive,
+            rate: viewModel.displayRate,
+            fee: viewModel.displayFeeString,
+            platform: viewModel.selectedPlatform.name,
+            stakeTokenIcon: viewModel.token.logo,
+            fromSym: viewModel.token.symbol,
+            toSym: viewModel.selectedEarningToken.value?.symbol ?? ""
+        )
+        self.openStakeSummary(txObject: txObject, settings: viewModel.setting, displayInfo: displayInfo)
+    }
+    
     @IBAction func nextButtonTapped(_ sender: UIButton) {
         guard !AppState.shared.isBrowsingMode else {
           onAddWalletButtonTapped(sender)
           return
         }
         guard viewModel.isChainValid else {
-            let chainType = ChainType.make(chainID: viewModel.chainId) ?? .eth
-            let alertController = KNPrettyAlertController(
-                title: "",
-                message: "Please switch to \(chainType.chainName()) to continue".toBeLocalised(),
-                secondButtonTitle: Strings.ok,
-                firstButtonTitle: Strings.cancel,
-                secondButtonAction: {
-                    AppState.shared.updateChain(chain: chainType)
-                },
-                firstButtonAction: {
-                }
-            )
-            alertController.popupHeight = 220
-            present(alertController, animated: true, completion: nil)
+            showSwitchChainPopup()
             return
         }
         if viewModel.nextButtonStatus.value == .needApprove {
             sendApprove(tokenAddress: viewModel.token.address, remain: viewModel.tokenAllowance ?? .zero, symbol: viewModel.token.symbol, toAddress: viewModel.txObject.value?.to ?? "")
         } else {
             guard viewModel.formState.value == .valid else { return }
-            if let tx = viewModel.txObject.value {
-                let amountString = NumberFormatUtils.amount(value: viewModel.amount.value, decimals: viewModel.token.decimals)
-                let displayInfo = StakeDisplayInfo(
-                    amount: "\(amountString) \(viewModel.token.symbol)",
-                    apy: viewModel.displayAPY,
-                    receiveAmount: viewModel.displayAmountReceive,
-                    rate: viewModel.displayRate,
-                    fee: viewModel.displayFeeString,
-                    platform: viewModel.selectedPlatform.name,
-                    stakeTokenIcon: viewModel.token.logo,
-                    fromSym: viewModel.token.symbol,
-                    toSym: viewModel.selectedEarningToken.value?.symbol ?? ""
-                )
-                self.openStakeSummary(txObject: tx, settings: viewModel.setting, displayInfo: displayInfo)
-            } else {
-                viewModel.requestBuildStakeTx(showLoading: true)
+            guard !self.viewModel.amount.value.isZero else { return }
+            viewModel.requestBuildStakeTx(showLoading: true) { [weak self] success in
+                guard let txObject = self?.viewModel.txObject.value else { return }
+                self?.openStakeSummary(txObject: txObject)
             }
         }
         
@@ -409,12 +430,13 @@ class StakingViewController: InAppBrowsingViewController {
     func sendApprove(tokenAddress: String, remain: BigInt, symbol: String, toAddress: String) {
         let vm = ApproveTokenViewModel(symbol: symbol, tokenAddress: tokenAddress, remain: remain, toAddress: toAddress, chain: AppState.shared.currentChain)
         let vc = ApproveTokenViewController(viewModel: vm)
-        vc.onSuccessApprove = {
-            self.viewModel.nextButtonStatus.value = .approved
+        vc.onApproveSent = { hash in
+            self.viewModel?.approveHash = hash
+            self.viewModel.nextButtonStatus.value = .approving
         }
-        
-        vc.onFailApprove = {
-            self.viewModel.nextButtonStatus.value = .notApprove
+        vc.onFailApprove = { [weak self] error in
+          self?.showTopBannerView(message: TxErrorParser.parse(error: AnyError(error)).message)
+          self?.viewModel.nextButtonStatus.value = .needApprove
         }
         
         self.present(vc, animated: true, completion: nil)
@@ -436,7 +458,7 @@ class StakingViewController: InAppBrowsingViewController {
             self?.navigationController?.popViewController(animated: true)
             self?.onSelectViewPool?()
         }
-        let sheet = SheetViewController(controller: popup, sizes: [.fixed(450)], options: .init(pullBarHeight: 0))
+        let sheet = SheetViewController(controller: popup, sizes: [.fixed(420)], options: .init(pullBarHeight: 0))
         dismiss(animated: true) {
             UIApplication.shared.topMostViewController()?.present(sheet, animated: true)
         }

@@ -21,6 +21,7 @@ public class ApproveTokenViewModel {
   var headerTitle: String = "Approve Token"
   var chain: ChainType
   var tokenAddress: String
+  var hash: String?
   let remain: BigInt
   var gasPrice: BigInt = AppDependencies.gasConfig.getStandardGasPrice(chain: AppState.shared.currentChain)
   var toAddress: String
@@ -104,7 +105,7 @@ public class ApproveTokenViewModel {
                   TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: self.chain) { result in
                       switch result {
                       case .success(let hash):
-                          print(hash)
+                          self.hash = hash
                           onCompleted(nil)
                           let pendingTx = ApprovePendingTxInfo(
                               legacyTx: legacyTx,
@@ -166,8 +167,11 @@ public class ApproveTokenViewController: KNBaseViewController {
   
   var viewModel: ApproveTokenViewModel
   let transitor = TransitionDelegate()
-  public var onSuccessApprove: (() -> Void)? = nil
-  public var onFailApprove: (() -> Void)? = nil
+  public var onFailApprove: ((Error) -> Void)? = nil
+  public var onDismiss: (() -> Void)? = nil
+  public var onApproveSent: ((String) -> Void)? = nil
+    
+    
   var approveValue: BigInt {
     return self.viewModel.value
   }
@@ -222,13 +226,11 @@ public class ApproveTokenViewController: KNBaseViewController {
     self.showLoadingHUD()
     self.viewModel.sendApproveRequest(value: TransactionConstants.maxTokenAmount) { error in
       self.hideLoading()
-      if error != nil {
-        if let onFailApprove = self.onFailApprove {
-          onFailApprove()
-        }
+      if let error = error {
+        self.onFailApprove?(error)
       } else {
-        if let onSuccessApprove = self.onSuccessApprove {
-          onSuccessApprove()
+        if let hash = self.viewModel.hash {
+            self.onApproveSent?(hash)
         }
       }
       self.dismiss(animated: true)
@@ -255,10 +257,12 @@ public class ApproveTokenViewController: KNBaseViewController {
   }
 
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
+    onDismiss?()
     self.dismiss(animated: true, completion: nil)
   }
 
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
+    onDismiss?()
     self.dismiss(animated: true, completion: nil)
   }
 
