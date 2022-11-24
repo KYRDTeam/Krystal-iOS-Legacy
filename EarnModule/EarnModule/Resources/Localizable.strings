@@ -83,3 +83,5 @@
 "withdraw.summary" = "Withdraw Summary";
 "you.are.withdrawing" = "You are withdrawing";
 "confirm.withdraw" = "Confirm withdraw";
+"my.supply" = "My supply";
+"unstaking.in.progress" = "Unstaking in progress";

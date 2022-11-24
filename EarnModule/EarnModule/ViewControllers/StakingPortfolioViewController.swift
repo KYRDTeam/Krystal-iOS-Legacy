@@ -237,9 +237,9 @@ extension StakingPortfolioViewController: SkeletonTableViewDelegate {
     view.backgroundColor = AppTheme.current.sectionBackgroundColor
     let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: 100, height: 40))
     titleLabel.center.y = view.center.y
-    titleLabel.text = section == 0 ? "STAKING" : "UNSTAKING"
-    titleLabel.font = UIFont(name: "Karla-Regular", size: 14)!//UIFont.Kyber.regular(with: 14)
-    titleLabel.textColor = UIColor(named: "textWhiteColor")
+    titleLabel.text = section == 0 ? Strings.mySupply.uppercased() : Strings.unstakingInProgress.uppercased()
+    titleLabel.font = .karlaReguler(ofSize: 14)
+    titleLabel.textColor = AppTheme.current.primaryTextColor
     view.addSubview(titleLabel)
     
     return view
@@ -329,10 +329,8 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard orientation == .right, indexPath.section == 0 else { return nil }
-        guard let portfolios = self.viewModel.portfolio else { return nil }
-        let data = self.viewModel.filterEarningBalanceData(data: portfolios.0)
-        let earningBalance: EarningBalance = data[indexPath.row]
-        
+        let earningBalances = self.viewModel.dataSource.value.0.map { $0.earnBalance }
+        guard let earningBalance = earningBalances[indexPath.row] else { return nil }
         let earningType = EarningType(value: earningBalance.platform.type)
         
         let unstakeAction = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
@@ -346,19 +344,17 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         unstakeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
       
         let stakeAction = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
-            
-            if let earningBalance = self?.viewModel.portfolio?.0[indexPath.row] {
-                guard let chain = ChainType.make(chainID: earningBalance.chainID) else { return }
-                if chain != AppState.shared.currentChain {
-                    AppState.shared.updateChain(chain: chain)
-                }
-                let token = Token(name: earningBalance.toUnderlyingToken.symbol, symbol: earningBalance.toUnderlyingToken.symbol, address: earningBalance.toUnderlyingToken.address, decimals: earningBalance.toUnderlyingToken.decimals, logo: earningBalance.toUnderlyingToken.logo)
-                let earnPlatform = EarnPlatform(platform: earningBalance.platform, apy: earningBalance.apy, tvl: 0)
-                
-                
-                self?.delegate?.didSelectPlatform(token: token, platform: earnPlatform, chainId: earningBalance.chainID)
-            }
-
+          guard let chain = ChainType.make(chainID: earningBalance.chainID) else { return }
+          if chain != AppState.shared.currentChain {
+              AppState.shared.updateChain(chain: chain)
+          }
+          let token = Token(name: earningBalance.toUnderlyingToken.symbol,
+                            symbol: earningBalance.toUnderlyingToken.symbol,
+                            address: earningBalance.toUnderlyingToken.address,
+                            decimals: earningBalance.toUnderlyingToken.decimals,
+                            logo: earningBalance.toUnderlyingToken.logo)
+          let earnPlatform = EarnPlatform(platform: earningBalance.platform, apy: earningBalance.apy, tvl: 0)
+          self?.delegate?.didSelectPlatform(token: token, platform: earnPlatform, chainId: earningBalance.chainID)
         }
         let stakeImage = swipeCellImageView(title: plusTitleFor(earningType: earningType), icon: Images.greenPlus, color: AppTheme.current.primaryColor)
         stakeAction.image = stakeImage
