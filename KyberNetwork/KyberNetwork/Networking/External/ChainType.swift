@@ -106,7 +106,7 @@ extension ChainType {
     var allChains = ChainType.allCases
 
     if KNEnvironment.default == .production {
-      allChains = allChains.filter { $0 != .ropsten && $0 != .bscTestnet && $0 != .polygonTestnet && $0 != .avalancheTestnet }
+      allChains = allChains.filter { $0 != .goerli && $0 != .bscTestnet && $0 != .polygonTestnet && $0 != .avalancheTestnet }
     }
 
     let shouldShowAurora = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.auroraChainIntegration)
@@ -221,7 +221,7 @@ extension ChainType {
       return Images.allNetworkSquare
     case .eth:
       return Images.chainEthSquare
-    case .ropsten:
+    case .goerli:
       return Images.chainEthSquare
     case .bsc:
       return Images.chainBscSquare
@@ -354,7 +354,7 @@ extension ChainType {
     switch self {
     case .eth:
       return KNSupportedTokenStorage.shared.kncToken
-    case .ropsten:
+    case .goerli:
       return KNSupportedTokenStorage.shared.kncToken
     case .bsc:
         return KNSupportedTokenStorage.shared.busdToken
