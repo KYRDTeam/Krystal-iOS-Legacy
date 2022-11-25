@@ -994,7 +994,7 @@
 "no.tokens.deposited" = "No tokens deposited yet.";
 
 // Approval
-"approval.search.placeholder" = "Token name, symbol, address";
+"approval.search.placeholder" = "Search token, spender";
 "approval.menu.title" = "Token Approvals";
 "unlimited.allowance" = "Unlimited";
 "total.allowance" = "Total Allowance";
