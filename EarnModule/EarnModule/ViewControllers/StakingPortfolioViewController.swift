@@ -235,7 +235,7 @@ extension StakingPortfolioViewController: SkeletonTableViewDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
     view.backgroundColor = AppTheme.current.sectionBackgroundColor
-    let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: 100, height: 40))
+    let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: UIScreen.main.bounds.size.width - 70, height: 40))
     titleLabel.center.y = view.center.y
     titleLabel.text = section == 0 ? Strings.mySupply.uppercased() : Strings.unstakingInProgress.uppercased()
     titleLabel.font = .karlaReguler(ofSize: 14)
