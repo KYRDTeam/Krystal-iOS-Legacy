@@ -184,7 +184,7 @@ class EarnListViewController: InAppBrowsingViewController {
     
     private func updateUIPlatformFilterButton() {
         guard let selectedPlatform = selectedPlatform else {
-            platformFilterButton.setTitle("All Networks", for: .normal)
+            platformFilterButton.setTitle(Strings.allNetworks, for: .normal)
             return
         }
         platformFilterButton.setTitle(selectedPlatform.name.capitalized, for: .normal)
