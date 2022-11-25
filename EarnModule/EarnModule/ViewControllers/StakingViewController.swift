@@ -15,6 +15,7 @@ import Dependencies
 import TransactionModule
 import FittedSheets
 import AppState
+import Result
 
 typealias ProjectionValue = (value: String, usd: String)
 typealias ProjectionValues = (p30: ProjectionValue, p60: ProjectionValue, p90: ProjectionValue)
@@ -284,7 +285,7 @@ class StakingViewController: InAppBrowsingViewController {
             }
             switch value {
             case .notApprove:
-                self.nextButton.setTitle(String(format: Strings.cheking, self.viewModel.token.symbol), for: .normal)
+                self.nextButton.setTitle(String(format: Strings.checking, self.viewModel.token.symbol), for: .normal)
                 self.nextButton.alpha = 0.2
                 self.nextButton.isEnabled = false
             case .needApprove:
@@ -433,8 +434,9 @@ class StakingViewController: InAppBrowsingViewController {
             self.viewModel?.approveHash = hash
             self.viewModel.nextButtonStatus.value = .approving
         }
-        vc.onFailApprove = {
-            self.viewModel.nextButtonStatus.value = .notApprove
+        vc.onFailApprove = { [weak self] error in
+          self?.showTopBannerView(message: TxErrorParser.parse(error: AnyError(error)).message)
+          self?.viewModel.nextButtonStatus.value = .needApprove
         }
         
         self.present(vc, animated: true, completion: nil)

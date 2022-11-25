@@ -63,7 +63,7 @@ struct Strings {
     static let availableToWithdraw = "available.to.withdraw".toBeLocalised()
     static let noRecordFound = "no.record.found".toBeLocalised()
     static let earnIsCurrentlyNotSupportedOnThisChainYet = "earn.is.currently.not.supported.on.this.chain.yet".toBeLocalised()
-    static let cheking = "checking".toBeLocalised()
+    static let checking = "checking".toBeLocalised()
     static let stakeNow = "stake.now".toBeLocalised()
     static let emptyTokenDeposit = "no.tokens.deposited".toBeLocalised()
     static let apyTitle = "est.apy".toBeLocalised()
@@ -98,6 +98,7 @@ struct Strings {
     static let supplyingInProgress = "supplying.in.progress".toBeLocalised()
     static let stakingInProgress = "staking.in.progress".toBeLocalised()
     static let unstakeInProgress = "unstake.in.progress".toBeLocalised()
+    static let withdrawInProgress = "withdraw.in.progress".toBeLocalised()
     static let approveInProgress = "approve.in.progress".toBeLocalised()
     static let approveFail = "approve.fail".toBeLocalised()
     static let success = "success".toBeLocalised()
@@ -129,4 +130,6 @@ struct Strings {
     static let supplyingProjections = "supplying.projections".toBeLocalised()
     static let confirmSupply = "confirm.supply".toBeLocalised()
     static let supplySummary = "supply.summary".toBeLocalised()
+    static let mySupply = "my.supply".toBeLocalised()
+    static let unstakingInProgress = "unstaking.in.progress".toBeLocalised()
 }

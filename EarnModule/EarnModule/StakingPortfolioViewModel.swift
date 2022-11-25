@@ -37,7 +37,7 @@ class StakingPortfolioViewModel {
     var pending: [StakingPortfolioCellModel] = []
     
     var pendingUnstakeData = data.1
-    var earningBalanceData = filterEarningBalanceData(data: data.0)
+    let earningBalanceData = filterEarningBalanceData(data: data.0)
     
     if !searchText.isEmpty {
       pendingUnstakeData = pendingUnstakeData.filter({ item in

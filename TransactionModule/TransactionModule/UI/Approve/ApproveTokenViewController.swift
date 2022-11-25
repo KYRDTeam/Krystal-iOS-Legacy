@@ -167,7 +167,7 @@ public class ApproveTokenViewController: KNBaseViewController {
   
   var viewModel: ApproveTokenViewModel
   let transitor = TransitionDelegate()
-  public var onFailApprove: (() -> Void)? = nil
+  public var onFailApprove: ((Error) -> Void)? = nil
   public var onDismiss: (() -> Void)? = nil
   public var onApproveSent: ((String) -> Void)? = nil
     
@@ -226,8 +226,8 @@ public class ApproveTokenViewController: KNBaseViewController {
     self.showLoadingHUD()
     self.viewModel.sendApproveRequest(value: TransactionConstants.maxTokenAmount) { error in
       self.hideLoading()
-      if error != nil {
-        self.onFailApprove?()
+      if let error = error {
+        self.onFailApprove?(error)
       } else {
         if let hash = self.viewModel.hash {
             self.onApproveSent?(hash)
