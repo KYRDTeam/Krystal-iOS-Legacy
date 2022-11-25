@@ -297,7 +297,7 @@ class KNLoadBalanceCoordinator {
   func loadTotalBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [])
     let addresses = AppDelegate.session.getCurrentWalletAddresses().map(\.addressString)
-    provider.requestWithFilter(.getTotalBalance(address: addresses, forceSync: forceSync, KNEnvironment.allChainPath)) { (result) in
+    provider.requestWithFilter(.getTotalBalance(address: addresses, forceSync: forceSync, KNEnvironment.allChainIds)) { (result) in
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let data = json["data"] as? JSONDictionary, let balances = data["balances"] as? [JSONDictionary] {
         var summaryChains: [KNSummaryChainModel] = []
         for item in balances {
