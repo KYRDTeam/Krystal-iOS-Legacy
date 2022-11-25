@@ -92,9 +92,9 @@ class UnstakeViewModel: BaseViewModel {
     var platformTitleString: String {
         switch earningType {
         case .staking:
-            return Strings.unstake + " " + stakingTokenSymbol + " on " + platform.name.uppercased()
+            return Strings.unstake + " " + toTokenSymbol + " on " + platform.name.uppercased()
         case .lending:
-            return Strings.withdraw + " " + stakingTokenSymbol + " on " + platform.name.uppercased()
+            return Strings.withdraw + " " + toTokenSymbol + " on " + platform.name.uppercased()
         }
     }
     
@@ -110,9 +110,9 @@ class UnstakeViewModel: BaseViewModel {
     var buttonTitleString: String {
         switch earningType {
         case .staking:
-            return Strings.unstake + " " + stakingTokenSymbol
+            return Strings.unstake + " " + toTokenSymbol
         case .lending:
-            return Strings.withdraw + " " + stakingTokenSymbol
+            return Strings.withdraw + " " + toTokenSymbol
         }
     }
 

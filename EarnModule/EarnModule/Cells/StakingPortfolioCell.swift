@@ -25,9 +25,11 @@ struct StakingPortfolioCellModel {
   
   let isInProcess: Bool
   let isClaimable: Bool
-      var pendingUnstake: PendingUnstake?
+  var pendingUnstake: PendingUnstake?
+  var earnBalance: EarningBalance?
   
   init(earnBalance: EarningBalance) {
+    self.earnBalance = earnBalance
     self.isInProcess = false
     self.tokenLogo = earnBalance.toUnderlyingToken.logo
     self.chainLogo = ChainType.make(chainID: earnBalance.chainID)?.chainIcon()
