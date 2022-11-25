@@ -90,6 +90,14 @@ class AppRouter: AppRouterProtocol, Coordinator {
     }
   }
   
+  func getTopMostNavigation() -> UINavigationController? {
+    let topViewController = UIApplication.shared.topMostViewController()
+    if let nav = topViewController as? UINavigationController {
+      return nav
+    } else {
+      return topViewController?.navigationController
+    }
+  }
   
   func openExternalURL(url: String) {
     UIApplication.shared.topMostViewController()?.openSafari(with: url)
@@ -105,28 +113,39 @@ class AppRouter: AppRouterProtocol, Coordinator {
     UIApplication.shared.topMostViewController()?.openSafari(with: url)
   }
   
-  func openToken(address: String, chainID: Int) {
+  func openToken(navigationController: UINavigationController, address: String, chainID: Int) {
     guard let chain = ChainType.make(chainID: chainID) else { return }
     let currencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .quote
     guard let vc = TokenModule.createTokenDetailViewController(address: address, chain: chain, currencyMode: currencyMode) else { return }
-    let topViewController = UIApplication.shared.topMostViewController()
-    if let nav = topViewController as? UINavigationController {
-      nav.pushViewController(vc, animated: true)
-    } else {
-      topViewController?.navigationController?.pushViewController(vc, animated: true)
-    }
+    vc.hidesBottomBarWhenPushed = false
+    navigationController.pushViewController(vc, animated: true, completion: nil)
+//    let topViewController = UIApplication.shared.topMostViewController()
+//    if let nav = topViewController as? UINavigationController {
+//      nav.pushViewController(vc, animated: true)
+//    } else {
+//      topViewController?.navigationController?.pushViewController(vc, animated: true)
+//    }
   }
   
-  func openTokenTransfer(token: Token) {
-    
+  func openTokenTransfer(navigationController: UINavigationController, token: Token) {
+    let tokenObject = KNSupportedTokenStorage.shared.supportedToken.first { $0.address == token.address }?.toObject() ?? KNGeneralProvider.shared.quoteTokenObject
+    let coordinator = KNSendTokenViewCoordinator(
+      navigationController: navigationController,
+      balances: [:],
+      from: tokenObject
+    )
+    coordinator.delegate = self
+    coordinate(coordinator: coordinator)
   }
   
   func openSwap(token: Token) {
-    
+    AppDelegate.shared.coordinator.tabbarController.selectedIndex = 1
+    AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
   }
   
   func openInvest(token: Token) {
-    
+    AppDelegate.shared.coordinator.tabbarController.selectedIndex = 2
+    AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
   }
   
 }
@@ -140,6 +159,18 @@ extension AppRouter: KNHistoryCoordinatorDelegate {
   func historyCoordinatorDidClose() {
     removeCoordinator(historyCoordinator!)
     historyCoordinator = nil
+  }
+  
+}
+
+extension AppRouter: KNSendTokenViewCoordinatorDelegate {
+  
+  func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
+    
+  }
+  
+  func sendTokenCoordinatorDidClose(coordinator: KNSendTokenViewCoordinator) {
+      removeCoordinator(coordinator)
   }
   
 }

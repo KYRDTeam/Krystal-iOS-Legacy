@@ -28,7 +28,7 @@ extension TokenEndpoint: TargetType {
     case .getCommonBaseToken:
       return "/v1/token/commonBase"
     case .getPoolList:
-      return "/v1/pool/list"
+      return "/all/v1/pool/list"
     case .getChartData(let chainPath, _, _, _, _):
       return "/\(chainPath)/v1/market/priceSeries"
     }

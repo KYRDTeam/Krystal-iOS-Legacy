@@ -23,8 +23,8 @@ public protocol AppRouterProtocol {
   func openExternalURL(url: String)
   func openSupportURL()
   func openTxHash(txHash: String, chainID: Int)
-  func openToken(address: String, chainID: Int)
-  func openTokenTransfer(token: Token)
+  func openToken(navigationController: UINavigationController, address: String, chainID: Int)
+  func openTokenTransfer(navigationController: UINavigationController, token: Token)
   func openSwap(token: Token)
   func openInvest(token: Token)
   

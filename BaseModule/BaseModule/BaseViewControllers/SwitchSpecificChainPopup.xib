@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SwitchSpecificChainPopup" customModule="BaseModule" customModuleProvider="target">
+            <connections>
+                <outlet property="destChainImageView" destination="c1B-1Q-Jrk" id="Dr9-4Q-ReA"/>
+                <outlet property="destChainNameLabel" destination="CdM-gL-AdA" id="Qqe-D6-CH1"/>
+                <outlet property="messageLabel" destination="Tek-3W-tew" id="P7U-Oe-g0x"/>
+                <outlet property="sourceChainImageView" destination="9tz-gZ-QRd" id="N9P-Tg-xqT"/>
+                <outlet property="sourceChainNameLabel" destination="naV-aT-5C2" id="7on-rj-ULZ"/>
+                <outlet property="view" destination="gwF-DF-9kI" id="RzI-Lb-6tc"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="gwF-DF-9kI">
+            <rect key="frame" x="0.0" y="0.0" width="465" height="706"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="Switch Network" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KpE-J9-ALR">
+                    <rect key="frame" x="16" y="86" width="433" height="303"/>
+                    <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                    <color key="textColor" name="textWhiteColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="sVe-gL-nd0">
+                    <rect key="frame" x="40" y="600" width="385" height="40"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OZz-10-vVu" customClass="LoadyButton" customModule="Loady">
+                            <rect key="frame" x="0.0" y="0.0" width="385" height="40"/>
+                            <color key="backgroundColor" name="buttonBackgroundColor"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="16"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Confirm">
+                                <color key="titleColor" name="buttonTextColor"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                    <real key="value" value="14"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="confirmTapped:" destination="-1" eventType="touchUpInside" id="fOq-Eg-AdG"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="MbH-xf-2O3"/>
+                    </constraints>
+                </stackView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chain_bsc_square" translatesAutoresizingMaskIntoConstraints="NO" id="9tz-gZ-QRd">
+                    <rect key="frame" x="88.5" y="472" width="56" height="56"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="56" id="EWs-rR-Kc8"/>
+                        <constraint firstAttribute="width" constant="56" id="yTF-l2-Bep"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BNB Chain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="naV-aT-5C2">
+                    <rect key="frame" x="82.5" y="540" width="68" height="16.5"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chain_eth_square" translatesAutoresizingMaskIntoConstraints="NO" id="c1B-1Q-Jrk">
+                    <rect key="frame" x="321" y="472" width="56" height="56"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="56" id="J9u-7P-Uti"/>
+                        <constraint firstAttribute="height" constant="56" id="xQ9-P6-vJX"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CdM-gL-AdA">
+                    <rect key="frame" x="317.5" y="540" width="63" height="16.5"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="→" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oWo-L7-Prg">
+                    <rect key="frame" x="216.5" y="481.5" width="32" height="37.5"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="32"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Please switch to Ethereum to perform this action" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tek-3W-tew">
+                    <rect key="frame" x="24" y="413" width="417" height="19"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                    <color key="textColor" name="textWhiteColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="yoc-G5-AEd"/>
+            <color key="backgroundColor" red="0.16078431369999999" green="0.1764705882" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="sVe-gL-nd0" firstAttribute="leading" secondItem="yoc-G5-AEd" secondAttribute="leading" constant="40" id="0La-VP-cuY"/>
+                <constraint firstItem="naV-aT-5C2" firstAttribute="centerX" secondItem="9tz-gZ-QRd" secondAttribute="centerX" id="1Ja-4v-tgZ"/>
+                <constraint firstItem="9tz-gZ-QRd" firstAttribute="centerX" secondItem="gwF-DF-9kI" secondAttribute="centerX" multiplier="1:2" id="2ak-CZ-UjN"/>
+                <constraint firstItem="Tek-3W-tew" firstAttribute="top" secondItem="KpE-J9-ALR" secondAttribute="bottom" constant="24" id="3w8-sM-tVb"/>
+                <constraint firstItem="yoc-G5-AEd" firstAttribute="bottom" secondItem="sVe-gL-nd0" secondAttribute="bottom" constant="32" id="539-93-vig"/>
+                <constraint firstItem="c1B-1Q-Jrk" firstAttribute="centerY" secondItem="9tz-gZ-QRd" secondAttribute="centerY" id="8y5-j3-1AZ"/>
+                <constraint firstItem="yoc-G5-AEd" firstAttribute="trailing" secondItem="sVe-gL-nd0" secondAttribute="trailing" constant="40" id="BRX-17-xJS"/>
+                <constraint firstItem="9tz-gZ-QRd" firstAttribute="top" secondItem="Tek-3W-tew" secondAttribute="bottom" constant="40" id="DcI-Ip-p9d"/>
+                <constraint firstItem="KpE-J9-ALR" firstAttribute="top" secondItem="yoc-G5-AEd" secondAttribute="top" constant="42" id="Ea5-wc-nbI"/>
+                <constraint firstItem="oWo-L7-Prg" firstAttribute="centerY" secondItem="9tz-gZ-QRd" secondAttribute="centerY" id="G1M-Pa-3Ie"/>
+                <constraint firstItem="sVe-gL-nd0" firstAttribute="top" secondItem="9tz-gZ-QRd" secondAttribute="bottom" constant="72" id="Ld2-B6-V3C"/>
+                <constraint firstItem="Tek-3W-tew" firstAttribute="leading" secondItem="gwF-DF-9kI" secondAttribute="leading" constant="24" id="XgC-G8-65Y"/>
+                <constraint firstItem="c1B-1Q-Jrk" firstAttribute="centerX" secondItem="gwF-DF-9kI" secondAttribute="centerX" multiplier="3:2" id="YYj-vY-eIN"/>
+                <constraint firstItem="oWo-L7-Prg" firstAttribute="centerX" secondItem="gwF-DF-9kI" secondAttribute="centerX" id="b9S-PP-UTK"/>
+                <constraint firstItem="CdM-gL-AdA" firstAttribute="centerX" secondItem="c1B-1Q-Jrk" secondAttribute="centerX" id="beF-k7-1RM"/>
+                <constraint firstItem="naV-aT-5C2" firstAttribute="top" secondItem="9tz-gZ-QRd" secondAttribute="bottom" constant="12" id="ebU-Ew-aco"/>
+                <constraint firstItem="yoc-G5-AEd" firstAttribute="trailing" secondItem="KpE-J9-ALR" secondAttribute="trailing" constant="16" id="f4K-Sn-b5r"/>
+                <constraint firstItem="CdM-gL-AdA" firstAttribute="top" secondItem="c1B-1Q-Jrk" secondAttribute="bottom" constant="12" id="lti-0l-yJU"/>
+                <constraint firstItem="yoc-G5-AEd" firstAttribute="trailing" secondItem="Tek-3W-tew" secondAttribute="trailing" constant="24" id="luy-XG-1xn"/>
+                <constraint firstItem="KpE-J9-ALR" firstAttribute="leading" secondItem="yoc-G5-AEd" secondAttribute="leading" constant="16" id="o88-Pq-USD"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="87.681159420289859" y="1.3392857142857142"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="OZz-10-vVu">
+            <size key="intrinsicContentSize" width="62" height="31"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="chain_bsc_square" width="32" height="32"/>
+        <image name="chain_eth_square" width="32" height="32"/>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="buttonTextColor">
+            <color red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

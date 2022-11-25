@@ -40,8 +40,9 @@ class ApprovalsCoordinator: Coordinator {
                 },
                 onOpenStatus: onOpenTxStatusPopup,
                 onTapTokenSymbol: { [weak self] approval in
+                  guard let self = self else { return }
                     if let tokenAddress = approval.tokenAddress {
-                      AppDependencies.router.openToken(address: tokenAddress, chainID: approval.chainId)
+                      AppDependencies.router.openToken(navigationController: self.navigationController, address: tokenAddress, chainID: approval.chainId)
                     }
                 },
                 onTapSpenderAddress: { [weak self] approval in
@@ -53,7 +54,6 @@ class ApprovalsCoordinator: Coordinator {
         )
         self.viewModel = viewModel
         vc.viewModel = viewModel
-        vc.hidesBottomBarWhenPushed = true
         self.rootViewController = vc
         navigationController.pushViewController(vc, animated: true)
     }

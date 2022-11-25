@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A63E27FD292FA1050024328D /* mobile-charting-library in Resources */ = {isa = PBXBuildFile; fileRef = A63E27FC292FA1050024328D /* mobile-charting-library */; };
 		A668BF91292CB849001A110D /* TokenModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A668BF90292CB849001A110D /* TokenModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A668BFA0292CB8B9001A110D /* TokenDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A668BF9E292CB8B9001A110D /* TokenDetailViewController.xib */; };
 		A668BFA1292CB8B9001A110D /* TokenDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BF9F292CB8B9001A110D /* TokenDetailViewController.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A63E27FC292FA1050024328D /* mobile-charting-library */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "mobile-charting-library"; sourceTree = "<group>"; };
 		A668BF8D292CB849001A110D /* TokenModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TokenModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A668BF90292CB849001A110D /* TokenModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TokenModule.h; sourceTree = "<group>"; };
 		A668BF9E292CB8B9001A110D /* TokenDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokenDetailViewController.xib; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 		A668BFC0292CBE92001A110D /* TradingView */ = {
 			isa = PBXGroup;
 			children = (
+				A63E27FC292FA1050024328D /* mobile-charting-library */,
 				A668BFC1292CBE92001A110D /* TradingViewController.swift */,
 				A668BFC2292CBE92001A110D /* Period.swift */,
 				A668BFC5292CBE92001A110D /* ChartType.swift */,
@@ -274,6 +277,7 @@
 			files = (
 				A668BFA0292CB8B9001A110D /* TokenDetailViewController.xib in Resources */,
 				A6B4A6A9292E139900F6F0F5 /* Assets.xcassets in Resources */,
+				A63E27FD292FA1050024328D /* mobile-charting-library in Resources */,
 				A668BFD4292CC26B001A110D /* TokenPoolCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

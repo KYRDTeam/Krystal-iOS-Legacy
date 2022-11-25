@@ -177,6 +177,14 @@ target 'TokenModule' do
   pod 'BigInt'
   pod 'MBProgressHUD', '~> 1.1.0'
   pod 'Charts'
+  pod 'SkeletonView'
+end
+
+target 'BaseModule' do
+  project 'BaseModule/BaseModule.xcodeproj'
+  use_frameworks!
+  
+  pod 'FittedSheets'
 end
 
 target 'KyberNetwork' do

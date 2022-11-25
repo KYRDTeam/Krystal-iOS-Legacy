@@ -470,7 +470,7 @@ extension KNHistoryCoordinator: QRCodeReaderDelegate {
 
 extension KNHistoryCoordinator: KNSendTokenViewCoordinatorDelegate {
   
-  func sendTokenCoordinatorDidClose() {
+  func sendTokenCoordinatorDidClose(coordinator: KNSendTokenViewCoordinator) {
     self.sendCoordinator = nil
   }
   
@@ -478,9 +478,6 @@ extension KNHistoryCoordinator: KNSendTokenViewCoordinatorDelegate {
     self.delegate?.historyCoordinatorDidSelectAddToken(token)
   }
   
-  func sendTokenViewCoordinatorSelectOpenHistoryList() {
-    self.navigationController.popViewController(animated: true)
-  }
 }
 
 extension KNHistoryCoordinator: GasFeeSelectorPopupViewControllerDelegate {

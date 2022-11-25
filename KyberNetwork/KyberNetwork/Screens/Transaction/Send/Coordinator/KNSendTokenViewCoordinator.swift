@@ -12,11 +12,11 @@ import WalletConnectSwift
 import JSONRPCKit
 import WalletCore
 import KrystalWallets
+import Dependencies
 
 protocol KNSendTokenViewCoordinatorDelegate: class {
-  func sendTokenViewCoordinatorSelectOpenHistoryList()
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject)
-  func sendTokenCoordinatorDidClose()
+  func sendTokenCoordinatorDidClose(coordinator: KNSendTokenViewCoordinator)
 }
 
 class KNSendTokenViewCoordinator: NSObject, Coordinator {
@@ -117,7 +117,7 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
 
   func stop() {
     self.navigationController.popViewController(animated: true) {
-      self.delegate?.sendTokenCoordinatorDidClose()
+      self.delegate?.sendTokenCoordinatorDidClose(coordinator: self)
     }
   }
 }
@@ -258,7 +258,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       self.navigationController.present(vc, animated: true, completion: nil)
       self.gasPriceSelector = vc
     case .openHistory:
-      self.delegate?.sendTokenViewCoordinatorSelectOpenHistoryList()
+      AppDependencies.router.openTransactionHistory()
     case .sendNFT(item: let item, category: let category, gasPrice: let gasPrice, gasLimit: let gasLimit, to: let to, amount: let amount, ens: let ens, isERC721: let isSupportERC721, advancedGasLimit: let advancedGasLimit, advancedPriorityFee: let advancedPriorityFee, advancedMaxFee: let advancedMaxFee, advancedNonce: let advancedNonce):
       let vm = ConfirmSendNFTViewModel(nftItem: item, nftCategory: category, gasPrice: gasPrice, gasLimit: gasLimit, address: to, ens: ens, amount: amount, supportERC721: isSupportERC721, advancedGasLimit: advancedGasLimit, advancedMaxPriorityFee: advancedPriorityFee, advancedMaxFee: advancedMaxFee, advancedNonce: advancedNonce)
       let vc = ConfirmSendNFTViewController(viewModel: vm)

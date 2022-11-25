@@ -20,9 +20,8 @@ class TokenDetailViewModel {
   var dataSource: [(x: Double, y: Double)] = []
   var poolData: [TokenPoolDetail] = []
   var xLabels: [Double] = []
-  let token: Token
   var periodType: ChartPeriodType = .oneDay
-  var detailInfo: TokenDetailInfo?
+  
   var chartData: [[Double]]?
   var chartOriginTimeStamp: Double = 0
 
@@ -30,7 +29,6 @@ class TokenDetailViewModel {
   let currencyMode: CurrencyMode
   
   var chain: ChainType
-  var chainID: Int
   
   var hideBalanceStatus: Bool {
     get {
@@ -44,7 +42,14 @@ class TokenDetailViewModel {
   var isExpandingPoolTable: Bool = false
   
   var isFaved: Bool {
-    return AppDependencies.tokenStorage.isFavoriteToken(address: token.address)
+    return AppDependencies.tokenStorage.isFavoriteToken(address: address)
+  }
+  
+  var isQuoteToken: Bool {
+    if let tokenDetail = tokenDetail {
+      return tokenDetail.symbol.uppercased() == chain.quoteToken().uppercased()
+    }
+    return false
   }
 
   let numberFormatter: NumberFormatter = {
@@ -60,16 +65,17 @@ class TokenDetailViewModel {
   
   var onTokenInfoUpdated: (() -> ())?
   var onTokenInfoLoadedFail: (() -> ())?
+  var onDataLoaded: (() -> ())?
   var onChartDataUpdated: (() -> ())?
-  var onPoolListUpdated: (() -> ())?
   
   let service = TokenService()
+  var address: String
+  var tokenDetail: TokenDetailInfo?
 
-  init(token: Token, chainID: Int, currencyMode: CurrencyMode) {
-    self.token = token
+  init(address: String, chain: ChainType, currencyMode: CurrencyMode) {
+    self.address = address
     self.currencyMode = currencyMode
-    self.chainID = chainID
-    self.chain = ChainType.make(chainID: chainID) ?? AppState.shared.currentChain
+    self.chain = chain
     self.currency = currencyMode.toString(chain: chain)
   }
   
@@ -128,28 +134,28 @@ class TokenDetailViewModel {
   }
   
   var displayPrice: String {
-    let priceInDouble = self.detailInfo?.markets[self.currency]?.price ?? 0
+    let priceInDouble = tokenDetail?.markets[self.currency]?.price ?? 0
     let priceInBigInt = BigInt(priceInDouble * pow(10, 18))
     return "$" + NumberFormatUtils.usdValueFormat(value: priceInBigInt, decimals: 18)
   }
 
   var display24hVol: String {
-    let volume24H = self.detailInfo?.markets[self.currency]?.volume24H ?? 0
+    let volume24H = tokenDetail?.markets[self.currency]?.volume24H ?? 0
     return self.currencyMode.symbol() + NumberFormatUtils.volFormat(number: volume24H) + self.currencyMode.suffixSymbol(chain: chain)
   }
 
   var diffPercent: Double {
     switch self.periodType {
     case .oneDay:
-      return self.detailInfo?.markets[self.currency]?.priceChange24HPercentage ?? 0
+      return tokenDetail?.markets[self.currency]?.priceChange24HPercentage ?? 0
     case .sevenDay:
-      return self.detailInfo?.markets[self.currency]?.priceChange7DPercentage ?? 0
+      return tokenDetail?.markets[self.currency]?.priceChange7DPercentage ?? 0
     case .oneMonth:
-      return self.detailInfo?.markets[self.currency]?.priceChange30DPercentage ?? 0
+      return tokenDetail?.markets[self.currency]?.priceChange30DPercentage ?? 0
     case .threeMonth:
-      return self.detailInfo?.markets[self.currency]?.priceChange200DPercentage ?? 0
+      return tokenDetail?.markets[self.currency]?.priceChange200DPercentage ?? 0
     case .oneYear:
-      return self.detailInfo?.markets[self.currency]?.priceChange1YPercentage ?? 0
+      return tokenDetail?.markets[self.currency]?.priceChange1YPercentage ?? 0
     }
   }
 
@@ -166,26 +172,32 @@ class TokenDetailViewModel {
   }
   
   var diplayBalance: String {
+    guard let tokenDetail = tokenDetail else {
+      return ""
+    }
     guard !self.hideBalanceStatus else {
       return "********"
     }
-    guard let balance = AppDependencies.balancesStorage.getBalance(address: self.token.address) else { return "---" }
-    let balanceString = NumberFormatUtils.balanceFormat(value: balance, decimals: self.token.decimals)
-    return balanceString + " \(self.token.symbol.uppercased())"
+    guard let balance = AppDependencies.balancesStorage.getBalance(address: self.address) else { return "---" }
+    let balanceString = NumberFormatUtils.balanceFormat(value: balance, decimals: tokenDetail.decimals)
+    return balanceString + " \(tokenDetail.symbol.uppercased())"
   }
 
   var displayUSDBalance: String {
-    guard let balance = AppDependencies.balancesStorage.getBalance(address: self.token.address) else {
+    guard let tokenDetail = tokenDetail else {
+      return ""
+    }
+    guard let balance = AppDependencies.balancesStorage.getBalance(address: self.address) else {
       return "---"
     }
     let price = getTokenLastPrice(self.currencyMode)
     let rateBigInt = BigInt(price * pow(10.0, 18.0))
     let valueBigInt = balance * rateBigInt / BigInt(10).power(18)
-    return self.currencyMode.symbol() + NumberFormatUtils.usdValueFormat(value: valueBigInt, decimals: token.decimals)
+    return self.currencyMode.symbol() + NumberFormatUtils.usdValueFormat(value: valueBigInt, decimals: tokenDetail.decimals)
   }
 
   var marketCap: Double {
-    return self.detailInfo?.markets[self.currency]?.marketCap ?? 0
+    return tokenDetail?.markets[self.currency]?.marketCap ?? 0
   }
   
   var displayMarketCap: String {
@@ -193,17 +205,17 @@ class TokenDetailViewModel {
   }
   
   var displayAllTimeHigh: String {
-    let ath = self.detailInfo?.markets[self.currency]?.ath ?? 0
+    let ath = tokenDetail?.markets[self.currency]?.ath ?? 0
     return self.currencyMode.symbol() + NumberFormatUtils.allTimeHighAndLowFormat(number: ath) + self.currencyMode.suffixSymbol(chain: chain)
   }
 
   var displayAllTimeLow: String {
-    let atl = self.detailInfo?.markets[self.currency]?.atl ?? 0
+    let atl = tokenDetail?.markets[self.currency]?.atl ?? 0
     return self.currencyMode.symbol() + NumberFormatUtils.allTimeHighAndLowFormat(number: atl) + self.currencyMode.suffixSymbol(chain: chain)
   }
 
   var displayDescription: String {
-    return self.detailInfo?.resultDescription ?? ""
+    return self.tokenDetail?.resultDescription ?? ""
   }
 
   var displayDescriptionAttribution: NSAttributedString? {
@@ -224,6 +236,8 @@ class TokenDetailViewModel {
   }
 
   var headerTitle: NSAttributedString {
+    guard let token = tokenDetail else { return NSAttributedString() }
+    
     let attributedString = NSMutableAttributedString()
     let titleAttributes: [NSAttributedString.Key: Any] = [
       NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor")!,
@@ -235,25 +249,16 @@ class TokenDetailViewModel {
       NSAttributedString.Key.font: UIFont.karlaReguler(ofSize: 18),
       NSAttributedString.Key.kern: 0.0,
     ]
-    var titleString = ""
-    if let detailInfo = self.detailInfo {
-      titleString = detailInfo.symbol.isEmpty ? "\(self.token.symbol.uppercased())" : "\(detailInfo.symbol.uppercased())"
-    } else {
-      titleString = "\(self.token.symbol.uppercased())"
-    }
-    var subTitleString = ""
-    if let detailInfo = self.detailInfo {
-      subTitleString = detailInfo.name.isEmpty ? "\(self.token.name.uppercased())" : "\(detailInfo.name.uppercased())"
-    } else {
-      subTitleString = "\(self.token.name.uppercased())"
-    }
-    attributedString.append(NSAttributedString(string: "\(titleString) ", attributes: titleAttributes))
-    attributedString.append(NSAttributedString(string: "\(subTitleString)", attributes: subTitleAttributes))
+    
+    attributedString.append(NSAttributedString(string: token.symbol.uppercased(), attributes: titleAttributes))
+    attributedString.append(NSAttributedString(string: " "))
+    attributedString.append(NSAttributedString(string: token.name.uppercased(), attributes: subTitleAttributes))
+    
     return attributedString
   }
   
   var tagImage: UIImage? {
-    guard let tag = self.detailInfo?.tag else { return nil }
+    guard let tag = tokenDetail?.tag else { return nil }
      if tag == "VERIFIED" {
        return UIImage(named: "blueTick_icon")
      } else if tag == "PROMOTION" {
@@ -267,7 +272,7 @@ class TokenDetailViewModel {
    }
   
   var tagLabel: String {
-    guard let tag = self.detailInfo?.tag else { return "" }
+    guard let tag = tokenDetail?.tag else { return "" }
      if tag == "VERIFIED" {
        return "Verified Token".toBeLocalised()
      } else if tag == "PROMOTION" {
@@ -313,7 +318,10 @@ class TokenDetailViewModel {
   }
   
   var canEarn: Bool {
-    return AppDependencies.tokenStorage.isTokenEarnable(address: token.address)
+    guard let tokenDetail = tokenDetail else {
+      return false
+    }
+    return AppDependencies.tokenStorage.isTokenEarnable(address: tokenDetail.address)
   }
   
   var selectedPoolPair: String {
@@ -332,8 +340,11 @@ class TokenDetailViewModel {
   }
   
   var baseTokenAddress: String {
-    if token.isQuoteToken() {
-      let wsymbol = "W" + self.token.symbol
+    guard let token = tokenDetail else {
+      return ""
+    }
+    if token.symbol.uppercased() == chain.quoteToken().uppercased() {
+      let wsymbol = "W" + token.symbol
       if let wtoken = AppDependencies.tokenStorage.getAllSupportedTokens().first(where: { $0.symbol == wsymbol }) {
         return wtoken.address
       }
@@ -344,48 +355,68 @@ class TokenDetailViewModel {
   func getTokenLastPrice(_ mode: CurrencyMode) -> Double {
     switch mode {
     case .usd:
-      return detailInfo?.markets["usd"]?.price ?? 0
+      return tokenDetail?.markets["usd"]?.price ?? 0
     case .eth:
-      return detailInfo?.markets["eth"]?.price ?? 0
+      return tokenDetail?.markets["eth"]?.price ?? 0
     case .btc:
-      return detailInfo?.markets["btc"]?.price ?? 0
+      return tokenDetail?.markets["btc"]?.price ?? 0
     default:
-      return detailInfo?.markets[chain.quoteToken().lowercased()]?.price ?? 0
+      return tokenDetail?.markets[chain.quoteToken().lowercased()]?.price ?? 0
     }
   }
   
-  func loadTokenDetailInfo(isFirstLoad: Bool) {
-    service.getTokenDetail(address: token.address, chainPath: chain.apiChainPath()) { [weak self] tokenDetail in
+  func loadTokenDetailInfo(completion: @escaping () -> ()) {
+    service.getTokenDetail(address: address, chainPath: chain.apiChainPath()) { [weak self] tokenDetail in
       if let tokenDetail = tokenDetail {
-        self?.detailInfo = tokenDetail
-        self?.onTokenInfoUpdated?()
-      } else {
-        if isFirstLoad {
-          self?.onTokenInfoLoadedFail?()
-        }
+        self?.tokenDetail = tokenDetail
       }
+      completion()
     }
   }
   
-  func loadChartData() {
-    service.getChartData(chainPath: chain.customRPC().apiChainPath, tokenAddress: token.address, quote: currency, from: periodType.getFromTimeStamp(), to: Int(Date().timeIntervalSince1970)) { [weak self] data in
+  func loadChartData(completion: @escaping () -> ()) {
+    service.getChartData(chainPath: chain.customRPC().apiChainPath, tokenAddress: address, quote: currency, from: periodType.getFromTimeStamp(), to: Int(Date().timeIntervalSince1970)) { [weak self] data in
       self?.updateChartData(data)
-      self?.onChartDataUpdated?()
+      completion()
     }
   }
   
-  func loadPoolList() {
-    var address = token.address
-    if token.isQuoteToken() {
+  func loadPoolList(completion: @escaping () -> ()) {
+    guard let token = tokenDetail else {
+      return
+    }
+    if isQuoteToken {
       let wsymbol = "W" + token.symbol
       if let wtoken = AppDependencies.tokenStorage.getAllSupportedTokens().first(where: { $0.symbol == wsymbol }) {
         address = wtoken.address
       }
     }
-    service.getPoolList(tokenAddress: address, chainID: chainID) { [weak self] pools in
+    service.getPoolList(tokenAddress: address, chainID: chain.getChainId()) { [weak self] pools in
       self?.poolData = pools
-      self?.onPoolListUpdated?()
+      completion()
     }
   }
   
+  func createToken() -> Token? {
+    guard let tokenDetail = tokenDetail else {
+      return nil
+    }
+    return Token(name: tokenDetail.name, symbol: tokenDetail.symbol, address: tokenDetail.address, decimals: tokenDetail.decimals, logo: tokenDetail.logo)
+  }
+  
+  func loadData() {
+    loadTokenDetailInfo { [weak self] in
+      guard let self = self else { return }
+      if self.tokenDetail != nil {
+        self.loadChartData {
+          self.loadPoolList {
+            self.onDataLoaded?()
+          }
+        }
+      } else {
+        self.onTokenInfoLoadedFail?()
+      }
+    }
+  }
+
 }

@@ -15,6 +15,7 @@ import DesignSystem
 import Services
 import BaseWallet
 import AppState
+import SkeletonView
 
 class TokenDetailViewController: KNBaseViewController {
   @IBOutlet weak var containScrollView: UIScrollView!
@@ -72,6 +73,7 @@ class TokenDetailViewController: KNBaseViewController {
   @IBOutlet weak var twitterButton: UIButton!
   @IBOutlet weak var discordButton: UIButton!
   @IBOutlet weak var telegramButton: UIButton!
+  @IBOutlet weak var errorView: ErrorView!
   
   var viewModel: TokenDetailViewModel!
   fileprivate var tokenPoolTimer: Timer?
@@ -85,6 +87,7 @@ class TokenDetailViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupConstraints()
+    self.setupErrorView()
     self.setupPoolInfoView()
     self.setupInfoSegment()
     self.setupTableView()
@@ -93,9 +96,17 @@ class TokenDetailViewController: KNBaseViewController {
     self.setupChartViews()
     self.setupTradingView()
     self.bindViewModel()
-    self.viewModel.loadChartData()
-    self.reloadCharts()
-    self.updateUISocialButtons()
+    self.showLoading()
+    self.viewModel.loadData()
+  }
+  
+  func showLoading() {
+    let gradient = SkeletonGradient(baseColor: AppTheme.current.sectionBackgroundColor)
+    view.showAnimatedGradientSkeleton(usingGradient: gradient)
+  }
+  
+  func hideLoading() {
+    view.hideSkeleton()
   }
   
   func setupTradingView() {
@@ -108,6 +119,12 @@ class TokenDetailViewController: KNBaseViewController {
   
   func setupPoolInfoView() {
     self.updateUIPoolName(hidden: true)
+  }
+  
+  func setupErrorView() {
+    errorView.onGoBackTapped = { [weak self] in
+      self?.navigationController?.popViewController(animated: true)
+    }
   }
   
   func setupInfoSegment() {
@@ -123,7 +140,7 @@ class TokenDetailViewController: KNBaseViewController {
     self.swapButton.rounded(radius: 16)
     self.investButton.rounded(radius: 16)
     self.favButton.setImage(self.viewModel.displayFavIcon, for: .normal)
-    self.favButton.isHidden = self.viewModel.chainID != AppState.shared.currentChain.getChainId()
+    self.favButton.isHidden = self.viewModel.chain.getChainId() != AppState.shared.currentChain.getChainId()
     periodChartSelectButtons.forEach { (button) in
       button.rounded(radius: 7)
     }
@@ -183,7 +200,7 @@ class TokenDetailViewController: KNBaseViewController {
   }
   
   @objc func copyTokenAddress() {
-    UIPasteboard.general.string = self.viewModel.token.address
+    UIPasteboard.general.string = self.viewModel.tokenDetail?.address
     let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
     hud.mode = .text
     hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
@@ -202,15 +219,6 @@ class TokenDetailViewController: KNBaseViewController {
     self.poolNameLabel.text = self.viewModel.selectedPoolName
   }
   
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    
-    self.viewModel.loadPoolList()
-    self.viewModel.loadTokenDetailInfo(isFirstLoad: true)
-    self.updateUIChartInfo()
-    self.updateUITokenInfo()
-  }
-  
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     self.tokenPoolTimer?.invalidate()
@@ -218,36 +226,42 @@ class TokenDetailViewController: KNBaseViewController {
   }
   
   func bindViewModel() {
-    viewModel.onTokenInfoUpdated = { [weak self] in
-      self?.updateUITokenInfo()
-      self?.updateUIChartInfo()
-      self?.updateUISocialButtons()
-    }
-    viewModel.onTokenInfoLoadedFail = { [weak self] in
-      // TODO: Show not found view
-    }
-    viewModel.onChartDataUpdated = { [weak self] in
-      self?.noDataImageView.isHidden = self?.viewModel.chartData?.isEmpty == false
-      self?.updateUIChartInfo()
-      if let data = self?.viewModel.lineChartData {
-        self?.tokenChartView.data = data
-        self?.tokenChartView.setNeedsDisplay()
-      }
-    }
-    viewModel.onPoolListUpdated = { [weak self] in
+    viewModel.onDataLoaded = { [weak self] in
       guard let self = self else { return }
-      if self.viewModel.poolData.isEmpty {
-        self.infoSegment.isHidden = true
-        self.aboutTitleLabel.isHidden = false
-        self.hidePoolView(false)
-        return
-      }
-      self.infoSegment.isHidden = false
-      self.aboutTitleLabel.isHidden = true
-      self.showAllPoolButton.isHidden = self.viewModel.poolData.count <= 5
-      self.poolTableView.reloadData()
-      self.updatePoolTableHeight()
+      self.hideLoading()
+      self.updateUITokenInfo()
+      self.updateUIChartInfo()
+      self.updateUISocialButtons()
+      self.reloadChartUI()
+      self.reloadPoolListUI()
     }
+
+    viewModel.onTokenInfoLoadedFail = { [weak self] in
+      self?.hideLoading()
+      self?.errorView.isHidden = false
+    }
+  }
+  
+  func reloadChartUI() {
+    self.noDataImageView.isHidden = self.viewModel.chartData?.isEmpty == false
+    if let data = self.viewModel.lineChartData {
+      self.tokenChartView.data = data
+      self.tokenChartView.setNeedsDisplay()
+    }
+  }
+  
+  func reloadPoolListUI() {
+    if self.viewModel.poolData.isEmpty {
+      self.infoSegment.isHidden = true
+      self.aboutTitleLabel.isHidden = false
+      self.hidePoolView(false)
+      return
+    }
+    self.infoSegment.isHidden = false
+    self.aboutTitleLabel.isHidden = true
+    self.showAllPoolButton.isHidden = self.viewModel.poolData.count <= 5
+    self.poolTableView.reloadData()
+    self.updatePoolTableHeight()
   }
   
   func showPoolView() {
@@ -299,7 +313,9 @@ class TokenDetailViewController: KNBaseViewController {
       return
     }
     self.viewModel.periodType = type
-    self.viewModel.loadChartData()
+    self.viewModel.loadChartData { [weak self] in
+      self?.reloadChartUI()
+    }
     self.updateUIPeriodSelectButtons()
     self.updateUITokenInfo()
   }
@@ -309,54 +325,91 @@ class TokenDetailViewController: KNBaseViewController {
   }
   
   @IBAction func transferButtonTapped(_ sender: UIButton) {
-    AppDependencies.router.openTokenTransfer(token: viewModel.token)
-    AppDependencies.tracker.track("token_detail_transfer", properties: ["screenid": "token_detail"])
+    guard let nav = self.navigationController else { return }
+    guard let token = viewModel.createToken() else { return }
+    
+    let openTransfer = {
+      AppDependencies.router.openTokenTransfer(navigationController: nav, token: token)
+      AppDependencies.tracker.track("token_detail_transfer", properties: ["screenid": "token_detail"])
+    }
+    if viewModel.chain == AppState.shared.currentChain {
+      openTransfer()
+    } else {
+      SwitchSpecificChainPopup.show(onViewController: self, destChain: viewModel.chain) {
+        openTransfer()
+      }
+    }
   }
   
   @IBAction func swapButtonTapped(_ sender: UIButton) {
-    AppDependencies.router.openSwap(token: viewModel.token)
-    AppDependencies.tracker.track("token_detail_swap", properties: ["screenid": "token_detail"])
+    guard let token = viewModel.createToken() else { return }
+    
+    let openSwap = {
+      AppDependencies.router.openSwap(token: token)
+      AppDependencies.tracker.track("token_detail_swap", properties: ["screenid": "token_detail"])
+    }
+    
+    if viewModel.chain == AppState.shared.currentChain {
+      openSwap()
+    } else {
+      SwitchSpecificChainPopup.show(onViewController: self, destChain: viewModel.chain) {
+        openSwap()
+      }
+    }
   }
   
   @IBAction func investButtonTapped(_ sender: UIButton) {
-    AppDependencies.router.openInvest(token: viewModel.token)
-    AppDependencies.tracker.track("token_detail_earn", properties: ["screenid": "token_detail"])
+    guard let token = viewModel.createToken() else { return }
+    
+    let openInvest = {
+      AppDependencies.router.openInvest(token: token)
+      AppDependencies.tracker.track("token_detail_earn", properties: ["screenid": "token_detail"])
+    }
+    
+    if viewModel.chain == AppState.shared.currentChain {
+      openInvest()
+    } else {
+      SwitchSpecificChainPopup.show(onViewController: self, destChain: viewModel.chain) {
+        openInvest()
+      }
+    }
   }
   
   @IBAction func etherscanButtonTapped(_ sender: UIButton) {
-    AppDependencies.router.openToken(address: viewModel.token.address, chainID: viewModel.chainID)
+//    AppDependencies.router.openToken(address: viewModel.token.address, chainID: viewModel.chainID)
   }
   
   @IBAction func websiteButtonTapped(_ sender: UIButton) {
-    guard let websiteURL = viewModel.detailInfo?.links.homepage else {
+    guard let websiteURL = viewModel.tokenDetail?.links.homepage else {
       return
     }
     AppDependencies.router.openExternalURL(url: websiteURL)
   }
   
   @IBAction func twitterButtonTapped(_ sender: UIButton) {
-    guard let twitterName = viewModel.detailInfo?.links.twitterScreenName else {
+    guard let twitterName = viewModel.tokenDetail?.links.twitterScreenName else {
       return
     }
     AppDependencies.router.openExternalURL(url: "https://twitter.com/\(twitterName)/")
   }
   
   @IBAction func dicordButtonTapped(_ sender: UIButton) {
-    guard let discordURL = viewModel.detailInfo?.links.discord else {
+    guard let discordURL = viewModel.tokenDetail?.links.discord else {
       return
     }
     AppDependencies.router.openExternalURL(url: discordURL)
   }
   
   @IBAction func telegramButtonTapped(_ sender: UIButton) {
-    guard let telegramURL = viewModel.detailInfo?.links.telegram else {
+    guard let telegramURL = viewModel.tokenDetail?.links.telegram else {
       return
     }
     AppDependencies.router.openExternalURL(url: telegramURL)
   }
   
   @IBAction func favButtonTapped(_ sender: UIButton) {
-    AppDependencies.tokenStorage.markFavoriteToken(address: viewModel.token.address, toOn: !viewModel.isFaved)
+    guard let address = viewModel.tokenDetail?.address else { return }
+    AppDependencies.tokenStorage.markFavoriteToken(address: address, toOn: !viewModel.isFaved)
     self.favButton.setImage(self.viewModel.displayFavIcon, for: .normal)
     AppDependencies.tracker.track("token_detail_favorite", properties: ["screenid": "token_detail"])
   }
@@ -387,28 +440,14 @@ class TokenDetailViewController: KNBaseViewController {
     self.swapButton.backgroundColor = self.viewModel.displayDiffColor
     self.transferButton.backgroundColor = self.viewModel.displayDiffColor
     if self.viewModel.canEarn {
-      self.investButton.backgroundColor = self.viewModel.displayDiffColor
+//      self.investButton.backgroundColor = self.viewModel.displayDiffColor
     }
-    if let image = self.viewModel.tagImage {
-      self.tagImageView.image = image
-      self.tagLabel.text = self.viewModel.tagLabel
-      self.tagLabelWidth.constant = self.viewModel.tagLabel.width(withConstrainedHeight: 28, font: UIFont.karlaReguler(ofSize: 12))
-      self.addressToSuperViewLeading.isActive = false
-      self.addressToSuperViewTrailing.constant = 100
-      self.addressLeading.isActive = true
-      self.tagView.isHidden = false
-    } else {
-      self.tagView.isHidden = true
-      self.addressToSuperViewLeading.isActive = true
-      let addressViewWidth = self.viewModel.token.address.shortTypeAddress.width(withConstrainedHeight: 28, font: UIFont.karlaReguler(ofSize: 12)) + 43
-      let padding = (UIScreen.main.bounds.size.width - addressViewWidth) / 2
-      self.addressToSuperViewLeading.constant = CGFloat(padding)
-      self.addressToSuperViewTrailing.constant = CGFloat(padding)
-      self.addressLeading.isActive = false
-    }
+    self.tagImageView.image = self.viewModel.tagImage
+    self.tagLabel.text = self.viewModel.tagLabel
+    self.tagView.isHidden = self.viewModel.tagImage == nil
     
     self.chainIcon.image = viewModel.chain.chainIcon()
-    self.chainAddressLabel.text = self.viewModel.token.address.shortTypeAddress
+    self.chainAddressLabel.text = self.viewModel.tokenDetail?.address
   }
 
   fileprivate func updateUIPeriodSelectButtons() {
@@ -460,25 +499,25 @@ class TokenDetailViewController: KNBaseViewController {
   }
   
   fileprivate func updateUISocialButtons() {
-    guard let detail = self.viewModel.detailInfo else {
+    guard let token = self.viewModel.tokenDetail else {
       self.socialButtonStackView.isHidden = true
       return
     }
     self.socialButtonStackView.isHidden = false
     
-    if !detail.links.homepage.isValidURL, self.websiteButton != nil {
+    if !token.links.homepage.isValidURL, self.websiteButton != nil {
       self.websiteButton.removeFromSuperview()
     }
     
-    if !detail.links.twitter.isValidURL, self.twitterButton != nil {
+    if !token.links.twitter.isValidURL, self.twitterButton != nil {
       self.twitterButton.removeFromSuperview()
     }
     
-    if !detail.links.discord.isValidURL, self.discordButton != nil {
+    if !token.links.discord.isValidURL, self.discordButton != nil {
       self.discordButton.removeFromSuperview()
     }
     
-    if !detail.links.telegram.isValidURL, self.telegramButton != nil {
+    if !token.links.telegram.isValidURL, self.telegramButton != nil {
       self.telegramButton.removeFromSuperview()
     }
   }
