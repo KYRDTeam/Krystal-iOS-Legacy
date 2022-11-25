@@ -96,6 +96,19 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
             self.destTokenInfoContainerView.rounded(color: AppTheme.current.primaryColor, width: 1, radius: 16)
             self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
             self.processStatusLabel.text = Strings.success
+
+            if let stakeVM = viewModel as? StakingTransactionProcessPopupViewModel {
+                AppDependencies.tracker.track(
+                    stakeVM.earningType == .staking ? "mob_stake_done_pop_up_open" : "mob_supply_done_pop_up_open",
+                    properties: ["screenid": stakeVM.earningType == .staking ? "mob_stake_done_pop_up" : "mob_supply_done_pop_up"]
+                )
+            }
+            if let unstakeVM = viewModel as? UnstakeTransactionProcessPopupViewModel {
+                AppDependencies.tracker.track(
+                    unstakeVM.earningType == .staking ? "mob_unstake_done_pop_up_open" : "mob_withdraw_done_pop_up_open",
+                    properties: ["screenid": unstakeVM.earningType == .staking ? "mob_unstake_done_pop_up" : "mob_withdraw_done_pop_up"]
+                )
+            }
         case .failure:
             self.loadingIndicatorView.isHidden = true
             self.transactionStateIcon.isHidden = false

@@ -134,7 +134,8 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
                     eip1559Tx: txResult.eip1559Tx,
                     chain: self.currentChain,
                     date: Date(),
-                    hash: txResult.hash
+                    hash: txResult.hash,
+                    earningType: self.earningType
                 )
                 TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
                 self.onSuccess(pendingTx)
