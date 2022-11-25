@@ -31,7 +31,7 @@ class StakingViewModel: BaseViewModel {
     var isUseReverseRate: Observable<Bool> = .init(false)
     var nextButtonStatus: Observable<NextButtonState> = .init(.notApprove)
     var balance: Observable<BigInt> = .init(0)
-    
+    var approveHash: String?
     var tokenAllowance: BigInt? {
         didSet {
             self.checkNextButtonStatus()
@@ -68,7 +68,21 @@ class StakingViewModel: BaseViewModel {
     }
     
     @objc func txStatusUpdated(_ notification: Notification) {
-        getBalance()
+        guard let hash = notification.userInfo?["hash"] as? String, let status = notification.userInfo?["status"] as? InternalTransactionState else {
+            return
+        }
+        if let approveHash = approveHash, approveHash == hash {
+            switch status {
+            case .error, .drop:
+                self.nextButtonStatus.value = .notApprove
+            case .done:
+                self.nextButtonStatus.value = .approved
+            default:
+                print(status)
+            }
+        } else {
+            getBalance()
+        }
     }
     
     func validateAmount() -> StakingValidationError? {
@@ -103,7 +117,7 @@ class StakingViewModel: BaseViewModel {
     }
     
     var displayAPY: String {
-        return StringFormatter.percentString(value: selectedPlatform.apy / 100)
+      return NumberFormatUtils.percent(value: selectedPlatform.apy)
     }
     
     var transactionFee: BigInt {
@@ -220,7 +234,7 @@ class StakingViewModel: BaseViewModel {
     var displayAmountReceive: String {
         guard let detail = selectedEarningToken.value, amount.value > 0 else { return "---" }
         let receiveAmt = BigInt(rate * pow(10.0, 18.0)) * amount.value / BigInt(10).power(18)
-        return NumberFormatUtils.amount(value: receiveAmt, decimals: 18) + " " + detail.symbol
+        return NumberFormatUtils.amount(value: receiveAmt, decimals: detail.decimals) + " " + detail.symbol
     }
     
     var rate: Double {

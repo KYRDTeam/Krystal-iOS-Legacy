@@ -982,6 +982,7 @@
 "wc.disconnect" = "Disconnect";
 "wc.disconnect.confirm" = "Are you sure to disconnect from this dapp?";
 "wc.not.support.watch.wallet" = "You are using watch wallet";
+"wc.not.support.this.network" = "Wallet Connect is not supported on this network";
 
 // Wallet list
 "backup.wallet.warning.message" = "NEVER share Keystore/Private Key/Mnemonic with anyone (including Krystal). These data grant access to all your funds and they may get stolen";

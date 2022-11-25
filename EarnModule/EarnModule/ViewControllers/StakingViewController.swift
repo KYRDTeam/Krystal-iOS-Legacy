@@ -15,6 +15,7 @@ import Dependencies
 import TransactionModule
 import FittedSheets
 import AppState
+import Result
 
 typealias ProjectionValue = (value: String, usd: String)
 typealias ProjectionValues = (p30: ProjectionValue, p60: ProjectionValue, p90: ProjectionValue)
@@ -37,6 +38,7 @@ enum FormState: Equatable {
 enum NextButtonState {
     case notApprove
     case needApprove
+    case approving
     case approved
     case noNeed
 }
@@ -283,7 +285,7 @@ class StakingViewController: InAppBrowsingViewController {
             }
             switch value {
             case .notApprove:
-                self.nextButton.setTitle(String(format: Strings.cheking, self.viewModel.token.symbol), for: .normal)
+                self.nextButton.setTitle(String(format: Strings.checking, self.viewModel.token.symbol), for: .normal)
                 self.nextButton.alpha = 0.2
                 self.nextButton.isEnabled = false
             case .needApprove:
@@ -293,6 +295,10 @@ class StakingViewController: InAppBrowsingViewController {
             case .approved:
                 self.nextButton.setTitle(self.viewModel.actionButtonTitle, for: .normal)
                 self.updateUIError()
+            case .approving:
+                self.nextButton.setTitle(Strings.approveInProgress, for: .normal)
+                self.nextButton.alpha = 0.2
+                self.nextButton.isEnabled = false
             case .noNeed:
                 self.nextButton.setTitle(self.viewModel.actionButtonTitle, for: .normal)
                 self.updateUIError()
@@ -424,12 +430,13 @@ class StakingViewController: InAppBrowsingViewController {
     func sendApprove(tokenAddress: String, remain: BigInt, symbol: String, toAddress: String) {
         let vm = ApproveTokenViewModel(symbol: symbol, tokenAddress: tokenAddress, remain: remain, toAddress: toAddress, chain: AppState.shared.currentChain)
         let vc = ApproveTokenViewController(viewModel: vm)
-        vc.onSuccessApprove = {
-            self.viewModel.nextButtonStatus.value = .approved
+        vc.onApproveSent = { hash in
+            self.viewModel?.approveHash = hash
+            self.viewModel.nextButtonStatus.value = .approving
         }
-        
-        vc.onFailApprove = {
-            self.viewModel.nextButtonStatus.value = .notApprove
+        vc.onFailApprove = { [weak self] error in
+          self?.showTopBannerView(message: TxErrorParser.parse(error: AnyError(error)).message)
+          self?.viewModel.nextButtonStatus.value = .needApprove
         }
         
         self.present(vc, animated: true, completion: nil)
