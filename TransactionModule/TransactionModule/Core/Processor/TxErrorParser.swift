@@ -39,7 +39,7 @@ public class TxErrorParser {
         var errorMessage = ""
         if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
           if case let JSONRPCKit.JSONRPCError.responseError(code, message, _) = apiKitError {
-              if code == -32000 && message == "execution reverted" {
+              if code == -32000 {
                   return .insufficientGasFee
               }
               errorMessage = message

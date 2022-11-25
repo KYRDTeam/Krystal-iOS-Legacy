@@ -133,7 +133,7 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
         } else {
             let basic = setting.basic
             setting.advanced = .init(
-                gasLimit: remoteGasLimit,
+                gasLimit: setting.gasLimit,
                 maxFee: self.getGasPrice(gasType: basic?.gasType ?? .regular),
                 maxPriorityFee: value,
                 nonce: currentNonce
@@ -148,7 +148,7 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
         } else {
             let basic = setting.basic
             setting.advanced = .init(
-                gasLimit: remoteGasLimit,
+                gasLimit: setting.gasLimit,
                 maxFee: value,
                 maxPriorityFee: self.getPriority(gasType: basic?.gasType ?? .regular) ?? .zero,
                 nonce: currentNonce
@@ -163,7 +163,7 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
         } else {
             let basic = setting.basic
             setting.advanced = .init(
-                gasLimit: remoteGasLimit,
+                gasLimit: setting.gasLimit,
                 maxFee: self.getGasPrice(gasType: basic?.gasType ?? .regular),
                 maxPriorityFee: self.getPriority(gasType: basic?.gasType ?? .regular) ?? .zero,
                 nonce: value
