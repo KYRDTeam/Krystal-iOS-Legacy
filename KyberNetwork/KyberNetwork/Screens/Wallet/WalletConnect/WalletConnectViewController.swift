@@ -34,11 +34,11 @@ class WalletConnectViewController: UIViewController {
   var url: WCURL!
   var address: KAddress!
   var server: Server!
-  var privateKey: EthereumPrivateKey!
+  var privateKey: EthereumPrivateKey?
   var session: Session?
   var lastTimeRequest: Date?
   var detected: Bool = false
-  var startSessionAction: ((Session.WalletInfo) -> ())?
+  var startSessionAction: ((Session.WalletInfo) -> Void)?
   
   enum State {
     case requesting
@@ -73,16 +73,18 @@ class WalletConnectViewController: UIViewController {
   }
   
   func initPrivateKey() {
-    privateKey = try! EthereumPrivateKey(
-      hexPrivateKey: try! WalletManager.shared.exportPrivateKey(address: address)
-    )
+    if let hexPrivateKey = try? WalletManager.shared.exportPrivateKey(address: address), let privateKey = try? EthereumPrivateKey(hexPrivateKey: hexPrivateKey) {
+      self.privateKey = privateKey
+    }
   }
   
   func setupServer() {
     server = Server(delegate: self)
-    server.register(handler: PersonalSignHandler(for: self, server: server, privateKey: privateKey, session: AppDelegate.session))
-    server.register(handler: SignTransactionHandler(for: self, server: server, privateKey: privateKey, session: AppDelegate.session))
-    server.register(handler: SendTransactionHandler(for: self, server: server, privateKey: privateKey, session: AppDelegate.session))
+    if let privateKey = privateKey {
+      server.register(handler: PersonalSignHandler(for: self, server: server, privateKey: privateKey, session: AppDelegate.session))
+      server.register(handler: SignTransactionHandler(for: self, server: server, privateKey: privateKey, session: AppDelegate.session))
+      server.register(handler: SendTransactionHandler(for: self, server: server, privateKey: privateKey, session: AppDelegate.session))
+    }
   }
   
   func connect() {
@@ -145,6 +147,7 @@ class WalletConnectViewController: UIViewController {
     case .failed:
       connect()
     case .detected:
+      guard let privateKey = privateKey else { return }
       let walletMeta = Session.ClientMeta(name: "Test Wallet",
                                           description: nil,
                                           icons: [],

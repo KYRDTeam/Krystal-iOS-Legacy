@@ -41,6 +41,7 @@
 "supplying.in.progress" = "Supplying In Progress";
 "staking.in.progress" = "Staking In Progress";
 "unstake.in.progress" = "Unstaking In Progress";
+"withdraw.in.progress" = "Withdrawing In Progress";
 "approve.in.progress" = "Approving In Progress";
 "success" = "Success";
 "tx.failed" = "Transaction failed";
@@ -79,3 +80,10 @@
 "you.are.supplying" = "You are supplying";
 "approve.fail" = "Approve fail";
 "supply.summary" = "Supply Summary";
+"available.to.unstake" = "Available to unstake";
+"available.to.withdraw" = "Available to withdraw";
+"withdraw.summary" = "Withdraw Summary";
+"you.are.withdrawing" = "You are withdrawing";
+"confirm.withdraw" = "Confirm withdraw";
+"my.supply" = "My supply";
+"unstaking.in.progress" = "Unstaking in progress";

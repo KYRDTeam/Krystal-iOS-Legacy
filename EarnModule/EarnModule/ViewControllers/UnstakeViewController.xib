@@ -34,6 +34,7 @@
                 <outlet property="receiveInfoView" destination="DdX-MI-5M5" id="K8R-B8-K91"/>
                 <outlet property="receiveTimeView" destination="Z8k-j5-eCz" id="FOY-BM-wVT"/>
                 <outlet property="tokenIcon" destination="gKC-58-Nun" id="axc-3s-Xkj"/>
+                <outlet property="unstakeBalanceTitleLabel" destination="SzS-8L-7lc" id="IEx-tM-pfJ"/>
                 <outlet property="unstakeButton" destination="u1U-LM-sz2" id="XZB-dZ-f9X"/>
                 <outlet property="unstakePlatformLabel" destination="gWb-EO-PTB" id="F0G-SC-9yk"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>

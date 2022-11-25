@@ -262,9 +262,9 @@ enum KNEnvironment: Int {
     return "mob-23b6e6df-bf90-494b-90e9-85c1d59ab4a2"
   }
 
-  static var allChainPath: String? {
+  static var allChainIds: String? {
     return ChainType.getAllChain().map { chain in
-      chain.apiChainPath()
+      "\(chain.getChainId())"
     }.joined(separator: ",")
   }
 }
