@@ -234,7 +234,7 @@ class UnstakeViewController: InAppBrowsingViewController {
             self.viewModel?.approveHash = hash
             self.unstakeButtonState = .approving
         }
-        vc.onFailApprove = {
+        vc.onFailApprove = { error in
             self.showErrorTopBannerMessage(message: Strings.approveFail)
             self.unstakeButtonState = .needApprove
         }

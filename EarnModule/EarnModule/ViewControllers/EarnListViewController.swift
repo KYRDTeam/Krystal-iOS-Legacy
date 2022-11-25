@@ -37,7 +37,7 @@ class EarnListViewController: InAppBrowsingViewController {
     super.viewDidLoad()
     fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
     Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { [weak self] _ in
-        self?.fetchData(chainId: self?.currentSelectedChain == .all ? nil : self?.currentSelectedChain.getChainId(), shouldShowLoading: false)
+        self?.fetchData(chainId: self?.currentSelectedChain == .all ? nil : self?.currentSelectedChain.getChainId(), isAutoReload: true)
     }
     setupUI()
   }
@@ -66,13 +66,15 @@ class EarnListViewController: InAppBrowsingViewController {
     self.tableView.reloadData()
   }
   
-  func fetchData(chainId: Int? = nil, shouldShowLoading: Bool = true) {
-    self.displayDataSource.forEach { viewModel in
-      viewModel.isExpanse = false
+  func fetchData(chainId: Int? = nil, isAutoReload: Bool = false) {
+    if !isAutoReload {
+      self.displayDataSource.forEach { viewModel in
+        viewModel.isExpanse = false
+      }
+      reloadUI()
     }
-    reloadUI()
     let service = EarnServices()
-    if shouldShowLoading {
+    if !isAutoReload {
         showLoading()
     }
     
@@ -91,10 +93,21 @@ class EarnListViewController: InAppBrowsingViewController {
       }
 
       self.dataSource = data
-      self.displayDataSource = data
-      
+        var displayData: [EarnPoolViewCellViewModel] = []
+        data.forEach { cellVM in
+            if let oldVM = self.displayDataSource.first { object in
+                return object.earnPoolModel.chainID == cellVM.earnPoolModel.chainID && object.earnPoolModel.token.address.lowercased() == cellVM.earnPoolModel.token.address.lowercased()
+            } {
+                cellVM.isExpanse = oldVM.isExpanse
+            }
+            displayData.append(cellVM)
+        }
         
-      if shouldShowLoading {
+      self.displayDataSource = displayData
+      if let text = self.searchTextField.text, !text.isEmpty {
+        self.filterDataSource(text: text)
+      }
+      if !isAutoReload {
         self.hideLoading()
       }
       self.reloadUI()
@@ -221,14 +234,18 @@ extension EarnListViewController: UITextFieldDelegate {
     timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(doSearch), userInfo: nil, repeats: false)
     return true
   }
-  
-  @objc func doSearch() {
-    if let text = self.searchTextField.text, !text.isEmpty {
-      self.displayDataSource = self.dataSource.filter({ viewModel in
+    
+  func filterDataSource(text: String) {
+    self.displayDataSource = self.dataSource.filter({ viewModel in
         let containSymbol = viewModel.earnPoolModel.token.symbol.lowercased().contains(text.lowercased())
         let containName = viewModel.earnPoolModel.token.name.lowercased().contains(text.lowercased())
         return containSymbol || containName
-      })
+    })
+  }
+  
+  @objc func doSearch() {
+    if let text = self.searchTextField.text, !text.isEmpty {
+      filterDataSource(text: text)
       if self.displayDataSource.isEmpty {
         self.emptyIcon.image = UIImage(named: "empty-search-token")
         self.emptyLabel.text = Strings.noRecordFound

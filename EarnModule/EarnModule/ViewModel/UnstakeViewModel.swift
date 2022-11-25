@@ -92,9 +92,9 @@ class UnstakeViewModel: BaseViewModel {
     var platformTitleString: String {
         switch earningType {
         case .staking:
-            return Strings.unstake + " " + stakingTokenSymbol + " on " + platform.name.uppercased()
+            return Strings.unstake + " " + toTokenSymbol + " on " + platform.name.uppercased()
         case .lending:
-            return Strings.withdraw + " " + stakingTokenSymbol + " on " + platform.name.uppercased()
+            return Strings.withdraw + " " + toTokenSymbol + " on " + platform.name.uppercased()
         }
     }
     
@@ -110,9 +110,9 @@ class UnstakeViewModel: BaseViewModel {
     var buttonTitleString: String {
         switch earningType {
         case .staking:
-            return Strings.unstake + " " + stakingTokenSymbol
+            return Strings.unstake + " " + toTokenSymbol
         case .lending:
-            return Strings.withdraw + " " + stakingTokenSymbol
+            return Strings.withdraw + " " + toTokenSymbol
         }
     }
 
@@ -156,6 +156,7 @@ class UnstakeViewModel: BaseViewModel {
         case .error, .drop:
             self.delegate?.didApproveToken(success: false)
         case .done:
+            checkEnoughFeeForTx()
             self.delegate?.didApproveToken(success: true)
         default:
             print(status)
@@ -200,6 +201,16 @@ class UnstakeViewModel: BaseViewModel {
             switch result {
             case .success(let balance):
                 if balance.value < fee {
+                    
+                    // check if still enough fee for approve
+                    if self.stakingTokenAllowance < self.unstakeValue {
+                        let gasPrice = AppDependencies.gasConfig.getStandardGasPrice(chain: AppState.shared.currentChain)
+                        let gasLimit = AppDependencies.gasConfig.defaultApproveGasLimit
+                        let defaultApproveFee = gasLimit * gasPrice
+                        if defaultApproveFee < balance.value {
+                            return
+                        }
+                    }
                     self.delegate?.didCheckNotEnoughFeeForTx(errMsg: "")
                 }
             case .failure(let err):

@@ -25,9 +25,11 @@ struct StakingPortfolioCellModel {
   
   let isInProcess: Bool
   let isClaimable: Bool
-      var pendingUnstake: PendingUnstake?
+  var pendingUnstake: PendingUnstake?
+  var earnBalance: EarningBalance?
   
   init(earnBalance: EarningBalance) {
+    self.earnBalance = earnBalance
     self.isInProcess = false
     self.tokenLogo = earnBalance.toUnderlyingToken.logo
     self.chainLogo = ChainType.make(chainID: earnBalance.chainID)?.chainIcon()
@@ -36,23 +38,23 @@ struct StakingPortfolioCellModel {
 
     var stakingBalanceString = (BigInt(earnBalance.stakingToken.balance)?.shortString(decimals: earnBalance.stakingToken.decimals) ?? "---") + " " + earnBalance.stakingToken.symbol
     var toUnderlyingBalanceString = (BigInt(earnBalance.toUnderlyingToken.balance)?.shortString(decimals: earnBalance.toUnderlyingToken.decimals) ?? "---") + " " + earnBalance.toUnderlyingToken.symbol
-    if let stakingBalanceBigInt = BigInt(earnBalance.stakingToken.balance) {
+
+    if let stakingBalanceBigInt = BigInt(earnBalance.stakingToken.balance), let toUnderlyingBalanceBigInt = BigInt(earnBalance.toUnderlyingToken.balance) {
+      if toUnderlyingBalanceBigInt < BigInt(pow(10.0, Double(earnBalance.toUnderlyingToken.decimals - 6))) {
+        toUnderlyingBalanceString = "< 0.000001 \(earnBalance.toUnderlyingToken.symbol)"
+      }
       if stakingBalanceBigInt < BigInt(pow(10.0, Double(earnBalance.stakingToken.decimals - 6))) {
           stakingBalanceString = "< 0.000001 \(earnBalance.stakingToken.symbol)"
       }
-    }
-    if let toUnderlyingBalanceBigInt = BigInt(earnBalance.toUnderlyingToken.balance) {
-      if toUnderlyingBalanceBigInt < BigInt(pow(10.0, Double(earnBalance.toUnderlyingToken.decimals - 6))) {
-          toUnderlyingBalanceString = "< 0.000001 \(earnBalance.toUnderlyingToken.symbol)"
-      }
-      if toUnderlyingBalanceBigInt > BigInt(0) {
-          let usdBigIntValue = BigInt(earnBalance.underlyingUsd) * toUnderlyingBalanceBigInt
-          let usdString = usdBigIntValue < BigInt(pow(10.0, Double(earnBalance.toUnderlyingToken.decimals - 2))) ? " | < $0.01" : " | $\(usdBigIntValue.shortString(decimals: earnBalance.toUnderlyingToken.decimals, maxFractionDigits: 2))"
-          toUnderlyingBalanceString = toUnderlyingBalanceString + usdString
+      if stakingBalanceBigInt > BigInt(0) {
+        let usdBigIntValue = BigInt(earnBalance.underlyingUsd * pow(10.0 , Double(earnBalance.toUnderlyingToken.decimals))) * toUnderlyingBalanceBigInt / BigInt(pow(10.0 , Double(earnBalance.toUnderlyingToken.decimals)))
+        let usdString = usdBigIntValue < BigInt(pow(10.0, Double(earnBalance.toUnderlyingToken.decimals - 2))) ? " | < $0.01" : " | $\(usdBigIntValue.shortString(decimals: earnBalance.toUnderlyingToken.decimals, maxFractionDigits: 2))"
+        stakingBalanceString = stakingBalanceString + usdString
       }
     }
-    self.displayDepositedValue = stakingBalanceString
-    self.displayDeposited2Value = toUnderlyingBalanceString
+
+    self.displayDepositedValue = toUnderlyingBalanceString
+    self.displayDeposited2Value = stakingBalanceString
     self.displayType = "| " + earnBalance.platform.type.capitalized
     self.displayTokenName = earnBalance.toUnderlyingToken.symbol
     self.displayPlatformName = earnBalance.platform.name.uppercased()
@@ -67,7 +69,9 @@ struct StakingPortfolioCellModel {
     self.platformLogo = pendingUnstake.platform.logo
     self.displayAPYValue = "---"
     self.displayDepositedValue = (BigInt(pendingUnstake.balance)?.shortString(decimals: pendingUnstake.decimals) ?? "---") + " " + pendingUnstake.symbol
-    self.displayDeposited2Value = ""
+    let balanceBigInt = BigInt(pendingUnstake.balance) ?? BigInt(0)
+    let usdBigIntValue = BigInt(pendingUnstake.priceUsd * pow(10.0 , Double(pendingUnstake.decimals))) * balanceBigInt / BigInt(pow(10.0 , Double(pendingUnstake.decimals)))
+    self.displayDeposited2Value = "$\(usdBigIntValue.shortString(decimals: pendingUnstake.decimals, maxFractionDigits: 2))"
     self.displayType = "| " + pendingUnstake.platform.type.capitalized
     self.displayTokenName = pendingUnstake.symbol
     self.displayPlatformName = pendingUnstake.platform.name.uppercased()
@@ -116,8 +120,8 @@ class StakingPortfolioCell: SwipeTableViewCell {
   @IBOutlet weak var depositTitleLabelContraintWithAPYTitle: NSLayoutConstraint!
   @IBOutlet weak var apyTitleLabel: UILabel!
   @IBOutlet weak var balanceTitleLabel: UILabel!
-
-  var onTapHint: (() -> Void)? = nil
+  @IBOutlet weak var depositedValueLabelTopConstraint: NSLayoutConstraint!
+    var onTapHint: (() -> Void)? = nil
   var claimTapped: (() -> ())?
   
   func updateCellModel(_ model: StakingPortfolioCellModel) {
@@ -132,12 +136,13 @@ class StakingPortfolioCell: SwipeTableViewCell {
     
     warningLabelContainerView.isHidden = !model.isInProcess || model.isClaimable
     claimButton.isHidden = !model.isClaimable
-    
+    depositedValueLabelTopConstraint.constant = model.isInProcess ? 10 : 30
     addButton.isHidden = model.isInProcess
     minusButton.isHidden = model.isInProcess
     deposited2ValueLabel.text = model.displayDeposited2Value
     
     apyTitleLabel.isHidden = model.isInProcess
+    balanceTitleLabel.isHidden = model.isInProcess
     apyValueLabel.isHidden = model.isInProcess
     
     depositTitleLabelContraintWithAPYTitle.priority = model.isInProcess ? UILayoutPriority(250) : UILayoutPriority(1000)

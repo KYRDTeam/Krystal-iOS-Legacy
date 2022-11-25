@@ -62,9 +62,11 @@ class StakingTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
 
 class UnstakeTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
     let pendingUnstakeTx: PendingUnstakeTxInfo
+    let earningType: EarningType
     
     init(pendingStakingTx: PendingUnstakeTxInfo) {
         self.pendingUnstakeTx = pendingStakingTx
+        self.earningType = .init(value: pendingStakingTx.platform.type)
     }
     
     var destTitle: String {
@@ -88,7 +90,12 @@ class UnstakeTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
     }
     
     var processingString: String {
-        return Strings.unstakeInProgress
+        switch earningType {
+        case .staking:
+            return Strings.unstakeInProgress
+        case .lending:
+            return Strings.withdrawInProgress
+        }
     }
     
     var finishButtonString: String {
