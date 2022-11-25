@@ -69,7 +69,9 @@ struct StakingPortfolioCellModel {
     self.platformLogo = pendingUnstake.platform.logo
     self.displayAPYValue = "---"
     self.displayDepositedValue = (BigInt(pendingUnstake.balance)?.shortString(decimals: pendingUnstake.decimals) ?? "---") + " " + pendingUnstake.symbol
-    self.displayDeposited2Value = ""
+    let balanceBigInt = BigInt(pendingUnstake.balance) ?? BigInt(0)
+    let usdBigIntValue = BigInt(pendingUnstake.priceUsd * pow(10.0 , Double(pendingUnstake.decimals))) * balanceBigInt / BigInt(pow(10.0 , Double(pendingUnstake.decimals)))
+    self.displayDeposited2Value = "$\(usdBigIntValue.shortString(decimals: pendingUnstake.decimals, maxFractionDigits: 2))"
     self.displayType = "| " + pendingUnstake.platform.type.capitalized
     self.displayTokenName = pendingUnstake.symbol
     self.displayPlatformName = pendingUnstake.platform.name.uppercased()
@@ -118,8 +120,8 @@ class StakingPortfolioCell: SwipeTableViewCell {
   @IBOutlet weak var depositTitleLabelContraintWithAPYTitle: NSLayoutConstraint!
   @IBOutlet weak var apyTitleLabel: UILabel!
   @IBOutlet weak var balanceTitleLabel: UILabel!
-
-  var onTapHint: (() -> Void)? = nil
+  @IBOutlet weak var depositedValueLabelTopConstraint: NSLayoutConstraint!
+    var onTapHint: (() -> Void)? = nil
   var claimTapped: (() -> ())?
   
   func updateCellModel(_ model: StakingPortfolioCellModel) {
@@ -134,12 +136,13 @@ class StakingPortfolioCell: SwipeTableViewCell {
     
     warningLabelContainerView.isHidden = !model.isInProcess || model.isClaimable
     claimButton.isHidden = !model.isClaimable
-    
+    depositedValueLabelTopConstraint.constant = model.isInProcess ? 10 : 30
     addButton.isHidden = model.isInProcess
     minusButton.isHidden = model.isInProcess
     deposited2ValueLabel.text = model.displayDeposited2Value
     
     apyTitleLabel.isHidden = model.isInProcess
+    balanceTitleLabel.isHidden = model.isInProcess
     apyValueLabel.isHidden = model.isInProcess
     
     depositTitleLabelContraintWithAPYTitle.priority = model.isInProcess ? UILayoutPriority(250) : UILayoutPriority(1000)
