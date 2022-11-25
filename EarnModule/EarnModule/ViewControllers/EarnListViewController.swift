@@ -132,7 +132,7 @@ class EarnListViewController: InAppBrowsingViewController {
             }
         }
         return Array(platformSet).sorted { (left, right) -> Bool in
-            return left.name > right.name
+            return left.name < right.name
         }
     }
     
