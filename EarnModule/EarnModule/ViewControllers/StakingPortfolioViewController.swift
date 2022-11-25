@@ -246,7 +246,7 @@ extension StakingPortfolioViewController: SkeletonTableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return indexPath.section == 0 ? 162 : 146
+    return 160
   }
   
   func collectionSkeletonView(_ skeletonView: UITableView, identifierForHeaderInSection section: Int) -> ReusableHeaderFooterIdentifier? {
