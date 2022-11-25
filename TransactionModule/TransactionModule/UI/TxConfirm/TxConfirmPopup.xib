@@ -73,7 +73,7 @@
                     </constraints>
                 </stackView>
                 <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="MNj-Fc-tVd">
-                    <rect key="frame" x="223.5" y="129.5" width="91.5" height="16"/>
+                    <rect key="frame" x="225" y="129.5" width="88.5" height="16"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="WgS-d4-Wb0">
                             <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
@@ -83,7 +83,7 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rEJ-UK-lkP">
-                            <rect key="frame" x="24" y="0.0" width="67.5" height="16"/>
+                            <rect key="frame" x="24" y="0.0" width="64.5" height="16"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="15"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
@@ -91,7 +91,7 @@
                     </subviews>
                 </stackView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nXZ-YC-Lpw">
-                    <rect key="frame" x="185.5" y="207" width="167" height="42"/>
+                    <rect key="frame" x="183.5" y="206.5" width="171" height="42"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chain_eth_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Dnb-bi-1bn">
                             <rect key="frame" x="16" y="9" width="24" height="24"/>
@@ -101,7 +101,7 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="234 MATIC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9HZ-X8-mr1">
-                            <rect key="frame" x="56" y="9.5" width="95" height="23.5"/>
+                            <rect key="frame" x="56" y="9.5" width="99" height="23.5"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="23.5" id="lkS-ab-dc7"/>
                             </constraints>
@@ -126,22 +126,22 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Confirm" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h7b-r8-XR1">
-                    <rect key="frame" x="24" y="169.5" width="490" height="21.5"/>
+                    <rect key="frame" x="24" y="169.5" width="490" height="21"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                     <color key="textColor" name="normalTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="iK6-bs-ctx">
-                    <rect key="frame" x="234" y="265" width="70.5" height="231"/>
+                    <rect key="frame" x="232" y="264.5" width="74.5" height="231.5"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="on" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xpR-xs-qMs">
-                            <rect key="frame" x="0.0" y="209.5" width="21" height="21.5"/>
+                            <rect key="frame" x="0.0" y="210.5" width="20.5" height="21"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LIDO" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vw5-Jc-n0d">
-                            <rect key="frame" x="29" y="207.5" width="41.5" height="23.5"/>
+                            <rect key="frame" x="28.5" y="208" width="46" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
@@ -227,7 +227,7 @@
     </objects>
     <designables>
         <designable name="Tjn-EL-cHU">
-            <size key="intrinsicContentSize" width="62" height="31"/>
+            <size key="intrinsicContentSize" width="57" height="31"/>
         </designable>
     </designables>
     <resources>
