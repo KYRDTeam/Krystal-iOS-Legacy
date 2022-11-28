@@ -169,7 +169,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   fileprivate func openConfirmViewAfterRequestBuildTx(items: [MultiSendItem], nonce: String) {
     self.requestBuildTx(items: items) { object in
       guard let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16), !gasLimit.isZero else {
-          self.navigationController.showTopBannerView(message: "Can not estimate gas limit for this transaction")
+          self.navigationController.showTopBannerView(message: Strings.estGasErrorMessage)
         return
       }
       self.processingTx = object
