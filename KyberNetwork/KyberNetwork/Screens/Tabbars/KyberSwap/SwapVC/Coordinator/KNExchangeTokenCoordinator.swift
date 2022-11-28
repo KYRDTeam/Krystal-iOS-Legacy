@@ -1318,16 +1318,12 @@ extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
 
 extension KNExchangeTokenCoordinator: KNSendTokenViewCoordinatorDelegate {
   
-  func sendTokenCoordinatorDidClose() {
+  func sendTokenCoordinatorDidClose(coordinator: KNSendTokenViewCoordinator) {
     self.sendTokenCoordinator = nil
   }
   
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.exchangeTokenCoordinatorDidSelectAddToken(token)
-  }
-
-  func sendTokenViewCoordinatorSelectOpenHistoryList() {
-    self.openHistoryScreen()
   }
 
   func sendTokenCoordinatorDidSelectManageWallet() {

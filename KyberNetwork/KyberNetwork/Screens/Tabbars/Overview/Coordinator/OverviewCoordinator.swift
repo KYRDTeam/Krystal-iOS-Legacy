@@ -512,7 +512,7 @@ extension OverviewCoordinator: OverviewDepositViewControllerDelegate {
 
 extension OverviewCoordinator: KNSendTokenViewCoordinatorDelegate {
 
-  func sendTokenCoordinatorDidClose() {
+  func sendTokenCoordinatorDidClose(coordinator: KNSendTokenViewCoordinator) {
     self.sendCoordinator = nil
   }
   

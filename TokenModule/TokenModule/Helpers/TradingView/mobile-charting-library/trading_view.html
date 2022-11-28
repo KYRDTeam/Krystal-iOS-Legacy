@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>TradingView Charting Library example</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <link rel="stylesheet" href="css/styles.css">
+        <script
+            type="text/javascript"
+            src="charting_library/charting_library/charting_library.js">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js"></script>
+        <script src="dist/bundle.js"></script>
+    </head>
+    <body style="margin:0px;" style="background-color: #0F0F0F;">
+        <div id="tv_chart_container">
+            <!-- This div will contain the Charting Library widget. -->
+        </div>
+        <div id="no_data_container" style="display: none;">
+            <img id="no_data_img" src="images/no_data.png" />
+          </div>
+    </body>
+</html>

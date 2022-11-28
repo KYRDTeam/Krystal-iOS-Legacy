@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+    <title>TradingView Charting Library demo</title>
+
+    <!-- Fix for iOS Safari zooming bug -->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js"></script>
+    <script type="text/javascript" src="charting_library/charting_library.standalone.js"></script>
+    <script type="text/javascript" src="datafeeds/udf/dist/bundle.js"></script>
+	<script type="module" src="../src/main.js"></script>
+<!-- 
+	<script type="text/javascript">
+		function getInfo(){
+			const symbol = ApplicationBridge.getTokenSymbol()
+			console.log(`[Trang]: symbol ${symbol})`);
+		}
+
+		window.addEventListener('DOMContentLoaded', function() {
+			console.log('------------', window.location.href)
+		}, false);
+
+	</script> -->
+
+
+    <!-- <script type="text/javascript">
+
+			function getParameterByName(name) {
+				name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+				var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+					results = regex.exec(location.search);
+				return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+			}
+
+			const config = {
+                supported_resolutions: ["1", "3", "5", "15", "30", "60", "120",   "240", "D"]
+            }
+            onReady: cb => {
+                console.log('=====onReady running')
+                setTimeout(() => cb(config), 0)
+            }
+
+			function initOnReady() {
+
+				var widget = window.tvWidget = new TradingView.widget({
+					// debug: true, // uncomment this line to see Library errors and warnings in the console
+					fullscreen: false,
+					symbol: 'AAPL',
+					interval: '1D',
+					container: "tv_chart_container",
+
+					//	BEWARE: no trailing slash is expected in feed URL
+					datafeed: new Datafeeds.UDFCompatibleDatafeed("https://api-dev.krystal.team/all/v1/tradingview/history?network=bsc&baseAddress=0xf4ed363144981d3a65f42e7d0dc54ff9eef559a1&quoteAddress=0xe9e7cea3dedca5984780bafc599bd69add087d56&fromTime=1646973871000&toTime=1653882240000&interval=240"),
+					library_path: "charting_library/",
+					locale: getParameterByName('lang') || "en",
+
+					disabled_features: ["use_localstorage_for_settings","header_compare", "header_symbol_search", "left_toolbar"],
+					enabled_features: ["study_templates"],
+					charts_storage_url: 'https://saveload.tradingview.com',
+					charts_storage_api_version: "1.1",
+					client_id: 'tradingview.com',
+					user_id: 'public_user_id',
+					theme: "Dark",
+					overrides: {
+						"paneProperties.legendProperties.showSeriesTitle": false,
+					   }
+				});
+			};
+
+			window.addEventListener('DOMContentLoaded', initOnReady, false);
+
+    </script> -->
+
+</head>
+
+<body style="margin:0px;">
+<div id="tv_chart_container"></div>
+</body>
+
+</html>
+

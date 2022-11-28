@@ -335,16 +335,12 @@ extension KNSettingsCoordinator: MFMailComposeViewControllerDelegate {
 
 extension KNSettingsCoordinator: KNSendTokenViewCoordinatorDelegate {
   
-  func sendTokenCoordinatorDidClose() {
+  func sendTokenCoordinatorDidClose(coordinator: KNSendTokenViewCoordinator) {
     self.sendTokenCoordinator = nil
   }
   
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.appCoordinatorDidSelectAddToken(token)
-  }
-  
-  func sendTokenViewCoordinatorSelectOpenHistoryList() {
-    self.openHistoryScreen()
   }
 }
 

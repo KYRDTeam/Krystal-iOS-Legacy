@@ -11,6 +11,9 @@ import Services
 
 public protocol TokenStorage {
     func getAllSupportedTokens() -> [Token]
+    func isTokenEarnable(address: String) -> Bool
+    func isFavoriteToken(address: String) -> Bool
+    func markFavoriteToken(address: String, toOn: Bool)
 }
 
 public extension TokenStorage {

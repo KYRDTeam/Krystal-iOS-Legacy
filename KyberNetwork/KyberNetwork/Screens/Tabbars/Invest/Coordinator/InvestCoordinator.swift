@@ -369,16 +369,12 @@ extension InvestCoordinator: InvestViewControllerDelegate {
 
 extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
   
-  func sendTokenCoordinatorDidClose() {
+  func sendTokenCoordinatorDidClose(coordinator: KNSendTokenViewCoordinator) {
     self.sendCoordinator = nil
   }
   
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.investCoordinatorDidSelectAddToken(token)
-  }
-  
-  func sendTokenViewCoordinatorSelectOpenHistoryList() {
-    self.openHistoryScreen()
   }
   
 }
