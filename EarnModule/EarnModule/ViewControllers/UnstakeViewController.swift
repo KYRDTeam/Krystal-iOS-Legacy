@@ -13,6 +13,7 @@ import BigInt
 import FittedSheets
 import Utilities
 import Services
+import Dependencies
 
 enum UnstakeButtonState {
     case normal
@@ -157,6 +158,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.toTokenSymbol)
         validateInput()
         updateUINextButton()
+        AppDependencies.tracker.track(viewModel.earningType == .lending ? "mob_withdraw_max_amount" : "mob_unstake_max_amount", properties: ["screenid": "earn"])
     }
     
     @IBAction func unstakeButtonTapped(_ sender: Any) {
@@ -170,6 +172,7 @@ class UnstakeViewController: InAppBrowsingViewController {
                     unstakeButtonState = .approving
             }
         }
+        AppDependencies.tracker.track(viewModel?.earningType == .lending ? "mob_withdraw" : "mob_unstake", properties: ["screenid": "earn"])
     }
     
     func showError(msg: String) {
@@ -275,6 +278,7 @@ class UnstakeViewController: InAppBrowsingViewController {
                         if let pendingTx = pendingTx as? PendingUnstakeTxInfo {
                             self.openTxStatusPopup(tx: pendingTx)
                         }
+                        AppDependencies.tracker.track(self.viewModel?.earningType == .lending ? "mob_confirm_withdraw" : "mob_confirm_unstake", properties: ["screenid": "earn"])
                     }
                 }
                 return
@@ -335,6 +339,7 @@ extension UnstakeViewController: UITextFieldDelegate {
         updateReceivedAmount()
         validateInput()
         updateUINextButton()
+        AppDependencies.tracker.track(viewModel?.earningType == .lending ? "mob_enter_withdraw_amount" : "mob_enter_unstake_amount", properties: ["screenid": "earn"])
     }
 
 }

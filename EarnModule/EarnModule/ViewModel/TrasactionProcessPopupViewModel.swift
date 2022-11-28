@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Dependencies
 
 protocol TrasactionProcessPopupViewModel: class {
     var destTitle: String { get }
@@ -15,6 +16,7 @@ protocol TrasactionProcessPopupViewModel: class {
     var destIcon: String { get }
     var processingString: String { get }
     var finishButtonString: String { get }
+    func trackPopupOpenEvent()
 }
 
 class StakingTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
@@ -58,6 +60,13 @@ class StakingTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
     var finishButtonString: String {
         return Strings.viewMyPool
     }
+  
+    func trackPopupOpenEvent() {
+      AppDependencies.tracker.track(
+          earningType == .staking ? "mob_stake_done_pop_up_open" : "mob_supply_done_pop_up_open",
+          properties: ["screenid": earningType == .staking ? "mob_stake_done_pop_up" : "mob_supply_done_pop_up"]
+      )
+    }
 }
 
 class UnstakeTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
@@ -100,5 +109,12 @@ class UnstakeTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
     
     var finishButtonString: String {
         return Strings.viewMyPortfolio
+    }
+  
+    func trackPopupOpenEvent() {
+        AppDependencies.tracker.track(
+            earningType == .staking ? "mob_unstake_done_pop_up_open" : "mob_withdraw_done_pop_up_open",
+            properties: ["screenid": earningType == .staking ? "mob_unstake_done_pop_up" : "mob_withdraw_done_pop_up"]
+        )
     }
 }
