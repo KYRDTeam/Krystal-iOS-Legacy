@@ -11,6 +11,8 @@
 		7E36E36D291A658D009BC8FE /* TxInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E36E36B291A658C009BC8FE /* TxInfoView.swift */; };
 		7E36E36E291A658D009BC8FE /* TxInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E36E36C291A658C009BC8FE /* TxInfoView.xib */; };
 		7EAF4759291B5CB500BF5D00 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF4758291B5CB500BF5D00 /* UIViewController.swift */; };
+		A63E21B1292F70110024328D /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63E21B0292F70110024328D /* ErrorView.swift */; };
+		A63E21B3292F701C0024328D /* ErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63E21B2292F701C0024328D /* ErrorView.xib */; };
 		A64C2E1628F6F8AF002FD64C /* DashedLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E1528F6F8AF002FD64C /* DashedLineView.swift */; };
 		A64C2E1D28F6FA28002FD64C /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E1C28F6FA28002FD64C /* Font.swift */; };
 		A64C2E1F28F6FC29002FD64C /* CountdownTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E1E28F6FC29002FD64C /* CountdownTimer.swift */; };
@@ -27,6 +29,7 @@
 		A66846062907FBB0006BBE29 /* BottomMessagePopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66846042907FBB0006BBE29 /* BottomMessagePopup.xib */; };
 		A66846132908DE16006BBE29 /* ListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66846112908DE16006BBE29 /* ListEmptyView.swift */; };
 		A66846142908DE16006BBE29 /* ListEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66846122908DE16006BBE29 /* ListEmptyView.xib */; };
+		A668BFD1292CBEDE001A110D /* GrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFD0292CBEDE001A110D /* GrowingTextView.swift */; };
 		A6B1FD2928F6B8CB00894DCB /* DesignSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = A6B1FD2828F6B8CB00894DCB /* DesignSystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6B1FD3028F6B8E200894DCB /* ThemeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FD2F28F6B8E200894DCB /* ThemeProtocol.swift */; };
 		A6B1FD3228F6BA2300894DCB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6B1FD3128F6BA2300894DCB /* Assets.xcassets */; };
@@ -38,6 +41,8 @@
 		7E36E36B291A658C009BC8FE /* TxInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TxInfoView.swift; sourceTree = "<group>"; };
 		7E36E36C291A658C009BC8FE /* TxInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxInfoView.xib; sourceTree = "<group>"; };
 		7EAF4758291B5CB500BF5D00 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		A63E21B0292F70110024328D /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		A63E21B2292F701C0024328D /* ErrorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ErrorView.xib; sourceTree = "<group>"; };
 		A64C2E1528F6F8AF002FD64C /* DashedLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedLineView.swift; sourceTree = "<group>"; };
 		A64C2E1C28F6FA28002FD64C /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		A64C2E1E28F6FC29002FD64C /* CountdownTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTimer.swift; sourceTree = "<group>"; };
@@ -54,6 +59,7 @@
 		A66846042907FBB0006BBE29 /* BottomMessagePopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BottomMessagePopup.xib; sourceTree = "<group>"; };
 		A66846112908DE16006BBE29 /* ListEmptyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListEmptyView.swift; sourceTree = "<group>"; };
 		A66846122908DE16006BBE29 /* ListEmptyView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListEmptyView.xib; sourceTree = "<group>"; };
+		A668BFD0292CBEDE001A110D /* GrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		A6B1FD2528F6B8CB00894DCB /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B1FD2828F6B8CB00894DCB /* DesignSystem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DesignSystem.h; sourceTree = "<group>"; };
 		A6B1FD2F28F6B8E200894DCB /* ThemeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeProtocol.swift; sourceTree = "<group>"; };
@@ -91,6 +97,7 @@
 		A64C2E1428F6F891002FD64C /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				A668BFD0292CBEDE001A110D /* GrowingTextView.swift */,
 				7E36E36B291A658C009BC8FE /* TxInfoView.swift */,
 				7E36E36C291A658C009BC8FE /* TxInfoView.xib */,
 				A66846112908DE16006BBE29 /* ListEmptyView.swift */,
@@ -106,6 +113,8 @@
 				A66846042907FBB0006BBE29 /* BottomMessagePopup.xib */,
 				A64F1D65290B942C000D4733 /* RadioButton.swift */,
 				A64F1D6B290B99F0000D4733 /* TabSegmentControl.swift */,
+				A63E21B0292F70110024328D /* ErrorView.swift */,
+				A63E21B2292F701C0024328D /* ErrorView.xib */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -251,6 +260,7 @@
 				A66846142908DE16006BBE29 /* ListEmptyView.xib in Resources */,
 				7E36E36E291A658D009BC8FE /* TxInfoView.xib in Resources */,
 				A64C2E2328F6FCF0002FD64C /* CircularArrowProgressView.xib in Resources */,
+				A63E21B3292F701C0024328D /* ErrorView.xib in Resources */,
 				A66846062907FBB0006BBE29 /* BottomMessagePopup.xib in Resources */,
 				A6B1FD3228F6BA2300894DCB /* Assets.xcassets in Resources */,
 			);
@@ -290,6 +300,7 @@
 			files = (
 				A6B1FD3728F6C20300894DCB /* AppTheme.swift in Sources */,
 				A64F1D66290B942C000D4733 /* RadioButton.swift in Sources */,
+				A63E21B1292F70110024328D /* ErrorView.swift in Sources */,
 				A66846052907FBB0006BBE29 /* BottomMessagePopup.swift in Sources */,
 				A6B1FD3528F6BF2600894DCB /* KrystalTheme.swift in Sources */,
 				A66846132908DE16006BBE29 /* ListEmptyView.swift in Sources */,
@@ -303,6 +314,7 @@
 				A64C2E2128F6FCD3002FD64C /* CircularArrowProgressView.swift in Sources */,
 				A64C2E5928F819E0002FD64C /* MessageBanner.swift in Sources */,
 				A64C2E2628F6FD28002FD64C /* PolygonView.swift in Sources */,
+				A668BFD1292CBEDE001A110D /* GrowingTextView.swift in Sources */,
 				A64C2E4C28F7F978002FD64C /* UIButton+.swift in Sources */,
 				7E36E36D291A658D009BC8FE /* TxInfoView.swift in Sources */,
 			);
