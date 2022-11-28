@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,11 +12,11 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
-            <string>Karla-Regular</string>
-        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -29,7 +29,6 @@
                 <outlet property="chainButton" destination="ttY-jz-PFc" id="qh6-OT-Zsv"/>
                 <outlet property="chainIcon" destination="Vq2-OZ-KMi" id="8HW-Ci-7tE"/>
                 <outlet property="errorLabel" destination="utK-f4-eqE" id="baN-g3-yiB"/>
-                <outlet property="ethWarningView" destination="E6Y-Zs-ufZ" id="8M2-Vq-C3A"/>
                 <outlet property="networkFeeView" destination="y6A-ga-6bJ" id="7sT-R1-ZF0"/>
                 <outlet property="nextButtonTopContraint" destination="3xB-qg-jnu" id="6e3-s8-Awn"/>
                 <outlet property="rateView" destination="XsL-2l-Vff" id="P0B-oy-tCM"/>
@@ -278,39 +277,6 @@
                     <color key="textColor" name="textRedColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E6Y-Zs-ufZ" userLabel="Error View">
-                    <rect key="frame" x="17" y="458.33333333333331" width="341" height="78.333333333333314"/>
-                    <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="warning_yellow_icon" translatesAutoresizingMaskIntoConstraints="NO" id="tDC-s8-qcI">
-                            <rect key="frame" x="26" y="16" width="24" height="24"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="24" id="0Qz-Oz-8db"/>
-                                <constraint firstAttribute="width" constant="24" id="Ko9-nw-nRF"/>
-                            </constraints>
-                        </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unstaking ETH is not available currently. It will be enabled after the Shanghai upgrade" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z25-O4-hY9">
-                            <rect key="frame" x="63" y="13.000000000000004" width="252" height="49.333333333333343"/>
-                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
-                            <color key="textColor" name="warningColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" red="1" green="0.86274509799999999" blue="0.0" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstItem="tDC-s8-qcI" firstAttribute="leading" secondItem="E6Y-Zs-ufZ" secondAttribute="leading" constant="26" id="63h-Xl-y0Z"/>
-                        <constraint firstItem="Z25-O4-hY9" firstAttribute="leading" secondItem="tDC-s8-qcI" secondAttribute="trailing" constant="13" id="Hmu-ku-1ZM"/>
-                        <constraint firstAttribute="trailing" secondItem="Z25-O4-hY9" secondAttribute="trailing" constant="26" id="Pwa-o6-HQu"/>
-                        <constraint firstItem="Z25-O4-hY9" firstAttribute="top" secondItem="E6Y-Zs-ufZ" secondAttribute="top" constant="13" id="RwR-UB-loD"/>
-                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="tDC-s8-qcI" secondAttribute="bottom" constant="16" id="SOk-B2-U31"/>
-                        <constraint firstAttribute="bottom" secondItem="Z25-O4-hY9" secondAttribute="bottom" constant="16" id="aY5-sW-K5y"/>
-                        <constraint firstItem="tDC-s8-qcI" firstAttribute="top" secondItem="E6Y-Zs-ufZ" secondAttribute="top" constant="16" id="rzc-Pq-1y4"/>
-                    </constraints>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
-                            <real key="value" value="16"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
@@ -321,14 +287,11 @@
                 <constraint firstAttribute="trailing" secondItem="SQp-ti-rCR" secondAttribute="trailing" id="Knu-Is-qAw"/>
                 <constraint firstItem="wFc-Tg-Mi2" firstAttribute="centerY" secondItem="gWb-EO-PTB" secondAttribute="centerY" id="LGl-IF-5it"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="OZD-CW-5ls" secondAttribute="trailing" constant="30" id="LpN-cZ-Eji"/>
-                <constraint firstItem="E6Y-Zs-ufZ" firstAttribute="top" secondItem="OZD-CW-5ls" secondAttribute="bottom" constant="40" id="Mqf-gK-rYs"/>
                 <constraint firstItem="gWb-EO-PTB" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="21" id="TXq-xe-Q9G"/>
-                <constraint firstItem="E6Y-Zs-ufZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="17" id="U2A-go-U9o"/>
                 <constraint firstItem="SQp-ti-rCR" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="47" id="Ub5-jh-nAg"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="u1U-LM-sz2" secondAttribute="trailing" constant="28" id="V7g-J3-BgZ"/>
                 <constraint firstItem="gWb-EO-PTB" firstAttribute="top" secondItem="SQp-ti-rCR" secondAttribute="bottom" constant="11" id="W8J-mw-2WE"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="jxF-2d-6ta" secondAttribute="trailing" constant="17" id="Whj-0N-zP4"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="E6Y-Zs-ufZ" secondAttribute="trailing" constant="17" id="XUG-Df-BVa"/>
                 <constraint firstItem="SQp-ti-rCR" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="YN5-Id-HE7"/>
                 <constraint firstItem="jxF-2d-6ta" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="17" id="YhP-rc-2rF"/>
                 <constraint firstItem="utK-f4-eqE" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="31" id="ZAL-ys-A06"/>
@@ -349,7 +312,6 @@
         <image name="chain_polygon_big_icon" width="84" height="84"/>
         <image name="eth" width="32" height="32"/>
         <image name="gas_config_icon" width="36" height="36"/>
-        <image name="warning_yellow_icon" width="24" height="24"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -367,9 +329,6 @@
         </namedColor>
         <namedColor name="toolbarBgColor">
             <color red="0.13333333333333333" green="0.13333333333333333" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="warningColor">
-            <color red="1" green="0.75294117647058822" blue="0.035294117647058823" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

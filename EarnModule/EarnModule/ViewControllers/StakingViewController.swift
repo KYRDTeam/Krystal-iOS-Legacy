@@ -170,7 +170,7 @@ class StakingViewController: InAppBrowsingViewController {
         guard AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.unstakeWarning) else {
             return
         }
-        guard viewModel.token.address == Constants.ethAddress else {
+        guard viewModel.token.address == Constants.ethAddress && viewModel.earningType == .staking else {
             return
         }
         

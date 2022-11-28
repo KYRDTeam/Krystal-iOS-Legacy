@@ -37,7 +37,6 @@ class UnstakeViewController: InAppBrowsingViewController {
     @IBOutlet weak var networkFeeView: TxInfoView!
     @IBOutlet weak var receiveTimeView: TxInfoView!
     @IBOutlet weak var unstakeBalanceTitleLabel: UILabel!
-    @IBOutlet weak var ethWarningView: UIView!
     @IBOutlet weak var nextButtonTopContraint: NSLayoutConstraint!
  	@IBOutlet weak var toggleUnwrapView: TxToggleInfoView!
 
@@ -56,7 +55,6 @@ class UnstakeViewController: InAppBrowsingViewController {
         initializeData()
         setupUI()
         updateUINextButton()
-        updateUIETHWarningView()
     }
     
     func initializeData() {
@@ -197,18 +195,6 @@ class UnstakeViewController: InAppBrowsingViewController {
         let inputValue = amountTextField.text?.amountBigInt(decimals: viewModel.stakingTokenDecimal) ?? BigInt(0)
         viewModel.unstakeValue = inputValue
         receiveInfoView.setValue(value: viewModel.receivedInfoString())
-    }
-    
-    fileprivate func updateUIETHWarningView() {
-        guard AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.unstakeWarning) else {
-            return
-        }
-        guard viewModel?.toTokenSymbol.lowercased() == "eth" else {
-            return
-        }
-        
-        ethWarningView.isHidden = false
-        nextButtonTopContraint.constant = 150
     }
     
     func validateInput() -> Bool {
