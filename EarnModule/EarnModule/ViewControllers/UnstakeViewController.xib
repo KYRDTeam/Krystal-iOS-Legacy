@@ -33,6 +33,7 @@
                 <outlet property="rateView" destination="XsL-2l-Vff" id="P0B-oy-tCM"/>
                 <outlet property="receiveInfoView" destination="DdX-MI-5M5" id="K8R-B8-K91"/>
                 <outlet property="receiveTimeView" destination="Z8k-j5-eCz" id="FOY-BM-wVT"/>
+                <outlet property="toggleUnwrapView" destination="BoC-eW-9mm" id="EHi-1m-c8g"/>
                 <outlet property="tokenIcon" destination="gKC-58-Nun" id="axc-3s-Xkj"/>
                 <outlet property="unstakeBalanceTitleLabel" destination="SzS-8L-7lc" id="IEx-tM-pfJ"/>
                 <outlet property="unstakeButton" destination="u1U-LM-sz2" id="XZB-dZ-f9X"/>
@@ -203,6 +204,13 @@
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="OZD-CW-5ls">
                     <rect key="frame" x="30" y="294.33333333333331" width="315" height="124"/>
                     <subviews>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BoC-eW-9mm" customClass="TxToggleInfoView" customModule="DesignSystem">
+                            <rect key="frame" x="0.0" y="-28" width="315" height="28"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="28" id="rbQ-a5-ddz"/>
+                            </constraints>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DdX-MI-5M5" customClass="TxInfoView" customModule="DesignSystem">
                             <rect key="frame" x="0.0" y="0.0" width="315" height="28"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
