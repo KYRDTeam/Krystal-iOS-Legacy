@@ -380,6 +380,8 @@ class StakingViewController: InAppBrowsingViewController {
                 message: String(format: Strings.amountQuoteTokenUsedForFee, viewModel.currentChain.quoteToken())
             )
         }
+        AppDependencies.tracker.track(viewModel.earningType == .staking ? "mob_stake_max_amount" : "mob_supply_max_amount", properties: ["screenid": "earn"])
+
     }
     
     func showSwitchChainPopup() {
@@ -434,7 +436,7 @@ class StakingViewController: InAppBrowsingViewController {
                 self?.openStakeSummary(txObject: txObject)
             }
         }
-        
+        AppDependencies.tracker.track(viewModel.earningType == .staking ? "mob_stake" : "mob_supply", properties: ["screenid": "earn"])
     }
     
     @IBAction func expandProjectionButtonTapped(_ sender: UIButton) {
@@ -460,6 +462,7 @@ class StakingViewController: InAppBrowsingViewController {
         guard let earningToken = viewModel.selectedEarningToken.value else { return }
         let viewModel = StakingSummaryViewModel(earnToken: earningToken, txObject: txObject, setting: settings, token: viewModel.token, platform: viewModel.selectedPlatform, displayInfo: displayInfo)
         TxConfirmPopup.show(onViewController: self, withViewModel: viewModel) { [weak self] pendingTx in
+            AppDependencies.tracker.track(viewModel.earningType == .staking ? "mob_confirm_stake" : "mob_confirm_supply", properties: ["screenid": "earn"])
             self?.openTxStatusPopup(tx: pendingTx as! PendingStakingTxInfo)
         }
     }
@@ -506,6 +509,7 @@ extension StakingViewController: UITextFieldDelegate {
     @objc func keyboardPauseTyping(timer: Timer) {
         updateRateInfoView()
         viewModel.requestBuildStakeTx()
+        AppDependencies.tracker.track("mob_enter_stake_amount", properties: ["screenid": "earn"])
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
