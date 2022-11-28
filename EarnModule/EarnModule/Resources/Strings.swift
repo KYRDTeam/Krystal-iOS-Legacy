@@ -70,6 +70,7 @@ struct Strings {
     static let youWillReceive = "receive.title".toBeLocalised()
     static let rate = "rate".toBeLocalised()
     static let networkFee = "network.fee".toBeLocalised()
+    static let unwrapToken = "unwrap.token".toBeLocalised()
     static let approveToken = "approve.token".toBeLocalised()
     static let confirmStake = "confirm.stake".toBeLocalised()
     static let confirmUnstake = "confirm.unstake".toBeLocalised()
