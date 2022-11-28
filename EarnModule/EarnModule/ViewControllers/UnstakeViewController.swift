@@ -185,7 +185,7 @@ class UnstakeViewController: InAppBrowsingViewController {
     }
     
     fileprivate func updateUIETHWarningView() {
-        guard AppDependencies.featureFlag.showFeature(forKey: FeatureFlagKeys.unstakeWarning) else {
+        guard AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.unstakeWarning) else {
             return
         }
         guard viewModel?.toTokenSymbol.lowercased() == "eth" else {

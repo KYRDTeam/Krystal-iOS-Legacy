@@ -23,7 +23,7 @@ struct FeatureFlagKeys {
     static let tokenApproval = "token-approval"
 }
 
-class FeatureFlagManager: FeatureFlag {
+class FeatureFlagManager {
   static let shared = FeatureFlagManager()
 
   func configClient(session: KNSession?) {
