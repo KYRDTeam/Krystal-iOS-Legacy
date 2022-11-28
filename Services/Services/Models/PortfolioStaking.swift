@@ -72,11 +72,17 @@ public struct IngToken: Codable {
   public let decimals: Int
 }
 
+public struct WrapInfo: Codable {
+    public let isWrappable: Bool
+    public let wrapAddress: String
+}
+
 // MARK: - OptionDetailResponse
 public struct OptionDetailResponse: Codable {
     public let earningTokens: [EarningToken]
     public let poolAddress: String
     public var validation: EarnOptionValidation?
+    public let wrap: WrapInfo?
 }
 // MARK: - EarningToken
 public struct EarningToken: Codable {

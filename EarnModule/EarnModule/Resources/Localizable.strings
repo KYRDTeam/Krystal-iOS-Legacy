@@ -86,3 +86,4 @@
 "confirm.withdraw" = "Confirm withdraw";
 "my.supply" = "My supply";
 "unstaking.in.progress" = "Unstaking in progress";
+"unwrap.token" = "Unwrap %@";
