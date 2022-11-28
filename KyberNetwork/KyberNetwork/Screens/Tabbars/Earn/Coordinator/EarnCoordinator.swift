@@ -1042,16 +1042,12 @@ extension EarnCoordinator: OverviewDepositViewControllerDelegate {
 
 extension EarnCoordinator: KNSendTokenViewCoordinatorDelegate {
   
-  func sendTokenCoordinatorDidClose() {
+  func sendTokenCoordinatorDidClose(coordinator: KNSendTokenViewCoordinator) {
     self.sendCoordinator = nil
   }
   
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.earnCoordinatorDidSelectAddToken(token)
-  }
-  
-  func sendTokenViewCoordinatorSelectOpenHistoryList() {
-    self.openHistoryScreen()
   }
   
 }

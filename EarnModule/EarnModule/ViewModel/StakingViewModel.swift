@@ -50,7 +50,7 @@ class StakingViewModel: BaseViewModel {
         self.token = token
         self.selectedPlatform = platform
         self.chainId = chainId
-        self.balance.value = AppDependencies.balancesStorage.getBalanceBigInt(address: token.address)
+        self.balance.value = AppDependencies.balancesStorage.getBalance(address: token.address) ?? .zero
         super.init()
     }
     
@@ -260,7 +260,7 @@ class StakingViewModel: BaseViewModel {
     }
     
     var isAmountTooBig: Bool {
-        return self.amount.value > AppDependencies.balancesStorage.getBalanceBigInt(address: token.address)
+        return self.amount.value > AppDependencies.balancesStorage.getBalance(address: token.address) ?? .zero
     }
     
     var displayProjectionValues: ProjectionValues? {
