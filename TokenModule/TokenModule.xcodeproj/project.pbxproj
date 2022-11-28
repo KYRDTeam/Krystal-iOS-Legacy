@@ -1,0 +1,547 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A63E27FD292FA1050024328D /* mobile-charting-library in Resources */ = {isa = PBXBuildFile; fileRef = A63E27FC292FA1050024328D /* mobile-charting-library */; };
+		A668BF91292CB849001A110D /* TokenModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A668BF90292CB849001A110D /* TokenModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A668BFA0292CB8B9001A110D /* TokenDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A668BF9E292CB8B9001A110D /* TokenDetailViewController.xib */; };
+		A668BFA1292CB8B9001A110D /* TokenDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BF9F292CB8B9001A110D /* TokenDetailViewController.swift */; };
+		A668BFA3292CB8F3001A110D /* TokenDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFA2292CB8F3001A110D /* TokenDetailViewModel.swift */; };
+		A668BFA9292CBD57001A110D /* ChartPeriodType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFA8292CBD57001A110D /* ChartPeriodType.swift */; };
+		A668BFAB292CBD82001A110D /* TokenModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFAA292CBD82001A110D /* TokenModule.swift */; };
+		A668BFAD292CBE39001A110D /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A668BFAC292CBE39001A110D /* AppState.framework */; };
+		A668BFB1292CBE3B001A110D /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A668BFB0292CBE3B001A110D /* BaseModule.framework */; };
+		A668BFB4292CBE3F001A110D /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A668BFB3292CBE3F001A110D /* BaseWallet.framework */; };
+		A668BFB7292CBE42001A110D /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A668BFB6292CBE42001A110D /* Dependencies.framework */; };
+		A668BFBA292CBE45001A110D /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A668BFB9292CBE45001A110D /* DesignSystem.framework */; };
+		A668BFBD292CBE4E001A110D /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A668BFBC292CBE4E001A110D /* Utilities.framework */; };
+		A668BFC9292CBE92001A110D /* TradingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFC1292CBE92001A110D /* TradingViewController.swift */; };
+		A668BFCA292CBE92001A110D /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFC2292CBE92001A110D /* Period.swift */; };
+		A668BFCB292CBE92001A110D /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFC4292CBE92001A110D /* UIView+.swift */; };
+		A668BFCC292CBE92001A110D /* ChartType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFC5292CBE92001A110D /* ChartType.swift */; };
+		A668BFCD292CBE92001A110D /* TradingView+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFC6292CBE92001A110D /* TradingView+Action.swift */; };
+		A668BFCE292CBE92001A110D /* ChartLoadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFC7292CBE92001A110D /* ChartLoadRequest.swift */; };
+		A668BFCF292CBE92001A110D /* TradingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFC8292CBE92001A110D /* TradingView.swift */; };
+		A668BFD4292CC26B001A110D /* TokenPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A668BFD2292CC26B001A110D /* TokenPoolCell.xib */; };
+		A668BFD5292CC26B001A110D /* TokenPoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFD3292CC26B001A110D /* TokenPoolCell.swift */; };
+		A668BFD9292CC650001A110D /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFD8292CC650001A110D /* String+.swift */; };
+		A668BFDF292CCEAD001A110D /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFDE292CCEAD001A110D /* String.swift */; };
+		A668BFE5292CD46B001A110D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFE4292CD46B001A110D /* Constants.swift */; };
+		A6B4A6A9292E139900F6F0F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6B4A6A8292E139900F6F0F5 /* Assets.xcassets */; };
+		F9A227AEF3E7FA65E153EC7E /* Pods_TokenModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B80AE15B9D1F9B99D8DA7934 /* Pods_TokenModule.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A63E27FC292FA1050024328D /* mobile-charting-library */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "mobile-charting-library"; sourceTree = "<group>"; };
+		A668BF8D292CB849001A110D /* TokenModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TokenModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A668BF90292CB849001A110D /* TokenModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TokenModule.h; sourceTree = "<group>"; };
+		A668BF9E292CB8B9001A110D /* TokenDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokenDetailViewController.xib; sourceTree = "<group>"; };
+		A668BF9F292CB8B9001A110D /* TokenDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenDetailViewController.swift; sourceTree = "<group>"; };
+		A668BFA2292CB8F3001A110D /* TokenDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailViewModel.swift; sourceTree = "<group>"; };
+		A668BFA8292CBD57001A110D /* ChartPeriodType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPeriodType.swift; sourceTree = "<group>"; };
+		A668BFAA292CBD82001A110D /* TokenModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenModule.swift; sourceTree = "<group>"; };
+		A668BFAC292CBE39001A110D /* AppState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A668BFB0292CBE3B001A110D /* BaseModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A668BFB3292CBE3F001A110D /* BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A668BFB6292CBE42001A110D /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A668BFB9292CBE45001A110D /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A668BFBC292CBE4E001A110D /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A668BFC1292CBE92001A110D /* TradingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradingViewController.swift; sourceTree = "<group>"; };
+		A668BFC2292CBE92001A110D /* Period.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
+		A668BFC4292CBE92001A110D /* UIView+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		A668BFC5292CBE92001A110D /* ChartType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartType.swift; sourceTree = "<group>"; };
+		A668BFC6292CBE92001A110D /* TradingView+Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TradingView+Action.swift"; sourceTree = "<group>"; };
+		A668BFC7292CBE92001A110D /* ChartLoadRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartLoadRequest.swift; sourceTree = "<group>"; };
+		A668BFC8292CBE92001A110D /* TradingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradingView.swift; sourceTree = "<group>"; };
+		A668BFD2292CC26B001A110D /* TokenPoolCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokenPoolCell.xib; sourceTree = "<group>"; };
+		A668BFD3292CC26B001A110D /* TokenPoolCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenPoolCell.swift; sourceTree = "<group>"; };
+		A668BFD8292CC650001A110D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		A668BFDE292CCEAD001A110D /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		A668BFE4292CD46B001A110D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A6B4A6A8292E139900F6F0F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B80AE15B9D1F9B99D8DA7934 /* Pods_TokenModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokenModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C10B00C3C97E49A742A85D59 /* Pods-TokenModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenModule.release.xcconfig"; path = "Target Support Files/Pods-TokenModule/Pods-TokenModule.release.xcconfig"; sourceTree = "<group>"; };
+		D465846A183AABBCF04E5485 /* Pods-TokenModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenModule.debug.xcconfig"; path = "Target Support Files/Pods-TokenModule/Pods-TokenModule.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A668BF8A292CB849001A110D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A668BFB4292CBE3F001A110D /* BaseWallet.framework in Frameworks */,
+				A668BFAD292CBE39001A110D /* AppState.framework in Frameworks */,
+				A668BFB1292CBE3B001A110D /* BaseModule.framework in Frameworks */,
+				A668BFBD292CBE4E001A110D /* Utilities.framework in Frameworks */,
+				A668BFBA292CBE45001A110D /* DesignSystem.framework in Frameworks */,
+				A668BFB7292CBE42001A110D /* Dependencies.framework in Frameworks */,
+				F9A227AEF3E7FA65E153EC7E /* Pods_TokenModule.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5C357F96B7DD4692E4AD278B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D465846A183AABBCF04E5485 /* Pods-TokenModule.debug.xcconfig */,
+				C10B00C3C97E49A742A85D59 /* Pods-TokenModule.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		A668BF83292CB849001A110D = {
+			isa = PBXGroup;
+			children = (
+				A668BF8F292CB849001A110D /* TokenModule */,
+				A668BF8E292CB849001A110D /* Products */,
+				5C357F96B7DD4692E4AD278B /* Pods */,
+				C6B66BB1B65B4FC6BD942FBF /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		A668BF8E292CB849001A110D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A668BF8D292CB849001A110D /* TokenModule.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A668BF8F292CB849001A110D /* TokenModule */ = {
+			isa = PBXGroup;
+			children = (
+				A668BFBF292CBE82001A110D /* Helpers */,
+				A668BF9C292CB877001A110D /* Resources */,
+				A668BF9B292CB871001A110D /* Extensions */,
+				A668BF9A292CB869001A110D /* Screens */,
+				A668BF90292CB849001A110D /* TokenModule.h */,
+				A668BFAA292CBD82001A110D /* TokenModule.swift */,
+			);
+			path = TokenModule;
+			sourceTree = "<group>";
+		};
+		A668BF9A292CB869001A110D /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				A668BF9D292CB890001A110D /* TokenDetail */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		A668BF9B292CB871001A110D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A668BFC4292CBE92001A110D /* UIView+.swift */,
+				A668BFD8292CC650001A110D /* String+.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A668BF9C292CB877001A110D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A668BFDE292CCEAD001A110D /* String.swift */,
+				A668BFE4292CD46B001A110D /* Constants.swift */,
+				A6B4A6A8292E139900F6F0F5 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A668BF9D292CB890001A110D /* TokenDetail */ = {
+			isa = PBXGroup;
+			children = (
+				A668BF9F292CB8B9001A110D /* TokenDetailViewController.swift */,
+				A668BF9E292CB8B9001A110D /* TokenDetailViewController.xib */,
+				A668BFA2292CB8F3001A110D /* TokenDetailViewModel.swift */,
+				A668BFA8292CBD57001A110D /* ChartPeriodType.swift */,
+				A668BFD3292CC26B001A110D /* TokenPoolCell.swift */,
+				A668BFD2292CC26B001A110D /* TokenPoolCell.xib */,
+			);
+			path = TokenDetail;
+			sourceTree = "<group>";
+		};
+		A668BFBF292CBE82001A110D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				A668BFC0292CBE92001A110D /* TradingView */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		A668BFC0292CBE92001A110D /* TradingView */ = {
+			isa = PBXGroup;
+			children = (
+				A63E27FC292FA1050024328D /* mobile-charting-library */,
+				A668BFC1292CBE92001A110D /* TradingViewController.swift */,
+				A668BFC2292CBE92001A110D /* Period.swift */,
+				A668BFC5292CBE92001A110D /* ChartType.swift */,
+				A668BFC6292CBE92001A110D /* TradingView+Action.swift */,
+				A668BFC7292CBE92001A110D /* ChartLoadRequest.swift */,
+				A668BFC8292CBE92001A110D /* TradingView.swift */,
+			);
+			path = TradingView;
+			sourceTree = "<group>";
+		};
+		C6B66BB1B65B4FC6BD942FBF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A668BFBC292CBE4E001A110D /* Utilities.framework */,
+				A668BFB9292CBE45001A110D /* DesignSystem.framework */,
+				A668BFB6292CBE42001A110D /* Dependencies.framework */,
+				A668BFB3292CBE3F001A110D /* BaseWallet.framework */,
+				A668BFB0292CBE3B001A110D /* BaseModule.framework */,
+				A668BFAC292CBE39001A110D /* AppState.framework */,
+				B80AE15B9D1F9B99D8DA7934 /* Pods_TokenModule.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		A668BF88292CB849001A110D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A668BF91292CB849001A110D /* TokenModule.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		A668BF8C292CB849001A110D /* TokenModule */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A668BF94292CB849001A110D /* Build configuration list for PBXNativeTarget "TokenModule" */;
+			buildPhases = (
+				059E1A2E877676591E8B874E /* [CP] Check Pods Manifest.lock */,
+				A668BF88292CB849001A110D /* Headers */,
+				A668BF89292CB849001A110D /* Sources */,
+				A668BF8A292CB849001A110D /* Frameworks */,
+				A668BF8B292CB849001A110D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TokenModule;
+			productName = TokenModule;
+			productReference = A668BF8D292CB849001A110D /* TokenModule.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A668BF84292CB849001A110D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1340;
+				TargetAttributes = {
+					A668BF8C292CB849001A110D = {
+						CreatedOnToolsVersion = 13.4;
+						LastSwiftMigration = 1340;
+					};
+				};
+			};
+			buildConfigurationList = A668BF87292CB849001A110D /* Build configuration list for PBXProject "TokenModule" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A668BF83292CB849001A110D;
+			productRefGroup = A668BF8E292CB849001A110D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A668BF8C292CB849001A110D /* TokenModule */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A668BF8B292CB849001A110D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A668BFA0292CB8B9001A110D /* TokenDetailViewController.xib in Resources */,
+				A6B4A6A9292E139900F6F0F5 /* Assets.xcassets in Resources */,
+				A63E27FD292FA1050024328D /* mobile-charting-library in Resources */,
+				A668BFD4292CC26B001A110D /* TokenPoolCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		059E1A2E877676591E8B874E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TokenModule-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A668BF89292CB849001A110D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A668BFA1292CB8B9001A110D /* TokenDetailViewController.swift in Sources */,
+				A668BFD5292CC26B001A110D /* TokenPoolCell.swift in Sources */,
+				A668BFC9292CBE92001A110D /* TradingViewController.swift in Sources */,
+				A668BFCE292CBE92001A110D /* ChartLoadRequest.swift in Sources */,
+				A668BFCB292CBE92001A110D /* UIView+.swift in Sources */,
+				A668BFE5292CD46B001A110D /* Constants.swift in Sources */,
+				A668BFA3292CB8F3001A110D /* TokenDetailViewModel.swift in Sources */,
+				A668BFDF292CCEAD001A110D /* String.swift in Sources */,
+				A668BFA9292CBD57001A110D /* ChartPeriodType.swift in Sources */,
+				A668BFCA292CBE92001A110D /* Period.swift in Sources */,
+				A668BFCC292CBE92001A110D /* ChartType.swift in Sources */,
+				A668BFCF292CBE92001A110D /* TradingView.swift in Sources */,
+				A668BFD9292CC650001A110D /* String+.swift in Sources */,
+				A668BFAB292CBD82001A110D /* TokenModule.swift in Sources */,
+				A668BFCD292CBE92001A110D /* TradingView+Action.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A668BF92292CB849001A110D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		A668BF93292CB849001A110D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		A668BF95292CB849001A110D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D465846A183AABBCF04E5485 /* Pods-TokenModule.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = G9CRYMTLBL;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios.token.TokenModule;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A668BF96292CB849001A110D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C10B00C3C97E49A742A85D59 /* Pods-TokenModule.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = G9CRYMTLBL;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios.token.TokenModule;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A668BF87292CB849001A110D /* Build configuration list for PBXProject "TokenModule" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A668BF92292CB849001A110D /* Debug */,
+				A668BF93292CB849001A110D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A668BF94292CB849001A110D /* Build configuration list for PBXNativeTarget "TokenModule" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A668BF95292CB849001A110D /* Debug */,
+				A668BF96292CB849001A110D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A668BF84292CB849001A110D /* Project object */;
+}

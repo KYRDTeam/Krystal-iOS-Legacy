@@ -251,7 +251,7 @@ class StakingViewModel {
   }
   
   func getAllowance() {
-    guard !pool.token.isQuoteToken else {
+    guard !pool.token.isQuoteToken() else {
       nextButtonStatus.value = .noNeed
       return
     }

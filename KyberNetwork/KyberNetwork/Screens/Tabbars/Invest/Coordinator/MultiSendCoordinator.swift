@@ -15,6 +15,7 @@ import QRCodeReaderViewController
 import MBProgressHUD
 import WalletConnectSwift
 import KrystalWallets
+import Dependencies
 
 class MultiSendCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
@@ -159,7 +160,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
         
       }
     case .openHistory:
-      self.delegate?.sendTokenViewCoordinatorSelectOpenHistoryList()
+      AppDependencies.router.openTransactionHistory()
     case .useLastMultisend:
       break
     }

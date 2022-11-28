@@ -187,29 +187,29 @@
                     <rect key="frame" x="0.0" y="125" width="414" height="36"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0$ at risk" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jFG-fX-Cvd">
-                            <rect key="frame" x="36" y="7.5" width="79" height="21.5"/>
+                            <rect key="frame" x="24" y="7.5" width="79" height="21.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
-                            <color key="textColor" red="0.95686274509803915" green="0.33333333333333331" blue="0.19607843137254902" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                             </userDefinedRuntimeAttributes>
                         </label>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="warning_red_icon" translatesAutoresizingMaskIntoConstraints="NO" id="7st-KX-LGm">
-                            <rect key="frame" x="123" y="10" width="16" height="16"/>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="info_icon_white" translatesAutoresizingMaskIntoConstraints="NO" id="7st-KX-LGm">
+                            <rect key="frame" x="111" y="10" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="6F6-Kz-HsI"/>
                                 <constraint firstAttribute="width" constant="16" id="YeH-by-eyE"/>
                             </constraints>
                         </imageView>
                     </subviews>
-                    <color key="backgroundColor" red="1" green="0.43137254901960786" blue="0.25098039215686274" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="jFG-fX-Cvd" firstAttribute="centerY" secondItem="4oj-2l-J6E" secondAttribute="centerY" id="3aQ-1F-zax"/>
                         <constraint firstItem="7st-KX-LGm" firstAttribute="leading" secondItem="jFG-fX-Cvd" secondAttribute="trailing" constant="8" id="8xh-c0-T15"/>
                         <constraint firstItem="7st-KX-LGm" firstAttribute="centerY" secondItem="jFG-fX-Cvd" secondAttribute="centerY" id="OuL-Gz-Cg2"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="7st-KX-LGm" secondAttribute="trailing" constant="16" id="Uec-iv-gEF"/>
-                        <constraint firstItem="jFG-fX-Cvd" firstAttribute="leading" secondItem="4oj-2l-J6E" secondAttribute="leading" constant="36" id="hiB-V4-cGA"/>
+                        <constraint firstItem="jFG-fX-Cvd" firstAttribute="leading" secondItem="4oj-2l-J6E" secondAttribute="leading" constant="24" id="hiB-V4-cGA"/>
                         <constraint firstAttribute="height" constant="36" id="tIt-zF-mER"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
@@ -295,8 +295,8 @@
         <image name="backup_warning" width="24" height="24"/>
         <image name="eth" width="32" height="32"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
+        <image name="info_icon_white" width="16" height="16"/>
         <image name="search_overview_icon" width="33" height="33"/>
-        <image name="warning_red_icon" width="13" height="14"/>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
