@@ -245,6 +245,11 @@ class BridgeViewController: InAppBrowsingViewController {
     self.viewModel.isApproving = true
     self.tableView.reloadData()
   }
+    
+  func coordinatorCancelApprove() {
+    self.viewModel.isApproving = false
+    self.tableView.reloadData()
+  }
 
   func coordinatorFailApprove(token: TokenObject) {
     self.showWarningTopBannerMessage(
