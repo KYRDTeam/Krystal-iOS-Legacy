@@ -125,8 +125,7 @@ class StakingViewController: InAppBrowsingViewController {
     
     override func onAppSwitchChain() {
         super.onAppSwitchChain()
-        
-        navigationController?.popViewController(animated: true)
+        viewModel.reloadData()
     }
     
     deinit {
