@@ -87,4 +87,4 @@
 "my.supply" = "My supply";
 "unstaking.in.progress" = "Unstaking in progress";
 "unwrap.token" = "Unwrap %@";
-"unstake.warning.pop.up" = "Currently, unstaking is not available, as this functionality is not yet supported by Ethereum./nUnstaking will be enabled after the Shanghai upgrade that will follow The Merge in approximately 6-12 months (~Q2/Q3 2023)";
+"unstake.eth.warning.pop.up" = "Currently, unstaking is not available, as this functionality is not yet supported by Ethereum.\nUnstaking will be enabled after the Shanghai upgrade that will follow The Merge in approximately 6-12 months (~Q2/Q3 2023)";
