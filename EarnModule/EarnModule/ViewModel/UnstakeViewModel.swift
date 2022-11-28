@@ -28,6 +28,7 @@ class UnstakeViewModel: BaseViewModel {
     let ratio: BigInt
     let stakingTokenSymbol: String
     var toTokenSymbol: String
+    var unwrapTokenSymbol: String
     let balance: BigInt
     let platform: Platform
     var unstakeValue: BigInt = BigInt(0) {
@@ -57,16 +58,16 @@ class UnstakeViewModel: BaseViewModel {
     let apiService = EarnServices()
     
     var isLido: Bool {
-        return platform.name.lowercased() == "LIDO".lowercased()
+        return platform.name.uppercased() == "LIDO"
     }
     
     var isAnkr: Bool {
-        return platform.name.lowercased() == "ANKR".lowercased()
+        return platform.name.uppercased() == "ANKR"
     }
     var buildTxRequestParams: JSONDictionary {
         
         var earningType: String = platform.type
-        if toTokenSymbol.lowercased() == "MATIC".lowercased() && ( isLido || isAnkr ) {
+        if displaySymbol.lowercased() == "MATIC".lowercased() && (isLido || isAnkr) {
             earningType = "stakingMATIC"
         }
         var params: JSONDictionary = [
@@ -102,9 +103,9 @@ class UnstakeViewModel: BaseViewModel {
     var platformTitleString: String {
         switch earningType {
         case .staking:
-            return Strings.unstake + " " + toTokenSymbol + " on " + platform.name.uppercased()
+            return Strings.unstake + " " + displaySymbol + " on " + platform.name.uppercased()
         case .lending:
-            return Strings.withdraw + " " + toTokenSymbol + " on " + platform.name.uppercased()
+            return Strings.withdraw + " " + displaySymbol + " on " + platform.name.uppercased()
         }
     }
     
@@ -120,17 +121,29 @@ class UnstakeViewModel: BaseViewModel {
     var buttonTitleString: String {
         switch earningType {
         case .staking:
-            return Strings.unstake + " " + toTokenSymbol
+            return Strings.unstake + " " + displaySymbol
         case .lending:
-            return Strings.withdraw + " " + toTokenSymbol
+            return Strings.withdraw + " " + displaySymbol
         }
     }
+    
+    var displaySymbol: String {
+        if isUnWrap {
+            return unwrapTokenSymbol
+        } else {
+            return toTokenSymbol
+        }
+    }
+    
+    var isUnWrap: Bool = false
 
     init(earningBalance: EarningBalance) {
         self.displayDepositedValue = (BigInt(earningBalance.stakingToken.balance)?.shortString(decimals: earningBalance.stakingToken.decimals) ?? "---") + " " + earningBalance.stakingToken.symbol
         self.ratio = BigInt(earningBalance.ratio)
         self.stakingTokenSymbol = earningBalance.stakingToken.symbol
         self.toTokenSymbol = earningBalance.toUnderlyingToken.symbol
+        self.unwrapTokenSymbol = earningBalance.toUnderlyingToken.symbol
+        self.unwrapTokenSymbol.removeFirst()
         self.balance = BigInt(earningBalance.stakingToken.balance) ?? BigInt(0)
         self.platform = earningBalance.platform
         self.chain = ChainType.make(chainID: earningBalance.chainID) ?? AppState.shared.currentChain
@@ -186,7 +199,7 @@ class UnstakeViewModel: BaseViewModel {
     }
     
     func receivedInfoString() -> String {
-        return receivedValueString() + " " + toTokenSymbol
+        return receivedValueString() + " " + displaySymbol
     }
     
     func receivedValueMaxString() -> String {
@@ -197,10 +210,10 @@ class UnstakeViewModel: BaseViewModel {
     func showRateInfo() -> String {
         if showRevertedRate {
             let ratioString = NumberFormatUtils.balanceFormat(value: BigInt(10).power(36) / ratio, decimals: 18)
-            return "1 \(toTokenSymbol) = \(ratioString) \(stakingTokenSymbol)"
+            return "1 \(displaySymbol) = \(ratioString) \(stakingTokenSymbol)"
         } else {
             let ratioString = NumberFormatUtils.balanceFormat(value: ratio, decimals: 18)
-            return "1 \(stakingTokenSymbol) = \(ratioString) \(toTokenSymbol)"
+            return "1 \(stakingTokenSymbol) = \(ratioString) \(displaySymbol)"
         }
     }
     
@@ -231,34 +244,29 @@ class UnstakeViewModel: BaseViewModel {
 
     func timeForUnstakeString() -> String {
         var time = ""
-        if toTokenSymbol.lowercased() == "AVAX".lowercased() && isAnkr {
+        if displaySymbol.lowercased() == "AVAX".lowercased() && isAnkr {
             time = Strings.avaxUnstakeTime
-        } else if toTokenSymbol.lowercased() == "BNB".lowercased() && isAnkr {
+        } else if displaySymbol.lowercased() == "BNB".lowercased() && isAnkr {
             time = Strings.bnbUnstakeTime
-        } else if toTokenSymbol.lowercased() == "FTM".lowercased() && isAnkr {
+        } else if displaySymbol.lowercased() == "FTM".lowercased() && isAnkr {
             time = Strings.ftmUnstakeTime
-        } else if toTokenSymbol.lowercased() == "MATIC".lowercased() && isAnkr {
+        } else if displaySymbol.lowercased() == "MATIC".lowercased() && isAnkr {
             time = Strings.maticUnstakeTime
-        } else if toTokenSymbol.lowercased() == "SOL".lowercased() && isLido {
+        } else if displaySymbol.lowercased() == "SOL".lowercased() && isLido {
             time =  Strings.solUnstakeTime
         }
         if time.isEmpty {
             return ""
         }
-        return String(format: Strings.youWillReceiveYourIn, toTokenSymbol, time)
+        return String(format: Strings.youWillReceiveYourIn, displaySymbol, time)
     }
 
     func transactionFeeString() -> String {
         return NumberFormatUtils.gasFee(value: setting.transactionFee(chain: chain)) + " " + AppState.shared.currentChain.quoteToken() + feeUSDString
     }
     
-    func updateWrapInfo(isUseWrap: Bool) {
-        if isUseWrap && toTokenSymbol.first?.uppercased() == "W" {
-            toTokenSymbol.removeFirst()
-        } else {
-            toTokenSymbol = "W" + toTokenSymbol
-        }
-        
+    func updateWrapInfo(isUnWrap: Bool) {
+        self.isUnWrap = isUnWrap
         if let wrapInfo = wrapInfo {
             toUnderlyingTokenAddress = wrapInfo.wrapAddress
         }
@@ -274,28 +282,27 @@ class UnstakeViewModel: BaseViewModel {
         }
         
         
-        apiService.getStakingOptionDetail(platform: platform.name, earningType: platform.type, chainID: "\(chain.getChainId())", tokenAddress: tokenAddress) { result in
+        apiService.getStakingOptionDetail(platform: platform.name, earningType: platform.type, chainID: "\(chain.getChainId())", tokenAddress: tokenAddress) { [weak self] result in
             switch result {
             case .success(let detail):
-                if let earningToken = detail.earningTokens.first(where: { $0.address.lowercased() == self.stakingTokenAddress.lowercased() }) {
-                    self.contractAddress = detail.poolAddress
+                    if let earningToken = detail.earningTokens.first(where: { $0.address.lowercased() == self?.stakingTokenAddress.lowercased() }) {
+                    self?.contractAddress = detail.poolAddress
                     if let wrap = detail.wrap {
-                        self.wrapInfo = wrap
-                        self.delegate?.didGetWrapInfo(wrap: wrap)
+                        self?.wrapInfo = wrap
+                        self?.delegate?.didGetWrapInfo(wrap: wrap)
                     }
-                    
                     let minAmount = detail.validation?.minUnstakeAmount ?? 0
-                    self.minUnstakeAmount = BigInt(minAmount * pow(10.0, Double(self.stakingTokenDecimal)))
+                    self?.minUnstakeAmount = BigInt(minAmount * pow(10.0, Double(self?.stakingTokenDecimal ?? 0)))
                     let maxAmount = detail.validation?.maxUnstakeAmount ?? 0
-                    self.maxUnstakeAmount = BigInt(maxAmount * pow(10.0, Double(self.stakingTokenDecimal)))
-                    self.checkNeedApprove(earningToken: earningToken, completion: completion)
+                    self?.maxUnstakeAmount = BigInt(maxAmount * pow(10.0, Double(self?.stakingTokenDecimal ?? 0)))
+                    self?.checkNeedApprove(earningToken: earningToken, completion: completion)
                 } else {
                     completion()
-                    self.delegate?.didGetDataSuccess()
+                    self?.delegate?.didGetDataSuccess()
                 }
             case .failure(let error):
                 completion()
-                self.delegate?.didGetDataFail(errMsg: error.localizedDescription)
+                self?.delegate?.didGetDataFail(errMsg: error.localizedDescription)
             }
         }
     }

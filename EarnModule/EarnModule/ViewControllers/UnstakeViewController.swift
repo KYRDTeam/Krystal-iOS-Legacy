@@ -81,7 +81,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         toggleUnwrapView.setTitle(title: String(format: Strings.unwrapToken,viewModel.toTokenSymbol))
         toggleUnwrapView.onSwitchValue = { isOn in
             if let viewModel = self.viewModel {
-                viewModel.updateWrapInfo(isUseWrap: isOn)
+                viewModel.updateWrapInfo(isUnWrap: isOn)
                 self.receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.toTokenSymbol)
                 self.rateView.setValue(value: viewModel.showRateInfo())
                 self.showLoadingHUD()
