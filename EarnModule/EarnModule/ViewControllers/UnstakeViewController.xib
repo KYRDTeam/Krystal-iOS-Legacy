@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,11 +12,11 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
-            <string>Karla-Regular</string>
-        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -30,6 +30,7 @@
                 <outlet property="chainIcon" destination="Vq2-OZ-KMi" id="8HW-Ci-7tE"/>
                 <outlet property="errorLabel" destination="utK-f4-eqE" id="baN-g3-yiB"/>
                 <outlet property="networkFeeView" destination="y6A-ga-6bJ" id="7sT-R1-ZF0"/>
+                <outlet property="nextButtonTopContraint" destination="3xB-qg-jnu" id="6e3-s8-Awn"/>
                 <outlet property="rateView" destination="XsL-2l-Vff" id="P0B-oy-tCM"/>
                 <outlet property="receiveInfoView" destination="DdX-MI-5M5" id="K8R-B8-K91"/>
                 <outlet property="receiveTimeView" destination="Z8k-j5-eCz" id="FOY-BM-wVT"/>
@@ -303,7 +304,7 @@
                 <constraint firstItem="OZD-CW-5ls" firstAttribute="top" secondItem="jxF-2d-6ta" secondAttribute="bottom" constant="24" id="yJJ-DW-5hu"/>
                 <constraint firstItem="OZD-CW-5ls" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="30" id="ziH-1J-qT7"/>
             </constraints>
-            <point key="canvasLocation" x="102" y="-11"/>
+            <point key="canvasLocation" x="101.59999999999999" y="-11.083743842364532"/>
         </view>
     </objects>
     <resources>

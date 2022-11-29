@@ -743,7 +743,11 @@ struct KrystalTransactionDetailViewModel: TransactionDetailsViewModel {
     } else if self.data.historyItem.type == "Received" {
       return Strings.toWallet
     } else if self.data.historyItem.type == "Transfer" {
-      return Strings.toWallet
+        if data.historyItem.extraData?.sendToken != nil {
+            return Strings.contract
+        } else {
+            return Strings.toWallet
+        }
     } else if self.data.historyItem.type == "Approval" {
       return Strings.contract
     } else {
