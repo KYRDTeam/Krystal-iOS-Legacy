@@ -47,6 +47,7 @@ class EarnOverviewV2Controller: InAppBrowsingViewController {
     
     setupUI()
     setupPageViewController()
+      AppDependencies.tracker.track("earn_v2", properties: ["screenid": "earn_v2"])
   }
 
   override func onAppSelectAllChain() {

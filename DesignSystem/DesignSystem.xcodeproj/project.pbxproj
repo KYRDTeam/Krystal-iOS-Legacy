@@ -13,6 +13,8 @@
 		7EAF4759291B5CB500BF5D00 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF4758291B5CB500BF5D00 /* UIViewController.swift */; };
 		A63E21B1292F70110024328D /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63E21B0292F70110024328D /* ErrorView.swift */; };
 		A63E21B3292F701C0024328D /* ErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63E21B2292F701C0024328D /* ErrorView.xib */; };
+		7EBC5506292E183E000EB8E0 /* TxToggleInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBC5505292E183E000EB8E0 /* TxToggleInfoView.swift */; };
+		7EBC5508292E1880000EB8E0 /* TxToggleInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EBC5507292E1880000EB8E0 /* TxToggleInfoView.xib */; };
 		A64C2E1628F6F8AF002FD64C /* DashedLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E1528F6F8AF002FD64C /* DashedLineView.swift */; };
 		A64C2E1D28F6FA28002FD64C /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E1C28F6FA28002FD64C /* Font.swift */; };
 		A64C2E1F28F6FC29002FD64C /* CountdownTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E1E28F6FC29002FD64C /* CountdownTimer.swift */; };
@@ -43,6 +45,8 @@
 		7EAF4758291B5CB500BF5D00 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		A63E21B0292F70110024328D /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		A63E21B2292F701C0024328D /* ErrorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ErrorView.xib; sourceTree = "<group>"; };
+		7EBC5505292E183E000EB8E0 /* TxToggleInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxToggleInfoView.swift; sourceTree = "<group>"; };
+		7EBC5507292E1880000EB8E0 /* TxToggleInfoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxToggleInfoView.xib; sourceTree = "<group>"; };
 		A64C2E1528F6F8AF002FD64C /* DashedLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedLineView.swift; sourceTree = "<group>"; };
 		A64C2E1C28F6FA28002FD64C /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		A64C2E1E28F6FC29002FD64C /* CountdownTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTimer.swift; sourceTree = "<group>"; };
@@ -115,6 +119,8 @@
 				A64F1D6B290B99F0000D4733 /* TabSegmentControl.swift */,
 				A63E21B0292F70110024328D /* ErrorView.swift */,
 				A63E21B2292F701C0024328D /* ErrorView.xib */,
+				7EBC5505292E183E000EB8E0 /* TxToggleInfoView.swift */,
+				7EBC5507292E1880000EB8E0 /* TxToggleInfoView.xib */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -257,6 +263,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7EBC5508292E1880000EB8E0 /* TxToggleInfoView.xib in Resources */,
 				A66846142908DE16006BBE29 /* ListEmptyView.xib in Resources */,
 				7E36E36E291A658D009BC8FE /* TxInfoView.xib in Resources */,
 				A64C2E2328F6FCF0002FD64C /* CircularArrowProgressView.xib in Resources */,
@@ -316,6 +323,7 @@
 				A64C2E2628F6FD28002FD64C /* PolygonView.swift in Sources */,
 				A668BFD1292CBEDE001A110D /* GrowingTextView.swift in Sources */,
 				A64C2E4C28F7F978002FD64C /* UIButton+.swift in Sources */,
+				7EBC5506292E183E000EB8E0 /* TxToggleInfoView.swift in Sources */,
 				7E36E36D291A658D009BC8FE /* TxInfoView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
