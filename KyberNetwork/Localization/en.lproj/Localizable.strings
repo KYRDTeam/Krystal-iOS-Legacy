@@ -1017,3 +1017,4 @@
 "You will receive" = "You will receive";
 "Rate" = "Rate";
 "Network Fee" = "Network Fee";
+"can.not.est.gas" = "Can not estimate gas limit for this transaction";
