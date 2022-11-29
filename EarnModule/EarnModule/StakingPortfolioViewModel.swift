@@ -2,7 +2,7 @@
 //  StakingPortfolioViewModel.swift
 //  EarnModule
 //
-//  Created by Com1 on 11/11/2022.
+//  Created by Ta Minh Quan on 11/29/2022.
 //
 
 import UIKit
@@ -10,88 +10,110 @@ import Services
 import AppState
 
 class StakingPortfolioViewModel {
-  var portfolio: ([EarningBalance], [PendingUnstake])?
-  let apiService = EarnServices()
-  var searchText = ""
-  var chainID: Int?
-  
-  var dataSource: Observable<([StakingPortfolioCellModel], [StakingPortfolioCellModel])> = .init(([], []))
-  var error: Observable<Error?> = .init(nil)
-  var isLoading: Observable<Bool> = .init(true)
-  
-  func cleanAllData() {
-    dataSource.value.0.removeAll()
-    dataSource.value.1.removeAll()
-  }
-  
-  func isEmpty() -> Bool {
-    return dataSource.value.0.isEmpty && dataSource.value.1.isEmpty
-  }
-  
-  func reloadDataSource() {
-    cleanAllData()
-    guard let data = portfolio else {
-      return
-    }
-    var output: [StakingPortfolioCellModel] = []
-    var pending: [StakingPortfolioCellModel] = []
+    var portfolio: ([EarningBalance], [PendingUnstake])?
+    let apiService = EarnServices()
+    var searchText = ""
+    var chainID: Int?
     
-    var pendingUnstakeData = data.1
-    let earningBalanceData = filterEarningBalanceData(data: data.0)
+    var dataSource: Observable<([StakingPortfolioCellModel], [StakingPortfolioCellModel])> = .init(([], []))
+    var error: Observable<Error?> = .init(nil)
+    var isLoading: Observable<Bool> = .init(true)
+    var selectedPlatforms: Set<EarnPlatform> = Set()
     
-    if !searchText.isEmpty {
-      pendingUnstakeData = pendingUnstakeData.filter({ item in
-        return item.symbol.lowercased().contains(searchText)
-      })
+    func cleanAllData() {
+        dataSource.value.0.removeAll()
+        dataSource.value.1.removeAll()
     }
     
-    if let unwrap = chainID {
-      pendingUnstakeData = pendingUnstakeData.filter({ item in
-        return item.chainID == unwrap
-      })
+    func isEmpty() -> Bool {
+        return dataSource.value.0.isEmpty && dataSource.value.1.isEmpty
     }
     
-    pendingUnstakeData.forEach({ item in
-      pending.append(StakingPortfolioCellModel(pendingUnstake: item))
-    })
-    earningBalanceData.forEach { item in
-      output.append(StakingPortfolioCellModel(earnBalance: item))
+    func reloadDataSource() {
+        cleanAllData()
+        guard let data = portfolio else {
+            return
+        }
+        
+        
+        
+        var output: [StakingPortfolioCellModel] = []
+        var pending: [StakingPortfolioCellModel] = []
+        
+        var pendingUnstakeData = data.1
+        let earningBalanceData = filterEarningBalanceData(data: data.0)
+        
+        if !searchText.isEmpty {
+            pendingUnstakeData = pendingUnstakeData.filter({ item in
+                return item.symbol.lowercased().contains(searchText)
+            })
+        }
+        
+        if let unwrap = chainID {
+            pendingUnstakeData = pendingUnstakeData.filter({ item in
+                return item.chainID == unwrap
+            })
+        }
+        
+        pendingUnstakeData.forEach({ item in
+            pending.append(StakingPortfolioCellModel(pendingUnstake: item))
+        })
+        earningBalanceData.forEach { item in
+            output.append(StakingPortfolioCellModel(earnBalance: item))
+        }
+        dataSource.value = (output, pending)
     }
-    dataSource.value = (output, pending)
-  }
     
     func filterEarningBalanceData(data: [EarningBalance]) -> [EarningBalance] {
         var earningBalanceData = data
         if !searchText.isEmpty {
-          earningBalanceData = earningBalanceData.filter({ item in
-            return item.stakingToken.symbol.lowercased().contains(searchText) || item.toUnderlyingToken.symbol.lowercased().contains(searchText)
-          })
+            earningBalanceData = earningBalanceData.filter({ item in
+                return item.stakingToken.symbol.lowercased().contains(searchText) || item.toUnderlyingToken.symbol.lowercased().contains(searchText)
+            })
         }
         
         if let unwrap = chainID {
-          earningBalanceData = earningBalanceData.filter({ item in
-            return item.chainID == unwrap
-          })
+            earningBalanceData = earningBalanceData.filter({ item in
+                return item.chainID == unwrap
+            })
         }
         return earningBalanceData
     }
-  
+    
     func requestData(shouldShowLoading: Bool = true) {
-      if shouldShowLoading {
-        isLoading.value = true
-      }
-      
-      apiService.getStakingPortfolio(address: AppState.shared.currentAddress.addressString, chainId: nil) { result in
-          if shouldShowLoading {
-              self.isLoading.value = false
-          }
-          switch result {
-          case .success(let portfolio):
-            self.portfolio = portfolio
-            self.reloadDataSource()
-          case .failure(let error):
-            self.error.value = error
-          }
+        if shouldShowLoading {
+            isLoading.value = true
+        }
+        
+        apiService.getStakingPortfolio(address: AppState.shared.currentAddress.addressString, chainId: nil) { result in
+            if shouldShowLoading {
+                self.isLoading.value = false
+            }
+            switch result {
+            case .success(let portfolio):
+                self.portfolio = portfolio
+                self.reloadDataSource()
+            case .failure(let error):
+                self.error.value = error
+            }
+        }
     }
-  }
+    
+    func getAllPlatform() -> Set<EarnPlatform> {
+        guard let portfolio = portfolio else {
+            return Set()
+        }
+        
+        var platformSet = Set<EarnPlatform>()
+        
+        portfolio.0.map { $0.platform.toEarnPlatform() }.forEach { element in
+            platformSet.insert(element)
+        }
+        
+        portfolio.1.map { $0.platform.toEarnPlatform() }.forEach { element in
+            platformSet.insert(element)
+        }
+        
+        return platformSet
+    }
 }
