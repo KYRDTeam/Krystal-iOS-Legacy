@@ -89,6 +89,7 @@ class Images {
   static let greenPlus = UIImage(named: "green_plus_icon")!
   static let greenSubtract = UIImage(named: "green_subtract_icon")!
   static let redSubtract =   UIImage(imageName: "red_subtract_icon")!
+    static let allNetworkIcon = UIImage(imageName: "all_platform_icon")!
 }
 
 extension UIImage {
