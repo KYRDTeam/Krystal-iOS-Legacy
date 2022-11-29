@@ -195,6 +195,18 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     fileprivate func updateUIError() {
+        guard !AppState.shared.isBrowsingMode else {
+            self.nextButton.setTitle(String(format: Strings.connectWallet, self.viewModel.token.symbol), for: .normal)
+            self.nextButton.alpha = 1
+            self.nextButton.isEnabled = true
+            return
+        }
+        guard !AppState.shared.currentAddress.isWatchWallet else {
+            self.nextButton.setTitle(Strings.stakeNow, for: .normal)
+            self.nextButton.alpha = 0.2
+            self.nextButton.isEnabled = false
+            return
+        }
         switch viewModel.formState.value {
         case .valid:
             amountFieldContainerView.rounded(radius: 16)
