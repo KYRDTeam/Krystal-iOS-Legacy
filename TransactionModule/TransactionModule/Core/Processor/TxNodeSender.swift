@@ -44,7 +44,17 @@ public class TxNodeSender: TxNodeSenderProtocol {
                     }
                 case .failure(let err):
                     // code=3840 is the invalid JSON response case (when timeout or cannot connect)
-                    if case let APIKit.SessionTaskError.responseError(apiKitError) = err.error, apiKitError.code == 3840 {
+                    if case let APIKit.SessionTaskError.responseError(apiKitError) = err.error {
+                        if apiKitError.code == 3840 {
+                            if error == nil {
+                                error = err
+                            }
+                        } else {
+                            error = err
+                        }
+                    }
+                    // -1001 is connection timeout
+                    else if case let SessionTaskError.connectionError(taskError) = err.error, taskError.code == -1001 {
                         if error == nil {
                             error = err
                         }
