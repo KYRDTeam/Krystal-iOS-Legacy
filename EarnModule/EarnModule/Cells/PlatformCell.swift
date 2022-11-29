@@ -22,7 +22,7 @@ class PlatformCell: UITableViewCell {
     func updateCell(platform: EarnPlatform?, isSelected: Bool) {
         guard let platform = platform else {
             iconImageView.image = Images.allNetworkIcon
-            nameLabel.text = Strings.allNetworks
+            nameLabel.text = Strings.allPlatforms
             selectedIcon.isHidden = !isSelected
             return
         }

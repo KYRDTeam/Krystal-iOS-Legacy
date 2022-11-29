@@ -34,20 +34,18 @@ class EarnListViewController: InAppBrowsingViewController {
     var displayDataSource: [EarnPoolViewCellViewModel] = []
     var timer: Timer?
     var currentSelectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : AppState.shared.currentChain
-    var selectedPlatform: Set<EarnPlatform>!
+    var selectedPlatforms: Set<EarnPlatform>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        selectedPlatform = Set(getAllPlatform())
+        selectedPlatforms = Set(getAllPlatform())
         fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
         Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { [weak self] _ in
             self?.fetchData(chainId: self?.currentSelectedChain == .all ? nil : self?.currentSelectedChain.getChainId(), isAutoReload: true)
         }
         setupUI()
     }
-    
-    
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
@@ -67,8 +65,8 @@ class EarnListViewController: InAppBrowsingViewController {
         self.tableView.registerCellNib(EarnPoolViewCell.self)
     }
     
-    private func isSelectedAllPlatform() -> Bool {
-        return selectedPlatform.isEmpty || selectedPlatform.count == getAllPlatform().count
+    private func isSelectedAllPlatforms() -> Bool {
+        return selectedPlatforms.isEmpty || selectedPlatforms.count == getAllPlatform().count
     }
     
     func reloadUI() {
@@ -85,10 +83,10 @@ class EarnListViewController: InAppBrowsingViewController {
             }
         }
         
-        if !isSelectedAllPlatform() {
+        if !isSelectedAllPlatforms() {
             self.displayDataSource = self.displayDataSource.filter { element in
                 let modelPfSet: Set<EarnPlatform> = Set(element.earnPoolModel.platforms)
-                return modelPfSet.intersection(self.selectedPlatform).count >= 1
+                return modelPfSet.intersection(self.selectedPlatforms).count >= 1
             }
         }
         
@@ -194,7 +192,7 @@ class EarnListViewController: InAppBrowsingViewController {
     
     @IBAction func platformFilterButtonTapped(_ sender: UIButton) {
         let allPlatforms = getAllPlatform()
-        let viewModel = PlatformFilterViewModel(dataSource: allPlatforms, selected: selectedPlatform)
+        let viewModel = PlatformFilterViewModel(dataSource: allPlatforms, selected: selectedPlatforms)
         let viewController = PlatformFilterViewController.instantiateFromNib()
         viewController.viewModel = viewModel
         viewController.delegate = self
@@ -204,11 +202,11 @@ class EarnListViewController: InAppBrowsingViewController {
     }
     
     private func updateUIPlatformFilterButton() {
-        if isSelectedAllPlatform() {
-            platformFilterButton.setTitle(Strings.allNetworks, for: .normal)
+        if isSelectedAllPlatforms() {
+            platformFilterButton.setTitle(Strings.allPlatforms, for: .normal)
             return
         }
-        let name = selectedPlatform.map { $0.name.capitalized }.joined(separator: ", ")
+        let name = selectedPlatforms.map { $0.name.capitalized }.joined(separator: ", ")
         platformFilterButton.setTitle(name, for: .normal)
     }
 }
@@ -328,7 +326,7 @@ extension EarnListViewController: EarnPoolViewCellDelegate {
 
 extension EarnListViewController: PlatformFilterViewControllerDelegate {
     func didSelectPlatform(viewController: PlatformFilterViewController, selected: Set<EarnPlatform>) {
-        selectedPlatform = selected
+        selectedPlatforms = selected
         viewController.dismiss(animated: true) {
             self.updateUIPlatformFilterButton()
             self.reloadUI()

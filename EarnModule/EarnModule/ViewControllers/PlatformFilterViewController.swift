@@ -80,7 +80,8 @@ extension PlatformFilterViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(PlatformCell.self, indexPath: indexPath)!
         
         if let platform = viewModel.platformForRow(row: indexPath.row) {
-            cell.updateCell(platform: platform, isSelected: viewModel.selected.contains(platform))
+            let isSelect = viewModel.isSelectAll ? false : viewModel.selected.contains(platform)
+            cell.updateCell(platform: platform, isSelected: isSelect)
         } else {
             cell.updateCell(platform: nil, isSelected: viewModel.isSelectAll)
         }
@@ -93,12 +94,14 @@ extension PlatformFilterViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if let platform = viewModel.platformForRow(row: indexPath.row) {
+            if viewModel.isSelectAll {
+                viewModel.selected.removeAll()
+            }
             if viewModel.selected.contains(platform) {
                 viewModel.selected.remove(platform)
             } else {
                 viewModel.selected.insert(platform)
             }
-            
         } else {
             if viewModel.isSelectAll {
                 viewModel.selected.removeAll()
