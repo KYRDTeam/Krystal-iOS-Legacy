@@ -337,6 +337,10 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         let earningType = EarningType(value: earningBalance.platform.type)
         
         let unstakeAction = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
+            if earningBalance.toUnderlyingToken.address.lowercased() == Constants.ethAddress.lowercased() && earningType == .staking {
+                self?.showErrorTopBannerMessage(message: Strings.unstakeEthWarningPopupMessage)
+                return
+            }
             let viewModel = UnstakeViewModel(earningBalance: earningBalance)
             let viewController = UnstakeViewController.instantiateFromNib()
             viewController.viewModel = viewModel

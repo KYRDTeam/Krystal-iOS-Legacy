@@ -37,7 +37,8 @@ class UnstakeViewController: InAppBrowsingViewController {
     @IBOutlet weak var networkFeeView: TxInfoView!
     @IBOutlet weak var receiveTimeView: TxInfoView!
     @IBOutlet weak var unstakeBalanceTitleLabel: UILabel!
-    @IBOutlet weak var toggleUnwrapView: TxToggleInfoView!
+    @IBOutlet weak var nextButtonTopContraint: NSLayoutConstraint!
+ 	@IBOutlet weak var toggleUnwrapView: TxToggleInfoView!
 
     var viewModel: UnstakeViewModel?
     var unstakeButtonState: UnstakeButtonState = .disable {

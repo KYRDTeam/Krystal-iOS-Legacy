@@ -6,6 +6,7 @@
 //
 
 import LaunchDarkly
+import Dependencies
 
 struct FeatureFlagKeys {
   static let promotionCodeIntegration = "promotion-code"
