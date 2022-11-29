@@ -96,6 +96,7 @@ class StakingTrasactionProcessPopup: KNBaseViewController {
             self.destTokenInfoContainerView.rounded(color: AppTheme.current.primaryColor, width: 1, radius: 16)
             self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
             self.processStatusLabel.text = Strings.success
+            self.viewModel.trackPopupOpenEvent()
         case .failure:
             self.loadingIndicatorView.isHidden = true
             self.transactionStateIcon.isHidden = false

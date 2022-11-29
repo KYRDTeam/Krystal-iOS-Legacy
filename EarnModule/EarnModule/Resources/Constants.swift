@@ -10,4 +10,5 @@ import BigInt
 
 struct Constants {
     static let earnGasLimitDefault = BigInt(1_140_000)
+    static let ethAddress = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
 }

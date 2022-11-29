@@ -104,6 +104,7 @@ class EarnOverviewController: InAppBrowsingViewController {
         let direction: UIPageViewController.NavigationDirection = index < selectedPageIndex ? .reverse : .forward
         selectedPageIndex = index
         pageViewController.setViewControllers([childListViewControllers[index]], direction: direction, animated: true)
+        AppDependencies.tracker.track( index == 0 ? "mob_earn_earn" : "mob_earn_portfolio", properties: ["screenid": "earn"])
     }
 }
 

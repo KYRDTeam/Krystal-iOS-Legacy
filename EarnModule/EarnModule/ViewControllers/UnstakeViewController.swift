@@ -12,6 +12,8 @@ import TransactionModule
 import BigInt
 import FittedSheets
 import Utilities
+import Services
+import Dependencies
 
 enum UnstakeButtonState {
     case normal
@@ -35,6 +37,8 @@ class UnstakeViewController: InAppBrowsingViewController {
     @IBOutlet weak var networkFeeView: TxInfoView!
     @IBOutlet weak var receiveTimeView: TxInfoView!
     @IBOutlet weak var unstakeBalanceTitleLabel: UILabel!
+    @IBOutlet weak var nextButtonTopContraint: NSLayoutConstraint!
+ 	@IBOutlet weak var toggleUnwrapView: TxToggleInfoView!
 
     var viewModel: UnstakeViewModel?
     var unstakeButtonState: UnstakeButtonState = .disable {
@@ -76,6 +80,19 @@ class UnstakeViewController: InAppBrowsingViewController {
             self?.viewModel?.showRevertedRate.toggle()
             self?.rateView.setValue(value: viewModel.showRateInfo())
         }
+        toggleUnwrapView.setTitle(title: String(format: Strings.unwrapToken,viewModel.toTokenSymbol))
+        toggleUnwrapView.onSwitchValue = { isOn in
+            if let viewModel = self.viewModel {
+                viewModel.updateWrapInfo(isUnWrap: isOn)
+                self.receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.toTokenSymbol)
+                self.rateView.setValue(value: viewModel.showRateInfo())
+                self.showLoadingHUD()
+                viewModel.fetchData(isUseWrapTokenAddress: true, completion: {
+                    self.hideLoading()
+                })
+            }
+        }
+        
         networkFeeView.setInfo(title: Strings.networkFee, value: viewModel.transactionFeeString())
         receiveTimeView.setInfo(title: viewModel.timeForUnstakeString(), value: "")
         unstakePlatformLabel.text = viewModel.platformTitleString
@@ -142,6 +159,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.toTokenSymbol)
         validateInput()
         updateUINextButton()
+        AppDependencies.tracker.track(viewModel.earningType == .lending ? "mob_withdraw_max_amount" : "mob_unstake_max_amount", properties: ["screenid": "earn"])
     }
     
     @IBAction func unstakeButtonTapped(_ sender: Any) {
@@ -155,6 +173,7 @@ class UnstakeViewController: InAppBrowsingViewController {
                     unstakeButtonState = .approving
             }
         }
+        AppDependencies.tracker.track(viewModel?.earningType == .lending ? "mob_withdraw" : "mob_unstake", properties: ["screenid": "earn"])
     }
     
     func showError(msg: String) {
@@ -260,6 +279,7 @@ class UnstakeViewController: InAppBrowsingViewController {
                         if let pendingTx = pendingTx as? PendingUnstakeTxInfo {
                             self.openTxStatusPopup(tx: pendingTx)
                         }
+                        AppDependencies.tracker.track(self.viewModel?.earningType == .lending ? "mob_confirm_withdraw" : "mob_confirm_unstake", properties: ["screenid": "earn"])
                     }
                 }
                 return
@@ -307,6 +327,10 @@ extension UnstakeViewController: UnstakeViewModelDelegate {
             self.showErrorTopBannerMessage(message: errMsg)
         }
     }
+    
+    func didGetWrapInfo(wrap: WrapInfo) {
+        toggleUnwrapView.isHidden = !wrap.isWrappable
+    }
 }
 
 extension UnstakeViewController: UITextFieldDelegate {
@@ -316,6 +340,7 @@ extension UnstakeViewController: UITextFieldDelegate {
         updateReceivedAmount()
         validateInput()
         updateUINextButton()
+        AppDependencies.tracker.track(viewModel?.earningType == .lending ? "mob_enter_withdraw_amount" : "mob_enter_unstake_amount", properties: ["screenid": "earn"])
     }
 
 }

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ErrorView" customModule="DesignSystem" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="jGA-km-cZS">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-error-404" translatesAutoresizingMaskIntoConstraints="NO" id="OOI-IO-cKD">
+                    <rect key="frame" x="83" y="144" width="248" height="248"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="248" id="cfl-OT-6BG"/>
+                        <constraint firstAttribute="height" constant="248" id="udO-f1-9DH"/>
+                    </constraints>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6GQ-ZU-zNH">
+                    <rect key="frame" x="88" y="676" width="238" height="42"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OXz-dE-ykV">
+                            <rect key="frame" x="1" y="1" width="236" height="40"/>
+                            <color key="backgroundColor" name="mainViewBgColor"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Go back">
+                                <color key="titleColor" name="textWhiteColor70"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="goBackTapped:" destination="-1" eventType="touchUpInside" id="Dhf-Gd-YJ5"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" name="textWhiteColor70"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="OXz-dE-ykV" secondAttribute="trailing" constant="1" id="OC6-wT-dla"/>
+                        <constraint firstAttribute="bottom" secondItem="OXz-dE-ykV" secondAttribute="bottom" constant="1" id="V9n-hA-21S"/>
+                        <constraint firstItem="OXz-dE-ykV" firstAttribute="leading" secondItem="6GQ-ZU-zNH" secondAttribute="leading" constant="1" id="mBz-U8-vgE"/>
+                        <constraint firstAttribute="height" constant="42" id="rfL-Fl-Zxx"/>
+                        <constraint firstItem="OXz-dE-ykV" firstAttribute="top" secondItem="6GQ-ZU-zNH" secondAttribute="top" constant="1" id="sck-LL-mJw"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="16"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="MvC-NC-TzI"/>
+            <color key="backgroundColor" name="mainViewBgColor"/>
+            <constraints>
+                <constraint firstItem="MvC-NC-TzI" firstAttribute="bottom" secondItem="6GQ-ZU-zNH" secondAttribute="bottom" constant="144" id="0Sp-cw-43o"/>
+                <constraint firstItem="OOI-IO-cKD" firstAttribute="top" secondItem="MvC-NC-TzI" secondAttribute="top" constant="100" id="LhI-IH-krb"/>
+                <constraint firstItem="MvC-NC-TzI" firstAttribute="trailing" secondItem="6GQ-ZU-zNH" secondAttribute="trailing" constant="88" id="Tee-ag-83w"/>
+                <constraint firstItem="OOI-IO-cKD" firstAttribute="centerX" secondItem="MvC-NC-TzI" secondAttribute="centerX" id="dVs-x7-wPI"/>
+                <constraint firstItem="6GQ-ZU-zNH" firstAttribute="leading" secondItem="MvC-NC-TzI" secondAttribute="leading" constant="88" id="hcQ-HK-qyb"/>
+            </constraints>
+            <point key="canvasLocation" x="132" y="111"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon-error-404" width="248" height="230"/>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor70">
+            <color red="1" green="1" blue="1" alpha="0.69999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

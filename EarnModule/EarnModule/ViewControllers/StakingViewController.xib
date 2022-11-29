@@ -13,11 +13,11 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
-        </array>
-        <array key="Karla-VariableFont_wght.ttf">
-            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -35,6 +35,7 @@
                 <outlet property="earningTokenContainerView" destination="DXA-Eq-Vgp" id="aO3-Dg-RHJ"/>
                 <outlet property="earningTokensHeightConstraint" destination="IaB-Dv-P1P" id="LFP-Pe-KbG"/>
                 <outlet property="errorMsgLabel" destination="eXy-Nq-Sss" id="OOs-y4-2ba"/>
+                <outlet property="ethWarningView" destination="are-Ev-0VA" id="raX-ru-yPX"/>
                 <outlet property="expandContainerViewHeightContraint" destination="ibA-g0-5LK" id="64Q-AQ-L4P"/>
                 <outlet property="expandProjectionButton" destination="7VS-cG-N4B" id="AJw-fm-SJI"/>
                 <outlet property="faqContainerHeightContraint" destination="2eR-M1-xwK" id="Nf6-E4-Es4"/>
@@ -42,6 +43,7 @@
                 <outlet property="infoAreaTopContraint" destination="8HI-i4-JNA" id="lET-P2-7Qy"/>
                 <outlet property="networkFeeInfoView" destination="cyu-cp-C1e" id="JWp-U2-iZB"/>
                 <outlet property="nextButton" destination="qRD-Uw-5YN" id="1oZ-Yu-iIJ"/>
+                <outlet property="nextButtonTopContraint" destination="GLd-pH-2BY" id="yCM-2v-BK0"/>
                 <outlet property="p30USDValueLabel" destination="6sJ-Hb-AOV" id="UhA-fz-aCp"/>
                 <outlet property="p30ValueLabel" destination="6ce-KL-Ard" id="4dq-qy-eQ7"/>
                 <outlet property="p60USDValueLabel" destination="6bc-md-dhB" id="fjR-y1-NMD"/>
@@ -628,8 +630,42 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="are-Ev-0VA" userLabel="Error View">
+                            <rect key="frame" x="15" y="349.5" width="345" height="78.5"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="warning_yellow_icon" translatesAutoresizingMaskIntoConstraints="NO" id="QWW-Yc-n87">
+                                    <rect key="frame" x="26" y="16" width="24" height="24"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="24" id="Dcq-Fz-IQ0"/>
+                                        <constraint firstAttribute="width" constant="24" id="Vkq-tC-xJN"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unstaking ETH is not available currently. It will be enabled after the Shanghai upgrade" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yR4-6D-YVF">
+                                    <rect key="frame" x="63" y="13" width="256" height="49.5"/>
+                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                    <color key="textColor" name="warningColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" red="1" green="0.86274509799999999" blue="0.0" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="yR4-6D-YVF" secondAttribute="trailing" constant="26" id="1FT-rY-uYg"/>
+                                <constraint firstItem="yR4-6D-YVF" firstAttribute="leading" secondItem="QWW-Yc-n87" secondAttribute="trailing" constant="13" id="4mB-k8-qZD"/>
+                                <constraint firstAttribute="bottom" secondItem="yR4-6D-YVF" secondAttribute="bottom" constant="16" id="8Fh-KD-xYg"/>
+                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="QWW-Yc-n87" secondAttribute="bottom" constant="16" id="NhY-QM-XJZ"/>
+                                <constraint firstItem="yR4-6D-YVF" firstAttribute="top" secondItem="are-Ev-0VA" secondAttribute="top" constant="13" id="RFw-BL-c8d"/>
+                                <constraint firstItem="QWW-Yc-n87" firstAttribute="leading" secondItem="are-Ev-0VA" secondAttribute="leading" constant="26" id="WXM-ro-nuk"/>
+                                <constraint firstItem="QWW-Yc-n87" firstAttribute="top" secondItem="are-Ev-0VA" secondAttribute="top" constant="16" id="z78-X8-Fp2"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                    <real key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="sKb-dZ-bQO" firstAttribute="trailing" secondItem="are-Ev-0VA" secondAttribute="trailing" constant="15" id="14G-1o-1QT"/>
                         <constraint firstItem="rfE-17-gYQ" firstAttribute="centerX" secondItem="mZ9-HU-8LJ" secondAttribute="centerX" id="3St-43-OsK"/>
                         <constraint firstItem="QKH-hD-w8o" firstAttribute="top" secondItem="rfE-17-gYQ" secondAttribute="bottom" constant="40" id="8HI-i4-JNA"/>
                         <constraint firstItem="Wlq-zP-dUB" firstAttribute="leading" secondItem="SOS-I0-hAY" secondAttribute="trailing" constant="5" id="8ny-uA-A37"/>
@@ -651,6 +687,7 @@
                         <constraint firstItem="UbE-D0-djG" firstAttribute="trailing" secondItem="rfE-17-gYQ" secondAttribute="trailing" id="XlZ-CY-t5T"/>
                         <constraint firstItem="uL6-Ya-9qb" firstAttribute="leading" secondItem="mZ9-HU-8LJ" secondAttribute="leading" constant="15" id="ZLc-WI-BV2"/>
                         <constraint firstItem="DXA-Eq-Vgp" firstAttribute="leading" secondItem="sKb-dZ-bQO" secondAttribute="leading" constant="15" id="a6e-FW-v6t"/>
+                        <constraint firstItem="are-Ev-0VA" firstAttribute="top" secondItem="QKH-hD-w8o" secondAttribute="bottom" constant="40" id="adi-TE-RXE"/>
                         <constraint firstItem="qRD-Uw-5YN" firstAttribute="leading" secondItem="mZ9-HU-8LJ" secondAttribute="leading" constant="15" id="hCl-A8-VL7"/>
                         <constraint firstAttribute="trailing" secondItem="4aU-ZU-sEM" secondAttribute="trailing" constant="15" id="hOI-rH-JF1"/>
                         <constraint firstItem="uL6-Ya-9qb" firstAttribute="top" secondItem="qRD-Uw-5YN" secondAttribute="bottom" constant="15" id="hrF-0A-e3c"/>
@@ -658,6 +695,7 @@
                         <constraint firstItem="UbE-D0-djG" firstAttribute="centerY" secondItem="E6D-sW-5ed" secondAttribute="centerY" id="sMk-Bf-ZAR"/>
                         <constraint firstItem="rfE-17-gYQ" firstAttribute="top" secondItem="Wlq-zP-dUB" secondAttribute="bottom" constant="11" id="sNw-3w-c76"/>
                         <constraint firstItem="E6D-sW-5ed" firstAttribute="top" secondItem="mZ9-HU-8LJ" secondAttribute="top" constant="27" id="tkO-ns-S5p"/>
+                        <constraint firstItem="are-Ev-0VA" firstAttribute="leading" secondItem="sKb-dZ-bQO" secondAttribute="leading" constant="15" id="vir-Sq-R1v"/>
                         <constraint firstAttribute="trailing" secondItem="rfE-17-gYQ" secondAttribute="trailing" constant="15" id="yNT-4Z-lAi"/>
                         <constraint firstAttribute="trailing" secondItem="QKH-hD-w8o" secondAttribute="trailing" constant="15" id="zq0-bM-P5e"/>
                     </constraints>
@@ -690,6 +728,7 @@
         <image name="gas_config_icon" width="36" height="36"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
         <image name="icon-plus-square" width="16" height="16"/>
+        <image name="warning_yellow_icon" width="24" height="24"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -710,6 +749,9 @@
         </namedColor>
         <namedColor name="toolbarBgColor">
             <color red="0.13333333333333333" green="0.13333333333333333" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="warningColor">
+            <color red="1" green="0.75294117647058822" blue="0.035294117647058823" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

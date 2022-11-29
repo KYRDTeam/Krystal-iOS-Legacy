@@ -11,5 +11,5 @@ import Services
 import BigInt
 
 public protocol BalancesStorage {
-  func getBalanceBigInt(address: String) -> BigInt
+  func getBalance(address: String) -> BigInt?
 }
