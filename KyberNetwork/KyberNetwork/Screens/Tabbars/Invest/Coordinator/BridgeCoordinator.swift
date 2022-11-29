@@ -514,6 +514,9 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       vm.headerTitle = "Approve Transfer"
       let vc = ApproveTokenViewController(viewModel: vm)
       vc.delegate = self
+      vc.onDismiss = {
+        self.rootViewController.coordinatorCancelApprove()
+      }
       self.navigationController.present(vc, animated: true, completion: nil)
       self.approveVC = vc
     case .selectMaxSource:
