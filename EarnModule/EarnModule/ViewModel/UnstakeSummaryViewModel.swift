@@ -143,7 +143,7 @@ extension UnstakeSummaryViewModel {
             switch result {
             case .success:
                 if let signedData = EIP1559TransactionSigner().signTransaction(address: self.currentAddress, eip1559Tx: eip1559Tx) {
-                    TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: self.currentChain) { result in
+                    TransactionManager.txProcessor.sendTx(data: signedData, chain: self.currentChain) { result in
                         switch result {
                         case .success(let hash):
                             let pendingTx = PendingUnstakeTxInfo(platform: self.platform,
@@ -193,7 +193,7 @@ extension UnstakeSummaryViewModel {
                 let signResult = EthereumTransactionSigner().signTransaction(address: self.currentAddress, transaction: legacyTx)
                 switch signResult {
                 case .success(let signedData):
-                    TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: self.currentChain) { result in
+                    TransactionManager.txProcessor.sendTx(data: signedData, chain: self.currentChain) { result in
                         switch result {
                         case .success(let hash):
                             let pendingTx = PendingUnstakeTxInfo(platform: self.platform,

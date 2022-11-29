@@ -308,6 +308,8 @@ struct Strings {
   static let rate = "Rate".toBeLocalised()
   static let networkFee = "Network Fee".toBeLocalised()
     
+    static let estGasErrorMessage = "can.not.est.gas".toBeLocalised()
+    
     // Approval
     static let approvalSearchPlaceholder = "approval.search.placeholder".toBeLocalised()
     static let approvalMenuTitle = "approval.menu.title".toBeLocalised()

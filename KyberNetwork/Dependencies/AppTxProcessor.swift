@@ -13,6 +13,8 @@ import Result
 
 class AppTxProcessor: TxProcessorProtocol {
     
+    var txSender: TxNodeSenderProtocol = TxNodeSender()
+    
     func hasPendingTx() -> Bool {
         return !EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty
     }
@@ -28,10 +30,6 @@ class AppTxProcessor: TxProcessorProtocol {
     
     @objc func pendingTxListUpdated() {
         TransactionManager.onPendingTxListUpdated()
-    }
-
-    func sendTxToNode(data: Data, chain: ChainType, completion: @escaping (Result<String, AnyError>) -> Void) {
-        KNGeneralProvider.shared.sendSignedTransactionData(data, chain: chain, completion: completion)
     }
     
     func savePendingTx(txInfo: PendingTxInfo) {
