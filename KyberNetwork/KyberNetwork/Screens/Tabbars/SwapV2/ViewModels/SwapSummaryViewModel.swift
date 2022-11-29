@@ -12,6 +12,8 @@ import APIKit
 import BigInt
 import Result
 import KrystalWallets
+import Services
+import AppState
 
 class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   var settings: SwapTransactionSettings {
@@ -40,6 +42,12 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
       self.rateString.value = self.getRateString(sourceToken: swapObject.sourceToken, destToken: swapObject.destToken)
     }
   }
+    
+    var l1Fee: BigInt = BigInt(0) {
+        didSet {
+            self.updateInfo()
+        }
+    }
   
   var minRatePercent: Double {
     didSet {
@@ -91,10 +99,10 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   func updateData() {
     rateString.value = getRateString(sourceToken: swapObject.sourceToken, destToken: swapObject.destToken)
     minReceiveString.value = calculateMinReceiveString(rate: swapObject.rate)
-    estimatedGasFeeString.value = getEstimatedNetworkFeeString(rate: swapObject.rate)
+    estimatedGasFeeString.value = getEstimatedNetworkFeeString(rate: swapObject.rate, l1Fee: l1Fee)
     priceImpactString.value = getPriceImpactString(rate: swapObject.rate)
     priceImpactState.value = getPriceImpactState(change: Double(swapObject.rate.priceImpact) / 100)
-    maxGasFeeString.value = getMaxNetworkFeeString(rate: swapObject.rate)
+    maxGasFeeString.value = getMaxNetworkFeeString(rate: swapObject.rate, l1Fee: l1Fee)
     slippageString.value = "\(String(format: "%.1f", self.minRatePercent))%"
   }
   
@@ -114,8 +122,8 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   func updateInfo() {
     self.slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
     self.minReceiveString.value = self.getMinReceiveString(destToken: swapObject.destToken, rate: swapObject.rate)
-    self.estimatedGasFeeString.value = self.getEstimatedNetworkFeeString(rate: swapObject.rate)
-    self.maxGasFeeString.value = self.getMaxNetworkFeeString(rate: swapObject.rate)
+    self.estimatedGasFeeString.value = self.getEstimatedNetworkFeeString(rate: swapObject.rate, l1Fee: l1Fee)
+    self.maxGasFeeString.value = self.getMaxNetworkFeeString(rate: swapObject.rate, l1Fee: l1Fee)
   }
   
   func updateSettings(settings: SwapTransactionSettings) {
@@ -149,18 +157,18 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   
   func startUpdateRate() {
     self.updateRateTimer?.invalidate()
-    self.fetchRate()
+    self.fetchData()
     self.updateRateTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds15,
       repeats: true,
       block: { [weak self] _ in
         guard let `self` = self else { return }
-        self.fetchRate()
+        self.fetchData()
       }
     )
   }
 
-  func fetchRate() {
+  func fetchData() {
     swapRepository.getAllRates(address: currentAddress.addressString, srcTokenContract: self.swapObject.sourceToken.address.lowercased(), destTokenContract: self.swapObject.destToken.address.lowercased(), amount: self.swapObject.sourceAmount, focusSrc: true) { [weak self] rates in
       guard let self = self else { return }
       let sortedRates = rates.sorted { lhs, rhs in
@@ -183,11 +191,19 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
         }
       }
     }
+    updateTxData { _ in
+    }
   }
   
   func didConfirmSwap() {
-    self.getLatestNonce { result in
-      
+    self.updateTxData { txObject in
+        if KNGeneralProvider.shared.isUseEIP1559 {
+            guard let signTx = self.buildEIP1559Tx(txObject) else { return }
+            self.getEstimateGasLimit(txEIP1559: signTx, tx: nil)
+        } else {
+            guard let signTx = self.buildSignSwapTx(txObject) else { return }
+            self.getEstimateGasLimit(txEIP1559: nil, tx: signTx)
+        }
     }
   }
 
@@ -202,46 +218,22 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
 
 extension SwapSummaryViewModel {
 
-  fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
-    guard let provider = self.session.externalProvider else {
-      return
-    }
-    provider.getTransactionCount { result in
-      switch result {
-      case .success(let res):
-        self.buildTx(latestNonce: res)
-      case .failure(let error):
-        self.showError(errorMsg: error.description)
+  fileprivate func updateTxData(completion: @escaping (TxObject) -> Void) {
+      self.swapRepository.getLatestNonce { nonce in
+          self.buildTx(latestNonce: nonce, completion: completion)
       }
-    }
   }
   
-  func buildTx(latestNonce: Int) {
+  func buildTx(latestNonce: Int, completion: @escaping (TxObject) -> Void) {
     guard let tx = buildRawSwapTx(latestNonce: latestNonce) else {
       self.showError(errorMsg: "Build raw Tx error")
       return
     }
-    
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    
-    self.showLoading()
-    provider.requestWithFilter(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint, useGasToken: tx.useGasToken)) { [weak self] result in
-      DispatchQueue.main.async {
-        self?.shouldDiplayLoading.value = false
-      }
-      guard let `self` = self else { return }
-      switch result {
-      case .success(let resp):
-        let decoder = JSONDecoder()
-        do {
-          let data = try decoder.decode(TransactionResponse.self, from: resp.data)
-          self.handleTx(object: data.txObject)
-        } catch {
-          self.showError(errorMsg: "Parse Tx Data Error")
+    self.swapRepository.buildTx(tx: tx) { data in
+        self.swapRepository.getL1FeeForTxIfHave(object: data.txObject) { l1Fee, object in
+            self.l1Fee = l1Fee
+            completion(object)
         }
-      case .failure(let error):
-        self.showError(errorMsg: error.localizedDescription)
-      }
     }
   }
   
@@ -369,16 +361,6 @@ extension SwapSummaryViewModel {
             self.showError(errorMsg: errorMessage)
         }
       }
-    }
-  }
-  
-  func handleTx(object: TxObject) {
-    if KNGeneralProvider.shared.isUseEIP1559 {
-      guard let signTx = buildEIP1559Tx(object) else { return }
-      getEstimateGasLimit(txEIP1559: signTx, tx: nil)
-    } else {
-      guard let signTx = buildSignSwapTx(object) else { return }
-      getEstimateGasLimit(txEIP1559: nil, tx: signTx)
     }
   }
   

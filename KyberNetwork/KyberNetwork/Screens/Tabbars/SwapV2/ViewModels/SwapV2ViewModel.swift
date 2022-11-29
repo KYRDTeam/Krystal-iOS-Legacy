@@ -9,6 +9,8 @@ import Foundation
 import BigInt
 import KrystalWallets
 import Result
+import AppState
+import Services
 
 struct SwapV2ViewModelActions {
   var onSelectOpenHistory: () -> ()
@@ -34,10 +36,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
         return self.getMinReceiveString(destToken: destToken, rate: $0)
       }
       self.estimatedGasFeeString.value = self.selectedPlatformRate.value.map {
-        return self.getEstimatedNetworkFeeString(rate: $0)
+        return self.getEstimatedNetworkFeeString(rate: $0, l1Fee: self.l1Fee)
       }
       self.maxGasFeeString.value = self.selectedPlatformRate.value.map {
-        return self.getMaxNetworkFeeString(rate: $0)
+        return self.getMaxNetworkFeeString(rate: $0, l1Fee: l1Fee)
       }
       self.priceImpactString.value = self.selectedPlatformRate.value.map {
         return self.getPriceImpactString(rate: $0)
@@ -58,7 +60,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       self.rateString.value = self.getRateString(sourceToken: sourceToken, destToken: destToken)
     }
   }
-  
+
   var isInputValid: Bool {
     return sourceToken.value != nil && destToken.value != nil && !(sourceAmount.value ?? .zero).isZero
   }
@@ -90,6 +92,12 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       return balance - gasPrice * gasLimit
     } else {
       return sourceBalance.value ?? .zero
+    }
+  }
+    
+  var l1Fee: BigInt = BigInt(0) {
+    didSet {
+        self.updateInfo()
     }
   }
   
@@ -277,6 +285,8 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     self.state.value = isRefresh ? .refreshingRates : .fetchingRates
     self.swapRepository.getAllRates(address: addressString, srcTokenContract: sourceToken.address, destTokenContract: destToken.address, amount: amount, focusSrc: true) { [weak self] rates in
       self?.platformRates.value = rates
+      self?.updateTxData { _ in
+      }
     }
   }
   
@@ -561,10 +571,10 @@ extension SwapV2ViewModel {
       return self.getMinReceiveString(destToken: destToken, rate: $0)
     }
     self.estimatedGasFeeString.value = self.selectedPlatformRate.value.map {
-      return self.getEstimatedNetworkFeeString(rate: $0)
+      return self.getEstimatedNetworkFeeString(rate: $0, l1Fee: self.l1Fee)
     }
     self.maxGasFeeString.value = self.selectedPlatformRate.value.map {
-      return self.getMaxNetworkFeeString(rate: $0)
+      return self.getMaxNetworkFeeString(rate: $0, l1Fee: l1Fee)
     }
   }
   
@@ -601,5 +611,45 @@ extension SwapV2ViewModel {
       ])
     }
   }
-  
+    func showError(errorMsg: String) {
+      UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.showErrorTopBannerMessage(message: errorMsg)
+    }
+
+    func updateTxData(completion: @escaping (TxObject) -> Void) {
+        self.swapRepository.getLatestNonce { nonce in
+            self.buildTx(latestNonce: nonce, completion: completion)
+        }
+    }
+    
+    func buildTx(latestNonce: Int, completion: @escaping (TxObject) -> Void) {
+      guard let tx = buildRawSwapTx(latestNonce: latestNonce) else {
+        self.showError(errorMsg: "Build raw Tx error")
+        return
+      }
+      self.swapRepository.buildTx(tx: tx) { data in
+          self.swapRepository.getL1FeeForTxIfHave(object: data.txObject) { l1Fee, object in
+              self.l1Fee = l1Fee
+              completion(object)
+          }
+      }
+    }
+    
+    func buildRawSwapTx(latestNonce: Int) -> RawSwapTransaction? {
+      guard let sourceToken = sourceToken.value, let destToken = destToken.value else { return nil}
+      guard let sourceAmount = sourceAmount.value else { return nil}
+      guard let rate = selectedPlatformRate.value else { return nil}
+      let toAmount = BigInt(rate.amount) ?? BigInt(0)
+      let minDestQty = toAmount * BigInt(10000.0 - self.settings.slippage * 100.0) / BigInt(10000.0)
+      return RawSwapTransaction(
+        userAddress: currentAddress.value.addressString,
+        src: sourceToken.address ,
+        dest: destToken.address,
+        srcQty: sourceAmount.description,
+        minDesQty: minDestQty.description,
+        gasPrice: self.gasPrice.description,
+        nonce: latestNonce,
+        hint: rate.hint,
+        useGasToken: false
+      )
+    }
 }
