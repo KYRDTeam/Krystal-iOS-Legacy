@@ -20,15 +20,20 @@ public struct TxProcessResult {
 }
 
 public protocol TxProcessorProtocol {
+    var txSender: TxNodeSenderProtocol { get set }
     func hasPendingTx() -> Bool
     func observePendingTxListChanged()
     func process(address: KAddress, chain: ChainType, txObject: TxObject, setting: TxSettingObject,
                  completion: @escaping (Result<TxProcessResult, TxError>) -> Void)
-    func sendTxToNode(data: Data, chain: ChainType, completion: @escaping (Result<String, AnyError>) -> Void)
+    func sendTx(data: Data, chain: ChainType, completion: @escaping (Result<String, AnyError>) -> Void)
     func savePendingTx(txInfo: PendingTxInfo)
 }
 
 public extension TxProcessorProtocol {
+    
+    func sendTx(data: Data, chain: ChainType, completion: @escaping (Result<String, AnyError>) -> Void) {
+        txSender.sendTx(data: data, chain: chain, completion: completion)
+    }
     
     func process(address: KAddress, chain: ChainType, txObject: TxObject, setting: TxSettingObject, completion: @escaping (Result<TxProcessResult, TxError>) -> Void) {
         getLatestNonce(address: address, chain: chain) { _ in
@@ -55,7 +60,7 @@ public extension TxProcessorProtocol {
             switch result {
             case .success:
                 if let signedData = EIP1559TransactionSigner().signTransaction(address: address, eip1559Tx: eip1559Tx) {
-                    TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: chain) { result in
+                    self.txSender.sendTx(data: signedData, chain: chain) { result in
                         switch result {
                         case .success(let hash):
                             completion(.success(.init(hash: hash, legacyTx: nil, eip1559Tx: eip1559Tx)))
@@ -91,7 +96,7 @@ public extension TxProcessorProtocol {
                 let signResult = EthereumTransactionSigner().signTransaction(address: address, transaction: legacyTx)
                 switch signResult {
                 case .success(let signedData):
-                    TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: chain) { result in
+                    self.txSender.sendTx(data: signedData, chain: chain) { result in
                         switch result {
                         case .success(let hash):
                             completion(.success(.init(hash: hash, legacyTx: legacyTx, eip1559Tx: nil)))

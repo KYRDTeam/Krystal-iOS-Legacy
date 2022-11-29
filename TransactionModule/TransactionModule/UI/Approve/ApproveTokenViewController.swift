@@ -102,7 +102,7 @@ public class ApproveTokenViewModel {
               let signResult = EthereumTransactionSigner().signTransaction(address: AppState.shared.currentAddress, transaction: legacyTx)
               switch signResult {
               case .success(let signedData):
-                  TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: self.chain) { result in
+                  TransactionManager.txProcessor.sendTx(data: signedData, chain: self.chain) { result in
                       switch result {
                       case .success(let hash):
                           self.hash = hash
