@@ -12,6 +12,9 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlatformFilterViewController" customModule="EarnModule" customModuleProvider="target">
@@ -32,7 +35,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="9mz-mU-9X7">
-                    <rect key="frame" x="0.0" y="87.5" width="375" height="579.5"/>
+                    <rect key="frame" x="0.0" y="87.5" width="375" height="501.5"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="300" id="gx4-e9-PnM"/>
@@ -42,21 +45,75 @@
                         <outlet property="delegate" destination="-1" id="amF-03-jYr"/>
                     </connections>
                 </tableView>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="OMp-kF-E6W">
+                    <rect key="frame" x="40" y="609" width="295" height="38"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6yM-Rn-n1f">
+                            <rect key="frame" x="0.0" y="0.0" width="139.5" height="38"/>
+                            <color key="backgroundColor" red="0.29411764709999999" green="0.30980392159999998" blue="0.30588235289999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="38" id="cGe-BT-eh9"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" white="1" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                    <real key="value" value="14"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="cancelButtonTapped:" destination="-1" eventType="touchUpInside" id="aKj-Ej-VXZ"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8AO-Y7-g4C">
+                            <rect key="frame" x="155.5" y="0.0" width="139.5" height="38"/>
+                            <color key="backgroundColor" name="buttonBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="38" id="RqY-gj-jSS"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="16"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Done">
+                                <color key="titleColor" name="buttonTextColor"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                    <real key="value" value="14"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="doneButtonTapped:" destination="-1" eventType="touchUpInside" id="eV6-ep-ruR"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.16078431372549018" green="0.1764705882352941" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="9mz-mU-9X7" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="DBT-T6-wZK"/>
                 <constraint firstItem="9mz-mU-9X7" firstAttribute="top" secondItem="rE1-hY-7cm" secondAttribute="bottom" constant="32" id="L0g-aZ-ZyB"/>
                 <constraint firstItem="rE1-hY-7cm" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="32" id="MFV-W0-ZJ0"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="OMp-kF-E6W" secondAttribute="trailing" constant="40" id="VQi-Dt-yGW"/>
                 <constraint firstItem="9mz-mU-9X7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Vbd-w8-bxn"/>
                 <constraint firstItem="9mz-mU-9X7" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="WcW-60-3Ef"/>
+                <constraint firstItem="OMp-kF-E6W" firstAttribute="top" secondItem="9mz-mU-9X7" secondAttribute="bottom" constant="20" id="l8A-1t-10e"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="OMp-kF-E6W" secondAttribute="bottom" constant="20" id="owT-1U-pxf"/>
                 <constraint firstItem="rE1-hY-7cm" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="qv4-xm-87l"/>
+                <constraint firstItem="OMp-kF-E6W" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="40" id="s0Z-jt-WRk"/>
             </constraints>
             <point key="canvasLocation" x="138.40000000000001" y="113.79310344827587"/>
         </view>
     </objects>
     <resources>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="buttonTextColor">
+            <color red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

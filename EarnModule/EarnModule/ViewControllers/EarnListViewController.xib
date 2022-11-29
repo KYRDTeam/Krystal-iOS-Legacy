@@ -141,6 +141,7 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstItem="5yf-DK-dqL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ttV-1v-HvL" secondAttribute="leading" constant="18" id="0Yr-mJ-omX"/>
                                 <constraint firstItem="vlg-vF-1w7" firstAttribute="top" secondItem="ttV-1v-HvL" secondAttribute="top" id="2gq-6E-56O"/>
                                 <constraint firstAttribute="height" constant="108" id="8qT-M1-wXK"/>
                                 <constraint firstItem="WXG-o1-h3V" firstAttribute="centerY" secondItem="vlg-vF-1w7" secondAttribute="centerY" id="Gcd-Fv-fYu"/>

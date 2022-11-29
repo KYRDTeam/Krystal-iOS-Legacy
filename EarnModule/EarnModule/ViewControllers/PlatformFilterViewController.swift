@@ -9,14 +9,14 @@ import UIKit
 import Services
 
 protocol PlatformFilterViewControllerDelegate: class {
-    func didSelectPlatform(viewController: PlatformFilterViewController, selected: EarnPlatform?)
+    func didSelectPlatform(viewController: PlatformFilterViewController, selected: Set<EarnPlatform>)
 }
 
 class PlatformFilterViewModel {
     var dataSource: [EarnPlatform]
-    var selected: EarnPlatform?
+    var selected: Set<EarnPlatform>
     
-    init(dataSource: [EarnPlatform], selected: EarnPlatform?) {
+    init(dataSource: [EarnPlatform], selected: Set<EarnPlatform>) {
         self.dataSource = dataSource
         self.selected = selected
     }
@@ -31,6 +31,10 @@ class PlatformFilterViewModel {
     
     func totalRow() -> Int {
         return dataSource.count + 1
+    }
+    
+    var isSelectAll: Bool {
+        return dataSource.count == selected.count
     }
 }
 
@@ -56,6 +60,15 @@ class PlatformFilterViewController: KNBaseViewController {
         platformTableView.registerCellNib(PlatformCell.self)
     }
     
+    @IBAction func doneButtonTapped(_ sender: UIButton) {
+        dismiss(animated: true) {
+            self.delegate?.didSelectPlatform(viewController: self, selected: self.viewModel.selected)
+        }
+    }
+    
+    @IBAction func cancelButtonTapped(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
 }
 
 extension PlatformFilterViewController: UITableViewDataSource {
@@ -65,8 +78,13 @@ extension PlatformFilterViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(PlatformCell.self, indexPath: indexPath)!
-        let platform = viewModel.platformForRow(row: indexPath.row)
-        cell.updateCell(platform: platform, isSelected: platform == viewModel.selected)
+        
+        if let platform = viewModel.platformForRow(row: indexPath.row) {
+            cell.updateCell(platform: platform, isSelected: viewModel.selected.contains(platform))
+        } else {
+            cell.updateCell(platform: nil, isSelected: viewModel.isSelectAll)
+        }
+        
         return cell
     }
 }
@@ -74,7 +92,23 @@ extension PlatformFilterViewController: UITableViewDataSource {
 extension PlatformFilterViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let platform = viewModel.platformForRow(row: indexPath.row)
-        delegate?.didSelectPlatform(viewController: self, selected: platform)
+        if let platform = viewModel.platformForRow(row: indexPath.row) {
+            if viewModel.selected.contains(platform) {
+                viewModel.selected.remove(platform)
+            } else {
+                viewModel.selected.insert(platform)
+            }
+            
+        } else {
+            if viewModel.isSelectAll {
+                viewModel.selected.removeAll()
+            } else {
+                viewModel.dataSource.forEach { element in
+                    viewModel.selected.insert(element)
+                }
+            }
+        }
+        platformTableView.reloadData()
+        
     }
 }
