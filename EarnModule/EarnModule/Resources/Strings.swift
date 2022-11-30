@@ -116,7 +116,9 @@ struct Strings {
     static let youWillReceiveYourIn = "you.will.receive.your.in".toBeLocalised()
     static let amountQuoteTokenUsedForFee = "use.amount.of.quote.token.for.fee.message".toBeLocalised()
     static let yourStakingBalanceIsNotSufficient = "your.staking.balance.is.not.suffcient".toBeLocalised()
+    static let allNetworks = "all.networks".toBeLocalised()
     static let connectWallet = "connect.wallet".toBeLocalised()
+    static let allPlatforms = "all.platforms".toBeLocalised()
     
     static let supply = "supply".toBeLocalised()
     static let supplyNow = "supply.now".toBeLocalised()
