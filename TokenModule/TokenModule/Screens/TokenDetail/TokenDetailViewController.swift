@@ -362,7 +362,7 @@ class TokenDetailViewController: KNBaseViewController {
     guard let token = viewModel.createToken() else { return }
     
     let openInvest = {
-      AppDependencies.router.openInvest(token: token)
+      AppDependencies.router.openEarn(token: token)
       AppDependencies.tracker.track("token_detail_earn", properties: ["screenid": "token_detail"])
     }
     
