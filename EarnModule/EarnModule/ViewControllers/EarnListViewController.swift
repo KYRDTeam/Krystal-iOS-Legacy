@@ -142,7 +142,7 @@ class EarnListViewController: InAppBrowsingViewController {
         }
     }
     
-    private func getAllPlatform() -> Set<EarnPlatform> {
+    private func getAllPlatform() -> [EarnPlatform] {
         var platformSet = Set<EarnPlatform>()
         
         dataSource.forEach { item in
@@ -150,7 +150,9 @@ class EarnListViewController: InAppBrowsingViewController {
                 platformSet.insert(element)
             }
         }
-        return platformSet
+        return Array(platformSet).sorted { (left, right) -> Bool in
+            return left.name < right.name
+        }
     }
     
     

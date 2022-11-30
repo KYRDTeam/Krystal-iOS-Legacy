@@ -119,12 +119,6 @@ class AppRouter: AppRouterProtocol, Coordinator {
     guard let vc = TokenModule.createTokenDetailViewController(address: address, chain: chain, currencyMode: currencyMode) else { return }
     vc.hidesBottomBarWhenPushed = false
     navigationController.pushViewController(vc, animated: true, completion: nil)
-//    let topViewController = UIApplication.shared.topMostViewController()
-//    if let nav = topViewController as? UINavigationController {
-//      nav.pushViewController(vc, animated: true)
-//    } else {
-//      topViewController?.navigationController?.pushViewController(vc, animated: true)
-//    }
   }
   
   func openTokenTransfer(navigationController: UINavigationController, token: Token) {
@@ -139,13 +133,14 @@ class AppRouter: AppRouterProtocol, Coordinator {
   }
   
   func openSwap(token: Token) {
-    AppDelegate.shared.coordinator.tabbarController.selectedIndex = 1
-    AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
+      AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: false)
+      AppDelegate.shared.coordinator.tabbarController.selectedIndex = 1
   }
   
-  func openInvest(token: Token) {
-    AppDelegate.shared.coordinator.tabbarController.selectedIndex = 2
+  func openEarn(token: Token) {
+    AppDelegate.shared.coordinator.tabbarController.selectedIndex = 3
     AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
+    AppDelegate.shared.coordinator.earnCoordinator?.appCoodinatorDidOpenEarnView(tokenAddress: token.address)
   }
   
 }

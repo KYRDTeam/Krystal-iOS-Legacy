@@ -114,5 +114,6 @@ extension PlatformFilterViewController: UITableViewDelegate {
             }
         }
         platformTableView.reloadData()
+        
     }
 }
