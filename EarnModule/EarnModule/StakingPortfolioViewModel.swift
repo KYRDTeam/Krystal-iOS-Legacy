@@ -34,14 +34,12 @@ class StakingPortfolioViewModel {
         guard let data = portfolio else {
             return
         }
-        
-        
-        
+
         var output: [StakingPortfolioCellModel] = []
         var pending: [StakingPortfolioCellModel] = []
         
         var pendingUnstakeData = data.1
-        let earningBalanceData = filterEarningBalanceData(data: data.0)
+        var earningBalanceData = data.0
         
         if !searchText.isEmpty {
             pendingUnstakeData = pendingUnstakeData.filter({ item in
@@ -55,17 +53,6 @@ class StakingPortfolioViewModel {
             })
         }
         
-        pendingUnstakeData.forEach({ item in
-            pending.append(StakingPortfolioCellModel(pendingUnstake: item))
-        })
-        earningBalanceData.forEach { item in
-            output.append(StakingPortfolioCellModel(earnBalance: item))
-        }
-        dataSource.value = (output, pending)
-    }
-    
-    func filterEarningBalanceData(data: [EarningBalance]) -> [EarningBalance] {
-        var earningBalanceData = data
         if !searchText.isEmpty {
             earningBalanceData = earningBalanceData.filter({ item in
                 return item.stakingToken.symbol.lowercased().contains(searchText) || item.toUnderlyingToken.symbol.lowercased().contains(searchText)
@@ -77,7 +64,24 @@ class StakingPortfolioViewModel {
                 return item.chainID == unwrap
             })
         }
-        return earningBalanceData
+        
+        if !isSelectedAllPlatform {
+            earningBalanceData = earningBalanceData.filter({ item in
+                return self.selectedPlatforms.contains(item.platform.toEarnPlatform())
+            })
+            
+            pendingUnstakeData = pendingUnstakeData.filter({ item in
+                return self.selectedPlatforms.contains(item.platform.toEarnPlatform())
+            })
+        }
+        
+        pendingUnstakeData.forEach({ item in
+            pending.append(StakingPortfolioCellModel(pendingUnstake: item))
+        })
+        earningBalanceData.forEach { item in
+            output.append(StakingPortfolioCellModel(earnBalance: item))
+        }
+        dataSource.value = (output, pending)
     }
     
     func requestData(shouldShowLoading: Bool = true) {
@@ -115,5 +119,17 @@ class StakingPortfolioViewModel {
         }
         
         return platformSet
+    }
+    
+    var isSelectedAllPlatform: Bool {
+        return selectedPlatforms.isEmpty || selectedPlatforms.count == getAllPlatform().count
+    }
+    
+    var platformFilterButtonTitle: String {
+        if isSelectedAllPlatform {
+            return Strings.allPlatforms
+        }
+        let name = selectedPlatforms.map { $0.name.capitalized }.joined(separator: ", ")
+        return name
     }
 }

@@ -81,6 +81,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         if viewModel.isEmpty() && viewModel.isLoading.value == false {
             viewModel.requestData()
         }
+        updateUIPlatformFilterButton()
     }
     
     private func registerCell() {
@@ -180,8 +181,6 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         }
     }
     
-    
-    
     @IBAction func platformFilterButtonTapped(_ sender: UIButton) {
         let allPlatforms = viewModel.getAllPlatform()
         let viewModel = PlatformFilterViewModel(dataSource: allPlatforms, selected: viewModel.selectedPlatforms)
@@ -191,6 +190,10 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         let sheetOptions = SheetOptions(pullBarHeight: 0)
         let sheet = SheetViewController(controller: viewController, sizes: [.intrinsic], options: sheetOptions)
         present(sheet, animated: true)
+    }
+    
+    private func updateUIPlatformFilterButton() {
+        platformFilterButton.setTitle(viewModel.platformFilterButtonTitle, for: .normal)
     }
 }
 
@@ -398,6 +401,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
 extension StakingPortfolioViewController: PlatformFilterViewControllerDelegate {
     func didSelectPlatform(viewController: PlatformFilterViewController, selected: Set<EarnPlatform>) {
         viewModel.selectedPlatforms = selected
-        
+        reloadUI()
+        updateUIPlatformFilterButton()
     }
 }
