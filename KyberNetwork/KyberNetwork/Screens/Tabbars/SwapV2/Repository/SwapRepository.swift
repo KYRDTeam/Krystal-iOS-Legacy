@@ -162,7 +162,7 @@ class SwapRepository {
             let data = try decoder.decode(TransactionResponse.self, from: resp.data)
             completion(data)
           } catch {
-            self.showError(errorMsg: "Parse Tx Data Error")
+            self.showError(errorMsg: Strings.parseTxDataFailed)
           }
         case .failure(let error):
           self.showError(errorMsg: error.localizedDescription)

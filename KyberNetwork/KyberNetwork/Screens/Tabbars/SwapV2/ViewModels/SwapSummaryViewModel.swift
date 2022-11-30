@@ -226,7 +226,7 @@ extension SwapSummaryViewModel {
   
   func buildTx(latestNonce: Int, completion: @escaping (TxObject) -> Void) {
     guard let tx = buildRawSwapTx(latestNonce: latestNonce) else {
-      self.showError(errorMsg: "Build raw Tx error")
+      self.showError(errorMsg: Strings.buildRawTxFailed)
       return
     }
     self.swapRepository.buildTx(tx: tx) { data in
