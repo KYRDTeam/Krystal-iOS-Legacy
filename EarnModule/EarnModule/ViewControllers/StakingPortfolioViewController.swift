@@ -330,6 +330,18 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         }
     }
     
+    func openUnstake(earningBalance: EarningBalance) {
+        let earningType = EarningType(value: earningBalance.platform.type)
+        if earningBalance.toUnderlyingToken.address.lowercased() == Constants.ethAddress.lowercased() && earningType == .staking {
+            self.showUnstakeETHWarning()
+            return
+        }
+        let viewModel = UnstakeViewModel(earningBalance: earningBalance)
+        let viewController = UnstakeViewController.instantiateFromNib()
+        viewController.viewModel = viewModel
+        self.show(viewController, sender: nil)
+    }
+    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard orientation == .right, indexPath.section == 0 else { return nil }
         let earningBalances = self.viewModel.dataSource.value.0.map { $0.earnBalance }
@@ -337,14 +349,15 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         let earningType = EarningType(value: earningBalance.platform.type)
         
         let unstakeAction = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
-            if earningBalance.toUnderlyingToken.address.lowercased() == Constants.ethAddress.lowercased() && earningType == .staking {
-                self?.showUnstakeETHWarning()
-                return
+            guard let self = self else { return }
+            if earningBalance.chainID == AppState.shared.currentChain.getChainId() {
+              self.openUnstake(earningBalance: earningBalance)
+            } else {
+              let newChain = ChainType.make(chainID: earningBalance.chainID) ?? AppState.shared.currentChain
+              SwitchSpecificChainPopup.show(onViewController: self, destChain: newChain) {
+                  self.openUnstake(earningBalance: earningBalance)
+              }
             }
-            let viewModel = UnstakeViewModel(earningBalance: earningBalance)
-            let viewController = UnstakeViewController.instantiateFromNib()
-            viewController.viewModel = viewModel
-            self?.show(viewController, sender: nil)
         }
         let image = swipeCellImageView(title: minusTitleFor(earningType: earningType), icon: Images.redSubtract, color: AppTheme.current.errorTextColor)
         unstakeAction.image = image
