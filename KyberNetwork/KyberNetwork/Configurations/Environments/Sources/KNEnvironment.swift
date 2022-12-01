@@ -257,9 +257,9 @@ enum KNEnvironment: Int {
 
   var mobileKey: String {
     if KNEnvironment.default == .production {
-      return "mob-5d185228-993b-4283-84fa-4dae640b19b1"
+      return "mob-b1920f08-a232-42a1-8168-4c37b628cbd4"
     }
-    return "mob-23b6e6df-bf90-494b-90e9-85c1d59ab4a2"
+    return "mob-670659ef-ca21-40b5-b2e9-f2e25234cf10"
   }
 
   static var allChainIds: String? {

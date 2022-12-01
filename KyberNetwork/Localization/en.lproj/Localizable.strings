@@ -1007,8 +1007,8 @@
 "broadcasting.transaction" = "Broadcasting Transaction";
 "open.x" = "Open %@";
 "support" = "Support";
-"approval.no.token.found.on.wallet" = "There are no token approvals found on this wallet.";
-"approval.no.token.found.on.network" = "There are no token approvals found on this network.";
+"approval.no.token.found.on.wallet" = "No token approvals found on this wallet.";
+"approval.no.token.found.on.network" = "No token approvals found on this network.";
 
 
 "Checking" = "Checking";

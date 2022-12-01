@@ -84,7 +84,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         toggleUnwrapView.onSwitchValue = { isOn in
             if let viewModel = self.viewModel {
                 viewModel.updateWrapInfo(isUnWrap: isOn)
-                self.receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.toTokenSymbol)
+                self.receiveInfoView.setValue(value: viewModel.receivedInfoString())
                 self.rateView.setValue(value: viewModel.showRateInfo())
                 self.showLoadingHUD()
                 viewModel.fetchData(isUseWrapTokenAddress: true, completion: {
@@ -156,7 +156,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         guard let viewModel = viewModel else { return }
         viewModel.unstakeValue = viewModel.balance
         amountTextField.text = viewModel.unstakeValueString()
-        receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.toTokenSymbol)
+        receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.displaySymbol)
         validateInput()
         updateUINextButton()
         AppDependencies.tracker.track(viewModel.earningType == .lending ? "mob_withdraw_max_amount" : "mob_unstake_max_amount", properties: ["screenid": "earn"])
@@ -243,6 +243,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         guard let viewModel = viewModel, let contractAddress = viewModel.contractAddress else { return }
         let vm = ApproveTokenViewModel(symbol: viewModel.stakingTokenSymbol, tokenAddress: viewModel.stakingTokenAddress, remain: viewModel.stakingTokenAllowance, toAddress: contractAddress, chain: viewModel.chain)
         let vc = ApproveTokenViewController(viewModel: vm)
+        vc.updateGasLimit(viewModel.gasLimitForApprove)
         vc.onDismiss = {
             self.unstakeButtonState = .needApprove
         }
@@ -269,7 +270,7 @@ class UnstakeViewController: InAppBrowsingViewController {
                                                          stakeTokenIcon: viewModel.stakingTokenLogo,
                                                          toTokenIcon:viewModel.toTokenLogo,
                                                          fromSym: viewModel.stakingTokenSymbol,
-                                                         toSym: viewModel.toTokenSymbol,
+                                                         toSym: viewModel.displaySymbol,
                                                          earningType: viewModel.earningType)
                     
                     
