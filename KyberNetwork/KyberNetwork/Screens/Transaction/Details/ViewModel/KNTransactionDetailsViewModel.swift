@@ -724,35 +724,11 @@ struct KrystalTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var fromFieldTitle: String {
-    if self.data.historyItem.type == "Swap" {
-      return "Wallet".toBeLocalised()
-    } else if self.data.historyItem.type == "Received" {
-      return "From Wallet".toBeLocalised()
-    } else if self.data.historyItem.type == "Transfer" {
-      return "Wallet".toBeLocalised()
-    } else if self.data.historyItem.type == "Approval" {
-      return "Wallet".toBeLocalised()
-    } else {
-      return "Wallet".toBeLocalised()
-    }
+      return Strings.From
   }
   
   var toFieldTitle: String {
-    if self.data.historyItem.type == "Swap" {
-      return Strings.contract
-    } else if self.data.historyItem.type == "Received" {
-      return Strings.toWallet
-    } else if self.data.historyItem.type == "Transfer" {
-        if data.historyItem.extraData?.sendToken != nil {
-            return Strings.contract
-        } else {
-            return Strings.toWallet
-        }
-    } else if self.data.historyItem.type == "Approval" {
-      return Strings.contract
-    } else {
-      return Strings.contract
-    }
+      return Strings.To
   }
   
   var transactionTypeImage: UIImage {
