@@ -89,6 +89,7 @@ public class ApproveTokenViewModel {
               guard let nonce = nonce else {
                 return
               }
+              let gasLimit = self.setting.advanced?.gasLimit ?? self.gasLimit
               let legacyTx = LegacyTransaction(
                   value: BigInt(0),
                   address: AppState.shared.currentAddress.addressString,
@@ -96,7 +97,7 @@ public class ApproveTokenViewModel {
                   nonce: nonce,
                   data: hex,
                   gasPrice: gasPrice,
-                  gasLimit: self.setting.gasLimit,
+                  gasLimit: gasLimit,
                   chainID: self.chain.getChainId()
               )
               let signResult = EthereumTransactionSigner().signTransaction(address: AppState.shared.currentAddress, transaction: legacyTx)
@@ -271,7 +272,7 @@ public class ApproveTokenViewController: KNBaseViewController {
     self.gasFeeEstUSDLabel.text = self.viewModel.getFeeUSDString()
   }
   
-  func coordinatorDidUpdateGasLimit(_ gas: BigInt) {
+  public func updateGasLimit(_ gas: BigInt) {
     self.viewModel.gasLimit = gas
     guard self.isViewLoaded else { return }
     updateGasFeeUI()

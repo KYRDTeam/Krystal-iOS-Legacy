@@ -47,6 +47,7 @@ class UnstakeViewModel: BaseViewModel {
     let stakingTokenDecimal: Int
     var toUnderlyingTokenAddress: String
     var stakingTokenAllowance: BigInt = BigInt(0)
+    var gasLimitForApprove: BigInt = AppDependencies.gasConfig.defaultApproveGasLimit
     var contractAddress: String?
     var minUnstakeAmount: BigInt = BigInt(0)
     var maxUnstakeAmount: BigInt = BigInt(0)
@@ -228,9 +229,9 @@ class UnstakeViewModel: BaseViewModel {
                     // check if still enough fee for approve
                     if self.stakingTokenAllowance < self.unstakeValue {
                         let gasPrice = AppDependencies.gasConfig.getStandardGasPrice(chain: AppState.shared.currentChain)
-                        let gasLimit = AppDependencies.gasConfig.defaultApproveGasLimit
-                        let defaultApproveFee = gasLimit * gasPrice
-                        if defaultApproveFee < balance.value {
+                        let gasLimit = self.gasLimitForApprove
+                        let approveFee = gasLimit * gasPrice
+                        if approveFee < balance.value {
                             return
                         }
                     }
@@ -316,7 +317,10 @@ class UnstakeViewModel: BaseViewModel {
                 switch result {
                 case .success(let number):
                     self.stakingTokenAllowance = number
-                    self.configAllowance()
+                    TransactionManager.txProcessor.estimateGasLimitForApprove(tokenAddress: earningToken.address, address: AppState.shared.currentAddress.addressString) { estGasLimit in
+                        self.gasLimitForApprove = estGasLimit
+                        self.configAllowance()
+                    }
                 case .failure(let error):
                     self.delegate?.didGetDataFail(errMsg: error.localizedDescription)
                 }
@@ -342,7 +346,7 @@ class UnstakeViewModel: BaseViewModel {
             }
         }
     }
-    
+
     func configAllowance() {
         if stakingTokenAllowance < unstakeValue {
             //need approve more

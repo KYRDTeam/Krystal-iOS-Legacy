@@ -14,7 +14,7 @@ public struct AllChains {
     name: "Ethereum",
     symbol: "Mainnet",
     endpoint: "https://eth-mainnet.nodereal.io/v1/1659dfb40aa24bbb8153a677b98064d7",
-    endpointKyber: "https://ethereum.kyber.network/v1/mainnet/geth?appId=prod-krystal-ios",
+    endpointKyber: "https://rpc.ankr.com/eth",
     endpointAlchemy: "https://rpc.ankr.com/eth",
     etherScanEndpoint: "https://etherscan.io/",
     webScanName: "Etherscan",
