@@ -14,6 +14,7 @@ import Result
 import KrystalWallets
 import Services
 import AppState
+import TransactionModule
 
 class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   var settings: SwapTransactionSettings {
@@ -61,6 +62,10 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   
   var currentAddress: KAddress {
     return AppDelegate.session.address
+  }
+    
+  var currentChain: ChainType {
+    return AppState.shared.currentChain
   }
   
   var toAmount: BigInt {
@@ -219,9 +224,12 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
 extension SwapSummaryViewModel {
 
   fileprivate func updateTxData(completion: @escaping (TxObject) -> Void) {
-      self.swapRepository.getLatestNonce { nonce in
-          self.buildTx(latestNonce: nonce, completion: completion)
+    TransactionManager.txProcessor.getLatestNonce(address: currentAddress, chain: currentChain) { nonce in
+      guard let nonce = nonce else {
+          return
       }
+      self.buildTx(latestNonce: nonce, completion: completion)
+    }
   }
   
   func buildTx(latestNonce: Int, completion: @escaping (TxObject) -> Void) {

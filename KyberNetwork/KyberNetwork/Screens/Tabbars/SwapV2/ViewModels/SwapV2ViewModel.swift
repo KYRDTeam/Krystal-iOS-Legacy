@@ -11,6 +11,7 @@ import KrystalWallets
 import Result
 import AppState
 import Services
+import TransactionModule
 
 struct SwapV2ViewModelActions {
   var onSelectOpenHistory: () -> ()
@@ -616,7 +617,10 @@ extension SwapV2ViewModel {
     }
 
     func updateTxData(completion: @escaping (TxObject) -> Void) {
-        self.swapRepository.getLatestNonce { nonce in
+        TransactionManager.txProcessor.getLatestNonce(address: currentAddress.value, chain: currentChain.value) { nonce in
+            guard let nonce = nonce else {
+                return
+            }
             self.buildTx(latestNonce: nonce, completion: completion)
         }
     }

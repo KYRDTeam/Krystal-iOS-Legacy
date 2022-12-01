@@ -14,11 +14,7 @@ import AppState
 import Services
 
 class SwapRepository {
-    
-  var session: KNSession {
-    return AppDelegate.session
-  }
-  
+
   let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
   
   func getAllRates(address: String, srcTokenContract: String, destTokenContract: String,
@@ -192,22 +188,7 @@ class SwapRepository {
             completion(BigInt(0), object)
         }
     }
-    
-    func getLatestNonce(completion: @escaping (Int) -> Void) {
-      guard let provider = self.session.externalProvider else {
-        return
-      }
-      provider.getTransactionCount { [weak self] result in
-        guard let `self` = self else { return }
-        switch result {
-        case .success(let res):
-          completion(res)
-        case .failure(let error):
-          self.showError(errorMsg: error.localizedDescription)
-        }
-      }
-    }
-    
+
     func showError(errorMsg: String) {
       UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.showErrorTopBannerMessage(message: errorMsg)
     }
