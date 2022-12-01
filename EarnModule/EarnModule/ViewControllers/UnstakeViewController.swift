@@ -243,6 +243,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         guard let viewModel = viewModel, let contractAddress = viewModel.contractAddress else { return }
         let vm = ApproveTokenViewModel(symbol: viewModel.stakingTokenSymbol, tokenAddress: viewModel.stakingTokenAddress, remain: viewModel.stakingTokenAllowance, toAddress: contractAddress, chain: viewModel.chain)
         let vc = ApproveTokenViewController(viewModel: vm)
+        vc.updateGasLimit(viewModel.gasLimitForApprove)
         vc.onDismiss = {
             self.unstakeButtonState = .needApprove
         }

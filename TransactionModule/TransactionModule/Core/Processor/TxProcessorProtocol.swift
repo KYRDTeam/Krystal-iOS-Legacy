@@ -12,6 +12,7 @@ import Services
 import KrystalWallets
 import Dependencies
 import BigInt
+import AppState
 
 public struct TxProcessResult {
     public var hash: String
@@ -126,6 +127,55 @@ public extension TxProcessorProtocol {
                 completion(nonce)
             default:
                 completion(nil)
+            }
+        }
+    }
+    
+    func buildSignTxForApprove(tokenAddress: String, address: String, completion: @escaping (LegacyTransaction?) -> Void) {
+        let service = EthereumNodeService(chain: AppState.shared.currentChain)
+        service.getSendApproveERC20TokenEncodeData(spender: AppState.shared.currentChain.proxyAddress(), value: TransactionConstants.maxTokenAmount) { result in
+            switch result {
+            case .success(let resp):
+              let gasLimit = AppDependencies.gasConfig.defaultApproveGasLimit
+              let gasPrice = AppDependencies.gasConfig.getStandardGasPrice(chain: AppState.shared.currentChain)
+              
+              let signTransaction = LegacyTransaction(
+                value: BigInt(0),
+                address: address,
+                to: tokenAddress,
+                nonce: 1,
+                data: resp,
+                gasPrice: gasPrice,
+                gasLimit: gasLimit,
+                chainID: AppState.shared.currentChain.getChainId()
+              )
+              completion(signTransaction)
+            case .failure:
+              completion(nil)
+            }
+        }
+    }
+    
+    func estimateGasLimitForApprove(tokenAddress: String, address: String, completion: @escaping (BigInt) -> Void) {
+        let service = EthereumNodeService(chain: AppState.shared.currentChain)
+        buildSignTxForApprove(tokenAddress: tokenAddress, address: address) { signTx in
+            guard let signTx = signTx else { return }
+            
+            let request = KNEstimateGasLimitRequest(
+              from: signTx.address,
+              to: signTx.to,
+              value: signTx.value,
+              data: signTx.data,
+              gasPrice: signTx.gasPrice
+            )
+            
+            service.getEstimateGasLimit(request: request, chain: AppState.shared.currentChain) { result in
+                switch result {
+                case.success(let estGas):
+                  completion(estGas)
+                default:
+                  completion(BigInt(0))
+                }
             }
         }
     }

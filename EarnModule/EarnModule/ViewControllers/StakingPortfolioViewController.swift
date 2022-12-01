@@ -356,7 +356,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         
         let unstakeAction = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
             if earningBalance.toUnderlyingToken.address.lowercased() == Constants.ethAddress.lowercased() && earningType == .staking {
-                self?.showErrorTopBannerMessage(message: Strings.unstakeEthWarningPopupMessage)
+                self?.showUnstakeETHWarning()
                 return
             }
             let viewModel = UnstakeViewModel(earningBalance: earningBalance)
@@ -395,6 +395,23 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         options.maximumButtonWidth = 102
         options.backgroundColor = AppTheme.current.sectionBackgroundColor
         return options
+    }
+    
+    private func showUnstakeETHWarning() {
+        let alertController = KNPrettyAlertController(
+            title: Strings.warning,
+            isWarning: true,
+            message: Strings.unstakeEthWarningPopupMessage,
+            secondButtonTitle: nil,
+            firstButtonTitle: Strings.ok,
+            secondButtonAction: {
+            },
+            firstButtonAction: {
+            }
+        )
+        
+        alertController.popupHeight = 320
+        present(alertController, animated: true, completion: nil)
     }
 }
 
