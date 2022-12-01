@@ -11,6 +11,7 @@
 		7E3E7EA0290A8CF9007F6FCF /* EarnServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7E9F290A8CF9007F6FCF /* EarnServices.swift */; };
 		7E3E7EA3290A8D4E007F6FCF /* EarnPoolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7EA1290A8D4D007F6FCF /* EarnPoolModel.swift */; };
 		7E3E7EA4290A8D4E007F6FCF /* PortfolioStaking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7EA2290A8D4E007F6FCF /* PortfolioStaking.swift */; };
+		7EACF4492935E0A400FF3810 /* GetL1Fee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EACF4482935E0A400FF3810 /* GetL1Fee.swift */; };
 		7EAF4785291B930900BF5D00 /* AllowanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF4784291B930900BF5D00 /* AllowanceService.swift */; };
 		A64C2E0A28F6F204002FD64C /* Rate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E0928F6F204002FD64C /* Rate.swift */; };
 		A64C2E0C28F6F248002FD64C /* SwapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E0B28F6F248002FD64C /* SwapService.swift */; };
@@ -82,6 +83,7 @@
 		7E3E7E9F290A8CF9007F6FCF /* EarnServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnServices.swift; sourceTree = "<group>"; };
 		7E3E7EA1290A8D4D007F6FCF /* EarnPoolModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EarnPoolModel.swift; sourceTree = "<group>"; };
 		7E3E7EA2290A8D4E007F6FCF /* PortfolioStaking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioStaking.swift; sourceTree = "<group>"; };
+		7EACF4482935E0A400FF3810 /* GetL1Fee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetL1Fee.swift; sourceTree = "<group>"; };
 		7EAF4784291B930900BF5D00 /* AllowanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowanceService.swift; sourceTree = "<group>"; };
 		A64C2E0928F6F204002FD64C /* Rate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rate.swift; sourceTree = "<group>"; };
 		A64C2E0B28F6F248002FD64C /* SwapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapService.swift; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 				A64C2EB028F91CA9002FD64C /* GetDecimals.swift */,
 				A64C2EB128F91CA9002FD64C /* GetERC20Balance.swift */,
 				A64C2EB228F91CA9002FD64C /* GetSymbol.swift */,
+				7EACF4482935E0A400FF3810 /* GetL1Fee.swift */,
 			);
 			path = Command;
 			sourceTree = "<group>";
@@ -549,6 +552,7 @@
 				7E3E7E9D290A8C46007F6FCF /* EarnEndpoint.swift in Sources */,
 				A64C2EC628F91DF9002FD64C /* EstimateGasRequest.swift in Sources */,
 				A64C2EEC28F9374A002FD64C /* TokenEndpoint.swift in Sources */,
+				7EACF4492935E0A400FF3810 /* GetL1Fee.swift in Sources */,
 				A64C2EC528F91DF9002FD64C /* GasPriceRequest.swift in Sources */,
 				A64C2E9928F91ADA002FD64C /* EthereumNodeRequest.swift in Sources */,
 				A64C2E1328F6F335002FD64C /* NetworkError.swift in Sources */,

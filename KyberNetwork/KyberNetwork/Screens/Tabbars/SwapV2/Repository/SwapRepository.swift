@@ -10,9 +10,11 @@ import BigInt
 import Moya
 import KrystalWallets
 import Result
+import AppState
+import Services
 
 class SwapRepository {
-  
+
   let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
   
   func getAllRates(address: String, srcTokenContract: String, destTokenContract: String,
@@ -145,4 +147,49 @@ class SwapRepository {
     }
   }
   
+    
+    func buildTx(tx: RawSwapTransaction, completion: @escaping (TransactionResponse) -> Void) {
+      provider.requestWithFilter(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint, useGasToken: tx.useGasToken)) { [weak self] result in
+        guard let `self` = self else { return }
+        switch result {
+        case .success(let resp):
+          let decoder = JSONDecoder()
+          do {
+            let data = try decoder.decode(TransactionResponse.self, from: resp.data)
+            completion(data)
+          } catch {
+            self.showError(errorMsg: Strings.parseTxDataFailed)
+          }
+        case .failure(let error):
+          self.showError(errorMsg: error.localizedDescription)
+        }
+      }
+    }
+    
+    func getL1FeeForTxIfHave(object: TxObject, completion: @escaping (BigInt, TxObject) -> Void) {
+        if AppState.shared.currentChain == .optimism {
+            let service = EthereumNodeService(chain: AppState.shared.currentChain)
+            service.getOPL1FeeEncodeData(for: object.data) { result in
+                switch result {
+                case .success(let encodeString):
+                    service.getOptimismL1Fee(for: encodeString) { feeResult in
+                        switch feeResult {
+                        case .success(let fee):
+                            completion(fee, object)
+                        case .failure(let error):
+                            self.showError(errorMsg: error.localizedDescription)
+                        }
+                    }
+                case .failure(let error):
+                    self.showError(errorMsg: error.localizedDescription)
+                }
+            }
+        } else {
+            completion(BigInt(0), object)
+        }
+    }
+
+    func showError(errorMsg: String) {
+      UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.showErrorTopBannerMessage(message: errorMsg)
+    }
 }

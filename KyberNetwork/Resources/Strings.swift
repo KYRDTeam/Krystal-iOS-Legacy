@@ -129,7 +129,8 @@ struct Strings {
   static let amountToSendGreaterThanZero = "amount.to.send.greater.than.zero".toBeLocalised()
   static let selectToken = "select.token".toBeLocalised()
   static let selectPlatformToSupply = "select.platform.to.supply.x".toBeLocalised()
-  
+  static let buildRawTxFailed = "build.raw.tx.failed".toBeLocalised()
+  static let parseTxDataFailed = "parse.tx.failed".toBeLocalised()
   // Receive screen
   static let receiveWarningText = "receive_screen_warning_text".toBeLocalised()
   static let copy = "copy".toBeLocalised()
