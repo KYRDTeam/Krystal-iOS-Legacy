@@ -9,6 +9,11 @@ import Foundation
 import UIKit
 import Kingfisher
 
+let VERIFIED_TAG   = "VERIFIED"
+let PROMOTION_TAG  = "PROMOTION"
+let SCAM_TAG       = "SCAM"
+let UNVERIFIED_TAG = "UNVERIFIED"
+
 public extension UIImageView {
     
     func loadImage(_ urlString: String?) {
@@ -39,5 +44,20 @@ public extension UIImageView {
       let placeHolderImg = image ?? UIImage(named: "default_token")!
       var url = "https://files.kyberswap.com/DesignAssets/tokens/iOS/\(icon).png"
       self.setImage(urlString: url, symbol: symbol, size)
+    }
+}
+
+public extension UIImage {
+    static func imageWithTag(tag: String) -> UIImage? {
+      if tag == VERIFIED_TAG {
+          return Images.blueTickIcon
+      } else if tag == PROMOTION_TAG {
+          return Images.greenCheckedIcon
+      } else if tag == SCAM_TAG {
+         return Images.warningTagIcon
+      } else if tag == UNVERIFIED_TAG {
+         return nil
+      }
+      return nil
     }
 }
