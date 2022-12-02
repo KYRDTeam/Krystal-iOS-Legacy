@@ -88,6 +88,14 @@ class EarnListViewController: InAppBrowsingViewController {
                 let modelPfSet: Set<EarnPlatform> = Set(element.earnPoolModel.platforms)
                 return modelPfSet.intersection(self.selectedPlatforms).count >= 1
             }
+            
+            displayDataSource.forEach { item in
+                item.filteredPlatform = self.selectedPlatforms
+            }
+        } else {
+            displayDataSource.forEach { item in
+                item.filteredPlatform = nil
+            }
         }
         
         self.emptyView.isHidden = !self.displayDataSource.isEmpty
