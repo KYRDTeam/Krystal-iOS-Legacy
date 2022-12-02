@@ -100,6 +100,7 @@ class EarnListViewController: InAppBrowsingViewController {
         
         self.emptyView.isHidden = !self.displayDataSource.isEmpty
         self.tableView.reloadData()
+        updateUIPlatformFilterButton()
     }
     
     func fetchData(chainId: Int? = nil, isAutoReload: Bool = false) {
@@ -146,6 +147,7 @@ class EarnListViewController: InAppBrowsingViewController {
             if !isAutoReload {
                 self.hideLoading()
             }
+            self.selectedPlatforms = Set(self.getAllPlatform())
             self.reloadUI()
         }
     }
