@@ -91,12 +91,18 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     }
     
     private func updateUIEmptyView() {
-        if viewModel.searchText.isEmpty {
-            emptyIcon.image = Images.emptyDeposit
-            emptyLabel.text = Strings.emptyTokenDeposit
+        guard isViewLoaded else { return }
+        if viewModel.isSupportEarnv2 {
+            if viewModel.searchText.isEmpty {
+                emptyIcon.image = Images.emptyDeposit
+                emptyLabel.text = Strings.emptyTokenDeposit
+            } else {
+                self.emptyIcon.image = Images.emptySearch
+                self.emptyLabel.text = Strings.noRecordFound
+            }
         } else {
-            self.emptyIcon.image = Images.emptySearch
-            self.emptyLabel.text = Strings.noRecordFound
+            emptyIcon.image = Images.emptyDeposit
+            emptyLabel.text = Strings.earnIsCurrentlyNotSupportedOnThisChainYet
         }
         emptyViewContainer.isHidden = !viewModel.isEmpty()
     }
@@ -194,6 +200,14 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     
     private func updateUIPlatformFilterButton() {
         platformFilterButton.setTitle(viewModel.platformFilterButtonTitle, for: .normal)
+    }
+    
+    func updateSupportedEarnv2(_ value: Bool) {
+        guard viewModel.isSupportEarnv2 != value else {
+            return
+        }
+        viewModel.isSupportEarnv2 = value
+        updateUIEmptyView()
     }
 }
 
