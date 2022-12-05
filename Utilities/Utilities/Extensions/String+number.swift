@@ -83,7 +83,7 @@ public extension String {
     }
 }
 
-extension String {
+public extension String {
     func index(from: Int) -> Index {
         return self.index(startIndex, offsetBy: from)
     }
@@ -105,7 +105,7 @@ extension String {
     }
 }
 
-extension String {
+public extension String {
     
     func toBeLocalised() -> String {
         return NSLocalizedString(self, comment: "")
@@ -382,7 +382,7 @@ public extension String {
     }
 }
 
-extension StringProtocol {
+public extension StringProtocol {
     
     public func chunked(into size: Int) -> [SubSequence] {
         var chunks: [SubSequence] = []

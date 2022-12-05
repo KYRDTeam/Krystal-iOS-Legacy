@@ -9,15 +9,12 @@ import Foundation
 import Moya
 import BigInt
 import Utilities
+import Result
 
-public class SwapService {
+public class SwapService: BaseService {
     
     let provider = MoyaProvider<SwapEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    
-    public init() {
-        
-    }
-    
+
     public func getAllRates(chainPath: String, address: String, srcTokenContract: String, destTokenContract: String,
                             amount: BigInt, focusSrc: Bool, completion: @escaping ([Rate]) -> ()) {
         provider.request(.getAllRates(chainPath: chainPath, src: srcTokenContract.lowercased(), dst: destTokenContract.lowercased(),
@@ -36,21 +33,21 @@ public class SwapService {
         }
     }
     
-//    func getExpectedRate(chainPath: String, sourceToken: String, destToken: String, srcAmount: BigInt, hint: String, completion: @escaping (Result<Rate, SwapServiceError>) -> ()) {
-//        let amt = srcAmount.description
-//        provider.request(.getExpectedRate(chainPath: chainPath, src: sourceToken, dst: destToken, srcAmount: amt, hint: hint, isCaching: true)) { result in
-//            switch result {
-//            case .success(let resp):
-//                completion(.success(<#T##Rate#>))
-//            case .failure(let error):
-//                ()
-//            }
-//            if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let rate = json["rate"] as? String, let rateBigInt = BigInt(rate) {
-//                completion(.success(<#T##Rate#>))
-//            } else {
-//                self.rootViewController.coordinatorDidUpdateExpectedRate(from: from, to: to, amount: srcAmount, rate: BigInt(0))
-//            }
-//        }
-//    }
+    public func buildTx(chainPath: String, request: SwapBuildTxRequest, completion: @escaping ((Result<TxObject, AnyError>) -> ())) {
+        provider.request(.buildSwapTx(chainPath: chainPath, address: request.userAddress, src: request.src, dst: request.dest, srcAmount: request.srcQty, minDstAmount: request.minDesQty, gasPrice: request.gasPrice, nonce: request.nonce, hint: request.hint, useGasToken: request.useGasToken)) { result in
+            switch result {
+            case .success(let resp):
+                let decoder = JSONDecoder()
+                do {
+                    let data = try decoder.decode(TransactionResponse.self, from: resp.data)
+                    completion(.success(data.txObject))
+                } catch {
+                    completion(.failure(AnyError(error)))
+                }
+            case .failure(let error):
+                completion(.failure(AnyError(error)))
+            }
+        }
+    }
     
 }

@@ -21,6 +21,11 @@ public struct TxSettingObject {
     public var basic: TxBasicSetting?
     public var advanced: TxAdvancedSetting?
     
+    public init(basic: TxBasicSetting?, advanced: TxAdvancedSetting?) {
+        self.basic = basic
+        self.advanced = advanced
+    }
+    
     public static let `default`: TxSettingObject = .init(basic: .init(), advanced: nil)
     
     public var gasLimit: BigInt {
@@ -57,6 +62,11 @@ public struct TxSettingObject {
 public struct TxBasicSetting {
     public var gasLimit: BigInt = TransactionConstants.defaultGasLimit
     public var gasType: GasSpeed = .regular
+    
+    public init(gasLimit: BigInt = TransactionConstants.defaultGasLimit, gasType: GasSpeed = .regular) {
+        self.gasLimit = gasLimit
+        self.gasType = gasType
+    }
 }
 
 public struct TxAdvancedSetting {
@@ -64,4 +74,11 @@ public struct TxAdvancedSetting {
     public var maxFee: BigInt
     public var maxPriorityFee: BigInt
     public var nonce: Int
+    
+    public init(gasLimit: BigInt, maxFee: BigInt, maxPriorityFee: BigInt, nonce: Int) {
+        self.gasLimit = gasLimit
+        self.maxFee = maxFee
+        self.maxPriorityFee = maxPriorityFee
+        self.nonce = nonce
+    }
 }

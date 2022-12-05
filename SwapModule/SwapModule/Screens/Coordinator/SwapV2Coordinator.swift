@@ -57,13 +57,13 @@ public class SwapCoordinator: NSObject, Coordinator {
     }
     
     func openSwapConfirm(object: SwapObject) {
-//        let viewModel = SwapSummaryViewModel(swapObject: object)
-//        let swapSummaryVC = SwapSummaryViewController(viewModel: viewModel)
+        let viewModel = SwapSummaryViewModel(swapObject: object)
+        let swapSummaryVC = SwapSummaryViewController(viewModel: viewModel)
 //        swapSummaryVC.delegate = rootViewController
-//        let nav = UINavigationController(rootViewController: swapSummaryVC)
-//        nav.modalPresentationStyle = .overFullScreen
-//        self.rootViewController.present(nav, animated: true)
-//        AppDependencies.tracker.track("swap_confirm_pop_up_open", properties: ["screenid": "swap_confirm_pop_up"])
+        let nav = UINavigationController(rootViewController: swapSummaryVC)
+        nav.modalPresentationStyle = .overFullScreen
+        self.rootViewController.present(nav, animated: true)
+        AppDependencies.tracker.track("swap_confirm_pop_up_open", properties: ["screenid": "swap_confirm_pop_up"])
     }
     
     func openTransactionSettings(gasLimit: BigInt, rate: Rate?, settings: SwapTransactionSettings) {

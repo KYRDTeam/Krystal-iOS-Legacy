@@ -61,6 +61,13 @@
 		A6604D8E293D9B3300F6B51E /* TransactionSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6604D8D293D9B3300F6B51E /* TransactionSettingsViewModel.swift */; };
 		A6604D90293D9CE600F6B51E /* SettingBasicAdvancedFormCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6604D8F293D9CE600F6B51E /* SettingBasicAdvancedFormCellModel.swift */; };
 		A6604D92293D9D1D00F6B51E /* SettingAdvancedModeFormCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6604D91293D9D1D00F6B51E /* SettingAdvancedModeFormCellModel.swift */; };
+		A6604D95293DDD7400F6B51E /* SwapSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6604D93293DDD7400F6B51E /* SwapSummaryViewController.swift */; };
+		A6604D96293DDD7400F6B51E /* SwapSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6604D94293DDD7400F6B51E /* SwapSummaryViewController.xib */; };
+		A6604D98293DDD9000F6B51E /* SwapSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6604D97293DDD9000F6B51E /* SwapSummaryViewModel.swift */; };
+		A6604D9A293DE61B00F6B51E /* RawSwapTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6604D99293DE61B00F6B51E /* RawSwapTransaction.swift */; };
+		A6604D9E293DF0F500F6B51E /* PendingSwapTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6604D9D293DF0F500F6B51E /* PendingSwapTxInfo.swift */; };
+		A6C256CA293DF80800D4B2BE /* SwapProcessPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6C256C8293DF80800D4B2BE /* SwapProcessPopup.xib */; };
+		A6C256CB293DF80800D4B2BE /* SwapProcessPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C256C9293DF80800D4B2BE /* SwapProcessPopup.swift */; };
 		A915E2B24411BEFE1D1E6646 /* Pods_SwapModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CADA989BD9B33A878DEA071 /* Pods_SwapModule.framework */; };
 /* End PBXBuildFile section */
 
@@ -123,6 +130,13 @@
 		A6604D8D293D9B3300F6B51E /* TransactionSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSettingsViewModel.swift; sourceTree = "<group>"; };
 		A6604D8F293D9CE600F6B51E /* SettingBasicAdvancedFormCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingBasicAdvancedFormCellModel.swift; sourceTree = "<group>"; };
 		A6604D91293D9D1D00F6B51E /* SettingAdvancedModeFormCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingAdvancedModeFormCellModel.swift; sourceTree = "<group>"; };
+		A6604D93293DDD7400F6B51E /* SwapSummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapSummaryViewController.swift; sourceTree = "<group>"; };
+		A6604D94293DDD7400F6B51E /* SwapSummaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwapSummaryViewController.xib; sourceTree = "<group>"; };
+		A6604D97293DDD9000F6B51E /* SwapSummaryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapSummaryViewModel.swift; sourceTree = "<group>"; };
+		A6604D99293DE61B00F6B51E /* RawSwapTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawSwapTransaction.swift; sourceTree = "<group>"; };
+		A6604D9D293DF0F500F6B51E /* PendingSwapTxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingSwapTxInfo.swift; sourceTree = "<group>"; };
+		A6C256C8293DF80800D4B2BE /* SwapProcessPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwapProcessPopup.xib; sourceTree = "<group>"; };
+		A6C256C9293DF80800D4B2BE /* SwapProcessPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapProcessPopup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -263,6 +277,8 @@
 				A6512F3928F6D1C900A84BC2 /* SwapTransactionSettings.swift */,
 				A64C2E7428F910D3002FD64C /* KNSelectedGasPriceType.swift */,
 				A62F0EFD29360EFE00937677 /* AdvancedInputError.swift */,
+				A6604D99293DE61B00F6B51E /* RawSwapTransaction.swift */,
+				A6604D9D293DF0F500F6B51E /* PendingSwapTxInfo.swift */,
 			);
 			name = Models;
 			path = Screens/Models;
@@ -281,6 +297,7 @@
 			isa = PBXGroup;
 			children = (
 				A6512F3D28F6D1C900A84BC2 /* SwapPlatformItemViewModel.swift */,
+				A6604D97293DDD9000F6B51E /* SwapSummaryViewModel.swift */,
 				A6512F3E28F6D1C900A84BC2 /* SwapInfoViewModelProtocol.swift */,
 				A6512F3F28F6D1C900A84BC2 /* SwapV2ViewModel.swift */,
 			);
@@ -291,6 +308,10 @@
 		A6512F4128F6D1C900A84BC2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A6C256C9293DF80800D4B2BE /* SwapProcessPopup.swift */,
+				A6C256C8293DF80800D4B2BE /* SwapProcessPopup.xib */,
+				A6604D93293DDD7400F6B51E /* SwapSummaryViewController.swift */,
+				A6604D94293DDD7400F6B51E /* SwapSummaryViewController.xib */,
 				A6512F4328F6D1C900A84BC2 /* SwapV2PlatformCell.xib */,
 				A6512F4428F6D1C900A84BC2 /* SwapV2PlatformCell.swift */,
 				A6512F4728F6D1C900A84BC2 /* SwapV2ViewController.swift */,
@@ -416,6 +437,7 @@
 				A62F0EF229360A6C00937677 /* SettingBasicAdvancedFormCell.xib in Resources */,
 				A6512F6128F6D1C900A84BC2 /* SwapInfoView.xib in Resources */,
 				A64C2E3128F7B8AE002FD64C /* Localizable.strings in Resources */,
+				A6C256CA293DF80800D4B2BE /* SwapProcessPopup.xib in Resources */,
 				A6512F5B28F6D1C900A84BC2 /* SwapV2PlatformCell.xib in Resources */,
 				A62F0EF029360A6C00937677 /* SettingBasicModeCell.xib in Resources */,
 				A6512F6028F6D1C900A84BC2 /* SwapV2ViewController.xib in Resources */,
@@ -426,6 +448,7 @@
 				A64C2E8E28F915E1002FD64C /* rocket.json in Resources */,
 				A62F0EED29360A6C00937677 /* SettingAdvancedModeFormCell.xib in Resources */,
 				A62F0EFC29360A6C00937677 /* TransactionSettingsViewController.xib in Resources */,
+				A6604D96293DDD7400F6B51E /* SwapSummaryViewController.xib in Resources */,
 				A62F0EF629360A6C00937677 /* SettingSegmentedCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -464,9 +487,11 @@
 			files = (
 				A62F0EEC29360A6C00937677 /* SettingBasicAdvancedFormCell.swift in Sources */,
 				A62F0EF129360A6C00937677 /* SettingBasicModeCell.swift in Sources */,
+				A6604D95293DDD7400F6B51E /* SwapSummaryViewController.swift in Sources */,
 				A6512F5128F6D1C900A84BC2 /* SwapState.swift in Sources */,
 				A6512F6628F6D1C900A84BC2 /* SwapV2Coordinator.swift in Sources */,
 				A6512F5628F6D1C900A84BC2 /* SwapPlatformItemViewModel.swift in Sources */,
+				A6604D9A293DE61B00F6B51E /* RawSwapTransaction.swift in Sources */,
 				A64C2E7528F910D3002FD64C /* KNSelectedGasPriceType.swift in Sources */,
 				A62F0EFA29360A6C00937677 /* ExpertModeWarningViewController.swift in Sources */,
 				A64C2E5528F812A5002FD64C /* Images.swift in Sources */,
@@ -475,9 +500,11 @@
 				A6512F5428F6D1C900A84BC2 /* SwapTransactionSettings.swift in Sources */,
 				A62F0EF729360A6C00937677 /* SlippageRateCell.swift in Sources */,
 				A64C2E3328F7B8D3002FD64C /* Strings.swift in Sources */,
+				A6604D9E293DF0F500F6B51E /* PendingSwapTxInfo.swift in Sources */,
 				A64C2E5128F7FF55002FD64C /* Constants.swift in Sources */,
 				A62F0EEE29360A6C00937677 /* SettingAdvancedModeFormCell.swift in Sources */,
 				A6512F5F28F6D1C900A84BC2 /* SwapV2ViewController.swift in Sources */,
+				A6604D98293DDD9000F6B51E /* SwapSummaryViewModel.swift in Sources */,
 				A6512F5328F6D1C900A84BC2 /* SwapError.swift in Sources */,
 				A62F0EF429360A6C00937677 /* SettingSegmentedCell.swift in Sources */,
 				A6512F5728F6D1C900A84BC2 /* SwapInfoViewModelProtocol.swift in Sources */,
@@ -485,6 +512,7 @@
 				A62F0EFE29360EFE00937677 /* AdvancedInputError.swift in Sources */,
 				A6512F6428F6D1C900A84BC2 /* SwapInfoView.swift in Sources */,
 				A6512F6728F6D1C900A84BC2 /* SwapObject.swift in Sources */,
+				A6C256CB293DF80800D4B2BE /* SwapProcessPopup.swift in Sources */,
 				A6512F5828F6D1C900A84BC2 /* SwapV2ViewModel.swift in Sources */,
 				A62F0EF929360A6C00937677 /* TransactionSettingsViewController.swift in Sources */,
 				A62F0EFB29360A6C00937677 /* BigInt+SwapSettings.swift in Sources */,
