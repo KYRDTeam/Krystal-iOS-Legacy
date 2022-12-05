@@ -5,6 +5,7 @@ import BigInt
 import Moya
 import KrystalWallets
 import AppState
+import SwapModule
 
 class KNAppCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
@@ -22,7 +23,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   
   internal var loadBalanceCoordinator: KNLoadBalanceCoordinator?
 
-  internal var swapV2Coordinator: SwapV2Coordinator?
+    internal var swapV2Coordinator: SwapCoordinator?
 //  internal var balanceTabCoordinator: KNBalanceTabCoordinator?
   internal var overviewTabCoordinator: OverviewCoordinator?
   internal var settingsCoordinator: KNSettingsCoordinator?

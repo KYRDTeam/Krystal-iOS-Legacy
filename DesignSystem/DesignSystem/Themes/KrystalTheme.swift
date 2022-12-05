@@ -25,4 +25,6 @@ struct KrystalTheme: ThemeProtocol {
     var warningTextColor: UIColor = #colorLiteral(red: 0.9490196078, green: 0.7450980392, blue: 0.2156862745, alpha: 1)
     var infoTextColor: UIColor = #colorLiteral(red: 0.04705882353, green: 0.7843137255, blue: 0.9450980392, alpha: 1)
     var orangeColor: UIColor = #colorLiteral(red: 0.9725490196, green: 0.6235294118, blue: 0.3137254902, alpha: 1)
+    var placeholderTextColor: UIColor = #colorLiteral(red: 0.6431372549, green: 0.7098039216, blue: 0.7333333333, alpha: 1)
+    var navigationButtonBackgroundColor: UIColor = #colorLiteral(red: 0.2941176471, green: 0.3098039216, blue: 0.3058823529, alpha: 1)
 }

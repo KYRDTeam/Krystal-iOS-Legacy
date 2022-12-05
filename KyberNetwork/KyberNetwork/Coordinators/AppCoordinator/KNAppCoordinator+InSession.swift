@@ -6,6 +6,7 @@ import KrystalWallets
 import Dependencies
 import AppState
 import TransactionModule
+import SwapModule
 
 // MARK: This file for handling in session
 extension KNAppCoordinator {
@@ -69,7 +70,7 @@ extension KNAppCoordinator {
     self.addCoordinator(self.settingsCoordinator!)
     self.settingsCoordinator?.start()
     
-  self.swapV2Coordinator = SwapV2Coordinator()
+      self.swapV2Coordinator = SwapModule.createSwapCoordinator()
   self.swapV2Coordinator?.start()
   self.swapV2Coordinator?.navigationController.tabBarItem = UITabBarItem(
     title: nil,

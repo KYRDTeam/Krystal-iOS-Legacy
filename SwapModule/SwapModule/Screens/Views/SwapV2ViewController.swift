@@ -8,11 +8,11 @@
 import UIKit
 import Lottie
 import BigInt
-import DesignSystem
-import Utilities
 import BaseModule
+import DesignSystem
 import AppState
 import Dependencies
+import Utilities
 
 class SwapV2ViewController: InAppBrowsingViewController {
     @IBOutlet weak var platformTableView: UITableView!
@@ -97,6 +97,12 @@ class SwapV2ViewController: InAppBrowsingViewController {
         configureViews()
         resetViews()
         bindViewModel()
+        viewModel.onViewLoaded()
+    }
+    
+    override func handleAddWalletTapped() {
+        super.handleAddWalletTapped()
+        AppDependencies.tracker.track("swap_connect_wallet", properties: ["screenid": "swap"])
     }
     
     override func handleWalletButtonTapped() {
@@ -589,7 +595,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
         sourceTextField.resignFirstResponder()
         if viewModel.isSourceTokenQuote {
             showSuccessTopBannerMessage(
-                message: String(format: Strings.swapSmallAmountOfQuoteTokenUsedForFee, AppState.shared.currentChain.customRPC().quoteToken)
+                message: String(format: Strings.swapSmallAmountOfQuoteTokenUsedForFee, AppState.shared.currentChain.quoteToken())
             )
         }
         onSourceAmountChange(value: allBalanceText)
@@ -698,7 +704,7 @@ extension SwapV2ViewController {
         
         if amountToChange > viewModel.maxAvailableSourceTokenAmount && amountToChange <= sourceBalance {
             showSuccessTopBannerMessage(
-                message: String(format: Strings.swapSmallAmountOfQuoteTokenUsedForFee, AppState.shared.currentChain.customRPC().quoteToken)
+                message: String(format: Strings.swapSmallAmountOfQuoteTokenUsedForFee, AppState.shared.currentChain.quoteToken())
             )
             sourceTextField.text = NumberFormatUtils.amount(value: viewModel.maxAvailableSourceTokenAmount, decimals: sourceToken.decimals)
             viewModel.sourceAmount.value = viewModel.maxAvailableSourceTokenAmount
