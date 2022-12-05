@@ -19,6 +19,7 @@ class StakingPortfolioViewModel {
     var error: Observable<Error?> = .init(nil)
     var isLoading: Observable<Bool> = .init(true)
     var selectedPlatforms: Set<EarnPlatform> = Set()
+    var isSupportEarnv2: Bool = true
     
     func cleanAllData() {
         dataSource.value.0.removeAll()

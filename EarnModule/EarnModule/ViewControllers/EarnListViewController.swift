@@ -35,6 +35,7 @@ class EarnListViewController: InAppBrowsingViewController {
     var timer: Timer?
     var currentSelectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : AppState.shared.currentChain
     var selectedPlatforms: Set<EarnPlatform>!
+    var isSupportEarnv2: Observable<Bool> = .init(true)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,6 +104,7 @@ class EarnListViewController: InAppBrowsingViewController {
         }
         
         self.emptyView.isHidden = !self.displayDataSource.isEmpty
+        self.isSupportEarnv2.value = !self.displayDataSource.isEmpty
         self.tableView.reloadData()
         updateUIPlatformFilterButton()
     }
