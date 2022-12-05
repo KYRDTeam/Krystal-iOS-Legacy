@@ -34,6 +34,12 @@ class StakingPortfolioViewModel {
         guard let data = portfolio else {
             return
         }
+        
+        let allPlatform = getAllPlatform()
+        
+        if !selectedPlatforms.isSubset(of: allPlatform) {
+            selectedPlatforms = allPlatform
+        }
 
         var output: [StakingPortfolioCellModel] = []
         var pending: [StakingPortfolioCellModel] = []
