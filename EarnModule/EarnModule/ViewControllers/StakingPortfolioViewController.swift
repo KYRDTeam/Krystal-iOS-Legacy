@@ -169,7 +169,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     }
     
     func requestClaim(pendingUnstake: PendingUnstake) {
-        AppDependencies.tracker.track("mob_portfolio_claim", properties: ["screenid": "earn"])
+        AppDependencies.tracker.track("mob_portfolio_claim", properties: ["screenid": "earn_v2"])
         let viewModel = StakingConfirmClaimPopupViewModel(pendingUnstake: pendingUnstake)
         TxConfirmPopup.show(onViewController: self, withViewModel: viewModel) { [weak self] pendingTx in
             let vc = ClaimTxStatusPopup.instantiateFromNib()
@@ -222,7 +222,6 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
             guard let self = self else { return }
             guard let pendingUnstake = cm.pendingUnstake else { return }
             self.requestClaim(pendingUnstake: pendingUnstake)
-            AppDependencies.tracker.track("mob_portfolio_claim_confirm", properties: ["screenid": "earn"])
         }
         return cell
     }
