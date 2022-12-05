@@ -15,6 +15,7 @@ import QRCodeReaderViewController
 import MBProgressHUD
 import WalletConnectSwift
 import KrystalWallets
+import Dependencies
 
 class MultiSendCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
@@ -159,7 +160,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
         
       }
     case .openHistory:
-      self.delegate?.sendTokenViewCoordinatorSelectOpenHistoryList()
+      AppDependencies.router.openTransactionHistory()
     case .useLastMultisend:
       break
     }
@@ -168,7 +169,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   fileprivate func openConfirmViewAfterRequestBuildTx(items: [MultiSendItem], nonce: String) {
     self.requestBuildTx(items: items) { object in
       guard let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16), !gasLimit.isZero else {
-        self.openConfirmViewAfterRequestBuildTx(items: items, nonce: nonce)
+          self.navigationController.showTopBannerView(message: Strings.estGasErrorMessage)
         return
       }
       self.processingTx = object

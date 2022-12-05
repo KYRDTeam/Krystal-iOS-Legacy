@@ -982,6 +982,7 @@
 "wc.disconnect" = "Disconnect";
 "wc.disconnect.confirm" = "Are you sure to disconnect from this dapp?";
 "wc.not.support.watch.wallet" = "You are using watch wallet";
+"wc.not.support.this.network" = "Wallet Connect is not supported on this network";
 
 // Wallet list
 "backup.wallet.warning.message" = "NEVER share Keystore/Private Key/Mnemonic with anyone (including Krystal). These data grant access to all your funds and they may get stolen";
@@ -994,7 +995,7 @@
 "no.tokens.deposited" = "No tokens deposited yet.";
 
 // Approval
-"approval.search.placeholder" = "Token name, symbol, address";
+"approval.search.placeholder" = "Search token, spender";
 "approval.menu.title" = "Token Approvals";
 "unlimited.allowance" = "Unlimited";
 "total.allowance" = "Total Allowance";
@@ -1006,8 +1007,8 @@
 "broadcasting.transaction" = "Broadcasting Transaction";
 "open.x" = "Open %@";
 "support" = "Support";
-"approval.no.token.found.on.wallet" = "There are no token approvals found on this wallet.";
-"approval.no.token.found.on.network" = "There are no token approvals found on this network.";
+"approval.no.token.found.on.wallet" = "No token approvals found on this wallet.";
+"approval.no.token.found.on.network" = "No token approvals found on this network.";
 
 
 "Checking" = "Checking";
@@ -1016,3 +1017,6 @@
 "You will receive" = "You will receive";
 "Rate" = "Rate";
 "Network Fee" = "Network Fee";
+"can.not.est.gas" = "Can not estimate gas limit for this transaction";
+"build.raw.tx.failed" = "Build raw Tx failed";
+"parse.tx.failed" = "Parse Tx data failed";

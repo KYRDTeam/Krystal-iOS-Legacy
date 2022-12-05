@@ -35,6 +35,7 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
     let token: Token
     let platform: EarnPlatform
     let displayInfo: StakeDisplayInfo
+    let earningType: EarningType
     
     var shouldDiplayLoading: Observable<Bool> = .init(false)
 
@@ -45,10 +46,16 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
         self.displayInfo = displayInfo
         self.txObject = txObject
         self.setting = setting
+        self.earningType = .init(value: platform.type)
     }
     
     var title: String {
-        return Strings.stakeSummary
+        switch earningType {
+        case .staking:
+            return Strings.stakeSummary
+        case .lending:
+            return Strings.supplySummary
+        }
     }
     
     var chain: ChainType {
@@ -56,7 +63,12 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var action: String {
-        return Strings.youAreStaking
+        switch earningType {
+        case .staking:
+            return Strings.youAreStaking
+        case .lending:
+            return Strings.youAreSupplying
+        }
     }
     
     var tokenIconURL: String {
@@ -72,7 +84,12 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var buttonTitle: String {
-        return Strings.confirmStake
+        switch earningType {
+        case .staking:
+            return Strings.confirmStake
+        case .lending:
+            return Strings.confirmSupply
+        }
     }
     
     var rows: [TxInfoRowData] {
@@ -117,7 +134,8 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
                     eip1559Tx: txResult.eip1559Tx,
                     chain: self.currentChain,
                     date: Date(),
-                    hash: txResult.hash
+                    hash: txResult.hash,
+                    earningType: self.earningType
                 )
                 TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
                 self.onSuccess(pendingTx)

@@ -369,6 +369,47 @@ public class EthereumNodeService {
         }
     }
     
+    public func getOPL1FeeEncodeData(for data: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+        let request = GetOPL1FeeEncode(data: data)
+        web3?.request(request: request) { result in
+          switch result {
+          case .success(let data):
+            completion(.success(data))
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
+        }
+    }
+    
+    public func getOPL1FeeDecodeData(from feeData: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+        let request = GetOPL1FeeDecode(data: feeData)
+        web3?.request(request: request) { result in
+          switch result {
+          case .success(let res):
+            completion(.success(BigInt(res) ?? BigInt()))
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
+        }
+    }
+    
+    public func getOptimismL1Fee(for data: String, completion:  @escaping (Result<BigInt, AnyError>) -> Void) {
+        let optimismGetL1FeeContract = "0x420000000000000000000000000000000000000f"
+        let request = EtherServiceAlchemyRequest(
+            batch: BatchFactory().create(CallRequest(to: optimismGetL1FeeContract, data: data)), chain: self.chain
+        )
+        Session.send(request) { result in
+          DispatchQueue.main.async {
+            switch result {
+            case .success(let dataString):
+              self.getOPL1FeeDecodeData(from: dataString, completion: completion)
+            case .failure(let error):
+              completion(.failure(AnyError(error)))
+            }
+          }
+        }
+    }
+    
     public func getEstimateGasLimit(request: KNEstimateGasLimitRequest, chain: ChainType, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
         Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request), chain: chain)) { result in
             switch result {

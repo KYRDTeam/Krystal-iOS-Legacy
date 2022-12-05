@@ -129,7 +129,8 @@ struct Strings {
   static let amountToSendGreaterThanZero = "amount.to.send.greater.than.zero".toBeLocalised()
   static let selectToken = "select.token".toBeLocalised()
   static let selectPlatformToSupply = "select.platform.to.supply.x".toBeLocalised()
-  
+  static let buildRawTxFailed = "build.raw.tx.failed".toBeLocalised()
+  static let parseTxDataFailed = "parse.tx.failed".toBeLocalised()
   // Receive screen
   static let receiveWarningText = "receive_screen_warning_text".toBeLocalised()
   static let copy = "copy".toBeLocalised()
@@ -289,6 +290,7 @@ struct Strings {
   static let wcDisconnectConfirm = "wc.disconnect.confirm".toBeLocalised()
   static let wcCancel = "wc.cancel".toBeLocalised()
   static let wcNotSupportWatchWallet = "wc.not.support.watch.wallet".toBeLocalised()
+  static let wcNotSupportedNetwork = "wc.not.support.this.network".toBeLocalised()
   
   // Wallet list
   static let backupWalletWarningMessage = "backup.wallet.warning.message".toBeLocalised()
@@ -306,6 +308,8 @@ struct Strings {
   static let youWillReceive = "You will receive".toBeLocalised()
   static let rate = "Rate".toBeLocalised()
   static let networkFee = "Network Fee".toBeLocalised()
+    
+    static let estGasErrorMessage = "can.not.est.gas".toBeLocalised()
     
     // Approval
     static let approvalSearchPlaceholder = "approval.search.placeholder".toBeLocalised()

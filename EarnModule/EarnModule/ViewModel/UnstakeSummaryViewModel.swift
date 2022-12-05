@@ -45,7 +45,12 @@ class UnstakeSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var title: String {
-        return Strings.unStakeSummary
+        switch displayInfo.earningType {
+        case .staking:
+            return Strings.unStakeSummary
+        case .lending:
+            return Strings.withdrawSummary
+        }
     }
     
     var chain: ChainType {
@@ -53,7 +58,12 @@ class UnstakeSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var action: String {
-        return Strings.youAreUnstaking
+        switch displayInfo.earningType {
+        case .staking:
+            return Strings.youAreUnstaking
+        case .lending:
+            return Strings.youAreWithdrawing
+        }
     }
     
     var tokenIconURL: String {
@@ -61,7 +71,7 @@ class UnstakeSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var tokenAmountString: String {
-        return displayInfo.amount + " " + displayInfo.fromSym
+        return displayInfo.amount + " " + displayInfo.toSym
     }
     
     var platformName: String {
@@ -69,7 +79,12 @@ class UnstakeSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var buttonTitle: String {
-        return Strings.confirmUnstake
+        switch displayInfo.earningType {
+        case .staking:
+            return Strings.confirmUnstake
+        case .lending:
+            return Strings.confirmWithdraw
+        }
     }
     
     var rows: [TxInfoRowData] {
@@ -128,7 +143,7 @@ extension UnstakeSummaryViewModel {
             switch result {
             case .success:
                 if let signedData = EIP1559TransactionSigner().signTransaction(address: self.currentAddress, eip1559Tx: eip1559Tx) {
-                    TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: self.currentChain) { result in
+                    TransactionManager.txProcessor.sendTx(data: signedData, chain: self.currentChain) { result in
                         switch result {
                         case .success(let hash):
                             let pendingTx = PendingUnstakeTxInfo(platform: self.platform,
@@ -178,7 +193,7 @@ extension UnstakeSummaryViewModel {
                 let signResult = EthereumTransactionSigner().signTransaction(address: self.currentAddress, transaction: legacyTx)
                 switch signResult {
                 case .success(let signedData):
-                    TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: self.currentChain) { result in
+                    TransactionManager.txProcessor.sendTx(data: signedData, chain: self.currentChain) { result in
                         switch result {
                         case .success(let hash):
                             let pendingTx = PendingUnstakeTxInfo(platform: self.platform,

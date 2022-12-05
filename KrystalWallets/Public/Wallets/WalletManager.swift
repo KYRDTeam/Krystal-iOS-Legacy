@@ -147,7 +147,7 @@ public extension WalletManager {
       keyManager.save(value: newPassword, forKey: importedWallet.identifier)
       let wallet = WalletObject(id: importedWallet.identifier, importType: .privateKey, name: name)
       let account = try importedWallet.getAccount(password: "", coin: addressType.coinType)
-      let address = AddressObject(walletID: wallet.id, addressType: addressType, address: account.address, name: name)
+        let address = AddressObject(walletID: wallet.id, addressType: addressType, address: account.address.lowercased(), name: name)
       
       let existedAddresses = self.getAllAddresses(addresses: [account.address])
         

@@ -2,22 +2,28 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:KyberNetwork.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:AppState/AppState.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Dependencies/Dependencies.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:BaseWallet/BaseWallet.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:TokenModule/TokenModule.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:TransactionModule/TransactionModule.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Services/Services.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Dependencies/Dependencies.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:EarnModule/EarnModule.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:AppState/AppState.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:KyberNetwork.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:SwapModule/SwapModule.xcodeproj">
@@ -29,16 +35,10 @@
       location = "group:BaseModule/BaseModule.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:BaseWallet/BaseWallet.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:AppState/AppState.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Utilities/Utilities.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:EarnModule/EarnModule.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

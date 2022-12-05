@@ -465,47 +465,8 @@ extension ChainType {
   
 }
 
-enum CurrencyMode: Int {
-  case usd = 0
-  case eth
-  case btc
-  case quote
-
-  func symbol() -> String {
-    switch self {
-    case .usd:
-      return "$"
-    case .btc:
-      return "₿"
-    case .eth:
-      return "⧫"
-    case .quote:
-      return ""
-    }
-  }
-
-  func suffixSymbol() -> String {
-    switch self {
-    case .quote:
-      return " \(KNGeneralProvider.shared.currentChain.customRPC().quoteToken)"
-    default:
-      return ""
-    }
-  }
-
-  func toString() -> String {
-    switch self {
-    case .eth:
-      return "eth"
-    case .usd:
-      return "usd"
-    case .btc:
-      return "btc"
-    case .quote:
-      return KNGeneralProvider.shared.currentChain.customRPC().quoteToken.lowercased()
-    }
-  }
-
+extension CurrencyMode {
+  
   func decimalNumber() -> Int {
     switch self {
     case .eth:
@@ -518,8 +479,5 @@ enum CurrencyMode: Int {
       return DecimalNumber.quote
     }
   }
-
-  var isQuoteCurrency: Bool {
-    return self == .quote
-  }
+  
 }

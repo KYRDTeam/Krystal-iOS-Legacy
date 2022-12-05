@@ -288,7 +288,7 @@ class ApproveTokenViewController: KNBaseViewController {
   @IBOutlet weak var editButton: UIButton!
   @IBOutlet weak var chainIcon: UIImageView!
   @IBOutlet weak var chainLabel: UILabel!
-  
+  var onDismiss: (() -> Void)? = nil
   var viewModel: ApproveTokenViewModel
   let transitor = TransitionDelegate()
   weak var delegate: ApproveTokenViewControllerDelegate?
@@ -365,10 +365,12 @@ class ApproveTokenViewController: KNBaseViewController {
   }
 
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
+    onDismiss?()
     self.dismiss(animated: true, completion: nil)
   }
 
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
+    onDismiss?()
     self.dismiss(animated: true, completion: nil)
   }
   

@@ -38,8 +38,10 @@
 "my.portfolio" = "My Portfolio";
 "close" = "Close";
 "edit" = "Edit";
+"supplying.in.progress" = "Supplying In Progress";
 "staking.in.progress" = "Staking In Progress";
 "unstake.in.progress" = "Unstaking In Progress";
+"withdraw.in.progress" = "Withdrawing In Progress";
 "approve.in.progress" = "Approving In Progress";
 "success" = "Success";
 "tx.failed" = "Transaction failed";
@@ -59,4 +61,33 @@
 "you.will.receive.your.in" = "You will receive your %@ in %@";
 "use.amount.of.quote.token.for.fee.message" = "A small amount of %@ will be used for transaction fee";
 "your.staking.balance.is.not.suffcient" = "Your staking balance is not sufficient";
+"connect.wallet" = "Connect Wallet";
 "insufficient.quote.balance" = "Insufficient %@ balance";
+"all.networks" = "All Networks";
+
+"supply" = "Supply";
+"withdraw" = "Withdraw";
+
+"stake.x.on.y" = "Stake %@ on %@";
+"supply.x.on.y" = "Supply %@ on %@";
+
+"confirm.supply" = "Confirm Supply";
+"supply.now" = "Supply Now";
+"available.to.supply" = "Available to supply: ";
+"available.to.stake" = "Available to stake: ";
+"staking.projections" = "Staking Projections";
+"supplying.projections" = "Supplying Projections";
+"you.are.supplying" = "You are supplying";
+"approve.fail" = "Approve fail";
+"supply.summary" = "Supply Summary";
+"available.to.unstake" = "Available to unstake";
+"available.to.withdraw" = "Available to withdraw";
+"withdraw.summary" = "Withdraw Summary";
+"you.are.withdrawing" = "You are withdrawing";
+"confirm.withdraw" = "Confirm withdraw";
+"my.supply" = "My supply";
+"unstaking.in.progress" = "Unstaking in progress";
+"unwrap.token" = "Unwrap %@";
+"unstake.eth.warning.pop.up" = "Currently, unstaking is not available, as this functionality is not yet supported by Ethereum.\nUnstaking will be enabled after the Shanghai upgrade that will follow The Merge in approximately 6-12 months (~Q2/Q3 2023)";
+"all.platforms" = "All Platforms";
+"warning" = "Warning";

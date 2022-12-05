@@ -12,6 +12,7 @@ import Services
 import KrystalWallets
 import Dependencies
 import BigInt
+import AppState
 
 public struct TxProcessResult {
     public var hash: String
@@ -20,15 +21,20 @@ public struct TxProcessResult {
 }
 
 public protocol TxProcessorProtocol {
+    var txSender: TxNodeSenderProtocol { get set }
     func hasPendingTx() -> Bool
     func observePendingTxListChanged()
     func process(address: KAddress, chain: ChainType, txObject: TxObject, setting: TxSettingObject,
                  completion: @escaping (Result<TxProcessResult, TxError>) -> Void)
-    func sendTxToNode(data: Data, chain: ChainType, completion: @escaping (Result<String, AnyError>) -> Void)
+    func sendTx(data: Data, chain: ChainType, completion: @escaping (Result<String, AnyError>) -> Void)
     func savePendingTx(txInfo: PendingTxInfo)
 }
 
 public extension TxProcessorProtocol {
+    
+    func sendTx(data: Data, chain: ChainType, completion: @escaping (Result<String, AnyError>) -> Void) {
+        txSender.sendTx(data: data, chain: chain, completion: completion)
+    }
     
     func process(address: KAddress, chain: ChainType, txObject: TxObject, setting: TxSettingObject, completion: @escaping (Result<TxProcessResult, TxError>) -> Void) {
         getLatestNonce(address: address, chain: chain) { _ in
@@ -55,7 +61,7 @@ public extension TxProcessorProtocol {
             switch result {
             case .success:
                 if let signedData = EIP1559TransactionSigner().signTransaction(address: address, eip1559Tx: eip1559Tx) {
-                    TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: chain) { result in
+                    self.txSender.sendTx(data: signedData, chain: chain) { result in
                         switch result {
                         case .success(let hash):
                             completion(.success(.init(hash: hash, legacyTx: nil, eip1559Tx: eip1559Tx)))
@@ -91,7 +97,7 @@ public extension TxProcessorProtocol {
                 let signResult = EthereumTransactionSigner().signTransaction(address: address, transaction: legacyTx)
                 switch signResult {
                 case .success(let signedData):
-                    TransactionManager.txProcessor.sendTxToNode(data: signedData, chain: chain) { result in
+                    self.txSender.sendTx(data: signedData, chain: chain) { result in
                         switch result {
                         case .success(let hash):
                             completion(.success(.init(hash: hash, legacyTx: legacyTx, eip1559Tx: nil)))
@@ -121,6 +127,55 @@ public extension TxProcessorProtocol {
                 completion(nonce)
             default:
                 completion(nil)
+            }
+        }
+    }
+    
+    func buildSignTxForApprove(tokenAddress: String, address: String, completion: @escaping (LegacyTransaction?) -> Void) {
+        let service = EthereumNodeService(chain: AppState.shared.currentChain)
+        service.getSendApproveERC20TokenEncodeData(spender: AppState.shared.currentChain.proxyAddress(), value: TransactionConstants.maxTokenAmount) { result in
+            switch result {
+            case .success(let resp):
+              let gasLimit = AppDependencies.gasConfig.defaultApproveGasLimit
+              let gasPrice = AppDependencies.gasConfig.getStandardGasPrice(chain: AppState.shared.currentChain)
+              
+              let signTransaction = LegacyTransaction(
+                value: BigInt(0),
+                address: address,
+                to: tokenAddress,
+                nonce: 1,
+                data: resp,
+                gasPrice: gasPrice,
+                gasLimit: gasLimit,
+                chainID: AppState.shared.currentChain.getChainId()
+              )
+              completion(signTransaction)
+            case .failure:
+              completion(nil)
+            }
+        }
+    }
+    
+    func estimateGasLimitForApprove(tokenAddress: String, address: String, completion: @escaping (BigInt) -> Void) {
+        let service = EthereumNodeService(chain: AppState.shared.currentChain)
+        buildSignTxForApprove(tokenAddress: tokenAddress, address: address) { signTx in
+            guard let signTx = signTx else { return }
+            
+            let request = KNEstimateGasLimitRequest(
+              from: signTx.address,
+              to: signTx.to,
+              value: signTx.value,
+              data: signTx.data,
+              gasPrice: signTx.gasPrice
+            )
+            
+            service.getEstimateGasLimit(request: request, chain: AppState.shared.currentChain) { result in
+                switch result {
+                case.success(let estGas):
+                  completion(estGas)
+                default:
+                  completion(BigInt(0))
+                }
             }
         }
     }

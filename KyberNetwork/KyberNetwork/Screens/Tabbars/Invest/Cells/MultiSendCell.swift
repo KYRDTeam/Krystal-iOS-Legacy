@@ -94,7 +94,7 @@ class MultiSendCellModel {
   }
 
   var allTokenBalanceString: String {
-    if self.from.isQuoteToken {
+    if self.from.isQuoteToken() {
       let balance = availableAmount
       let availableValue = max(BigInt(0), balance - self.gasFee)
       let string = availableValue.string(

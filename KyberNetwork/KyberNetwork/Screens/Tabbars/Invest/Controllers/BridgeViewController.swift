@@ -170,6 +170,12 @@ class BridgeViewController: InAppBrowsingViewController {
       }
     }
     self.viewModel.selectMaxBlock = {
+      if let sourceToken = self.viewModel.currentSourceToken, sourceToken.isQuoteToken {
+        self.showSuccessTopBannerMessage(
+          message: String(format: Strings.swapSmallAmountOfQuoteTokenUsedForFee, KNGeneralProvider.shared.quoteToken)
+        )
+      }
+        
       self.delegate?.bridgeViewControllerController(self, run: .selectMaxSource)
       MixPanelManager.track("bridge_enter_amount", properties: ["screenid": "bridge"])
     }
@@ -237,6 +243,11 @@ class BridgeViewController: InAppBrowsingViewController {
   
   func coordinatorStartApprove(token: TokenObject) {
     self.viewModel.isApproving = true
+    self.tableView.reloadData()
+  }
+    
+  func coordinatorCancelApprove() {
+    self.viewModel.isApproving = false
     self.tableView.reloadData()
   }
 

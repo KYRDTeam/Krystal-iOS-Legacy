@@ -12,6 +12,7 @@ import WalletConnectSwift
 import KrystalWallets
 import UIKit
 import AppState
+import Dependencies
 
 protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidImportWallet(wallet: KWallet, chainType: ChainType)
@@ -128,27 +129,17 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
   
   func appCoordinatorReceivedTokensDetailFromUniversalLink(tokenAddress: String?, chainIdString: String?) {
-    guard let chainIdString = chainIdString, let tokenAddress = tokenAddress else {
-      return
-    }
-    let chainId = Int(chainIdString) ?? KNGeneralProvider.shared.currentChain.getChainId()
-    let tokenModel = Token(name: "", symbol: "", address: tokenAddress, decimals: 18, logo: "")
-    let viewModel = ChartViewModel(token: tokenModel, currencyMode: .usd)
-    viewModel.chainId = chainId
-    let controller = ChartViewController(viewModel: viewModel)
-    controller.delegate = self
-    self.navigationController.pushViewController(controller, animated: true)
+      guard let chainIdString = chainIdString, let tokenAddress = tokenAddress else {
+          return
+      }
+      let chainID = Int(chainIdString) ?? KNGeneralProvider.shared.currentChain.getChainId()
+      AppDependencies.router.openToken(navigationController: navigationController, address: tokenAddress, chainID: chainID)
   }
 
   func openChartView(token: Token, chainId: Int? = nil, animated: Bool = true) {
-    Tracker.track(event: .marketOpenDetail)
-    let viewModel = ChartViewModel(token: token, currencyMode: self.currentCurrencyType)
-    if let chainId = chainId {
-      viewModel.chainId = chainId
-    }
-    let controller = ChartViewController(viewModel: viewModel)
-    controller.delegate = self
-    self.navigationController.pushViewController(controller, animated: animated)
+      guard let chainID = chainId else { return }
+      Tracker.track(event: .marketOpenDetail)
+      AppDependencies.router.openToken(navigationController: navigationController, address: token.address, chainID: chainID)
   }
   
   fileprivate func openKrytalView() {
@@ -261,188 +252,32 @@ class OverviewCoordinator: NSObject, Coordinator {
     }
     coordinate(coordinator: coordinator)
   }
+    
+    func openSendTokenView(_ token: Token?, recipientAddress: String = "") {
+        let from: TokenObject = {
+            if let fromToken = token {
+                if let fromTokenObject = KNSupportedTokenStorage.shared.supportedToken.first { $0.address == fromToken.address }?.toObject() {
+                    return fromTokenObject
+                }
+                return fromToken.toObject()
+            }
+            return KNGeneralProvider.shared.quoteTokenObject
+        }()
+        self.sendCoordinator = nil
+        let coordinator = KNSendTokenViewCoordinator(
+            navigationController: self.navigationController,
+            balances: self.balances,
+            from: from,
+            recipientAddress: recipientAddress
+        )
+        coordinator.delegate = self
+        coordinator.start()
+        self.sendCoordinator = coordinator
+    }
+
 }
 
 extension OverviewCoordinator: CreateChainWalletMenuCoordinatorDelegate { }
-
-extension OverviewCoordinator: ChartViewControllerDelegate {
-  func chartViewController(_ controller: ChartViewController, run event: ChartViewEvent) {
-    switch event {
-    case .getPoolList(address: let address, chainId: let chainId):
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.requestWithFilter(.getPoolList(tokenAddress: address, chainId: chainId, limit: 50)) { result in
-        switch result {
-        case .failure(let error):
-          controller.coordinatorFailUpdateApi(error)
-        case .success(let resp):
-          var allPools: [TokenPoolDetail] = []
-          if let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let jsonData = json["data"] as? [JSONDictionary] {
-            jsonData.forEach { poolJson in
-              let tokenPoolDetail = TokenPoolDetail(json: poolJson)
-              if !tokenPoolDetail.token0.symbol.isEmpty && !tokenPoolDetail.token1.symbol.isEmpty {
-                allPools.append(tokenPoolDetail)
-              }
-            }
-          }
-          controller.coordinatorDidUpdatePoolData(poolData: allPools)
-        }
-      }
-    case .getChartData(let address, let from, let to, let currency):
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      var chainPath = KNGeneralProvider.shared.chainPath
-      if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
-        chainPath = chainType.chainPath()
-      }
-      self.navigationController.showLoadingHUD()
-      provider.requestWithFilter(.getChartData(chainPath: chainPath, address: address, quote: currency, from: from)) { result in
-        DispatchQueue.main.async {
-          self.navigationController.hideLoading()
-        }
-        switch result {
-        case .failure(let error):
-          controller.coordinatorFailUpdateApi(error)
-        case .success(let resp):
-          let decoder = JSONDecoder()
-          do {
-            let data = try decoder.decode(ChartDataResponse.self, from: resp.data)
-            controller.coordinatorDidUpdateChartData(data.prices)
-          } catch let error {
-            print("[Debug]" + error.localizedDescription)
-          }
-        }
-      }
-    case .getTokenDetailInfo(address: let address):
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      var chainPath = KNGeneralProvider.shared.chainPath
-      if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
-        chainPath = chainType.chainPath()
-      }
-      self.navigationController.showLoadingHUD()
-      provider.requestWithFilter(.getTokenDetail(chainPath: chainPath, address: address)) { (result) in
-        DispatchQueue.main.async {
-          self.navigationController.hideLoading()
-        }
-        switch result {
-        case .failure(let error):
-          controller.coordinatorFailUpdateApi(error)
-        case .success(let resp):
-          let decoder = JSONDecoder()
-          do {
-            let data = try decoder.decode(TokenDetailResponse.self, from: resp.data)
-            controller.coordinatorDidUpdateTokenDetailInfo(data.result)
-          } catch let error {
-            print("[Debug]" + error.localizedDescription)
-            controller.coordinatorDidUpdateTokenDetailInfo(nil)
-          }
-        }
-      }
-    case .transfer(token: let token):
-      var chainPath = KNGeneralProvider.shared.chainPath
-      if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
-        chainPath = chainType.chainPath()
-      }
-      if chainPath != KNGeneralProvider.shared.chainPath {
-        let alertController = KNPrettyAlertController(
-          title: "",
-          message: Strings.pleaseSwitchTo + " \(chainPath.dropFirst().uppercased()) " + Strings.toSwap,
-          secondButtonTitle: Strings.OK,
-          firstButtonTitle: Strings.Cancel,
-          secondButtonAction: {
-            self.handleSwitchChain(controller) {
-              self.openSendTokenView(token)
-            }
-          },
-          firstButtonAction: nil
-        )
-        alertController.popupHeight = 300
-        self.navigationController.present(alertController, animated: true, completion: nil)
-      } else {
-        self.openSendTokenView(token)
-      }
-      
-    case .swap(token: let token):
-      var chainPath = KNGeneralProvider.shared.chainPath
-      if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
-        chainPath = chainType.chainPath()
-      }
-      if chainPath != KNGeneralProvider.shared.chainPath {
-        let alertController = KNPrettyAlertController(
-          title: "",
-          message: Strings.pleaseSwitchTo + " \(chainPath.dropFirst().uppercased()) " + Strings.toSwap,
-          secondButtonTitle: Strings.OK,
-          firstButtonTitle: Strings.Cancel,
-          secondButtonAction: {
-            self.handleSwitchChain(controller) {
-              self.openSwapView(token: token, isBuy: false)
-            }
-          },
-          firstButtonAction: nil
-        )
-        alertController.popupHeight = 300
-        self.navigationController.present(alertController, animated: true, completion: nil)
-      } else {
-        self.openSwapView(token: token, isBuy: false)
-      }
-    case .invest(token: let token):
-      self.delegate?.overviewCoordinatorDidSelectDepositMore(tokenAddress: token.address)
-    case .openEtherscan(let address, let chain):
-      self.openCommunityURL("\(chain.customRPC().etherScanEndpoint)address/\(address)")
-    case .openWebsite(url: let url):
-      self.openCommunityURL(url)
-    case .openTwitter(name: let name):
-      self.openCommunityURL("https://twitter.com/\(name)/")
-    case .selectPool(source: let source, quote: let quote):
-      break
-    case .openDiscord(link: let link):
-      self.navigationController.openSafari(with: link)
-    case .openTelegram(link: let link):
-      self.navigationController.openSafari(with: link)
-    }
-  }
-  
-  func handleSwitchChain(_ controller: ChartViewController, completion: @escaping () -> Void) {
-    var newChain = KNGeneralProvider.shared.currentChain
-    if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
-      newChain = chainType
-    }
-    let addresses = WalletManager.shared.getAllAddresses(addressType: newChain.addressType)
-    if addresses.isEmpty {
-      self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: newChain)
-    }
-    AppState.shared.updateChain(chain: newChain)
-    completion()
-  }
-
-  func openCommunityURL(_ url: String) {
-    self.navigationController.openSafari(with: url)
-  }
-
-  func openSendTokenView(_ token: Token?, recipientAddress: String = "") {
-    let from: TokenObject = {
-      if let fromToken = token {
-        if let fromTokenObject = KNSupportedTokenStorage.shared.supportedToken.first { $0.address == fromToken.address }?.toObject() {
-          return fromTokenObject
-        }
-        return fromToken.toObject()
-      }
-      return KNGeneralProvider.shared.quoteTokenObject
-    }()
-    self.sendCoordinator = nil
-    let coordinator = KNSendTokenViewCoordinator(
-      navigationController: self.navigationController,
-      balances: self.balances,
-      from: from,
-      recipientAddress: recipientAddress
-    )
-    coordinator.delegate = self
-    coordinator.start()
-    self.sendCoordinator = coordinator
-  }
-
-  func openSwapView(token: Token, isBuy: Bool) {
-    self.delegate?.overviewCoordinatorDidSelectSwapToken(token: token, isBuy: isBuy)
-  }
-}
 
 extension OverviewCoordinator: NavigationBarDelegate {
   func viewControllerDidSelectHistory(_ controller: KNBaseViewController) {
@@ -512,7 +347,7 @@ extension OverviewCoordinator: OverviewDepositViewControllerDelegate {
 
 extension OverviewCoordinator: KNSendTokenViewCoordinatorDelegate {
 
-  func sendTokenCoordinatorDidClose() {
+  func sendTokenCoordinatorDidClose(coordinator: KNSendTokenViewCoordinator) {
     self.sendCoordinator = nil
   }
   
