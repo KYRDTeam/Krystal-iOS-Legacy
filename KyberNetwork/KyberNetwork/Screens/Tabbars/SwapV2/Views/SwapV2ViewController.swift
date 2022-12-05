@@ -568,17 +568,15 @@ class SwapV2ViewController: InAppBrowsingViewController {
   }
   
   @objc func openSourceTokenSearch() {
-    guard let vc = TokenModule.openSearchToken(on: self) else { return }
-    vc.onSelectTokenCompletion = { [weak self] selectedToken in
-      self?.viewModel.updateSourceToken(token: selectedToken.token)
-    }
+      TokenModule.openSearchToken(on: self) { [weak self] selectedToken in
+          self?.viewModel.updateSourceToken(token: selectedToken.token)
+      }
   }
   
   @objc func openDestTokenSearch() {
-    guard let vc = TokenModule.openSearchToken(on: self) else { return }
-    vc.onSelectTokenCompletion = { [weak self] selectedToken in
-      self?.viewModel.updateDestToken(token: selectedToken.token)
-    }
+      TokenModule.openSearchToken(on: self) { [weak self] selectedToken in
+          self?.viewModel.updateDestToken(token: selectedToken.token)
+      }
   }
   
   @objc func sourceBalanceTapped() {
