@@ -22,11 +22,12 @@ public class TokenModule {
     return vc
   }
   
-    public static func createSearchTokenViewController() -> SearchTokenViewController? {
+    public static func openSearchToken(on viewController: UIViewController) -> SearchTokenViewController? {
         let viewModel = SearchTokenViewModel()
         let vc = SearchTokenViewController.instantiateFromNib()
         vc.viewModel = viewModel
         vc.modalPresentationStyle = .fullScreen
+        viewController.present(vc, animated: true, completion: nil)
         return vc
     }
 }
