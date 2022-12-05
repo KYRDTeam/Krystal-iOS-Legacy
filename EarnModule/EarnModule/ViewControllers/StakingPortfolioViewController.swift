@@ -82,6 +82,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
             viewModel.requestData()
         }
         updateUIPlatformFilterButton()
+		AppDependencies.tracker.track("mob_earn_portfolio", properties: ["screenid": "earn_v2"])
     }
     
     private func registerCell() {
@@ -168,7 +169,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     }
     
     func requestClaim(pendingUnstake: PendingUnstake) {
-        AppDependencies.tracker.track("mob_portfolio_claim", properties: ["screenid": "earn"])
+        AppDependencies.tracker.track("mob_portfolio_claim", properties: ["screenid": "earn_v2"])
         let viewModel = StakingConfirmClaimPopupViewModel(pendingUnstake: pendingUnstake)
         TxConfirmPopup.show(onViewController: self, withViewModel: viewModel) { [weak self] pendingTx in
             let vc = ClaimTxStatusPopup.instantiateFromNib()
@@ -178,6 +179,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
             vc.viewModel = ClaimTxStatusViewModel(pendingTx: pendingTx as! PendingClaimTxInfo)
             let sheet = SheetViewController(controller: vc, sizes: [.intrinsic], options: .init(pullBarHeight: 0))
             self?.present(sheet, animated: true)
+            AppDependencies.tracker.track("mob_portfolio_claim_confirm", properties: ["screenid": "earn_v2_claim_pop_up"])
         }
     }
     
@@ -220,7 +222,6 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
             guard let self = self else { return }
             guard let pendingUnstake = cm.pendingUnstake else { return }
             self.requestClaim(pendingUnstake: pendingUnstake)
-            AppDependencies.tracker.track("mob_portfolio_claim_confirm", properties: ["screenid": "earn"])
         }
         return cell
     }
