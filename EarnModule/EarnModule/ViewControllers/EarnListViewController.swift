@@ -147,7 +147,12 @@ class EarnListViewController: InAppBrowsingViewController {
             if !isAutoReload {
                 self.hideLoading()
             }
-            self.selectedPlatforms = Set(self.getAllPlatform())
+            
+            let allPlatform = self.getAllPlatform()
+            
+            if !self.selectedPlatforms.isSubset(of: allPlatform) {
+                self.selectedPlatforms = allPlatform
+            }
             self.reloadUI()
         }
     }
