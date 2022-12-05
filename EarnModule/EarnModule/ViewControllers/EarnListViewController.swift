@@ -92,6 +92,10 @@ class EarnListViewController: InAppBrowsingViewController {
             displayDataSource.forEach { item in
                 item.filteredPlatform = self.selectedPlatforms
             }
+            if self.displayDataSource.isEmpty {
+                self.emptyIcon.image = UIImage(named: "empty-search-token")
+                self.emptyLabel.text = Strings.noRecordFound
+            }
         } else {
             displayDataSource.forEach { item in
                 item.filteredPlatform = nil
@@ -147,7 +151,6 @@ class EarnListViewController: InAppBrowsingViewController {
             if !isAutoReload {
                 self.hideLoading()
             }
-            self.selectedPlatforms = Set(self.getAllPlatform())
             self.reloadUI()
         }
     }
