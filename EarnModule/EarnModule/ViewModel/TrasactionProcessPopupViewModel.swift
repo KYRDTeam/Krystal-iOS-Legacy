@@ -7,6 +7,7 @@
 
 import Foundation
 import Dependencies
+import AppState
 
 protocol TrasactionProcessPopupViewModel: class {
     var destTitle: String { get }
@@ -62,9 +63,15 @@ class StakingTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
     }
   
     func trackPopupOpenEvent() {
+        let params: [String : Any] = [
+            "screenid": earningType == .staking ? "mob_stake_done_pop_up" : "mob_supply_done_pop_up",
+            "txn_hash": pendingStakingTx.hash,
+            "chain_id": pendingStakingTx.chain.getChainId()
+            
+        ]
       AppDependencies.tracker.track(
-          earningType == .staking ? "mob_stake_done_pop_up_open" : "mob_supply_done_pop_up_open",
-          properties: ["screenid": earningType == .staking ? "mob_stake_done_pop_up" : "mob_supply_done_pop_up"]
+          earningType == .staking ? "earn_v2_stake_done_pop_up_open" : "earn_v2_supply_done_pop_up_open",
+          properties: params
       )
     }
 }
@@ -112,9 +119,12 @@ class UnstakeTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
     }
   
     func trackPopupOpenEvent() {
+        var params: [String: Any] =  ["screenid": earningType == .staking ? "earn_v2_unstake_done_pop_up" : "earn_v2_withdraw_done_pop_up"]
+        params["txn_hash"] = hash
+        params["chain_id"] = AppState.shared.currentChain.getChainId()
         AppDependencies.tracker.track(
             earningType == .staking ? "mob_unstake_done_pop_up_open" : "mob_withdraw_done_pop_up_open",
-            properties: ["screenid": earningType == .staking ? "mob_unstake_done_pop_up" : "mob_withdraw_done_pop_up"]
+            properties: params
         )
     }
 }

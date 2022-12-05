@@ -38,6 +38,14 @@ class EarnOverviewController: InAppBrowsingViewController {
     setupUI()
     setupPageViewController()
   }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppDependencies.tracker.track(
+            "earn_v2_open",
+            properties: ["screenid": "earn_v2"]
+        )
+    }
 
   override func onAppSelectAllChain() {
     currentSelectedChain = .all
