@@ -16,17 +16,17 @@ public class SearchTokenViewModel: BaseViewModel {
     let searchService = TokenService()
     
     func fetchDataFromAPI(query: String, orderBy: String, completion: @escaping () -> Void) {
-        self.searchService.getSearchTokens(chainPath: currentChain.customRPC().apiChainPath,address: currentAddress.addressString, query: query, orderBy: orderBy) { swapTokens in
+        self.searchService.getSearchTokens(chainPath: currentChain.customRPC().apiChainPath,address: currentAddress.addressString, query: query, orderBy: orderBy) { [weak self] swapTokens in
             if let swapTokens = swapTokens {
-              self.searchTokens = swapTokens
+              self?.searchTokens = swapTokens
             }
             completion()
         }
     }
     
     func getCommonBaseToken(completion: @escaping () -> Void) {
-        self.searchService.getCommonBaseTokens(chainPath: currentChain.customRPC().apiChainPath) { tokens in
-            self.commonBaseTokens = tokens
+        self.searchService.getCommonBaseTokens(chainPath: currentChain.customRPC().apiChainPath) { [weak self] tokens in
+            self?.commonBaseTokens = tokens
             completion()
         }
     }
