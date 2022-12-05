@@ -44,6 +44,10 @@ public struct Platform: Codable {
   public let name: String
   public let logo: String
   public let type, desc: String
+    
+    public func toEarnPlatform() -> EarnPlatform {
+        return EarnPlatform(platform: self, apy: -1, tvl: -1)
+    }
 }
 
 // MARK: - EarningBalancesResponse

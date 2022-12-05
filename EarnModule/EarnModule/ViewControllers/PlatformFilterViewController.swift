@@ -16,8 +16,10 @@ class PlatformFilterViewModel {
     var dataSource: [EarnPlatform]
     var selected: Set<EarnPlatform>
     
-    init(dataSource: [EarnPlatform], selected: Set<EarnPlatform>) {
-        self.dataSource = dataSource
+    init(dataSource: Set<EarnPlatform>, selected: Set<EarnPlatform>) {
+        self.dataSource = Array(dataSource).sorted { (left, right) -> Bool in
+            return left.name < right.name
+        }
         self.selected = selected
     }
     

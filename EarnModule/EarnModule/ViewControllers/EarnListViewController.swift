@@ -88,6 +88,14 @@ class EarnListViewController: InAppBrowsingViewController {
                 let modelPfSet: Set<EarnPlatform> = Set(element.earnPoolModel.platforms)
                 return modelPfSet.intersection(self.selectedPlatforms).count >= 1
             }
+            
+            displayDataSource.forEach { item in
+                item.filteredPlatform = self.selectedPlatforms
+            }
+        } else {
+            displayDataSource.forEach { item in
+                item.filteredPlatform = nil
+            }
         }
         
         self.emptyView.isHidden = !self.displayDataSource.isEmpty
@@ -142,7 +150,7 @@ class EarnListViewController: InAppBrowsingViewController {
         }
     }
     
-    private func getAllPlatform() -> [EarnPlatform] {
+    private func getAllPlatform() -> Set<EarnPlatform> {
         var platformSet = Set<EarnPlatform>()
         
         dataSource.forEach { item in
@@ -150,9 +158,7 @@ class EarnListViewController: InAppBrowsingViewController {
                 platformSet.insert(element)
             }
         }
-        return Array(platformSet).sorted { (left, right) -> Bool in
-            return left.name < right.name
-        }
+        return platformSet
     }
     
     

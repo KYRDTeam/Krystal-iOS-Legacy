@@ -1018,3 +1018,5 @@
 "Rate" = "Rate";
 "Network Fee" = "Network Fee";
 "can.not.est.gas" = "Can not estimate gas limit for this transaction";
+"build.raw.tx.failed" = "Build raw Tx failed";
+"parse.tx.failed" = "Parse Tx data failed";
