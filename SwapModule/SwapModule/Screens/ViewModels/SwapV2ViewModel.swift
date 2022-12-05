@@ -272,19 +272,25 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     
     func checkAllowance() {
         self.state.value = .checkingAllowance
+        let nodeService = EthereumNodeService(chain: currentChain.value)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.swapRepository.getAllowance(tokenAddress: self.sourceToken.value?.address ?? "", address: self.addressString) { [weak self] allowance, _ in
+            nodeService.getAllowance(address: self.currentAddress.value.addressString, networkAddress: self.currentChain.value.proxyAddress(), tokenAddress: self.sourceToken.value?.address ?? "") { [weak self] result in
                 guard let self = self else { return }
-                if allowance < self.sourceAmount.value ?? .zero {
-                    if self.isApproving() {
-                        self.state.value = .approving
+                switch result {
+                case .success(let allowance):
+                    if allowance < self.sourceAmount.value ?? .zero {
+                        if self.isApproving() {
+                            self.state.value = .approving
+                        } else {
+                            self.state.value = .notApproved(currentAllowance: allowance)
+                        }
+                    } else if self.priceImpactState.value == .veryHighNeedExpertMode || self.priceImpactState.value == .outOfNegativeRange {
+                        self.state.value = .requiredExpertMode
                     } else {
-                        self.state.value = .notApproved(currentAllowance: allowance)
+                        self.state.value = .ready
                     }
-                } else if self.priceImpactState.value == .veryHighNeedExpertMode || self.priceImpactState.value == .outOfNegativeRange {
-                    self.state.value = .requiredExpertMode
-                } else {
-                    self.state.value = .ready
+                case .failure:
+                    self.state.value = .notApproved(currentAllowance: 0)
                 }
             }
         }
@@ -393,12 +399,8 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
     
     func isApproving() -> Bool {
-        //    let allTransactions = EtherscanTransactionStorage.shared.getInternalHistoryTransaction()
-        //    let pendingApproveTxs = allTransactions.filter { tx in
-        //      return tx.transactionDetailDescription.lowercased() == sourceToken.value?.address.lowercased() && tx.type == .allowance
-        //    }
-        //    return !pendingApproveTxs.isEmpty
-        return false
+        guard let address = sourceToken.value?.address else { return false }
+        return TransactionManager.txProcessor.isTokenApproving(address: address)
     }
     
     private func getSortedRates(rates: [Rate], sortBySelected: Bool) -> [Rate] {
@@ -470,8 +472,8 @@ extension SwapV2ViewModel {
         )
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(transactionStateDidUpdate),
-            name: .kTxStatusUpdated,
+            selector: #selector(checkPendingTx),
+            name: .kPendingTxListUpdated,
             object: nil
         )
     }
@@ -511,15 +513,8 @@ extension SwapV2ViewModel {
         reloadDestBalance()
     }
     
-    @objc func transactionStateDidUpdate() {
-        checkPendingTx()
-    }
-    
-    func checkPendingTx() {
-        //    let pendingTransaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().first { transaction in
-        //      transaction.state == .pending
-        //    }
-        //    hasPendingTransaction.value = pendingTransaction != nil
+    @objc func checkPendingTx() {
+        hasPendingTransaction.value = TransactionManager.txProcessor.hasPendingTx()
     }
     
     func scheduleFetchingBalance() {

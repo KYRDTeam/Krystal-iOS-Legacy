@@ -312,7 +312,7 @@ class UnstakeViewModel: BaseViewModel {
         guard let contractAddress = contractAddress else { return }
         let service = EthereumNodeService(chain: chain)
         if earningToken.requireApprove {
-            service.getAllowance(for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: earningToken.address) { result in
+            service.getAllowance(address: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: earningToken.address) { result in
                 completion()
                 switch result {
                 case .success(let number):

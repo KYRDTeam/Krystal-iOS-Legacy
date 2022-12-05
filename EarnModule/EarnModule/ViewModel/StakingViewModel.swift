@@ -388,7 +388,7 @@ extension StakingViewModel {
         
         let contractAddress = tx.to
         let service = EthereumNodeService(chain: currentChain)
-        service.getAllowance(for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: token.address) { result in
+        service.getAllowance(address: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: token.address) { result in
             switch result {
             case .success(let number):
                 self.tokenAllowance = number
