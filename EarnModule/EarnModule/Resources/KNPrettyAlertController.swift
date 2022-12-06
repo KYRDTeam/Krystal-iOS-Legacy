@@ -26,6 +26,7 @@ class KNPrettyAlertController: KNBaseViewController {
   var gradientButton: UIButton!
   let transitor = TransitionDelegate()
   var popupHeight: CGFloat = 300
+    var tapRange: NSRange?
   init(title: String?,
        isWarning: Bool = false,
        message: String,
@@ -79,7 +80,27 @@ class KNPrettyAlertController: KNBaseViewController {
       let messageTopContraint = NSLayoutConstraint(item: self.contentLabel, attribute: .top, relatedBy: .equal, toItem: self.containerView, attribute: .top, multiplier: 1, constant: 33)
       self.containerView.addConstraint(messageTopContraint)
     }
-    self.contentLabel.text = message
+      if message.suffix(11) == "Swap to ETH" {
+          let linkAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.font: UIFont.karlaBold(ofSize: 16),
+            NSAttributedString.Key.foregroundColor: UIColor(named: "buttonBackgroundColor")!,
+          ]
+          let textAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.font: UIFont.karlaMedium(ofSize: 16),
+            NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor")!,
+          ]
+          let attributionString = NSMutableAttributedString(string: message, attributes: textAttributes)
+          let highlightRange = NSString(string: message).range(of: "Swap to ETH")
+          attributionString.setAttributes(linkAttributes, range: highlightRange)
+          contentLabel.attributedText = attributionString
+          contentLabel.isUserInteractionEnabled = true
+          let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapSwapText(_:)))
+          contentLabel.addGestureRecognizer(tapGesture)
+          tapRange = highlightRange
+      } else {
+          self.contentLabel.text = message
+      }
+    
     self.firstButton.setTitle(firstButtonTitle, for: .normal)
     if let yesTxt = self.secondButtonTitle {
       self.secondButton.setTitle(yesTxt, for: .normal)
@@ -113,6 +134,16 @@ class KNPrettyAlertController: KNBaseViewController {
   @IBAction func noButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: self.firstButtonAction)
   }
+    
+    @objc func tapSwapText(_ sender: UITapGestureRecognizer) {
+        guard let tapRange = tapRange else {
+            return
+        }
+
+        if sender.didTapAttributedTextInLabel(label: contentLabel, inRange: tapRange) {
+            print("Tapping")
+        }
+    }
 }
 
 extension KNPrettyAlertController: BottomPopUpAbstract {
@@ -127,4 +158,37 @@ extension KNPrettyAlertController: BottomPopUpAbstract {
   func getPopupContentView() -> UIView {
     return self.containerView
   }
+}
+
+extension UITapGestureRecognizer {
+    
+    func didTapAttributedTextInLabel(label: UILabel, inRange targetRange: NSRange) -> Bool {
+        // Create instances of NSLayoutManager, NSTextContainer and NSTextStorage
+        let layoutManager = NSLayoutManager()
+        let textContainer = NSTextContainer(size: CGSize.zero)
+        let textStorage = NSTextStorage(attributedString: label.attributedText!)
+        
+        // Configure layoutManager and textStorage
+        layoutManager.addTextContainer(textContainer)
+        textStorage.addLayoutManager(layoutManager)
+        
+        // Configure textContainer
+        textContainer.lineFragmentPadding = 0.0
+        textContainer.lineBreakMode = label.lineBreakMode
+        textContainer.maximumNumberOfLines = label.numberOfLines
+        let labelSize = label.bounds.size
+        textContainer.size = labelSize
+        
+        // Find the tapped character location and compare it to the specified range
+        let locationOfTouchInLabel = self.location(in: label)
+        let textBoundingBox = layoutManager.usedRect(for: textContainer)
+        let textContainerOffset = CGPoint(x: (labelSize.width - textBoundingBox.size.width) * 0.5 - textBoundingBox.origin.x,
+                                          y: (labelSize.height - textBoundingBox.size.height) * 0.5 - textBoundingBox.origin.y);
+        let locationOfTouchInTextContainer = CGPoint(x: locationOfTouchInLabel.x - textContainerOffset.x,
+                                                     y: locationOfTouchInLabel.y - textContainerOffset.y);
+        var indexOfCharacter = layoutManager.characterIndex(for: locationOfTouchInTextContainer, in: textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+        indexOfCharacter = indexOfCharacter + 4
+        return NSLocationInRange(indexOfCharacter, targetRange)
+    }
+    
 }
