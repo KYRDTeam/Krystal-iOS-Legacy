@@ -35,6 +35,7 @@ class EarnListViewController: InAppBrowsingViewController {
     var timer: Timer?
     var currentSelectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : AppState.shared.currentChain
     var selectedPlatforms: Set<EarnPlatform>!
+    var isSupportEarnv2: Observable<Bool> = .init(true)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,6 +93,10 @@ class EarnListViewController: InAppBrowsingViewController {
             displayDataSource.forEach { item in
                 item.filteredPlatform = self.selectedPlatforms
             }
+            if self.displayDataSource.isEmpty {
+                self.emptyIcon.image = UIImage(named: "empty-search-token")
+                self.emptyLabel.text = Strings.noRecordFound
+            }
         } else {
             displayDataSource.forEach { item in
                 item.filteredPlatform = nil
@@ -99,6 +104,7 @@ class EarnListViewController: InAppBrowsingViewController {
         }
         
         self.emptyView.isHidden = !self.displayDataSource.isEmpty
+        self.isSupportEarnv2.value = !self.displayDataSource.isEmpty
         self.tableView.reloadData()
         updateUIPlatformFilterButton()
     }
@@ -146,12 +152,6 @@ class EarnListViewController: InAppBrowsingViewController {
             }
             if !isAutoReload {
                 self.hideLoading()
-            }
-            
-            let allPlatform = self.getAllPlatform()
-            
-            if !self.selectedPlatforms.isSubset(of: allPlatform) {
-                self.selectedPlatforms = allPlatform
             }
             self.reloadUI()
         }

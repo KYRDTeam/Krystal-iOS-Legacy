@@ -64,7 +64,7 @@ class StakingTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
   
     func trackPopupOpenEvent() {
         let params: [String : Any] = [
-            "screenid": earningType == .staking ? "mob_stake_done_pop_up" : "mob_supply_done_pop_up",
+            "screenid": earningType == .staking ? "earn_v2_stake_done_pop_up" : "earn_v2_supply_done_pop_up",
             "txn_hash": pendingStakingTx.hash,
             "chain_id": pendingStakingTx.chain.getChainId()
             
@@ -123,7 +123,7 @@ class UnstakeTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
         params["txn_hash"] = hash
         params["chain_id"] = AppState.shared.currentChain.getChainId()
         AppDependencies.tracker.track(
-            earningType == .staking ? "mob_unstake_done_pop_up_open" : "mob_withdraw_done_pop_up_open",
+            earningType == .staking ? "earn_v2_unstake_done_pop_up_open" : "earn_v2_withdraw_done_pop_up_open",
             properties: params
         )
     }
