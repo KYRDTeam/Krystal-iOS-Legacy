@@ -72,7 +72,7 @@ class EarnOverviewController: InAppBrowsingViewController {
       earnPoolVC.isSupportEarnv2.observeAndFire(on: self) { value in
           portfolioVC.updateSupportedEarnv2(value)
       }
-    childListViewControllers = [earnPoolVC, portfolioVC]
+    childListViewControllers = [earnPoolVC, portfolioVC, InAppBrowsingViewController()]
   }
 
   func setupUI() {
@@ -80,10 +80,10 @@ class EarnOverviewController: InAppBrowsingViewController {
       reloadAllNetworksChain()
     }
     segmentedControl.highlightSelectedSegment(width: 100)
-    let width = UIScreen.main.bounds.size.width - 140
+    let width = UIScreen.main.bounds.size.width - 36
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: width, height: 30)
-    segmentedControl.setWidth(width / 2, forSegmentAt: 0)
-    segmentedControl.setWidth(width / 2, forSegmentAt: 1)
+    segmentedControl.setWidth(width / 3, forSegmentAt: 0)
+    segmentedControl.setWidth(width / 3, forSegmentAt: 1)
   }
 
   func setupPageViewController() {

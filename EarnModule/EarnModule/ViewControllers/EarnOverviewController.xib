@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -37,7 +37,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ILr-eH-wbn">
-                    <rect key="frame" x="0.0" y="44" width="375" height="89"/>
+                    <rect key="frame" x="0.0" y="47" width="375" height="89"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Staking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="txh-qs-zjN">
                             <rect key="frame" x="50.000000000000007" y="24" width="67.666666666666686" height="21.333333333333329"/>
@@ -163,7 +163,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AwC-Ci-od9">
-                                    <rect key="frame" x="115.66666666666669" y="18.666666666666664" width="86.333333333333314" height="32"/>
+                                    <rect key="frame" x="115.66666666666669" y="18.666666666666671" width="86.333333333333314" height="32"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="32" id="9G4-Ho-nyb"/>
                                     </constraints>
@@ -226,11 +226,12 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Pri-qj-GIm" customClass="SegmentedControl" customModule="DesignSystem">
-                    <rect key="frame" x="70" y="133" width="235" height="32"/>
+                    <rect key="frame" x="18" y="136" width="339" height="32"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <segments>
                         <segment title="Earn" width="98"/>
                         <segment title="My Portfolio" width="98"/>
+                        <segment title="Reward"/>
                     </segments>
                     <color key="tintColor" name="buttonBackgroundColor"/>
                     <color key="selectedSegmentTintColor" name="textWhiteColor"/>
@@ -239,7 +240,7 @@
                     </connections>
                 </segmentedControl>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jx6-Kq-DKO">
-                    <rect key="frame" x="0.0" y="164" width="375" height="648"/>
+                    <rect key="frame" x="0.0" y="167" width="375" height="645"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
             </subviews>
@@ -247,7 +248,7 @@
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
                 <constraint firstItem="ILr-eH-wbn" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="AaM-4e-m9E"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Pri-qj-GIm" secondAttribute="trailing" constant="70" id="FZg-he-bwD"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Pri-qj-GIm" secondAttribute="trailing" constant="18" id="FZg-he-bwD"/>
                 <constraint firstItem="Jx6-Kq-DKO" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="LxE-iy-Zlo"/>
                 <constraint firstAttribute="trailing" secondItem="Jx6-Kq-DKO" secondAttribute="trailing" id="X66-7z-QfN"/>
                 <constraint firstItem="Jx6-Kq-DKO" firstAttribute="top" secondItem="Pri-qj-GIm" secondAttribute="bottom" id="brR-bo-VK0"/>
@@ -255,14 +256,14 @@
                 <constraint firstItem="ILr-eH-wbn" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="mQ2-kd-U8g"/>
                 <constraint firstAttribute="bottom" secondItem="Jx6-Kq-DKO" secondAttribute="bottom" id="oAh-cr-Ywr"/>
                 <constraint firstItem="Pri-qj-GIm" firstAttribute="top" secondItem="ILr-eH-wbn" secondAttribute="bottom" id="r1H-EN-P5g"/>
-                <constraint firstItem="Pri-qj-GIm" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="70" id="uhd-gf-63i"/>
+                <constraint firstItem="Pri-qj-GIm" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="18" id="uhd-gf-63i"/>
             </constraints>
             <point key="canvasLocation" x="60" y="19.95073891625616"/>
         </view>
     </objects>
     <designables>
         <designable name="Pri-qj-GIm">
-            <size key="intrinsicContentSize" width="197" height="31"/>
+            <size key="intrinsicContentSize" width="263" height="31"/>
         </designable>
     </designables>
     <resources>

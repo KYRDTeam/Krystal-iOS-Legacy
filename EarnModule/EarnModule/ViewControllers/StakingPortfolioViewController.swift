@@ -39,12 +39,9 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     @IBOutlet weak var emptyViewContainer: UIView!
     @IBOutlet weak var emptyIcon: UIImageView!
     @IBOutlet weak var emptyLabel: UILabel!
-    
+    @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var searchFieldActionButton: UIButton!
-    @IBOutlet weak var searchViewRightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var searchTextField: UITextField!
-    @IBOutlet weak var platformFilterButton: UIButton!
     
     weak var delegate: StakingPortfolioViewControllerDelegate?
     
@@ -81,7 +78,6 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         if viewModel.isEmpty() && viewModel.isLoading.value == false {
             viewModel.requestData()
         }
-        updateUIPlatformFilterButton()
 		AppDependencies.tracker.track("mob_earn_portfolio", properties: ["screenid": "earn_v2"])
     }
     
@@ -125,8 +121,6 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     func updateUIStartSearchingMode() {
         self.view.layoutIfNeeded()
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
-            self.searchViewRightConstraint.constant = 77
-            self.cancelButton.isHidden = false
             self.searchFieldActionButton.setImage(UIImage(named: "close-search-icon"), for: .normal)
             self.view.layoutIfNeeded()
         }
@@ -135,8 +129,6 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     func updateUIEndSearchingMode() {
         self.view.layoutIfNeeded()
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
-            self.searchViewRightConstraint.constant = 18
-            self.cancelButton.isHidden = true
             self.searchFieldActionButton.setImage(UIImage(named: "search_blue_icon"), for: .normal)
             self.view.endEditing(true)
             self.view.layoutIfNeeded()
@@ -144,19 +136,20 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     }
     
     @IBAction func onSearchButtonTapped(_ sender: Any) {
-        if !self.cancelButton.isHidden {
-            searchTextField.text = ""
-            viewModel.searchText = ""
-            reloadUI()
-        } else {
-            self.updateUIStartSearchingMode()
-        }
+        self.updateUIStartSearchingMode()
     }
-    
-    @IBAction func cancelButtonTapped(_ sender: Any) {
-        self.updateUIEndSearchingMode()
+
+    @IBAction func filterButtonTapped(_ sender: Any) {
+        let allPlatforms = viewModel.getAllPlatform()
+        let viewModel = PlatformFilterViewModel(dataSource: allPlatforms, selected: viewModel.selectedPlatforms)
+        let viewController = PlatformFilterViewController.instantiateFromNib()
+        viewController.viewModel = viewModel
+        viewController.delegate = self
+        let sheetOptions = SheetOptions(pullBarHeight: 0)
+        let sheet = SheetViewController(controller: viewController, sizes: [.intrinsic], options: sheetOptions)
+        present(sheet, animated: true)
     }
-    
+
     func reloadUI() {
         viewModel.reloadDataSource()
         portfolioTableView.reloadData()
@@ -188,22 +181,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
             AppDependencies.tracker.track("mob_portfolio_claim_confirm", properties: ["screenid": "earn_v2_claim_pop_up"])
         }
     }
-    
-    @IBAction func platformFilterButtonTapped(_ sender: UIButton) {
-        let allPlatforms = viewModel.getAllPlatform()
-        let viewModel = PlatformFilterViewModel(dataSource: allPlatforms, selected: viewModel.selectedPlatforms)
-        let viewController = PlatformFilterViewController.instantiateFromNib()
-        viewController.viewModel = viewModel
-        viewController.delegate = self
-        let sheetOptions = SheetOptions(pullBarHeight: 0)
-        let sheet = SheetViewController(controller: viewController, sizes: [.intrinsic], options: sheetOptions)
-        present(sheet, animated: true)
-    }
-    
-    private func updateUIPlatformFilterButton() {
-        platformFilterButton.setTitle(viewModel.platformFilterButtonTitle, for: .normal)
-    }
-    
+
     func updateSupportedEarnv2(_ value: Bool) {
         guard viewModel.isSupportEarnv2 != value else {
             return
@@ -447,6 +425,5 @@ extension StakingPortfolioViewController: PlatformFilterViewControllerDelegate {
     func didSelectPlatform(viewController: PlatformFilterViewController, selected: Set<EarnPlatform>) {
         viewModel.selectedPlatforms = selected
         reloadUI()
-        updateUIPlatformFilterButton()
     }
 }
