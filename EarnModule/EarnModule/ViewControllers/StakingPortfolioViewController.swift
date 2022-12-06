@@ -53,7 +53,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         super.viewDidLoad()
         registerCell()
         searchTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
-        viewModel.dataSource.observeAndFire(on: self) { _ in
+        viewModel.displayDataSource.observeAndFire(on: self) { _ in
             self.portfolioTableView.reloadData()
             
         }
@@ -197,12 +197,12 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? viewModel.dataSource.value.0.count : viewModel.dataSource.value.1.count
+        return section == 0 ? viewModel.displayDataSource.value.0.count : viewModel.displayDataSource.value.1.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(StakingPortfolioCell.self, indexPath: indexPath)!
-        let items = indexPath.section == 0 ? viewModel.dataSource.value.0 : viewModel.dataSource.value.1
+        let items = indexPath.section == 0 ? viewModel.displayDataSource.value.0 : viewModel.displayDataSource.value.1
         let cm = items[indexPath.row]
         cell.updateCellModel(cm)
         cell.delegate = self
@@ -246,16 +246,20 @@ extension StakingPortfolioViewController: SkeletonTableViewDelegate {
         
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+      return CGFloat(46.0)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+      return CGFloat(0.0)
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
-        view.backgroundColor = AppTheme.current.sectionBackgroundColor
-        let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: UIScreen.main.bounds.size.width - 70, height: 40))
-        titleLabel.center.y = view.center.y
-        titleLabel.text = section == 0 ? Strings.mySupply.uppercased() : Strings.unstakingInProgress.uppercased()
-        titleLabel.font = .karlaReguler(ofSize: 14)
-        titleLabel.textColor = AppTheme.current.primaryTextColor
-        view.addSubview(titleLabel)
-        
+        let view = viewModel.viewForHeader(tableView, section: section)
+        view.onTapped = { isExpand in
+            self.viewModel.showHideSection(section: section, isExpand: isExpand)
+            self.portfolioTableView.reloadData()
+        }
         return view
     }
     
@@ -355,7 +359,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard orientation == .right, indexPath.section == 0 else { return nil }
-        let earningBalances = self.viewModel.dataSource.value.0.map { $0.earnBalance }
+        let earningBalances = self.viewModel.displayDataSource.value.0.map { $0.earnBalance }
         guard let earningBalance = earningBalances[indexPath.row] else { return nil }
         let earningType = EarningType(value: earningBalance.platform.type)
         

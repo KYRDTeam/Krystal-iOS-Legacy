@@ -14,16 +14,18 @@ class StakingPortfolioViewModel {
     let apiService = EarnServices()
     var searchText = ""
     var chainID: Int?
-    
     var dataSource: Observable<([StakingPortfolioCellModel], [StakingPortfolioCellModel])> = .init(([], []))
+    var displayDataSource: Observable<([StakingPortfolioCellModel], [StakingPortfolioCellModel])> = .init(([], []))
     var error: Observable<Error?> = .init(nil)
     var isLoading: Observable<Bool> = .init(true)
     var selectedPlatforms: Set<EarnPlatform> = Set()
     var isSupportEarnv2: Bool = true
+    var showStaking: Bool = false
+    var showPending: Bool = false
     
     func cleanAllData() {
-        dataSource.value.0.removeAll()
-        dataSource.value.1.removeAll()
+        displayDataSource.value.0.removeAll()
+        displayDataSource.value.1.removeAll()
     }
     
     func isEmpty() -> Bool {
@@ -75,13 +77,15 @@ class StakingPortfolioViewModel {
                 return self.selectedPlatforms.contains(item.platform.toEarnPlatform())
             })
         }
-        
         pendingUnstakeData.forEach({ item in
             pending.append(StakingPortfolioCellModel(pendingUnstake: item))
         })
+        
         earningBalanceData.forEach { item in
             output.append(StakingPortfolioCellModel(earnBalance: item))
         }
+        
+        displayDataSource.value = (showStaking ? output : [], showPending ? pending : [])
         dataSource.value = (output, pending)
     }
     
@@ -132,5 +136,31 @@ class StakingPortfolioViewModel {
         }
         let name = selectedPlatforms.map { $0.name.capitalized }.joined(separator: ", ")
         return name
+    }
+    
+    func viewForHeader(_ tableView: UITableView, section: Int) -> PortfolioHeaderView {
+        let view = PortfolioHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 46))
+        view.shouldShowIcon = section == 0
+        var title: String
+        if section == 0 {
+            title = Strings.mySupply
+        } else if section == 1 {
+            title = Strings.mySupply
+        } else {
+            title = Strings.unstakingInProgress
+        }
+        view.titleLable.text = title
+        view.isExpand = section == 0 ? showStaking : showPending
+        
+        return view
+    }
+    
+    func showHideSection(section: Int, isExpand: Bool) {
+        if section == 0 {
+            showStaking = isExpand
+        } else if section == 1 {
+            showPending = isExpand
+        }
+        self.reloadDataSource()
     }
 }

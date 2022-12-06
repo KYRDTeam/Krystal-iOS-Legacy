@@ -91,6 +91,8 @@ class Images {
   static let redSubtract =   UIImage(imageName: "red_subtract_icon")!
   static let allNetworkIcon = UIImage(imageName: "all_platform_icon")!
   static let filterIcon = UIImage(imageName: "filter_icon")!
+  static let arrowUpIcon = UIImage(imageName: "icon-arrow-up")!
+  static let arrowDownIcon = UIImage(imageName: "icon-arrow-down")!
 }
 
 extension UIImage {
