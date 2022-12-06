@@ -174,8 +174,8 @@ class SwapProcessPopup: KNBaseViewController {
     }
     
     func setupUI() {
-        self.sourceTokenIcon.setSymbolImage(symbol: self.pendingTx.sourceSymbol, size: sourceTokenIcon.frame.size)
-        self.destTokenIcon.setSymbolImage(symbol: self.pendingTx.destSymbol, size: destTokenIcon.frame.size)
+        self.sourceTokenIcon.loadImage(self.pendingTx.sourceIcon)
+        self.destTokenIcon.loadImage(self.pendingTx.destIcon)
         self.txHashLabel.text = self.pendingTx.hash
         let descriptions = self.pendingTx.description.split(separator: "→").map { String($0) }
         self.sourceTokenAmountLabel.text = descriptions.first ?? ""

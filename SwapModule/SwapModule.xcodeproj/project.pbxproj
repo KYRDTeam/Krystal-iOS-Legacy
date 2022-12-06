@@ -68,6 +68,7 @@
 		A6604D9E293DF0F500F6B51E /* PendingSwapTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6604D9D293DF0F500F6B51E /* PendingSwapTxInfo.swift */; };
 		A6C256CA293DF80800D4B2BE /* SwapProcessPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6C256C8293DF80800D4B2BE /* SwapProcessPopup.xib */; };
 		A6C256CB293DF80800D4B2BE /* SwapProcessPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C256C9293DF80800D4B2BE /* SwapProcessPopup.swift */; };
+		A6DA7A2B293F4B420078501A /* TokenModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6DA7A2A293F4B420078501A /* TokenModule.framework */; };
 		A915E2B24411BEFE1D1E6646 /* Pods_SwapModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CADA989BD9B33A878DEA071 /* Pods_SwapModule.framework */; };
 /* End PBXBuildFile section */
 
@@ -137,6 +138,7 @@
 		A6604D9D293DF0F500F6B51E /* PendingSwapTxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingSwapTxInfo.swift; sourceTree = "<group>"; };
 		A6C256C8293DF80800D4B2BE /* SwapProcessPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwapProcessPopup.xib; sourceTree = "<group>"; };
 		A6C256C9293DF80800D4B2BE /* SwapProcessPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapProcessPopup.swift; sourceTree = "<group>"; };
+		A6DA7A2A293F4B420078501A /* TokenModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TokenModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6DA7A2B293F4B420078501A /* TokenModule.framework in Frameworks */,
 				A64C2E3C28F7BDEE002FD64C /* Services.framework in Frameworks */,
 				A64C2E4E28F7FEBC002FD64C /* Dependencies.framework in Frameworks */,
 				A915E2B24411BEFE1D1E6646 /* Pods_SwapModule.framework in Frameworks */,
@@ -162,6 +165,7 @@
 		351CC470B9FADAD8F77E8D17 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6DA7A2A293F4B420078501A /* TokenModule.framework */,
 				A62F0F0A2939E19C00937677 /* TransactionModule.framework */,
 				A64C2E4D28F7FEBC002FD64C /* Dependencies.framework */,
 				A64C2E3B28F7BDEE002FD64C /* Services.framework */,

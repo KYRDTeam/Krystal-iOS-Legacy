@@ -51,7 +51,7 @@
                     <rect key="frame" x="0.0" y="44" width="390" height="501"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VtB-IA-jcK">
-                            <rect key="frame" x="66.333333333333343" y="32" width="257.33333333333326" height="32"/>
+                            <rect key="frame" x="62" y="32" width="266" height="32"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jrs-lc-WjI">
                                     <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
@@ -79,8 +79,8 @@
                                     </constraints>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Processing Transaction" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="25S-K4-RhF">
-                                    <rect key="frame" x="45.000000000000014" y="0.0" width="212.33333333333337" height="32"/>
-                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="20"/>
+                                    <rect key="frame" x="45" y="0.0" width="221" height="32"/>
+                                    <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                                     <color key="textColor" name="textWhiteColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
