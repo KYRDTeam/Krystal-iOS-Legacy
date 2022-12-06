@@ -55,6 +55,8 @@
 		7ED1AF23291E498100BA7C75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD6429091F7A00069B33 /* Assets.xcassets */; };
 		7ED78DD5293F2B8E000E736F /* PortfolioHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED78DD4293F2B8E000E736F /* PortfolioHeaderView.swift */; };
 		7ED78DD7293F2BAB000E736F /* PortfolioHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED78DD6293F2BAB000E736F /* PortfolioHeaderView.xib */; };
+		7ED78DDA293F5756000E736F /* PortfolioPieChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED78DD8293F5756000E736F /* PortfolioPieChartCell.swift */; };
+		7ED78DDB293F5756000E736F /* PortfolioPieChartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED78DD9293F5756000E736F /* PortfolioPieChartCell.xib */; };
 		7EF19ED8290B860B00358B66 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF19ED7290B860B00358B66 /* DesignSystem.framework */; };
 		7EF19EDC290B865300358B66 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF19EDB290B865300358B66 /* Utilities.framework */; };
 		A6066936292B7E6C00718E90 /* EarningType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6066935292B7E6C00718E90 /* EarningType.swift */; };
@@ -145,6 +147,8 @@
 		7ED1AF1D291E29AD00BA7C75 /* StakingPortfolioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StakingPortfolioViewModel.swift; path = EarnModule/StakingPortfolioViewModel.swift; sourceTree = SOURCE_ROOT; };
 		7ED78DD4293F2B8E000E736F /* PortfolioHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioHeaderView.swift; sourceTree = "<group>"; };
 		7ED78DD6293F2BAB000E736F /* PortfolioHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PortfolioHeaderView.xib; sourceTree = "<group>"; };
+		7ED78DD8293F5756000E736F /* PortfolioPieChartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioPieChartCell.swift; sourceTree = "<group>"; };
+		7ED78DD9293F5756000E736F /* PortfolioPieChartCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PortfolioPieChartCell.xib; sourceTree = "<group>"; };
 		7EF19ED7290B860B00358B66 /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EF19EDB290B865300358B66 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6066935292B7E6C00718E90 /* EarningType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarningType.swift; sourceTree = "<group>"; };
@@ -233,6 +237,8 @@
 				7E6EBD692909280900069B33 /* EarnPoolViewCell.xib */,
 				C3851892292CAB7E004E9661 /* PlatformCell.swift */,
 				C3851893292CAB7E004E9661 /* PlatformCell.xib */,
+				7ED78DD8293F5756000E736F /* PortfolioPieChartCell.swift */,
+				7ED78DD9293F5756000E736F /* PortfolioPieChartCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -467,6 +473,7 @@
 			files = (
 				7E6EBD6029091E0800069B33 /* EarnListViewController.xib in Resources */,
 				C3851891292CAB48004E9661 /* PlatformFilterViewController.xib in Resources */,
+				7ED78DDB293F5756000E736F /* PortfolioPieChartCell.xib in Resources */,
 				A6FDE58F2924BCDA009BC64B /* ClaimTxStatusPopup.xib in Resources */,
 				7E6EBD6329091E0800069B33 /* StakingPortfolioViewController.xib in Resources */,
 				7E36E36A291A530A009BC8FE /* UnstakeViewController.xib in Resources */,
@@ -553,6 +560,7 @@
 				7EAF477E291B7CDB00BF5D00 /* TransitionDelegate.swift in Sources */,
 				C3A408022923411C008C1220 /* SectionHeaderFAQView.swift in Sources */,
 				C3A4080F2923416A008C1220 /* FAQModel.swift in Sources */,
+				7ED78DDA293F5756000E736F /* PortfolioPieChartCell.swift in Sources */,
 				7E181E652923A6E400C661CD /* PendingUnstakeTxInfo.swift in Sources */,
 				7EAF4752291B567600BF5D00 /* StakingViewController.swift in Sources */,
 				7EB252C32907F43B00648438 /* Observer.swift in Sources */,

@@ -84,6 +84,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     private func registerCell() {
         portfolioTableView.registerCellNib(StakingPortfolioCell.self)
         portfolioTableView.registerCellNib(SkeletonCell.self)
+        portfolioTableView.registerCellNib(PortfolioPieChartCell.self)
         portfolioTableView.register(SkeletonBlankSectionHeader.self, forHeaderFooterViewReuseIdentifier: "SectionHeader")
     }
     
@@ -200,9 +201,15 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
         return viewModel.numberOfRows(section: section)
     }
     
+    func chartCell(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(PortfolioPieChartCell.self, indexPath: indexPath)!
+        cell.loadChartData()
+        return cell
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            return UITableViewCell()
+            return chartCell(tableView, indexPath: indexPath)
         }
         let cell = tableView.dequeueReusableCell(StakingPortfolioCell.self, indexPath: indexPath)!
         let items = indexPath.section == 1 ? viewModel.displayDataSource.value.0 : viewModel.displayDataSource.value.1
@@ -267,7 +274,7 @@ extension StakingPortfolioViewController: SkeletonTableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 160
+        return indexPath.section == 0 ? 390 : 160
     }
     
     func collectionSkeletonView(_ skeletonView: UITableView, identifierForHeaderInSection section: Int) -> ReusableHeaderFooterIdentifier? {
