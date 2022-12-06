@@ -27,6 +27,7 @@ class KNPrettyAlertController: KNBaseViewController {
   let transitor = TransitionDelegate()
   var popupHeight: CGFloat = 300
     var tapRange: NSRange?
+    var swapLinkTap: (() -> Void)?
   init(title: String?,
        isWarning: Bool = false,
        message: String,
@@ -141,7 +142,9 @@ class KNPrettyAlertController: KNBaseViewController {
         }
 
         if sender.didTapAttributedTextInLabel(label: contentLabel, inRange: tapRange) {
-            print("Tapping")
+            self.dismiss(animated: true) {
+                self.swapLinkTap?()
+            }
         }
     }
 }

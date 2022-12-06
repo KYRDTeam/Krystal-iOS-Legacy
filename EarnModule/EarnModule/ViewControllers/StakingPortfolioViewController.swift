@@ -366,7 +366,10 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
     func openUnstake(earningBalance: EarningBalance) {
         let earningType = EarningType(value: earningBalance.platform.type)
         if earningBalance.toUnderlyingToken.address.lowercased() == Constants.ethAddress.lowercased() && earningType == .staking {
-            self.showUnstakeETHWarning()
+            self.showUnstakeETHWarning(
+                from: earningBalance.stakingToken.toToken(),
+                to: earningBalance.toUnderlyingToken.toToken()
+            )
             return
         }
         let viewModel = UnstakeViewModel(earningBalance: earningBalance)
@@ -425,7 +428,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         return options
     }
     
-    private func showUnstakeETHWarning() {
+    private func showUnstakeETHWarning(from: Token, to: Token) {
         let alertController = KNPrettyAlertController(
             title: Strings.warning,
             isWarning: true,
@@ -437,6 +440,9 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
             firstButtonAction: {
             }
         )
+        alertController.swapLinkTap = {
+            AppDependencies.router.openSwap(from: from, to: to)
+        }
         
         alertController.popupHeight = 320
         present(alertController, animated: true, completion: nil)

@@ -136,6 +136,11 @@ class AppRouter: AppRouterProtocol, Coordinator {
       AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: false)
       AppDelegate.shared.coordinator.tabbarController.selectedIndex = 1
   }
+    
+    func openSwap(from: Token, to: Token) {
+        AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorOpenSwap(from: from, to: to)
+        AppDelegate.shared.coordinator.tabbarController.selectedIndex = 1
+    }
   
   func openEarn(token: Token) {
     AppDelegate.shared.coordinator.tabbarController.selectedIndex = 3

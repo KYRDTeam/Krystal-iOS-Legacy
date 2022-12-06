@@ -27,5 +27,5 @@ public protocol AppRouterProtocol {
   func openTokenTransfer(navigationController: UINavigationController, token: Token)
   func openSwap(token: Token)
   func openEarn(token: Token)
-  
+  func openSwap(from: Token, to: Token)
 }

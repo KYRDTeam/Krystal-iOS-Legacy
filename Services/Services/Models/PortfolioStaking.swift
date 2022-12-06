@@ -74,6 +74,10 @@ public struct IngToken: Codable {
   public let logo: String
   public let balance: String
   public let decimals: Int
+    
+    public func toToken() -> Token {
+        return Token(name: symbol, symbol: symbol, address: address, decimals: decimals, logo: logo)
+    }
 }
 
 public struct WrapInfo: Codable {
