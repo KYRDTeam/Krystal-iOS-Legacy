@@ -8,6 +8,7 @@
 import Foundation
 
 extension String {
-  static let showMore = "Show more"
-  static let showLess = "Show less"
+    static let showMore = "show.more".toBeLocalised()
+    static let showLess = "show.less".toBeLocalised()
+    static let findTokenByNameSymbolAddress = "find.a.token.by.name.symbol.or.address".toBeLocalised()
 }

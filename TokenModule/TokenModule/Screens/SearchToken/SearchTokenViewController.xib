@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,12 +12,12 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchTokenViewController" customModule="Krystal" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchTokenViewController" customModule="TokenModule" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="hHp-Y8-e7X" id="CpQ-aY-cVI"/>
                 <outlet property="collectionView" destination="96q-8h-wfj" id="z7A-d4-f3w"/>
@@ -98,9 +98,7 @@
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="9"/>
                             <color key="tintColor" name="textWhiteColor"/>
-                            <state key="normal" image="search_blue_icon">
-                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
-                            </state>
+                            <state key="normal" image="search_icon"/>
                             <connections>
                                 <action selector="onSearchButtonTapped:" destination="-1" eventType="touchUpInside" id="nEr-gq-fsp"/>
                             </connections>
@@ -142,8 +140,8 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <outlet property="dataSource" destination="-1" id="WvP-0j-eC2"/>
-                        <outlet property="delegate" destination="-1" id="Tx9-fs-lHU"/>
+                        <outlet property="dataSource" destination="-1" id="SnQ-vU-jX3"/>
+                        <outlet property="delegate" destination="-1" id="mEe-sC-HPO"/>
                     </connections>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UWq-0X-v4W">
@@ -232,7 +230,7 @@
     <resources>
         <image name="close-search-icon" width="24" height="24"/>
         <image name="empty-search-token" width="128" height="139"/>
-        <image name="search_blue_icon" width="16" height="16"/>
+        <image name="search_icon" width="24" height="24"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
