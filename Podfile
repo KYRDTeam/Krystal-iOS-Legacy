@@ -78,6 +78,7 @@ def swapDependencies
   pod 'APIKit'
   pod 'lottie-ios'
   pod 'FittedSheets'
+  pod 'loady'
 end
 
 def earnDependencies

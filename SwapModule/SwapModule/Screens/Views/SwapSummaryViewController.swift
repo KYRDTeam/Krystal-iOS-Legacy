@@ -13,6 +13,7 @@ import AppState
 import DesignSystem
 import Dependencies
 import FittedSheets
+import Loady
 
 protocol SwapSummaryViewControllerDelegate: AnyObject {
     func onUpdateSettings(settings: SwapTransactionSettings)
@@ -20,7 +21,7 @@ protocol SwapSummaryViewControllerDelegate: AnyObject {
     func onSwapSummarySubmitTransaction()
 }
 
-class SwapSummaryViewController: KNBaseViewController {
+class SwapSummaryViewController: UIViewController {
     @IBOutlet weak var chainNameLabel: UILabel!
     @IBOutlet weak var chainIcon: UIImageView!
     @IBOutlet weak var rateChangedView: UIView!
@@ -42,27 +43,19 @@ class SwapSummaryViewController: KNBaseViewController {
     @IBOutlet weak var destTokenBalanceLabel: UILabel!
     @IBOutlet weak var destTokenValueLabel: UILabel!
     @IBOutlet weak var stackViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var confirmSwapButton: UIButton!
+    @IBOutlet weak var confirmSwapButton: LoadyButton!
     @IBOutlet weak var confirmSwapButtonTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var rateChangedLabel: UILabel!
     
-    var viewModel: SwapSummaryViewModel
+    var viewModel: SwapSummaryViewModel!
     
     weak var delegate: SwapSummaryViewControllerDelegate?
     
-    init(viewModel: SwapSummaryViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: SwapSummaryViewController.className, bundle: nil)
-        self.modalPresentationStyle = .fullScreen
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+        
+        self.setupContinueButton()
+        self.setupUI()
         self.viewModel.updateData()
         self.viewModel.startUpdateRate()
     }
@@ -78,7 +71,12 @@ class SwapSummaryViewController: KNBaseViewController {
         self.chainNameLabel.text = AppState.shared.currentChain.chainName()
         setupTokensUI()
         setupInfoViews()
+        
         bindViewModel()
+    }
+    
+    func setupContinueButton() {
+        confirmSwapButton.setAnimation(LoadyAnimationType.indicator(with: .init(indicatorViewStyle: .black)))
     }
     
     func setupTokensUI() {
@@ -149,14 +147,9 @@ class SwapSummaryViewController: KNBaseViewController {
             self?.delegate?.onSwapSummarySubmitTransaction()
         }
         
-        viewModel.shouldDiplayLoading.observeAndFire(on: self) { [weak self] shouldDisplay in
-            if let shouldDisplay = shouldDisplay {
-                if shouldDisplay {
-                    self?.showLoadingHUD()
-                } else {
-                    self?.hideLoading(animated: false)
-                }
-            }
+        viewModel.onTxFailed = { [weak self] message in
+            self?.hideLoading()
+            self?.showError(errorMsg: message)
         }
         
         viewModel.onUpdateRate = { [weak self] rate in
@@ -260,6 +253,18 @@ class SwapSummaryViewController: KNBaseViewController {
         destTokenValueLabel.text = viewModel.getDestAmountUsdString()
     }
     
+    func showLoading() {
+        confirmSwapButton.startLoading()
+    }
+    
+    func hideLoading() {
+        confirmSwapButton.stopLoading()
+    }
+    
+    func showError(errorMsg: String) {
+        UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.showErrorTopBannerMessage(message: errorMsg)
+    }
+    
     @IBAction func acceptRateChangedButtonTapped(_ sender: Any) {
         viewModel.updateRate()
         
@@ -267,6 +272,7 @@ class SwapSummaryViewController: KNBaseViewController {
     }
     
     @IBAction func confirmSwapButtonTapped(_ sender: Any) {
+        showLoading()
         viewModel.didConfirmSwap()
         AppDependencies.tracker.track("swap_confirm", properties: ["screenid": "swap_confirm_pop_up"])
     }

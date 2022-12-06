@@ -18,7 +18,7 @@ import BaseWallet
 
 struct SwapV2ViewModelActions {
     var onSelectOpenHistory: () -> ()
-    var openSwapConfirm: (SwapObject) -> ()
+    var openSwapConfirm: (_ swapObject: SwapObject, _ quoteToken: TokenDetailInfo) -> ()
     var openApprove: (_ token: Token, _ amount: BigInt) -> ()
     var openSettings: (_ gasLimit: BigInt,_ rate: Rate?,_ settings: SwapTransactionSettings) -> ()
 }
@@ -541,6 +541,7 @@ extension SwapV2ViewModel {
             guard let sourceToken = sourceToken.value, let destToken = destToken.value else { return }
             guard let selectedRate = selectedPlatformRate.value else { return }
             guard let sourceAmount = sourceAmount.value else { return }
+            guard let quoteToken = quoteTokenDetail else { return }
             
             let swapObject = SwapObject(sourceToken: sourceToken,
                                         destToken: destToken,
@@ -551,7 +552,7 @@ extension SwapV2ViewModel {
                                         sourceTokenPrice: self.sourceTokenPrice.value ?? 0,
                                         destTokenPrice: self.destTokenPrice.value ?? 0,
                                         swapSetting: self.settings)
-            actions.openSwapConfirm(swapObject)
+            actions.openSwapConfirm(swapObject, quoteToken)
             AppDependencies.tracker.track("swap_swap_now", properties: [
                 "screenid": "swap",
                 "source_amount": sourceAmount.shortString(decimals: sourceToken.decimals),

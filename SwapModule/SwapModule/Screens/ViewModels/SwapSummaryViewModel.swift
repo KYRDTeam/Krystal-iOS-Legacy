@@ -37,10 +37,10 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
     var priceImpactString: Observable<String?> = .init(nil)
     var newRate: Observable<Rate?> = .init(nil)
     var error: Observable<String?> = .init(nil)
-    var shouldDiplayLoading: Observable<Bool?> = .init(nil)
     var priceImpactState: Observable<PriceImpactState> = .init(.normal)
     var onUpdateRate: ((Rate) -> ())?
     var onTxSendSuccess: ((PendingSwapTxInfo) -> ())?
+    var onTxFailed: ((String) -> ())?
     
     var showRevertedRate: Bool {
         didSet {
@@ -195,18 +195,11 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
             case .success(let nonce):
                 self.buildTx(nonce: nonce)
             case .failure(let error):
-                self.showError(errorMsg: TxErrorParser.parse(error: error).message)
+                self.onTxFailed?(TxErrorParser.parse(error: error).message)
             }
         }
     }
     
-    func showError(errorMsg: String) {
-        UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.showErrorTopBannerMessage(message: errorMsg)
-    }
-    
-    func showLoading() {
-        self.shouldDiplayLoading.value = true
-    }
 }
 
 // MARK: Tx related
@@ -233,7 +226,7 @@ extension SwapSummaryViewModel {
             case .success(let txObject):
                 self?.sendTransaction(txObject: txObject)
             case .failure(let error):
-                self?.showError(errorMsg: TxErrorParser.parse(error: error).message)
+                self?.onTxFailed?(TxErrorParser.parse(error: error).message)
             }
         }
     }
@@ -272,7 +265,7 @@ extension SwapSummaryViewModel {
                 TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
                 self.onTxSendSuccess?(pendingTx)
             case .failure(let error):
-                self.showError(errorMsg: error.message)
+                self.onTxFailed?(error.message)
             }
         }
     }

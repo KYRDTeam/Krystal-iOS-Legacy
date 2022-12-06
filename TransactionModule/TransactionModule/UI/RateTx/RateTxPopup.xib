@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -137,7 +137,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="JYT-IT-yhP"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="15"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" title="Send">
                                 <color key="titleColor" name="buttonTextColor"/>
@@ -222,12 +222,6 @@
                         <constraint firstItem="aiB-GU-yRf" firstAttribute="centerX" secondItem="NIz-ju-Og1" secondAttribute="centerX" id="wA1-xp-Bwl"/>
                         <constraint firstItem="uwx-Wq-B5F" firstAttribute="centerX" secondItem="NIz-ju-Og1" secondAttribute="centerX" id="xli-5j-EDO"/>
                     </constraints>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="20"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

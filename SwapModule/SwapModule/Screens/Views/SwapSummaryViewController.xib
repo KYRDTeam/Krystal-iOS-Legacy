@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -13,20 +13,17 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-SemiBold.ttf">
-            <string>Karla-SemiBold</string>
-        </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SwapSummaryViewController" customModule="Krystal" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SwapSummaryViewController" customModule="SwapModule" customModuleProvider="target">
             <connections>
                 <outlet property="chainIcon" destination="wYE-Is-FV9" id="tww-jM-NW5"/>
                 <outlet property="chainNameLabel" destination="DyH-52-X9n" id="Wb8-mh-53c"/>
-                <outlet property="confirmSwapButton" destination="oIk-vk-At8" id="e7D-ca-wDi"/>
-                <outlet property="confirmSwapButtonTopConstraint" destination="f43-WW-sDd" id="ttp-oQ-iBT"/>
+                <outlet property="confirmSwapButton" destination="V4u-Rw-iQL" id="qAu-h6-Kdm"/>
+                <outlet property="confirmSwapButtonTopConstraint" destination="vnv-KU-Edv" id="j2Y-nF-Gey"/>
                 <outlet property="destTokenBalanceLabel" destination="a8J-md-c5k" id="7bd-ZT-PPK"/>
                 <outlet property="destTokenLogo" destination="Vph-r5-1b4" id="gjJ-Sy-tPG"/>
                 <outlet property="destTokenSymbolLabel" destination="E3e-ek-Edn" id="uVO-Ch-4Fm"/>
@@ -248,7 +245,7 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="fop-hd-2l1">
                                     <rect key="frame" x="28" y="214" width="358" height="220"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XdP-fx-sSw" userLabel="Platform" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XdP-fx-sSw" userLabel="Platform" customClass="SwapInfoView" customModule="SwapModule" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="358" height="28"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
@@ -258,7 +255,7 @@
                                                 <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtPlatform"/>
                                             </userDefinedRuntimeAttributes>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Lw-nD-i04" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Lw-nD-i04" customClass="SwapInfoView" customModule="SwapModule" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="32" width="358" height="28"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
@@ -268,7 +265,7 @@
                                                 <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtRate"/>
                                             </userDefinedRuntimeAttributes>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iny-JF-87S" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iny-JF-87S" customClass="SwapInfoView" customModule="SwapModule" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="64" width="358" height="28"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
@@ -278,7 +275,7 @@
                                                 <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtSlippage"/>
                                             </userDefinedRuntimeAttributes>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i0b-VC-AP5" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i0b-VC-AP5" customClass="SwapInfoView" customModule="SwapModule" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="96" width="358" height="28"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
@@ -288,7 +285,7 @@
                                                 <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtMinReceive"/>
                                             </userDefinedRuntimeAttributes>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DkY-dj-91F" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DkY-dj-91F" customClass="SwapInfoView" customModule="SwapModule" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="128" width="358" height="28"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
@@ -298,7 +295,7 @@
                                                 <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtFee"/>
                                             </userDefinedRuntimeAttributes>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VAg-jY-Adp" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VAg-jY-Adp" customClass="SwapInfoView" customModule="SwapModule" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="160" width="358" height="28"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
@@ -308,7 +305,7 @@
                                                 <userDefinedRuntimeAttribute type="string" keyPath="valueAccessibilityID" value="txtMaxFee"/>
                                             </userDefinedRuntimeAttributes>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XkL-q0-opE" customClass="SwapInfoView" customModule="Krystal" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XkL-q0-opE" customClass="SwapInfoView" customModule="SwapModule" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="192" width="358" height="28"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
@@ -320,24 +317,24 @@
                                         </view>
                                     </subviews>
                                 </stackView>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oIk-vk-At8">
+                                <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V4u-Rw-iQL" customClass="LoadyButton" customModule="Loady">
                                     <rect key="frame" x="28" y="494" width="358" height="42"/>
                                     <color key="backgroundColor" name="buttonBackgroundColor"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="42" id="pbj-Dn-l6x"/>
+                                        <constraint firstAttribute="height" constant="42" id="jYi-Bi-vlQ"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="Karla-SemiBold" family="Karla" pointSize="14"/>
+                                    <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="16"/>
                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" title="Confirm Swap">
+                                    <state key="normal" title="Confirm">
                                         <color key="titleColor" name="buttonTextColor"/>
                                     </state>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
-                                            <real key="value" value="16"/>
+                                            <real key="value" value="14"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                     <connections>
-                                        <action selector="confirmSwapButtonTapped:" destination="-1" eventType="touchUpInside" id="siO-ZH-PyP"/>
+                                        <action selector="confirmSwapButtonTapped:" destination="-1" eventType="touchUpInside" id="TK6-M6-IHj"/>
                                     </connections>
                                 </button>
                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3te-AR-yck">
@@ -469,26 +466,26 @@
                                 <constraint firstItem="gV0-RB-lv9" firstAttribute="top" secondItem="l9f-cf-b6B" secondAttribute="bottom" constant="26" id="03H-Gh-LPK"/>
                                 <constraint firstItem="F4L-50-be1" firstAttribute="leading" secondItem="Tf7-kK-D4U" secondAttribute="leading" constant="28" id="2GN-kD-Ba9"/>
                                 <constraint firstItem="l9f-cf-b6B" firstAttribute="leading" secondItem="Tf7-kK-D4U" secondAttribute="leading" constant="28" id="2x6-cY-Cdx"/>
-                                <constraint firstAttribute="trailing" secondItem="oIk-vk-At8" secondAttribute="trailing" constant="28" id="54g-co-w4q"/>
                                 <constraint firstAttribute="trailing" secondItem="3te-AR-yck" secondAttribute="trailing" constant="32" id="ABF-M7-h38"/>
                                 <constraint firstItem="fop-hd-2l1" firstAttribute="leading" secondItem="Tf7-kK-D4U" secondAttribute="leading" constant="28" id="AIf-xg-XmC"/>
                                 <constraint firstItem="bw3-Sg-JDL" firstAttribute="centerY" secondItem="l9f-cf-b6B" secondAttribute="top" constant="-3" id="CNu-NV-alQ"/>
+                                <constraint firstItem="V4u-Rw-iQL" firstAttribute="leading" secondItem="Tf7-kK-D4U" secondAttribute="leading" constant="28" id="Cor-0n-Mcw"/>
                                 <constraint firstItem="3te-AR-yck" firstAttribute="leading" secondItem="Tf7-kK-D4U" secondAttribute="leading" constant="32" id="HcW-J1-tyj"/>
                                 <constraint firstItem="JaS-zc-vSL" firstAttribute="top" secondItem="Tf7-kK-D4U" secondAttribute="top" constant="10" id="JBM-Y6-Gy0"/>
                                 <constraint firstAttribute="trailing" secondItem="l9f-cf-b6B" secondAttribute="trailing" constant="28" id="KPp-HA-sdv"/>
-                                <constraint firstAttribute="bottom" secondItem="oIk-vk-At8" secondAttribute="bottom" constant="78" id="Prc-nP-MoR"/>
                                 <constraint firstAttribute="trailing" secondItem="fop-hd-2l1" secondAttribute="trailing" constant="28" id="Tz1-li-Uqk"/>
                                 <constraint firstItem="l9f-cf-b6B" firstAttribute="top" secondItem="JaS-zc-vSL" secondAttribute="bottom" constant="6" id="X3O-hf-MXl"/>
-                                <constraint firstItem="oIk-vk-At8" firstAttribute="leading" secondItem="Tf7-kK-D4U" secondAttribute="leading" constant="28" id="ZSg-q9-8Yc"/>
                                 <constraint firstItem="F4L-50-be1" firstAttribute="top" secondItem="fop-hd-2l1" secondAttribute="bottom" constant="70" id="bWb-AL-oAD"/>
+                                <constraint firstAttribute="trailing" secondItem="V4u-Rw-iQL" secondAttribute="trailing" constant="28" id="c3a-fu-GXY"/>
                                 <constraint firstItem="3te-AR-yck" firstAttribute="top" secondItem="fop-hd-2l1" secondAttribute="bottom" constant="60" id="dZc-ae-kGI"/>
                                 <constraint firstItem="gV0-RB-lv9" firstAttribute="leading" secondItem="l9f-cf-b6B" secondAttribute="leading" id="e8l-ca-OhH"/>
                                 <constraint firstItem="gV0-RB-lv9" firstAttribute="trailing" secondItem="l9f-cf-b6B" secondAttribute="trailing" id="eRi-3t-eFf"/>
-                                <constraint firstItem="oIk-vk-At8" firstAttribute="top" secondItem="fop-hd-2l1" secondAttribute="bottom" constant="60" id="f43-WW-sDd"/>
                                 <constraint firstAttribute="trailing" secondItem="F4L-50-be1" secondAttribute="trailing" constant="28" id="fhZ-hp-yXl"/>
                                 <constraint firstItem="fop-hd-2l1" firstAttribute="top" secondItem="l9f-cf-b6B" secondAttribute="bottom" constant="26" id="iBw-fC-XRj"/>
                                 <constraint firstItem="JaS-zc-vSL" firstAttribute="leading" secondItem="Tf7-kK-D4U" secondAttribute="leading" constant="28" id="rqu-cT-820"/>
+                                <constraint firstAttribute="bottom" secondItem="V4u-Rw-iQL" secondAttribute="bottom" constant="78" id="uay-MN-aom"/>
                                 <constraint firstItem="bw3-Sg-JDL" firstAttribute="centerX" secondItem="Tf7-kK-D4U" secondAttribute="centerX" id="vni-vw-mfF"/>
+                                <constraint firstItem="V4u-Rw-iQL" firstAttribute="top" secondItem="fop-hd-2l1" secondAttribute="bottom" constant="60" id="vnv-KU-Edv"/>
                                 <constraint firstAttribute="trailing" secondItem="JaS-zc-vSL" secondAttribute="trailing" constant="28" id="x0w-sI-A3z"/>
                             </constraints>
                         </view>
@@ -570,6 +567,11 @@
             <point key="canvasLocation" x="131.8840579710145" y="113.83928571428571"/>
         </view>
     </objects>
+    <designables>
+        <designable name="V4u-Rw-iQL">
+            <size key="intrinsicContentSize" width="62" height="31"/>
+        </designable>
+    </designables>
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
         <image name="chain_bsc_icon" width="24" height="24"/>

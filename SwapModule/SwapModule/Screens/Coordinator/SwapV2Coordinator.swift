@@ -30,8 +30,8 @@ public class SwapCoordinator: NSObject, Coordinator {
                 onSelectOpenHistory: {
                     self.openTransactionHistory()
                 },
-                openSwapConfirm: { swapObject in
-                    self.openSwapConfirm(object: swapObject)
+                openSwapConfirm: { swapObject, quoteToken in
+                    self.openSwapConfirm(object: swapObject, quoteToken: quoteToken)
                 },
                 openApprove: { tokenObject, amount in
                     self.openApprove(token: tokenObject, amount: amount)
@@ -56,9 +56,11 @@ public class SwapCoordinator: NSObject, Coordinator {
         }
     }
     
-    func openSwapConfirm(object: SwapObject) {
+    func openSwapConfirm(object: SwapObject, quoteToken: TokenDetailInfo) {
         let viewModel = SwapSummaryViewModel(swapObject: object)
-        let swapSummaryVC = SwapSummaryViewController(viewModel: viewModel)
+        viewModel.quoteTokenDetail = quoteToken
+        let swapSummaryVC = SwapSummaryViewController.instantiateFromNib()
+        swapSummaryVC.viewModel = viewModel
 //        swapSummaryVC.delegate = rootViewController
         let nav = UINavigationController(rootViewController: swapSummaryVC)
         nav.modalPresentationStyle = .overFullScreen
