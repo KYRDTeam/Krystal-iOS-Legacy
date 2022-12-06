@@ -20,6 +20,7 @@ class StakingPortfolioViewModel {
     var isLoading: Observable<Bool> = .init(true)
     var selectedPlatforms: Set<EarnPlatform> = Set()
     var isSupportEarnv2: Bool = true
+    var showChart: Bool = true
     var showStaking: Bool = false
     var showPending: Bool = false
     
@@ -141,24 +142,40 @@ class StakingPortfolioViewModel {
     func viewForHeader(_ tableView: UITableView, section: Int) -> PortfolioHeaderView {
         let view = PortfolioHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 46))
         view.shouldShowIcon = section == 0
-        var title: String
         if section == 0 {
-            title = Strings.mySupply
+            view.titleLable.text = Strings.chart
+            view.isExpand = showChart
         } else if section == 1 {
-            title = Strings.mySupply
+            view.titleLable.text = Strings.mySupply
+            view.isExpand = showStaking
         } else {
-            title = Strings.unstakingInProgress
+            view.titleLable.text = Strings.unstakingInProgress
+            view.isExpand = showPending
         }
-        view.titleLable.text = title
-        view.isExpand = section == 0 ? showStaking : showPending
         
         return view
     }
     
+    func numberOfRows(section: Int) -> Int {
+        if section == 0 {
+            return showChart ? 1 : 0
+        } else if section == 1 {
+            return displayDataSource.value.0.count
+        } else {
+            return displayDataSource.value.1.count
+        }
+    }
+    
+    func numberOfSection() -> Int {
+        return dataSource.value.1.isEmpty ? 2 : 3
+    }
+    
     func showHideSection(section: Int, isExpand: Bool) {
         if section == 0 {
-            showStaking = isExpand
+            showChart = isExpand
         } else if section == 1 {
+            showStaking = isExpand
+        } else if section == 2 {
             showPending = isExpand
         }
         self.reloadDataSource()

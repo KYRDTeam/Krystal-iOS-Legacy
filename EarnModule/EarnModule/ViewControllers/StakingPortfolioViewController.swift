@@ -193,16 +193,19 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
 
 extension StakingPortfolioViewController: SkeletonTableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.dataSource.value.1.isEmpty ? 1 : 2
+        return viewModel.numberOfSection()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? viewModel.displayDataSource.value.0.count : viewModel.displayDataSource.value.1.count
+        return viewModel.numberOfRows(section: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+            return UITableViewCell()
+        }
         let cell = tableView.dequeueReusableCell(StakingPortfolioCell.self, indexPath: indexPath)!
-        let items = indexPath.section == 0 ? viewModel.displayDataSource.value.0 : viewModel.displayDataSource.value.1
+        let items = indexPath.section == 1 ? viewModel.displayDataSource.value.0 : viewModel.displayDataSource.value.1
         let cm = items[indexPath.row]
         cell.updateCellModel(cm)
         cell.delegate = self
@@ -358,7 +361,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        guard orientation == .right, indexPath.section == 0 else { return nil }
+        guard orientation == .right, indexPath.section == 1 else { return nil }
         let earningBalances = self.viewModel.displayDataSource.value.0.map { $0.earnBalance }
         guard let earningBalance = earningBalances[indexPath.row] else { return nil }
         let earningType = EarningType(value: earningBalance.platform.type)

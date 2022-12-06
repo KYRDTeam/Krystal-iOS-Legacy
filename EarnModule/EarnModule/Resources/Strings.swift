@@ -133,6 +133,7 @@ struct Strings {
     static let confirmSupply = "confirm.supply".toBeLocalised()
     static let supplySummary = "supply.summary".toBeLocalised()
     static let mySupply = "my.supply".toBeLocalised()
+    static let chart = "chart".toBeLocalised()
     static let unstakingInProgress = "unstaking.in.progress".toBeLocalised()
     static let unstakeEthWarningPopupMessage = "unstake.eth.warning.pop.up".toBeLocalised()
     static let warning = "warning".toBeLocalised()
