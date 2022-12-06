@@ -34,7 +34,7 @@ final public class StringFormatter {
         return formatter.string(from: NSNumber(value: value)) ?? ""
     }
     
-    static func usdString(value: Double) -> String {
+    public static func usdString(value: Double) -> String {
         let formatter = NumberFormatter()
         formatter.maximumFractionDigits = 2
         formatter.numberStyle = .decimal
@@ -64,7 +64,7 @@ final public class StringFormatter {
         return formatter.string(from: NSNumber(value: value)) ?? ""
     }
     
-    static func amountString(value: Double) -> String {
+    public static func amountString(value: Double) -> String {
         let formatter = NumberFormatter()
         // rule amount round upto 4 digits
         formatter.numberStyle = .decimal

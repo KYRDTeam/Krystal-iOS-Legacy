@@ -4,6 +4,7 @@ import UIKit
 import BigInt
 import Result
 import KrystalWallets
+import AppState
 
 /*
  Handling notification from many fetchers, views, ...
@@ -99,6 +100,13 @@ extension KNAppCoordinator {
       name: gasPriceName,
       object: nil
     )
+      
+      NotificationCenter.default.addObserver(
+        self,
+        selector: #selector(handleAppSwitchAddressNotification),
+        name: .appAddressChanged,
+        object: nil
+      )
   }
 
   func removeObserveNotificationFromSession() {
@@ -166,6 +174,12 @@ extension KNAppCoordinator {
       name: marketDataName,
       object: nil
     )
+      
+      NotificationCenter.default.removeObserver(
+        self,
+        name: .appAddressChanged,
+        object: nil
+      )
 
   }
 
@@ -346,4 +360,11 @@ extension KNAppCoordinator {
   @objc func pullToRefreshDone() {
     self.overviewTabCoordinator?.appCoordinatorPullToRefreshDone()
   }
+    
+    @objc func handleAppSwitchAddressNotification(notification: Notification) {
+        let address = AppState.shared.currentAddress
+        MixPanelManager.shared.updateWalletAddress(address: address.addressString)
+        MixPanelManager.shared.setDistintID(address)
+        Tracker.updateUserID(address.addressString)
+    }
 }

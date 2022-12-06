@@ -123,7 +123,7 @@ class UnstakeTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
         params["txn_hash"] = hash
         params["chain_id"] = AppState.shared.currentChain.getChainId()
         AppDependencies.tracker.track(
-            earningType == .staking ? "mob_unstake_done_pop_up_open" : "mob_withdraw_done_pop_up_open",
+            earningType == .staking ? "earn_v2_unstake_done_pop_up_open" : "earn_v2_withdraw_done_pop_up_open",
             properties: params
         )
     }

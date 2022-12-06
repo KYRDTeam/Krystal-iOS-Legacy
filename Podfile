@@ -100,6 +100,7 @@ def servicesDependencies
 end
 
 def designSystemDependencies
+  pod 'SkeletonView'
   pod 'SwiftMessages'
   pod 'FittedSheets'
   pod 'MBProgressHUD', '~> 1.1.0'

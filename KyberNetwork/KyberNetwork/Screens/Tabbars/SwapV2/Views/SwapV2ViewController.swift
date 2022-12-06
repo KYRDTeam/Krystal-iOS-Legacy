@@ -9,6 +9,7 @@ import UIKit
 import Lottie
 import BigInt
 import BaseModule
+import TokenModule
 
 class SwapV2ViewController: InAppBrowsingViewController {
   @IBOutlet weak var platformTableView: UITableView!
@@ -567,19 +568,15 @@ class SwapV2ViewController: InAppBrowsingViewController {
   }
   
   @objc func openSourceTokenSearch() {
-    let controller = SearchTokenViewController(viewModel: SearchTokenViewModel())
-    controller.onSelectTokenCompletion = { [weak self] selectedToken in
-      self?.viewModel.updateSourceToken(token: selectedToken.token)
-    }
-    self.present(controller, animated: true, completion: nil)
+      TokenModule.openSearchToken(on: self) { [weak self] selectedToken in
+          self?.viewModel.updateSourceToken(token: selectedToken.token)
+      }
   }
   
   @objc func openDestTokenSearch() {
-    let controller = SearchTokenViewController(viewModel: SearchTokenViewModel())
-    controller.onSelectTokenCompletion = { [weak self] selectedToken in
-      self?.viewModel.updateDestToken(token: selectedToken.token)
-    }
-    self.present(controller, animated: true, completion: nil)
+      TokenModule.openSearchToken(on: self) { [weak self] selectedToken in
+          self?.viewModel.updateDestToken(token: selectedToken.token)
+      }
   }
   
   @objc func sourceBalanceTapped() {
