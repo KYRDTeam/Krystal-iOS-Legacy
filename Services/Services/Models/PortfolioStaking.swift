@@ -57,14 +57,25 @@ public struct EarningBalancesResponse: Codable {
 
 // MARK: - EarningBalance
 public struct EarningBalance: Codable {
-  public let chainID: Int
-  public let platform: Platform
-  public let stakingToken, toUnderlyingToken: IngToken
-  public let underlyingUsd, apy, ratio: Double
-
+    public let chainID: Int
+    public let platform: Platform
+    public let stakingToken, toUnderlyingToken: IngToken
+    public let underlyingUsd, apy, ratio: Double
+    public let status: StatusClass
+    
     enum CodingKeys: String, CodingKey {
         case chainID = "chainId"
-        case platform, stakingToken, toUnderlyingToken, underlyingUsd, apy, ratio
+        case platform, stakingToken, toUnderlyingToken, underlyingUsd, apy, ratio, status
+    }
+}
+
+public struct StatusClass: Codable {
+    public let status: String
+    public let statusDetail: String
+
+    enum CodingKeys: String, CodingKey {
+        case status
+        case statusDetail = "status_detail"
     }
 }
 

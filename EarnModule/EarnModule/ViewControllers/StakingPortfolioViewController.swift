@@ -237,6 +237,16 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
             guard let pendingUnstake = cm.pendingUnstake else { return }
             self.requestClaim(pendingUnstake: pendingUnstake)
         }
+        cell.onTapWarningIcon = { type in
+            switch type {
+            case .disable:
+                self.showErrorTopBannerMessage(message: "Token no longer supported by partner platform. You are only able to withdraw your existing funds.")
+            case .warning:
+                self.showErrorTopBannerMessage(message: "Token at risk. You can deposit your funds, but we strongly discourage you from doing so.")
+            case .none:
+                break
+            }
+        }
         return cell
     }
     
