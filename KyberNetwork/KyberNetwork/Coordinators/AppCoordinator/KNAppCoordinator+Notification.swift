@@ -363,6 +363,8 @@ extension KNAppCoordinator {
     
     @objc func handleAppSwitchAddressNotification(notification: Notification) {
         let address = AppState.shared.currentAddress
-        restartSession(address: address)
+        if !AppState.shared.isBrowsingMode {
+            restartSession(address: address)
+        }
     }
 }

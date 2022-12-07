@@ -229,6 +229,7 @@ extension KNAppCoordinator {
         self.switchToWatchAddress(address: nextAddress, chain: KNGeneralProvider.shared.currentChain)
       } else if let wallet = walletManager.wallet(forAddress: nextAddress) {
           switchWallet(wallet: wallet, chain: KNGeneralProvider.shared.currentChain)
+          AppState.shared.updateAddress(address: AppState.shared.currentAddress, targetChain: AppState.shared.currentChain)
       } else {
         switchToLastImportedAddress()
       }
