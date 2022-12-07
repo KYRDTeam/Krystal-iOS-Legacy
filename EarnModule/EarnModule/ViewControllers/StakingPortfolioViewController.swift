@@ -240,9 +240,9 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
         cell.onTapWarningIcon = { type in
             switch type {
             case .disable:
-                self.showErrorTopBannerMessage(message: "Token no longer supported by partner platform. You are only able to withdraw your existing funds.")
+                self.showErrorTopBannerMessage(message: Strings.stakeDisableMessage)
             case .warning:
-                self.showErrorTopBannerMessage(message: "Token at risk. You can deposit your funds, but we strongly discourage you from doing so.")
+                self.showErrorTopBannerMessage(message: Strings.stakeWarningMessage)
             case .none:
                 break
             }
