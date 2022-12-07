@@ -385,6 +385,8 @@ class TokenDetailViewModel {
     guard let token = tokenDetail else {
       return
     }
+      
+    var address = self.address
     if isQuoteToken {
       let wsymbol = "W" + token.symbol
       if let wtoken = AppDependencies.tokenStorage.getAllSupportedTokens().first(where: { $0.symbol == wsymbol }) {
