@@ -110,10 +110,12 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
           } else {
             self.navigationController.showTopBannerView(message: "Fail to register referral code")
           }
+        } else {
+            self.navigationController.showTopBannerView(message: "Fail to register referral code")
         }
       }
     } catch {
-      print("[Send ref code] \(error.localizedDescription)")
+        self.navigationController.showTopBannerView(message: "Fail to register referral code")
     }
   }
 }
