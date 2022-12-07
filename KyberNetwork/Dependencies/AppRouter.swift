@@ -122,7 +122,7 @@ class AppRouter: AppRouterProtocol, Coordinator {
   }
   
   func openTokenTransfer(navigationController: UINavigationController, token: Token) {
-    let tokenObject = KNSupportedTokenStorage.shared.supportedToken.first { $0.address == token.address }?.toObject() ?? KNGeneralProvider.shared.quoteTokenObject
+      let tokenObject = KNSupportedTokenStorage.shared.supportedToken.first { $0.address == token.address }?.toObject() ?? token.toObject()
     let coordinator = KNSendTokenViewCoordinator(
       navigationController: navigationController,
       balances: [:],

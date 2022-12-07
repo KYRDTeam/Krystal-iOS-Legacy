@@ -26,6 +26,7 @@ class EarnListViewController: InAppBrowsingViewController {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var emptyView: UIView!
     weak var delegate: EarnListViewControllerDelegate?
+    var isNeedReloadFilter = true
     
     @IBOutlet weak var platformFilterButton: UIButton!
     @IBOutlet weak var emptyIcon: UIImageView!
@@ -52,11 +53,13 @@ class EarnListViewController: InAppBrowsingViewController {
     }
     
     override func onAppSwitchChain() {
+        isNeedReloadFilter = true
         currentSelectedChain = AppState.shared.currentChain
         fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
     }
     
     override func onAppSelectAllChain() {
+        isNeedReloadFilter = true
         currentSelectedChain = .all
         fetchData()
     }
@@ -152,6 +155,10 @@ class EarnListViewController: InAppBrowsingViewController {
             }
             if !isAutoReload {
                 self.hideLoading()
+            }
+            if self.isNeedReloadFilter {
+                self.isNeedReloadFilter = false
+                self.selectedPlatforms = self.getAllPlatform()
             }
             self.reloadUI()
         }

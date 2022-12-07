@@ -10,6 +10,9 @@
 		7AF0F9DD3CC978A37BF121EA /* Pods_Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A24B6E36190B9757D206062 /* Pods_Utilities.framework */; };
 		7E6EBD89290937BD00069B33 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD88290937BD00069B33 /* UIFont+.swift */; };
 		7EAF476A291B695000BF5D00 /* UICollectionView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF4769291B695000BF5D00 /* UICollectionView+register.swift */; };
+		7EB129B42938B1AF00CE6D1C /* NSObject+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB129B32938B1AF00CE6D1C /* NSObject+.swift */; };
+		7ECC45C62939B07100B37D30 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECC45C52939B07100B37D30 /* Images.swift */; };
+		7ECC45C82939B47700B37D30 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ECC45C72939B47700B37D30 /* Assets.xcassets */; };
 		A64C2DE528F6D57A002FD64C /* BaseXibView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2DE428F6D57A002FD64C /* BaseXibView.swift */; };
 		A64C2DFA28F6D657002FD64C /* NumberFormatUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2DF928F6D657002FD64C /* NumberFormatUtils.swift */; };
 		A64C2E0128F6D833002FD64C /* UIViewController+nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E0028F6D833002FD64C /* UIViewController+nib.swift */; };
@@ -46,6 +49,9 @@
 		7E6EBD88290937BD00069B33 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		7EAF4769291B695000BF5D00 /* UICollectionView+register.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+register.swift"; sourceTree = "<group>"; };
 		7EAF4770291B6C1000BF5D00 /* BaseModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EB129B32938B1AF00CE6D1C /* NSObject+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+.swift"; sourceTree = "<group>"; };
+		7ECC45C52939B07100B37D30 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		7ECC45C72939B47700B37D30 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A64C2DE428F6D57A002FD64C /* BaseXibView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseXibView.swift; sourceTree = "<group>"; };
 		A64C2DF928F6D657002FD64C /* NumberFormatUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatUtils.swift; sourceTree = "<group>"; };
 		A64C2E0028F6D833002FD64C /* UIViewController+nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+nib.swift"; sourceTree = "<group>"; };
@@ -116,6 +122,7 @@
 				A64C2DE428F6D57A002FD64C /* BaseXibView.swift */,
 				A64C2E5C28F8779C002FD64C /* JSONDictionary.swift */,
 				A64C2E7C28F911D1002FD64C /* EthereumUnit.swift */,
+				7ECC45C52939B07100B37D30 /* Images.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -143,6 +150,7 @@
 				7E6EBD88290937BD00069B33 /* UIFont+.swift */,
 				C3A408132923536E008C1220 /* UIColor+.swift */,
 				A668BFD6292CC554001A110D /* URL+.swift */,
+				7EB129B32938B1AF00CE6D1C /* NSObject+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -172,6 +180,7 @@
 				A6B1FD1528F6B3F100894DCB /* Extensions */,
 				A6B1FD0628F69EBB00894DCB /* Helpers */,
 				A6E433C328F54F6F00782F7D /* Utilities.h */,
+				7ECC45C72939B47700B37D30 /* Assets.xcassets */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -256,6 +265,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7ECC45C82939B47700B37D30 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,6 +308,7 @@
 				A6B1FD0828F69EC500894DCB /* Storage.swift in Sources */,
 				A64C2E7928F91165002FD64C /* Data+hex.swift in Sources */,
 				A668BFDB292CC6E1001A110D /* DateFormatterUtil.swift in Sources */,
+				7ECC45C62939B07100B37D30 /* Images.swift in Sources */,
 				A64C2E0328F6D845002FD64C /* UITableView+register.swift in Sources */,
 				7EAF476A291B695000BF5D00 /* UICollectionView+register.swift in Sources */,
 				A64C2E7728F9113C002FD64C /* String+number.swift in Sources */,
@@ -313,6 +324,7 @@
 				A66846162908EA60006BBE29 /* Collection+.swift in Sources */,
 				A64C2E4428F7F58A002FD64C /* CAGradientLayer+.swift in Sources */,
 				A64C2E7328F91051002FD64C /* Error+pretty.swift in Sources */,
+				7EB129B42938B1AF00CE6D1C /* NSObject+.swift in Sources */,
 				A64C2E1828F6F95B002FD64C /* UIView+accessiblityID.swift in Sources */,
 				A6B1FD1728F6B40800894DCB /* UIScreen+statusBar.swift in Sources */,
 				A64C2E5D28F8779C002FD64C /* JSONDictionary.swift in Sources */,

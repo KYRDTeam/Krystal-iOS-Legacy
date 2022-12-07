@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Services
+import Utilities
 
 class SearchTokenViewCell: UITableViewCell {
   @IBOutlet weak var iconImageView: UIImageView!
@@ -23,9 +25,9 @@ class SearchTokenViewCell: UITableViewCell {
     // Configure the view for the selected state
   }
   
-  func updateUI(token: SwapToken) {
-    if let url = URL(string: token.token.logo) {
-      self.iconImageView.setImage(with: url, placeholder: UIImage(named: "default_token")!)
+  func updateUI(token: SearchToken) {
+    if URL(string: token.token.logo) != nil {
+      self.iconImageView.loadImage(token.token.logo)
     } else {
       self.iconImageView.image = UIImage(named: "default_token")!
     }

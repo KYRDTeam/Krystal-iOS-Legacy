@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Services
+import Utilities
 
 class CommonBaseTokenCell: UICollectionViewCell {
   @IBOutlet weak var tokenIcon: UIImageView!
@@ -18,8 +20,8 @@ class CommonBaseTokenCell: UICollectionViewCell {
 
   func updateUI(token: Token) {
     self.tokenLabel.text = token.symbol
-    if let url = URL(string: token.logo) {
-      self.tokenIcon.setImage(with: url, placeholder: UIImage(named: "default_token")!)
+    if URL(string: token.logo) != nil {
+      self.tokenIcon.loadImage(token.logo)
     } else {
       self.tokenIcon.image = UIImage(named: "default_token")!
     }

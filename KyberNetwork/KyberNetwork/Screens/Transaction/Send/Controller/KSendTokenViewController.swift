@@ -632,6 +632,7 @@ extension KSendTokenViewController {
     self.updateUIPendingTxIndicatorView()
     let title = KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.transfer
     sendButton.setTitle(title, for: .normal)
+    amountTextField.text = ""
   }
 
   func coordinatorDidUpdateChain() {
