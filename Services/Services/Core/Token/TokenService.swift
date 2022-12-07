@@ -13,6 +13,7 @@ import Utilities
 public class TokenService: BaseService {
   
   let provider = MoyaProvider<TokenEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
+  var searchTokensProcess: Cancellable?
   
   public func getTokenDetail(address: String, chainPath: String, completion: @escaping (TokenDetailInfo?) -> ()) {
     provider.request(.getTokenDetail(chainPath: chainPath, address: address)) { result in
@@ -31,8 +32,8 @@ public class TokenService: BaseService {
     }
   }
   
-  public func getCommonBaseTokens(completion: @escaping ([Token]) -> ()) {
-    provider.request(.getCommonBaseToken) { result in
+  public func getCommonBaseTokens(chainPath: String, completion: @escaping ([Token]) -> ()) {
+    provider.request(.getCommonBaseToken(chainPath: chainPath)) { result in
       switch result {
       case .success(let response):
         if let json = try? response.mapJSON() as? [String: Any] ?? [:], let tokenJsons = json["tokens"] as? [[String: Any]] {
@@ -83,5 +84,27 @@ public class TokenService: BaseService {
       }
     }
   }
+    
+    public func getSearchTokens(chainPath: String, address: String, query: String, orderBy: String, completion: @escaping ([SearchToken]?) -> ()) {
+        if let searchTokensProcess = self.searchTokensProcess {
+          searchTokensProcess.cancel()
+        }
+        self.searchTokensProcess = provider.request(.getSearchToken(chainPath: chainPath, address: address, query: query, orderBy: orderBy)) { result in
+          switch result {
+          case .success(let response):
+            if let json = try? response.mapJSON() as? JSONDictionary ?? [:], let balancesJsons = json["balances"] as? [JSONDictionary] {
+              var tokens: [SearchToken] = []
+              balancesJsons.forEach { balanceJsons in
+                tokens.append(SearchToken(json: balanceJsons))
+              }
+              completion(tokens)
+            } else {
+              completion(nil)
+            }
+          case .failure:
+            completion(nil)
+          }
+        }
+    }
   
 }

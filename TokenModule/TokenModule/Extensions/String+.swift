@@ -9,6 +9,6 @@ import Foundation
 
 extension String {
   func toBeLocalised() -> String {
-    return NSLocalizedString(self, comment: "")
+      return NSLocalizedString(self, tableName: nil, bundle: TokenModule.bundle, value: "", comment: "")
   }
 }

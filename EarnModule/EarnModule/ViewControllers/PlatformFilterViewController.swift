@@ -20,7 +20,8 @@ class PlatformFilterViewModel {
         self.dataSource = Array(dataSource).sorted { (left, right) -> Bool in
             return left.name < right.name
         }
-        self.selected = selected
+        
+        self.selected = dataSource.intersection(selected)
     }
     
     func platformForRow(row: Int) -> EarnPlatform? {
@@ -64,6 +65,7 @@ class PlatformFilterViewController: KNBaseViewController {
     
     @IBAction func doneButtonTapped(_ sender: UIButton) {
         dismiss(animated: true) {
+            guard !self.viewModel.selected.isEmpty else { return }
             self.delegate?.didSelectPlatform(viewController: self, selected: self.viewModel.selected)
         }
     }

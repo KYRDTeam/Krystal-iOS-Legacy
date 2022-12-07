@@ -69,6 +69,9 @@ class EarnOverviewController: InAppBrowsingViewController {
     earnPoolVC.delegate = self
     let portfolioVC = StakingPortfolioViewController.instantiateFromNib()
     portfolioVC.delegate = self
+      earnPoolVC.isSupportEarnv2.observeAndFire(on: self) { value in
+          portfolioVC.updateSupportedEarnv2(value)
+      }
     childListViewControllers = [earnPoolVC, portfolioVC]
   }
 
