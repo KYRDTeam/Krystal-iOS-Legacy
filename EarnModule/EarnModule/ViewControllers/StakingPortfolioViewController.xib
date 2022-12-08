@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -32,7 +32,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Jh9-lx-at7">
-                    <rect key="frame" x="0.0" y="74" width="375" height="593"/>
+                    <rect key="frame" x="0.0" y="69" width="375" height="598"/>
                     <color key="backgroundColor" red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
@@ -43,13 +43,13 @@
                     </connections>
                 </tableView>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="72k-Xu-RIT">
-                    <rect key="frame" x="0.0" y="74" width="375" height="593"/>
+                    <rect key="frame" x="0.0" y="69" width="375" height="598"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="deposit_empty_icon" translatesAutoresizingMaskIntoConstraints="NO" id="4dq-y8-ZfK">
-                            <rect key="frame" x="142.5" y="198" width="90" height="107"/>
+                            <rect key="frame" x="142.5" y="200.5" width="90" height="107"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No tokens deposited yet." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNb-7G-c5u">
-                            <rect key="frame" x="20" y="328" width="335" height="19"/>
+                            <rect key="frame" x="20" y="330.5" width="335" height="19"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" red="0.54117647059999996" green="0.64313725489999995" blue="0.68235294120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -154,9 +154,9 @@
                 <constraint firstItem="qaS-MQ-s3J" firstAttribute="centerY" secondItem="Lan-RH-3Fn" secondAttribute="centerY" id="RPq-IQ-AqG"/>
                 <constraint firstAttribute="trailing" secondItem="Jh9-lx-at7" secondAttribute="trailing" id="hFn-6Q-cZy"/>
                 <constraint firstItem="Lan-RH-3Fn" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="18" id="jsa-Mp-SCX"/>
-                <constraint firstItem="72k-Xu-RIT" firstAttribute="top" secondItem="Lan-RH-3Fn" secondAttribute="bottom" constant="5" id="ooS-bW-psM"/>
+                <constraint firstItem="72k-Xu-RIT" firstAttribute="top" secondItem="Lan-RH-3Fn" secondAttribute="bottom" id="ooS-bW-psM"/>
                 <constraint firstItem="72k-Xu-RIT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="wZG-10-cQ5"/>
-                <constraint firstItem="Jh9-lx-at7" firstAttribute="top" secondItem="Lan-RH-3Fn" secondAttribute="bottom" constant="5" id="zot-bb-F9R"/>
+                <constraint firstItem="Jh9-lx-at7" firstAttribute="top" secondItem="Lan-RH-3Fn" secondAttribute="bottom" id="zot-bb-F9R"/>
             </constraints>
             <userDefinedRuntimeAttributes>
                 <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">

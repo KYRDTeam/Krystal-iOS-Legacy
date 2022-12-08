@@ -20,7 +20,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="362" id="KGk-i7-Jjw" customClass="PortfolioPieChartCell" customModule="EarnModule" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="362" id="KGk-i7-Jjw" customClass="PortfolioPieChartCell" customModule="EarnModule" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="374" height="362"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
@@ -28,11 +28,11 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fSm-FQ-L77" customClass="PieChartView" customModule="Charts">
-                        <rect key="frame" x="32" y="32" width="140" height="140"/>
+                        <rect key="frame" x="24" y="24" width="156" height="156"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="140" id="hwq-YK-wXI"/>
-                            <constraint firstAttribute="height" constant="140" id="wYE-Ii-XGU"/>
+                            <constraint firstAttribute="width" constant="156" id="hwq-YK-wXI"/>
+                            <constraint firstAttribute="height" constant="156" id="wYE-Ii-XGU"/>
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EARNING ASSETS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPF-0J-zxk">
@@ -83,16 +83,16 @@
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FzI-nD-zi9" customClass="DashedLineView" customModule="DesignSystem">
-                        <rect key="frame" x="28" y="193" width="318" height="1"/>
-                        <color key="backgroundColor" name="mainViewBgColor"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FzI-nD-zi9" customClass="DashedLineView" customModule="DesignSystem">
+                        <rect key="frame" x="28" y="201" width="318" height="1"/>
+                        <color key="backgroundColor" name="tagBgColor"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="hrA-wM-UJl"/>
                         </constraints>
                     </view>
-                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="kHI-l1-geH">
-                        <rect key="frame" x="0.0" y="194" width="374" height="168"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="kHI-l1-geH">
+                        <rect key="frame" x="0.0" y="226" width="374" height="136"/>
+                        <color key="backgroundColor" name="innerContainerBgColor"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="R0t-MJ-kb4">
                             <size key="itemSize" width="128" height="128"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -110,7 +110,7 @@
                     <constraint firstItem="GgX-zT-jpD" firstAttribute="centerY" secondItem="Ncn-kO-trE" secondAttribute="centerY" id="IBP-sM-CJm"/>
                     <constraint firstItem="1pB-Jp-Cee" firstAttribute="centerY" secondItem="cv7-7y-CHE" secondAttribute="centerY" id="Jlx-1f-9mN"/>
                     <constraint firstItem="GgX-zT-jpD" firstAttribute="leading" secondItem="Ncn-kO-trE" secondAttribute="trailing" constant="6" id="NPZ-7m-atn"/>
-                    <constraint firstItem="fSm-FQ-L77" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="32" id="Okc-jd-LXs"/>
+                    <constraint firstItem="fSm-FQ-L77" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="24" id="Okc-jd-LXs"/>
                     <constraint firstItem="tn8-1O-63k" firstAttribute="leading" secondItem="hPF-0J-zxk" secondAttribute="leading" id="PBu-MQ-KrA"/>
                     <constraint firstItem="ZYT-AQ-kFd" firstAttribute="top" secondItem="tn8-1O-63k" secondAttribute="bottom" constant="6" id="Qqy-Fz-pdp"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1pB-Jp-Cee" secondAttribute="trailing" constant="3" id="VBU-Wt-rtg"/>
@@ -122,19 +122,20 @@
                     <constraint firstItem="kHI-l1-geH" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ic3-up-qBl"/>
                     <constraint firstItem="FzI-nD-zi9" firstAttribute="top" secondItem="fSm-FQ-L77" secondAttribute="bottom" constant="21" id="je6-wg-YuR"/>
                     <constraint firstAttribute="bottom" secondItem="kHI-l1-geH" secondAttribute="bottom" id="kQN-En-jSX"/>
-                    <constraint firstItem="kHI-l1-geH" firstAttribute="top" secondItem="FzI-nD-zi9" secondAttribute="bottom" id="md2-e6-xE3"/>
+                    <constraint firstItem="kHI-l1-geH" firstAttribute="top" secondItem="FzI-nD-zi9" secondAttribute="bottom" constant="24" id="md2-e6-xE3"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="tn8-1O-63k" secondAttribute="trailing" constant="3" id="oQb-JV-Eb3"/>
                     <constraint firstAttribute="trailing" secondItem="kHI-l1-geH" secondAttribute="trailing" id="oRe-GH-jp9"/>
                     <constraint firstItem="cv7-7y-CHE" firstAttribute="top" secondItem="2lv-xY-v7s" secondAttribute="bottom" constant="11" id="pif-Ub-FfA"/>
                     <constraint firstItem="tn8-1O-63k" firstAttribute="top" secondItem="hPF-0J-zxk" secondAttribute="bottom" constant="6" id="qCr-h8-oxV"/>
                     <constraint firstAttribute="trailing" secondItem="hPF-0J-zxk" secondAttribute="trailing" constant="63" id="skA-Ir-Ccs"/>
                     <constraint firstItem="Ncn-kO-trE" firstAttribute="leading" secondItem="2lv-xY-v7s" secondAttribute="leading" id="v5i-oH-4Zb"/>
-                    <constraint firstItem="fSm-FQ-L77" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="32" id="zkx-Pw-Fc7"/>
+                    <constraint firstItem="fSm-FQ-L77" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="24" id="zkx-Pw-Fc7"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" name="innerContainerBgColor"/>
             <connections>
+                <outlet property="collectionView" destination="kHI-l1-geH" id="plA-f9-umJ"/>
                 <outlet property="pieChartView" destination="fSm-FQ-L77" id="tqO-gK-7Sn"/>
             </connections>
             <point key="canvasLocation" x="38.167938931297705" y="131.69014084507043"/>
@@ -147,11 +148,11 @@
         <namedColor name="innerContainerBgColor">
             <color red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="mainViewBgColor">
-            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="normalTextColor">
             <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="tagBgColor">
+            <color red="0.23137254901960785" green="0.24313725490196078" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>

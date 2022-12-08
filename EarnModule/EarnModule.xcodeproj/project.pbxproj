@@ -14,6 +14,8 @@
 		7E36E369291A530A009BC8FE /* UnstakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E36E367291A530A009BC8FE /* UnstakeViewController.swift */; };
 		7E36E36A291A530A009BC8FE /* UnstakeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E36E368291A530A009BC8FE /* UnstakeViewController.xib */; };
 		7E5E7278290B7E5700156F3C /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5E7277290B7E5700156F3C /* Services.framework */; };
+		7E693E60294097B40069CFFE /* ChartLegendTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E693E5E294097B40069CFFE /* ChartLegendTokenCell.swift */; };
+		7E693E61294097B40069CFFE /* ChartLegendTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E693E5F294097B40069CFFE /* ChartLegendTokenCell.xib */; };
 		7E6EBD6029091E0800069B33 /* EarnListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5C29091E0700069B33 /* EarnListViewController.xib */; };
 		7E6EBD6129091E0800069B33 /* EarnListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5D29091E0700069B33 /* EarnListViewController.swift */; };
 		7E6EBD6229091E0800069B33 /* StakingPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5E29091E0700069B33 /* StakingPortfolioViewController.swift */; };
@@ -106,6 +108,8 @@
 		7E36E367291A530A009BC8FE /* UnstakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnstakeViewController.swift; sourceTree = "<group>"; };
 		7E36E368291A530A009BC8FE /* UnstakeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnstakeViewController.xib; sourceTree = "<group>"; };
 		7E5E7277290B7E5700156F3C /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E693E5E294097B40069CFFE /* ChartLegendTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLegendTokenCell.swift; sourceTree = "<group>"; };
+		7E693E5F294097B40069CFFE /* ChartLegendTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChartLegendTokenCell.xib; sourceTree = "<group>"; };
 		7E6EBD5C29091E0700069B33 /* EarnListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EarnListViewController.xib; sourceTree = "<group>"; };
 		7E6EBD5D29091E0700069B33 /* EarnListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EarnListViewController.swift; sourceTree = "<group>"; };
 		7E6EBD5E29091E0700069B33 /* StakingPortfolioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StakingPortfolioViewController.swift; sourceTree = "<group>"; };
@@ -239,6 +243,8 @@
 				C3851893292CAB7E004E9661 /* PlatformCell.xib */,
 				7ED78DD8293F5756000E736F /* PortfolioPieChartCell.swift */,
 				7ED78DD9293F5756000E736F /* PortfolioPieChartCell.xib */,
+				7E693E5E294097B40069CFFE /* ChartLegendTokenCell.swift */,
+				7E693E5F294097B40069CFFE /* ChartLegendTokenCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -496,6 +502,7 @@
 				7E6EBD87290931E900069B33 /* StakingPortfolioCell.xib in Resources */,
 				C3A4080E2923416A008C1220 /* ankr-bnb.plist in Resources */,
 				C3A4080C2923416A008C1220 /* ankr-matic-matic.plist in Resources */,
+				7E693E61294097B40069CFFE /* ChartLegendTokenCell.xib in Resources */,
 				C3A408042923411C008C1220 /* StakingFAQView.xib in Resources */,
 				7EAF4767291B68C100BF5D00 /* EarningTokenCell.xib in Resources */,
 				7E987F262908E92500AA5F8F /* EarnOverviewController.xib in Resources */,
@@ -554,6 +561,7 @@
 				A6D1F808291BAF1E00ABA52B /* StakingViewModel.swift in Sources */,
 				A61B297E292385000064C3FE /* EarnParamBuilder.swift in Sources */,
 				A61B2980292385780064C3FE /* EarnParamBuilderFactory.swift in Sources */,
+				7E693E60294097B40069CFFE /* ChartLegendTokenCell.swift in Sources */,
 				7EB252C12907F3E100648438 /* EarnOverViewModel.swift in Sources */,
 				A61B2984292385C30064C3FE /* LidoParamBuilder.swift in Sources */,
 				7EAF4768291B68C100BF5D00 /* EarningTokenCell.swift in Sources */,
