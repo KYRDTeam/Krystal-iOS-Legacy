@@ -18,13 +18,18 @@ public extension String {
         return attributedString
     }
   
-  
-    
 }
 
 
 public extension Optional where Wrapped == String {
   
+    var isNilOrEmpty: Bool {
+        if let self = self {
+            return self.isEmpty
+        }
+        return true
+    }
+    
   func whenNilOrEmpty(_ value: String) -> String {
     if let unwrapped = self, !unwrapped.isEmpty {
       return unwrapped
