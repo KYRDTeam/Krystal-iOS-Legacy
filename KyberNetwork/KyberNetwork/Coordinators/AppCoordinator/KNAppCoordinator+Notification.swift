@@ -363,8 +363,8 @@ extension KNAppCoordinator {
     
     @objc func handleAppSwitchAddressNotification(notification: Notification) {
         let address = AppState.shared.currentAddress
-        MixPanelManager.shared.updateWalletAddress(address: address.addressString)
-        MixPanelManager.shared.setDistintID(address)
-        Tracker.updateUserID(address.addressString)
+        if !AppState.shared.isBrowsingMode {
+            restartSession(address: address)
+        }
     }
 }
