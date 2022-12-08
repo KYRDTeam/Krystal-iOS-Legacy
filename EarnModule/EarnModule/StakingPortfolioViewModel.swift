@@ -21,7 +21,7 @@ class StakingPortfolioViewModel {
     var selectedPlatforms: Set<EarnPlatform> = Set()
     var isSupportEarnv2: Bool = true
     var showChart: Bool = true
-    var showStaking: Bool = false
+    var showStaking: Bool = true
     var showPending: Bool = false
     
     func cleanAllData() {
@@ -86,7 +86,7 @@ class StakingPortfolioViewModel {
             output.append(StakingPortfolioCellModel(earnBalance: item))
         }
         
-        displayDataSource.value = (showStaking ? output : [], showPending ? pending : [])
+        displayDataSource.value = (output, pending)
         dataSource.value = (output, pending)
     }
     
@@ -158,7 +158,7 @@ class StakingPortfolioViewModel {
     
     func numberOfRows(section: Int) -> Int {
         if section == 0 {
-            return showChart ? 1 : 0
+            return 1//showChart ? 1 : 0
         } else if section == 1 {
             return displayDataSource.value.0.count
         } else {
@@ -170,7 +170,7 @@ class StakingPortfolioViewModel {
         return dataSource.value.1.isEmpty ? 2 : 3
     }
     
-    func showHideSection(section: Int, isExpand: Bool) {
+    func updateShowHideSection(section: Int, isExpand: Bool) {
         if section == 0 {
             showChart = isExpand
         } else if section == 1 {
@@ -178,6 +178,17 @@ class StakingPortfolioViewModel {
         } else if section == 2 {
             showPending = isExpand
         }
-        self.reloadDataSource()
+    }
+    
+    func heightForRow(section: Int) -> CGFloat {
+        if section == 0 {
+            return showChart ? 390 : 0
+        } else if section == 1 {
+            return showStaking ? 160 : 0
+        } else if section == 2 {
+            return showPending ? 160 : 0
+        } else {
+            return 0
+        }
     }
 }

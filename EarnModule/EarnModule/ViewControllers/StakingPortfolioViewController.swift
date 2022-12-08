@@ -45,13 +45,13 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     
     weak var delegate: StakingPortfolioViewControllerDelegate?
     
-    
     let viewModel: StakingPortfolioViewModel = StakingPortfolioViewModel()
     var timer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         registerCell()
+        portfolioTableView.backgroundColor = AppTheme.current.sectionBackgroundColor
         searchTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
         viewModel.displayDataSource.observeAndFire(on: self) { _ in
             self.portfolioTableView.reloadData()
@@ -261,20 +261,46 @@ extension StakingPortfolioViewController: SkeletonTableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-      return CGFloat(0.0)
+      return CGFloat(0.01)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = viewModel.viewForHeader(tableView, section: section)
         view.onTapped = { isExpand in
-            self.viewModel.showHideSection(section: section, isExpand: isExpand)
-            self.portfolioTableView.reloadData()
+            self.viewModel.updateShowHideSection(section: section, isExpand: isExpand)
+            self.portfolioTableView.beginUpdates()
+            if !isExpand {
+                self.view.layoutIfNeeded()
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+                    for index in 0..<self.portfolioTableView.numberOfRows(inSection: section) {
+                        if let cell = self.portfolioTableView.cellForRow(at: IndexPath(row: index, section: section)) {
+                            var rect = cell.frame
+                            rect.size.height = 0
+                            cell.frame = rect
+                        }
+                    }
+                    self.view.layoutIfNeeded()
+                }
+            } else {
+                self.view.layoutIfNeeded()
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+                    for index in 0..<self.portfolioTableView.numberOfRows(inSection: section) {
+                        if let cell = self.portfolioTableView.cellForRow(at: IndexPath(row: index, section: section)) {
+                            var rect = cell.frame
+                            rect.size.height = 390
+                            cell.frame = rect
+                        }
+                    }
+                    self.view.layoutIfNeeded()
+                }
+            }
+            self.portfolioTableView.endUpdates()
         }
         return view
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return indexPath.section == 0 ? 390 : 160
+        return viewModel.heightForRow(section: indexPath.section)
     }
     
     func collectionSkeletonView(_ skeletonView: UITableView, identifierForHeaderInSection section: Int) -> ReusableHeaderFooterIdentifier? {
