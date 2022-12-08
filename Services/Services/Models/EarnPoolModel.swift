@@ -51,7 +51,7 @@ public class EarnPlatform: Equatable, Hashable {
   public let logo: String
   public let type: String
   public let desc: String
-  public let apy: Double
+  public let apy, rewardApy: Double
   public let tvl: Double
 
   init(json: JSONDictionary) {
@@ -61,6 +61,7 @@ public class EarnPlatform: Equatable, Hashable {
     self.desc = json["desc"] as? String ?? ""
     self.apy = json["apy"] as? Double ?? 0
     self.tvl = json["tvl"] as? Double ?? 0
+    self.rewardApy = json["rewardAPY"] as? Double ?? 0
   }
     
    public init (platform: Platform, apy: Double, tvl: Double) {
@@ -70,6 +71,7 @@ public class EarnPlatform: Equatable, Hashable {
         self.desc = platform.desc
         self.apy = apy
         self.tvl = tvl
+       self.rewardApy = 0
     }
     
     public static func ==(lhs: EarnPlatform, rhs: EarnPlatform) -> Bool {

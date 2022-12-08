@@ -59,6 +59,8 @@ class EarnPoolViewCell: UITableViewCell {
     @IBOutlet weak var apyLabel: UILabel!
     @IBOutlet weak var arrowUpImage: UIImageView!
     @IBOutlet weak var chainImageContaintView: UIView!
+    
+    
     var viewModel: EarnPoolViewCellViewModel?
     weak var delegate: EarnPoolViewCellDelegate?
     override func awakeFromNib() {

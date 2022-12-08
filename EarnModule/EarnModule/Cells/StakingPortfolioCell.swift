@@ -25,6 +25,7 @@ struct StakingPortfolioCellModel {
   
   let isInProcess: Bool
   let isClaimable: Bool
+    let hasRewardApy: Bool
   var pendingUnstake: PendingUnstake?
   var earnBalance: EarningBalance?
   
@@ -59,6 +60,7 @@ struct StakingPortfolioCellModel {
     self.displayTokenName = earnBalance.toUnderlyingToken.symbol
     self.displayPlatformName = earnBalance.platform.name.uppercased()
     self.isClaimable = false
+      self.hasRewardApy = earnBalance.rewardApy > 0
   }
   
   init(pendingUnstake: PendingUnstake) {
@@ -76,6 +78,7 @@ struct StakingPortfolioCellModel {
     self.displayTokenName = pendingUnstake.symbol
     self.displayPlatformName = pendingUnstake.platform.name.uppercased()
     self.isClaimable = pendingUnstake.extraData.status == "claimable"
+      self.hasRewardApy = false
   }
     
     func timeForUnstakeString() -> String {
@@ -121,6 +124,8 @@ class StakingPortfolioCell: SwipeTableViewCell {
   @IBOutlet weak var apyTitleLabel: UILabel!
   @IBOutlet weak var balanceTitleLabel: UILabel!
   @IBOutlet weak var depositedValueLabelTopConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var rewardApyIcon: UIImageView!
     var onTapHint: (() -> Void)? = nil
   var claimTapped: (() -> ())?
   
@@ -147,6 +152,7 @@ class StakingPortfolioCell: SwipeTableViewCell {
     
     depositTitleLabelContraintWithAPYTitle.priority = model.isInProcess ? UILayoutPriority(250) : UILayoutPriority(1000)
     depostTitleLabelLeadingContraintWithSuperView.priority = model.isInProcess ? UILayoutPriority(1000) : UILayoutPriority(250)
+      rewardApyIcon.isHidden = !model.hasRewardApy
   }
   
   @IBAction func inProcessButtonTapped(_ sender: UIButton) {

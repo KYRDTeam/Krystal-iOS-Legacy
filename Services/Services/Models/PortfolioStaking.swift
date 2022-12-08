@@ -60,11 +60,11 @@ public struct EarningBalance: Codable {
   public let chainID: Int
   public let platform: Platform
   public let stakingToken, toUnderlyingToken: IngToken
-  public let underlyingUsd, apy, ratio: Double
+  public let underlyingUsd, apy, ratio, rewardApy: Double
 
     enum CodingKeys: String, CodingKey {
         case chainID = "chainId"
-        case platform, stakingToken, toUnderlyingToken, underlyingUsd, apy, ratio
+        case platform, stakingToken, toUnderlyingToken, underlyingUsd, apy, ratio, rewardApy
     }
 }
 

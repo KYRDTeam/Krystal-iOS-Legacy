@@ -21,7 +21,8 @@ class EarnPoolPlatformCell: UITableViewCell {
   @IBOutlet weak var tvlValueLabel: UILabel!
   @IBOutlet weak var dashView: DashedLineView!
   @IBOutlet weak var platformIcon: UIImageView!
-  var platform: EarnPlatform?
+    @IBOutlet weak var rewardApyIcon: UIImageView!
+    var platform: EarnPlatform?
   weak var delegate: EarnPoolPlatformCellDelegate?
 
   override func awakeFromNib() {
@@ -46,5 +47,7 @@ class EarnPoolPlatformCell: UITableViewCell {
     apyValueLabel.text = NumberFormatUtils.percent(value: platform.apy)
     tvlValueLabel.text = "$" + NumberFormatUtils.volFormat(number: platform.tvl)
     self.platform = platform
+      let hasRewardApy = platform.rewardApy > 0
+      rewardApyIcon.isHidden = !hasRewardApy
   }
 }
