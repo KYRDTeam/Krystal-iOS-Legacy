@@ -197,11 +197,11 @@ PODS:
   - Protobuf (3.21.2)
   - QRCodeReaderViewController (4.0.2)
   - Quick (5.0.1)
-  - Realm (3.19.1):
-    - Realm/Headers (= 3.19.1)
-  - Realm/Headers (3.19.1)
-  - RealmSwift (3.19.1):
-    - Realm (= 3.19.1)
+  - Realm (10.32.0):
+    - Realm/Headers (= 10.32.0)
+  - Realm/Headers (10.32.0)
+  - RealmSwift (10.32.0):
+    - Realm (= 10.32.0)
   - Result (3.2.4)
   - SAMKeychain (1.5.3)
   - secp256k1.swift (0.1.4)
@@ -284,7 +284,7 @@ DEPENDENCIES:
   - OneSignal (< 4.0, >= 3.0.0)
   - QRCodeReaderViewController (~> 4.0.2)
   - Quick
-  - RealmSwift (~> 3.19.0)
+  - RealmSwift (~> 10.32)
   - SAMKeychain (~> 1.5.3)
   - SeedStackViewController
   - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `7.2.8`)
@@ -443,8 +443,8 @@ SPEC CHECKSUMS:
   Protobuf: 818c6a87e44193a77f56b87c6a1c106efda7e062
   QRCodeReaderViewController: e8f27d035b3e72b1d4b1c61ff66458287e3be0ff
   Quick: 749aa754fd1e7d984f2000fe051e18a3a9809179
-  Realm: fb377747e694c7deb62d402400454134fe321bee
-  RealmSwift: 1302b0ab60f3105a2b214a735eeb0938607cf16b
+  Realm: a00e93347b8d26d372c7a82f6c0b08d6536a21c8
+  RealmSwift: fe09c29ca409f8f905fe4086f2a52936193f2e3d
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
@@ -467,6 +467,6 @@ SPEC CHECKSUMS:
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: 0f73c0e53dc209cbd7579786a0decf32b33a854a
+PODFILE CHECKSUM: b29a072324da302aa53c90175842f9733f977e17
 
 COCOAPODS: 1.11.3
