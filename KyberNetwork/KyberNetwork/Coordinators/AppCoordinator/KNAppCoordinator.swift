@@ -5,6 +5,7 @@ import BigInt
 import Moya
 import KrystalWallets
 import AppState
+import EarnModule
 
 class KNAppCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
@@ -26,7 +27,7 @@ class KNAppCoordinator: NSObject, Coordinator {
 //  internal var balanceTabCoordinator: KNBalanceTabCoordinator?
   internal var overviewTabCoordinator: OverviewCoordinator?
   internal var settingsCoordinator: KNSettingsCoordinator?
-  internal var earnCoordinator: EarnCoordinator?
+    var earnCoordinator: EarnModuleCoordinator?
   internal var rewardCoordinator: RewardCoordinator?
   internal var investCoordinator: InvestCoordinator?
 

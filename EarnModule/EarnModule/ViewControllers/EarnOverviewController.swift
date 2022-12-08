@@ -18,6 +18,7 @@ class EarnOverviewController: InAppBrowsingViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
   @IBOutlet weak var pageContainer: UIView!
   @IBOutlet weak var dotView: UIView!
+    
   var selectedPageIndex = 0
   let pageViewController: UIPageViewController = {
     let pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
@@ -33,6 +34,8 @@ class EarnOverviewController: InAppBrowsingViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+      
+    navigationController?.setNavigationBarHidden(true, animated: true)
     initChildViewControllers()
 
     setupUI()
@@ -94,10 +97,6 @@ class EarnOverviewController: InAppBrowsingViewController {
     pageContainer.addSubview(pageViewController.view)
     addChild(pageViewController)
     pageViewController.didMove(toParent: self)
-  }
-
-  @IBAction func backButtonPressed(_ sender: Any) {
-    self.navigationController?.popViewController(animated: true)
   }
 
   @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {

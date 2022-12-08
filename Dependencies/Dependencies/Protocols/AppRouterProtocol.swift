@@ -16,8 +16,6 @@ public protocol AppRouterProtocol {
                       onSelectWallet: @escaping (KWallet) -> (),
                       onSelectWatchAddress: @escaping (KAddress) -> ())
   func openChainList(_ selectedChain: ChainType, allowAllChainOption: Bool, onSelectChain: @escaping (ChainType) -> Void)
-  //  func createSwapViewController() -> UIViewController
-  func createEarnOverViewController() -> UIViewController
   func openAddWallet()
   func openTransactionHistory()
   func openExternalURL(url: String)
@@ -26,6 +24,6 @@ public protocol AppRouterProtocol {
   func openToken(navigationController: UINavigationController, address: String, chainID: Int)
   func openTokenTransfer(navigationController: UINavigationController, token: Token)
   func openSwap(token: Token)
-  func openEarn(token: Token)
+  func openEarn()
   
 }

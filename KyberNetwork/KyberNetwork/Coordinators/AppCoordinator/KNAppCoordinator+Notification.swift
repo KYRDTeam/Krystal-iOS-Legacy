@@ -239,7 +239,6 @@ extension KNAppCoordinator {
     self.investCoordinator?.appCoordinatorDidUpdateChain()
     self.loadBalanceCoordinator?.loadLendingBalances(completion: { _ in
     })
-    self.earnCoordinator?.appCoordinatorDidUpdateChain()
     self.settingsCoordinator?.appCoordinatorDidUpdateChain()
     self.session.externalProvider?.minTxCount = 0
   }
@@ -253,8 +252,6 @@ extension KNAppCoordinator {
 
     self.settingsCoordinator?.appCoordinatorTokenBalancesDidUpdate(balances: otherTokensBalance)
     
-    self.earnCoordinator?.appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: totalUSD, totalBalanceInETH: totalETH, otherTokensBalance: otherTokensBalance)
-    
     self.investCoordinator?.appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: totalUSD, totalBalanceInETH: totalETH, otherTokensBalance: otherTokensBalance)
     
     self.overviewTabCoordinator?.appCoordinatorDidUpdateTokenList()
@@ -265,14 +262,12 @@ extension KNAppCoordinator {
     guard self.session != nil, let transaction = sender.object as? InternalHistoryTransaction else { return }
 
     self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
-    self.earnCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     self.investCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     self.settingsCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
 
     let updateOverview = self.overviewTabCoordinator?.appCoordinatorUpdateTransaction(transaction) ?? false
-    let updateEarn = self.earnCoordinator?.appCoordinatorUpdateTransaction(transaction) ?? false
     let updateInvest = self.investCoordinator?.appCoordinatorUpdateTransaction(transaction) ?? false
-    if !(updateOverview || updateEarn || updateInvest) {
+    if !(updateOverview || updateInvest) {
       guard transaction.chain == KNGeneralProvider.shared.currentChain else {
         return
       }
@@ -301,7 +296,6 @@ extension KNAppCoordinator {
   @objc func tokenTransactionListDidUpdate(_ sender: Any?) {
     if self.session == nil { return }
     self.overviewTabCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
-    self.earnCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
     self.investCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
   }
 
