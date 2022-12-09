@@ -236,6 +236,7 @@ PODS:
     - TrustWalletCore/Types
   - TrustWalletCore/Types (2.9.6):
     - SwiftProtobuf
+  - TrustWeb3Provider (1.0.0)
   - WalletConnectSwift (1.6.0):
     - CryptoSwift (~> 1.4)
     - Starscream (~> 3.1)
@@ -302,6 +303,7 @@ DEPENDENCIES:
   - TrustKeystore (~> 0.4.2)
   - TrustWalletCore
   - TrustWalletCore (~> 2.9)
+  - TrustWeb3Provider (from `https://github.com/tungnguyen20/trust-web3-provider`, branch `develop`)
   - WalletConnectSwift
   - Web3
 
@@ -384,6 +386,9 @@ EXTERNAL SOURCES:
     :tag: 7.2.8
   TagListView:
     :git: https://github.com/Expensify/TagListView.git
+  TrustWeb3Provider:
+    :branch: develop
+    :git: https://github.com/tungnguyen20/trust-web3-provider
 
 CHECKOUT OPTIONS:
   Sentry:
@@ -392,6 +397,9 @@ CHECKOUT OPTIONS:
   TagListView:
     :commit: 964553283e872c59d8a3e8901172e27ce792fe25
     :git: https://github.com/Expensify/TagListView.git
+  TrustWeb3Provider:
+    :commit: 712e70bf49c355fbea2d8e54c25d0fef02deea10
+    :git: https://github.com/tungnguyen20/trust-web3-provider
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
@@ -464,9 +472,10 @@ SPEC CHECKSUMS:
   TrustCore: 688df9a241008cf9cfa3842ec8ef28777a8b7534
   TrustKeystore: ba8a33ccd7b6a46dfe25f209253d6ba13da6655c
   TrustWalletCore: e90c905d84680a7c2d7d32f4341ca3671588eb18
+  TrustWeb3Provider: 0ab27d940de173e209d25d0307885c3dc5149d09
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: b29a072324da302aa53c90175842f9733f977e17
+PODFILE CHECKSUM: 762b198e50dbdfcff3df6c0fb3a6720458ff5203
 
 COCOAPODS: 1.11.3
