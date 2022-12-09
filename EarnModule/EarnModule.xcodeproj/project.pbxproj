@@ -59,6 +59,7 @@
 		7ED78DD7293F2BAB000E736F /* PortfolioHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED78DD6293F2BAB000E736F /* PortfolioHeaderView.xib */; };
 		7ED78DDA293F5756000E736F /* PortfolioPieChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED78DD8293F5756000E736F /* PortfolioPieChartCell.swift */; };
 		7ED78DDB293F5756000E736F /* PortfolioPieChartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED78DD9293F5756000E736F /* PortfolioPieChartCell.xib */; };
+		7EEF41742942E6E0006FA506 /* PortfolioPieChartCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEF41732942E6E0006FA506 /* PortfolioPieChartCellViewModel.swift */; };
 		7EF19ED8290B860B00358B66 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF19ED7290B860B00358B66 /* DesignSystem.framework */; };
 		7EF19EDC290B865300358B66 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF19EDB290B865300358B66 /* Utilities.framework */; };
 		A6066936292B7E6C00718E90 /* EarningType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6066935292B7E6C00718E90 /* EarningType.swift */; };
@@ -153,6 +154,7 @@
 		7ED78DD6293F2BAB000E736F /* PortfolioHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PortfolioHeaderView.xib; sourceTree = "<group>"; };
 		7ED78DD8293F5756000E736F /* PortfolioPieChartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioPieChartCell.swift; sourceTree = "<group>"; };
 		7ED78DD9293F5756000E736F /* PortfolioPieChartCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PortfolioPieChartCell.xib; sourceTree = "<group>"; };
+		7EEF41732942E6E0006FA506 /* PortfolioPieChartCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioPieChartCellViewModel.swift; sourceTree = "<group>"; };
 		7EF19ED7290B860B00358B66 /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EF19EDB290B865300358B66 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6066935292B7E6C00718E90 /* EarningType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarningType.swift; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 				7E71FA792921E9BC0021E67D /* UnstakeViewModel.swift */,
 				7E181E5E2923713700C661CD /* UnstakeSummaryViewModel.swift */,
 				7EB00DE62924F463001B2136 /* TrasactionProcessPopupViewModel.swift */,
+				7EEF41732942E6E0006FA506 /* PortfolioPieChartCellViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -580,6 +583,7 @@
 				7EB252B92907F25200648438 /* EarnOverviewController.swift in Sources */,
 				A61B2982292385AC0064C3FE /* AnkrParamBuilder.swift in Sources */,
 				7EAF4764291B685500BF5D00 /* StakingEarningTokensView.swift in Sources */,
+				7EEF41742942E6E0006FA506 /* PortfolioPieChartCellViewModel.swift in Sources */,
 				7ED1AF1E291E29AD00BA7C75 /* StakingPortfolioViewModel.swift in Sources */,
 				A6066936292B7E6C00718E90 /* EarningType.swift in Sources */,
 				7EB252BE2907F30300648438 /* EarnModule.swift in Sources */,

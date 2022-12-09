@@ -23,7 +23,7 @@ class StakingPortfolioViewModel {
     var showChart: Bool = true
     var showStaking: Bool = true
     var showPending: Bool = false
-    
+
     func cleanAllData() {
         displayDataSource.value.0.removeAll()
         displayDataSource.value.1.removeAll()

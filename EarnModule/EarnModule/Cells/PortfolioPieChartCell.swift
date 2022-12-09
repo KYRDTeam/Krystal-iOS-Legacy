@@ -10,10 +10,16 @@ import Charts
 import DesignSystem
 
 class PortfolioPieChartCell: UITableViewCell {
-
+    @IBOutlet weak var dailyEarningLabel: UILabel!
+    @IBOutlet weak var annualYieldLabel: UILabel!
+    @IBOutlet weak var apyValueLabel: UILabel!
+    @IBOutlet weak var totalUSDValueLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var pieChartView: PieChartView!
+
     var currentSelectedIndex: Int?
+    var viewModel: PortfolioPieChartCellViewModel?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -26,6 +32,15 @@ class PortfolioPieChartCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func updateUI() {
+        guard let viewModel = viewModel else { return }
+        loadChartData()
+        totalUSDValueLabel.text = viewModel.earningAssetsString
+        apyValueLabel.text = viewModel.apyString
+        annualYieldLabel.text = viewModel.annualYieldString
+        dailyEarningLabel.text = viewModel.dailyEarningString
     }
     
     func loadChartData() {
@@ -103,6 +118,13 @@ extension PortfolioPieChartCell: UICollectionViewDataSource {
         } else {
             cell.containtView.backgroundColor = .clear
         }
+        if let viewModel = viewModel {
+            if indexPath.row == 5 {
+                cell.updateUILastCell(totalValue: viewModel.earningAssets, remainValue: viewModel.remainUSDValue)
+            } else {
+                cell.updateUI(earningBalance: viewModel.dataSource[indexPath.row], totalValue: viewModel.earningAssets, index: indexPath.row )
+            }
+        }
         return cell
     }
 }
@@ -115,13 +137,10 @@ extension PortfolioPieChartCell: UICollectionViewDelegate {
 
 extension PortfolioPieChartCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-      return UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 9)
+      return UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-      return CGSize(
-        width: 170,
-        height: 44
-      )
+        return ChartLegendTokenCell.legendSize
     }
 }

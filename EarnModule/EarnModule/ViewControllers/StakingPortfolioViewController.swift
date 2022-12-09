@@ -231,7 +231,10 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
     
     func chartCell(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(PortfolioPieChartCell.self, indexPath: indexPath)!
-        cell.loadChartData()
+        if let portfolio = viewModel.portfolio {
+            cell.viewModel = PortfolioPieChartCellViewModel(earningBalances: portfolio.0, chainID: viewModel.chainID)
+            cell.updateUI()
+        }
         return cell
     }
     

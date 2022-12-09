@@ -13,7 +13,7 @@
         <array key="Karla-Medium.ttf">
             <string>Karla-Medium</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -54,7 +54,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2.65%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZYT-AQ-kFd">
-                        <rect key="frame" x="223.66666666666666" y="95" width="47.333333333333343" height="21"/>
+                        <rect key="frame" x="226.66666666666666" y="95" width="47.333333333333343" height="21"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                         <color key="textColor" name="buttonBackgroundColor"/>
                         <nil key="highlightedColor"/>
@@ -103,7 +103,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="FzI-nD-zi9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="28" id="2hb-Ee-eBe"/>
-                    <constraint firstItem="ZYT-AQ-kFd" firstAttribute="leading" secondItem="2lv-xY-v7s" secondAttribute="trailing" id="42t-k1-txh"/>
+                    <constraint firstItem="ZYT-AQ-kFd" firstAttribute="leading" secondItem="2lv-xY-v7s" secondAttribute="trailing" constant="3" id="42t-k1-txh"/>
                     <constraint firstAttribute="trailing" secondItem="FzI-nD-zi9" secondAttribute="trailing" constant="28" id="51g-RG-imW"/>
                     <constraint firstItem="2lv-xY-v7s" firstAttribute="leading" secondItem="tn8-1O-63k" secondAttribute="leading" id="AvD-bo-j2A"/>
                     <constraint firstItem="ZYT-AQ-kFd" firstAttribute="centerY" secondItem="2lv-xY-v7s" secondAttribute="centerY" id="Eiy-A1-eS8"/>
@@ -135,8 +135,12 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" name="innerContainerBgColor"/>
             <connections>
+                <outlet property="annualYieldLabel" destination="1pB-Jp-Cee" id="ZsC-5r-hOc"/>
+                <outlet property="apyValueLabel" destination="ZYT-AQ-kFd" id="iMH-io-Ka2"/>
                 <outlet property="collectionView" destination="kHI-l1-geH" id="plA-f9-umJ"/>
+                <outlet property="dailyEarningLabel" destination="GgX-zT-jpD" id="LXI-4E-fUf"/>
                 <outlet property="pieChartView" destination="fSm-FQ-L77" id="tqO-gK-7Sn"/>
+                <outlet property="totalUSDValueLabel" destination="tn8-1O-63k" id="EfD-DN-fuv"/>
             </connections>
             <point key="canvasLocation" x="38.167938931297705" y="131.69014084507043"/>
         </tableViewCell>

@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -54,7 +54,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="6,500 USDC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JQ6-gO-7tQ">
-                                <rect key="frame" x="65" y="6" width="85" height="16"/>
+                                <rect key="frame" x="65" y="6" width="105" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="iAr-OT-8x8"/>
                                 </constraints>
@@ -63,7 +63,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$6,508 | 16.2%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wze-80-a9v">
-                                <rect key="frame" x="65" y="22" width="85" height="16"/>
+                                <rect key="frame" x="65" y="22" width="105" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="Zuv-bu-LJr"/>
                                 </constraints>
@@ -74,14 +74,14 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="JQ6-gO-7tQ" firstAttribute="leading" secondItem="FhY-Hs-wEd" secondAttribute="trailing" constant="13" id="3Pv-aX-RBc"/>
                             <constraint firstItem="M7b-67-aeh" firstAttribute="leading" secondItem="FhY-Hs-wEd" secondAttribute="leading" constant="12" id="4ts-Um-Yis"/>
                             <constraint firstItem="FhY-Hs-wEd" firstAttribute="leading" secondItem="phE-d4-iet" secondAttribute="trailing" constant="12" id="FAU-hb-qTO"/>
                             <constraint firstItem="M7b-67-aeh" firstAttribute="top" secondItem="FhY-Hs-wEd" secondAttribute="top" constant="14" id="HLQ-dn-crU"/>
                             <constraint firstItem="phE-d4-iet" firstAttribute="leading" secondItem="UJA-eP-7Mu" secondAttribute="leading" constant="8" id="QAe-tI-FFX"/>
                             <constraint firstAttribute="bottom" secondItem="wze-80-a9v" secondAttribute="bottom" constant="6" id="Sgd-Qt-X8H"/>
-                            <constraint firstAttribute="trailing" secondItem="JQ6-gO-7tQ" secondAttribute="trailing" constant="20" id="TBa-et-dMM"/>
+                            <constraint firstAttribute="trailing" secondItem="JQ6-gO-7tQ" secondAttribute="trailing" id="TBa-et-dMM"/>
                             <constraint firstItem="FhY-Hs-wEd" firstAttribute="top" secondItem="UJA-eP-7Mu" secondAttribute="top" constant="8" id="U3D-ZT-RQz"/>
+                            <constraint firstItem="JQ6-gO-7tQ" firstAttribute="leading" secondItem="UJA-eP-7Mu" secondAttribute="leading" constant="65" id="Vrz-dD-1FG"/>
                             <constraint firstItem="wze-80-a9v" firstAttribute="top" secondItem="JQ6-gO-7tQ" secondAttribute="bottom" id="au3-3R-c2z"/>
                             <constraint firstItem="JQ6-gO-7tQ" firstAttribute="leading" secondItem="wze-80-a9v" secondAttribute="leading" id="hhQ-WB-wzT"/>
                             <constraint firstItem="JQ6-gO-7tQ" firstAttribute="top" secondItem="UJA-eP-7Mu" secondAttribute="top" constant="6" id="sUS-9V-g8v"/>
@@ -107,6 +107,7 @@
             <size key="customSize" width="170" height="63"/>
             <connections>
                 <outlet property="balanceLabel" destination="JQ6-gO-7tQ" id="a88-eU-BO6"/>
+                <outlet property="balanceLabelLeading" destination="Vrz-dD-1FG" id="Xzj-Gg-YbT"/>
                 <outlet property="chainImageView" destination="M7b-67-aeh" id="XVa-u0-SbU"/>
                 <outlet property="containtView" destination="UJA-eP-7Mu" id="mGi-E7-7vj"/>
                 <outlet property="detailLabel" destination="wze-80-a9v" id="h6B-rV-9hc"/>
