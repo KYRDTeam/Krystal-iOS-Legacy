@@ -128,6 +128,15 @@ class StakingPortfolioCell: SwipeTableViewCell {
     @IBOutlet weak var rewardApyIcon: UIImageView!
     var onTapHint: (() -> Void)? = nil
   var claimTapped: (() -> ())?
+    var onTapRewardApy: ((EarningBalance) -> Void)?
+    
+    var cellModel: StakingPortfolioCellModel?
+    
+    override func awakeFromNib() {
+      super.awakeFromNib()
+        rewardApyIcon.isUserInteractionEnabled = true
+        rewardApyIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapRewardApyIcon)))
+    }
   
   func updateCellModel(_ model: StakingPortfolioCellModel) {
     tokenImageView.loadImage(model.tokenLogo)
@@ -153,6 +162,7 @@ class StakingPortfolioCell: SwipeTableViewCell {
     depositTitleLabelContraintWithAPYTitle.priority = model.isInProcess ? UILayoutPriority(250) : UILayoutPriority(1000)
     depostTitleLabelLeadingContraintWithSuperView.priority = model.isInProcess ? UILayoutPriority(1000) : UILayoutPriority(250)
       rewardApyIcon.isHidden = !model.hasRewardApy
+      cellModel = model
   }
   
   @IBAction func inProcessButtonTapped(_ sender: UIButton) {
@@ -164,4 +174,12 @@ class StakingPortfolioCell: SwipeTableViewCell {
   @IBAction func claimButtonTapped(_ sender: UIButton) {
       claimTapped?()
   }
+    
+    @objc func tapRewardApyIcon() {
+        guard let earningBalance = cellModel?.earnBalance else {
+            return
+        }
+        onTapRewardApy?(earningBalance)
+        
+    }
 }

@@ -136,4 +136,5 @@ struct Strings {
     static let unstakingInProgress = "unstaking.in.progress".toBeLocalised()
     static let unstakeEthWarningPopupMessage = "unstake.eth.warning.pop.up".toBeLocalised()
     static let warning = "warning".toBeLocalised()
+    static let rewardApyInfoText = "reward.apy.info.text".toBeLocalised()
 }

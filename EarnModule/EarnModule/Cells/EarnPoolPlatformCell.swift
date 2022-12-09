@@ -12,6 +12,7 @@ import Services
 
 protocol EarnPoolPlatformCellDelegate: class {
   func didSelectStake(_ platform: EarnPlatform)
+    func didSelectRewardApy(_ platform: EarnPlatform)
 }
 
 class EarnPoolPlatformCell: UITableViewCell {
@@ -24,10 +25,12 @@ class EarnPoolPlatformCell: UITableViewCell {
     @IBOutlet weak var rewardApyIcon: UIImageView!
     var platform: EarnPlatform?
   weak var delegate: EarnPoolPlatformCellDelegate?
+    
 
   override func awakeFromNib() {
     super.awakeFromNib()
-//      self.dashView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
+      rewardApyIcon.isUserInteractionEnabled = true
+      rewardApyIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapRewardApyIcon)))
   }
 
   override func setSelected(_ selected: Bool, animated: Bool) {
@@ -50,4 +53,12 @@ class EarnPoolPlatformCell: UITableViewCell {
       let hasRewardApy = platform.rewardApy > 0
       rewardApyIcon.isHidden = !hasRewardApy
   }
+    
+    @objc func tapRewardApyIcon() {
+        guard let platform = platform else {
+            return
+        }
+
+        delegate?.didSelectRewardApy(platform)
+    }
 }
