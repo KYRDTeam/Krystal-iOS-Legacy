@@ -190,6 +190,34 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         viewModel.isSupportEarnv2 = value
         updateUIEmptyView()
     }
+    
+    func animateChartCell(isExpand: Bool) {
+        if !isExpand {
+            self.view.layoutIfNeeded()
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+                for index in 0..<self.portfolioTableView.numberOfRows(inSection: 0) {
+                    if let cell = self.portfolioTableView.cellForRow(at: IndexPath(row: index, section: 0)) {
+                        var rect = cell.frame
+                        rect.size.height = 0
+                        cell.frame = rect
+                    }
+                }
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            self.view.layoutIfNeeded()
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+                for index in 0..<self.portfolioTableView.numberOfRows(inSection: 0) {
+                    if let cell = self.portfolioTableView.cellForRow(at: IndexPath(row: index, section: 0)) {
+                        var rect = cell.frame
+                        rect.size.height = 390
+                        cell.frame = rect
+                    }
+                }
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
 }
 
 extension StakingPortfolioViewController: SkeletonTableViewDataSource {
@@ -269,30 +297,8 @@ extension StakingPortfolioViewController: SkeletonTableViewDelegate {
         view.onTapped = { isExpand in
             self.viewModel.updateShowHideSection(section: section, isExpand: isExpand)
             self.portfolioTableView.beginUpdates()
-            if !isExpand {
-                self.view.layoutIfNeeded()
-                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
-                    for index in 0..<self.portfolioTableView.numberOfRows(inSection: section) {
-                        if let cell = self.portfolioTableView.cellForRow(at: IndexPath(row: index, section: section)) {
-                            var rect = cell.frame
-                            rect.size.height = 0
-                            cell.frame = rect
-                        }
-                    }
-                    self.view.layoutIfNeeded()
-                }
-            } else {
-                self.view.layoutIfNeeded()
-                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
-                    for index in 0..<self.portfolioTableView.numberOfRows(inSection: section) {
-                        if let cell = self.portfolioTableView.cellForRow(at: IndexPath(row: index, section: section)) {
-                            var rect = cell.frame
-                            rect.size.height = 390
-                            cell.frame = rect
-                        }
-                    }
-                    self.view.layoutIfNeeded()
-                }
+            if section == 0 {
+                self.animateChartCell(isExpand: isExpand)
             }
             self.portfolioTableView.endUpdates()
         }
