@@ -8,6 +8,7 @@
 import UIKit
 import Services
 import AppState
+import DesignSystem
 
 class StakingPortfolioViewModel {
     var portfolio: ([EarningBalance], [PendingUnstake])?
@@ -21,7 +22,7 @@ class StakingPortfolioViewModel {
     var selectedPlatforms: Set<EarnPlatform> = Set()
     var isSupportEarnv2: Bool = true
     var showChart: Bool = true
-    var showStaking: Bool = true
+    var showStaking: Bool = false
     var showPending: Bool = false
 
     func cleanAllData() {
@@ -156,9 +157,17 @@ class StakingPortfolioViewModel {
         return view
     }
     
+    func viewForFooter(_ tableView: UITableView) -> UIView {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+        let seperatoView = UIView(frame: CGRect(x: 22, y: 0, width: tableView.frame.size.width - 44, height: 1))
+        seperatoView.backgroundColor = AppTheme.current.separatorColor
+        view.addSubview(seperatoView)
+        return view
+    }
+    
     func numberOfRows(section: Int) -> Int {
         if section == 0 {
-            return 1//showChart ? 1 : 0
+            return 1
         } else if section == 1 {
             return displayDataSource.value.0.count
         } else {

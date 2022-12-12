@@ -40,9 +40,7 @@ class PortfolioPieChartCellViewModel: BaseViewModel {
             var total: Double = 0.0
             for index in 5..<dataSource.count {
                 let earningBalance = dataSource[index]
-                let toUnderlyingBalanceBigInt = BigInt(earningBalance.toUnderlyingToken.balance) ?? BigInt(0)
-                let usdBigIntValue = BigInt(earningBalance.underlyingUsd * pow(10.0 , Double(earningBalance.toUnderlyingToken.decimals))) * toUnderlyingBalanceBigInt / BigInt(pow(10.0 , Double(earningBalance.toUnderlyingToken.decimals)))
-                total += usdBigIntValue.doubleValue(decimal: earningBalance.toUnderlyingToken.decimals)
+                total += earningBalance.usdValue()
             }
             return total
         }
@@ -58,9 +56,7 @@ class PortfolioPieChartCellViewModel: BaseViewModel {
             })
         }
         for earningBalance in earningBalanceData {
-            let toUnderlyingBalanceBigInt = BigInt(earningBalance.toUnderlyingToken.balance) ?? BigInt(0)
-            let usdBigIntValue = BigInt(earningBalance.underlyingUsd * pow(10.0 , Double(earningBalance.toUnderlyingToken.decimals))) * toUnderlyingBalanceBigInt / BigInt(pow(10.0 , Double(earningBalance.toUnderlyingToken.decimals)))
-            total += usdBigIntValue.doubleValue(decimal: earningBalance.toUnderlyingToken.decimals)
+            total += earningBalance.usdValue()
         }
         return total
     }
@@ -78,11 +74,7 @@ class PortfolioPieChartCellViewModel: BaseViewModel {
             })
         }
         for earningBalance in earningBalanceData {
-            let toUnderlyingBalanceBigInt = BigInt(earningBalance.toUnderlyingToken.balance) ?? BigInt(0)
-            let usdBigIntValue = BigInt(earningBalance.underlyingUsd * pow(10.0 , Double(earningBalance.toUnderlyingToken.decimals))) * toUnderlyingBalanceBigInt / BigInt(pow(10.0 , Double(earningBalance.toUnderlyingToken.decimals)))
-            let usdDouble = usdBigIntValue.doubleValue(decimal: earningBalance.toUnderlyingToken.decimals)
-            
-            total += (usdDouble * earningBalance.apy) / 100
+            total += (earningBalance.usdValue() * earningBalance.apy) / 100
         }
         return total / earningAssets
     }

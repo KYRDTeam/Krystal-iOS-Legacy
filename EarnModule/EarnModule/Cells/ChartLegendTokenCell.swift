@@ -34,21 +34,8 @@ class ChartLegendTokenCell: UICollectionViewCell {
         legendColorView.backgroundColor = AppTheme.current.chartColors[index]
         tokenImageView.loadImage(earningBalance.toUnderlyingToken.logo)
         chainImageView.image = ChainType.make(chainID: earningBalance.chainID)?.chainIcon()
-        
-        var toUnderlyingBalanceString = "---"
-        var detailString = "---"
-        if let toUnderlyingBalanceBigInt = BigInt(earningBalance.toUnderlyingToken.balance) {
-            if toUnderlyingBalanceBigInt < BigInt(pow(10.0, Double(earningBalance.toUnderlyingToken.decimals - 6))) {
-                toUnderlyingBalanceString = "< 0.000001 \(earningBalance.toUnderlyingToken.symbol)"
-            } else {
-                toUnderlyingBalanceString = toUnderlyingBalanceBigInt.shortString(decimals: earningBalance.toUnderlyingToken.decimals) + " " + earningBalance.toUnderlyingToken.symbol
-            }
-            let usdBigIntValue = BigInt(earningBalance.underlyingUsd * pow(10.0 , Double(earningBalance.toUnderlyingToken.decimals))) * toUnderlyingBalanceBigInt / BigInt(pow(10.0 , Double(earningBalance.toUnderlyingToken.decimals)))
-            let usdDouble = usdBigIntValue.doubleValue(decimal: earningBalance.toUnderlyingToken.decimals)
-            detailString = "$" + usdBigIntValue.shortString(decimals: earningBalance.toUnderlyingToken.decimals, maxFractionDigits: 2) + " | " + StringFormatter.percentString(value: usdDouble / totalValue)
-        }
-        balanceLabel.text = toUnderlyingBalanceString
-        detailLabel.text = detailString
+        balanceLabel.text = earningBalance.balanceString()
+        detailLabel.text = earningBalance.usdDetailString(totalValue: totalValue)
     }
     
     func updateUILastCell(totalValue: Double, remainValue: Double?) {
