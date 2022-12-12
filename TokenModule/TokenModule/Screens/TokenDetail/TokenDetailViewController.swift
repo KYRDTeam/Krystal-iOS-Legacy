@@ -144,10 +144,6 @@ class TokenDetailViewController: KNBaseViewController {
     periodChartSelectButtons.forEach { (button) in
       button.rounded(radius: 7)
     }
-    if !self.viewModel.canEarn {
-      self.investButton.removeFromSuperview()
-      self.swapButton.rightAnchor.constraint(equalTo: self.swapButton.superview!.rightAnchor, constant: -26).isActive = true
-    }
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(copyTokenAddress))
     self.chainAddressLabel.isUserInteractionEnabled = true
     self.chainAddressLabel.addGestureRecognizer(tapGesture)
@@ -438,7 +434,10 @@ class TokenDetailViewController: KNBaseViewController {
     self.swapButton.backgroundColor = self.viewModel.displayDiffColor
     self.transferButton.backgroundColor = self.viewModel.displayDiffColor
     if self.viewModel.canEarn {
-//      self.investButton.backgroundColor = self.viewModel.displayDiffColor
+        self.investButton.backgroundColor = self.viewModel.displayDiffColor
+    } else {
+        self.investButton.removeFromSuperview()
+        self.swapButton.rightAnchor.constraint(equalTo: self.swapButton.superview!.rightAnchor, constant: -26).isActive = true
     }
     self.tagImageView.image = self.viewModel.tagImage
     self.tagLabel.text = self.viewModel.tagLabel
