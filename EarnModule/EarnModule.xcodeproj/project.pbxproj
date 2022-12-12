@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		724567E960E5EE407A35533D /* Pods_EarnModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5969EB6F30F2999141BBB05 /* Pods_EarnModule.framework */; };
+		7E0DAE34294711670045AD35 /* EarningTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0DAE32294711670045AD35 /* EarningTypeCell.swift */; };
+		7E0DAE35294711670045AD35 /* EarningTypeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E0DAE33294711670045AD35 /* EarningTypeCell.xib */; };
 		7E181E5F2923713700C661CD /* UnstakeSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E181E5E2923713700C661CD /* UnstakeSummaryViewModel.swift */; };
 		7E181E6129237A5E00C661CD /* UnstakeDisplayInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E181E6029237A5E00C661CD /* UnstakeDisplayInfo.swift */; };
 		7E181E652923A6E400C661CD /* PendingUnstakeTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E181E642923A6E400C661CD /* PendingUnstakeTxInfo.swift */; };
@@ -103,6 +105,8 @@
 
 /* Begin PBXFileReference section */
 		60E45F03C79752ACE005A2BE /* Pods-EarnModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EarnModule.release.xcconfig"; path = "Target Support Files/Pods-EarnModule/Pods-EarnModule.release.xcconfig"; sourceTree = "<group>"; };
+		7E0DAE32294711670045AD35 /* EarningTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarningTypeCell.swift; sourceTree = "<group>"; };
+		7E0DAE33294711670045AD35 /* EarningTypeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarningTypeCell.xib; sourceTree = "<group>"; };
 		7E181E5E2923713700C661CD /* UnstakeSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnstakeSummaryViewModel.swift; sourceTree = "<group>"; };
 		7E181E6029237A5E00C661CD /* UnstakeDisplayInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnstakeDisplayInfo.swift; sourceTree = "<group>"; };
 		7E181E642923A6E400C661CD /* PendingUnstakeTxInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingUnstakeTxInfo.swift; sourceTree = "<group>"; };
@@ -247,6 +251,8 @@
 				7ED78DD9293F5756000E736F /* PortfolioPieChartCell.xib */,
 				7E693E5E294097B40069CFFE /* ChartLegendTokenCell.swift */,
 				7E693E5F294097B40069CFFE /* ChartLegendTokenCell.xib */,
+				7E0DAE32294711670045AD35 /* EarningTypeCell.swift */,
+				7E0DAE33294711670045AD35 /* EarningTypeCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -490,6 +496,7 @@
 				7ED1AF23291E498100BA7C75 /* Assets.xcassets in Resources */,
 				7ED78DD7293F2BAB000E736F /* PortfolioHeaderView.xib in Resources */,
 				7E6EBD6D2909280900069B33 /* EarnPoolViewCell.xib in Resources */,
+				7E0DAE35294711670045AD35 /* EarningTypeCell.xib in Resources */,
 				7E6EBD72290929A400069B33 /* Localizable.strings in Resources */,
 				C36AD4B12924F2680031770E /* lido-eth.plist in Resources */,
 				C376A2B029261075008E0291 /* ankr-matic-eth.plist in Resources */,
@@ -574,6 +581,7 @@
 				7ED78DDA293F5756000E736F /* PortfolioPieChartCell.swift in Sources */,
 				7E181E652923A6E400C661CD /* PendingUnstakeTxInfo.swift in Sources */,
 				7EAF4752291B567600BF5D00 /* StakingViewController.swift in Sources */,
+				7E0DAE34294711670045AD35 /* EarningTypeCell.swift in Sources */,
 				7EB252C32907F43B00648438 /* Observer.swift in Sources */,
 				7E36E369291A530A009BC8FE /* UnstakeViewController.swift in Sources */,
 				C3A408032923411C008C1220 /* StakingFAQView.swift in Sources */,

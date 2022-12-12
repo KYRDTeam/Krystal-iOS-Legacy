@@ -143,6 +143,8 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     @IBAction func filterButtonTapped(_ sender: Any) {
         let allPlatforms = viewModel.getAllPlatform()
         let viewModel = PlatformFilterViewModel(dataSource: allPlatforms, selected: viewModel.selectedPlatforms)
+        viewModel.shouldShowType = true
+        viewModel.selectedType = self.viewModel.selectedTypes
         let viewController = PlatformFilterViewController.instantiateFromNib()
         viewController.viewModel = viewModel
         viewController.delegate = self
@@ -475,8 +477,9 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
 }
 
 extension StakingPortfolioViewController: PlatformFilterViewControllerDelegate {
-    func didSelectPlatform(viewController: PlatformFilterViewController, selected: Set<EarnPlatform>) {
+    func didSelectPlatform(viewController: PlatformFilterViewController, selected: Set<EarnPlatform>, types: [EarningType]) {
         viewModel.selectedPlatforms = selected
+        viewModel.selectedTypes = types
         reloadUI()
     }
 }

@@ -93,3 +93,5 @@
 "warning" = "Warning";
 "chart" = "CHART";
 "other" = "OTHER";
+"select.platform" = "Select Platform";
+"select.type" = "Select Type";

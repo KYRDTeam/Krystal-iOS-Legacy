@@ -20,6 +20,7 @@ class StakingPortfolioViewModel {
     var error: Observable<Error?> = .init(nil)
     var isLoading: Observable<Bool> = .init(true)
     var selectedPlatforms: Set<EarnPlatform> = Set()
+    var selectedTypes: [EarningType] = [.staking, .lending]
     var isSupportEarnv2: Bool = true
     var showChart: Bool = true
     var showStaking: Bool = false
@@ -79,6 +80,18 @@ class StakingPortfolioViewModel {
                 return self.selectedPlatforms.contains(item.platform.toEarnPlatform())
             })
         }
+        
+        // filter type
+        earningBalanceData = earningBalanceData.filter({ item in
+            let earningType = EarningType(value: item.platform.type)
+            return self.selectedTypes.contains(earningType)
+        })
+        
+        pendingUnstakeData = pendingUnstakeData.filter({ item in
+            let earningType = EarningType(value: item.platform.type)
+            return self.selectedTypes.contains(earningType)
+        })
+        
         pendingUnstakeData.forEach({ item in
             pending.append(StakingPortfolioCellModel(pendingUnstake: item))
         })
@@ -104,6 +117,9 @@ class StakingPortfolioViewModel {
             case .success(let portfolio):
                 self.portfolio = portfolio
                 self.reloadDataSource()
+                if shouldShowLoading {
+                    self.selectedPlatforms = self.getAllPlatform()
+                }
             case .failure(let error):
                 self.error.value = error
             }

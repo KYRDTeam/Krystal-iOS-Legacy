@@ -345,7 +345,7 @@ extension EarnListViewController: EarnPoolViewCellDelegate {
 }
 
 extension EarnListViewController: PlatformFilterViewControllerDelegate {
-    func didSelectPlatform(viewController: PlatformFilterViewController, selected: Set<EarnPlatform>) {
+    func didSelectPlatform(viewController: PlatformFilterViewController, selected: Set<EarnPlatform>, types: [EarningType]) {
         selectedPlatforms = selected
         viewController.dismiss(animated: true) {
             self.updateUIPlatformFilterButton()

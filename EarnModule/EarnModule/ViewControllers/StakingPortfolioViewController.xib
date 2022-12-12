@@ -57,7 +57,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <color key="backgroundColor" name="innerContainerBgColor"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="gNb-7G-c5u" secondAttribute="trailing" constant="20" id="SmU-96-Ipw"/>
                         <constraint firstItem="4dq-y8-ZfK" firstAttribute="centerX" secondItem="72k-Xu-RIT" secondAttribute="centerX" id="Ua2-Jf-Cct"/>

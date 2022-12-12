@@ -138,4 +138,6 @@ struct Strings {
     static let unstakeEthWarningPopupMessage = "unstake.eth.warning.pop.up".toBeLocalised()
     static let warning = "warning".toBeLocalised()
     static let other = "other".toBeLocalised()
+    static let selectPlatform = "select.platform".toBeLocalised()
+    static let selectType = "select.type".toBeLocalised()
 }
