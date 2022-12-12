@@ -182,7 +182,11 @@ class StakingPortfolioViewModel {
     
     func heightForRow(section: Int) -> CGFloat {
         if section == 0 {
-            return showChart ? 390 : 0
+            if showChart {
+                let viewModel = PortfolioPieChartCellViewModel(earningBalances: portfolio?.0 ?? [], chainID: chainID)
+                return viewModel.cellHeight
+            }
+            return 0
         } else if section == 1 {
             return showStaking ? 160 : 0
         } else if section == 2 {

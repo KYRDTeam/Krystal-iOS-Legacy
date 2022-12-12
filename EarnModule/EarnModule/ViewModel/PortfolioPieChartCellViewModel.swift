@@ -102,6 +102,15 @@ class PortfolioPieChartCellViewModel: BaseViewModel {
         return StringFormatter.usdString(value: earningAssets * apyDouble / 365)
     }
     
+    var cellHeight: CGFloat {
+        if dataSource.count <= 2 {
+            return 300
+        } else if dataSource.count <= 4 {
+            return 350
+        }
+        return 390
+    }
+    
     init(earningBalances: [EarningBalance], chainID: Int?) {
         self.earningBalances = earningBalances
         self.chainID = chainID

@@ -36,25 +36,28 @@ class PortfolioPieChartCell: UITableViewCell {
     
     func updateUI() {
         guard let viewModel = viewModel else { return }
-        loadChartData()
+        loadChartView()
         totalUSDValueLabel.text = viewModel.earningAssetsString
         apyValueLabel.text = viewModel.apyString
         annualYieldLabel.text = viewModel.annualYieldString
         dailyEarningLabel.text = viewModel.dailyEarningString
+        collectionView.reloadData()
     }
     
-    func loadChartData() {
+    func loadChartView() {
         pieChartView.delegate = self
         pieChartView.legend.enabled = false
         pieChartView.holeColor = AppTheme.current.sectionBackgroundColor
         pieChartView.holeRadiusPercent = 0.65
-        self.setDataCount(Int(6), range: UInt32(6))
+        self.setChartData()
     }
     
-    func setDataCount(_ count: Int, range: UInt32) {
+    func setChartData() {
         guard let viewModel = viewModel else { return }
         var entries: [PieChartDataEntry] = []
+        var chartColors: [UIColor] = []
         if viewModel.dataSource.count > 5 {
+            chartColors = AppTheme.current.chartColors.prefix(5) + [AppTheme.current.chartColors.last!]
             for index in 0..<5 {
                 let earningBalance = viewModel.dataSource[index]
                 let chartEntry = PieChartDataEntry(value: earningBalance.usdValue())
@@ -63,33 +66,20 @@ class PortfolioPieChartCell: UITableViewCell {
             let otherPiechartEntry = PieChartDataEntry(value: viewModel.remainUSDValue ?? 0)
             entries.append(otherPiechartEntry)
         } else {
+            chartColors = AppTheme.current.chartColors
             for index in 0..<viewModel.dataSource.count {
                 let earningBalance = viewModel.dataSource[index]
                 let chartEntry = PieChartDataEntry(value: earningBalance.usdValue())
                 entries.append(chartEntry)
             }
         }
-        
-        
-        let set = PieChartDataSet(entries: entries, label: "Election Results")
+        let set = PieChartDataSet(entries: entries)
         set.drawIconsEnabled = false
         set.drawValuesEnabled = false
         set.selectionShift = 10
-        
-        set.colors = AppTheme.current.chartColors
+        set.colors = chartColors
         
         let data = PieChartData(dataSet: set)
-        
-        let pFormatter = NumberFormatter()
-        pFormatter.numberStyle = .percent
-        pFormatter.maximumFractionDigits = 1
-        pFormatter.multiplier = 1
-        pFormatter.percentSymbol = " %"
-        data.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
-        
-        data.setValueFont(.systemFont(ofSize: 11, weight: .light))
-        data.setValueTextColor(.black)
-        
         pieChartView.data = data
         pieChartView.animate(xAxisDuration: 0.8)
     }
@@ -117,7 +107,8 @@ extension PortfolioPieChartCell: ChartViewDelegate {
 
 extension PortfolioPieChartCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
+        guard let viewModel = viewModel else { return 0 }
+        return viewModel.dataSource.count > 5 ? 6 : viewModel.dataSource.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
