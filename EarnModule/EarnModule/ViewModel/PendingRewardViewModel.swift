@@ -77,7 +77,8 @@ class PendingRewardViewModel {
         apiService.buildClaimReward(chainId: item.chain.id, from: AppState.shared.currentAddress.addressString, platform: item.platform.name) { result in
             switch result {
             case .success(let txObject):
-                print(txObject)
+                let popupViewModel = PendingRewardClaimConfirmPopUpViewModel(item: item, txObject: txObject)
+                print(popupViewModel)
             case .failure(let error):
                 print(error.description)
             }
