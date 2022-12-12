@@ -67,7 +67,7 @@ struct StakingPortfolioCellModel {
       self.pendingUnstake = pendingUnstake
     self.isInProcess = true
     self.tokenLogo = pendingUnstake.logo
-    self.chainLogo = ChainType.make(chainID: pendingUnstake.chainID ?? 1)?.chainIcon()
+    self.chainLogo = ChainType.make(chainID: pendingUnstake.chainID)?.chainIcon()
     self.platformLogo = pendingUnstake.platform.logo
     self.displayAPYValue = "---"
     self.displayDepositedValue = (BigInt(pendingUnstake.balance)?.shortString(decimals: pendingUnstake.decimals) ?? "---") + " " + pendingUnstake.symbol

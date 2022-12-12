@@ -74,6 +74,11 @@
 		A6FDE58E2924BCDA009BC64B /* ClaimTxStatusPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FDE58C2924BCDA009BC64B /* ClaimTxStatusPopup.swift */; };
 		A6FDE58F2924BCDA009BC64B /* ClaimTxStatusPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6FDE58D2924BCDA009BC64B /* ClaimTxStatusPopup.xib */; };
 		A6FDE5912924BE34009BC64B /* ClaimTxStatusPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FDE5902924BE34009BC64B /* ClaimTxStatusPopupViewModel.swift */; };
+		C34E9C5A2943396E00ECC56B /* PendingRewardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34E9C582943396E00ECC56B /* PendingRewardViewController.swift */; };
+		C34E9C5B2943396E00ECC56B /* PendingRewardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C34E9C592943396E00ECC56B /* PendingRewardViewController.xib */; };
+		C34E9C5E294610CD00ECC56B /* PendingRewardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34E9C5C294610CD00ECC56B /* PendingRewardCell.swift */; };
+		C34E9C5F294610CD00ECC56B /* PendingRewardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C34E9C5D294610CD00ECC56B /* PendingRewardCell.xib */; };
+		C34E9C6129471A1300ECC56B /* PendingRewardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34E9C6029471A1200ECC56B /* PendingRewardViewModel.swift */; };
 		C36AD4B12924F2680031770E /* lido-eth.plist in Resources */ = {isa = PBXBuildFile; fileRef = C36AD4B02924F2680031770E /* lido-eth.plist */; };
 		C36AD4B32924F8DC0031770E /* lido-matic.plist in Resources */ = {isa = PBXBuildFile; fileRef = C36AD4B22924F8DC0031770E /* lido-matic.plist */; };
 		C376A2B029261075008E0291 /* ankr-matic-eth.plist in Resources */ = {isa = PBXBuildFile; fileRef = C376A2AF29261075008E0291 /* ankr-matic-eth.plist */; };
@@ -164,6 +169,11 @@
 		A6FDE58D2924BCDA009BC64B /* ClaimTxStatusPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClaimTxStatusPopup.xib; sourceTree = "<group>"; };
 		A6FDE5902924BE34009BC64B /* ClaimTxStatusPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimTxStatusPopupViewModel.swift; sourceTree = "<group>"; };
 		B5969EB6F30F2999141BBB05 /* Pods_EarnModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EarnModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C34E9C582943396E00ECC56B /* PendingRewardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingRewardViewController.swift; sourceTree = "<group>"; };
+		C34E9C592943396E00ECC56B /* PendingRewardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PendingRewardViewController.xib; sourceTree = "<group>"; };
+		C34E9C5C294610CD00ECC56B /* PendingRewardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingRewardCell.swift; sourceTree = "<group>"; };
+		C34E9C5D294610CD00ECC56B /* PendingRewardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PendingRewardCell.xib; sourceTree = "<group>"; };
+		C34E9C6029471A1200ECC56B /* PendingRewardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingRewardViewModel.swift; sourceTree = "<group>"; };
 		C36AD4B02924F2680031770E /* lido-eth.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "lido-eth.plist"; sourceTree = "<group>"; };
 		C36AD4B22924F8DC0031770E /* lido-matic.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "lido-matic.plist"; sourceTree = "<group>"; };
 		C376A2AF29261075008E0291 /* ankr-matic-eth.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ankr-matic-eth.plist"; sourceTree = "<group>"; };
@@ -229,6 +239,8 @@
 				7E6EBD692909280900069B33 /* EarnPoolViewCell.xib */,
 				C3851892292CAB7E004E9661 /* PlatformCell.swift */,
 				C3851893292CAB7E004E9661 /* PlatformCell.xib */,
+				C34E9C5C294610CD00ECC56B /* PendingRewardCell.swift */,
+				C34E9C5D294610CD00ECC56B /* PendingRewardCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -277,6 +289,8 @@
 				A6FDE58D2924BCDA009BC64B /* ClaimTxStatusPopup.xib */,
 				C385188E292CAB48004E9661 /* PlatformFilterViewController.swift */,
 				C385188F292CAB48004E9661 /* PlatformFilterViewController.xib */,
+				C34E9C582943396E00ECC56B /* PendingRewardViewController.swift */,
+				C34E9C592943396E00ECC56B /* PendingRewardViewController.xib */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -312,6 +326,7 @@
 				7E71FA792921E9BC0021E67D /* UnstakeViewModel.swift */,
 				7E181E5E2923713700C661CD /* UnstakeSummaryViewModel.swift */,
 				7EB00DE62924F463001B2136 /* TrasactionProcessPopupViewModel.swift */,
+				C34E9C6029471A1200ECC56B /* PendingRewardViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -465,8 +480,10 @@
 				7E6EBD6329091E0800069B33 /* StakingPortfolioViewController.xib in Resources */,
 				7E36E36A291A530A009BC8FE /* UnstakeViewController.xib in Resources */,
 				7EAF4763291B685500BF5D00 /* StakingEarningTokensView.xib in Resources */,
+				C34E9C5F294610CD00ECC56B /* PendingRewardCell.xib in Resources */,
 				7ED1AF23291E498100BA7C75 /* Assets.xcassets in Resources */,
 				7E6EBD6D2909280900069B33 /* EarnPoolViewCell.xib in Resources */,
+				C34E9C5B2943396E00ECC56B /* PendingRewardViewController.xib in Resources */,
 				7E6EBD72290929A400069B33 /* Localizable.strings in Resources */,
 				C36AD4B12924F2680031770E /* lido-eth.plist in Resources */,
 				C376A2B029261075008E0291 /* ankr-matic-eth.plist in Resources */,
@@ -530,10 +547,12 @@
 				A61B297C292384E80064C3FE /* SpecifiedEarningPlatform.swift in Sources */,
 				A6FDE58E2924BCDA009BC64B /* ClaimTxStatusPopup.swift in Sources */,
 				7EB00DE72924F463001B2136 /* TrasactionProcessPopupViewModel.swift in Sources */,
+				C34E9C5E294610CD00ECC56B /* PendingRewardCell.swift in Sources */,
 				7E6EBD6C2909280900069B33 /* EarnPoolViewCell.swift in Sources */,
 				7E6EBD86290931E900069B33 /* StakingPortfolioCell.swift in Sources */,
 				7E71FA7A2921E9BD0021E67D /* UnstakeViewModel.swift in Sources */,
 				7E181E6129237A5E00C661CD /* UnstakeDisplayInfo.swift in Sources */,
+				C34E9C6129471A1300ECC56B /* PendingRewardViewModel.swift in Sources */,
 				C3851894292CAB7E004E9661 /* PlatformCell.swift in Sources */,
 				7EB252C72907F7EC00648438 /* TypeAliases.swift in Sources */,
 				A6D1F808291BAF1E00ABA52B /* StakingViewModel.swift in Sources */,
@@ -556,6 +575,7 @@
 				7EB252B92907F25200648438 /* EarnOverviewController.swift in Sources */,
 				A61B2982292385AC0064C3FE /* AnkrParamBuilder.swift in Sources */,
 				7EAF4764291B685500BF5D00 /* StakingEarningTokensView.swift in Sources */,
+				C34E9C5A2943396E00ECC56B /* PendingRewardViewController.swift in Sources */,
 				7ED1AF1E291E29AD00BA7C75 /* StakingPortfolioViewModel.swift in Sources */,
 				A6066936292B7E6C00718E90 /* EarningType.swift in Sources */,
 				7EB252BE2907F30300648438 /* EarnModule.swift in Sources */,

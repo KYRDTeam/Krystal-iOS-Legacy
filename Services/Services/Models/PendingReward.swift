@@ -8,48 +8,48 @@
 import Foundation
 
 // MARK: - PendingRewardResponseElement
-struct PendingRewardResponseElement: Codable {
-    let earningRewards: [EarningReward]
-    let platform: RewardPlatform
+public struct PendingRewardResponseElement: Codable {
+    public let earningRewards: [EarningReward]
+    public let platform: RewardPlatform
 }
 
 // MARK: - EarningReward
-struct EarningReward: Codable {
-    let chain: Chain
-    let rewardTokens: [RewardToken]?
+public struct EarningReward: Codable {
+    public let chain: Chain
+    public let rewardTokens: [RewardToken]?
 }
 
 // MARK: - Chain
-struct Chain: Codable {
-    let id: Int
-    let name: String
-    let logo: String
+public struct Chain: Codable {
+    public let id: Int
+    public let name: String
+    public let logo: String
 }
 
 // MARK: - RewardToken
-struct RewardToken: Codable {
-    let tokenInfo: TokenInfo
-    let pendingReward: PendingReward
+public struct RewardToken: Codable {
+    public let tokenInfo: TokenInfo
+    public let pendingReward: PendingReward
 }
 
 // MARK: - PendingReward
-struct PendingReward: Codable {
-    let balance: String
-    let balancePriceUsd: Double
+public struct PendingReward: Codable {
+    public let balance: String
+    public let balancePriceUsd: Double
 }
 
 // MARK: - TokenInfo
-struct TokenInfo: Codable {
-    let address, name, symbol: String
-    let logo: String
-    let decimals: Int
+public struct TokenInfo: Codable {
+    public let address, name, symbol: String
+    public let logo: String
+    public let decimals: Int
 }
 
 // MARK: - Platform
-struct RewardPlatform: Codable {
-    let name: String
-    let logo: String
-    let platformDescription, earningType: String
+public struct RewardPlatform: Codable {
+    public let name: String
+    public let logo: String
+    public let platformDescription, earningType: String
 
     enum CodingKeys: String, CodingKey {
         case name, logo
@@ -58,5 +58,5 @@ struct RewardPlatform: Codable {
     }
 }
 
-typealias PendingRewardResponse = [PendingRewardResponseElement]
+public typealias PendingRewardResponse = [PendingRewardResponseElement]
 
