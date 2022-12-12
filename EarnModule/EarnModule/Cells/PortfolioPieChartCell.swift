@@ -52,22 +52,31 @@ class PortfolioPieChartCell: UITableViewCell {
     }
     
     func setDataCount(_ count: Int, range: UInt32) {
-        let entries = (0..<count).map { (i) -> PieChartDataEntry in
-            // IMPORTANT: In a PieChart, no values (Entry) should have the same xIndex (even if from different DataSets), since no values can be drawn above each other.
-            return PieChartDataEntry(value: Double(arc4random_uniform(range) + range / 5))
+        guard let viewModel = viewModel else { return }
+        var entries: [PieChartDataEntry] = []
+        if viewModel.dataSource.count > 5 {
+            for index in 0..<5 {
+                let earningBalance = viewModel.dataSource[index]
+                let chartEntry = PieChartDataEntry(value: earningBalance.usdValue())
+                entries.append(chartEntry)
+            }
+            let otherPiechartEntry = PieChartDataEntry(value: viewModel.remainUSDValue ?? 0)
+            entries.append(otherPiechartEntry)
+        } else {
+            for index in 0..<viewModel.dataSource.count {
+                let earningBalance = viewModel.dataSource[index]
+                let chartEntry = PieChartDataEntry(value: earningBalance.usdValue())
+                entries.append(chartEntry)
+            }
         }
+        
         
         let set = PieChartDataSet(entries: entries, label: "Election Results")
         set.drawIconsEnabled = false
         set.drawValuesEnabled = false
         set.selectionShift = 10
         
-        set.colors = ChartColorTemplates.vordiplom()
-            + ChartColorTemplates.joyful()
-            + ChartColorTemplates.colorful()
-            + ChartColorTemplates.liberty()
-            + ChartColorTemplates.pastel()
-            + [UIColor(red: 51/255, green: 181/255, blue: 229/255, alpha: 1)]
+        set.colors = AppTheme.current.chartColors
         
         let data = PieChartData(dataSet: set)
         

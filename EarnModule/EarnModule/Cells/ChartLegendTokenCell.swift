@@ -31,7 +31,7 @@ class ChartLegendTokenCell: UICollectionViewCell {
         balanceLabelLeading.constant = 65
         tokenImageView.isHidden = false
         chainImageView.isHidden = false
-        legendColorView.backgroundColor = AppTheme.current.primaryColor
+        legendColorView.backgroundColor = AppTheme.current.chartColors[index]
         tokenImageView.loadImage(earningBalance.toUnderlyingToken.logo)
         chainImageView.image = ChainType.make(chainID: earningBalance.chainID)?.chainIcon()
         
@@ -55,13 +55,13 @@ class ChartLegendTokenCell: UICollectionViewCell {
         balanceLabelLeading.constant = 28
         tokenImageView.isHidden = true
         chainImageView.isHidden = true
-        legendColorView.backgroundColor = AppTheme.current.primaryColor
+        legendColorView.backgroundColor = AppTheme.current.chartColors.last
         balanceLabel.text = Strings.other
         if let remainValue = remainValue {
             detailLabel.text = StringFormatter.usdString(value: remainValue) + " | " +  StringFormatter.percentString(value: remainValue / totalValue)
         } else {
             detailLabel.text = ""
-        }        
+        }
     }
     
 }
