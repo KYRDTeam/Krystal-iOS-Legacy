@@ -22,7 +22,6 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidSelectSwapToken(token: Token, isBuy: Bool)
   func overviewCoordinatorDidSelectDepositMore(tokenAddress: String)
   func overviewCoordinatorDidSelectAddToken(_ token: TokenObject)
-  func overviewCoordinatorDidChangeHideBalanceStatus(_ status: Bool)
   func overviewCoordinatorDidStart()
   func overviewCoordinatorDidPullToRefresh(mode: ViewMode, overviewMode: OverviewMode)
   func overviewCoordinatorBuyCrypto()

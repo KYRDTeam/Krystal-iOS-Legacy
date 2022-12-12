@@ -19,7 +19,6 @@ enum ExploreMenuItem: CaseIterable {
     case rewardHunting
     case bridge
     case scanner
-    case stake
     case approvals
 }
 
@@ -54,7 +53,6 @@ class ExploreViewModel {
         let isPromoCodeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
         let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
         let isScannerEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
-        let isStakeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.earnV2)
         let isTokenApprovalEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.tokenApproval)
         let isNotBrowsing = !KNGeneralProvider.shared.isBrowsingMode
         
@@ -75,11 +73,6 @@ class ExploreViewModel {
                 menuItems.append(.promotion)
             }
         }
-        
-        if isStakeEnabled {
-            menuItems.append(.stake)
-        }
-        
         if isRewardHuntingEnabled && isNotBrowsing {
             menuItems.append(.rewardHunting)
         }
