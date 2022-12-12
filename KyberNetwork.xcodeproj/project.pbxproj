@@ -741,6 +741,7 @@
 		A69C5BE528D1C45A000DE825 /* NotificationFilterTagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69C5BE328D1C45A000DE825 /* NotificationFilterTagCell.xib */; };
 		A69C5BE928D1E07D000DE825 /* NotificationListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69C5BE828D1E07D000DE825 /* NotificationListEmptyView.swift */; };
 		A69C5BEB28D1E088000DE825 /* NotificationListEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69C5BEA28D1E088000DE825 /* NotificationListEmptyView.xib */; };
+		A6A1ED0029431A58001A9F03 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A1ECFF29431A58001A9F03 /* TabBarController.swift */; };
 		A6B0671E2859CDBE00DEBAE8 /* KrystalWallets.h in Headers */ = {isa = PBXBuildFile; fileRef = A6B0671D2859CDBE00DEBAE8 /* KrystalWallets.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6B0672F2859CF5100DEBAE8 /* Signer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E607112851A31C00387388 /* Signer.swift */; };
 		A6B067302859CF5100DEBAE8 /* ImportType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4832847BCF70066E177 /* ImportType.swift */; };
@@ -2044,6 +2045,7 @@
 		A69C5BE328D1C45A000DE825 /* NotificationFilterTagCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationFilterTagCell.xib; sourceTree = "<group>"; };
 		A69C5BE828D1E07D000DE825 /* NotificationListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationListEmptyView.swift; sourceTree = "<group>"; };
 		A69C5BEA28D1E088000DE825 /* NotificationListEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationListEmptyView.xib; sourceTree = "<group>"; };
+		A6A1ECFF29431A58001A9F03 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KrystalWallets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B0671D2859CDBE00DEBAE8 /* KrystalWallets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KrystalWallets.h; sourceTree = "<group>"; };
 		A6B0673C2859F43A00DEBAE8 /* KrystalTransactionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalTransactionService.swift; sourceTree = "<group>"; };
@@ -3134,6 +3136,7 @@
 		25682B6D20EE0365009738C4 /* Tabbars */ = {
 			isa = PBXGroup;
 			children = (
+				A6A1ECFE29431A4B001A9F03 /* Tabbar */,
 				A6D38BE82898E418003579F2 /* SwapV2 */,
 				A693AFE92819052000880503 /* RewardingHunting */,
 				7EFE43FD2714449C006CF502 /* Rewards */,
@@ -5493,6 +5496,14 @@
 				A69C5BE028D1C10F000DE825 /* NotificationListViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A6A1ECFE29431A4B001A9F03 /* Tabbar */ = {
+			isa = PBXGroup;
+			children = (
+				A6A1ECFF29431A58001A9F03 /* TabBarController.swift */,
+			);
+			path = Tabbar;
 			sourceTree = "<group>";
 		};
 		A6A8A1EE28168B9600F7AB88 /* LoadingCell */ = {
@@ -8385,6 +8396,7 @@
 				A6F5DCAE28572FF200FD02C9 /* NonceCache.swift in Sources */,
 				A6E6463C28B7742F009556F9 /* KrystalService.swift in Sources */,
 				25D325A720C075DE008BB235 /* KNSendTokenViewCoordinator.swift in Sources */,
+				A6A1ED0029431A58001A9F03 /* TabBarController.swift in Sources */,
 				C3743295278EC076002C97A9 /* Int.swift in Sources */,
 				A6D38BF32899118F003579F2 /* SwapV2PlatformCell.swift in Sources */,
 				A6E26FD8281289DC0054427E /* SolanaTransactionItemViewModel.swift in Sources */,

@@ -261,9 +261,6 @@ extension InvestViewController: UICollectionViewDelegate {
       case .scanner:
         delegate?.investViewController(self, run: .scanner)
         MixPanelManager.track("Xplore_Scanner", properties: ["screenid": "explore"])
-      case .stake:
-        delegate?.investViewController(self, run: .stake)
-//          MixPanelManager.track("Xplore_Scanner", properties: ["screenid": "explore"])
       case .approvals:
           delegate?.investViewController(self, run: .openApprovals)
       }

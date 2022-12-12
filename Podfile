@@ -59,7 +59,7 @@ end
 def databasePods
   pod 'KeychainSwift', '~> 13.0.0'
   pod 'SAMKeychain', '~> 1.5.3'
-  pod 'RealmSwift', '~> 3.19.0'
+  pod 'RealmSwift', '~> 10.32'
 end
 
 def utilitiesPods
