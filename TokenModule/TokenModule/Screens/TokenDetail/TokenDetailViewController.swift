@@ -359,8 +359,6 @@ class TokenDetailViewController: KNBaseViewController {
   }
   
   @IBAction func investButtonTapped(_ sender: UIButton) {
-    guard let token = viewModel.createToken() else { return }
-    
     let openInvest = {
       AppDependencies.router.openEarn()
       AppDependencies.tracker.track("token_detail_earn", properties: ["screenid": "token_detail"])
