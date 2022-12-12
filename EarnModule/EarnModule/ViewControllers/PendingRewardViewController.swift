@@ -20,6 +20,9 @@ class PendingRewardViewController: InAppBrowsingViewController {
     
     @IBOutlet weak var rewardTableView: UITableView!
     
+    @IBOutlet weak var emptyViewContainer: UIView!
+    @IBOutlet weak var emptyIcon: UIImageView!
+    @IBOutlet weak var emptyLabel: UILabel!
     
     let viewModel = PendingRewardViewModel()
     var timer: Timer?
@@ -40,9 +43,17 @@ class PendingRewardViewController: InAppBrowsingViewController {
                 self.updateUIEmptyView()
             }
         }
+        viewModel.isClaiming.observeAndFire(on: self) { value in
+            if value {
+                self.displayLoading()
+            } else {
+                self.hideLoading()
+            }
+        }
         let currentChain = AppState.shared.currentChain
         viewModel.chainID = AppState.shared.isSelectedAllChain ? nil : currentChain.getChainId()
         viewModel.requestData()
+        emptyIcon.image = Images.emptyReward
     }
 
     func updateUIStartSearchingMode() {
@@ -73,7 +84,9 @@ class PendingRewardViewController: InAppBrowsingViewController {
     }
     
     private func updateUIEmptyView() {
-        //TODO: placeholder
+        guard isViewLoaded else { return }
+        
+        emptyViewContainer.isHidden = !viewModel.isEmpty()
     }
     
     func showLoadingSkeleton() {
@@ -153,6 +166,9 @@ extension PendingRewardViewController: SkeletonTableViewDataSource {
         let cellModel = viewModel.dataSource.value[indexPath.row]
         cell.updateCellModel(cellModel)
         cell.chainImageView.isHidden = viewModel.chainID != nil
+        cell.onTap = { cm in
+            self.viewModel.buildClaimReward(item: cm.rewardItem)
+        }
         return cell
     }
     

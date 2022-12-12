@@ -22,6 +22,8 @@ struct PendingRewardCellModel {
     let displayClaimAmount: String
     let displayClaimValue: String
     
+    let rewardItem: RewardItem
+    
     init(item: RewardItem) {
         self.tokenLogo = item.rewardToken.tokenInfo.logo
         self.chainLogo = item.chain.logo
@@ -32,6 +34,7 @@ struct PendingRewardCellModel {
         self.displayPlatformName = item.platform.name.uppercased()
         self.displayClaimAmount = (BigInt(item.rewardToken.pendingReward.balance)?.shortString(decimals: item.rewardToken.tokenInfo.decimals) ?? "---") + " " + item.rewardToken.tokenInfo.symbol
         self.displayClaimValue = "$\(item.rewardToken.pendingReward.balancePriceUsd)"
+        self.rewardItem = item
     }
 }
 
@@ -51,6 +54,7 @@ class PendingRewardCell: UITableViewCell {
     @IBOutlet weak var claimButton: UIButton!
     
     var cellModel: PendingRewardCellModel?
+    var onTap: ((PendingRewardCellModel) -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -68,4 +72,12 @@ class PendingRewardCell: UITableViewCell {
         rewardValueLabel.text = model.displayClaimValue
         cellModel = model
     }
+    
+    @IBAction func tapClaimButton(_ sender: UIButton) {
+        guard let cellModel = cellModel else {
+            return
+        }
+        onTap?(cellModel)
+    }
+    
 }

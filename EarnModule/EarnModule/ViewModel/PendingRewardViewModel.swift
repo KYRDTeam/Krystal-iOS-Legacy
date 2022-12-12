@@ -22,6 +22,7 @@ class PendingRewardViewModel {
     var chainID: Int?
     var dataSource: Observable<[PendingRewardCellModel]> = .init([])
     var isLoading: Observable<Bool> = .init(true)
+    var isClaiming: Observable<Bool> = .init(false)
     
     func reloadDataSource() {
         dataSource.value.removeAll()
@@ -63,6 +64,24 @@ class PendingRewardViewModel {
                 print(error.description)
             }
             self.isLoading.value = false
+        }
+    }
+    
+    
+    func isEmpty() -> Bool {
+        return dataSource.value.isEmpty
+    }
+    
+    func buildClaimReward(item: RewardItem) {
+        isClaiming.value = true
+        apiService.buildClaimReward(chainId: item.chain.id, from: AppState.shared.currentAddress.addressString, platform: item.platform.name) { result in
+            switch result {
+            case .success(let txObject):
+                print(txObject)
+            case .failure(let error):
+                print(error.description)
+            }
+            self.isClaiming.value = false
         }
     }
 }

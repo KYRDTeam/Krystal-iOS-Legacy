@@ -17,6 +17,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PendingRewardViewController" customModule="EarnModule" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="01e-wg-pVO" id="SSH-Dt-gRc"/>
+                <outlet property="emptyIcon" destination="deQ-zj-Pfl" id="m3f-zu-Yj1"/>
+                <outlet property="emptyLabel" destination="F4W-Cd-7oz" id="FaS-Y7-JCk"/>
+                <outlet property="emptyViewContainer" destination="iES-Sd-LQT" id="2qy-RF-sL6"/>
                 <outlet property="rewardTableView" destination="suq-Kd-nNG" id="wGu-4Z-Bq9"/>
                 <outlet property="searchFieldActionButton" destination="Yuo-gS-IJa" id="NQH-Xl-TCp"/>
                 <outlet property="searchTextField" destination="Zax-Hf-eLl" id="Bci-fV-26s"/>
@@ -29,6 +32,33 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iES-Sd-LQT">
+                    <rect key="frame" x="0.0" y="96" width="385" height="571"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="empty_reward_icon" translatesAutoresizingMaskIntoConstraints="NO" id="deQ-zj-Pfl">
+                            <rect key="frame" x="134.5" y="220" width="116" height="131"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No reward token yet." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F4W-Cd-7oz">
+                            <rect key="frame" x="20" y="374" width="345" height="19"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <color key="textColor" red="0.54117647059999996" green="0.64313725489999995" blue="0.68235294120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstItem="F4W-Cd-7oz" firstAttribute="leading" secondItem="iES-Sd-LQT" secondAttribute="leading" constant="20" id="CoO-Oh-HgP"/>
+                        <constraint firstItem="deQ-zj-Pfl" firstAttribute="centerX" secondItem="iES-Sd-LQT" secondAttribute="centerX" id="Ffw-nE-9vc"/>
+                        <constraint firstItem="deQ-zj-Pfl" firstAttribute="centerY" secondItem="iES-Sd-LQT" secondAttribute="centerY" id="Mqo-y2-ztH"/>
+                        <constraint firstItem="F4W-Cd-7oz" firstAttribute="top" secondItem="deQ-zj-Pfl" secondAttribute="bottom" constant="23" id="QoV-C1-q4B"/>
+                        <constraint firstAttribute="trailing" secondItem="F4W-Cd-7oz" secondAttribute="trailing" constant="20" id="TeD-ga-HqE"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                            <real key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="01e-wg-pVO">
                     <rect key="frame" x="310" y="33" width="47" height="30"/>
                     <constraints>
@@ -91,7 +121,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="suq-Kd-nNG">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="suq-Kd-nNG">
                     <rect key="frame" x="0.0" y="96" width="375" height="571"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <userDefinedRuntimeAttributes>
@@ -109,10 +139,14 @@
                 <constraint firstItem="suq-Kd-nNG" firstAttribute="top" secondItem="iRj-PU-7qE" secondAttribute="bottom" constant="27" id="7WT-R6-W4y"/>
                 <constraint firstItem="01e-wg-pVO" firstAttribute="centerY" secondItem="iRj-PU-7qE" secondAttribute="centerY" id="CK3-Yi-w03"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="01e-wg-pVO" secondAttribute="trailing" constant="18" id="FgK-xs-BQY"/>
+                <constraint firstItem="iES-Sd-LQT" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" constant="10" id="H6I-ID-BoG"/>
+                <constraint firstItem="iES-Sd-LQT" firstAttribute="top" secondItem="iRj-PU-7qE" secondAttribute="bottom" constant="27" id="IT5-Yr-KPl"/>
                 <constraint firstItem="suq-Kd-nNG" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="MuB-Zq-arr"/>
                 <constraint firstItem="iRj-PU-7qE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="18" id="TlW-Z2-pfi"/>
                 <constraint firstItem="iRj-PU-7qE" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="27" id="eXQ-qb-RGT"/>
                 <constraint firstItem="suq-Kd-nNG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="hQ6-Un-kL0"/>
+                <constraint firstItem="iES-Sd-LQT" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="hvp-UL-yoF"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="iES-Sd-LQT" secondAttribute="bottom" id="jq5-MB-mDU"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="suq-Kd-nNG" secondAttribute="bottom" id="klt-4k-CPS"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="iRj-PU-7qE" secondAttribute="trailing" constant="18" id="yd7-n0-EwK"/>
             </constraints>
@@ -126,6 +160,7 @@
         </view>
     </objects>
     <resources>
+        <image name="empty_reward_icon" width="116" height="131"/>
         <image name="search_blue_icon" width="16" height="16"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
