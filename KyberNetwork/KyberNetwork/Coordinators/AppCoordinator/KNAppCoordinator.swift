@@ -106,10 +106,9 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
   
   func switchToWatchAddress(address: KAddress, chain: ChainType) {
-//    KNGeneralProvider.shared.currentChain = chain
     switchAddress(address: address)
-//    AppEventCenter.shared.switchChain(chain: chain)
     AppState.shared.updateChain(chain: chain)
+    AppState.shared.updateAddress(address: address, targetChain: chain)
   }
   
   func switchAddress(address: KAddress) {
