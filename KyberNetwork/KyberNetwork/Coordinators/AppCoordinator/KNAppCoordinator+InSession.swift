@@ -117,7 +117,9 @@ extension KNAppCoordinator {
       selectedImage: nil
     )
     self.earnCoordinator?.navigationController.tabBarItem.tag = 3
+      
     self.earnCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuEarn"
+    self.tabbarController.addNewTag(toItemAt: 3)
 
     self.settingsCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: nil,
@@ -127,6 +129,8 @@ extension KNAppCoordinator {
     self.settingsCoordinator?.navigationController.tabBarItem.tag = 4
     self.settingsCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuSetting"
 
+    self.tabbarController.setupTabbarConstraints()
+      
     self.navigationController.pushViewController(self.tabbarController, animated: true) {
     }
 

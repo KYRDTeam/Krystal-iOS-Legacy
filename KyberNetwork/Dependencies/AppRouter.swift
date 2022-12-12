@@ -126,6 +126,11 @@ class AppRouter: AppRouterProtocol, Coordinator {
         AppDelegate.shared.coordinator.tabbarController.selectedIndex = 3
         AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
     }
+    
+    func openEarnPortfolio() {
+        openEarn()
+        AppDelegate.shared.coordinator.earnCoordinator?.openPortfolio()
+    }
   
 }
 

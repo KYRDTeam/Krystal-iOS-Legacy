@@ -24,7 +24,13 @@ public class EarnModuleCoordinator: Coordinator {
         let viewController = EarnOverviewController.instantiateFromNib()
         viewController.viewModel = viewModel
         earnOverviewViewController = viewController
+        earnOverviewViewController.loadViewIfNeeded()
+        navigationController.setNavigationBarHidden(true, animated: true)
         navigationController.pushViewController(viewController, animated: true)
+    }
+    
+    public func openPortfolio() {
+        earnOverviewViewController.jumpToPage(index: 1)
     }
     
 }

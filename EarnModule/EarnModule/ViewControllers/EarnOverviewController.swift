@@ -98,6 +98,14 @@ class EarnOverviewController: InAppBrowsingViewController {
     addChild(pageViewController)
     pageViewController.didMove(toParent: self)
   }
+    
+    func jumpToPage(index: Int) {
+        segmentedControl.selectedSegmentIndex = index
+        segmentedControl.underlineCenterPosition()
+        if index != selectedPageIndex {
+            selectPage(index: index)
+        }
+    }
 
   @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
     segmentedControl.underlineCenterPosition()
