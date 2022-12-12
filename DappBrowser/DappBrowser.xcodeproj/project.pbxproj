@@ -8,11 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		4AFBEF1132EDDE9E7897CD22 /* Pods_DappBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 608693D1FE4F76598383EE78 /* Pods_DappBrowser.framework */; };
+		A6B78C8A2947010000FBFCB5 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B78C892947010000FBFCB5 /* Utilities.framework */; };
+		A6CF70C22946EC400061E552 /* BrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6CF70BE2946EC400061E552 /* BrowserViewController.xib */; };
+		A6CF70C32946EC400061E552 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CF70BF2946EC400061E552 /* NavigationBar.swift */; };
+		A6CF70C42946EC400061E552 /* NavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6CF70C02946EC400061E552 /* NavigationBar.xib */; };
+		A6CF70C52946EC400061E552 /* BrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CF70C12946EC400061E552 /* BrowserViewController.swift */; };
 		A6FAFF0E29431040006F9E21 /* DappBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = A6FAFF0D29431040006F9E21 /* DappBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		608693D1FE4F76598383EE78 /* Pods_DappBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DappBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6B78C892947010000FBFCB5 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6CF70BE2946EC400061E552 /* BrowserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BrowserViewController.xib; sourceTree = "<group>"; };
+		A6CF70BF2946EC400061E552 /* NavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
+		A6CF70C02946EC400061E552 /* NavigationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NavigationBar.xib; sourceTree = "<group>"; };
+		A6CF70C12946EC400061E552 /* BrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
 		A6FAFF0A29431040006F9E21 /* DappBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DappBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6FAFF0D29431040006F9E21 /* DappBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DappBrowser.h; sourceTree = "<group>"; };
 		D9E9186E63A6D2519A6BA7CD /* Pods-DappBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DappBrowser.release.xcconfig"; path = "Target Support Files/Pods-DappBrowser/Pods-DappBrowser.release.xcconfig"; sourceTree = "<group>"; };
@@ -25,6 +35,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4AFBEF1132EDDE9E7897CD22 /* Pods_DappBrowser.framework in Frameworks */,
+				A6B78C8A2947010000FBFCB5 /* Utilities.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -39,6 +50,17 @@
 			);
 			name = Pods;
 			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		A6CF70BD2946EC400061E552 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A6CF70BF2946EC400061E552 /* NavigationBar.swift */,
+				A6CF70C02946EC400061E552 /* NavigationBar.xib */,
+				A6CF70C12946EC400061E552 /* BrowserViewController.swift */,
+				A6CF70BE2946EC400061E552 /* BrowserViewController.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		A6FAFF0029431040006F9E21 = {
@@ -62,6 +84,7 @@
 		A6FAFF0C29431040006F9E21 /* DappBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				A6CF70BD2946EC400061E552 /* Views */,
 				A6FAFF0D29431040006F9E21 /* DappBrowser.h */,
 			);
 			path = DappBrowser;
@@ -70,6 +93,7 @@
 		EC5B7BA817BE103000DBA2FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6B78C892947010000FBFCB5 /* Utilities.framework */,
 				608693D1FE4F76598383EE78 /* Pods_DappBrowser.framework */,
 			);
 			name = Frameworks;
@@ -119,6 +143,7 @@
 				TargetAttributes = {
 					A6FAFF0929431040006F9E21 = {
 						CreatedOnToolsVersion = 13.4;
+						LastSwiftMigration = 1340;
 					};
 				};
 			};
@@ -145,6 +170,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6CF70C22946EC400061E552 /* BrowserViewController.xib in Resources */,
+				A6CF70C42946EC400061E552 /* NavigationBar.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,6 +207,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6CF70C32946EC400061E552 /* NavigationBar.swift in Sources */,
+				A6CF70C52946EC400061E552 /* BrowserViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +339,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DC171D0E9E0A4E69604E90EC /* Pods-DappBrowser.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -332,6 +362,7 @@
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -341,6 +372,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D9E9186E63A6D2519A6BA7CD /* Pods-DappBrowser.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
