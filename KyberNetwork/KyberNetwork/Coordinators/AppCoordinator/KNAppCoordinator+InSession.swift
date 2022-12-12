@@ -6,6 +6,7 @@ import KrystalWallets
 import Dependencies
 import AppState
 import TransactionModule
+import EarnModule
 
 // MARK: This file for handling in session
 extension KNAppCoordinator {
@@ -59,13 +60,6 @@ extension KNAppCoordinator {
     investCoordinator.start()
     self.investCoordinator = investCoordinator
 
-    self.earnCoordinator = {
-      let coordinator = EarnCoordinator()
-      coordinator.delegate = self
-      return coordinator
-    }()
-    self.earnCoordinator?.start()
-
     self.addCoordinator(self.settingsCoordinator!)
     self.settingsCoordinator?.start()
     
@@ -76,6 +70,10 @@ extension KNAppCoordinator {
     image: UIImage(named: "tabbar_swap_icon"),
     selectedImage: nil
   )
+      
+    self.earnCoordinator = EarnModuleCoordinator()
+    self.earnCoordinator?.start()
+      
   self.swapV2Coordinator?.navigationController.tabBarItem.tag = 1
   self.tabbarController.viewControllers = [
     self.overviewTabCoordinator!.navigationController,
@@ -119,7 +117,9 @@ extension KNAppCoordinator {
       selectedImage: nil
     )
     self.earnCoordinator?.navigationController.tabBarItem.tag = 3
+      
     self.earnCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuEarn"
+    self.tabbarController.addNewTag(toItemAt: 3)
 
     self.settingsCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: nil,
@@ -129,6 +129,8 @@ extension KNAppCoordinator {
     self.settingsCoordinator?.navigationController.tabBarItem.tag = 4
     self.settingsCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuSetting"
 
+    self.tabbarController.setupTabbarConstraints()
+      
     self.navigationController.pushViewController(self.tabbarController, animated: true) {
     }
 

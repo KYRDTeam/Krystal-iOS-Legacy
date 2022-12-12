@@ -40,8 +40,6 @@ class ExploreMenuItemViewModel {
       return Strings.KrystalBridge
     case .scanner:
       return Strings.scanner
-    case .stake:
-      return Strings.Staking
     case .approvals:
         return Strings.approvalMenuTitle
     }
@@ -71,8 +69,6 @@ class ExploreMenuItemViewModel {
       return Images.exploreBridgeIcon
     case .scanner:
       return Images.exploreScannerIcon
-    case .stake:
-      return Images.exploreStakeIcon
     case .approvals:
         return Images.exploreApprovalIcon
     }
@@ -80,7 +76,7 @@ class ExploreMenuItemViewModel {
     
     var isNewFeature: Bool {
         switch item {
-        case .approvals, .stake:
+        case .approvals:
             return true
         default:
             return false
