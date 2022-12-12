@@ -121,7 +121,8 @@ class StakingPortfolioCell: SwipeTableViewCell {
   @IBOutlet weak var apyTitleLabel: UILabel!
   @IBOutlet weak var balanceTitleLabel: UILabel!
   @IBOutlet weak var depositedValueLabelTopConstraint: NSLayoutConstraint!
-    var onTapHint: (() -> Void)? = nil
+  @IBOutlet weak var warningButtonHeightConstraint: NSLayoutConstraint!
+  var onTapHint: (() -> Void)? = nil
   var claimTapped: (() -> ())?
   
   func updateCellModel(_ model: StakingPortfolioCellModel) {
@@ -137,6 +138,7 @@ class StakingPortfolioCell: SwipeTableViewCell {
     warningLabelContainerView.isHidden = !model.isInProcess || model.isClaimable
     claimButton.isHidden = !model.isClaimable
     depositedValueLabelTopConstraint.constant = model.isInProcess ? 10 : 30
+    warningButtonHeightConstraint.constant = model.isInProcess ? 30 : 0
     addButton.isHidden = model.isInProcess
     minusButton.isHidden = model.isInProcess
     deposited2ValueLabel.text = model.displayDeposited2Value

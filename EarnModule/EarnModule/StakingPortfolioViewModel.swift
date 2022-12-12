@@ -215,7 +215,7 @@ class StakingPortfolioViewModel {
         } else if section == 1 {
             return showStaking ? 160 : 0
         } else if section == 2 {
-            return showPending ? 160 : 0
+            return showPending ? 170 : 0
         } else {
             return 0
         }
