@@ -355,18 +355,8 @@ class TokenDetailViewController: KNBaseViewController {
   }
   
   @IBAction func investButtonTapped(_ sender: UIButton) {
-    let openInvest = {
       AppDependencies.router.openEarn()
       AppDependencies.tracker.track("token_detail_earn", properties: ["screenid": "token_detail"])
-    }
-    
-    if viewModel.chain == AppState.shared.currentChain {
-      openInvest()
-    } else {
-      SwitchSpecificChainPopup.show(onViewController: self, destChain: viewModel.chain) {
-        openInvest()
-      }
-    }
   }
   
   @IBAction func etherscanButtonTapped(_ sender: UIButton) {
