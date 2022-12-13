@@ -156,8 +156,8 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
         guard let chain = ChainType.allCases.first(where: {
           return $0 != .all && $0.addressType == address.addressType
         }) else { return }
-        self.onChainSelected(chain: chain)
         AppState.shared.updateAddress(address: address, targetChain: chain)
+        self.onChainSelected(chain: chain)
       }
     }
     let selectWatchAddressHandler: (KAddress) -> () = { [weak self] address in
