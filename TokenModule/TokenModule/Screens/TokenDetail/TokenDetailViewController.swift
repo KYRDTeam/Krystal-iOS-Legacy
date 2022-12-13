@@ -355,18 +355,8 @@ class TokenDetailViewController: KNBaseViewController {
   }
   
   @IBAction func investButtonTapped(_ sender: UIButton) {
-    let openInvest = {
       AppDependencies.router.openEarn()
       AppDependencies.tracker.track("token_detail_earn", properties: ["screenid": "token_detail"])
-    }
-    
-    if viewModel.chain == AppState.shared.currentChain {
-      openInvest()
-    } else {
-      SwitchSpecificChainPopup.show(onViewController: self, destChain: viewModel.chain) {
-        openInvest()
-      }
-    }
   }
   
   @IBAction func etherscanButtonTapped(_ sender: UIButton) {
@@ -433,12 +423,12 @@ class TokenDetailViewController: KNBaseViewController {
     self.priceDiffImageView.image = self.viewModel.diffImage
     self.swapButton.backgroundColor = self.viewModel.displayDiffColor
     self.transferButton.backgroundColor = self.viewModel.displayDiffColor
-    if self.viewModel.canEarn {
-        self.investButton.backgroundColor = self.viewModel.displayDiffColor
-    } else {
-        self.investButton.removeFromSuperview()
-        self.swapButton.rightAnchor.constraint(equalTo: self.swapButton.superview!.rightAnchor, constant: -26).isActive = true
-    }
+//    if self.viewModel.canEarn {
+    self.investButton.backgroundColor = self.viewModel.displayDiffColor
+//    } else {
+//    self.investButton.removeFromSuperview()
+//    self.swapButton.rightAnchor.constraint(equalTo: self.swapButton.superview!.rightAnchor, constant: -26).isActive = true
+//    }
     self.tagImageView.image = self.viewModel.tagImage
     self.tagLabel.text = self.viewModel.tagLabel
     self.tagView.isHidden = self.viewModel.tagImage == nil
