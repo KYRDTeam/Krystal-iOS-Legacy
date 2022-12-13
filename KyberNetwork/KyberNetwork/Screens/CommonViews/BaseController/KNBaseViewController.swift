@@ -2,46 +2,6 @@
 
 import UIKit
 
-//class KNBaseViewController: UIViewController, UIGestureRecognizerDelegate {
-//
-//  @IBOutlet weak var topBarHeight: NSLayoutConstraint?
-//  let titleHeight: CGFloat = 24
-//  let titleVerticalPadding: CGFloat = 26
-//  
-//  override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
-//
-//  override func viewDidLoad() {
-//    super.viewDidLoad()
-//    
-//    topBarHeight?.constant = UIScreen.statusBarHeight + titleHeight + titleVerticalPadding * 2
-//  }
-//  
-//  override func viewDidAppear(_ animated: Bool) {
-//    super.viewDidAppear(animated)
-//    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-//    NSLog("Did present: \(self.className)")
-//  }
-//
-//  override func viewDidDisappear(_ animated: Bool) {
-//    super.viewDidDisappear(animated)
-//    NSLog("Did dismiss: \(self.className)")
-//    self.dismissTutorialOverlayer()
-//  }
-//  
-//  var isVisible: Bool {
-//    return self.viewIfLoaded?.window != nil
-//  }
-//}
-
-class KNTabBarController: UITabBarController {
-  override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
-
-  override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-    
-    tabBar.tintColor = UIColor(named: "buttonBackgroundColor")
-  }
-}
-
 class KNNavigationController: UINavigationController {
   override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
 }

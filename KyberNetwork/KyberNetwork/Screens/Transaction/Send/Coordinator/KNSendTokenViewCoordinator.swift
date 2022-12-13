@@ -13,6 +13,7 @@ import JSONRPCKit
 import WalletCore
 import KrystalWallets
 import Dependencies
+import TokenModule
 
 protocol KNSendTokenViewCoordinatorDelegate: class {
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject)
@@ -314,18 +315,11 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   }
 
   fileprivate func openSearchToken(selectedToken: TokenObject) {
-    let tokens = KNSupportedTokenStorage.shared.getAllTokenObject()
-    self.searchTokensVC = {
-      let viewModel = KNSearchTokenViewModel(
-        supportedTokens: tokens
-      )
-      let controller = KNSearchTokenViewController(viewModel: viewModel)
-      controller.loadViewIfNeeded()
-      controller.delegate = self
-      return controller
-    }()
-    self.navigationController.present(self.searchTokensVC!, animated: true, completion: nil)
-    self.searchTokensVC?.updateBalances(self.balances)
+      TokenModule.openSearchToken(on: navigationController) { [weak self] selectedToken in
+          guard let self = self else { return }
+          let balance = self.balances[selectedToken.token.address]
+          self.rootViewController?.coordinatorDidUpdateSendToken(selectedToken.token.toObject(), balance: balance)
+      }
   }
 
   fileprivate func openConfirmTransfer(transaction: UnconfirmedTransaction, ens: String?) {
@@ -361,21 +355,6 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
         completion(.success(res))
       case .failure(let error):
         completion(.failure(error))
-      }
-    }
-  }
-}
-
-// MARK: Search Token Delegate
-extension KNSendTokenViewCoordinator: KNSearchTokenViewControllerDelegate {
-  func searchTokenViewController(_ controller: KNSearchTokenViewController, run event: KNSearchTokenViewEvent) {
-    controller.dismiss(animated: true) {
-      self.searchTokensVC = nil
-      if case .select(let token) = event {
-        let balance = self.balances[token.contract]
-        self.rootViewController?.coordinatorDidUpdateSendToken(token, balance: balance)
-      } else if case .add(let token) = event {
-        self.delegate?.sendTokenCoordinatorDidSelectAddToken(token)
       }
     }
   }

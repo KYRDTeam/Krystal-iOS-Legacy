@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -835,7 +835,7 @@
                                             <rect key="frame" x="0.0" y="16" width="375" height="400"/>
                                             <color key="backgroundColor" name="mainViewBgColor"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="400" id="i2V-nn-eYr"/>
+                                                <constraint firstAttribute="height" priority="999" constant="400" id="i2V-nn-eYr"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isHiddenWhenSkeletonIsActive" value="YES"/>

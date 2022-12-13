@@ -45,7 +45,7 @@ class ApprovedTokenCell: SwipeTableViewCell {
         tokenSymbolLabel.text = viewModel.symbol
         tokenNameLabel.text = viewModel.tokenName
         verifyIcon.isHidden = !viewModel.isVerified
-        spenderAddressLabel.text = viewModel.spenderAddress
+        spenderAddressLabel.text = viewModel.spenderValue
         rightTokenSymbolLabel.text = viewModel.symbol
         amountLabel.text = viewModel.amountString
         chainImageView.isHidden = !viewModel.showChainIcon

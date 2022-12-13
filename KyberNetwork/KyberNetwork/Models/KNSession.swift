@@ -95,7 +95,7 @@ class KNSession {
   }
   
   func switchAddress(address: KAddress) {
-    AppEventCenter.shared.switchAddress(address: address)
+//    AppEventCenter.shared.switchAddress(address: address)
     WalletCache.shared.lastUsedAddress = address
     self.configureDatabase()
     self.configureWeb3()

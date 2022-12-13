@@ -3,6 +3,7 @@
 import UIKit
 import KrystalWallets
 import AppState
+import Dependencies
 
 // MARK: Landing Page Coordinator Delegate
 extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
@@ -126,19 +127,13 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
   func overviewCoordinatorDidStart() {
   }
 
-  func overviewCoordinatorDidChangeHideBalanceStatus(_ status: Bool) {
-    self.earnCoordinator?.appCoodinatorDidUpdateHideBalanceStatus(status)
-  }
-
   func overviewCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.appCoordinatorDidSelectAddToken(token)
   }
 
   func overviewCoordinatorDidSelectDepositMore(tokenAddress: String) {
-    self.earnCoordinator?.navigationController.popToRootViewController(animated: false)
-    self.tabbarController.selectedIndex = 3
-    self.earnCoordinator?.appCoodinatorDidOpenEarnView(tokenAddress: tokenAddress)
+      AppDependencies.router.openEarn()
   }
 
   func overviewCoordinatorDidSelectSwapToken(token: Token, isBuy: Bool) {
