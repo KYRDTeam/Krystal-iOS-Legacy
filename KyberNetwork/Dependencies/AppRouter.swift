@@ -125,10 +125,12 @@ class AppRouter: AppRouterProtocol, Coordinator {
     func openEarn() {
         AppDelegate.shared.coordinator.tabbarController.selectedIndex = 3
         AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
+        AppDelegate.shared.coordinator.earnCoordinator?.openEarningOptions()
     }
     
     func openEarnPortfolio() {
-        openEarn()
+        AppDelegate.shared.coordinator.tabbarController.selectedIndex = 3
+        AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
         AppDelegate.shared.coordinator.earnCoordinator?.openPortfolio()
     }
   

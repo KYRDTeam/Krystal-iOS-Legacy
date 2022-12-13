@@ -13,6 +13,7 @@ import APIKit
 import JSONRPCKit
 import KrystalWallets
 import Dependencies
+import BaseModule
 
 protocol WithdrawCoordinatorDelegate: class {
   func withdrawCoordinatorDidSelectHistory()
@@ -556,7 +557,20 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
 extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
   func withdrawConfirmPopupViewControllerDidSelectFirstButton(_ controller: WithdrawConfirmPopupViewController, balance: LendingBalance?) {
     controller.dismiss(animated: true) {
-        AppDependencies.router.openEarnPortfolio()
+        guard balance?.chainType == KNGeneralProvider.shared.currentChain else {
+          if let chain = balance?.chainType {
+              SwitchSpecificChainPopup.show(onViewController: self.navigationController, destChain: chain) {
+                  self.withdrawConfirmPopupViewControllerDidSelectFirstButton(controller, balance: balance)
+              }
+          }
+          return
+        }
+
+        if let controller = self.withdrawViewController {
+          self.navigationController.present(controller, animated: true, completion: {
+            controller.coordinatorUpdateIsUseGasToken(self.isAccountUseGasToken())
+          })
+        }
     }
   }
 
