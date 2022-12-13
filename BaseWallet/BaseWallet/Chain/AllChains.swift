@@ -28,24 +28,24 @@ public struct AllChains {
     apiChainPath: "ethereum"
   )
 
-  public static let ethRoptenPRC = CustomRPC(
-    chainID: 3,
+  public static let goerliPRC = CustomRPC(
+    chainID: 5,
     type: "ERC20",
-    name: "Ethereum-Ropsten",
-    symbol: "Ropsten",
-    endpoint: "https://ropsten.infura.io/v3/" + NodeConfig.infuraKey,
-    endpointKyber: "https://ropsten.infura.io/v3/" + NodeConfig.infuraKey,
-    endpointAlchemy: "https://eth-ropsten.alchemyapi.io/v2/" + NodeConfig.alchemyRopstenKey,
-    etherScanEndpoint: "https://ropsten.etherscan.io/",
+    name: "Ethereum-Goerli",
+    symbol: "Goerli",
+    endpoint: "https://eth-goerli.public.blastapi.io",
+    endpointKyber: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+    endpointAlchemy: "https://rpc.ankr.com/eth_goerli",
+    etherScanEndpoint: "https://goerli.etherscan.io/",
     webScanName: "Etherscan",
     ensAddress: "0x112234455c3a32fd11230c42e7bccd4a84e02010",
     wrappedAddress: "0x665d34f192f4940da4e859ff7768c0a80ed3ae10",
-    apiEtherscanEndpoint: "https://api-ropsten.etherscan.io/",
-    proxyAddress: "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a",
+    apiEtherscanEndpoint: "https://api-goerli.etherscan.io/",
+    proxyAddress: "0xa0Af2A2ABD276843f65B8c117406Da9335F39364",
     quoteTokenAddress: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
     chainIcon: "chain_eth_icon",
     quoteToken: "ETH",
-    apiChainPath: "ropsten"
+    apiChainPath: "goerli"
   )
 
   public static let ethStaggingPRC = CustomRPC(
