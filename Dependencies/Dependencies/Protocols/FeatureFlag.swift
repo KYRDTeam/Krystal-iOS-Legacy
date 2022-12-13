@@ -25,4 +25,5 @@ public struct FeatureFlagKeys {
     public static let earnV2 = "earn-v2"
     public static let tokenApproval = "token-approval"
     public static let unstakeWarning = "unstake-warning"
+    public static let earnNewTag = "earn-new-tag"
 }

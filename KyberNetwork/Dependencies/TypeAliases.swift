@@ -10,6 +10,7 @@ import BaseModule
 import TransactionModule
 import BaseWallet
 import Services
+import Dependencies
 
 typealias KNBaseViewController = BaseModule.KNBaseViewController
 typealias InAppBrowsingViewController = BaseModule.InAppBrowsingViewController
@@ -22,3 +23,4 @@ typealias InternalTransactionState = TransactionModule.InternalTransactionState
 typealias CurrencyMode = BaseWallet.CurrencyMode
 typealias Token = Services.Token
 
+typealias FeatureFlagKeys = Dependencies.FeatureFlagKeys
