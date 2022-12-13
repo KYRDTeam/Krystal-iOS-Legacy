@@ -154,7 +154,7 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
       } else {
         let address = addresses.first!
         guard let chain = ChainType.allCases.first(where: {
-          return ($0 != .all || self.supportAllChainOption) && $0.addressType == address.addressType
+          return $0 != .all && $0.addressType == address.addressType
         }) else { return }
         self.onChainSelected(chain: chain)
         AppState.shared.updateAddress(address: address, targetChain: chain)
