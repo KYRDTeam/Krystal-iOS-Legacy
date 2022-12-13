@@ -11,7 +11,7 @@ import Utilities
 import Services
 import SwipeCellKit
 
-internal enum WarningType {
+internal enum EarnWarningType {
     case disable
     case warning
     case none
@@ -34,7 +34,7 @@ struct StakingPortfolioCellModel {
   var pendingUnstake: PendingUnstake?
   var earnBalance: EarningBalance?
     let displayStatusLogo: UIImage?
-    let warningType: WarningType
+    let warningType: EarnWarningType
   
   init(earnBalance: EarningBalance) {
     self.earnBalance = earnBalance
@@ -153,7 +153,7 @@ class StakingPortfolioCell: SwipeTableViewCell {
     
     var onTapHint: (() -> Void)? = nil
   var claimTapped: (() -> ())?
-    var onTapWarningIcon: ((WarningType) -> Void)?
+    var onTapWarningIcon: ((EarnWarningType) -> Void)?
     var cellModel: StakingPortfolioCellModel?
   
   func updateCellModel(_ model: StakingPortfolioCellModel) {
