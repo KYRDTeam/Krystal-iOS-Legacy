@@ -696,6 +696,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
     if textField == self.amountTextField {
       textField.text = cleanedText
       self.viewModel.updateAmount(cleanedText)
+      self.shouldUpdateEstimatedGasLimit(nil)
       self.view.layoutIfNeeded()
       return false
     } else {

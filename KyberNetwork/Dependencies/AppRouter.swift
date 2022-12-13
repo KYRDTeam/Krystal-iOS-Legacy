@@ -17,6 +17,7 @@ class AppRouter: AppRouterProtocol, Coordinator {
   
   var coordinators: [Coordinator] = []
   var historyCoordinator: Coordinator?
+    
   func start() {
     fatalError("Do not use this function")
   }
@@ -28,7 +29,8 @@ class AppRouter: AppRouterProtocol, Coordinator {
     coordinate(coordinator: coordinator)
   }
   
-  func openWalletList(currentChain: ChainType, allowAllChainOption: Bool,
+  func openWalletList(currentChain: ChainType,
+                      allowAllChainOption: Bool,
                       onSelectWallet: @escaping (KWallet) -> Void,
                       onSelectWatchAddress: @escaping (KAddress) -> Void) {
     let walletsList = WalletListV2ViewController()
@@ -66,14 +68,6 @@ class AppRouter: AppRouterProtocol, Coordinator {
     UIApplication.shared.topMostViewController()?.present(popup, animated: true, completion: nil)
   }
   
-  //  func createSwapViewController() -> UIViewController {
-  //    return SwapModule.createSwapViewController()
-  //  }
-  
-  func createEarnOverViewController() -> UIViewController {
-    return EarnModule.createEarnOverViewController()
-  }
-  
   func openTransactionHistory() {
     guard let navigation = UIApplication.shared.topMostViewController() as? UINavigationController else { return }
     switch KNGeneralProvider.shared.currentChain {
@@ -87,15 +81,6 @@ class AppRouter: AppRouterProtocol, Coordinator {
       coordinator.delegate = self
       self.historyCoordinator = coordinator
       coordinate(coordinator: coordinator)
-    }
-  }
-  
-  func getTopMostNavigation() -> UINavigationController? {
-    let topViewController = UIApplication.shared.topMostViewController()
-    if let nav = topViewController as? UINavigationController {
-      return nav
-    } else {
-      return topViewController?.navigationController
     }
   }
   
@@ -136,12 +121,18 @@ class AppRouter: AppRouterProtocol, Coordinator {
       AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: false)
       AppDelegate.shared.coordinator.tabbarController.selectedIndex = 1
   }
-  
-  func openEarn(token: Token) {
-    AppDelegate.shared.coordinator.tabbarController.selectedIndex = 3
-    AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
-    AppDelegate.shared.coordinator.earnCoordinator?.appCoodinatorDidOpenEarnView(tokenAddress: token.address)
-  }
+    
+    func openEarn() {
+        AppDelegate.shared.coordinator.tabbarController.selectedIndex = 3
+        AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
+        AppDelegate.shared.coordinator.earnCoordinator?.openEarningOptions()
+    }
+    
+    func openEarnPortfolio() {
+        AppDelegate.shared.coordinator.tabbarController.selectedIndex = 3
+        AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
+        AppDelegate.shared.coordinator.earnCoordinator?.openPortfolio()
+    }
   
 }
 
@@ -168,4 +159,17 @@ extension AppRouter: KNSendTokenViewCoordinatorDelegate {
       removeCoordinator(coordinator)
   }
   
+}
+
+extension AppRouter {
+    
+    func getTopMostNavigation() -> UINavigationController? {
+        let topViewController = UIApplication.shared.topMostViewController()
+        if let nav = topViewController as? UINavigationController {
+            return nav
+        } else {
+            return topViewController?.navigationController
+        }
+    }
+    
 }

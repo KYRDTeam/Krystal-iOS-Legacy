@@ -101,6 +101,7 @@ class KNAddNewWalletCoordinator: Coordinator {
     } else {
       navigationController.dismiss(animated: true) {
         AppDelegate.shared.coordinator.onAddWallet(wallet: wallet, chain: chain)
+        AppState.shared.updateAddress(address: AppState.shared.currentAddress, targetChain: AppState.shared.currentChain)
       }
     }
   }

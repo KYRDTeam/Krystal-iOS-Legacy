@@ -152,6 +152,7 @@ class ApprovalListViewModel {
                 || approval.name?.lowercased().contains(trimmedSearchText) ?? false
                 || approval.tokenAddress?.lowercased().contains(trimmedSearchText) ?? false
                 || approval.spenderAddress?.lowercased().contains(trimmedSearchText) ?? false
+                || approval.spenderName?.lowercased().contains(trimmedSearchText) ?? false
             }
         }
     }
