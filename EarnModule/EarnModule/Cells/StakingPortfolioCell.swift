@@ -177,8 +177,8 @@ class StakingPortfolioCell: SwipeTableViewCell {
     balanceTitleLabel.isHidden = model.isInProcess
     apyValueLabel.isHidden = model.isInProcess
     
-    depositTitleLabelContraintWithAPYTitle.priority = model.isInProcess ? UILayoutPriority(250) : UILayoutPriority(1000)
-    depostTitleLabelLeadingContraintWithSuperView.priority = model.isInProcess ? UILayoutPriority(1000) : UILayoutPriority(250)
+    depositTitleLabelContraintWithAPYTitle.priority = model.isInProcess ? UILayoutPriority(250) : UILayoutPriority(999)
+    depostTitleLabelLeadingContraintWithSuperView.priority = model.isInProcess ? UILayoutPriority(999) : UILayoutPriority(250)
       if let warningIconImg = model.displayStatusLogo {
           statusImageView.isHidden = false
           statusImageView.image = warningIconImg

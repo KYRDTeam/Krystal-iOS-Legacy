@@ -75,7 +75,7 @@ public struct StatusClass: Codable {
 
     enum CodingKeys: String, CodingKey {
         case status
-        case statusDetail = "status_detail"
+        case statusDetail = "detail"
     }
 }
 
