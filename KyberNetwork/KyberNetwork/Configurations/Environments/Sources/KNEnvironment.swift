@@ -16,7 +16,7 @@ enum KNEnvironment: Int {
     case .mainnetTest: return "Mainnet"
     case .production: return "Production"
     case .staging: return "Staging"
-    case .ropsten: return "Ropsten"
+    case .ropsten: return "Dev"
     case .kovan: return "Kovan"
     case .rinkeby: return "Rinkeby"
     }
