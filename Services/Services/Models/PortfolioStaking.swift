@@ -70,12 +70,12 @@ public struct EarningBalance: Codable {
 }
 
 public struct StatusClass: Codable {
-    public let status: String
-    public let statusDetail: String
+    public let value: String
+    public let detail: String
 
     enum CodingKeys: String, CodingKey {
-        case status
-        case statusDetail = "detail"
+        case value
+        case detail
     }
 }
 

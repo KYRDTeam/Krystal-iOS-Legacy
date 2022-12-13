@@ -11,7 +11,7 @@ import Utilities
 import Services
 import SwipeCellKit
 
-enum WarningType {
+internal enum WarningType {
     case disable
     case warning
     case none
@@ -67,7 +67,7 @@ struct StakingPortfolioCellModel {
     self.displayTokenName = earnBalance.toUnderlyingToken.symbol
     self.displayPlatformName = earnBalance.platform.name.uppercased()
     self.isClaimable = false
-      switch earnBalance.status.status.lowercased() {
+      switch earnBalance.status.value.lowercased() {
       case "disabled":
           self.displayStatusLogo = UIImage(imageName: "stake_disable_icon")
           self.warningType = .disable
