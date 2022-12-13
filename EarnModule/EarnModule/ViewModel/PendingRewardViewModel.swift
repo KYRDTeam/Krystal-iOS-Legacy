@@ -23,6 +23,8 @@ class PendingRewardViewModel {
     var dataSource: Observable<[PendingRewardCellModel]> = .init([])
     var isLoading: Observable<Bool> = .init(true)
     var isClaiming: Observable<Bool> = .init(false)
+    var confirmViewModel: Observable<PendingRewardClaimConfirmPopUpViewModel?> = .init(nil)
+    var errorMsg: Observable<String> = .init("")
     
     func reloadDataSource() {
         dataSource.value.removeAll()
@@ -78,9 +80,9 @@ class PendingRewardViewModel {
             switch result {
             case .success(let txObject):
                 let popupViewModel = PendingRewardClaimConfirmPopUpViewModel(item: item, txObject: txObject)
-                print(popupViewModel)
+                self.confirmViewModel.value = popupViewModel
             case .failure(let error):
-                print(error.description)
+                self.errorMsg.value = error.description
             }
             self.isClaiming.value = false
         }

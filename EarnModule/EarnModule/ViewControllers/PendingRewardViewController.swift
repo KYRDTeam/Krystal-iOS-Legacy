@@ -10,6 +10,8 @@ import UIKit
 import AppState
 import SkeletonView
 import DesignSystem
+import TransactionModule
+import FittedSheets
 
 class PendingRewardViewController: InAppBrowsingViewController {
     
@@ -48,6 +50,19 @@ class PendingRewardViewController: InAppBrowsingViewController {
                 self.displayLoading()
             } else {
                 self.hideLoading()
+            }
+        }
+        viewModel.errorMsg.observeAndFire(on: self) { value in
+            guard !value.isEmpty else { return }
+            self.showErrorTopBannerMessage(message: value)
+        }
+        viewModel.confirmViewModel.observeAndFire(on: self) { value in
+            guard let value = value else { return }
+            TxConfirmPopup.show(onViewController: self, withViewModel: value) { pendingTx in
+                let vc = ClaimTxStatusPopup.instantiateFromNib()
+                vc.viewModel = ClaimTxStatusViewModel(pendingTx: pendingTx as! PendingClaimTxInfo)
+                let sheet = SheetViewController(controller: vc, sizes: [.intrinsic], options: .init(pullBarHeight: 0))
+                self.present(sheet, animated: true)
             }
         }
         let currentChain = AppState.shared.currentChain

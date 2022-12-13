@@ -175,8 +175,6 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     }
     
     func requestClaim(pendingUnstake: PendingUnstake) {
-        
-        //NOTE
         AppDependencies.tracker.track("mob_portfolio_claim", properties: ["screenid": "earn_v2"])
         let viewModel = StakingConfirmClaimPopupViewModel(pendingUnstake: pendingUnstake)
         TxConfirmPopup.show(onViewController: self, withViewModel: viewModel) { [weak self] pendingTx in
