@@ -9,6 +9,7 @@ import UIKit
 import BigInt
 import KrystalWallets
 import AppState
+import BaseModule
 
 class RewardsViewControllerViewModel {
   
@@ -66,11 +67,12 @@ class RewardsViewControllerViewModel {
 }
 
 protocol RewardsViewControllerDelegate: class {
+  func reloadData(_ controller: RewardsViewController)
   func loadClaimRewards(_ controller: RewardsViewController)
   func showClaimRewardVC(_ controller: RewardsViewController, model: KNRewardModel, txObject: TxObject)
 }
 
-class RewardsViewController: KNBaseViewController {
+class RewardsViewController: BaseWalletOrientedViewController {
   @IBOutlet weak var emptyView: UIView!
   @IBOutlet weak var emptyButton: UIButton!
   @IBOutlet weak var tableView: UITableView!
@@ -94,6 +96,10 @@ class RewardsViewController: KNBaseViewController {
       emptyButton.isHidden = false
       emptyLabel.text = "You don't have any reward".toBeLocalised()
     }
+  }
+  
+  override func onAppSwitchAddress() {
+    self.delegate?.reloadData(self)
   }
 
   func configUI() {
@@ -139,6 +145,7 @@ class RewardsViewController: KNBaseViewController {
 
   func claimRewardsButtonTapped() {
     Tracker.track(event: .promotionClaim)
+      
     // check current chain is in supported chain or not ? if not then show popup switch chain
     if !self.viewModel.supportedChains.contains(KNGeneralProvider.shared.customRPC.chainID) {
       let alertController = KNPrettyAlertController(
@@ -147,7 +154,8 @@ class RewardsViewController: KNBaseViewController {
         secondButtonTitle: Strings.ok,
         firstButtonTitle: Strings.cancel,
         secondButtonAction: {
-          self.showPopupSwitchChain()
+            AppState.shared.updateChain(chain: .bsc)
+            self.claimRewards()
         },
         firstButtonAction: nil
       )
@@ -157,20 +165,6 @@ class RewardsViewController: KNBaseViewController {
       claimRewards()
       MixPanelManager.track("reward_swap", properties: ["screenid": "reward"])
     }
-  }
-  
-  func showPopupSwitchChain() {
-    let popup = SwitchChainViewController()
-    popup.selectedChain = .bsc
-    popup.nextButtonTitle = Strings.confirm
-    popup.completionHandler = { selected in
-      AppState.shared.updateChain(chain: selected)
-//      KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
-      if selected == .bsc {
-        self.claimRewards()
-      }
-    }
-    self.present(popup, animated: true, completion: nil)
   }
   
   func claimRewards() {

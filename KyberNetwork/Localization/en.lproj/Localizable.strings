@@ -932,6 +932,7 @@
 "connect.wallet" = "Connect Wallet";
 "review.swap" = "Review Swap";
 "insufficient.token.balance" = "Insufficient %@ Balance";
+"insufficient.token.for.network.fee" = "Insufficient %@ for network fee";
 "checking.allowance" = "Checking Allowance";
 "approve.token" = "Approve %@";
 "approving.token" = "Approving %@";
@@ -981,6 +982,7 @@
 "wc.disconnect" = "Disconnect";
 "wc.disconnect.confirm" = "Are you sure to disconnect from this dapp?";
 "wc.not.support.watch.wallet" = "You are using watch wallet";
+"wc.not.support.this.network" = "Wallet Connect is not supported on this network";
 
 // Wallet list
 "backup.wallet.warning.message" = "NEVER share Keystore/Private Key/Mnemonic with anyone (including Krystal). These data grant access to all your funds and they may get stolen";
@@ -993,7 +995,7 @@
 "no.tokens.deposited" = "No tokens deposited yet.";
 
 // Approval
-"approval.search.placeholder" = "Symbol, name, address";
+"approval.search.placeholder" = "Search token, spender";
 "approval.menu.title" = "Token Approvals";
 "unlimited.allowance" = "Unlimited";
 "total.allowance" = "Total Allowance";
@@ -1001,3 +1003,20 @@
 "total.allowance.description" = "This is the total amount of funds in your wallet that can be accessed by smart contracts that you've previously approved. These funds may be lost if the smart contract is compromised by a hacker.";
 "approvals.no.risk" = "Don’t worry, you have NO risk now :D";
 "approvals.no.records.found" = "No records found";
+"revoke" = "Revoke";
+"broadcasting.transaction" = "Broadcasting Transaction";
+"open.x" = "Open %@";
+"support" = "Support";
+"approval.no.token.found.on.wallet" = "No token approvals found on this wallet.";
+"approval.no.token.found.on.network" = "No token approvals found on this network.";
+
+
+"Checking" = "Checking";
+"Stake Now" = "Stake Now";
+"APY (Est. Yield" = "APY (Est. Yield";
+"You will receive" = "You will receive";
+"Rate" = "Rate";
+"Network Fee" = "Network Fee";
+"can.not.est.gas" = "Can not estimate gas limit for this transaction";
+"build.raw.tx.failed" = "Build raw Tx failed";
+"parse.tx.failed" = "Parse Tx data failed";

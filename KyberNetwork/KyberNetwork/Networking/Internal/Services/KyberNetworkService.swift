@@ -884,7 +884,7 @@ enum KrytalService {
   case getRewards(address: String, accessToken: String)
   case getClaimRewards(address: String, accessToken: String)
   case checkEligibleWallet(address: String)
-  case getTotalBalance(address: [String], forceSync: Bool, _ chains: String?)
+  case getTotalBalance(address: [String], forceSync: Bool, _ chainIds: String?)
   case getGasPriceV2
   case getCryptoFiatPair
   case buyCrypto(buyCryptoModel: BifinityOrder)
@@ -908,6 +908,8 @@ enum KrytalService {
   case getSearchToken(address: String, query: String, orderBy: String)
   case getEarningBalances(address: String)
   case getPendingUnstakes(address: String)
+  case getEarningOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String)
+  case buildStakeTx(params: JSONDictionary)
 }
 
 extension KrytalService: TargetType {
@@ -926,7 +928,8 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance, .getAllLendingBalance, .getAllLendingDistributionBalance, .getMultichainBalance, .getLiquidityPool, .getEarningBalances, .getPendingUnstakes:
+    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance, .getAllLendingBalance, .getAllLendingDistributionBalance, .getMultichainBalance, .getLiquidityPool, .getEarningBalances, .getPendingUnstakes,
+        .getEarningOptionDetail, .buildStakeTx:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     case .getChartData(chainPath: let chainPath, address: _, quote: _, from: _), .getTokenDetail(chainPath: let chainPath, address: _):
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -1011,7 +1014,7 @@ extension KrytalService: TargetType {
     case .checkEligibleWallet:
       return "/v1/account/eligible"
     case .getTotalBalance:
-      return "/v1/account/totalBalances"
+      return "/v1/balance/totalBalances"
     case .getCryptoFiatPair:
       return "v1/fiat/cryptos"
     case .buyCrypto:
@@ -1058,12 +1061,16 @@ extension KrytalService: TargetType {
       return "/v1/earning/earningBalances"
     case .getPendingUnstakes:
       return "/v1/earning/pendingUnstakes"
+    case .getEarningOptionDetail:
+      return "/v1/earning/optionDetail"
+    case .buildStakeTx(params: let params):
+      return "/v1/earning/buildStakeTx"
     }
   }
 
   var method: Moya.Method {
     switch self {
-    case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .claimPromotion, .sendRate, .buyCrypto:
+    case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .claimPromotion, .sendRate, .buyCrypto, .buildStakeTx:
       return .post
     default:
       return .get
@@ -1325,13 +1332,13 @@ extension KrytalService: TargetType {
         "address": address
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getTotalBalance(address: let address, forceSync: let forceSync, let chains):
+    case .getTotalBalance(address: let address, forceSync: let forceSync, let chainsIds):
       var json: JSONDictionary = [
         "address": address.joined(separator: ","),
         "forceSync": forceSync
       ]
-      if let chains = chains {
-        json["chains"] = chains
+      if let chainsIds = chainsIds {
+        json["chainIds"] = chainsIds
       }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getGasPriceV2:
@@ -1520,6 +1527,16 @@ extension KrytalService: TargetType {
         "address": address
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getEarningOptionDetail(platform: let platform, earningType: let earningType, chainID: let chainID, tokenAddress: let tokenAddress):
+      var json: JSONDictionary = [
+        "platform": platform,
+        "earningType": earningType,
+        "chainId": chainID,
+        "tokenAddress": tokenAddress
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .buildStakeTx(params: let params):
+      return .requestParameters(parameters: params, encoding: JSONEncoding.default)
     }
   }
 

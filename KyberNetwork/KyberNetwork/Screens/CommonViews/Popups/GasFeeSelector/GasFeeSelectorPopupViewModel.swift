@@ -248,7 +248,6 @@ class GasFeeSelectorPopupViewModel {
     let fee = gasPrice * currentGasLimit
     let feeString: String = NumberFormatUtils.gasFeeFormat(number: fee)
     
-    
     let quoteToken = KNGeneralProvider.shared.quoteToken
     return "~ \(feeString) \(quoteToken)"
   }

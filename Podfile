@@ -31,6 +31,7 @@ def uiPods
   pod 'TagListView', :git => 'https://github.com/Expensify/TagListView.git'
   pod 'SkeletonView'
   pod 'FittedSheets'
+  pod 'loady'
 end
 
 def cryptoHelperPods
@@ -58,7 +59,7 @@ end
 def databasePods
   pod 'KeychainSwift', '~> 13.0.0'
   pod 'SAMKeychain', '~> 1.5.3'
-  pod 'RealmSwift', '~> 3.19.0'
+  pod 'RealmSwift', '~> 10.32'
 end
 
 def utilitiesPods
@@ -78,6 +79,17 @@ def swapDependencies
   pod 'lottie-ios'
 end
 
+def earnDependencies
+  pod 'BigInt'
+  pod 'Moya'
+  pod 'JSONRPCKit'
+  pod 'APIKit'
+  pod 'lottie-ios'
+  pod 'FittedSheets'
+  pod 'TrustCore'
+  pod 'SwipeCellKit'
+end
+
 def servicesDependencies
   pod 'Moya'
   pod 'BigInt'
@@ -88,12 +100,25 @@ def servicesDependencies
 end
 
 def designSystemDependencies
+  pod 'SkeletonView'
   pod 'SwiftMessages'
   pod 'FittedSheets'
+  pod 'MBProgressHUD', '~> 1.1.0'
 end
 
 def dependenciesDependencies
   pod 'BigInt'
+end
+
+def transactionModuleDependencies
+  pod 'FittedSheets'
+  pod 'BigInt'
+  pod 'TrustWalletCore'
+  pod 'TrustCore'
+  pod 'JSONRPCKit'
+  pod 'APIKit'
+  pod 'CryptoSwift'
+  pod 'loady'
 end
 
 target 'Dependencies' do
@@ -124,12 +149,43 @@ target 'SwapModule' do
   swapDependencies
 end
 
+target 'TransactionModule' do
+  project 'TransactionModule/TransactionModule.xcodeproj'
+  use_frameworks!
+  
+  transactionModuleDependencies
+end
+
+target 'EarnModule' do
+  project 'EarnModule/EarnModule.xcodeproj'
+  use_frameworks!
+  uiPods
+  earnDependencies
+end
+
 target 'Utilities' do
   project 'Utilities/Utilities.xcodeproj'
   use_frameworks!
   
   pod 'BigInt'
   pod 'Kingfisher'
+end
+
+target 'TokenModule' do
+  project 'TokenModule/TokenModule.xcodeproj'
+  use_frameworks!
+  
+  pod 'BigInt'
+  pod 'MBProgressHUD', '~> 1.1.0'
+  pod 'Charts'
+  pod 'SkeletonView'
+end
+
+target 'BaseModule' do
+  project 'BaseModule/BaseModule.xcodeproj'
+  use_frameworks!
+  
+  pod 'FittedSheets'
 end
 
 target 'KyberNetwork' do

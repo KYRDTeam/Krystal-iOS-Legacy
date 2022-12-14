@@ -288,7 +288,7 @@ class ApproveTokenViewController: KNBaseViewController {
   @IBOutlet weak var editButton: UIButton!
   @IBOutlet weak var chainIcon: UIImageView!
   @IBOutlet weak var chainLabel: UILabel!
-  
+  var onDismiss: (() -> Void)? = nil
   var viewModel: ApproveTokenViewModel
   let transitor = TransitionDelegate()
   weak var delegate: ApproveTokenViewControllerDelegate?
@@ -346,7 +346,7 @@ class ApproveTokenViewController: KNBaseViewController {
     guard self.viewModel.getFee() < ethBalance else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
-        message: NSLocalizedString("balance.not.enough.to.make.transaction", value: "Balance is not enough to make the transaction.", comment: "")
+        message: String(format: Strings.insufficientTokenForNetworkFee, KNGeneralProvider.shared.quoteTokenObject.symbol)
       )
       return
     }
@@ -365,10 +365,12 @@ class ApproveTokenViewController: KNBaseViewController {
   }
 
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
+    onDismiss?()
     self.dismiss(animated: true, completion: nil)
   }
 
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
+    onDismiss?()
     self.dismiss(animated: true, completion: nil)
   }
   

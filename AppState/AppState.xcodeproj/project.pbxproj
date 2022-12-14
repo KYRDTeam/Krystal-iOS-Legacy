@@ -45,13 +45,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A6512F3028F6CEAA00A84BC2 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
 		A6512F3128F6CEAE00A84BC2 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -82,7 +75,6 @@
 			isa = PBXGroup;
 			children = (
 				A6512F3128F6CEAE00A84BC2 /* Helpers */,
-				A6512F3028F6CEAA00A84BC2 /* Core */,
 				A6B1FD0428F69D9D00894DCB /* AppState.swift */,
 				A6B1FD1028F69F3000894DCB /* Constants.swift */,
 				A6512F1428F6C68600A84BC2 /* AppEvent.swift */,

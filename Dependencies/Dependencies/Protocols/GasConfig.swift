@@ -7,19 +7,23 @@
 
 import Foundation
 import BigInt
+import BaseWallet
 
 public protocol GasConfig {
-    var lowGas: BigInt { get }
-    var standardGas: BigInt { get }
-    var fastGas: BigInt { get }
-    var superFastGas: BigInt { get }
-    
-    var lowPriorityFee: BigInt? { get }
-    var standardPriorityFee: BigInt? { get }
-    var fastPriorityFee: BigInt? { get }
-    var superFastPriorityFee: BigInt? { get }
-    var baseFee: BigInt? { get }
-    
     var defaultExchangeGasLimit: BigInt { get }
     var defaultTransferGasLimit: BigInt { get }
+    var defaultApproveGasLimit: BigInt { get }
+    var earnGasLimitDefault: BigInt { get }
+    
+    func getLowGasPrice(chain: ChainType) -> BigInt
+    func getStandardGasPrice(chain: ChainType) -> BigInt
+    func getFastGasPrice(chain: ChainType) -> BigInt
+    func getSuperFastGasPrice(chain: ChainType) -> BigInt
+    
+    func getLowPriorityFee(chain: ChainType) -> BigInt?
+    func getStandardPriorityFee(chain: ChainType) -> BigInt?
+    func getFastPriorityFee(chain: ChainType) -> BigInt?
+    func getSuperFastPriorityFee(chain: ChainType) -> BigInt?
+    
+    func getBaseFee(chain: ChainType) -> BigInt?
 }

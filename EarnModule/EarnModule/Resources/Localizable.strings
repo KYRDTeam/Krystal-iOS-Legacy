@@ -1,0 +1,94 @@
+/* 
+  Localizable.strings
+  EarnModule
+
+  Created by Com1 on 26/10/2022.
+  
+*/
+"no.record.found" = "No record found";
+"search.pools" = "Search pools";
+"staking" = "Staking";
+"search.token" = "Search token";
+"earn.is.currently.not.supported.on.this.chain.yet" = "Earn is currently not supported on this chain yet.";
+"no.tokens.deposited" = "No tokens deposited yet.";
+"approve.token" = "Approve %@";
+"checking" = "Checking";
+"stake.now" = "Stake Now";
+"est.apy" = "APY (Est. Yield)";
+"receive.title" = "You will receive";
+"rate" = "Rate";
+"network.fee" = "Network Fee";
+"ok" = "OK";
+"cancel" = "Cancel";
+"confirm.stake" = "Confirm Stake";
+"stake.summary" = "Stake Summary";
+"unStake.summary" = "Unstake Summary";
+"you.are.staking" = "You are staking";
+"you.are.unStaking" = "You are unstaking";
+"amount" = "Amount";
+"insufficient.balance" = "Your balance is not sufficient";
+"not.enough.min.stake.amount" = "Should be at least %@";
+"higher.than.max.stake.amount" = "Should be no more than %@";
+"should.be.interval.of" = "Value must be multiple of %@";
+"confirm.claim" = "Confirm Claim";
+"you.are.claiming" = "You are claiming";
+"confirm" = "Confirm";
+"default.error.message" = "Something went wrong, please try again later";
+"claim.in.progress" = "Claim In Progress";
+"my.portfolio" = "My Portfolio";
+"close" = "Close";
+"edit" = "Edit";
+"supplying.in.progress" = "Supplying In Progress";
+"staking.in.progress" = "Staking In Progress";
+"unstake.in.progress" = "Unstaking In Progress";
+"withdraw.in.progress" = "Withdrawing In Progress";
+"approve.in.progress" = "Approving In Progress";
+"success" = "Success";
+"tx.failed" = "Transaction failed";
+"view.my.pool" = "View my pool";
+"view.my.portfolio" = "View my portfolio";
+"unstake" = "Unstake";
+"stake" = "Stake";
+"unstake.token" = "Unstake %@";
+"confirm.unstake" = "Confirm Unstake";
+"support" = "Support";
+"it.take.about.x.days.to.unstake" = "It takes about %@ days to unstake. After that you can claim your rewards.";
+"avax.unstake.time" = "4 weeks";
+"bnb.unstake.time" = "7-14 days";
+"ftm.unstake.time" = "35 days";
+"matic.unstake.time" = "3-4 days";
+"sol.unstake.time" = "2-3 days";
+"you.will.receive.your.in" = "You will receive your %@ in %@";
+"use.amount.of.quote.token.for.fee.message" = "A small amount of %@ will be used for transaction fee";
+"your.staking.balance.is.not.suffcient" = "Your staking balance is not sufficient";
+"connect.wallet" = "Connect Wallet";
+"insufficient.quote.balance" = "Insufficient %@ balance";
+"all.networks" = "All Networks";
+
+"supply" = "Supply";
+"withdraw" = "Withdraw";
+
+"stake.x.on.y" = "Stake %@ on %@";
+"supply.x.on.y" = "Supply %@ on %@";
+
+"confirm.supply" = "Confirm Supply";
+"supply.now" = "Supply Now";
+"available.to.supply" = "Available to supply: ";
+"available.to.stake" = "Available to stake: ";
+"staking.projections" = "Staking Projections";
+"supplying.projections" = "Supplying Projections";
+"you.are.supplying" = "You are supplying";
+"approve.fail" = "Approve fail";
+"supply.summary" = "Supply Summary";
+"available.to.unstake" = "Available to unstake";
+"available.to.withdraw" = "Available to withdraw";
+"withdraw.summary" = "Withdraw Summary";
+"you.are.withdrawing" = "You are withdrawing";
+"confirm.withdraw" = "Confirm withdraw";
+"my.supply" = "My supply";
+"unstaking.in.progress" = "Unstaking in progress";
+"unwrap.token" = "Unwrap %@";
+"unstake.eth.warning.pop.up" = "Currently, unstaking is not available, as this functionality is not yet supported by Ethereum.\nUnstaking will be enabled after the Shanghai upgrade that will follow The Merge in approximately 6-12 months (~Q2/Q3 2023)";
+"all.platforms" = "All Platforms";
+"warning" = "Warning";
+"reward.apy.info.text" = "Sypply APY: %@ \nReward APY: %@";

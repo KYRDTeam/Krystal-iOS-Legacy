@@ -19,7 +19,6 @@ public class AppState {
   public private(set) var currentChain: ChainType = Storage.retrieve(Constants.StorageKeys.currentChain, as: ChainType.self) ?? Constants.defaultChain {
     didSet {
       Storage.store(self.currentChain, as: Constants.StorageKeys.currentChain)
-      
     }
   }
   
@@ -43,13 +42,13 @@ public class AppState {
     AppEventManager.shared.postSwitchChainEvent(chain: chain)
   }
   
-  public func updateAddress(address: KAddress, targetChain: ChainType) {
-    currentAddress = address
-    AppEventManager.shared.postSwitchAddressEvent(address: address)
-    if targetChain != currentChain {
-      updateChain(chain: targetChain)
+    public func updateAddress(address: KAddress, targetChain: ChainType) {
+        currentAddress = address
+        AppEventManager.shared.postSwitchAddressEvent(address: address, switchChain: targetChain != currentChain)
+        if targetChain != currentChain {
+            updateChain(chain: targetChain)
+        }
     }
-  }
   
   public var isBrowsingMode: Bool {
     return currentAddress.addressString.isEmpty

@@ -263,7 +263,9 @@ class OverviewMainViewModel {
   
   func isEmpty() -> Bool {
     switch self.currentMode {
-    case .asset, .market, .favourite:
+    case .asset:
+        return self.dataSource.value[""]?.isEmpty ?? true
+    case .market, .favourite:
       return self.displayDataSource.value[""]?.isEmpty ?? true
     case .supply, .showLiquidityPool:
       return self.displayHeader.value.isEmpty
@@ -272,25 +274,27 @@ class OverviewMainViewModel {
     }
   }
   
-  func filterSmallAssetTokens(tokens: [Token]) -> [Token] {
-    let filteredTokens = tokens.filter({ token in
-      let rateBigInt = BigInt(token.getTokenLastPrice(self.currencyMode) * pow(10.0, 18.0))
-      let valueBigInt = token.getBalanceBigInt() * rateBigInt / BigInt(10).power(token.decimals)
-      if let doubleValue = Double(valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber())) {
-        return doubleValue > 0
+  func filterSmallAssetTokens(balanceModels: [BalanceModel]) -> [BalanceModel] {
+    let filterValues = balanceModels.filter { balance in
+      var doubleValue: Double = 0
+      if let currentQuoteValue = balance.quotes[self.currencyMode.toString()] {
+        doubleValue = currentQuoteValue.value
       }
-      return true
-    })
-    return filteredTokens
+      let valueString = StringFormatter.currencyString(value: doubleValue, symbol: self.currencyMode.toString())
+      return valueString.doubleValue > 0
+    }
+    return filterValues
   }
   
   func shouldShowHideButton() -> Bool {
     if self.currentChain == .all {
       return true
     } else {
-      let assetTokens = KNSupportedTokenStorage.shared.getAssetTokens()
-      let filteredTokens = filterSmallAssetTokens(tokens: assetTokens)
-      return assetTokens.count != filteredTokens.count
+      if let assetChainBalanceModels = self.assetChainBalanceModels.first {
+        let filteredTokens = filterSmallAssetTokens(balanceModels: assetChainBalanceModels.balances)
+        return assetChainBalanceModels.balances.count != filteredTokens.count
+      }
+      return false
     }
   }
   
@@ -298,7 +302,7 @@ class OverviewMainViewModel {
     self.currencyMode = mode
     self.reloadSummaryChainData()
   }
-  
+
   func reloadSummaryChainData() {
     let summaryChainModels = BalanceStorage.shared.getSummaryChainModels()
     var total = 0.0
@@ -327,6 +331,7 @@ class OverviewMainViewModel {
   
   func reloadAssetData(mode: RightMode) {
     var displayModels: [OverviewMainCellViewModel] = []
+    var dataSourceModels: [OverviewMainCellViewModel] = []
     var total:Double = 0
     self.assetChainBalanceModels.forEach { chainBalanceModel in
       // filter lending token
@@ -341,17 +346,7 @@ class OverviewMainViewModel {
       var filterValues = chainBalanceModel.balances.filter { balance in
         return !lendingSymbols.contains(balance.token.symbol.lowercased())
       }
-      if self.isHidingSmallAssetsToken {
-        filterValues = filterValues.filter { balance in
-          var doubleValue: Double = 0
-          if let currentQuoteValue = balance.quotes[self.currencyMode.toString()] {
-            doubleValue = currentQuoteValue.value
-          }
-          let valueString = StringFormatter.currencyString(value: doubleValue, symbol: self.currencyMode.toString())
-          return valueString.doubleValue > 0
-        }
-      }
-      let displayModel = filterValues.map { balance -> OverviewMainCellViewModel in
+      var displayModel = filterValues.map { balance -> OverviewMainCellViewModel in
         let viewModel = OverviewMainCellViewModel(mode: .asset(token: balance.token, rightMode: mode), currency: self.currencyMode)
         viewModel.chainName = chainBalanceModel.chainName
         viewModel.chainId = chainBalanceModel.chainId
@@ -365,6 +360,17 @@ class OverviewMainViewModel {
           total += currentQuoteValue.value
         }
         return viewModel
+      }
+      dataSourceModels.append(contentsOf: displayModel)
+      if self.isHidingSmallAssetsToken {
+          displayModel = displayModel.filter { cellVM in
+              var doubleValue: Double = 0
+              if let currentQuoteValue = cellVM.quotes[self.currencyMode.toString()] {
+                doubleValue = currentQuoteValue.value
+              }
+              let valueString = StringFormatter.currencyString(value: doubleValue, symbol: self.currencyMode.toString())
+              return valueString.doubleValue > 0
+          }
       }
       displayModels.append(contentsOf: displayModel)
     }
@@ -391,6 +397,7 @@ class OverviewMainViewModel {
     })
     self.displayHeader.value = []
     self.displayDataSource.value = ["": displayModels]
+    self.dataSource.value = ["": dataSourceModels]
     let displayTotalString = self.currencyMode.symbol() + StringFormatter.currencyString(value: total, symbol: self.currencyMode.toString()) + self.currencyMode.suffixSymbol()
     self.displayTotalValues.value["all"] = displayTotalString
     self.displayNFTHeader.value = []

@@ -7,11 +7,12 @@
 
 import Foundation
 import KrystalWallets
+import UIKit
 
 public enum ChainType: Codable, CaseIterable {
     case all
     case eth
-    case ropsten
+    case goerli
     case bsc
     case bscTestnet
     case polygon
@@ -43,7 +44,7 @@ public enum ChainType: Codable, CaseIterable {
         case 1:
             self = .eth
         case 2:
-            self = .ropsten
+            self = .goerli
         case 3:
             self = .bsc
         case 4:
@@ -82,7 +83,7 @@ public enum ChainType: Codable, CaseIterable {
             try container.encode(0, forKey: .rawValue)
         case .eth:
             try container.encode(1, forKey: .rawValue)
-        case .ropsten:
+        case .goerli:
             try container.encode(2, forKey: .rawValue)
         case .bsc:
             try container.encode(3, forKey: .rawValue)
@@ -129,8 +130,8 @@ public extension ChainType {
         switch self {
         case .eth:
             return AllChains.ethMainnetPRC
-        case .ropsten:
-            return AllChains.ethRoptenPRC
+        case .goerli:
+            return AllChains.goerliPRC
         case .bsc, .all:
             return AllChains.bscMainnetPRC
         case .bscTestnet:
@@ -173,7 +174,19 @@ public extension ChainType {
     }
     
     func getChainId() -> Int {
-        return self.customRPC().chainID
+        switch self {
+        case .all:
+            return 0
+        default:
+            return self.customRPC().chainID
+        }
+    }
+  
+    func chainIcon() -> UIImage? {
+        if self == .all {
+          return UIImage(named: "chain_all_icon")
+        }
+        return UIImage(named: self.customRPC().chainIcon)
     }
     
     func chainName() -> String {
@@ -209,6 +222,47 @@ public extension ChainType {
             return true
         }
     }
+  
+  func quoteToken() -> String {
+    return self.customRPC().quoteToken
+  }
+    
+  func quoteTokenAddress() -> String {
+    return self.customRPC().quoteTokenAddress
+  }
+  
+  static func make(chainID: Int) -> ChainType? {
+    return ChainType.getAllChain().first { $0.getChainId() == chainID }
+  }
+  
+  static func getAllChain(includeAll: Bool = false) -> [ChainType] {
+    var allChains = ChainType.allCases
+
+//    if KNEnvironment.default == .production {
+//      allChains = allChains.filter { $0 != .ropsten && $0 != .bscTestnet && $0 != .polygonTestnet && $0 != .avalancheTestnet }
+//    }
+//
+//    let shouldShowAurora = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.auroraChainIntegration)
+//    if !shouldShowAurora && KNGeneralProvider.shared.currentChain != .aurora {
+//      allChains = allChains.filter { $0 != .aurora }
+//    }
+//
+//    let shouldShowSolana = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.solanaChainIntegration)
+//    if !shouldShowSolana && KNGeneralProvider.shared.currentChain != .solana {
+//      allChains = allChains.filter { $0 != .solana }
+//    }
+//
+//    let shouldShowKlaytn = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.klaytnChainIntegration)
+//    if !shouldShowKlaytn && KNGeneralProvider.shared.currentChain != .klaytn {
+//      allChains = allChains.filter { $0 != .klaytn }
+//    }
+//    if !includeAll {
+//      allChains = allChains.filter { $0 != .all }
+//    } else {
+//      allChains.bringToFront(item: .all)
+//    }
+    return allChains
+  }
     
     func isSupportedBridge() -> Bool {
         switch self {
@@ -218,7 +272,6 @@ public extension ChainType {
             return true
         }
     }
-    
     var isEVM: Bool {
         switch self {
         case .solana:

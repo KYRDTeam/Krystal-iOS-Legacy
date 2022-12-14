@@ -13,7 +13,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -23,6 +23,7 @@
                 <outlet property="backupIcon" destination="bPd-3b-eP0" id="qVe-ka-0QM"/>
                 <outlet property="chainButton" destination="jew-yL-7jY" id="i9b-Ye-fCW"/>
                 <outlet property="chainIcon" destination="x7O-xn-JXj" id="15h-Rl-XNN"/>
+                <outlet property="dotView" destination="fD9-G5-uBJ" id="I5A-KS-u9k"/>
                 <outlet property="emptyView" destination="GQ1-bl-VXB" id="Yt2-9w-ssn"/>
                 <outlet property="riskAmountLabel" destination="jFG-fX-Cvd" id="Uqq-OF-4fE"/>
                 <outlet property="riskInfoImageView" destination="7st-KX-LGm" id="Kbf-Oe-fXI"/>
@@ -107,6 +108,20 @@
                                 <action selector="historyTapped:" destination="-1" eventType="touchUpInside" id="Px4-pm-h7b"/>
                             </connections>
                         </button>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fD9-G5-uBJ" userLabel="Dot View">
+                            <rect key="frame" x="392" y="27.5" width="6" height="6"/>
+                            <color key="backgroundColor" name="secondaryColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="6" id="LHJ-kK-9wL"/>
+                                <constraint firstAttribute="width" constant="6" id="jdR-1V-UFm"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="3"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p9q-BS-NPw">
                             <rect key="frame" x="16" y="9" width="36" height="36"/>
                             <constraints>
@@ -150,6 +165,7 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="fD9-G5-uBJ" firstAttribute="top" secondItem="ZjC-Up-Nko" secondAttribute="top" constant="3" id="5Fn-mc-IoD"/>
                         <constraint firstItem="Rkt-zo-1Ip" firstAttribute="centerY" secondItem="3XC-bI-RHh" secondAttribute="centerY" id="6UR-5w-BKp"/>
                         <constraint firstItem="p9q-BS-NPw" firstAttribute="centerY" secondItem="qkr-Jl-VTb" secondAttribute="centerY" id="JTx-mi-lJG"/>
                         <constraint firstAttribute="trailing" secondItem="ZjC-Up-Nko" secondAttribute="trailing" constant="16" id="SnN-u0-9uO"/>
@@ -163,6 +179,7 @@
                         <constraint firstItem="jew-yL-7jY" firstAttribute="leading" secondItem="x7O-xn-JXj" secondAttribute="trailing" constant="4" id="mx2-9L-rxa"/>
                         <constraint firstItem="ZjC-Up-Nko" firstAttribute="leading" secondItem="Rkt-zo-1Ip" secondAttribute="trailing" constant="8" id="oHa-a6-LOX"/>
                         <constraint firstItem="qkr-Jl-VTb" firstAttribute="top" secondItem="3XC-bI-RHh" secondAttribute="top" constant="16" id="ojU-XL-Nq4"/>
+                        <constraint firstItem="fD9-G5-uBJ" firstAttribute="trailing" secondItem="ZjC-Up-Nko" secondAttribute="trailing" id="qTY-cN-fq9"/>
                         <constraint firstItem="p9q-BS-NPw" firstAttribute="leading" secondItem="3XC-bI-RHh" secondAttribute="leading" constant="16" id="rIw-Db-bhz"/>
                     </constraints>
                 </view>
@@ -170,29 +187,29 @@
                     <rect key="frame" x="0.0" y="125" width="414" height="36"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0$ at risk" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jFG-fX-Cvd">
-                            <rect key="frame" x="36" y="7.5" width="79" height="21.5"/>
+                            <rect key="frame" x="24" y="7.5" width="79" height="21.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
-                            <color key="textColor" red="0.95686274509803915" green="0.33333333333333331" blue="0.19607843137254902" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                             </userDefinedRuntimeAttributes>
                         </label>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="warning_red_icon" translatesAutoresizingMaskIntoConstraints="NO" id="7st-KX-LGm">
-                            <rect key="frame" x="123" y="10" width="16" height="16"/>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="info_icon_white" translatesAutoresizingMaskIntoConstraints="NO" id="7st-KX-LGm">
+                            <rect key="frame" x="111" y="10" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="6F6-Kz-HsI"/>
                                 <constraint firstAttribute="width" constant="16" id="YeH-by-eyE"/>
                             </constraints>
                         </imageView>
                     </subviews>
-                    <color key="backgroundColor" red="1" green="0.43137254901960786" blue="0.25098039215686274" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="jFG-fX-Cvd" firstAttribute="centerY" secondItem="4oj-2l-J6E" secondAttribute="centerY" id="3aQ-1F-zax"/>
                         <constraint firstItem="7st-KX-LGm" firstAttribute="leading" secondItem="jFG-fX-Cvd" secondAttribute="trailing" constant="8" id="8xh-c0-T15"/>
                         <constraint firstItem="7st-KX-LGm" firstAttribute="centerY" secondItem="jFG-fX-Cvd" secondAttribute="centerY" id="OuL-Gz-Cg2"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="7st-KX-LGm" secondAttribute="trailing" constant="16" id="Uec-iv-gEF"/>
-                        <constraint firstItem="jFG-fX-Cvd" firstAttribute="leading" secondItem="4oj-2l-J6E" secondAttribute="leading" constant="36" id="hiB-V4-cGA"/>
+                        <constraint firstItem="jFG-fX-Cvd" firstAttribute="leading" secondItem="4oj-2l-J6E" secondAttribute="leading" constant="24" id="hiB-V4-cGA"/>
                         <constraint firstAttribute="height" constant="36" id="tIt-zF-mER"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
@@ -209,7 +226,7 @@
                                 <constraint firstAttribute="height" constant="24" id="cDI-42-Ish"/>
                             </constraints>
                         </imageView>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Symbol, name, address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jdv-oA-X0o">
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Symbol, name, address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Jdv-oA-X0o">
                             <rect key="frame" x="12" y="0.0" width="318" height="42"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -278,10 +295,13 @@
         <image name="backup_warning" width="24" height="24"/>
         <image name="eth" width="32" height="32"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
+        <image name="info_icon_white" width="16" height="16"/>
         <image name="search_overview_icon" width="33" height="33"/>
-        <image name="warning_red_icon" width="13" height="14"/>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="secondaryColor">
+            <color red="0.99599999189376831" green="0.4309999942779541" blue="0.25099998712539673" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

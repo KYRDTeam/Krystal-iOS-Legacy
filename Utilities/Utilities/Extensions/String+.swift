@@ -17,12 +17,19 @@ public extension String {
         attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range: NSMakeRange(0, attributedString.length))
         return attributedString
     }
-    
+  
 }
 
 
 public extension Optional where Wrapped == String {
   
+    var isNilOrEmpty: Bool {
+        if let self = self {
+            return self.isEmpty
+        }
+        return true
+    }
+    
   func whenNilOrEmpty(_ value: String) -> String {
     if let unwrapped = self, !unwrapped.isEmpty {
       return unwrapped

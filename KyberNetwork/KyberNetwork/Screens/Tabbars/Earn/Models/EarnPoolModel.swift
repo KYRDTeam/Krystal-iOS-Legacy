@@ -11,6 +11,7 @@ class EarnPoolModel {
   let token: Token
   let chainName: String
   let chainLogo: String
+  let chainID: Int
   let apy: Double
   let tvl: Double
   let platforms: [EarnPlatform]
@@ -24,9 +25,11 @@ class EarnPoolModel {
     if let jsonData = json["chain"] as? JSONDictionary {
       self.chainName = jsonData["name"] as? String ?? ""
       self.chainLogo = jsonData["logo"] as? String ?? ""
+      self.chainID = jsonData["id"] as? Int ?? 1
     } else {
       self.chainName = ""
       self.chainLogo = ""
+      self.chainID = -1
     }
     self.apy = json["apy"] as? Double ?? 0
     self.tvl = json["tvl"] as? Double ?? 0

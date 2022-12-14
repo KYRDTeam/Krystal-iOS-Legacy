@@ -10,6 +10,7 @@ import BigInt
 import KrystalWallets
 import Utilities
 import BaseModule
+import AppState
 
 enum BridgeEvent {
   case openHistory
@@ -169,6 +170,12 @@ class BridgeViewController: InAppBrowsingViewController {
       }
     }
     self.viewModel.selectMaxBlock = {
+      if let sourceToken = self.viewModel.currentSourceToken, sourceToken.isQuoteToken {
+        self.showSuccessTopBannerMessage(
+          message: String(format: Strings.swapSmallAmountOfQuoteTokenUsedForFee, KNGeneralProvider.shared.quoteToken)
+        )
+      }
+        
       self.delegate?.bridgeViewControllerController(self, run: .selectMaxSource)
       MixPanelManager.track("bridge_enter_amount", properties: ["screenid": "bridge"])
     }
@@ -238,6 +245,11 @@ class BridgeViewController: InAppBrowsingViewController {
     self.viewModel.isApproving = true
     self.tableView.reloadData()
   }
+    
+  func coordinatorCancelApprove() {
+    self.viewModel.isApproving = false
+    self.tableView.reloadData()
+  }
 
   func coordinatorFailApprove(token: TokenObject) {
     self.showWarningTopBannerMessage(
@@ -274,7 +286,7 @@ class BridgeViewController: InAppBrowsingViewController {
         self.delegate?.bridgeViewControllerController(self, run: .addChainWallet(chainType: selected))
         return
       } else {
-        self.onChainSelected(chain: selected)
+        AppState.shared.updateChain(chain: selected)
       }
     }
     self.present(popup, animated: true, completion: nil)

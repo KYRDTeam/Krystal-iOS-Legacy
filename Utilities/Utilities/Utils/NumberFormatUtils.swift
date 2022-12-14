@@ -43,6 +43,10 @@ public class NumberFormatUtils {
         }
     }
     
+    public static func gwei(value: BigInt) -> String {
+        return format(value: value, decimals: 9, maxDecimalMeaningDigits: nil, maxDecimalDigits: 2)
+    }
+    
     public static func amount(value: BigInt, decimals: Int) -> String {
         return format(value: value, decimals: decimals, maxDecimalMeaningDigits: 6, maxDecimalDigits: 6)
     }

@@ -512,7 +512,6 @@ class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler
     super.viewWillAppear(animated)
     self.isViewSetup = true
     self.isViewDisappeared = false
-    self.updateUIPendingTxIndicatorView()
     self.updateGasFeeUI()
     self.earnButton.setTitle(viewModel.titleForContinueButton, for: .normal)
     if KNGeneralProvider.shared.isBrowsingMode {
@@ -619,16 +618,6 @@ class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler
       self.compInfoMessageContainerView.isHidden = true
       self.sendButtonTopContraint.constant = 30
     }
-  }
-  
-  fileprivate func updateUIPendingTxIndicatorView() {
-    guard self.isViewLoaded else {
-      return
-    }
-    let pendingTransaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().first { transaction in
-      transaction.state == .pending
-    }
-    self.pendingTxIndicatorView.isHidden = pendingTransaction == nil
   }
 
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
@@ -759,7 +748,6 @@ class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler
   func coordinatorAppSwitchAddress() {
     self.viewModel.resetBalances()
     self.updateUIBalanceDidChange()
-    self.updateUIPendingTxIndicatorView()
   }
 
   fileprivate func updateAmountFieldUIForTransferAllETHIfNeeded() {
@@ -872,7 +860,6 @@ class EarnViewController: InAppBrowsingViewController, AbstractEarnViewControler
   }
   
   func coordinatorDidUpdatePendingTx() {
-    self.updateUIPendingTxIndicatorView()
     self.checkUpdateApproveButton()
     self.updateUIBalanceDidChange()
   }

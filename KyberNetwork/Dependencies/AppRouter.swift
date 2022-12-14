@@ -6,15 +6,18 @@
 //
 
 import Foundation
+import EarnModule
 import Dependencies
 import UIKit
 import KrystalWallets
 import AppState
+import TokenModule
 
 class AppRouter: AppRouterProtocol, Coordinator {
   
   var coordinators: [Coordinator] = []
   var historyCoordinator: Coordinator?
+    
   func start() {
     fatalError("Do not use this function")
   }
@@ -26,8 +29,9 @@ class AppRouter: AppRouterProtocol, Coordinator {
     coordinate(coordinator: coordinator)
   }
   
-  func openWalletList(currentChain: ChainType, allowAllChainOption: Bool,
-                      onSelectWallet: @escaping (KWallet) -> (),
+  func openWalletList(currentChain: ChainType,
+                      allowAllChainOption: Bool,
+                      onSelectWallet: @escaping (KWallet) -> Void,
                       onSelectWatchAddress: @escaping (KAddress) -> Void) {
     let walletsList = WalletListV2ViewController()
     walletsList.allowAllChainOption = allowAllChainOption
@@ -64,10 +68,6 @@ class AppRouter: AppRouterProtocol, Coordinator {
     UIApplication.shared.topMostViewController()?.present(popup, animated: true, completion: nil)
   }
   
-//  func createSwapViewController() -> UIViewController {
-//    return SwapModule.createSwapViewController()
-//  }
-  
   func openTransactionHistory() {
     guard let navigation = UIApplication.shared.topMostViewController() as? UINavigationController else { return }
     switch KNGeneralProvider.shared.currentChain {
@@ -83,6 +83,57 @@ class AppRouter: AppRouterProtocol, Coordinator {
       coordinate(coordinator: coordinator)
     }
   }
+  
+  func openExternalURL(url: String) {
+    UIApplication.shared.topMostViewController()?.openSafari(with: url)
+  }
+  
+  func openSupportURL() {
+    UIApplication.shared.topMostViewController()?.openSafari(with: Constants.supportURL)
+  }
+  
+  func openTxHash(txHash: String, chainID: Int) {
+    guard let chain = ChainType.make(chainID: chainID) else { return }
+    guard let url = URL(string: chain.customRPC().etherScanEndpoint + "tx/" + txHash) else { return }
+    UIApplication.shared.topMostViewController()?.openSafari(with: url)
+  }
+  
+  func openToken(navigationController: UINavigationController, address: String, chainID: Int) {
+    guard let chain = ChainType.make(chainID: chainID) else { return }
+    let currencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .quote
+    guard let vc = TokenModule.createTokenDetailViewController(address: address, chain: chain, currencyMode: currencyMode) else { return }
+    vc.hidesBottomBarWhenPushed = false
+    navigationController.pushViewController(vc, animated: true, completion: nil)
+  }
+  
+  func openTokenTransfer(navigationController: UINavigationController, token: Token) {
+      let tokenObject = KNSupportedTokenStorage.shared.supportedToken.first { $0.address == token.address }?.toObject() ?? token.toObject()
+    let coordinator = KNSendTokenViewCoordinator(
+      navigationController: navigationController,
+      balances: [:],
+      from: tokenObject
+    )
+    coordinator.delegate = self
+    coordinate(coordinator: coordinator)
+  }
+  
+  func openSwap(token: Token) {
+      AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: false)
+      AppDelegate.shared.coordinator.tabbarController.selectedIndex = 1
+  }
+    
+    func openEarn() {
+        AppDelegate.shared.coordinator.tabbarController.selectedIndex = 3
+        AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
+        AppDelegate.shared.coordinator.earnCoordinator?.openEarningOptions()
+    }
+    
+    func openEarnPortfolio() {
+        AppDelegate.shared.coordinator.tabbarController.selectedIndex = 3
+        AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
+        AppDelegate.shared.coordinator.earnCoordinator?.openPortfolio()
+    }
+  
 }
 
 extension AppRouter: KNHistoryCoordinatorDelegate {
@@ -90,10 +141,35 @@ extension AppRouter: KNHistoryCoordinatorDelegate {
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
     // No need to handle
   }
-
+  
   func historyCoordinatorDidClose() {
     removeCoordinator(historyCoordinator!)
     historyCoordinator = nil
   }
   
+}
+
+extension AppRouter: KNSendTokenViewCoordinatorDelegate {
+  
+  func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
+    
+  }
+  
+  func sendTokenCoordinatorDidClose(coordinator: KNSendTokenViewCoordinator) {
+      removeCoordinator(coordinator)
+  }
+  
+}
+
+extension AppRouter {
+    
+    func getTopMostNavigation() -> UINavigationController? {
+        let topViewController = UIApplication.shared.topMostViewController()
+        if let nav = topViewController as? UINavigationController {
+            return nav
+        } else {
+            return topViewController?.navigationController
+        }
+    }
+    
 }

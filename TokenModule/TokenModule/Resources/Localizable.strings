@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  TokenModule
+
+  Created by Com1 on 02/12/2022.
+  
+*/
+"find.a.token.by.name.symbol.or.address" = "Find a token by name, symbol or address";
+"show.more" = "Show more";
+"show.less"= "Show less";

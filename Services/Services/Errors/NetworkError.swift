@@ -7,11 +7,11 @@
 
 import Foundation
 
-enum NetworkError: Error {
+public enum NetworkError: LocalizedError {
     case backendError(reponse: ErrorResponse)
     case unknow(description: String)
     
-    func localizedDescription() -> String {
+    public var errorDescription: String? {
         switch self {
         case .backendError(let reponse):
             return reponse.error
@@ -25,7 +25,7 @@ enum NetworkError: Error {
     }
 }
 
-struct ErrorResponse: Codable {
+public struct ErrorResponse: Codable {
     let timestamp: Int
-    let error: String
+    let error: String?
 }

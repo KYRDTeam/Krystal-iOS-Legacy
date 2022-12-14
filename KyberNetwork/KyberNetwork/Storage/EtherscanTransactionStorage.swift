@@ -7,10 +7,15 @@
 
 import Foundation
 import KrystalWallets
+import AppState
+import TransactionModule
 
 class EtherscanTransactionStorage {
   static let shared = EtherscanTransactionStorage()
-  private var address: KAddress?
+//  private var address: KAddress?
+  var address: KAddress {
+    return AppState.shared.currentAddress
+  }
   private var tokenTransactions: [EtherscanTokenTransaction] = []
   private var internalTransaction: [EtherscanInternalTransaction] = []
   private var nftTransaction: [NFTTransaction] = []
@@ -19,8 +24,7 @@ class EtherscanTransactionStorage {
   private var internalHistoryTransactions: [InternalHistoryTransaction] = []
   private var krystalHistoryTransaction: [KrystalHistoryTransaction] = []
 
-  func updateCurrentWallet(_ address: KAddress) {
-    self.address = address
+  func updateCurrentHistoryCache() {
     self.tokenTransactions = Storage.retrieve(address.addressString + KNEnvironment.default.envPrefix + Constants.etherscanTokenTransactionsStoreFileName, as: [EtherscanTokenTransaction].self) ?? []
     self.internalTransaction = Storage.retrieve(address.addressString + KNEnvironment.default.envPrefix + Constants.etherscanInternalTransactionsStoreFileName, as: [EtherscanInternalTransaction].self) ?? []
     self.nftTransaction = Storage.retrieve(address.addressString + KNEnvironment.default.envPrefix + Constants.etherscanNFTTransactionsStoreFileName, as: [NFTTransaction].self) ?? []
@@ -36,42 +40,27 @@ class EtherscanTransactionStorage {
   }
   
   func isSavedKrystalHistory() -> Bool {
-    guard let address = self.address else {
-      return false
-    }
     return Storage.isFileExistAtPath(address.addressString + KNEnvironment.default.envPrefix + Constants.historyKrystalTransactionsStoreFileName)
   }
   
   func setTokenTransactions(_ transactions: [EtherscanTokenTransaction]) {
-    guard let unwrapped = self.address else {
-      return
-    }
     self.tokenTransactions = transactions
-    Storage.store(transactions, as: unwrapped.addressString + KNEnvironment.default.envPrefix + Constants.etherscanTokenTransactionsStoreFileName)
+    Storage.store(transactions, as: address.addressString + KNEnvironment.default.envPrefix + Constants.etherscanTokenTransactionsStoreFileName)
   }
 
   func setInternalTransactions(_ transactions: [EtherscanInternalTransaction]) {
-    guard let unwrapped = self.address else {
-      return
-    }
     self.internalTransaction = transactions
-    Storage.store(transactions, as: unwrapped.addressString + KNEnvironment.default.envPrefix + Constants.etherscanInternalTransactionsStoreFileName)
+    Storage.store(transactions, as: address.addressString + KNEnvironment.default.envPrefix + Constants.etherscanInternalTransactionsStoreFileName)
   }
   
   func setNFTTransaction(_ transactions: [NFTTransaction]) {
-    guard let unwrapped = self.address else {
-      return
-    }
     self.nftTransaction = transactions
-    Storage.store(transactions, as: unwrapped.addressString + KNEnvironment.default.envPrefix + Constants.etherscanNFTTransactionsStoreFileName)
+    Storage.store(transactions, as: address.addressString + KNEnvironment.default.envPrefix + Constants.etherscanNFTTransactionsStoreFileName)
   }
 
   func setTransactions(_ transactions: [EtherscanTransaction]) {
-    guard let unwrapped = self.address else {
-      return
-    }
     self.transactions = transactions
-    Storage.store(transactions, as: unwrapped.addressString + KNEnvironment.default.envPrefix + Constants.etherscanTransactionsStoreFileName)
+    Storage.store(transactions, as: address.addressString + KNEnvironment.default.envPrefix + Constants.etherscanTransactionsStoreFileName)
   }
 
   func getTokenTransaction() -> [EtherscanTokenTransaction] {
@@ -95,19 +84,13 @@ class EtherscanTransactionStorage {
   }
 
   func setKrystalTransaction(_ txs: [KrystalHistoryTransaction], isSave: Bool = true) {
-    guard let unwrapped = self.address else {
-      return
-    }
     self.krystalHistoryTransaction = txs
     if isSave {
-      Storage.store(self.krystalHistoryTransaction, as: unwrapped.addressString + KNEnvironment.default.envPrefix + Constants.historyKrystalTransactionsStoreFileName)
+      Storage.store(self.krystalHistoryTransaction, as: address.addressString + KNEnvironment.default.envPrefix + Constants.historyKrystalTransactionsStoreFileName)
     }
   }
 
   func appendKrystalTransaction(_ txs: [KrystalHistoryTransaction]) -> Bool {
-    guard let unwrapped = self.address else {
-      return false
-    }
     var newTx: [KrystalHistoryTransaction] = []
     txs.forEach { item in
       if !self.krystalHistoryTransaction.contains(item) {
@@ -119,15 +102,12 @@ class EtherscanTransactionStorage {
     }
     self.krystalHistoryTransaction = newTx + self.krystalHistoryTransaction
     if self.isSavedKrystalHistory() { //Has data of first block
-      Storage.store(self.krystalHistoryTransaction, as: unwrapped.addressString + KNEnvironment.default.envPrefix + Constants.historyKrystalTransactionsStoreFileName)
+      Storage.store(self.krystalHistoryTransaction, as: address.addressString + KNEnvironment.default.envPrefix + Constants.historyKrystalTransactionsStoreFileName)
     }
     return true
   }
 
   func appendTokenTransactions(_ transactions: [EtherscanTokenTransaction]) {
-    guard let unwrapped = self.address else {
-      return
-    }
     var newTx: [EtherscanTokenTransaction] = []
     transactions.forEach { (item) in
       if !self.tokenTransactions.contains(item) {
@@ -140,7 +120,7 @@ class EtherscanTransactionStorage {
     }
     
     let result = newTx + self.tokenTransactions
-    Storage.store(result, as: unwrapped.addressString + KNEnvironment.default.envPrefix + Constants.etherscanTokenTransactionsStoreFileName)
+    Storage.store(result, as: address.addressString + KNEnvironment.default.envPrefix + Constants.etherscanTokenTransactionsStoreFileName)
     self.tokenTransactions = result
   }
 
@@ -153,15 +133,14 @@ class EtherscanTransactionStorage {
         object: transaction,
         userInfo: nil
       )
-      
+        if let tx = transaction {
+            TransactionManager.onTransactionStatusUpdated(hash: hash, status: tx.state)
+        }
       self.removeInternalHistoryTransactionWithHash(hash.lowercased())
     }
   }
 
   func appendInternalTransactions(_ transactions: [EtherscanInternalTransaction]) {
-    guard let unwrapped = self.address else {
-      return
-    }
     var newTx: [EtherscanInternalTransaction] = []
     transactions.forEach { (item) in
       if !self.internalTransaction.contains(item) {
@@ -173,14 +152,11 @@ class EtherscanTransactionStorage {
       return
     }
     let result = newTx + self.internalTransaction
-    Storage.store(result, as: unwrapped.addressString + KNEnvironment.default.envPrefix + Constants.etherscanInternalTransactionsStoreFileName)
+    Storage.store(result, as: address.addressString + KNEnvironment.default.envPrefix + Constants.etherscanInternalTransactionsStoreFileName)
     self.internalTransaction = result
   }
   
   func appendNFTTransactions(_ transactions: [NFTTransaction]) {
-    guard let unwrapped = self.address else {
-      return
-    }
     var newTx: [NFTTransaction] = []
     transactions.forEach { (item) in
       if !self.nftTransaction.contains(item) {
@@ -192,14 +168,11 @@ class EtherscanTransactionStorage {
       return
     }
     let result = newTx + self.nftTransaction
-    Storage.store(result, as: unwrapped.addressString + KNEnvironment.default.envPrefix + Constants.etherscanNFTTransactionsStoreFileName)
+    Storage.store(result, as: address.addressString + KNEnvironment.default.envPrefix + Constants.etherscanNFTTransactionsStoreFileName)
     self.nftTransaction = result
   }
 
   func appendTransactions(_ transactions: [EtherscanTransaction]) {
-    guard let unwrapped = self.address else {
-      return
-    }
     var newTx: [EtherscanTransaction] = []
     transactions.forEach { (item) in
       if !self.transactions.contains(item) {
@@ -211,7 +184,7 @@ class EtherscanTransactionStorage {
       return
     }
     let result = newTx + self.transactions
-    Storage.store(result, as: unwrapped.addressString + KNEnvironment.default.envPrefix + Constants.etherscanTransactionsStoreFileName)
+    Storage.store(result, as: address.addressString + KNEnvironment.default.envPrefix + Constants.etherscanTransactionsStoreFileName)
     self.transactions = result
   }
 
@@ -264,10 +237,6 @@ class EtherscanTransactionStorage {
   }
 
   func generateKrytalTransactionModel(completion: @escaping () -> Void) {
-    guard let unwrapped = self.address else {
-      return
-    }
-    
     let storedHashs = self.historyTransactionModel.map { $0.hash }
     
     var historyModel: [HistoryTransaction] = []
@@ -278,10 +247,10 @@ class EtherscanTransactionStorage {
       let relatedNFTTx = self.getNFTTransactionsWithHash(transaction.hash)
       if type == .transferETH && transaction.from == transaction.to {
         type = .selfTransfer
-      } else if transaction.from.lowercased() != unwrapped.addressString && transaction.to.lowercased() == unwrapped.addressString {
+      } else if transaction.from.lowercased() != address.addressString && transaction.to.lowercased() == address.addressString {
         type = .receiveETH
       }
-      let model = HistoryTransaction(type: type, timestamp: transaction.timeStamp, transacton: [transaction], internalTransactions: relatedInternalTx, tokenTransactions: relatedTokenTx, nftTransaction: relatedNFTTx, wallet: unwrapped.addressString)
+      let model = HistoryTransaction(type: type, timestamp: transaction.timeStamp, transacton: [transaction], internalTransactions: relatedInternalTx, tokenTransactions: relatedTokenTx, nftTransaction: relatedNFTTx, wallet: address.addressString)
       historyModel.append(model)
     }
     let etherscanTxHash = self.getTransaction().map { $0.hash }
@@ -291,7 +260,7 @@ class EtherscanTransactionStorage {
     internalTx.forEach { (transaction) in
       let relatedTx = self.getTransactionWithHash(transaction.hash)
       let relatedTokenTx = self.getTokenTransactionWithHash(transaction.hash)
-      let model = HistoryTransaction(type: .receiveETH, timestamp: transaction.timeStamp, transacton: relatedTx, internalTransactions: [transaction], tokenTransactions: relatedTokenTx, nftTransaction: [], wallet: unwrapped.addressString)
+      let model = HistoryTransaction(type: .receiveETH, timestamp: transaction.timeStamp, transacton: relatedTx, internalTransactions: [transaction], tokenTransactions: relatedTokenTx, nftTransaction: [], wallet: address.addressString)
       historyModel.append(model)
     }
     let tokenTx = self.getTokenTransaction().filter { (transaction) -> Bool in
@@ -300,8 +269,8 @@ class EtherscanTransactionStorage {
     tokenTx.forEach { (transaction) in
       let relatedTx = self.getTransactionWithHash(transaction.hash)
       let relatedInternalTx = self.getInternalTransactionsWithHash(transaction.hash)
-      let type: HistoryModelType = transaction.from.lowercased() == unwrapped.addressString ? .transferToken : .receiveToken
-      let model = HistoryTransaction(type: type, timestamp: transaction.timeStamp, transacton: relatedTx, internalTransactions: relatedInternalTx, tokenTransactions: [transaction], nftTransaction: [], wallet: unwrapped.addressString)
+      let type: HistoryModelType = transaction.from.lowercased() == address.addressString ? .transferToken : .receiveToken
+      let model = HistoryTransaction(type: type, timestamp: transaction.timeStamp, transacton: relatedTx, internalTransactions: relatedInternalTx, tokenTransactions: [transaction], nftTransaction: [], wallet: address.addressString)
       historyModel.append(model)
     }
     
@@ -310,8 +279,8 @@ class EtherscanTransactionStorage {
     }
     nftTx.forEach { (transaction) in
       let relatedTx = self.getTransactionWithHash(transaction.hash)
-      let type: HistoryModelType = transaction.from.lowercased() == unwrapped.addressString ? .transferNFT : .receiveNFT
-      let model = HistoryTransaction(type: type, timestamp: transaction.timeStamp, transacton: relatedTx, internalTransactions: [], tokenTransactions: [], nftTransaction: [transaction], wallet: unwrapped.addressString)
+      let type: HistoryModelType = transaction.from.lowercased() == address.addressString ? .transferNFT : .receiveNFT
+      let model = HistoryTransaction(type: type, timestamp: transaction.timeStamp, transacton: relatedTx, internalTransactions: [], tokenTransactions: [], nftTransaction: [transaction], wallet: address.addressString)
       historyModel.append(model)
     }
     
@@ -328,7 +297,7 @@ class EtherscanTransactionStorage {
     }
     
     self.historyTransactionModel = historyModel
-    Storage.store(self.historyTransactionModel, as: unwrapped.addressString + KNEnvironment.default.envPrefix + Constants.historyTransactionsStoreFileName)
+    Storage.store(self.historyTransactionModel, as: address.addressString + KNEnvironment.default.envPrefix + Constants.historyTransactionsStoreFileName)
     completion()
     DispatchQueue.main.async {
       KNNotificationUtil.postNotification(for: kTokenTransactionListDidUpdateNotificationKey)
@@ -345,13 +314,13 @@ class EtherscanTransactionStorage {
   func getHistoryTransactionModel() -> [HistoryTransaction] {
     return self.historyTransactionModel
   }
-
-  func getInternalHistoryTransaction() -> [InternalHistoryTransaction] {
-    return self.internalHistoryTransactions.filter { transaction in
-      transaction.state == .pending
+    
+    func getInternalHistoryTransaction(chain: ChainType = AppState.shared.currentChain) -> [InternalHistoryTransaction] {
+        return self.internalHistoryTransactions.filter { transaction in
+            transaction.state == .pending && chain == transaction.chain
+        }
     }
-  }
-  
+    
   func getHandledInternalHistoryTransactionForUnsupportedApi() -> [InternalHistoryTransaction] {
     return self.internalHistoryTransactions.filter { transaction in
       transaction.state != .pending
@@ -359,17 +328,15 @@ class EtherscanTransactionStorage {
   }
 
   func appendInternalHistoryTransaction(_ tx: InternalHistoryTransaction) {
-    guard let unwrapped = self.address else {
-      return
-    }
     self.internalHistoryTransactions.append(tx)
     KNNotificationUtil.postNotification(
       for: kTransactionDidUpdateNotificationKey,
       object: tx,
       userInfo: nil
     )
+      TransactionManager.onTransactionStatusUpdated(hash: tx.txHash, status: tx.state)
     if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
-      Storage.store(self.internalHistoryTransactions, as: unwrapped.addressString + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
+      Storage.store(self.internalHistoryTransactions, as: address.addressString + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
     }
   }
 
@@ -388,9 +355,6 @@ class EtherscanTransactionStorage {
 
   @discardableResult
   func removeInternalHistoryTransactionWithHash(_ hash: String) -> Bool {
-    guard let unwrapped = self.address else {
-      return false
-    }
     guard let index = self.internalHistoryTransactions.firstIndex(where: { (item) -> Bool in
       return item.hash.lowercased() == hash.lowercased()
     }) else {
@@ -399,21 +363,18 @@ class EtherscanTransactionStorage {
     self.internalHistoryTransactions.remove(at: index)
     
     if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
-      Storage.store(self.internalHistoryTransactions, as: unwrapped.addressString + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
+      Storage.store(self.internalHistoryTransactions, as: address.addressString + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
     }
     return true
   }
   
   func updateInternalHistoryTransactionForUnsupportedChain(_ transaction: InternalHistoryTransaction) {
-    guard let unwrapped = self.address else {
-      return
-    }
     self.internalHistoryTransactions.forEach { internalTransaction in
       if internalTransaction.hash == transaction.hash {
         internalTransaction.state = transaction.state
       }
     }
-    Storage.store(self.internalHistoryTransactions, as: unwrapped.addressString + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
+    Storage.store(self.internalHistoryTransactions, as: address.addressString + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
   }
   
   func getInternalHistoryTokenSymbols() -> [String] {

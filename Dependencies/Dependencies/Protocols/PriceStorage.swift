@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import BigInt
 import BaseWallet
 
 public protocol PriceStorage {
-    func price(tokenAddress: String, chain: ChainType) -> TokenPrice?
+    func getQuoteUsdRate(chain: ChainType) -> Double?
+    func getUsdPrice(address: String) -> Double?
 }

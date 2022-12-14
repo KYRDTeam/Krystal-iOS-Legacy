@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>question</key>
+		<string>What is liquid staking?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Liquid staking protocols allow users to earn staking rewards even without locking up their assets. Users can deposit tokens and receive tradable liquid tokens in return. The DAO-controlled smart contract stakes these tokens using elected staking providers. As users&amp;apos; funds are controlled by the DAO, staking providers never have direct access to the users&amp;apos; assets.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>What is the difference between self-staking and liquid staking?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Ethereum is soon to be the biggest staking economy in space. However, staking Ethereum requires expert knowledge and complex and costly infrastructure. There are several reasons why - the main being the fact that slashing and offline penalties can get very severe if the staking is managed improperly. In addition to this, self-staking requires a minimum deposit of 32 ETH and your tokens will be locked up.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Through the use of a liquid self-staking service such as Lido, users can eliminate these inconveniences and benefit from secure, non-custodial staking backed by industry leaders.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>What is Lido?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Lido is a liquid staking solution for ETH 2.0 backed by industry-leading staking providers. Lido lets users stake their ETH - without locking assets or maintaining infrastructure - whilst participating in on-chain activities, e.g. lending. &lt;br&gt;&lt;br&gt;Lido&amp;apos;s goal is to solve the problems associated with initial ETH 2.0 staking - illiquidity, immovability and accessibility - making staked ETH liquid and allowing for participation with any amount of ETH to improve the security of the Ethereum network. &lt;br&gt;&lt;br&gt;As part of their continuing efforts to be a force for decentralization, Lido has published a &lt;a href=&quot;https://lido.fi/scorecard&quot;&gt;scorecard&lt;/a&gt; for community input and accountability.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Learn more &lt;a href=&quot;https://blog.lido.fi/introducing-lido/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>How does Lido work?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;When staking with Lido, users receive stETH tokens on a 1:1 basis representing their staked ETH. stETH balances can be used like regular ETH to earn yields and lending rewards, and are updated on a daily basis to reflect your ETH staking rewards. Note that there are no lock-ups or minimum deposits when staking with Lido. &lt;br&gt;&lt;br&gt;When using Lido, users receive secure staking rewards in real-time, allowing for participation in the securing of Ethereum without the associated risks and downside potential. &lt;br&gt;&lt;br&gt;Learn more &lt;a href=&quot;https://blog.lido.fi/how-lido-works/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>What is stETH?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;stETH is a token that represents staked ether in Lido, combining the value of the initial deposit + staking rewards. stETH tokens are minted upon deposit and burned when redeemed. stETH token balances are issued 1:1 to the ethers that are staked by Lido. stETH token&amp;rsquo;s balances are updated when the oracle reports a change in the total stake every day.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;stETH tokens can be used as one would use ether, allowing you to earn ETH 2.0 staking rewards whilst benefiting from e.g. yields across decentralised finance products.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>How stETH can be converted to ETH?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;While there&amp;apos;s no way to withdraw ETH from staking until withdrawals are enabled on the Beacon chain, stETH holders may exchange their stETH to ETH on liquidity pools such as Curve or Balancer.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>How is Lido secure?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Lido is a secure liquid staking solution for a number of reasons:&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol&gt;
+    &lt;li&gt;
+        &lt;p&gt;Open-sourcing &amp;amp; continuous review of all code.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;p&gt;Committee of elected, best-in-class validators to minimise staking risk.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;p&gt;Use of non-custodial staking service to eliminate counterparty risk.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;p&gt;Use of DAO for governance decisions &amp;amp; to manage risk factors.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;p&gt;Usually, when staking ETH you choose only one validator. In the case of Lido you stake across many validators, minimising your staking risk.&lt;/p&gt;
+    &lt;/li&gt;
+&lt;/ol&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>What are the risks of staking with Lido?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;There are a number of potential risks when staking ETH using liquid staking protocols.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol&gt;
+    &lt;li&gt;
+        &lt;p&gt;Smart contract security&lt;/p&gt;
+    &lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;There is an inherent risk that Lido could contain a smart contract vulnerability or bug. The Lido code is open-sourced, audited and covered by an extensive bug bounty program to minimise this risk.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol start=&quot;2&quot;&gt;
+    &lt;li&gt;
+        &lt;p&gt;ETH 2.0 - Technical risk&lt;/p&gt;
+    &lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Lido is built atop experimental technology under active development, and there is no guarantee that ETH 2.0 has been developed error-free. Any vulnerabilities inherent to ETH 2.0 brings with it slashing risk, as well as stETH fluctuation risk.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol start=&quot;3&quot;&gt;
+    &lt;li&gt;
+        &lt;p&gt;ETH 2.0 - Adoption risk&lt;/p&gt;
+    &lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;The value of stETH is built around the staking rewards associated with the Ethereum beacon chain. If ETH 2.0 fails to reach the required levels of adoption we could experience significant fluctuations in the value of ETH and stETH.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol start=&quot;4&quot;&gt;
+    &lt;li&gt;
+        &lt;p&gt;DAO key management risk&lt;/p&gt;
+    &lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;On the early stages of Lido, slightly more than 600k ETH became held across multiple accounts backed by a multi-signature threshold scheme to minimize custody risk. If signatories across a certain threshold lose their key shares, get hacked or go rogue, we risk these funds (&amp;lt;20% of total stake as of April 2022) becoming locked.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol start=&quot;5&quot;&gt;
+    &lt;li&gt;
+        &lt;p&gt;Slashing risk&lt;/p&gt;
+    &lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;ETH 2.0 validators risk staking penalties, with up to 100% of staked funds at risk if validators fail. To minimise this risk, Lido stakes across multiple professional and reputable node operators with heterogeneous setups, with additional mitigation in the form of coverage that is paid from Lido fees.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol start=&quot;6&quot;&gt;
+    &lt;li&gt;
+        &lt;p&gt;stETH price risk&lt;/p&gt;
+    &lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Users risk an exchange price of stETH which is lower than inherent value due to withdrawal restrictions on Lido, making arbitrage and risk-free market-making impossible. The Lido DAO is driven to mitigate the above risks and eliminate them entirely to the extent possible. Despite this, they may still exist and, as such, it is our duty to communicate them.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>What fee is applied by Lido? What is this used for?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Lido applies a 10% fee on a user&amp;rsquo;s staking rewards. This fee is split between node operators, the DAO, and a coverage fund.&lt;/p&gt;</string>
+	</dict>
+</array>
+</plist>

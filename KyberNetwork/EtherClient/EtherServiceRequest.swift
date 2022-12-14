@@ -3,15 +3,17 @@
 import Foundation
 import APIKit
 import JSONRPCKit
+import BaseWallet
 
 struct EtherServiceRequest<Batch: JSONRPCKit.Batch>: APIKit.Request {
     let batch: Batch
+    let chain: ChainType
 
     typealias Response = Batch.Responses
 
     var baseURL: URL {
       // Change to KyberNetwork endpoint
-      if let path = URL(string: KNGeneralProvider.shared.customRPC.endpoint + KNEnvironment.default.nodeEndpoint) {
+        if let path = URL(string: chain.customRPC().endpoint + KNEnvironment.default.nodeEndpoint) {
         return path
       }
       let config = Config()
@@ -29,6 +31,11 @@ struct EtherServiceRequest<Batch: JSONRPCKit.Batch>: APIKit.Request {
     var parameters: Any? {
         return batch.requestObject
     }
+    
+    init(batch: Batch, chain: ChainType = KNGeneralProvider.shared.currentChain) {
+        self.batch = batch
+        self.chain = chain
+    }
 
     func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Response {
         return try batch.responses(from: object)
@@ -37,12 +44,13 @@ struct EtherServiceRequest<Batch: JSONRPCKit.Batch>: APIKit.Request {
 
 struct EtherServiceKyberRequest<Batch: JSONRPCKit.Batch>: APIKit.Request {
   let batch: Batch
+    let chain: ChainType
 
   typealias Response = Batch.Responses
 
   var baseURL: URL {
     // Change to KyberNetwork endpoint
-    if let path = URL(string: KNGeneralProvider.shared.customRPC.endpointKyber + KNEnvironment.default.nodeEndpoint) {
+    if let path = URL(string: chain.customRPC().endpointKyber + KNEnvironment.default.nodeEndpoint) {
       return path
     }
     let config = Config()
@@ -60,6 +68,11 @@ struct EtherServiceKyberRequest<Batch: JSONRPCKit.Batch>: APIKit.Request {
   var parameters: Any? {
     return batch.requestObject
   }
+    
+    init(batch: Batch, chain: ChainType = KNGeneralProvider.shared.currentChain) {
+        self.batch = batch
+        self.chain = chain
+    }
 
   func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Response {
     return try batch.responses(from: object)
@@ -68,12 +81,13 @@ struct EtherServiceKyberRequest<Batch: JSONRPCKit.Batch>: APIKit.Request {
 
 struct EtherServiceAlchemyRequest<Batch: JSONRPCKit.Batch>: APIKit.Request {
   let batch: Batch
-
+    let chain: ChainType
+    
   typealias Response = Batch.Responses
 
   var baseURL: URL {
     // Change to KyberNetwork endpoint
-    if let path = URL(string: KNGeneralProvider.shared.customRPC.endpointAlchemy + KNEnvironment.default.nodeEndpoint) {
+      if let path = URL(string: chain.customRPC().endpointAlchemy + KNEnvironment.default.nodeEndpoint) {
       return path
     }
     let config = Config()
@@ -91,6 +105,11 @@ struct EtherServiceAlchemyRequest<Batch: JSONRPCKit.Batch>: APIKit.Request {
   var parameters: Any? {
     return batch.requestObject
   }
+    
+    init(batch: Batch, chain: ChainType = KNGeneralProvider.shared.currentChain) {
+        self.batch = batch
+        self.chain = chain
+    }
 
   func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Response {
     return try batch.responses(from: object)

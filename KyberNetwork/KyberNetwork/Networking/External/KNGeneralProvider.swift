@@ -785,13 +785,13 @@ class KNGeneralProvider {
     }
   }
 
-  func sendSignedTransactionData(_ data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
+    func sendSignedTransactionData(_ data: Data, chain: ChainType = AppState.shared.currentChain, completion: @escaping (Result<String, AnyError>) -> Void) {
     var error: Error?
     var transactionID: String?
     var hasCompletionCalled: Bool = false
     let group = DispatchGroup()
     group.enter()
-    self.sendRawTransactionWithInfura(data) { [weak self] result in
+    self.sendRawTransactionWithInfura(data, chain: chain) { [weak self] result in
       guard let _ = self else { return }
       switch result {
       case .success(let ID):
@@ -807,7 +807,7 @@ class KNGeneralProvider {
       group.leave()
     }
     group.enter()
-    self.sendRawTransactionWithAlchemy(data) { [weak self] result in
+        self.sendRawTransactionWithAlchemy(data, chain: chain) { [weak self] result in
       guard let _ = self else { return }
       switch result {
       case .success(let ID):
@@ -822,7 +822,7 @@ class KNGeneralProvider {
       group.leave()
     }
     group.enter()
-    self.sendRawTransactionWithKyber(data) { [weak self] result in
+    self.sendRawTransactionWithKyber(data, chain: chain) { [weak self] result in
       guard let _ = self else { return }
       switch result {
       case .success(let ID):
@@ -845,9 +845,9 @@ class KNGeneralProvider {
     }
   }
 
-  func sendRawTransactionWithInfura(_ data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
+    func sendRawTransactionWithInfura(_ data: Data, chain: ChainType = AppState.shared.currentChain, completion: @escaping (Result<String, AnyError>) -> Void) {
     let batch = BatchFactory().create(SendRawTransactionRequest(signedTransaction: data.hexEncoded))
-    let request = EtherServiceRequest(batch: batch)
+    let request = EtherServiceRequest(batch: batch, chain: chain)
     Session.send(request) { result in
       switch result {
       case .success(let transactionID):
@@ -858,9 +858,9 @@ class KNGeneralProvider {
     }
   }
 
-  private func sendRawTransactionWithAlchemy(_ data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
+  private func sendRawTransactionWithAlchemy(_ data: Data, chain: ChainType = AppState.shared.currentChain, completion: @escaping (Result<String, AnyError>) -> Void) {
     let batch = BatchFactory().create(SendRawTransactionRequest(signedTransaction: data.hexEncoded))
-    let request = EtherServiceAlchemyRequest(batch: batch)
+      let request = EtherServiceAlchemyRequest(batch: batch, chain: chain)
     Session.send(request) { result in
       switch result {
       case .success(let transactionID):
@@ -871,9 +871,9 @@ class KNGeneralProvider {
     }
   }
 
-  private func sendRawTransactionWithKyber(_ data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
+  private func sendRawTransactionWithKyber(_ data: Data, chain: ChainType = AppState.shared.currentChain, completion: @escaping (Result<String, AnyError>) -> Void) {
     let batch = BatchFactory().create(SendRawTransactionRequest(signedTransaction: data.hexEncoded))
-    let request = EtherServiceKyberRequest(batch: batch)
+    let request = EtherServiceKyberRequest(batch: batch, chain: chain)
     Session.send(request) { result in
       switch result {
       case .success(let transactionID):
@@ -907,6 +907,48 @@ extension KNGeneralProvider {
       completion(.failure(AnyError(error)))
     }
   }
+    
+    func signTransactionData(address: KAddress, tokenAddress: String, nonce: Int, data: Data, gasPrice: BigInt, gasLimit: BigInt) -> Result<(Data, SignTransaction), AnyError> {
+        let signTransaction = SignTransaction(
+            value: BigInt(0),
+            address: address.addressString,
+            to: tokenAddress,
+            nonce: nonce,
+            data: data,
+            gasPrice: gasPrice,
+            gasLimit: gasLimit,
+            chainID: KNGeneralProvider.shared.customRPC.chainID
+        )
+        
+        let signResult = EthereumTransactionSigner().signTransaction(address: address, transaction: signTransaction)
+        switch signResult {
+        case .success(let data):
+            return .success((data, signTransaction))
+        case .failure(let error):
+            return .failure(AnyError(error))
+        }
+    }
+    
+    func signTransactionData(chain: ChainType, address: KAddress, tokenAddress: String, nonce: Int, data: Data, gasPrice: BigInt, gasLimit: BigInt) -> Result<(Data, SignTransaction), AnyError> {
+        let signTransaction = SignTransaction(
+            value: BigInt(0),
+            address: address.addressString,
+            to: tokenAddress,
+            nonce: nonce,
+            data: data,
+            gasPrice: gasPrice,
+            gasLimit: gasLimit,
+            chainID: chain.getChainId()
+        )
+        
+        let signResult = EthereumTransactionSigner().signTransaction(address: address, transaction: signTransaction)
+        switch signResult {
+        case .success(let data):
+            return .success((data, signTransaction))
+        case .failure(let error):
+            return .failure(AnyError(error))
+        }
+    }
 
 }
 

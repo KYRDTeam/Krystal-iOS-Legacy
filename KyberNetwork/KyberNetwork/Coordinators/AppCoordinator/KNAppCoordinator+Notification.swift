@@ -4,6 +4,7 @@ import UIKit
 import BigInt
 import Result
 import KrystalWallets
+import AppState
 
 /*
  Handling notification from many fetchers, views, ...
@@ -99,6 +100,13 @@ extension KNAppCoordinator {
       name: gasPriceName,
       object: nil
     )
+      
+      NotificationCenter.default.addObserver(
+        self,
+        selector: #selector(handleAppSwitchAddressNotification),
+        name: .appAddressChanged,
+        object: nil
+      )
   }
 
   func removeObserveNotificationFromSession() {
@@ -166,6 +174,12 @@ extension KNAppCoordinator {
       name: marketDataName,
       object: nil
     )
+      
+      NotificationCenter.default.removeObserver(
+        self,
+        name: .appAddressChanged,
+        object: nil
+      )
 
   }
 
@@ -223,7 +237,8 @@ extension KNAppCoordinator {
     
     self.overviewTabCoordinator?.appCoordinatorDidUpdateChain()
     self.investCoordinator?.appCoordinatorDidUpdateChain()
-    self.earnCoordinator?.appCoordinatorDidUpdateChain()
+    self.loadBalanceCoordinator?.loadLendingBalances(completion: { _ in
+    })
     self.settingsCoordinator?.appCoordinatorDidUpdateChain()
     self.session.externalProvider?.minTxCount = 0
   }
@@ -237,8 +252,6 @@ extension KNAppCoordinator {
 
     self.settingsCoordinator?.appCoordinatorTokenBalancesDidUpdate(balances: otherTokensBalance)
     
-    self.earnCoordinator?.appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: totalUSD, totalBalanceInETH: totalETH, otherTokensBalance: otherTokensBalance)
-    
     self.investCoordinator?.appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: totalUSD, totalBalanceInETH: totalETH, otherTokensBalance: otherTokensBalance)
     
     self.overviewTabCoordinator?.appCoordinatorDidUpdateTokenList()
@@ -249,14 +262,12 @@ extension KNAppCoordinator {
     guard self.session != nil, let transaction = sender.object as? InternalHistoryTransaction else { return }
 
     self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
-    self.earnCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     self.investCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     self.settingsCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
 
     let updateOverview = self.overviewTabCoordinator?.appCoordinatorUpdateTransaction(transaction) ?? false
-    let updateEarn = self.earnCoordinator?.appCoordinatorUpdateTransaction(transaction) ?? false
     let updateInvest = self.investCoordinator?.appCoordinatorUpdateTransaction(transaction) ?? false
-    if !(updateOverview || updateEarn || updateInvest) {
+    if !(updateOverview || updateInvest) {
       guard transaction.chain == KNGeneralProvider.shared.currentChain else {
         return
       }
@@ -285,7 +296,6 @@ extension KNAppCoordinator {
   @objc func tokenTransactionListDidUpdate(_ sender: Any?) {
     if self.session == nil { return }
     self.overviewTabCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
-    self.earnCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
     self.investCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
   }
 
@@ -344,4 +354,11 @@ extension KNAppCoordinator {
   @objc func pullToRefreshDone() {
     self.overviewTabCoordinator?.appCoordinatorPullToRefreshDone()
   }
+    
+    @objc func handleAppSwitchAddressNotification(notification: Notification) {
+        let address = AppState.shared.currentAddress
+        if !AppState.shared.isBrowsingMode {
+            restartSession(address: address)
+        }
+    }
 }

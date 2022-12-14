@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>question</key>
+		<string>What is liquid staking?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Liquid staking protocols allow users to earn staking rewards even without locking up their assets. Users can deposit tokens and receive tradable liquid tokens in return.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>Is there any risk from staking, like slashing or any penalties?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;The only risk for stakers is missing out on rewards any time a validator they staked with is slashed. Slashing is a protocol-level penalty associated with a validator failure if it validates an invalid transaction or goes offline. The delegated staked token is not slashed &amp;mdash; slashing impacts only the self-stake of the validator. Ankr only delegates to trusted and reputable validator nodes to avoid any validator that would act maliciously.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>What is the minimum and maximum amount of AVAX I can stake?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;The minimum amount to stake is 1 AVAX, and there is no maximum cap on the amount of AVAX you can stake.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>How do I receive my rewards?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;aAVAXb is a rebasing token. When holding aAVAXb, your balance will increase in proportion to your AVAX staking rewards. A rebase runs daily, and rewards occur each time this runs. So each day, you will see the quantity of your aAVAXb increase by a small amount.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;aAVAXc is a reward-bearing token, meaning its quantity stays the same from the moment of staking. Instead, it appreciates in value, as the redemption ratio grows because of reward accumulation.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>How long does it take to unstake AVAX from Ankr?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;You will receive the unstaked AVAX at the end of the unbonding period, which will take approximately 4 weeks.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>After unstaking, does my stake immediately stop accumulating rewards?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Your stake continues to accumulate rewards until the moment you receive your funds.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>Is there any liquidity for my Liquid Staking tokens</string>
+		<key>answer</key>
+		<string>&lt;p&gt;You can trade them in the listed liquidity pools on ANKR DeFi:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://www.ankr.com/staking/defi/?assets=aAVAXb&quot;&gt;aAVAXb&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://www.ankr.com/staking/defi/?assets=aAVAXc&quot;&gt;aAVAXc&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can also use your liquid tokens to:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://www.ankr.com/docs/staking/defi/provide-liquidity-to-dex&quot;&gt;Provide liquidity to DEXs&lt;/a&gt; and earn from commissions taken when users swap tokens, using the liquidity pool you&amp;apos;re a part of.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://www.ankr.com/docs/staking/defi/yield-farm&quot;&gt;Yield farm&lt;/a&gt; and earn additional rewards in the form of other tokens.&lt;/p&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.ankr.com/docs/staking/defi/vaults/&quot;&gt;Put your tokens in a vault&lt;/a&gt; and automatically earn additional rewards in the form of one of both assets from the pair.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>Does Ankr charge for the service?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Ankr charges a 2% commission on the reward.&lt;/p&gt;</string>
+	</dict>
+</array>
+</plist>

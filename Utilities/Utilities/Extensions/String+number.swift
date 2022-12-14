@@ -146,7 +146,7 @@ extension String {
     }
 }
 
-extension String {
+public extension String {
     
     func replacing(pattern: String) -> String {
         guard let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) else {
