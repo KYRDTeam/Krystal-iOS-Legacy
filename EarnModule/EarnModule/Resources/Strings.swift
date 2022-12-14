@@ -139,5 +139,6 @@ struct Strings {
     static let warning = "warning".toBeLocalised()
     static let other = "other".toBeLocalised()
     static let selectPlatform = "select.platform".toBeLocalised()
+    static let rewardApyInfoText = "reward.apy.info.text".toBeLocalised()
     static let selectType = "select.type".toBeLocalised()
 }

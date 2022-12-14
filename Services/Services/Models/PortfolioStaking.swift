@@ -24,6 +24,18 @@ public struct PendingUnstake: Codable {
   public let platform: Platform
   public let extraData: StakingExtraData
   public let priceUsd: Double
+    
+    public init(chainID: Int, address: String, symbol: String, logo: String, balance: String, decimals: Int, platform: Platform, extraData: StakingExtraData, priceUsd: Double) {
+        self.chainID = chainID
+        self.address = address
+        self.symbol = symbol
+        self.logo = logo
+        self.balance = balance
+        self.decimals = decimals
+        self.platform = platform
+        self.extraData = extraData
+        self.priceUsd = priceUsd
+    }
 
     enum CodingKeys: String, CodingKey {
         case chainID = "chainId"
@@ -34,6 +46,10 @@ public struct PendingUnstake: Codable {
 // MARK: - ExtraData
 public struct StakingExtraData: Codable {
   public let status, nftID: String?
+    public init(status: String) {
+        self.status = status
+        self.nftID = nil
+    }
 
     enum CodingKeys: String, CodingKey {
         case status
@@ -47,6 +63,13 @@ public struct Platform: Codable {
   public let logo: String
   public let type, desc: String
     
+    public init(name: String, logo: String) {
+        self.name = name
+        self.logo = logo
+        self.type = ""
+        self.desc = ""
+    }
+    
     public func toEarnPlatform() -> EarnPlatform {
         return EarnPlatform(platform: self, apy: -1, tvl: -1)
     }
@@ -59,13 +82,13 @@ public struct EarningBalancesResponse: Codable {
 
 // MARK: - EarningBalance
 public struct EarningBalance: Codable {
-    public let chainID: Int
-    public let platform: Platform
-    public let stakingToken, toUnderlyingToken: IngToken
-    public let underlyingUsd, apy, ratio: Double
+  public let chainID: Int
+  public let platform: Platform
+  public let stakingToken, toUnderlyingToken: IngToken
+  public let underlyingUsd, apy, ratio, rewardApy: Double
     enum CodingKeys: String, CodingKey {
         case chainID = "chainId"
-        case platform, stakingToken, toUnderlyingToken, underlyingUsd, apy, ratio
+        case platform, stakingToken, toUnderlyingToken, underlyingUsd, apy, ratio, rewardApy
     }
     
     func usdBigIntValue() -> BigInt? {

@@ -91,6 +91,7 @@
 "unstake.eth.warning.pop.up" = "Currently, unstaking is not available, as this functionality is not yet supported by Ethereum.\nUnstaking will be enabled after the Shanghai upgrade that will follow The Merge in approximately 6-12 months (~Q2/Q3 2023)";
 "all.platforms" = "All Platforms";
 "warning" = "Warning";
+"reward.apy.info.text" = "Sypply APY: %@ \nReward APY: %@";
 "chart" = "CHART";
 "other" = "OTHER";
 "select.platform" = "Select Platform";
