@@ -160,6 +160,7 @@ class StakingPortfolioCell: SwipeTableViewCell {
     var onTapHint: (() -> Void)? = nil
   var claimTapped: (() -> ())?
     var onTapWarningIcon: ((EarnWarningType) -> Void)?
+    var onTapRewardApy: ((EarningBalance) -> Void)?
     var cellModel: StakingPortfolioCellModel?
   
   func updateCellModel(_ model: StakingPortfolioCellModel) {
