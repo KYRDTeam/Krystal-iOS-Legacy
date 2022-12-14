@@ -22,20 +22,18 @@ class EarnListViewController: InAppBrowsingViewController {
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchFieldActionButton: UIButton!
-    @IBOutlet weak var searchViewRightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var emptyView: UIView!
-    weak var delegate: EarnListViewControllerDelegate?
-    var isNeedReloadFilter = true
-    
-    @IBOutlet weak var platformFilterButton: UIButton!
     @IBOutlet weak var emptyIcon: UIImageView!
     @IBOutlet weak var emptyLabel: UILabel!
+    weak var delegate: EarnListViewControllerDelegate?
+    var isNeedReloadFilter = true
     var dataSource: [EarnPoolViewCellViewModel] = []
     var displayDataSource: [EarnPoolViewCellViewModel] = []
     var timer: Timer?
     var currentSelectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : AppState.shared.currentChain
     var selectedPlatforms: Set<EarnPlatform>!
+    var selectedTypes: [EarningType] = [.staking, .lending]
     var isSupportEarnv2: Observable<Bool> = .init(true)
     
     override func viewDidLoad() {
@@ -87,6 +85,14 @@ class EarnListViewController: InAppBrowsingViewController {
             }
         }
         
+        displayDataSource = displayDataSource.filter { element in
+            let filterPlatforms = element.earnPoolModel.platforms.filter { platform in
+                let earningType = EarningType(value: platform.type)
+                return self.selectedTypes.contains(earningType)
+            }
+            return filterPlatforms.count >= 1
+        }
+        
         if !isSelectedAllPlatforms() {
             self.displayDataSource = self.displayDataSource.filter { element in
                 let modelPfSet: Set<EarnPlatform> = Set(element.earnPoolModel.platforms)
@@ -95,6 +101,7 @@ class EarnListViewController: InAppBrowsingViewController {
             
             displayDataSource.forEach { item in
                 item.filteredPlatform = self.selectedPlatforms
+                item.filteredType = self.selectedTypes
             }
             if self.displayDataSource.isEmpty {
                 self.emptyIcon.image = UIImage(named: "empty-search-token")
@@ -103,13 +110,13 @@ class EarnListViewController: InAppBrowsingViewController {
         } else {
             displayDataSource.forEach { item in
                 item.filteredPlatform = nil
+                item.filteredType = self.selectedTypes
             }
         }
-        
+
         self.emptyView.isHidden = !self.displayDataSource.isEmpty
         self.isSupportEarnv2.value = !self.displayDataSource.isEmpty
         self.tableView.reloadData()
-        updateUIPlatformFilterButton()
     }
     
     func fetchData(chainId: Int? = nil, isAutoReload: Bool = false) {
@@ -179,8 +186,6 @@ class EarnListViewController: InAppBrowsingViewController {
     func updateUIStartSearchingMode() {
         self.view.layoutIfNeeded()
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
-            self.searchViewRightConstraint.constant = 77
-            self.cancelButton.isHidden = false
             self.searchFieldActionButton.setImage(UIImage(named: "close-search-icon"), for: .normal)
             self.view.layoutIfNeeded()
         }
@@ -189,30 +194,18 @@ class EarnListViewController: InAppBrowsingViewController {
     func updateUIEndSearchingMode() {
         self.view.layoutIfNeeded()
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
-            self.searchViewRightConstraint.constant = 18
-            self.cancelButton.isHidden = true
             self.searchFieldActionButton.setImage(UIImage(named: "search_blue_icon"), for: .normal)
             self.view.endEditing(true)
             self.view.layoutIfNeeded()
         }
     }
     
-    @IBAction func onSearchButtonTapped(_ sender: Any) {
-        if !self.cancelButton.isHidden {
-            searchTextField.text = ""
-            self.fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
-        } else {
-            self.updateUIStartSearchingMode()
-        }
-    }
-    
-    @IBAction func cancelButtonTapped(_ sender: Any) {
-        self.updateUIEndSearchingMode()
-    }
-    
-    @IBAction func platformFilterButtonTapped(_ sender: UIButton) {
+    @IBAction func filterButtonTapped(_ sender: Any) {
         let allPlatforms = getAllPlatform()
         let viewModel = PlatformFilterViewModel(dataSource: allPlatforms, selected: selectedPlatforms)
+        viewModel.shouldShowType = true
+        viewModel.selectedType = self.selectedTypes
+
         let viewController = PlatformFilterViewController.instantiateFromNib()
         viewController.viewModel = viewModel
         viewController.delegate = self
@@ -221,13 +214,8 @@ class EarnListViewController: InAppBrowsingViewController {
         present(sheet, animated: true)
     }
     
-    private func updateUIPlatformFilterButton() {
-        if isSelectedAllPlatforms() {
-            platformFilterButton.setTitle(Strings.allPlatforms, for: .normal)
-            return
-        }
-        let name = selectedPlatforms.map { $0.name.capitalized }.joined(separator: ", ")
-        platformFilterButton.setTitle(name, for: .normal)
+    @IBAction func onSearchButtonTapped(_ sender: Any) {
+        self.updateUIStartSearchingMode()
     }
 }
 
@@ -347,8 +335,8 @@ extension EarnListViewController: EarnPoolViewCellDelegate {
 extension EarnListViewController: PlatformFilterViewControllerDelegate {
     func didSelectPlatform(viewController: PlatformFilterViewController, selected: Set<EarnPlatform>, types: [EarningType]) {
         selectedPlatforms = selected
+        selectedTypes = types
         viewController.dismiss(animated: true) {
-            self.updateUIPlatformFilterButton()
             self.reloadUI()
         }
     }

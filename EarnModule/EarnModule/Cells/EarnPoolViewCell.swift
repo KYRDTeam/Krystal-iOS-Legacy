@@ -18,6 +18,7 @@ class EarnPoolViewCellViewModel {
     var isExpanse: Bool
     var earnPoolModel: EarnPoolModel
     var filteredPlatform: Set<EarnPlatform>?
+    var filteredType: [EarningType]?
     
     init(earnPool: EarnPoolModel) {
         self.isExpanse = false
@@ -37,12 +38,23 @@ class EarnPoolViewCellViewModel {
     }
     
     func platFormDataSource() -> [EarnPlatform] {
-        guard let filtered = filteredPlatform else {
-            return earnPoolModel.platforms
+        var platformDatas = earnPoolModel.platforms
+        
+        if let filteredPlatform = filteredPlatform {
+            platformDatas = platformDatas.filter { item in
+                filteredPlatform.contains(item)
+            }
+
         }
-        return earnPoolModel.platforms.filter { item in
-            return filtered.contains(item)
+
+        if let filteredType = filteredType {
+            platformDatas = platformDatas.filter { item in
+                let earningType = EarningType(value: item.type)
+                return filteredType.contains(earningType)
+            }
         }
+
+        return platformDatas
     }
 }
 
