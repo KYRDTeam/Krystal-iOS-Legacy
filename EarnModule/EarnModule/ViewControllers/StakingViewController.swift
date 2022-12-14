@@ -179,7 +179,7 @@ class StakingViewController: InAppBrowsingViewController {
         }
         
         ethWarningView.isHidden = false
-        nextButtonTopContraint.constant = 180
+        nextButtonTopContraint.constant = 150
     }
     
     fileprivate func updateUIEarningTokenView() {

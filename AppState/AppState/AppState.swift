@@ -44,10 +44,10 @@ public class AppState {
   
     public func updateAddress(address: KAddress, targetChain: ChainType) {
         currentAddress = address
+        AppEventManager.shared.postSwitchAddressEvent(address: address, switchChain: targetChain != currentChain)
         if targetChain != currentChain {
             updateChain(chain: targetChain)
         }
-        AppEventManager.shared.postSwitchAddressEvent(address: address, switchChain: targetChain != currentChain)
     }
   
   public var isBrowsingMode: Bool {

@@ -21,12 +21,10 @@ public protocol ThemeProtocol {
     var cancelButtonTextColor: UIColor { get }
     var popupBackgroundColor: UIColor { get }
     var separatorColor: UIColor { get }
-    var headerSeparatorColor: UIColor { get }
     var errorTextColor: UIColor { get }
     var warningTextColor: UIColor { get }
     var infoTextColor: UIColor { get }
     var orangeColor: UIColor { get }
-    var chartColors: [UIColor] { get }
 }
 
 

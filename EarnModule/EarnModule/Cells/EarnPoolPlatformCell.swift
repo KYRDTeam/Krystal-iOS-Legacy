@@ -12,7 +12,6 @@ import Services
 
 protocol EarnPoolPlatformCellDelegate: class {
   func didSelectStake(_ platform: EarnPlatform)
-    func didSelectRewardApy(_ platform: EarnPlatform)
 }
 
 class EarnPoolPlatformCell: UITableViewCell {
@@ -22,15 +21,12 @@ class EarnPoolPlatformCell: UITableViewCell {
   @IBOutlet weak var tvlValueLabel: UILabel!
   @IBOutlet weak var dashView: DashedLineView!
   @IBOutlet weak var platformIcon: UIImageView!
-    @IBOutlet weak var rewardApyIcon: UIImageView!
-    var platform: EarnPlatform?
+  var platform: EarnPlatform?
   weak var delegate: EarnPoolPlatformCellDelegate?
-    
 
   override func awakeFromNib() {
     super.awakeFromNib()
-      rewardApyIcon.isUserInteractionEnabled = true
-      rewardApyIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapRewardApyIcon)))
+//      self.dashView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
   }
 
   override func setSelected(_ selected: Bool, animated: Bool) {
@@ -50,15 +46,5 @@ class EarnPoolPlatformCell: UITableViewCell {
     apyValueLabel.text = NumberFormatUtils.percent(value: platform.apy)
     tvlValueLabel.text = "$" + NumberFormatUtils.volFormat(number: platform.tvl)
     self.platform = platform
-      let hasRewardApy = platform.rewardApy > 0
-      rewardApyIcon.isHidden = !hasRewardApy
   }
-    
-    @objc func tapRewardApyIcon() {
-        guard let platform = platform else {
-            return
-        }
-
-        delegate?.didSelectRewardApy(platform)
-    }
 }

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="191" id="KGk-i7-Jjw" customClass="EarnPoolPlatformCell" customModule="EarnModule" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="325" height="191"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="79" id="KGk-i7-Jjw" customClass="EarnPoolPlatformCell" customModule="EarnModule" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="325" height="79"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="325" height="191"/>
+                <rect key="frame" x="0.0" y="0.0" width="325" height="79"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cvg-Xx-b5L">
@@ -64,25 +64,25 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zei-zA-9ND">
-                        <rect key="frame" x="186" y="14.333333333333334" width="23.666666666666657" height="16.666666666666664"/>
+                        <rect key="frame" x="191" y="14.333333333333334" width="23.666666666666657" height="16.666666666666664"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" name="normalTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5.67%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z5T-5U-FyF">
-                        <rect key="frame" x="214.66666666666666" y="12" width="45.333333333333343" height="21"/>
+                        <rect key="frame" x="219.66666666666666" y="12" width="45.333333333333343" height="21"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                         <color key="textColor" name="buttonBackgroundColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TVL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jTw-co-Rnv">
-                        <rect key="frame" x="189.66666666666666" y="44.333333333333336" width="21.666666666666657" height="16.666666666666664"/>
+                        <rect key="frame" x="194.66666666666666" y="44.333333333333336" width="21.666666666666657" height="16.666666666666664"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" name="normalTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$30K" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w8h-4v-VAS">
-                        <rect key="frame" x="216.33333333333334" y="42" width="43.666666666666657" height="21"/>
+                        <rect key="frame" x="221.33333333333334" y="42" width="43.666666666666657" height="21"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -106,27 +106,22 @@
                             <action selector="plusButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="FZp-JZ-0nK"/>
                         </connections>
                     </button>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="reward_apy_icon" translatesAutoresizingMaskIntoConstraints="NO" id="e00-WF-oe9">
-                        <rect key="frame" x="262" y="14.666666666666664" width="16" height="16"/>
-                    </imageView>
                 </subviews>
                 <color key="backgroundColor" name="mainViewBgColor"/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="cvg-Xx-b5L" secondAttribute="bottom" constant="21" id="0k7-UN-Kpc"/>
-                    <constraint firstItem="e00-WF-oe9" firstAttribute="centerY" secondItem="Z5T-5U-FyF" secondAttribute="centerY" id="1FM-dY-GOu"/>
                     <constraint firstItem="cvg-Xx-b5L" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="2Xx-Ow-o6U"/>
-                    <constraint firstItem="e00-WF-oe9" firstAttribute="leading" secondItem="Z5T-5U-FyF" secondAttribute="trailing" constant="2" id="AnH-42-S21"/>
                     <constraint firstItem="Z5T-5U-FyF" firstAttribute="centerY" secondItem="Zei-zA-9ND" secondAttribute="centerY" id="B1J-J0-t7F"/>
                     <constraint firstItem="Z5T-5U-FyF" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="D8p-BV-h7I"/>
                     <constraint firstItem="w8h-4v-VAS" firstAttribute="leading" secondItem="jTw-co-Rnv" secondAttribute="trailing" constant="5" id="Dfg-Ns-DbN"/>
                     <constraint firstItem="Z5T-5U-FyF" firstAttribute="leading" secondItem="Zei-zA-9ND" secondAttribute="trailing" constant="5" id="Gbw-8x-yV7"/>
                     <constraint firstAttribute="trailing" secondItem="7ps-oU-6tn" secondAttribute="trailing" constant="20" id="Jr4-3p-Kjz"/>
                     <constraint firstAttribute="trailing" secondItem="ZHK-Oq-l8H" secondAttribute="trailing" constant="13" id="QA7-mA-Yy3"/>
-                    <constraint firstAttribute="trailing" secondItem="w8h-4v-VAS" secondAttribute="trailing" constant="65" id="XVe-f5-dDS"/>
+                    <constraint firstAttribute="trailing" secondItem="w8h-4v-VAS" secondAttribute="trailing" constant="60" id="XVe-f5-dDS"/>
                     <constraint firstAttribute="bottom" secondItem="w8h-4v-VAS" secondAttribute="bottom" constant="12" id="cs4-2E-fzm"/>
                     <constraint firstItem="w8h-4v-VAS" firstAttribute="top" secondItem="Z5T-5U-FyF" secondAttribute="bottom" constant="9" id="dfJ-w6-xB9"/>
                     <constraint firstItem="cvg-Xx-b5L" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="21" id="ejs-Vp-6Pb"/>
-                    <constraint firstAttribute="trailing" secondItem="Z5T-5U-FyF" secondAttribute="trailing" constant="65" id="giK-nK-grx"/>
+                    <constraint firstAttribute="trailing" secondItem="Z5T-5U-FyF" secondAttribute="trailing" constant="60" id="giK-nK-grx"/>
                     <constraint firstItem="w8h-4v-VAS" firstAttribute="centerY" secondItem="jTw-co-Rnv" secondAttribute="centerY" id="oiZ-28-VHX"/>
                     <constraint firstAttribute="bottom" secondItem="ZHK-Oq-l8H" secondAttribute="bottom" id="udc-3y-NKJ"/>
                     <constraint firstItem="7ps-oU-6tn" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="wo5-Pj-p7M"/>
@@ -139,17 +134,15 @@
                 <outlet property="dashView" destination="ZHK-Oq-l8H" id="BWq-uZ-viJ"/>
                 <outlet property="nameLabel" destination="4Vp-qt-l8J" id="ZJ1-Ti-nIh"/>
                 <outlet property="platformIcon" destination="krA-XX-RNd" id="fnh-fj-Jm7"/>
-                <outlet property="rewardApyIcon" destination="e00-WF-oe9" id="iHv-FF-Br4"/>
                 <outlet property="tvlValueLabel" destination="w8h-4v-VAS" id="Dgz-Xw-VJv"/>
                 <outlet property="typeLabel" destination="2dT-C1-cno" id="gIT-Rc-k0u"/>
             </connections>
-            <point key="canvasLocation" x="117.69230769230769" y="67.890995260663502"/>
+            <point key="canvasLocation" x="117.69230769230769" y="28.080568720379144"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="chain_polygon_big_icon" width="84" height="84"/>
         <image name="green_plus_icon" width="24" height="24"/>
-        <image name="reward_apy_icon" width="16" height="16.333333969116211"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

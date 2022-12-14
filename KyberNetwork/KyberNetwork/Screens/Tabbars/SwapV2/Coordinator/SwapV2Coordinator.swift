@@ -52,13 +52,6 @@ class SwapV2Coordinator: NSObject, Coordinator {
       self.rootViewController.viewModel.updateSourceToken(token: token)
     }
   }
-    
-    func appCoordinatorOpenSwap(from: Token, to: Token) {
-        self.navigationController.popToRootViewController(animated: true)
-        self.rootViewController.viewModel.currentChain.value = KNGeneralProvider.shared.currentChain
-        self.rootViewController.viewModel.updateSourceToken(token: from)
-        self.rootViewController.viewModel.updateDestToken(token: to)
-    }
   
   func openSwapConfirm(object: SwapObject) {
     let viewModel = SwapSummaryViewModel(swapObject: object)

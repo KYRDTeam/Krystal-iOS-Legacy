@@ -8,28 +8,22 @@
 import UIKit
 import Services
 import AppState
-import DesignSystem
 
 class StakingPortfolioViewModel {
     var portfolio: ([EarningBalance], [PendingUnstake])?
     let apiService = EarnServices()
     var searchText = ""
     var chainID: Int?
+    
     var dataSource: Observable<([StakingPortfolioCellModel], [StakingPortfolioCellModel])> = .init(([], []))
-    var displayDataSource: Observable<([StakingPortfolioCellModel], [StakingPortfolioCellModel])> = .init(([], []))
     var error: Observable<Error?> = .init(nil)
     var isLoading: Observable<Bool> = .init(true)
     var selectedPlatforms: Set<EarnPlatform> = Set()
-    var selectedTypes: [EarningType] = [.staking, .lending]
     var isSupportEarnv2: Bool = true
-    var showChart: Bool = true
-    var showStaking: Bool = false
-    var showPending: Bool = false
-    var shouldAnimateChart: Bool = true
-
+    
     func cleanAllData() {
-        displayDataSource.value.0.removeAll()
-        displayDataSource.value.1.removeAll()
+        dataSource.value.0.removeAll()
+        dataSource.value.1.removeAll()
     }
     
     func isEmpty() -> Bool {
@@ -82,26 +76,12 @@ class StakingPortfolioViewModel {
             })
         }
         
-        // filter type
-        earningBalanceData = earningBalanceData.filter({ item in
-            let earningType = EarningType(value: item.platform.type)
-            return self.selectedTypes.contains(earningType)
-        })
-        
-        pendingUnstakeData = pendingUnstakeData.filter({ item in
-            let earningType = EarningType(value: item.platform.type)
-            return self.selectedTypes.contains(earningType)
-        })
-        
         pendingUnstakeData.forEach({ item in
             pending.append(StakingPortfolioCellModel(pendingUnstake: item))
         })
-        
         earningBalanceData.forEach { item in
             output.append(StakingPortfolioCellModel(earnBalance: item))
         }
-        
-        displayDataSource.value = (output, pending)
         dataSource.value = (output, pending)
     }
     
@@ -118,9 +98,6 @@ class StakingPortfolioViewModel {
             case .success(let portfolio):
                 self.portfolio = portfolio
                 self.reloadDataSource()
-                if shouldShowLoading {
-                    self.selectedPlatforms = self.getAllPlatform()
-                }
             case .failure(let error):
                 self.error.value = error
             }
@@ -155,70 +132,5 @@ class StakingPortfolioViewModel {
         }
         let name = selectedPlatforms.map { $0.name.capitalized }.joined(separator: ", ")
         return name
-    }
-    
-    func viewForHeader(_ tableView: UITableView, section: Int) -> PortfolioHeaderView {
-        let view = PortfolioHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 46))
-        view.shouldShowIcon = section == 0
-        if section == 0 {
-            view.titleLable.text = Strings.chart
-            view.isExpand = showChart
-        } else if section == 1 {
-            view.titleLable.text = Strings.mySupply
-            view.isExpand = showStaking
-        } else {
-            view.titleLable.text = Strings.unstakingInProgress
-            view.isExpand = showPending
-        }
-        
-        return view
-    }
-    
-    func viewForFooter(_ tableView: UITableView) -> UIView {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
-        let seperatoView = UIView(frame: CGRect(x: 22, y: 0, width: tableView.frame.size.width - 44, height: 1))
-        seperatoView.backgroundColor = AppTheme.current.separatorColor
-        view.addSubview(seperatoView)
-        return view
-    }
-    
-    func numberOfRows(section: Int) -> Int {
-        if section == 0 {
-            return 1
-        } else if section == 1 {
-            return displayDataSource.value.0.count
-        } else {
-            return displayDataSource.value.1.count
-        }
-    }
-    
-    func numberOfSection() -> Int {
-        return dataSource.value.1.isEmpty ? 2 : 3
-    }
-    
-    func updateShowHideSection(section: Int, isExpand: Bool) {
-        if section == 0 {
-            showChart = isExpand
-        } else if section == 1 {
-            showStaking = isExpand
-        } else if section == 2 {
-            showPending = isExpand
-        }
-    }
-    
-    func heightForRow(section: Int) -> CGFloat {
-        if section == 0 {
-            if showChart {
-                let viewModel = PortfolioPieChartCellViewModel(earningBalances: portfolio?.0 ?? [], chainID: chainID)
-                return viewModel.cellHeight
-            }
-            return 0
-        } else if section == 1 {
-            return showStaking ? 160 : 0
-        } else if section == 2 {
-            return showPending ? 170 : 0
-        } else {
-            return 0
-        }
     }
 }
