@@ -213,11 +213,12 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Pri-qj-GIm" customClass="SegmentedControl" customModule="DesignSystem">
-                    <rect key="frame" x="70" y="133" width="235" height="32"/>
+                    <rect key="frame" x="20" y="133" width="335" height="32"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <segments>
                         <segment title="Earn" width="98"/>
                         <segment title="My Portfolio" width="98"/>
+                        <segment title="Reward"/>
                     </segments>
                     <color key="tintColor" name="buttonBackgroundColor"/>
                     <color key="selectedSegmentTintColor" name="textWhiteColor"/>
@@ -234,7 +235,7 @@
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
                 <constraint firstItem="ILr-eH-wbn" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="AaM-4e-m9E"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Pri-qj-GIm" secondAttribute="trailing" constant="70" id="FZg-he-bwD"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Pri-qj-GIm" secondAttribute="trailing" constant="20" id="FZg-he-bwD"/>
                 <constraint firstItem="Jx6-Kq-DKO" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="LxE-iy-Zlo"/>
                 <constraint firstAttribute="trailing" secondItem="Jx6-Kq-DKO" secondAttribute="trailing" id="X66-7z-QfN"/>
                 <constraint firstItem="Jx6-Kq-DKO" firstAttribute="top" secondItem="Pri-qj-GIm" secondAttribute="bottom" id="brR-bo-VK0"/>
@@ -242,16 +243,11 @@
                 <constraint firstItem="ILr-eH-wbn" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="mQ2-kd-U8g"/>
                 <constraint firstAttribute="bottom" secondItem="Jx6-Kq-DKO" secondAttribute="bottom" id="oAh-cr-Ywr"/>
                 <constraint firstItem="Pri-qj-GIm" firstAttribute="top" secondItem="ILr-eH-wbn" secondAttribute="bottom" id="r1H-EN-P5g"/>
-                <constraint firstItem="Pri-qj-GIm" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="70" id="uhd-gf-63i"/>
+                <constraint firstItem="Pri-qj-GIm" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="uhd-gf-63i"/>
             </constraints>
             <point key="canvasLocation" x="60" y="19.95073891625616"/>
         </view>
     </objects>
-    <designables>
-        <designable name="Pri-qj-GIm">
-            <size key="intrinsicContentSize" width="197" height="31"/>
-        </designable>
-    </designables>
     <resources>
         <image name="arrow_down_icon_white" width="10" height="6"/>
         <image name="arrow_down_template" width="24" height="24"/>

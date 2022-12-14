@@ -13,6 +13,7 @@ import AppState
 import Services
 import DesignSystem
 import FittedSheets
+import Utilities
 
 protocol EarnListViewControllerDelegate: class {
     func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel)
@@ -339,6 +340,11 @@ extension EarnListViewController: UITextFieldDelegate {
 }
 
 extension EarnListViewController: EarnPoolViewCellDelegate {
+    func didSelectRewardApy(platform: EarnPlatform, pool: EarnPoolModel) {
+        let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: pool.apy), NumberFormatUtils.percent(value: platform.rewardApy))
+        showTopBannerView(message: messge)
+    }
+    
     func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
         delegate?.didSelectPlatform(platform: platform, pool: pool)
     }
