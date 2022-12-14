@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import BigInt
+import Utilities
 
 // MARK: - PendingUnstakesResponse
 public struct PendingUnstakesResponse: Codable {
@@ -84,10 +86,43 @@ public struct EarningBalance: Codable {
   public let platform: Platform
   public let stakingToken, toUnderlyingToken: IngToken
   public let underlyingUsd, apy, ratio, rewardApy: Double
-
     enum CodingKeys: String, CodingKey {
         case chainID = "chainId"
         case platform, stakingToken, toUnderlyingToken, underlyingUsd, apy, ratio, rewardApy
+    }
+    
+    func usdBigIntValue() -> BigInt? {
+        if let toUnderlyingBalanceBigInt = BigInt(toUnderlyingToken.balance) {
+            return BigInt(underlyingUsd * pow(10.0 , Double(toUnderlyingToken.decimals))) * toUnderlyingBalanceBigInt / BigInt(pow(10.0 , Double(toUnderlyingToken.decimals)))
+        }
+        return nil
+    }
+    
+    public func usdValue() -> Double {
+        if let usdBigIntValue = usdBigIntValue() {
+            return usdBigIntValue.doubleValue(decimal: toUnderlyingToken.decimals)
+        }
+        return 0.0
+    }
+    
+    public func balanceString() -> String {
+        var toUnderlyingBalanceString = "---"
+        if let toUnderlyingBalanceBigInt = BigInt(toUnderlyingToken.balance) {
+            if toUnderlyingBalanceBigInt < BigInt(pow(10.0, Double(toUnderlyingToken.decimals - 6))) {
+                toUnderlyingBalanceString = "< 0.000001 \(toUnderlyingToken.symbol)"
+            } else {
+                toUnderlyingBalanceString = toUnderlyingBalanceBigInt.shortString(decimals: toUnderlyingToken.decimals) + " " + toUnderlyingToken.symbol
+            }
+        }
+        return toUnderlyingBalanceString
+    }
+    
+    public func usdDetailString(totalValue: Double) -> String {
+        var detailString = "---"
+        if let usdBigIntValue = usdBigIntValue() {
+            detailString = "$" + usdBigIntValue.shortString(decimals: toUnderlyingToken.decimals, maxFractionDigits: 2) + " | " + StringFormatter.percentString(value: usdValue() / totalValue)
+        }
+        return detailString
     }
 }
 

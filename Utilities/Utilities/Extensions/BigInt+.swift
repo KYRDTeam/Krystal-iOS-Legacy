@@ -65,5 +65,13 @@ public extension BigInt {
         return 0.0
     }
     
-    
+    func doubleValue(decimal: Int) -> Double {
+        let doubleString = self.fullString(decimals: decimal)
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        if let number = formatter.number(from: doubleString) {
+            return number.doubleValue
+        }
+        return 0.0
+    }
 }

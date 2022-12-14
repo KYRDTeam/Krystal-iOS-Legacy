@@ -92,3 +92,7 @@
 "all.platforms" = "All Platforms";
 "warning" = "Warning";
 "reward.apy.info.text" = "Sypply APY: %@ \nReward APY: %@";
+"chart" = "CHART";
+"other" = "OTHER";
+"select.platform" = "Select Platform";
+"select.type" = "Select Type";
