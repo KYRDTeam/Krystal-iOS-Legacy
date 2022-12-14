@@ -85,15 +85,21 @@ class PendingRewardClaimConfirmPopUpViewModel: BaseViewModel, TxConfirmViewModel
         }
     }
     
+    var pendingUnstake: PendingUnstake {
+        let platform = Platform(name: item.platform.name, logo: item.platform.logo)
+        let extra = StakingExtraData(status: "")
+        return PendingUnstake(chainID: item.chain.id, address: item.rewardToken.tokenInfo.address, symbol: item.rewardToken.tokenInfo.symbol, logo: item.rewardToken.tokenInfo.logo, balance: item.rewardToken.pendingReward.balance, decimals: item.rewardToken.tokenInfo.decimals, platform: platform, extraData: extra, priceUsd: 0)
+    }
+    
     func sendTx(txObject: TxObject) {
         TransactionManager.txProcessor.process(address: currentAddress, chain: chain, txObject: txObject, setting: setting) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let txResult):
-//                let pendingTx = PendingClaimTxInfo(pendingUnstake: self.pendingUnstake, legacyTx: txResult.legacyTx, eip1559Tx: txResult.eip1559Tx, chain: self.chain, date: Date(), hash: txResult.hash)
-//                TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
+                let pendingTx = PendingClaimTxInfo(pendingUnstake: self.pendingUnstake, legacyTx: txResult.legacyTx, eip1559Tx: txResult.eip1559Tx, chain: self.chain, date: Date(), hash: txResult.hash)
+                TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
                 print(txResult)
-//                self.onSuccess(pendingTx)
+                self.onSuccess(pendingTx)
             case .failure(let error):
                 self.onError(error.message)
             }
