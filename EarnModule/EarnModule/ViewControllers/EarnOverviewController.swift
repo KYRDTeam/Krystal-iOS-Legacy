@@ -84,7 +84,7 @@ class EarnOverviewController: InAppBrowsingViewController {
       reloadAllNetworksChain()
     }
     segmentedControl.highlightSelectedSegment(width: 100)
-    let width = UIScreen.main.bounds.size.width - 40
+    let width = UIScreen.main.bounds.size.width - 36
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: width, height: 30)
     segmentedControl.setWidth(width / 3, forSegmentAt: 0)
     segmentedControl.setWidth(width / 3, forSegmentAt: 1)
