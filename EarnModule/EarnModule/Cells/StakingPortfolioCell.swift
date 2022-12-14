@@ -25,6 +25,7 @@ struct StakingPortfolioCellModel {
   
   let isInProcess: Bool
   let isClaimable: Bool
+    let hasRewardApy: Bool
   var pendingUnstake: PendingUnstake?
   var earnBalance: EarningBalance?
   
@@ -59,13 +60,14 @@ struct StakingPortfolioCellModel {
     self.displayTokenName = earnBalance.toUnderlyingToken.symbol
     self.displayPlatformName = earnBalance.platform.name.uppercased()
     self.isClaimable = false
+      self.hasRewardApy = earnBalance.rewardApy > 0
   }
   
   init(pendingUnstake: PendingUnstake) {
       self.pendingUnstake = pendingUnstake
     self.isInProcess = true
     self.tokenLogo = pendingUnstake.logo
-    self.chainLogo = ChainType.make(chainID: pendingUnstake.chainID ?? 1)?.chainIcon()
+    self.chainLogo = ChainType.make(chainID: pendingUnstake.chainID)?.chainIcon()
     self.platformLogo = pendingUnstake.platform.logo
     self.displayAPYValue = "---"
     self.displayDepositedValue = (BigInt(pendingUnstake.balance)?.shortString(decimals: pendingUnstake.decimals) ?? "---") + " " + pendingUnstake.symbol
@@ -76,6 +78,7 @@ struct StakingPortfolioCellModel {
     self.displayTokenName = pendingUnstake.symbol
     self.displayPlatformName = pendingUnstake.platform.name.uppercased()
     self.isClaimable = pendingUnstake.extraData.status == "claimable"
+      self.hasRewardApy = false
   }
     
     func timeForUnstakeString() -> String {
@@ -121,8 +124,20 @@ class StakingPortfolioCell: SwipeTableViewCell {
   @IBOutlet weak var apyTitleLabel: UILabel!
   @IBOutlet weak var balanceTitleLabel: UILabel!
   @IBOutlet weak var depositedValueLabelTopConstraint: NSLayoutConstraint!
-    var onTapHint: (() -> Void)? = nil
+    
+    @IBOutlet weak var rewardApyIcon: UIImageView!
+  @IBOutlet weak var warningButtonHeightConstraint: NSLayoutConstraint!
+  var onTapHint: (() -> Void)? = nil
   var claimTapped: (() -> ())?
+    var onTapRewardApy: ((EarningBalance) -> Void)?
+    
+    var cellModel: StakingPortfolioCellModel?
+    
+    override func awakeFromNib() {
+      super.awakeFromNib()
+        rewardApyIcon.isUserInteractionEnabled = true
+        rewardApyIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapRewardApyIcon)))
+    }
   
   func updateCellModel(_ model: StakingPortfolioCellModel) {
     tokenImageView.loadImage(model.tokenLogo)
@@ -137,6 +152,7 @@ class StakingPortfolioCell: SwipeTableViewCell {
     warningLabelContainerView.isHidden = !model.isInProcess || model.isClaimable
     claimButton.isHidden = !model.isClaimable
     depositedValueLabelTopConstraint.constant = model.isInProcess ? 10 : 30
+    warningButtonHeightConstraint.constant = model.isInProcess ? 30 : 0
     addButton.isHidden = model.isInProcess
     minusButton.isHidden = model.isInProcess
     deposited2ValueLabel.text = model.displayDeposited2Value
@@ -147,6 +163,8 @@ class StakingPortfolioCell: SwipeTableViewCell {
     
     depositTitleLabelContraintWithAPYTitle.priority = model.isInProcess ? UILayoutPriority(250) : UILayoutPriority(1000)
     depostTitleLabelLeadingContraintWithSuperView.priority = model.isInProcess ? UILayoutPriority(1000) : UILayoutPriority(250)
+      rewardApyIcon.isHidden = !model.hasRewardApy
+      cellModel = model
   }
   
   @IBAction func inProcessButtonTapped(_ sender: UIButton) {
@@ -158,4 +176,12 @@ class StakingPortfolioCell: SwipeTableViewCell {
   @IBAction func claimButtonTapped(_ sender: UIButton) {
       claimTapped?()
   }
+    
+    @objc func tapRewardApyIcon() {
+        guard let earningBalance = cellModel?.earnBalance else {
+            return
+        }
+        onTapRewardApy?(earningBalance)
+        
+    }
 }
