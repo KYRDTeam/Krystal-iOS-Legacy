@@ -31,6 +31,7 @@ struct StakingPortfolioCellModel {
   
   let isInProcess: Bool
   let isClaimable: Bool
+    let hasRewardApy: Bool
   var pendingUnstake: PendingUnstake?
   var earnBalance: EarningBalance?
     let displayStatusLogo: UIImage?
@@ -78,13 +79,14 @@ struct StakingPortfolioCellModel {
           self.displayStatusLogo = nil
           self.warningType = .none
       }
+	self.hasRewardApy = earnBalance.rewardApy > 0
   }
   
   init(pendingUnstake: PendingUnstake) {
       self.pendingUnstake = pendingUnstake
     self.isInProcess = true
     self.tokenLogo = pendingUnstake.logo
-    self.chainLogo = ChainType.make(chainID: pendingUnstake.chainID ?? 1)?.chainIcon()
+    self.chainLogo = ChainType.make(chainID: pendingUnstake.chainID)?.chainIcon()
     self.platformLogo = pendingUnstake.platform.logo
     self.displayAPYValue = "---"
     self.displayDepositedValue = (BigInt(pendingUnstake.balance)?.shortString(decimals: pendingUnstake.decimals) ?? "---") + " " + pendingUnstake.symbol
@@ -97,6 +99,7 @@ struct StakingPortfolioCellModel {
     self.isClaimable = pendingUnstake.extraData.status == "claimable"
       self.warningType = .none
       self.displayStatusLogo = nil
+	self.hasRewardApy = false
   }
     
     func timeForUnstakeString() -> String {
@@ -143,12 +146,15 @@ class StakingPortfolioCell: SwipeTableViewCell {
   @IBOutlet weak var balanceTitleLabel: UILabel!
   @IBOutlet weak var depositedValueLabelTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var statusImageView: UIImageView!
+	@IBOutlet weak var rewardApyIcon: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         statusImageView.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showWarningPopup))
         statusImageView.addGestureRecognizer(tapGesture)
+		rewardApyIcon.isUserInteractionEnabled = true
+        rewardApyIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapRewardApyIcon)))
     }
     
     var onTapHint: (() -> Void)? = nil
@@ -185,6 +191,7 @@ class StakingPortfolioCell: SwipeTableViewCell {
       } else {
           statusImageView.isHidden = true
       }
+      rewardApyIcon.isHidden = !model.hasRewardApy
       cellModel = model
   }
   
@@ -203,5 +210,13 @@ class StakingPortfolioCell: SwipeTableViewCell {
             return
         }
         onTapWarningIcon?(cellModel.warningType)
+    }
+
+	@objc func tapRewardApyIcon() {
+        guard let earningBalance = cellModel?.earnBalance else {
+            return
+        }
+        onTapRewardApy?(earningBalance)
+        
     }
 }

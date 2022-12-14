@@ -12,7 +12,7 @@ import UIKit
 public enum ChainType: Codable, CaseIterable {
     case all
     case eth
-    case ropsten
+    case goerli
     case bsc
     case bscTestnet
     case polygon
@@ -44,7 +44,7 @@ public enum ChainType: Codable, CaseIterable {
         case 1:
             self = .eth
         case 2:
-            self = .ropsten
+            self = .goerli
         case 3:
             self = .bsc
         case 4:
@@ -83,7 +83,7 @@ public enum ChainType: Codable, CaseIterable {
             try container.encode(0, forKey: .rawValue)
         case .eth:
             try container.encode(1, forKey: .rawValue)
-        case .ropsten:
+        case .goerli:
             try container.encode(2, forKey: .rawValue)
         case .bsc:
             try container.encode(3, forKey: .rawValue)
@@ -130,8 +130,8 @@ public extension ChainType {
         switch self {
         case .eth:
             return AllChains.ethMainnetPRC
-        case .ropsten:
-            return AllChains.ethRoptenPRC
+        case .goerli:
+            return AllChains.goerliPRC
         case .bsc, .all:
             return AllChains.bscMainnetPRC
         case .bscTestnet:

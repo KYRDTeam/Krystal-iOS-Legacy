@@ -237,6 +237,11 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
             guard let pendingUnstake = cm.pendingUnstake else { return }
             self.requestClaim(pendingUnstake: pendingUnstake)
         }
+        cell.onTapRewardApy = { balance in
+            let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: balance.apy), NumberFormatUtils.percent(value: balance.rewardApy))
+            self.showTopBannerView(message: messge)
+		}
+		
         cell.onTapWarningIcon = { type in
             switch type {
             case .disable:

@@ -104,7 +104,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XvN-zC-v4i">
-                                <rect key="frame" x="68" y="73" width="51" height="17"/>
+                                <rect key="frame" x="72" y="73" width="51" height="17"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -132,7 +132,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1000 KNC" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKf-x6-MMw">
-                                <rect key="frame" x="68" y="93" width="68.5" height="19"/>
+                                <rect key="frame" x="72" y="93" width="68.5" height="19"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -221,7 +221,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1000 KNC" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tAY-MC-bzV">
-                                <rect key="frame" x="68" y="112" width="68.5" height="19"/>
+                                <rect key="frame" x="72" y="112" width="68.5" height="19"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <color key="textColor" name="normalTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -264,17 +264,20 @@
                             <constraint firstItem="Hlv-a0-Xuq" firstAttribute="leading" secondItem="Da2-Ys-JAC" secondAttribute="leading" constant="18" id="JSU-yb-VAv"/>
                             <constraint firstItem="jsx-eU-gTH" firstAttribute="centerX" secondItem="5kV-Di-ra3" secondAttribute="centerX" id="KED-fe-9Ay"/>
                             <constraint firstItem="XvN-zC-v4i" firstAttribute="leading" secondItem="5kV-Di-ra3" secondAttribute="trailing" priority="999" constant="26" id="MDA-vE-bV8"/>
+                            <constraint firstItem="XvN-zC-v4i" firstAttribute="leading" secondItem="5kV-Di-ra3" secondAttribute="trailing" constant="30" id="MDA-vE-bV8"/>
                             <constraint firstAttribute="trailing" secondItem="HrT-c7-iZm" secondAttribute="trailing" id="O0e-vD-xnV"/>
                             <constraint firstItem="weJ-YP-hhn" firstAttribute="leading" secondItem="hO3-YX-7pJ" secondAttribute="trailing" constant="5" id="OAY-Hl-YLL"/>
                             <constraint firstItem="XvN-zC-v4i" firstAttribute="leading" secondItem="Da2-Ys-JAC" secondAttribute="leading" priority="250" constant="21" id="OVS-Y5-pYr"/>
                             <constraint firstItem="Hlv-a0-Xuq" firstAttribute="top" secondItem="Da2-Ys-JAC" secondAttribute="top" constant="15" id="PZ4-2p-TUa"/>
                             <constraint firstItem="5kV-Di-ra3" firstAttribute="centerX" secondItem="Hlv-a0-Xuq" secondAttribute="centerX" id="Qb9-cc-0RZ"/>
+                            <constraint firstItem="UiE-x1-6sp" firstAttribute="leading" secondItem="jsx-eU-gTH" secondAttribute="trailing" constant="2" id="Sc1-ic-8Xu"/>
                             <constraint firstItem="CU8-Nm-UDM" firstAttribute="centerY" secondItem="gKf-x6-MMw" secondAttribute="centerY" id="TLq-DX-zIz"/>
                             <constraint firstItem="gKf-x6-MMw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jsx-eU-gTH" secondAttribute="trailing" constant="5" id="TPG-X0-ssD"/>
                             <constraint firstItem="NfX-1O-HwC" firstAttribute="leading" secondItem="Hlv-a0-Xuq" secondAttribute="leading" id="Y21-at-LQF"/>
                             <constraint firstItem="HrT-c7-iZm" firstAttribute="leading" secondItem="Da2-Ys-JAC" secondAttribute="leading" id="YE6-L0-CrV"/>
                             <constraint firstItem="6ac-VO-zvs" firstAttribute="trailing" secondItem="Hlv-a0-Xuq" secondAttribute="trailing" constant="2" id="YPW-4n-idl"/>
                             <constraint firstItem="eIu-Zq-CW8" firstAttribute="centerY" secondItem="gKf-x6-MMw" secondAttribute="centerY" id="ZUy-vs-6pg"/>
+                            <constraint firstItem="UiE-x1-6sp" firstAttribute="centerY" secondItem="jsx-eU-gTH" secondAttribute="centerY" id="Zpl-XF-E3E"/>
                             <constraint firstItem="gKf-x6-MMw" firstAttribute="top" secondItem="NfX-1O-HwC" secondAttribute="bottom" constant="30" id="ai6-iX-NWs"/>
                             <constraint firstItem="hO3-YX-7pJ" firstAttribute="leading" secondItem="6ac-VO-zvs" secondAttribute="trailing" constant="10" id="ax1-sF-5Vg"/>
                             <constraint firstItem="eIu-Zq-CW8" firstAttribute="trailing" secondItem="NfX-1O-HwC" secondAttribute="trailing" id="bRH-jF-Oub"/>
@@ -331,6 +334,7 @@
                 <outlet property="platformTypeLabel" destination="4B0-G3-L0Z" id="hOx-u0-akv"/>
                 <outlet property="processingStatusLabel" destination="qhW-5t-zCx" id="oYf-F6-tb8"/>
                 <outlet property="statusImageView" destination="weJ-YP-hhn" id="3ll-Qf-dah"/>
+                <outlet property="rewardApyIcon" destination="UiE-x1-6sp" id="q7A-YD-8n0"/>
                 <outlet property="tokenImageView" destination="Hlv-a0-Xuq" id="jue-fl-geL"/>
                 <outlet property="tokenNameLabel" destination="hO3-YX-7pJ" id="RWK-VA-gbb"/>
                 <outlet property="warningButton" destination="HrT-c7-iZm" id="Yhh-IV-BOs"/>
@@ -346,6 +350,7 @@
         <image name="knc" width="36" height="36"/>
         <image name="minus_icon" width="24" height="24"/>
         <image name="plus_icon" width="24" height="24"/>
+        <image name="reward_apy_icon" width="16" height="16"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

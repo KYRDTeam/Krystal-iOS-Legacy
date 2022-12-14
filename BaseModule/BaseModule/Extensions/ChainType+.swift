@@ -17,7 +17,7 @@ public extension ChainType {
       return .allNetworkSquare
     case .eth:
       return .chainEthSquare
-    case .ropsten:
+    case .goerli:
       return .chainEthSquare
     case .bsc:
       return .chainBscSquare
