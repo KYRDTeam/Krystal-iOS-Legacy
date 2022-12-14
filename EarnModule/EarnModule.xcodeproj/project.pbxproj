@@ -74,6 +74,7 @@
 		A61B2984292385C30064C3FE /* LidoParamBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61B2983292385C30064C3FE /* LidoParamBuilder.swift */; };
 		A61B2986292385CD0064C3FE /* CommonParamBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61B2985292385CD0064C3FE /* CommonParamBuilder.swift */; };
 		A61B298A2924BA040064C3FE /* PendingClaimTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61B29892924BA040064C3FE /* PendingClaimTxInfo.swift */; };
+		A662557C2941BFF300B4B6A4 /* EarnCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A662557B2941BFF300B4B6A4 /* EarnCoordinator.swift */; };
 		A66FC3FB28F4F52100E49E86 /* EarnModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A66FC3FA28F4F52100E49E86 /* EarnModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A69E8EB1291DDEBB005B28CB /* PendingStakingTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EB0291DDEBB005B28CB /* PendingStakingTxInfo.swift */; };
 		A69E8EB4291DEF23005B28CB /* StakeDisplayInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EB3291DEF23005B28CB /* StakeDisplayInfo.swift */; };
@@ -171,6 +172,7 @@
 		A61B2983292385C30064C3FE /* LidoParamBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LidoParamBuilder.swift; sourceTree = "<group>"; };
 		A61B2985292385CD0064C3FE /* CommonParamBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonParamBuilder.swift; sourceTree = "<group>"; };
 		A61B29892924BA040064C3FE /* PendingClaimTxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingClaimTxInfo.swift; sourceTree = "<group>"; };
+		A662557B2941BFF300B4B6A4 /* EarnCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnCoordinator.swift; sourceTree = "<group>"; };
 		A66FC3F728F4F52100E49E86 /* EarnModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EarnModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66FC3FA28F4F52100E49E86 /* EarnModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EarnModule.h; sourceTree = "<group>"; };
 		A69E8EB0291DDEBB005B28CB /* PendingStakingTxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingStakingTxInfo.swift; sourceTree = "<group>"; };
@@ -356,6 +358,14 @@
 			path = ParamBuilders;
 			sourceTree = "<group>";
 		};
+		A662557A2941BFE400B4B6A4 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				A662557B2941BFF300B4B6A4 /* EarnCoordinator.swift */,
+			);
+			path = Coordinators;
+			sourceTree = "<group>";
+		};
 		A66FC3ED28F4F52100E49E86 = {
 			isa = PBXGroup;
 			children = (
@@ -377,6 +387,7 @@
 		A66FC3F928F4F52100E49E86 /* EarnModule */ = {
 			isa = PBXGroup;
 			children = (
+				A662557A2941BFE400B4B6A4 /* Coordinators */,
 				A61B297A292384CF0064C3FE /* ParamBuilders */,
 				A69E8EB2291DEE91005B28CB /* Models */,
 				7EAF4760291B684900BF5D00 /* View */,
@@ -569,6 +580,7 @@
 				C3851894292CAB7E004E9661 /* PlatformCell.swift in Sources */,
 				7EB252C72907F7EC00648438 /* TypeAliases.swift in Sources */,
 				A6D1F808291BAF1E00ABA52B /* StakingViewModel.swift in Sources */,
+				A662557C2941BFF300B4B6A4 /* EarnCoordinator.swift in Sources */,
 				A61B297E292385000064C3FE /* EarnParamBuilder.swift in Sources */,
 				A61B2980292385780064C3FE /* EarnParamBuilderFactory.swift in Sources */,
 				7E693E60294097B40069CFFE /* ChartLegendTokenCell.swift in Sources */,

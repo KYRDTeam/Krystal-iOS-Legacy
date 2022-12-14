@@ -183,17 +183,6 @@
                                 <constraint firstAttribute="trailing" secondItem="AwC-Ci-od9" secondAttribute="trailing" constant="23" id="zxS-1d-wHK"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cz7-by-GG6">
-                            <rect key="frame" x="16" y="16.666666666666664" width="46" height="36"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="46" id="UBK-zB-cof"/>
-                                <constraint firstAttribute="height" constant="36" id="Xka-YG-7s1"/>
-                            </constraints>
-                            <state key="normal" image="back_blue_icon"/>
-                            <connections>
-                                <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="u4Q-v3-VLa"/>
-                            </connections>
-                        </button>
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
@@ -201,10 +190,7 @@
                         <constraint firstItem="uuv-fx-ieS" firstAttribute="leading" secondItem="a2Z-04-AAJ" secondAttribute="trailing" constant="6" id="9wu-l1-SQb"/>
                         <constraint firstAttribute="bottom" secondItem="ErS-2L-zWZ" secondAttribute="bottom" id="A1X-MO-EnF"/>
                         <constraint firstItem="7Ud-CJ-Y59" firstAttribute="trailing" secondItem="uuv-fx-ieS" secondAttribute="trailing" id="AgX-aV-nfO"/>
-                        <constraint firstItem="txh-qs-zjN" firstAttribute="leading" secondItem="ILr-eH-wbn" secondAttribute="leading" constant="50" id="B5J-qw-JJL"/>
-                        <constraint firstItem="cz7-by-GG6" firstAttribute="centerY" secondItem="txh-qs-zjN" secondAttribute="centerY" id="CLM-YX-K7t"/>
                         <constraint firstItem="ErS-2L-zWZ" firstAttribute="leading" secondItem="c7c-Vg-CdJ" secondAttribute="trailing" constant="20" id="HRE-op-SNo"/>
-                        <constraint firstItem="cz7-by-GG6" firstAttribute="leading" secondItem="ILr-eH-wbn" secondAttribute="leading" constant="16" id="HZf-mT-TRf"/>
                         <constraint firstAttribute="trailing" secondItem="ErS-2L-zWZ" secondAttribute="trailing" id="RNH-RC-oXe"/>
                         <constraint firstItem="txh-qs-zjN" firstAttribute="top" secondItem="ILr-eH-wbn" secondAttribute="top" constant="24" id="WXG-gt-Mdl"/>
                         <constraint firstItem="qIT-N6-N4L" firstAttribute="top" secondItem="txh-qs-zjN" secondAttribute="bottom" constant="6" id="XLd-3I-ps1"/>
@@ -216,6 +202,7 @@
                         <constraint firstItem="c7c-Vg-CdJ" firstAttribute="leading" secondItem="qIT-N6-N4L" secondAttribute="trailing" constant="4" id="oem-sO-JR2"/>
                         <constraint firstAttribute="bottom" secondItem="c7c-Vg-CdJ" secondAttribute="bottom" constant="24" id="q9V-3s-ukB"/>
                         <constraint firstItem="a2Z-04-AAJ" firstAttribute="centerY" secondItem="ILr-eH-wbn" secondAttribute="centerY" id="qTk-Rc-2jJ"/>
+                        <constraint firstItem="txh-qs-zjN" firstAttribute="leading" secondItem="ILr-eH-wbn" secondAttribute="leading" constant="37" id="vwF-mj-3Tb"/>
                         <constraint firstItem="c7c-Vg-CdJ" firstAttribute="centerY" secondItem="qIT-N6-N4L" secondAttribute="centerY" id="vy8-6o-TVm"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>

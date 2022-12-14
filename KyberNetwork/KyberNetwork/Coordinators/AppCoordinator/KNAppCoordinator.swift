@@ -5,6 +5,7 @@ import BigInt
 import Moya
 import KrystalWallets
 import AppState
+import EarnModule
 
 class KNAppCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
@@ -26,7 +27,7 @@ class KNAppCoordinator: NSObject, Coordinator {
 //  internal var balanceTabCoordinator: KNBalanceTabCoordinator?
   internal var overviewTabCoordinator: OverviewCoordinator?
   internal var settingsCoordinator: KNSettingsCoordinator?
-  internal var earnCoordinator: EarnCoordinator?
+    var earnCoordinator: EarnModuleCoordinator?
   internal var rewardCoordinator: RewardCoordinator?
   internal var investCoordinator: InvestCoordinator?
 
@@ -105,10 +106,9 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
   
   func switchToWatchAddress(address: KAddress, chain: ChainType) {
-//    KNGeneralProvider.shared.currentChain = chain
     switchAddress(address: address)
-//    AppEventCenter.shared.switchChain(chain: chain)
     AppState.shared.updateChain(chain: chain)
+    AppState.shared.updateAddress(address: address, targetChain: chain)
   }
   
   func switchAddress(address: KAddress) {
