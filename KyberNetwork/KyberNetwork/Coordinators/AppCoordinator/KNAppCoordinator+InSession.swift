@@ -75,6 +75,7 @@ extension KNAppCoordinator {
     selectedImage: nil
   )
   self.swapV2Coordinator?.navigationController.tabBarItem.tag = 1
+  self.swapV2Coordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuSwap"
   self.tabbarController.viewControllers = [
     self.overviewTabCoordinator!.navigationController,
     self.swapV2Coordinator!.navigationController,

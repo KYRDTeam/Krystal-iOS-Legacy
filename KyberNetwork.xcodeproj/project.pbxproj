@@ -588,6 +588,7 @@
 		7EFFAB8428AE4F5B007CFE7D /* SeedStringCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFAB8228AE4F5B007CFE7D /* SeedStringCell.swift */; };
 		7EFFAB8528AE4F5B007CFE7D /* SeedStringCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EFFAB8328AE4F5B007CFE7D /* SeedStringCell.xib */; };
 		938288E2ED2CF2CECDBAEA28 /* Pods_KyberNetworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */; };
+		9F40389D290F76DF00A5C4AE /* KNSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F40389C290F76DF00A5C4AE /* KNSecret.swift */; };
 		A608C45228B726A600B0B867 /* KQRCodeReaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A608C45128B726A600B0B867 /* KQRCodeReaderDelegate.swift */; };
 		A610B2D728ED5BAD00456965 /* EditWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A610B2D628ED5BAD00456965 /* EditWalletCoordinator.swift */; };
 		A610B2DA28ED66E800456965 /* WalletBackupableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A610B2D928ED66E800456965 /* WalletBackupableProtocol.swift */; };
@@ -1083,7 +1084,7 @@
 		C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38E5D7825F63FC000E5FC48 /* TransactionHistory.swift */; };
 		C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */; };
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
-		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
+		C39A7EED24778B03003EA57D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		C39D311428F5645800EC26ED /* StakingPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D311228F5645800EC26ED /* StakingPortfolioViewController.swift */; };
 		C39D311528F5645800EC26ED /* StakingPortfolioViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C39D311328F5645800EC26ED /* StakingPortfolioViewController.xib */; };
 		C39D311928F5679700EC26ED /* StakingPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D311728F5679700EC26ED /* StakingPortfolioCell.swift */; };
@@ -1117,7 +1118,6 @@
 		C3BBC55F25FB4A2F004E1FB6 /* InvestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BBC55E25FB4A2F004E1FB6 /* InvestCoordinator.swift */; };
 		C3BBC56425FB4ACE004E1FB6 /* InvestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BBC56225FB4ACE004E1FB6 /* InvestViewController.swift */; };
 		C3BBC56525FB4ACE004E1FB6 /* InvestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3BBC56325FB4ACE004E1FB6 /* InvestViewController.xib */; };
-		C3BC3F7F24AC984000B1ADFE /* KNSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BC3F7E24AC984000B1ADFE /* KNSecret.swift */; };
 		C3C0B0CB2602F8C6001A1710 /* Marketing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C0B0CA2602F8C6001A1710 /* Marketing.swift */; };
 		C3D560AA260C641E00408875 /* OverviewClaimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D560A8260C641E00408875 /* OverviewClaimViewController.swift */; };
 		C3D560AB260C641E00408875 /* OverviewClaimViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3D560A9260C641E00408875 /* OverviewClaimViewController.xib */; };
@@ -1866,6 +1866,7 @@
 		87FA1153388F27F599C430B8 /* Pods-TrustTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrustTests/Pods-TrustTests.debug.xcconfig"; sourceTree = "<group>"; };
 		88401C14158F6CE1B2A8A18D /* Pods-KyberNetworkTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KyberNetworkTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KyberNetworkTests/Pods-KyberNetworkTests.debug.xcconfig"; sourceTree = "<group>"; };
 		97C64E77FB15CCDC5F0BA6B5 /* Pods_KrystalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KrystalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F40389C290F76DF00A5C4AE /* KNSecret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KNSecret.swift; path = "../../../../../../krystal-mobile-enviroment/ios/environments/KNSecret.swift"; sourceTree = "<group>"; };
 		A3B747245A27436E621E7E41 /* Pods-TrustUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrustUITests/Pods-TrustUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A48A17FC2CC895AF2BB871D0 /* Pods_TrustTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrustTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6042C6428FD67C8001F4C40 /* AppState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2403,7 +2404,6 @@
 		C3BBC55E25FB4A2F004E1FB6 /* InvestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestCoordinator.swift; sourceTree = "<group>"; };
 		C3BBC56225FB4ACE004E1FB6 /* InvestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestViewController.swift; sourceTree = "<group>"; };
 		C3BBC56325FB4ACE004E1FB6 /* InvestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvestViewController.xib; sourceTree = "<group>"; };
-		C3BC3F7E24AC984000B1ADFE /* KNSecret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KNSecret.swift; path = KyberNetwork/KyberNetwork/Configurations/Environments/KNSecret.swift; sourceTree = SOURCE_ROOT; };
 		C3C0B0CA2602F8C6001A1710 /* Marketing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Marketing.swift; sourceTree = "<group>"; };
 		C3D560A8260C641E00408875 /* OverviewClaimViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewClaimViewController.swift; sourceTree = "<group>"; };
 		C3D560A9260C641E00408875 /* OverviewClaimViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewClaimViewController.xib; sourceTree = "<group>"; };
@@ -2831,7 +2831,7 @@
 		2537431C20ECEA52002C29FC /* Secret */ = {
 			isa = PBXGroup;
 			children = (
-				C3BC3F7E24AC984000B1ADFE /* KNSecret.swift */,
+				9F40389C290F76DF00A5C4AE /* KNSecret.swift */,
 			);
 			path = Secret;
 			sourceTree = "<group>";
@@ -7566,6 +7566,10 @@
 				"${BUILT_PRODUCTS_DIR}/TrustWalletCore/WalletCore.framework",
 				"${BUILT_PRODUCTS_DIR}/WalletConnectSwift/WalletConnectSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignal.framework/OneSignal",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignalCore/OneSignalCore.framework/OneSignalCore",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignalExtension/OneSignalExtension.framework/OneSignalExtension",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignalOutcomes/OneSignalOutcomes.framework/OneSignalOutcomes",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -7626,6 +7630,10 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WalletCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WalletConnectSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignal.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignalCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignalExtension.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignalOutcomes.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -7685,7 +7693,7 @@
 				7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */,
 				7EE92A0F286307E10050DC8D /* ShowAllCell.swift in Sources */,
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
-				C39A7EED24778B03003EA57D /* (null) in Sources */,
+				C39A7EED24778B03003EA57D /* BuildFile in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				C3233EFE2807DF4D0086C2BC /* CopyAddressCell.swift in Sources */,
 				A69C5BCE28D1B342000DE825 /* NotificationEndpoint.swift in Sources */,
@@ -7793,7 +7801,6 @@
 				25696F5720BD2B81002CC53F /* KNDataDetailsView.swift in Sources */,
 				A6B3CD44281178BC005D0D66 /* TransactionHistoryItem.swift in Sources */,
 				A6CC317A2877E7FB00891200 /* BarCodeDetector.swift in Sources */,
-				C3BC3F7F24AC984000B1ADFE /* KNSecret.swift in Sources */,
 				291F52B91F6B880F00B369AB /* EtherKeystore.swift in Sources */,
 				A661070528ACE94900425D67 /* AsyncOperation.swift in Sources */,
 				2545577D20ABD9A200012692 /* KNSupportedTokenStorage.swift in Sources */,
@@ -7930,6 +7937,7 @@
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
 				7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */,
 				7EC892DB27DD10A9000C5980 /* FiatCryptoHistoryCell.swift in Sources */,
+				9F40389D290F76DF00A5C4AE /* KNSecret.swift in Sources */,
 				29FA00D0201CA66A002F7DC5 /* DAppError.swift in Sources */,
 				C337E15E27744D37001C8B03 /* RPCServers.swift in Sources */,
 				7E59E5832872F10900DFD01C /* SettingsBundleHelper.swift in Sources */,
