@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StakingPortfolioViewController" customModule="EarnModule" customModuleProvider="target">
             <connections>
-                <outlet property="cancelButton" destination="BuJ-64-RNu" id="onQ-KD-pUx"/>
                 <outlet property="emptyIcon" destination="4dq-y8-ZfK" id="FYG-h3-EfN"/>
                 <outlet property="emptyLabel" destination="gNb-7G-c5u" id="5Eu-lU-QMN"/>
                 <outlet property="emptyViewContainer" destination="72k-Xu-RIT" id="hdF-wD-0bx"/>
-                <outlet property="platformFilterButton" destination="ypD-Od-mvZ" id="g7g-Ed-56Z"/>
+                <outlet property="filterButton" destination="qaS-MQ-s3J" id="6cb-cj-bIb"/>
                 <outlet property="portfolioTableView" destination="Jh9-lx-at7" id="HXv-ra-WXz"/>
                 <outlet property="searchFieldActionButton" destination="658-pi-3l3" id="HEt-6G-2bg"/>
                 <outlet property="searchTextField" destination="fJd-Iq-gdv" id="nT7-c4-QTW"/>
-                <outlet property="searchViewRightConstraint" destination="GtB-mz-RsY" id="hmA-Ie-BbN"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -33,9 +32,10 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Jh9-lx-at7">
-                    <rect key="frame" x="0.0" y="150" width="375" height="517"/>
-                    <color key="backgroundColor" red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Jh9-lx-at7">
+                    <rect key="frame" x="0.0" y="69" width="375" height="598"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <color key="sectionIndexBackgroundColor" name="innerContainerBgColor"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                     </userDefinedRuntimeAttributes>
@@ -45,19 +45,19 @@
                     </connections>
                 </tableView>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="72k-Xu-RIT">
-                    <rect key="frame" x="0.0" y="150" width="375" height="517"/>
+                    <rect key="frame" x="0.0" y="69" width="375" height="598"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="deposit_empty_icon" translatesAutoresizingMaskIntoConstraints="NO" id="4dq-y8-ZfK">
-                            <rect key="frame" x="142.5" y="160" width="90" height="107"/>
+                            <rect key="frame" x="142.5" y="200.5" width="90" height="107"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No tokens deposited yet." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNb-7G-c5u">
-                            <rect key="frame" x="20" y="290" width="335" height="19"/>
+                            <rect key="frame" x="20" y="330.5" width="335" height="19"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" red="0.54117647059999996" green="0.64313725489999995" blue="0.68235294120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <color key="backgroundColor" name="innerContainerBgColor"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="gNb-7G-c5u" secondAttribute="trailing" constant="20" id="SmU-96-Ipw"/>
                         <constraint firstItem="4dq-y8-ZfK" firstAttribute="centerX" secondItem="72k-Xu-RIT" secondAttribute="centerX" id="Ua2-Jf-Cct"/>
@@ -71,23 +71,11 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BuJ-64-RNu">
-                    <rect key="frame" x="310" y="27" width="47" height="42"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="47" id="X9N-wN-RWy"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="15"/>
-                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                    <state key="normal" title="Cancel"/>
-                    <connections>
-                        <action selector="cancelButtonTapped:" destination="-1" eventType="touchUpInside" id="70E-0r-jYQ"/>
-                    </connections>
-                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lan-RH-3Fn">
-                    <rect key="frame" x="18" y="27" width="339" height="42"/>
+                    <rect key="frame" x="18" y="27" width="284" height="42"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fJd-Iq-gdv">
-                            <rect key="frame" x="16" y="0.0" width="284" height="42"/>
+                            <rect key="frame" x="16" y="0.0" width="229" height="42"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="tintColor" name="buttonBackgroundColor"/>
                             <color key="textColor" name="textWhiteColor"/>
@@ -101,7 +89,7 @@
                             </connections>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="658-pi-3l3">
-                            <rect key="frame" x="305" y="9" width="24" height="24"/>
+                            <rect key="frame" x="250" y="9" width="24" height="24"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="24" id="2wb-sY-fQM"/>
                                 <constraint firstAttribute="width" constant="24" id="7MS-JB-Rw2"/>
@@ -133,64 +121,44 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zum-a0-Egc">
-                    <rect key="frame" x="244" y="95" width="113" height="32"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ypD-Od-mvZ">
-                            <rect key="frame" x="20" y="0.0" width="88" height="32"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="32" id="1Zo-is-Fud"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
-                            <color key="tintColor" name="normalTextColor"/>
-                            <state key="normal" title="All Platform" image="arrow_down_template">
-                                <color key="titleColor" name="normalTextColor"/>
-                            </state>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
-                                    <real key="value" value="14"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                            <connections>
-                                <action selector="platformFilterButtonTapped:" destination="-1" eventType="touchUpInside" id="aby-ux-8V2"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" red="0.0039215686269999999" green="0.0039215686269999999" blue="0.0039215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qaS-MQ-s3J">
+                    <rect key="frame" x="315" y="27" width="42" height="42"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
-                        <constraint firstItem="ypD-Od-mvZ" firstAttribute="top" secondItem="Zum-a0-Egc" secondAttribute="top" id="POL-6v-BnF"/>
-                        <constraint firstAttribute="trailing" secondItem="ypD-Od-mvZ" secondAttribute="trailing" constant="5" id="Xhk-Ah-2MI"/>
-                        <constraint firstAttribute="bottom" secondItem="ypD-Od-mvZ" secondAttribute="bottom" id="Z26-hu-i2S"/>
-                        <constraint firstItem="ypD-Od-mvZ" firstAttribute="leading" secondItem="Zum-a0-Egc" secondAttribute="leading" constant="20" id="igd-5U-wAH"/>
+                        <constraint firstAttribute="height" constant="42" id="FWE-PR-d6K"/>
+                        <constraint firstAttribute="width" constant="42" id="X3X-V1-rYI"/>
                     </constraints>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                    <color key="tintColor" name="normalTextColor"/>
+                    <state key="normal" image="filter_icon">
+                        <color key="titleColor" name="normalTextColor"/>
+                    </state>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
-                            <real key="value" value="14"/>
+                            <integer key="value" value="12"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
-                </view>
+                    <connections>
+                        <action selector="filterButtonTapped:" destination="-1" eventType="touchUpInside" id="dIP-9Q-29m"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="72k-Xu-RIT" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="2dt-7T-cKh"/>
-                <constraint firstItem="Zum-a0-Egc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="18" id="3Fh-Xw-RiJ"/>
                 <constraint firstItem="72k-Xu-RIT" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="7c8-Vk-OJD"/>
-                <constraint firstAttribute="trailing" secondItem="Lan-RH-3Fn" secondAttribute="trailing" constant="18" id="GtB-mz-RsY"/>
+                <constraint firstAttribute="trailing" secondItem="Lan-RH-3Fn" secondAttribute="trailing" constant="73" id="GtB-mz-RsY"/>
                 <constraint firstAttribute="bottom" secondItem="Jh9-lx-at7" secondAttribute="bottom" id="J98-cn-fjl"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="qaS-MQ-s3J" secondAttribute="trailing" constant="18" id="Kf0-Li-Zmi"/>
                 <constraint firstItem="Lan-RH-3Fn" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="27" id="LyP-eB-Ppz"/>
                 <constraint firstItem="Jh9-lx-at7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="MK5-P3-Dex"/>
-                <constraint firstItem="BuJ-64-RNu" firstAttribute="height" secondItem="Lan-RH-3Fn" secondAttribute="height" id="Qxy-lf-ELq"/>
-                <constraint firstItem="Jh9-lx-at7" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="150" id="Sav-zL-yAM"/>
-                <constraint firstItem="72k-Xu-RIT" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="150" id="Sv5-Ue-sVU"/>
-                <constraint firstItem="Zum-a0-Egc" firstAttribute="top" secondItem="BuJ-64-RNu" secondAttribute="bottom" constant="26" id="Tpo-QJ-Yq6"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="BuJ-64-RNu" secondAttribute="trailing" constant="18" id="bwo-5t-APY"/>
-                <constraint firstItem="BuJ-64-RNu" firstAttribute="centerY" secondItem="Lan-RH-3Fn" secondAttribute="centerY" id="dZK-FJ-gRV"/>
+                <constraint firstItem="qaS-MQ-s3J" firstAttribute="centerY" secondItem="Lan-RH-3Fn" secondAttribute="centerY" id="RPq-IQ-AqG"/>
                 <constraint firstAttribute="trailing" secondItem="Jh9-lx-at7" secondAttribute="trailing" id="hFn-6Q-cZy"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Zum-a0-Egc" secondAttribute="trailing" constant="18" id="iiQ-8P-JGy"/>
                 <constraint firstItem="Lan-RH-3Fn" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="18" id="jsa-Mp-SCX"/>
+                <constraint firstItem="72k-Xu-RIT" firstAttribute="top" secondItem="Lan-RH-3Fn" secondAttribute="bottom" id="ooS-bW-psM"/>
                 <constraint firstItem="72k-Xu-RIT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="wZG-10-cQ5"/>
+                <constraint firstItem="Jh9-lx-at7" firstAttribute="top" secondItem="Lan-RH-3Fn" secondAttribute="bottom" id="zot-bb-F9R"/>
             </constraints>
             <userDefinedRuntimeAttributes>
                 <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
@@ -202,11 +170,14 @@
         </view>
     </objects>
     <resources>
-        <image name="arrow_down_template" width="24" height="24"/>
         <image name="deposit_empty_icon" width="90" height="107"/>
+        <image name="filter_icon" width="24" height="24"/>
         <image name="search_blue_icon" width="16" height="16"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="innerContainerBgColor">
+            <color red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -217,5 +188,8 @@
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

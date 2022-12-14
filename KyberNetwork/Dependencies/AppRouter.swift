@@ -133,6 +133,11 @@ class AppRouter: AppRouterProtocol, Coordinator {
         AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
         AppDelegate.shared.coordinator.earnCoordinator?.openPortfolio()
     }
+
+	func openSwap(from: Token, to: Token) {
+        AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorOpenSwap(from: from, to: to)
+        AppDelegate.shared.coordinator.tabbarController.selectedIndex = 1
+    }
   
 }
 

@@ -10,13 +10,15 @@ import Moya
 import Utilities
 
 enum EarnEndpoint {
-  case listOption(chainId: String?)
-  case getEarningBalances(address: String, chainId: String?)
-  case getPendingUnstakes(address: String)
-  case getEarningOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String)
-  case buildStakeTx(params: JSONDictionary)
-  case buildUnstakeTx(params: JSONDictionary)
-  case buildClaimTx(params: JSONDictionary)
+    case listOption(chainId: String?)
+    case getEarningBalances(address: String, chainId: String?)
+    case getPendingUnstakes(address: String)
+    case getEarningOptionDetail(platform: String, earningType: String, chainID: String, tokenAddress: String)
+    case buildStakeTx(params: JSONDictionary)
+    case buildUnstakeTx(params: JSONDictionary)
+    case buildClaimTx(params: JSONDictionary)
+    case getPendingReward(address: String)
+    case buildClaimReward(chainId: Int, from: String, platform: String)
 }
 
 extension EarnEndpoint: TargetType {
@@ -40,12 +42,16 @@ extension EarnEndpoint: TargetType {
         return "/v1/earning/buildUnstakeTx"
     case .buildClaimTx:
         return "/v1/earning/buildClaimTx"
+    case .getPendingReward:
+        return "/v1/earning/pendingRewards"
+    case .buildClaimReward:
+        return "/v1/earning/buildClaimRewardsTx"
     }
   }
   
   var method: Moya.Method {
     switch self {
-    case .buildStakeTx, .buildUnstakeTx, .buildClaimTx:
+    case .buildStakeTx, .buildUnstakeTx, .buildClaimTx, .buildClaimReward:
       return .post
     default:
       return .get
@@ -61,7 +67,7 @@ extension EarnEndpoint: TargetType {
     case .listOption(let chainId):
       var json: JSONDictionary = [:]
       if let chainId = chainId {
-        json["chainID"] = chainId
+        json["chainIds"] = chainId
       }
       return json.isEmpty ? .requestPlain : .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getEarningBalances(address: let address, chainId: let chainId):
@@ -91,6 +97,18 @@ extension EarnEndpoint: TargetType {
         return .requestParameters(parameters: params, encoding: JSONEncoding.default)
     case .buildUnstakeTx(params: let params):
       return .requestParameters(parameters: params, encoding: JSONEncoding.default)
+    case .getPendingReward(address: let address):
+        var json: JSONDictionary = [
+          "address": address
+        ]
+        return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .buildClaimReward(chainId: let chainId, from: let from, platform: let platform):
+        var json: JSONDictionary = [
+          "chainId": chainId,
+          "from": from,
+          "platform": platform
+        ]
+        return .requestParameters(parameters: json, encoding: JSONEncoding.default)
     }
   }
   
