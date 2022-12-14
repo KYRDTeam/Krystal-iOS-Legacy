@@ -34,9 +34,12 @@ class PortfolioPieChartCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func updateUI() {
+    func updateUI(animate: Bool) {
         guard let viewModel = viewModel else { return }
         loadChartView()
+        if animate {
+            pieChartView.animate(xAxisDuration: 0.8)
+        }
         totalUSDValueLabel.text = viewModel.earningAssetsString
         apyValueLabel.text = viewModel.apyString
         annualYieldLabel.text = viewModel.annualYieldString
@@ -81,7 +84,6 @@ class PortfolioPieChartCell: UITableViewCell {
         
         let data = PieChartData(dataSet: set)
         pieChartView.data = data
-        pieChartView.animate(xAxisDuration: 0.8)
     }
     
 }

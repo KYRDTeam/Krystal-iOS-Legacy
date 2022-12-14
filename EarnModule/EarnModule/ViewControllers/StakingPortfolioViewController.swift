@@ -75,9 +75,11 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        viewModel.shouldAnimateChart = true
         if viewModel.isEmpty() && viewModel.isLoading.value == false {
             viewModel.requestData()
         }
+        portfolioTableView.reloadData()
 		AppDependencies.tracker.track("mob_earn_portfolio", properties: ["screenid": "earn_v2"])
     }
     
@@ -197,26 +199,25 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         if !isExpand {
             self.view.layoutIfNeeded()
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
-                for index in 0..<self.portfolioTableView.numberOfRows(inSection: 0) {
-                    if let cell = self.portfolioTableView.cellForRow(at: IndexPath(row: index, section: 0)) {
-                        var rect = cell.frame
-                        rect.size.height = 0
-                        cell.frame = rect
-                    }
+                if let cell = self.portfolioTableView.cellForRow(at: IndexPath(row: 0, section: 0)) {
+                    var rect = cell.frame
+                    rect.size.height = 0
+                    cell.frame = rect
                 }
                 self.view.layoutIfNeeded()
             }
         } else {
             self.view.layoutIfNeeded()
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
-                for index in 0..<self.portfolioTableView.numberOfRows(inSection: 0) {
-                    if let cell = self.portfolioTableView.cellForRow(at: IndexPath(row: index, section: 0)) {
-                        var rect = cell.frame
-                        rect.size.height = 390
-                        cell.frame = rect
-                    }
+            if let cell = self.portfolioTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? PortfolioPieChartCell {
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+                    var rect = cell.frame
+                    rect.size.height = 390
+                    cell.frame = rect
+                    self.view.layoutIfNeeded()
+                } completion: { complete in
+                    cell.updateUI(animate: true)
+                    self.viewModel.shouldAnimateChart = false
                 }
-                self.view.layoutIfNeeded()
             }
         }
     }
@@ -235,7 +236,8 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
         let cell = tableView.dequeueReusableCell(PortfolioPieChartCell.self, indexPath: indexPath)!
         if let portfolio = viewModel.portfolio {
             cell.viewModel = PortfolioPieChartCellViewModel(earningBalances: portfolio.0, chainID: viewModel.chainID)
-            cell.updateUI()
+            cell.updateUI(animate: viewModel.shouldAnimateChart)
+            viewModel.shouldAnimateChart = false
         }
         return cell
     }
@@ -288,11 +290,7 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
 }
 
 extension StakingPortfolioViewController: SkeletonTableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-    }
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
       return CGFloat(46.0)
     }
@@ -308,6 +306,7 @@ extension StakingPortfolioViewController: SkeletonTableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = viewModel.viewForHeader(tableView, section: section)
         view.onTapped = { isExpand in
+            self.viewModel.shouldAnimateChart = isExpand
             self.viewModel.updateShowHideSection(section: section, isExpand: isExpand)
             self.portfolioTableView.beginUpdates()
             if section == 0 {
