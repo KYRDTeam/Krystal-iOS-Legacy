@@ -13,7 +13,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -168,6 +168,9 @@
                             <state key="normal" title="Ethereum" image="arrow_down_icon_white">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnSwitchChain"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="onChainButtonTapped:" destination="-1" eventType="touchUpInside" id="jRS-0N-Zl4"/>
                             </connections>
