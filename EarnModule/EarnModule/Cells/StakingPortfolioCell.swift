@@ -11,6 +11,12 @@ import Utilities
 import Services
 import SwipeCellKit
 
+internal enum EarnWarningType {
+    case disable
+    case warning
+    case none
+}
+
 struct StakingPortfolioCellModel {
   let tokenLogo: String
   let chainLogo: UIImage?
@@ -28,6 +34,8 @@ struct StakingPortfolioCellModel {
     let hasRewardApy: Bool
   var pendingUnstake: PendingUnstake?
   var earnBalance: EarningBalance?
+    let displayStatusLogo: UIImage?
+    let warningType: EarnWarningType
   
   init(earnBalance: EarningBalance) {
     self.earnBalance = earnBalance
@@ -60,7 +68,18 @@ struct StakingPortfolioCellModel {
     self.displayTokenName = earnBalance.toUnderlyingToken.symbol
     self.displayPlatformName = earnBalance.platform.name.uppercased()
     self.isClaimable = false
-      self.hasRewardApy = earnBalance.rewardApy > 0
+      switch earnBalance.status.value.lowercased() {
+      case "disabled":
+          self.displayStatusLogo = UIImage(imageName: "stake_disable_icon")
+          self.warningType = .disable
+      case "warning":
+          self.displayStatusLogo = UIImage(imageName: "stake_warning_icon")
+          self.warningType = .warning
+      default:
+          self.displayStatusLogo = nil
+          self.warningType = .none
+      }
+	self.hasRewardApy = earnBalance.rewardApy > 0
   }
   
   init(pendingUnstake: PendingUnstake) {
@@ -78,7 +97,9 @@ struct StakingPortfolioCellModel {
     self.displayTokenName = pendingUnstake.symbol
     self.displayPlatformName = pendingUnstake.platform.name.uppercased()
     self.isClaimable = pendingUnstake.extraData.status == "claimable"
-      self.hasRewardApy = false
+      self.warningType = .none
+      self.displayStatusLogo = nil
+	self.hasRewardApy = false
   }
     
     func timeForUnstakeString() -> String {
@@ -124,20 +145,25 @@ class StakingPortfolioCell: SwipeTableViewCell {
   @IBOutlet weak var apyTitleLabel: UILabel!
   @IBOutlet weak var balanceTitleLabel: UILabel!
   @IBOutlet weak var depositedValueLabelTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var statusImageView: UIImageView!
+	@IBOutlet weak var rewardApyIcon: UIImageView!
     
-    @IBOutlet weak var rewardApyIcon: UIImageView!
-  @IBOutlet weak var warningButtonHeightConstraint: NSLayoutConstraint!
-  var onTapHint: (() -> Void)? = nil
-  var claimTapped: (() -> ())?
-    var onTapRewardApy: ((EarningBalance) -> Void)?
-    
-    var cellModel: StakingPortfolioCellModel?
+    @IBOutlet weak var warningButtonHeightConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
-      super.awakeFromNib()
-        rewardApyIcon.isUserInteractionEnabled = true
+        super.awakeFromNib()
+        statusImageView.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showWarningPopup))
+        statusImageView.addGestureRecognizer(tapGesture)
+		rewardApyIcon.isUserInteractionEnabled = true
         rewardApyIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapRewardApyIcon)))
     }
+    
+    var onTapHint: (() -> Void)? = nil
+  var claimTapped: (() -> ())?
+    var onTapWarningIcon: ((EarnWarningType) -> Void)?
+    var onTapRewardApy: ((EarningBalance) -> Void)?
+    var cellModel: StakingPortfolioCellModel?
   
   func updateCellModel(_ model: StakingPortfolioCellModel) {
     tokenImageView.loadImage(model.tokenLogo)
@@ -161,8 +187,14 @@ class StakingPortfolioCell: SwipeTableViewCell {
     balanceTitleLabel.isHidden = model.isInProcess
     apyValueLabel.isHidden = model.isInProcess
     
-    depositTitleLabelContraintWithAPYTitle.priority = model.isInProcess ? UILayoutPriority(250) : UILayoutPriority(1000)
-    depostTitleLabelLeadingContraintWithSuperView.priority = model.isInProcess ? UILayoutPriority(1000) : UILayoutPriority(250)
+    depositTitleLabelContraintWithAPYTitle.priority = model.isInProcess ? UILayoutPriority(250) : UILayoutPriority(999)
+    depostTitleLabelLeadingContraintWithSuperView.priority = model.isInProcess ? UILayoutPriority(999) : UILayoutPriority(250)
+      if let warningIconImg = model.displayStatusLogo {
+          statusImageView.isHidden = false
+          statusImageView.image = warningIconImg
+      } else {
+          statusImageView.isHidden = true
+      }
       rewardApyIcon.isHidden = !model.hasRewardApy
       cellModel = model
   }
@@ -177,7 +209,14 @@ class StakingPortfolioCell: SwipeTableViewCell {
       claimTapped?()
   }
     
-    @objc func tapRewardApyIcon() {
+    @objc func showWarningPopup() {
+        guard let cellModel = cellModel else {
+            return
+        }
+        onTapWarningIcon?(cellModel.warningType)
+    }
+
+	@objc func tapRewardApyIcon() {
         guard let earningBalance = cellModel?.earnBalance else {
             return
         }

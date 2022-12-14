@@ -82,13 +82,15 @@ public struct EarningBalancesResponse: Codable {
 
 // MARK: - EarningBalance
 public struct EarningBalance: Codable {
-  public let chainID: Int
-  public let platform: Platform
-  public let stakingToken, toUnderlyingToken: IngToken
-  public let underlyingUsd, apy, ratio, rewardApy: Double
+    public let chainID: Int
+    public let platform: Platform
+    public let stakingToken, toUnderlyingToken: IngToken
+    public let underlyingUsd, apy, ratio, rewardApy: Double
+    public let status: StatusClass
+    
     enum CodingKeys: String, CodingKey {
         case chainID = "chainId"
-        case platform, stakingToken, toUnderlyingToken, underlyingUsd, apy, ratio, rewardApy
+        case platform, stakingToken, toUnderlyingToken, underlyingUsd, apy, ratio, status, rewardApy
     }
     
     func usdBigIntValue() -> BigInt? {
@@ -123,6 +125,16 @@ public struct EarningBalance: Codable {
             detailString = "$" + usdBigIntValue.shortString(decimals: toUnderlyingToken.decimals, maxFractionDigits: 2) + " | " + StringFormatter.percentString(value: usdValue() / totalValue)
         }
         return detailString
+    }
+}
+
+public struct StatusClass: Codable {
+    public let value: String
+    public let detail: String
+
+    enum CodingKeys: String, CodingKey {
+        case value
+        case detail
     }
 }
 
