@@ -148,6 +148,8 @@ class StakingPortfolioCell: SwipeTableViewCell {
     @IBOutlet weak var statusImageView: UIImageView!
 	@IBOutlet weak var rewardApyIcon: UIImageView!
     
+    @IBOutlet weak var warningButtonHeightConstraint: NSLayoutConstraint!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         statusImageView.isUserInteractionEnabled = true
