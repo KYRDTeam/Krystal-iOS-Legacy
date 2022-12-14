@@ -35,6 +35,7 @@ class PendingRewardViewController: InAppBrowsingViewController {
         searchTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
         viewModel.dataSource.observeAndFire(on: self) { _ in
             self.rewardTableView.reloadData()
+            self.updateUIEmptyView()
             
         }
         viewModel.isLoading.observeAndFire(on: self) { status in
@@ -69,6 +70,15 @@ class PendingRewardViewController: InAppBrowsingViewController {
         viewModel.chainID = AppState.shared.isSelectedAllChain ? nil : currentChain.getChainId()
         viewModel.requestData()
         emptyIcon.image = Images.emptyReward
+        
+        Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { _ in
+            self.viewModel.requestData()
+        }
+    }
+    
+    override func reloadWallet() {
+        super.reloadWallet()
+        viewModel.requestData()
     }
 
     func updateUIStartSearchingMode() {
@@ -206,10 +216,6 @@ extension PendingRewardViewController: SkeletonTableViewDataSource {
 }
 
 extension PendingRewardViewController: SkeletonTableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 160
