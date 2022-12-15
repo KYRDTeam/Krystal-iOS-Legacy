@@ -64,7 +64,7 @@ class EarnOverviewController: InAppBrowsingViewController {
   @objc override func onAppSwitchChain() {
     super.onAppSwitchChain()
     currentSelectedChain = AppState.shared.currentChain
-//    viewModel.appDidSwitchChain()
+    reloadWallet()
   }
 
   func initChildViewControllers() {
