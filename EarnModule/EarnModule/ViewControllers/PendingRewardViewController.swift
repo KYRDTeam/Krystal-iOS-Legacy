@@ -72,7 +72,7 @@ class PendingRewardViewController: InAppBrowsingViewController {
         emptyIcon.image = Images.emptyReward
         
         Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { _ in
-            self.viewModel.requestData()
+            self.viewModel.requestData(showLoading: false)
         }
     }
     

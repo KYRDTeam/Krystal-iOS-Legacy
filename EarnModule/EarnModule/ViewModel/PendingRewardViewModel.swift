@@ -46,8 +46,8 @@ class PendingRewardViewModel {
         dataSource.value = cellModels
     }
     
-    func requestData() {
-        isLoading.value = true
+    func requestData(showLoading: Bool = true) {
+        if showLoading { isLoading.value = true }
         apiService.getPendingReward(address: AppState.shared.currentAddress.addressString) { result in
             switch result {
             case .success(let rewards):
@@ -65,7 +65,7 @@ class PendingRewardViewModel {
             case .failure(let error):
                 print(error.description)
             }
-            self.isLoading.value = false
+            if showLoading { self.isLoading.value = false }
         }
     }
     
