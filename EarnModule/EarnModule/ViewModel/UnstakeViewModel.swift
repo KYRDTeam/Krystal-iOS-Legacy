@@ -180,6 +180,7 @@ class UnstakeViewModel: BaseViewModel {
         case .error, .drop:
             self.delegate?.didApproveToken(success: false)
         case .done:
+            self.stakingTokenAllowance = TransactionConstants.maxTokenAmount
             checkEnoughFeeForTx()
             self.delegate?.didApproveToken(success: true)
         default:
