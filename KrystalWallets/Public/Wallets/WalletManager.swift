@@ -470,3 +470,35 @@ extension WalletManager {
   }
   
 }
+
+extension WalletManager {
+    
+    public func privateKey(wallet: KWallet, forCoin coinType: CoinType) -> PrivateKey? {
+        guard let addressType = getAddressType(coinType: coinType) else {
+            return nil
+        }
+        return try? getPrivateKey(wallet: wallet, forAddressType: addressType)
+    }
+    
+    public func address(wallet: KWallet, forCoin coinType: CoinType) -> String? {
+        guard let addressType = getAddressType(coinType: coinType) else {
+            return nil
+        }
+        guard let privateKey = privateKey(wallet: wallet, forCoin: coinType) else {
+            return nil
+        }
+        return getAddress(privateKey: privateKey, addressType: addressType)
+    }
+    
+    func getAddressType(coinType: CoinType) -> KAddressType? {
+        switch coinType {
+        case .ethereum:
+            return .evm
+        case .solana:
+            return .solana
+        default:
+            return nil
+        }
+    }
+    
+}

@@ -37,7 +37,7 @@ end
 def cryptoHelperPods
   pod 'BigInt', '~> 4.0'
   pod 'CryptoSwift'
-  pod 'TrustWalletCore', '~> 2.9'
+  pod 'TrustWalletCore', '~> 3'
   pod 'TrustKeystore', '~> 0.4.2'
   pod 'TrustCore', '~> 0.0.7'
   pod 'WalletConnectSwift'
@@ -54,7 +54,7 @@ def networkingPods
   pod 'Starscream', '~> 3.1'
   pod 'Kingfisher', '~> 7.0'
   pod 'Moya', '~> 10.0.1'
-  pod 'Mixpanel-swift'
+  pod 'Mixpanel-swift', '~> 3.1.7'
 end
 
 def databasePods
@@ -194,6 +194,10 @@ target 'DappBrowser' do
   use_frameworks!
   
   pod 'TrustWeb3Provider', :git => 'https://github.com/tungnguyen20/trust-web3-provider', :branch => 'develop'
+  pod 'WalletCore'
+  pod 'TrustWalletCore'
+  pod 'CryptoSwift'
+  pod 'FittedSheets'
 end
 
 target 'KyberNetwork' do
@@ -229,7 +233,7 @@ target 'KrystalWallets' do
   use_frameworks!
 
   databasePods
-  pod 'TrustWalletCore', '~> 2.9'
+  pod 'TrustWalletCore', '~> 3'
   pod 'KeychainSwift'
   pod 'CryptoSwift'
 end

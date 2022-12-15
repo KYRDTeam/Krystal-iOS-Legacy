@@ -13,7 +13,6 @@
             <connections>
                 <outlet property="navigationBar" destination="oYt-4p-409" id="GvK-sX-CC5"/>
                 <outlet property="progressView" destination="gy9-L0-RrJ" id="Lgg-px-FxS"/>
-                <outlet property="topBarHeight" destination="SWi-h0-Fbh" id="d5w-OA-gm0"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="webViewContainer" destination="BBB-N5-TXO" id="TTm-Ui-hhE"/>
             </connections>

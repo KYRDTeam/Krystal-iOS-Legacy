@@ -12,9 +12,7 @@ class NavigationBar: UIView {
   
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var leftButton: UIButton!
-  @IBOutlet weak var rightButton: UIButton!
   @IBOutlet weak var titleLabel: UILabel!
-  @IBOutlet weak var badgeView: UIView!
   
   @IBInspectable var title: String? {
     didSet { titleLabel.text = title }
@@ -55,25 +53,6 @@ class NavigationBar: UIView {
     leftButtonAction = action
   }
   
-  @IBInspectable var rightButtonImage: UIImage? {
-    didSet {
-      rightButton.setImage(rightButtonImage, for: .normal)
-    }
-  }
-  
-  private var rightButtonAction: (() -> ())? {
-    didSet {
-      if let action = rightButtonAction {
-        rightButton.addAction(for: .touchUpInside, action: action)
-      }
-    }
-  }
-  
-  func setRightButtonAction(_ action: (() -> ())?) {
-    if let _ = rightButtonAction { return }
-    rightButtonAction = action
-  }
-  
   func prepareNib() {
     let bundle = Bundle(for: NavigationBar.self)
     bundle.loadNibNamed(String(describing: NavigationBar.self), owner: self, options: nil)
@@ -87,13 +66,9 @@ class NavigationBar: UIView {
     
     titleLabel.text = title
     leftButton.setImage(leftButtonIcon, for: .normal)
-    rightButton.setImage(rightButtonImage, for: .normal)
     
     if let action = leftButtonAction {
         leftButton.addAction(for: .touchUpInside, action: action)
-    }
-    if let action = rightButtonAction {
-      rightButton.addAction(for: .touchUpInside, action: action)
     }
   }
   

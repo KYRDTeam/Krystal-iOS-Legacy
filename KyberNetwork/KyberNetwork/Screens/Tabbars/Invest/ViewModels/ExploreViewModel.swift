@@ -20,6 +20,7 @@ enum ExploreMenuItem: CaseIterable {
     case bridge
     case scanner
     case approvals
+    case loyalty
 }
 
 enum ExploreSection {
@@ -84,6 +85,8 @@ class ExploreViewModel {
         if isTokenApprovalEnabled && isNotBrowsing {
             menuItems.append(.approvals)
         }
+        
+        menuItems.append(.loyalty)
         
         if self.menuItems.value != menuItems {
             self.menuItems.value = menuItems
