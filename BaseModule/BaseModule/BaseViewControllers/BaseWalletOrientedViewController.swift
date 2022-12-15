@@ -146,20 +146,20 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
   
   @objc open func handleWalletButtonTapped() {
     let selectWalletHandler: (KWallet) -> () = { [weak self] wallet in
-      guard let self = self else { return }
-      let addresses = WalletManager.shared.getAllAddresses(walletID: wallet.id)
-      if addresses.isEmpty { return }
-      if let matchingChainAddress = addresses.first(where: { $0.addressType == AppState.shared.currentChain.addressType }) {
-        AppState.shared.updateAddress(address: matchingChainAddress, targetChain: AppState.shared.currentChain)
-      } else {
-        let address = addresses.first!
-        guard let chain = ChainType.allCases.first(where: {
-          return ($0 != .all || self.supportAllChainOption) && $0.addressType == address.addressType
-        }) else { return }
-        self.onChainSelected(chain: chain)
-        AppState.shared.updateAddress(address: address, targetChain: chain)
+        guard let self = self else { return }
+        let addresses = WalletManager.shared.getAllAddresses(walletID: wallet.id)
+        if addresses.isEmpty { return }
+        if let matchingChainAddress = addresses.first(where: { $0.addressType == AppState.shared.currentChain.addressType }) {
+          AppState.shared.updateAddress(address: matchingChainAddress, targetChain: AppState.shared.currentChain)
+        } else {
+          let address = addresses.first!
+          guard let chain = ChainType.allCases.first(where: {
+            return $0 != .all && $0.addressType == address.addressType
+          }) else { return }
+          AppState.shared.updateAddress(address: address, targetChain: chain)
+          self.onChainSelected(chain: chain)
+        }
       }
-    }
     let selectWatchAddressHandler: (KAddress) -> () = { [weak self] address in
       let currentChain = AppState.shared.currentChain
       if address.addressType == AppState.shared.currentChain.addressType {

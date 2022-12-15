@@ -169,6 +169,10 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         reloadUI()
     }
     
+    override func onAppSwitchAddress(switchChain: Bool) {
+        viewModel.requestData()
+    }
+    
     override func onAppSelectAllChain() {
         viewModel.chainID = nil
         reloadUI()
