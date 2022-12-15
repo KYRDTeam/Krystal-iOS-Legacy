@@ -12,12 +12,12 @@ import SkeletonView
 import DesignSystem
 import TransactionModule
 import FittedSheets
+import Services
 
 class PendingRewardViewController: InAppBrowsingViewController {
     
     @IBOutlet weak var searchFieldActionButton: UIButton!
     @IBOutlet weak var searchViewRightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var searchTextField: UITextField!
     
     @IBOutlet weak var rewardTableView: UITableView!
@@ -84,22 +84,20 @@ class PendingRewardViewController: InAppBrowsingViewController {
     func updateUIStartSearchingMode() {
         self.view.layoutIfNeeded()
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
-            self.searchViewRightConstraint.constant = 77
-            self.cancelButton.isHidden = false
             self.searchFieldActionButton.setImage(UIImage(named: "close-search-icon"), for: .normal)
             self.view.layoutIfNeeded()
         }
+        viewModel.isEditing = true
     }
     
     func updateUIEndSearchingMode() {
         self.view.layoutIfNeeded()
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
-            self.searchViewRightConstraint.constant = 18
-            self.cancelButton.isHidden = true
             self.searchFieldActionButton.setImage(UIImage(named: "search_blue_icon"), for: .normal)
             self.view.endEditing(true)
             self.view.layoutIfNeeded()
         }
+        viewModel.isEditing = false
     }
     
     func reloadUI() {
@@ -124,17 +122,28 @@ class PendingRewardViewController: InAppBrowsingViewController {
     }
     
     @IBAction func onSearchButtonTapped(_ sender: Any) {
-        if !self.cancelButton.isHidden {
+        if viewModel.isEditing {
+            updateUIEndSearchingMode()
             searchTextField.text = ""
+            searchTextField.resignFirstResponder()
             viewModel.searchText = ""
             reloadUI()
         } else {
-            self.updateUIStartSearchingMode()
+            updateUIStartSearchingMode()
         }
     }
     
-    @IBAction func cancelButtonTapped(_ sender: Any) {
-        self.updateUIEndSearchingMode()
+    @IBAction func filterButtonTapped(_ sender: Any) {
+        let allPlatforms = viewModel.getAllPlatform()
+        let viewModel = PlatformFilterViewModel(dataSource: allPlatforms, selected: viewModel.selectedPlatforms)
+        viewModel.shouldShowType = true
+        viewModel.selectedType = self.viewModel.selectedTypes
+        let viewController = PlatformFilterViewController.instantiateFromNib()
+        viewController.viewModel = viewModel
+        viewController.delegate = self
+        let sheetOptions = SheetOptions(pullBarHeight: 0)
+        let sheet = SheetViewController(controller: viewController, sizes: [.intrinsic], options: sheetOptions)
+        present(sheet, animated: true)
     }
     
     @objc override func onAppSwitchChain() {
@@ -227,5 +236,13 @@ extension PendingRewardViewController: SkeletonTableViewDelegate {
     
     func collectionSkeletonView(_ skeletonView: UITableView, identifierForFooterInSection section: Int) -> ReusableHeaderFooterIdentifier? {
         return "SectionHeader"
+    }
+}
+
+extension PendingRewardViewController: PlatformFilterViewControllerDelegate {
+    func didSelectPlatform(viewController: PlatformFilterViewController, selected: Set<EarnPlatform>, types: [EarningType]) {
+        viewModel.selectedPlatforms = selected
+        viewModel.selectedTypes = types
+        reloadUI()
     }
 }

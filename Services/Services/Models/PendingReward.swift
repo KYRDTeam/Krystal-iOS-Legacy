@@ -56,6 +56,16 @@ public struct RewardPlatform: Codable {
         case platformDescription = "description"
         case earningType
     }
+    
+    public func toEarnPlatform() -> EarnPlatform {
+        let json: [String: Any] = [
+            "name": name,
+            "logo": logo,
+            "type": earningType
+        ]
+        
+        return EarnPlatform(json: json)
+    }
 }
 
 public typealias PendingRewardResponse = [PendingRewardResponseElement]
