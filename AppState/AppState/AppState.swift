@@ -47,7 +47,7 @@ public class AppState {
     if targetChain != currentChain {
         updateChain(chain: targetChain)
     }
-    AppEventManager.shared.postSwitchAddressEvent(address: address, switchChain: targetChain != currentChain)
+    AppEventManager.shared.postSwitchAddressEvent(address: address, switchChain: false)
   }
   
   public var isBrowsingMode: Bool {
