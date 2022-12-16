@@ -81,7 +81,7 @@ class UnstakeViewController: InAppBrowsingViewController {
     func setupUI() {
         guard let viewModel = viewModel else { return }
         availableUnstakeValue.text = viewModel.displayDepositedValue
-        amountTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
+        amountTextField.setPlaceholder(text: Strings.amount, color: AppTheme.current.secondaryTextColor)
         receiveInfoView.setInfo(title: Strings.youWillReceive, value: viewModel.receivedInfoString())
         rateView.setInfo(title: Strings.rate, value: viewModel.showRateInfo(), shouldShowIcon: true, rightValueIcon: Images.revert)
         rateView.onTapRightIcon = { [weak self] in
