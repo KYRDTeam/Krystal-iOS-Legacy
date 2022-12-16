@@ -8763,7 +8763,7 @@
 				CODE_SIGN_ENTITLEMENTS = "KyberNetwork/KyberSwap - Crypto ExchangeDebug.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				ENABLE_BITCODE = NO;
@@ -8797,7 +8797,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				ENABLE_BITCODE = NO;
@@ -9105,7 +9105,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
@@ -9139,7 +9139,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
