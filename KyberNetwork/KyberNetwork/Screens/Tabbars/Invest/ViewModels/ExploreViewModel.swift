@@ -55,6 +55,7 @@ class ExploreViewModel {
         let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
         let isScannerEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
         let isTokenApprovalEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.tokenApproval)
+        let isLoyaltyEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.loyalty)
         let isNotBrowsing = !KNGeneralProvider.shared.isBrowsingMode
         
         var menuItems: [ExploreMenuItem] = []
@@ -86,7 +87,9 @@ class ExploreViewModel {
             menuItems.append(.approvals)
         }
         
-        menuItems.append(.loyalty)
+        if isLoyaltyEnabled && isNotBrowsing {
+            menuItems.append(.loyalty)
+        }
         
         if self.menuItems.value != menuItems {
             self.menuItems.value = menuItems
