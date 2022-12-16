@@ -287,7 +287,7 @@ class UnstakeViewController: InAppBrowsingViewController {
                                                          rate: viewModel.showRateInfo(),
                                                          fee: viewModel.transactionFeeString(),
                                                          stakeTokenIcon: viewModel.stakingTokenLogo,
-                                                         toTokenIcon:viewModel.toTokenLogo,
+                                                         toTokenIcon: viewModel.receiveTokenLogo,
                                                          fromSym: viewModel.stakingTokenSymbol,
                                                          toSym: viewModel.displaySymbol,
                                                          earningType: viewModel.earningType)
