@@ -87,6 +87,7 @@ public struct OptionDetailResponse: Codable {
     public let poolAddress: String
     public var validation: EarnOptionValidation?
     public let wrap: WrapInfo?
+    public var token: TokenInfo?
 }
 // MARK: - EarningToken
 public struct EarningToken: Codable {
@@ -107,3 +108,8 @@ public struct EarnOptionValidation: Codable {
     public var stakeInterval: Double?
 }
 
+public struct TokenInfo: Codable {
+  public let address, symbol: String
+  public let logo: String
+  public let decimals: Int
+}
