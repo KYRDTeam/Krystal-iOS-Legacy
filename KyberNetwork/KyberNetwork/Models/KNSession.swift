@@ -47,13 +47,6 @@ class KNSession {
     AppEventManager.shared.postWalletListUpdatedEvent()
   }
   
-  func getCurrentWalletAddresses() -> [KAddress] {
-    if address.isWatchWallet {
-      return [address]
-    }
-    return walletManager.getAllAddresses(walletID: address.walletID)
-  }
-  
   func configureDatabase() {
     let config = RealmConfiguration.configuration(for: address.addressString, chainID: KNGeneralProvider.shared.customRPC.chainID)
     self.realm = try! Realm(configuration: config)
