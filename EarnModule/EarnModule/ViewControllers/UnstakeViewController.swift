@@ -260,21 +260,11 @@ class UnstakeViewController: InAppBrowsingViewController {
     
     func approve() {
         guard let viewModel = viewModel, let contractAddress = viewModel.contractAddress else { return }
-        let vm = ApproveTokenViewModel(symbol: viewModel.stakingTokenSymbol, tokenAddress: viewModel.stakingTokenAddress, remain: viewModel.stakingTokenAllowance, toAddress: contractAddress, chain: viewModel.chain)
-        let vc = ApproveTokenViewController(viewModel: vm)
-        vc.updateGasLimit(viewModel.gasLimitForApprove)
-        vc.onDismiss = {
-            self.unstakeButtonState = .needApprove
-        }
-        vc.onApproveSent = { hash in
+        let param = ApprovePopup.ApproveParam(symbol: viewModel.stakingTokenSymbol, tokenAddress: viewModel.stakingTokenAddress, remain: viewModel.stakingTokenAllowance, toAddress: contractAddress, chain: viewModel.chain, gasLimit: viewModel.gasLimitForApprove)
+        ApprovePopup.show(on: self, param: param) { hash in
             self.viewModel?.approveHash = hash
             self.unstakeButtonState = .approving
         }
-        vc.onFailApprove = { error in
-            self.showErrorTopBannerMessage(message: Strings.approveFail)
-            self.unstakeButtonState = .needApprove
-        }
-        self.present(vc, animated: true, completion: nil)
     }
     
     func openUnStakeSummary() {
