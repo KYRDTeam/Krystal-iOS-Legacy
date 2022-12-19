@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -68,7 +68,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MATIC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YMp-Iy-D7C">
-                                <rect key="frame" x="55" y="17.666666666666668" width="50" height="21.000000000000004"/>
+                                <rect key="frame" x="55" y="17.666666666666668" width="54" height="21.000000000000004"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -77,7 +77,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dsD-bV-J4V">
-                                <rect key="frame" x="148.66666666666666" y="19.666666666666664" width="23.666666666666657" height="16.666666666666664"/>
+                                <rect key="frame" x="128.33333333333334" y="19.666666666666664" width="27.333333333333343" height="16.666666666666664"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                 <color key="textColor" name="normalTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -86,7 +86,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5.67%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u3I-aW-w4R">
-                                <rect key="frame" x="177.33333333333334" y="17.666666666666668" width="45.333333333333343" height="21.000000000000004"/>
+                                <rect key="frame" x="160.66666666666666" y="17.666666666666668" width="53.333333333333343" height="21.000000000000004"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <color key="textColor" name="buttonBackgroundColor"/>
                                 <nil key="highlightedColor"/>
@@ -95,7 +95,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TVL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uOx-64-HRJ">
-                                <rect key="frame" x="245.66666666666666" y="19.666666666666664" width="21.666666666666657" height="16.666666666666664"/>
+                                <rect key="frame" x="243.99999999999997" y="19.666666666666664" width="24.666666666666657" height="16.666666666666664"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                 <color key="textColor" name="normalTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -104,7 +104,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$30K" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BE0-7W-VuF">
-                                <rect key="frame" x="272.33333333333331" y="17.666666666666668" width="43.666666666666686" height="21.000000000000004"/>
+                                <rect key="frame" x="273.66666666666669" y="17.666666666666668" width="42.333333333333314" height="21.000000000000004"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -154,7 +154,7 @@
                             <constraint firstItem="u3I-aW-w4R" firstAttribute="centerY" secondItem="YMp-Iy-D7C" secondAttribute="centerY" id="P0Q-fv-qRF"/>
                             <constraint firstItem="u3I-aW-w4R" firstAttribute="leading" secondItem="dsD-bV-J4V" secondAttribute="trailing" constant="5" id="UDO-we-k3f"/>
                             <constraint firstItem="asH-IT-2CZ" firstAttribute="top" secondItem="wNl-t0-sKw" secondAttribute="top" constant="17" id="V8V-b7-oIX"/>
-                            <constraint firstItem="uOx-64-HRJ" firstAttribute="leading" secondItem="u3I-aW-w4R" secondAttribute="trailing" constant="23" id="ZbQ-GK-BHM"/>
+                            <constraint firstItem="uOx-64-HRJ" firstAttribute="leading" secondItem="u3I-aW-w4R" secondAttribute="trailing" constant="30" id="ZbQ-GK-BHM"/>
                             <constraint firstItem="zkV-H8-IJj" firstAttribute="top" secondItem="PC5-dI-riD" secondAttribute="bottom" id="buw-Tr-o5z"/>
                             <constraint firstAttribute="trailing" secondItem="asH-IT-2CZ" secondAttribute="trailing" constant="16" id="i4V-17-JKS"/>
                             <constraint firstItem="pLc-GZ-521" firstAttribute="top" secondItem="wNl-t0-sKw" secondAttribute="top" constant="16" id="k05-B0-FR9"/>

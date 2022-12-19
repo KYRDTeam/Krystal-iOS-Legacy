@@ -88,6 +88,13 @@
 "my.supply" = "My supply";
 "unstaking.in.progress" = "Unstaking in progress";
 "unwrap.token" = "Unwrap %@";
-"unstake.eth.warning.pop.up" = "Currently, unstaking is not available, as this functionality is not yet supported by Ethereum.\nUnstaking will be enabled after the Shanghai upgrade that will follow The Merge in approximately 6-12 months (~Q2/Q3 2023)";
+"unstake.eth.warning.pop.up" = "Unstaking ETH is currently not available as this functionality is not yet supported by Ethereum. It will only be enabled after the Shanghai upgrade that will follow The Merge in approximately 6-12 months (~Q2/Q3 2023). An alternative to unstaking will be to swap this token to ETH. Swap to ETH";
 "all.platforms" = "All Platforms";
 "warning" = "Warning";
+"reward.apy.info.text" = "Sypply APY: %@ \nReward APY: %@";
+"stake.warning.message" = "Token at risk. You can deposit your funds, but we strongly discourage you from doing so.";
+"stake.disable.message" = "Token no longer supported by partner platform. You are only able to withdraw your existing funds.";
+"chart" = "CHART";
+"other" = "OTHER";
+"select.platform" = "Select Platform";
+"select.type" = "Select Type";

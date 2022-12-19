@@ -8,12 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		724567E960E5EE407A35533D /* Pods_EarnModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5969EB6F30F2999141BBB05 /* Pods_EarnModule.framework */; };
+		7E0DAE34294711670045AD35 /* EarningTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0DAE32294711670045AD35 /* EarningTypeCell.swift */; };
+		7E0DAE35294711670045AD35 /* EarningTypeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E0DAE33294711670045AD35 /* EarningTypeCell.xib */; };
 		7E181E5F2923713700C661CD /* UnstakeSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E181E5E2923713700C661CD /* UnstakeSummaryViewModel.swift */; };
 		7E181E6129237A5E00C661CD /* UnstakeDisplayInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E181E6029237A5E00C661CD /* UnstakeDisplayInfo.swift */; };
 		7E181E652923A6E400C661CD /* PendingUnstakeTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E181E642923A6E400C661CD /* PendingUnstakeTxInfo.swift */; };
 		7E36E369291A530A009BC8FE /* UnstakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E36E367291A530A009BC8FE /* UnstakeViewController.swift */; };
 		7E36E36A291A530A009BC8FE /* UnstakeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E36E368291A530A009BC8FE /* UnstakeViewController.xib */; };
 		7E5E7278290B7E5700156F3C /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5E7277290B7E5700156F3C /* Services.framework */; };
+		7E693E60294097B40069CFFE /* ChartLegendTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E693E5E294097B40069CFFE /* ChartLegendTokenCell.swift */; };
+		7E693E61294097B40069CFFE /* ChartLegendTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E693E5F294097B40069CFFE /* ChartLegendTokenCell.xib */; };
 		7E6EBD6029091E0800069B33 /* EarnListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5C29091E0700069B33 /* EarnListViewController.xib */; };
 		7E6EBD6129091E0800069B33 /* EarnListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5D29091E0700069B33 /* EarnListViewController.swift */; };
 		7E6EBD6229091E0800069B33 /* StakingPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD5E29091E0700069B33 /* StakingPortfolioViewController.swift */; };
@@ -53,6 +57,11 @@
 		7EB252C92907F8C300648438 /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB252C82907F8C300648438 /* NSObject.swift */; };
 		7ED1AF1E291E29AD00BA7C75 /* StakingPortfolioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED1AF1D291E29AD00BA7C75 /* StakingPortfolioViewModel.swift */; };
 		7ED1AF23291E498100BA7C75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E6EBD6429091F7A00069B33 /* Assets.xcassets */; };
+		7ED78DD5293F2B8E000E736F /* PortfolioHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED78DD4293F2B8E000E736F /* PortfolioHeaderView.swift */; };
+		7ED78DD7293F2BAB000E736F /* PortfolioHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED78DD6293F2BAB000E736F /* PortfolioHeaderView.xib */; };
+		7ED78DDA293F5756000E736F /* PortfolioPieChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED78DD8293F5756000E736F /* PortfolioPieChartCell.swift */; };
+		7ED78DDB293F5756000E736F /* PortfolioPieChartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED78DD9293F5756000E736F /* PortfolioPieChartCell.xib */; };
+		7EEF41742942E6E0006FA506 /* PortfolioPieChartCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEF41732942E6E0006FA506 /* PortfolioPieChartCellViewModel.swift */; };
 		7EF19ED8290B860B00358B66 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF19ED7290B860B00358B66 /* DesignSystem.framework */; };
 		7EF19EDC290B865300358B66 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF19EDB290B865300358B66 /* Utilities.framework */; };
 		A6066936292B7E6C00718E90 /* EarningType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6066935292B7E6C00718E90 /* EarningType.swift */; };
@@ -75,6 +84,12 @@
 		A6FDE58E2924BCDA009BC64B /* ClaimTxStatusPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FDE58C2924BCDA009BC64B /* ClaimTxStatusPopup.swift */; };
 		A6FDE58F2924BCDA009BC64B /* ClaimTxStatusPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6FDE58D2924BCDA009BC64B /* ClaimTxStatusPopup.xib */; };
 		A6FDE5912924BE34009BC64B /* ClaimTxStatusPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FDE5902924BE34009BC64B /* ClaimTxStatusPopupViewModel.swift */; };
+		C34122B52947401D001CD2E1 /* PendingRewardClaimConfirmPopUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34122B42947401D001CD2E1 /* PendingRewardClaimConfirmPopUpViewModel.swift */; };
+		C34E9C5A2943396E00ECC56B /* PendingRewardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34E9C582943396E00ECC56B /* PendingRewardViewController.swift */; };
+		C34E9C5B2943396E00ECC56B /* PendingRewardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C34E9C592943396E00ECC56B /* PendingRewardViewController.xib */; };
+		C34E9C5E294610CD00ECC56B /* PendingRewardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34E9C5C294610CD00ECC56B /* PendingRewardCell.swift */; };
+		C34E9C5F294610CD00ECC56B /* PendingRewardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C34E9C5D294610CD00ECC56B /* PendingRewardCell.xib */; };
+		C34E9C6129471A1300ECC56B /* PendingRewardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34E9C6029471A1200ECC56B /* PendingRewardViewModel.swift */; };
 		C36AD4B12924F2680031770E /* lido-eth.plist in Resources */ = {isa = PBXBuildFile; fileRef = C36AD4B02924F2680031770E /* lido-eth.plist */; };
 		C36AD4B32924F8DC0031770E /* lido-matic.plist in Resources */ = {isa = PBXBuildFile; fileRef = C36AD4B22924F8DC0031770E /* lido-matic.plist */; };
 		C376A2B029261075008E0291 /* ankr-matic-eth.plist in Resources */ = {isa = PBXBuildFile; fileRef = C376A2AF29261075008E0291 /* ankr-matic-eth.plist */; };
@@ -97,12 +112,16 @@
 
 /* Begin PBXFileReference section */
 		60E45F03C79752ACE005A2BE /* Pods-EarnModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EarnModule.release.xcconfig"; path = "Target Support Files/Pods-EarnModule/Pods-EarnModule.release.xcconfig"; sourceTree = "<group>"; };
+		7E0DAE32294711670045AD35 /* EarningTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarningTypeCell.swift; sourceTree = "<group>"; };
+		7E0DAE33294711670045AD35 /* EarningTypeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarningTypeCell.xib; sourceTree = "<group>"; };
 		7E181E5E2923713700C661CD /* UnstakeSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnstakeSummaryViewModel.swift; sourceTree = "<group>"; };
 		7E181E6029237A5E00C661CD /* UnstakeDisplayInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnstakeDisplayInfo.swift; sourceTree = "<group>"; };
 		7E181E642923A6E400C661CD /* PendingUnstakeTxInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingUnstakeTxInfo.swift; sourceTree = "<group>"; };
 		7E36E367291A530A009BC8FE /* UnstakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnstakeViewController.swift; sourceTree = "<group>"; };
 		7E36E368291A530A009BC8FE /* UnstakeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnstakeViewController.xib; sourceTree = "<group>"; };
 		7E5E7277290B7E5700156F3C /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E693E5E294097B40069CFFE /* ChartLegendTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLegendTokenCell.swift; sourceTree = "<group>"; };
+		7E693E5F294097B40069CFFE /* ChartLegendTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChartLegendTokenCell.xib; sourceTree = "<group>"; };
 		7E6EBD5C29091E0700069B33 /* EarnListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EarnListViewController.xib; sourceTree = "<group>"; };
 		7E6EBD5D29091E0700069B33 /* EarnListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EarnListViewController.swift; sourceTree = "<group>"; };
 		7E6EBD5E29091E0700069B33 /* StakingPortfolioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StakingPortfolioViewController.swift; sourceTree = "<group>"; };
@@ -142,6 +161,11 @@
 		7EB252C62907F7EC00648438 /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
 		7EB252C82907F8C300648438 /* NSObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObject.swift; sourceTree = "<group>"; };
 		7ED1AF1D291E29AD00BA7C75 /* StakingPortfolioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StakingPortfolioViewModel.swift; path = EarnModule/StakingPortfolioViewModel.swift; sourceTree = SOURCE_ROOT; };
+		7ED78DD4293F2B8E000E736F /* PortfolioHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioHeaderView.swift; sourceTree = "<group>"; };
+		7ED78DD6293F2BAB000E736F /* PortfolioHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PortfolioHeaderView.xib; sourceTree = "<group>"; };
+		7ED78DD8293F5756000E736F /* PortfolioPieChartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioPieChartCell.swift; sourceTree = "<group>"; };
+		7ED78DD9293F5756000E736F /* PortfolioPieChartCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PortfolioPieChartCell.xib; sourceTree = "<group>"; };
+		7EEF41732942E6E0006FA506 /* PortfolioPieChartCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioPieChartCellViewModel.swift; sourceTree = "<group>"; };
 		7EF19ED7290B860B00358B66 /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EF19EDB290B865300358B66 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6066935292B7E6C00718E90 /* EarningType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarningType.swift; sourceTree = "<group>"; };
@@ -166,6 +190,12 @@
 		A6FDE58D2924BCDA009BC64B /* ClaimTxStatusPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClaimTxStatusPopup.xib; sourceTree = "<group>"; };
 		A6FDE5902924BE34009BC64B /* ClaimTxStatusPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimTxStatusPopupViewModel.swift; sourceTree = "<group>"; };
 		B5969EB6F30F2999141BBB05 /* Pods_EarnModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EarnModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C34122B42947401D001CD2E1 /* PendingRewardClaimConfirmPopUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingRewardClaimConfirmPopUpViewModel.swift; sourceTree = "<group>"; };
+		C34E9C582943396E00ECC56B /* PendingRewardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingRewardViewController.swift; sourceTree = "<group>"; };
+		C34E9C592943396E00ECC56B /* PendingRewardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PendingRewardViewController.xib; sourceTree = "<group>"; };
+		C34E9C5C294610CD00ECC56B /* PendingRewardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingRewardCell.swift; sourceTree = "<group>"; };
+		C34E9C5D294610CD00ECC56B /* PendingRewardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PendingRewardCell.xib; sourceTree = "<group>"; };
+		C34E9C6029471A1200ECC56B /* PendingRewardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingRewardViewModel.swift; sourceTree = "<group>"; };
 		C36AD4B02924F2680031770E /* lido-eth.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "lido-eth.plist"; sourceTree = "<group>"; };
 		C36AD4B22924F8DC0031770E /* lido-matic.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "lido-matic.plist"; sourceTree = "<group>"; };
 		C376A2AF29261075008E0291 /* ankr-matic-eth.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ankr-matic-eth.plist"; sourceTree = "<group>"; };
@@ -231,6 +261,14 @@
 				7E6EBD692909280900069B33 /* EarnPoolViewCell.xib */,
 				C3851892292CAB7E004E9661 /* PlatformCell.swift */,
 				C3851893292CAB7E004E9661 /* PlatformCell.xib */,
+				C34E9C5C294610CD00ECC56B /* PendingRewardCell.swift */,
+				7ED78DD8293F5756000E736F /* PortfolioPieChartCell.swift */,
+				7ED78DD9293F5756000E736F /* PortfolioPieChartCell.xib */,
+				7E693E5E294097B40069CFFE /* ChartLegendTokenCell.swift */,
+				7E693E5F294097B40069CFFE /* ChartLegendTokenCell.xib */,
+				7E0DAE32294711670045AD35 /* EarningTypeCell.swift */,
+				C34E9C5D294610CD00ECC56B /* PendingRewardCell.xib */,
+				7E0DAE33294711670045AD35 /* EarningTypeCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -256,6 +294,8 @@
 				C3A408012923411C008C1220 /* StakingFAQView.xib */,
 				7EAF4762291B685500BF5D00 /* StakingEarningTokensView.swift */,
 				7EAF4761291B685500BF5D00 /* StakingEarningTokensView.xib */,
+				7ED78DD4293F2B8E000E736F /* PortfolioHeaderView.swift */,
+				7ED78DD6293F2BAB000E736F /* PortfolioHeaderView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -279,6 +319,8 @@
 				A6FDE58D2924BCDA009BC64B /* ClaimTxStatusPopup.xib */,
 				C385188E292CAB48004E9661 /* PlatformFilterViewController.swift */,
 				C385188F292CAB48004E9661 /* PlatformFilterViewController.xib */,
+				C34E9C582943396E00ECC56B /* PendingRewardViewController.swift */,
+				C34E9C592943396E00ECC56B /* PendingRewardViewController.xib */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -314,6 +356,9 @@
 				7E71FA792921E9BC0021E67D /* UnstakeViewModel.swift */,
 				7E181E5E2923713700C661CD /* UnstakeSummaryViewModel.swift */,
 				7EB00DE62924F463001B2136 /* TrasactionProcessPopupViewModel.swift */,
+				C34E9C6029471A1200ECC56B /* PendingRewardViewModel.swift */,
+				C34122B42947401D001CD2E1 /* PendingRewardClaimConfirmPopUpViewModel.swift */,
+				7EEF41732942E6E0006FA506 /* PortfolioPieChartCellViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -472,12 +517,17 @@
 			files = (
 				7E6EBD6029091E0800069B33 /* EarnListViewController.xib in Resources */,
 				C3851891292CAB48004E9661 /* PlatformFilterViewController.xib in Resources */,
+				7ED78DDB293F5756000E736F /* PortfolioPieChartCell.xib in Resources */,
 				A6FDE58F2924BCDA009BC64B /* ClaimTxStatusPopup.xib in Resources */,
 				7E6EBD6329091E0800069B33 /* StakingPortfolioViewController.xib in Resources */,
 				7E36E36A291A530A009BC8FE /* UnstakeViewController.xib in Resources */,
 				7EAF4763291B685500BF5D00 /* StakingEarningTokensView.xib in Resources */,
+				C34E9C5F294610CD00ECC56B /* PendingRewardCell.xib in Resources */,
 				7ED1AF23291E498100BA7C75 /* Assets.xcassets in Resources */,
+				7ED78DD7293F2BAB000E736F /* PortfolioHeaderView.xib in Resources */,
 				7E6EBD6D2909280900069B33 /* EarnPoolViewCell.xib in Resources */,
+				7E0DAE35294711670045AD35 /* EarningTypeCell.xib in Resources */,
+				C34E9C5B2943396E00ECC56B /* PendingRewardViewController.xib in Resources */,
 				7E6EBD72290929A400069B33 /* Localizable.strings in Resources */,
 				C36AD4B12924F2680031770E /* lido-eth.plist in Resources */,
 				C376A2B029261075008E0291 /* ankr-matic-eth.plist in Resources */,
@@ -493,6 +543,7 @@
 				7E6EBD87290931E900069B33 /* StakingPortfolioCell.xib in Resources */,
 				C3A4080E2923416A008C1220 /* ankr-bnb.plist in Resources */,
 				C3A4080C2923416A008C1220 /* ankr-matic-matic.plist in Resources */,
+				7E693E61294097B40069CFFE /* ChartLegendTokenCell.xib in Resources */,
 				C3A408042923411C008C1220 /* StakingFAQView.xib in Resources */,
 				7EAF4767291B68C100BF5D00 /* EarningTokenCell.xib in Resources */,
 				7E987F262908E92500AA5F8F /* EarnOverviewController.xib in Resources */,
@@ -541,24 +592,30 @@
 				A61B297C292384E80064C3FE /* SpecifiedEarningPlatform.swift in Sources */,
 				A6FDE58E2924BCDA009BC64B /* ClaimTxStatusPopup.swift in Sources */,
 				7EB00DE72924F463001B2136 /* TrasactionProcessPopupViewModel.swift in Sources */,
+				C34E9C5E294610CD00ECC56B /* PendingRewardCell.swift in Sources */,
+				7ED78DD5293F2B8E000E736F /* PortfolioHeaderView.swift in Sources */,
 				7E6EBD6C2909280900069B33 /* EarnPoolViewCell.swift in Sources */,
 				7E6EBD86290931E900069B33 /* StakingPortfolioCell.swift in Sources */,
 				7E71FA7A2921E9BD0021E67D /* UnstakeViewModel.swift in Sources */,
 				7E181E6129237A5E00C661CD /* UnstakeDisplayInfo.swift in Sources */,
+				C34E9C6129471A1300ECC56B /* PendingRewardViewModel.swift in Sources */,
 				C3851894292CAB7E004E9661 /* PlatformCell.swift in Sources */,
 				7EB252C72907F7EC00648438 /* TypeAliases.swift in Sources */,
 				A6D1F808291BAF1E00ABA52B /* StakingViewModel.swift in Sources */,
 				A662557C2941BFF300B4B6A4 /* EarnCoordinator.swift in Sources */,
 				A61B297E292385000064C3FE /* EarnParamBuilder.swift in Sources */,
 				A61B2980292385780064C3FE /* EarnParamBuilderFactory.swift in Sources */,
+				7E693E60294097B40069CFFE /* ChartLegendTokenCell.swift in Sources */,
 				7EB252C12907F3E100648438 /* EarnOverViewModel.swift in Sources */,
 				A61B2984292385C30064C3FE /* LidoParamBuilder.swift in Sources */,
 				7EAF4768291B68C100BF5D00 /* EarningTokenCell.swift in Sources */,
 				7EAF477E291B7CDB00BF5D00 /* TransitionDelegate.swift in Sources */,
 				C3A408022923411C008C1220 /* SectionHeaderFAQView.swift in Sources */,
 				C3A4080F2923416A008C1220 /* FAQModel.swift in Sources */,
+				7ED78DDA293F5756000E736F /* PortfolioPieChartCell.swift in Sources */,
 				7E181E652923A6E400C661CD /* PendingUnstakeTxInfo.swift in Sources */,
 				7EAF4752291B567600BF5D00 /* StakingViewController.swift in Sources */,
+				7E0DAE34294711670045AD35 /* EarningTypeCell.swift in Sources */,
 				7EB252C32907F43B00648438 /* Observer.swift in Sources */,
 				7E36E369291A530A009BC8FE /* UnstakeViewController.swift in Sources */,
 				C3A408032923411C008C1220 /* StakingFAQView.swift in Sources */,
@@ -568,7 +625,10 @@
 				7EB252B92907F25200648438 /* EarnOverviewController.swift in Sources */,
 				A61B2982292385AC0064C3FE /* AnkrParamBuilder.swift in Sources */,
 				7EAF4764291B685500BF5D00 /* StakingEarningTokensView.swift in Sources */,
+				C34E9C5A2943396E00ECC56B /* PendingRewardViewController.swift in Sources */,
+				7EEF41742942E6E0006FA506 /* PortfolioPieChartCellViewModel.swift in Sources */,
 				7ED1AF1E291E29AD00BA7C75 /* StakingPortfolioViewModel.swift in Sources */,
+				C34122B52947401D001CD2E1 /* PendingRewardClaimConfirmPopUpViewModel.swift in Sources */,
 				A6066936292B7E6C00718E90 /* EarningType.swift in Sources */,
 				7EB252BE2907F30300648438 /* EarnModule.swift in Sources */,
 				C3851890292CAB48004E9661 /* PlatformFilterViewController.swift in Sources */,
