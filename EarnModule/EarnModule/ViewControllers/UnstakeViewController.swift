@@ -57,6 +57,14 @@ class UnstakeViewController: InAppBrowsingViewController {
         updateUINextButton()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppDependencies.tracker.track(
+            self.viewModel?.earningType == .lending ? "earn_v2_withdraw_setup_open" : "earn_v2_unstake_setup_open",
+            properties: ["screenid": self.viewModel?.earningType == .lending ? "earn_v2_withdraw_setup" : "earn_v2_unstake_setup"]
+        )
+    }
+    
     func initializeData() {
         unstakeButtonState = .disable
         if let viewModel = viewModel {
@@ -84,7 +92,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         toggleUnwrapView.onSwitchValue = { isOn in
             if let viewModel = self.viewModel {
                 viewModel.updateWrapInfo(isUnWrap: isOn)
-                self.receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.toTokenSymbol)
+                self.receiveInfoView.setValue(value: viewModel.receivedInfoString())
                 self.rateView.setValue(value: viewModel.showRateInfo())
                 self.showLoadingHUD()
                 viewModel.fetchData(isUseWrapTokenAddress: true, completion: {
@@ -156,10 +164,13 @@ class UnstakeViewController: InAppBrowsingViewController {
         guard let viewModel = viewModel else { return }
         viewModel.unstakeValue = viewModel.balance
         amountTextField.text = viewModel.unstakeValueString()
-        receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.toTokenSymbol)
+        receiveInfoView.setValue(value: viewModel.receivedValueMaxString() + " " + viewModel.displaySymbol)
         validateInput()
         updateUINextButton()
-        AppDependencies.tracker.track(viewModel.earningType == .lending ? "mob_withdraw_max_amount" : "mob_unstake_max_amount", properties: ["screenid": "earn"])
+        AppDependencies.tracker.track(
+            viewModel.earningType == .lending ? "mob_withdraw_max_amount" : "mob_unstake_max_amount",
+            properties: ["screenid": viewModel.earningType == .lending ? "earn_v2_withdraw_setup" : "earn_v2_unstake_setup"]
+        )
     }
     
     @IBAction func unstakeButtonTapped(_ sender: Any) {
@@ -173,7 +184,15 @@ class UnstakeViewController: InAppBrowsingViewController {
                     unstakeButtonState = .approving
             }
         }
-        AppDependencies.tracker.track(viewModel?.earningType == .lending ? "mob_withdraw" : "mob_unstake", properties: ["screenid": "earn"])
+        var params: [String: Any] = ["screenid": viewModel?.earningType == .lending ? "earn_v2_withdraw_setup" : "earn_v2_unstake_setup"]
+        let inputValue = amountTextField.text?.amountBigInt(decimals: viewModel?.stakingTokenDecimal ?? 18) ?? BigInt(0)
+        params["earn_amount"] = inputValue.description
+        params["earn_token"] = viewModel?.toTokenSymbol
+        params["earn_platform"] = viewModel?.platform.name
+        AppDependencies.tracker.track(
+            viewModel?.earningType == .lending ? "mob_withdraw" : "mob_unstake",
+            properties: params
+        )
     }
     
     func showError(msg: String) {
@@ -243,6 +262,7 @@ class UnstakeViewController: InAppBrowsingViewController {
         guard let viewModel = viewModel, let contractAddress = viewModel.contractAddress else { return }
         let vm = ApproveTokenViewModel(symbol: viewModel.stakingTokenSymbol, tokenAddress: viewModel.stakingTokenAddress, remain: viewModel.stakingTokenAllowance, toAddress: contractAddress, chain: viewModel.chain)
         let vc = ApproveTokenViewController(viewModel: vm)
+        vc.updateGasLimit(viewModel.gasLimitForApprove)
         vc.onDismiss = {
             self.unstakeButtonState = .needApprove
         }
@@ -269,7 +289,7 @@ class UnstakeViewController: InAppBrowsingViewController {
                                                          stakeTokenIcon: viewModel.stakingTokenLogo,
                                                          toTokenIcon:viewModel.toTokenLogo,
                                                          fromSym: viewModel.stakingTokenSymbol,
-                                                         toSym: viewModel.toTokenSymbol,
+                                                         toSym: viewModel.displaySymbol,
                                                          earningType: viewModel.earningType)
                     
                     
@@ -279,7 +299,10 @@ class UnstakeViewController: InAppBrowsingViewController {
                         if let pendingTx = pendingTx as? PendingUnstakeTxInfo {
                             self.openTxStatusPopup(tx: pendingTx)
                         }
-                        AppDependencies.tracker.track(self.viewModel?.earningType == .lending ? "mob_confirm_withdraw" : "mob_confirm_unstake", properties: ["screenid": "earn"])
+                        AppDependencies.tracker.track(
+                            self.viewModel?.earningType == .lending ? "mob_confirm_withdraw" : "mob_confirm_unstake",
+                            properties: ["screenid": self.viewModel?.earningType == .lending ? "earn_v2_withdraw_confirm" : "earn_v2_unstake_confirm"]
+                        )
                     }
                 }
                 return
@@ -340,7 +363,10 @@ extension UnstakeViewController: UITextFieldDelegate {
         updateReceivedAmount()
         validateInput()
         updateUINextButton()
-        AppDependencies.tracker.track(viewModel?.earningType == .lending ? "mob_enter_withdraw_amount" : "mob_enter_unstake_amount", properties: ["screenid": "earn"])
+        AppDependencies.tracker.track(
+            viewModel?.earningType == .lending ? "mob_enter_withdraw_amount" : "mob_enter_unstake_amount",
+            properties: ["screenid": viewModel?.earningType == .lending ? "earn_v2_withdraw_setup" : "earn_v2_unstake_setup"]
+        )
     }
 
 }

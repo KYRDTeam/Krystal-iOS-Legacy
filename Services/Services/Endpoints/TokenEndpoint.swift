@@ -10,9 +10,10 @@ import Moya
 
 enum TokenEndpoint {
   case getTokenDetail(chainPath: String, address: String)
-  case getCommonBaseToken
+  case getCommonBaseToken(chainPath: String)
   case getPoolList(tokenAddress: String, chainID: Int, limit: Int)
   case getChartData(chainPath: String, address: String, quote: String, from: Int, to: Int)
+  case getSearchToken(chainPath: String, address: String, query: String, orderBy: String)
 }
 
 extension TokenEndpoint: TargetType {
@@ -25,20 +26,19 @@ extension TokenEndpoint: TargetType {
     switch self {
     case .getTokenDetail(let chainPath, _):
       return "/\(chainPath)/v1/token/tokenDetails"
-    case .getCommonBaseToken:
-      return "/v1/token/commonBase"
+    case .getCommonBaseToken(let chainPath):
+      return "/\(chainPath)/v1/token/commonBase"
     case .getPoolList:
       return "/all/v1/pool/list"
     case .getChartData(let chainPath, _, _, _, _):
       return "/\(chainPath)/v1/market/priceSeries"
+    case .getSearchToken(let chainPath, _, _, _):
+      return "/\(chainPath)/v1/token/search"
     }
   }
   
   var method: Moya.Method {
-    switch self {
-    case .getTokenDetail, .getCommonBaseToken, .getPoolList, .getChartData:
-      return .get
-    }
+    return .get
   }
   
   var sampleData: Data {
@@ -68,6 +68,17 @@ extension TokenEndpoint: TargetType {
         "from": from,
         "to": to
       ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getSearchToken(_, let address, let query, let orderBy):
+      var json: [String: Any] = [
+        "query": query,
+        "orderBy": orderBy,
+        "limit": 50,
+        "tags": "PROMOTION,VERIFIED,UNVERIFIED"
+      ]
+      if !address.isEmpty {
+        json["address"] = address
+      }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
   }

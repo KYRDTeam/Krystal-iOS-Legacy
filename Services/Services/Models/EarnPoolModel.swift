@@ -46,12 +46,12 @@ public class EarnPoolModel {
   }
 }
 
-public class EarnPlatform {
+public class EarnPlatform: Equatable, Hashable {
   public let name: String
   public let logo: String
   public let type: String
   public let desc: String
-  public let apy: Double
+  public let apy, rewardApy: Double
   public let tvl: Double
 
   init(json: JSONDictionary) {
@@ -61,6 +61,7 @@ public class EarnPlatform {
     self.desc = json["desc"] as? String ?? ""
     self.apy = json["apy"] as? Double ?? 0
     self.tvl = json["tvl"] as? Double ?? 0
+    self.rewardApy = json["rewardAPY"] as? Double ?? 0
   }
     
    public init (platform: Platform, apy: Double, tvl: Double) {
@@ -70,5 +71,14 @@ public class EarnPlatform {
         self.desc = platform.desc
         self.apy = apy
         self.tvl = tvl
+       self.rewardApy = 0
+    }
+    
+    public static func ==(lhs: EarnPlatform, rhs: EarnPlatform) -> Bool {
+        return lhs.name == rhs.name && lhs.type == rhs.type && lhs.logo == rhs.logo
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+      hasher.combine(name)
     }
 }

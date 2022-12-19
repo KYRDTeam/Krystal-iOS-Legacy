@@ -8,21 +8,6 @@
 import LaunchDarkly
 import Dependencies
 
-struct FeatureFlagKeys {
-  static let promotionCodeIntegration = "promotion-code"
-  static let auroraChainIntegration = "aurora-chain"
-  static let rewardHunting = "reward-hunting"
-  static let solanaChainIntegration = "solana-chain"
-  static let klaytnChainIntegration = "klaytn-chain"
-  static let tokenPool = "token-pool"
-  static let tradingView = "trading-view"
-  static let scanner = "scanner"
-  static let appBrowsing = "app-browsing"
-  static let notiV2 = "noti-v2"
-  static let earnV2 = "earn-v2"
-    static let tokenApproval = "token-approval"
-}
-
 class FeatureFlagManager {
   static let shared = FeatureFlagManager()
 

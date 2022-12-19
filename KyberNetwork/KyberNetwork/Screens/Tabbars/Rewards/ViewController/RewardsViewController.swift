@@ -145,6 +145,7 @@ class RewardsViewController: BaseWalletOrientedViewController {
 
   func claimRewardsButtonTapped() {
     Tracker.track(event: .promotionClaim)
+      
     // check current chain is in supported chain or not ? if not then show popup switch chain
     if !self.viewModel.supportedChains.contains(KNGeneralProvider.shared.customRPC.chainID) {
       let alertController = KNPrettyAlertController(
@@ -153,7 +154,8 @@ class RewardsViewController: BaseWalletOrientedViewController {
         secondButtonTitle: Strings.ok,
         firstButtonTitle: Strings.cancel,
         secondButtonAction: {
-          self.showPopupSwitchChain()
+            AppState.shared.updateChain(chain: .bsc)
+            self.claimRewards()
         },
         firstButtonAction: nil
       )
@@ -163,20 +165,6 @@ class RewardsViewController: BaseWalletOrientedViewController {
       claimRewards()
       MixPanelManager.track("reward_swap", properties: ["screenid": "reward"])
     }
-  }
-  
-  func showPopupSwitchChain() {
-    let popup = SwitchChainViewController()
-    popup.selectedChain = .bsc
-    popup.nextButtonTitle = Strings.confirm
-    popup.completionHandler = { selected in
-      AppState.shared.updateChain(chain: selected)
-//      KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
-      if selected == .bsc {
-        self.claimRewards()
-      }
-    }
-    self.present(popup, animated: true, completion: nil)
   }
   
   func claimRewards() {

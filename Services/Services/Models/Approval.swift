@@ -21,6 +21,7 @@ public struct Approval: Decodable {
     public private(set) var chainId: Int
     public private(set) var tokenAddress: String?
     public private(set) var spenderAddress: String?
+    public private(set) var spenderName: String?
     public private(set) var amount: String?
     public private(set) var lastUpdateTxHash: String?
     public private(set) var symbol: String?

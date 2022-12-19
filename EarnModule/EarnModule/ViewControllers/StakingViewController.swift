@@ -100,6 +100,10 @@ class StakingViewController: InAppBrowsingViewController {
         faqContainerView.updateFAQInput(viewModel.faqInput)
         faqContainerView.delegate = self
         updateUIETHWarningView()
+        AppDependencies.tracker.track(
+            viewModel.earningType == .staking ? "earn_v2_stake_setup_open" : "earn_v2_supply_setup_open",
+            properties: ["screenid": viewModel.earningType == .staking ? "earn_v2_stake_setup" : "earn_v2_supply_setup"]
+        )
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -195,6 +199,18 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     fileprivate func updateUIError() {
+        guard !AppState.shared.isBrowsingMode else {
+            self.nextButton.setTitle(String(format: Strings.connectWallet, self.viewModel.token.symbol), for: .normal)
+            self.nextButton.alpha = 1
+            self.nextButton.isEnabled = true
+            return
+        }
+        guard !AppState.shared.currentAddress.isWatchWallet else {
+            self.nextButton.setTitle(Strings.stakeNow, for: .normal)
+            self.nextButton.alpha = 0.2
+            self.nextButton.isEnabled = false
+            return
+        }
         switch viewModel.formState.value {
         case .valid:
             amountFieldContainerView.rounded(radius: 16)
@@ -380,7 +396,10 @@ class StakingViewController: InAppBrowsingViewController {
                 message: String(format: Strings.amountQuoteTokenUsedForFee, viewModel.currentChain.quoteToken())
             )
         }
-        AppDependencies.tracker.track(viewModel.earningType == .staking ? "mob_stake_max_amount" : "mob_supply_max_amount", properties: ["screenid": "earn"])
+        AppDependencies.tracker.track(
+            viewModel.earningType == .staking ? "mob_stake_max_amount" : "mob_supply_max_amount",
+            properties:["screenid": viewModel.earningType == .staking ? "earn_v2_stake_setup" : "earn_v2_supply_setup"]
+        )
 
     }
     
@@ -436,7 +455,14 @@ class StakingViewController: InAppBrowsingViewController {
                 self?.openStakeSummary(txObject: txObject)
             }
         }
-        AppDependencies.tracker.track(viewModel.earningType == .staking ? "mob_stake" : "mob_supply", properties: ["screenid": "earn"])
+        var params = ["screenid": viewModel.earningType == .staking ? "earn_v2_stake_setup" : "earn_v2_supply_setup"]
+        params["earn_amount"] = viewModel.amount.value.description
+        params["earn_token"] = viewModel.selectedEarningToken.value?.symbol
+        params["earn_platform"] = viewModel.selectedPlatform.name
+        AppDependencies.tracker.track(
+            viewModel.earningType == .staking ? "mob_stake" : "mob_supply",
+            properties: params
+        )
     }
     
     @IBAction func expandProjectionButtonTapped(_ sender: UIButton) {
@@ -462,7 +488,10 @@ class StakingViewController: InAppBrowsingViewController {
         guard let earningToken = viewModel.selectedEarningToken.value else { return }
         let viewModel = StakingSummaryViewModel(earnToken: earningToken, txObject: txObject, setting: settings, token: viewModel.token, platform: viewModel.selectedPlatform, displayInfo: displayInfo)
         TxConfirmPopup.show(onViewController: self, withViewModel: viewModel) { [weak self] pendingTx in
-            AppDependencies.tracker.track(viewModel.earningType == .staking ? "mob_confirm_stake" : "mob_confirm_supply", properties: ["screenid": "earn"])
+            AppDependencies.tracker.track(
+                viewModel.earningType == .staking ? "mob_confirm_stake" : "mob_confirm_supply",
+                properties: ["screenid": viewModel.earningType == .staking ? "earn_v2_stake_confirm" : "earn_v2_supply_confirm"]
+            )
             self?.openTxStatusPopup(tx: pendingTx as! PendingStakingTxInfo)
         }
     }
@@ -509,7 +538,10 @@ extension StakingViewController: UITextFieldDelegate {
     @objc func keyboardPauseTyping(timer: Timer) {
         updateRateInfoView()
         viewModel.requestBuildStakeTx()
-        AppDependencies.tracker.track("mob_enter_stake_amount", properties: ["screenid": "earn"])
+        AppDependencies.tracker.track(
+            viewModel.earningType == .staking ? "mob_enter_stake_amount" : "mob_enter_supply_amount",
+            properties: ["screenid": viewModel.earningType == .staking ? "earn_v2_stake_setup" : "earn_v2_supply_setup"]
+        )
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {

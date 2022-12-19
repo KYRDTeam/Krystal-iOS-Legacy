@@ -632,6 +632,7 @@ extension KSendTokenViewController {
     self.updateUIPendingTxIndicatorView()
     let title = KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.transfer
     sendButton.setTitle(title, for: .normal)
+    amountTextField.text = ""
   }
 
   func coordinatorDidUpdateChain() {
@@ -695,6 +696,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
     if textField == self.amountTextField {
       textField.text = cleanedText
       self.viewModel.updateAmount(cleanedText)
+      self.shouldUpdateEstimatedGasLimit(nil)
       self.view.layoutIfNeeded()
       return false
     } else {

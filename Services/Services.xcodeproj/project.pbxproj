@@ -13,6 +13,8 @@
 		7E3E7EA4290A8D4E007F6FCF /* PortfolioStaking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7EA2290A8D4E007F6FCF /* PortfolioStaking.swift */; };
 		7EACF4492935E0A400FF3810 /* GetL1Fee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EACF4482935E0A400FF3810 /* GetL1Fee.swift */; };
 		7EAF4785291B930900BF5D00 /* AllowanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF4784291B930900BF5D00 /* AllowanceService.swift */; };
+		7EB129A92938A5DD00CE6D1C /* UnitValueModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB129A82938A5DD00CE6D1C /* UnitValueModel.swift */; };
+		7EB129B22938AD6400CE6D1C /* SearchToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB129B12938AD6400CE6D1C /* SearchToken.swift */; };
 		A64C2E0A28F6F204002FD64C /* Rate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E0928F6F204002FD64C /* Rate.swift */; };
 		A64C2E0C28F6F248002FD64C /* SwapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E0B28F6F248002FD64C /* SwapService.swift */; };
 		A64C2E0E28F6F27D002FD64C /* SwapEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E0D28F6F27D002FD64C /* SwapEndpoint.swift */; };
@@ -72,6 +74,7 @@
 		A6ED2D3C2911342600845EF2 /* GasPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ED2D3B2911342600845EF2 /* GasPrice.swift */; };
 		A6F6292228FD455E0085AE67 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6292128FD455E0085AE67 /* Token.swift */; };
 		A6F6292728FD49030085AE67 /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6292628FD49030085AE67 /* ErrorTracker.swift */; };
+		C357A49E2941E391009030CF /* PendingReward.swift in Sources */ = {isa = PBXBuildFile; fileRef = C357A49D2941E391009030CF /* PendingReward.swift */; };
 		DFBC1392A80048AF5E1D8B55 /* Pods_Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 577F9B8B04D43859B76C1799 /* Pods_Services.framework */; };
 /* End PBXBuildFile section */
 
@@ -85,6 +88,8 @@
 		7E3E7EA2290A8D4E007F6FCF /* PortfolioStaking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioStaking.swift; sourceTree = "<group>"; };
 		7EACF4482935E0A400FF3810 /* GetL1Fee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetL1Fee.swift; sourceTree = "<group>"; };
 		7EAF4784291B930900BF5D00 /* AllowanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowanceService.swift; sourceTree = "<group>"; };
+		7EB129A82938A5DD00CE6D1C /* UnitValueModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitValueModel.swift; sourceTree = "<group>"; };
+		7EB129B12938AD6400CE6D1C /* SearchToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchToken.swift; sourceTree = "<group>"; };
 		A64C2E0928F6F204002FD64C /* Rate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rate.swift; sourceTree = "<group>"; };
 		A64C2E0B28F6F248002FD64C /* SwapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapService.swift; sourceTree = "<group>"; };
 		A64C2E0D28F6F27D002FD64C /* SwapEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapEndpoint.swift; sourceTree = "<group>"; };
@@ -147,6 +152,7 @@
 		A6ED2D3B2911342600845EF2 /* GasPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPrice.swift; sourceTree = "<group>"; };
 		A6F6292128FD455E0085AE67 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		A6F6292628FD49030085AE67 /* ErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
+		C357A49D2941E391009030CF /* PendingReward.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingReward.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +224,9 @@
 				A668BFA4292CBBDA001A110D /* TokenPoolDetail.swift */,
 				A668BFA6292CBC94001A110D /* ChartDataResponse.swift */,
 				A668BFE6292CD75B001A110D /* TokenPrice.swift */,
+				7EB129A82938A5DD00CE6D1C /* UnitValueModel.swift */,
+				7EB129B12938AD6400CE6D1C /* SearchToken.swift */,
+				C357A49D2941E391009030CF /* PendingReward.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -523,6 +532,8 @@
 				A64C2EC428F91DF9002FD64C /* SendRawTransactionRequest.swift in Sources */,
 				A64C2ED128F9202A002FD64C /* Web3Factory.swift in Sources */,
 				A64C2E0E28F6F27D002FD64C /* SwapEndpoint.swift in Sources */,
+				7EB129A92938A5DD00CE6D1C /* UnitValueModel.swift in Sources */,
+				C357A49E2941E391009030CF /* PendingReward.swift in Sources */,
 				A64C2EEE28F93C4F002FD64C /* TokenDetail.swift in Sources */,
 				A64C2EB928F91CAA002FD64C /* ContractERC20Transfer.swift in Sources */,
 				A64C2EC928F91DF9002FD64C /* GetTransactionCountRequest.swift in Sources */,
@@ -548,6 +559,7 @@
 				A64C2ECD28F91F14002FD64C /* Balance.swift in Sources */,
 				A64C2EEA28F93741002FD64C /* TokenService.swift in Sources */,
 				A64C2EC728F91DF9002FD64C /* BlockNumber.swift in Sources */,
+				7EB129B22938AD6400CE6D1C /* SearchToken.swift in Sources */,
 				A64C2EA728F91BF1002FD64C /* KNGetExpectedRate.swift in Sources */,
 				7E3E7E9D290A8C46007F6FCF /* EarnEndpoint.swift in Sources */,
 				A64C2EC628F91DF9002FD64C /* EstimateGasRequest.swift in Sources */,

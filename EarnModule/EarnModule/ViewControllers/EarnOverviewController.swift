@@ -18,6 +18,7 @@ class EarnOverviewController: InAppBrowsingViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
   @IBOutlet weak var pageContainer: UIView!
   @IBOutlet weak var dotView: UIView!
+    
   var selectedPageIndex = 0
   let pageViewController: UIPageViewController = {
     let pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
@@ -33,11 +34,21 @@ class EarnOverviewController: InAppBrowsingViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+      
+    navigationController?.setNavigationBarHidden(true, animated: true)
     initChildViewControllers()
 
     setupUI()
     setupPageViewController()
   }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppDependencies.tracker.track(
+            "earn_v2_open",
+            properties: ["screenid": "earn_v2"]
+        )
+    }
 
   override func onAppSelectAllChain() {
     currentSelectedChain = .all
@@ -61,7 +72,11 @@ class EarnOverviewController: InAppBrowsingViewController {
     earnPoolVC.delegate = self
     let portfolioVC = StakingPortfolioViewController.instantiateFromNib()
     portfolioVC.delegate = self
-    childListViewControllers = [earnPoolVC, portfolioVC]
+      earnPoolVC.isSupportEarnv2.observeAndFire(on: self) { value in
+          portfolioVC.updateSupportedEarnv2(value)
+      }
+      let pendingRewardVC = PendingRewardViewController.instantiateFromNib()
+    childListViewControllers = [earnPoolVC, portfolioVC, pendingRewardVC]
   }
 
   func setupUI() {
@@ -69,10 +84,11 @@ class EarnOverviewController: InAppBrowsingViewController {
       reloadAllNetworksChain()
     }
     segmentedControl.highlightSelectedSegment(width: 100)
-    let width = UIScreen.main.bounds.size.width - 140
+    let width = UIScreen.main.bounds.size.width - 36
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: width, height: 30)
-    segmentedControl.setWidth(width / 2, forSegmentAt: 0)
-    segmentedControl.setWidth(width / 2, forSegmentAt: 1)
+    segmentedControl.setWidth(width / 3, forSegmentAt: 0)
+    segmentedControl.setWidth(width / 3, forSegmentAt: 1)
+      segmentedControl.setWidth(width / 3, forSegmentAt: 2)
   }
 
   func setupPageViewController() {
@@ -84,10 +100,14 @@ class EarnOverviewController: InAppBrowsingViewController {
     addChild(pageViewController)
     pageViewController.didMove(toParent: self)
   }
-
-  @IBAction func backButtonPressed(_ sender: Any) {
-    self.navigationController?.popViewController(animated: true)
-  }
+    
+    func jumpToPage(index: Int) {
+        segmentedControl.selectedSegmentIndex = index
+        segmentedControl.underlineCenterPosition()
+        if index != selectedPageIndex {
+            selectPage(index: index)
+        }
+    }
 
   @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
     segmentedControl.underlineCenterPosition()
