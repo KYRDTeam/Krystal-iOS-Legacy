@@ -116,6 +116,12 @@ class AppRouter: AppRouterProtocol, Coordinator {
     coordinator.delegate = self
     coordinate(coordinator: coordinator)
   }
+    
+    func openSwap() {
+        AppDelegate.shared.coordinator.tabbarController.selectedIndex = 1
+        AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: true)
+        
+    }
   
   func openSwap(token: Token) {
       AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: false)

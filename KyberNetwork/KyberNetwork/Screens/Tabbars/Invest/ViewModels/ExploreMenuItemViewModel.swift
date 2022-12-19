@@ -42,6 +42,8 @@ class ExploreMenuItemViewModel {
       return Strings.scanner
     case .approvals:
         return Strings.approvalMenuTitle
+    case .loyalty:
+        return Strings.loyalty
     }
   }
   
@@ -71,12 +73,14 @@ class ExploreMenuItemViewModel {
       return Images.exploreScannerIcon
     case .approvals:
         return Images.exploreApprovalIcon
+    case .loyalty:
+        return Images.exploreLoyaltyIcon
     }
   }
     
     var isNewFeature: Bool {
         switch item {
-        case .approvals:
+        case .approvals, .loyalty:
             return true
         default:
             return false

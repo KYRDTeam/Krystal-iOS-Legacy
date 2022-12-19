@@ -8,6 +8,6 @@
 import Foundation
 import Lottie
 
-extension Animation {
-  static let rocket = Animation.named("rocket")
+extension LottieAnimation {
+  static let rocket = LottieAnimation.named("rocket")
 }

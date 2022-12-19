@@ -516,7 +516,7 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="bZv-tE-15u">
                                                             <rect key="frame" x="56.666666666666686" y="17.333333333333314" width="173" height="107"/>
                                                             <subviews>
-                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nzk-yc-rhc" customClass="AnimationView" customModule="Lottie">
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nzk-yc-rhc" customClass="LottieAnimationView" customModule="Lottie">
                                                                     <rect key="frame" x="46.333333333333329" y="0.0" width="80" height="80"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
