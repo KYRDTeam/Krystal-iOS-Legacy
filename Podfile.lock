@@ -286,6 +286,7 @@ DEPENDENCIES:
   - loady
   - Lokalise (~> 0.8.1)
   - lottie-ios
+  - MBProgressHUD
   - MBProgressHUD (~> 1.1.0)
   - Mixpanel-swift (~> 3.1.7)
   - Moya
@@ -488,6 +489,6 @@ SPEC CHECKSUMS:
   WalletCore: 70dd5da0d438a8e99d042c2a96f39ecc5cbe862d
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: b6fb7f083d0d3a298cda465ca53934542339eaa3
+PODFILE CHECKSUM: 4f515e95aeeffc6cb177178597f54ff1876227ab
 
 COCOAPODS: 1.11.3

@@ -57,6 +57,10 @@ class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
     
     override init() {
         super.init()
+        reloadWallet()
+    }
+    
+    func reloadWallet() {
         wallet = WalletManager.shared.getWallet(id: AppState.shared.currentAddress.walletID)
     }
     
@@ -901,4 +905,5 @@ extension Data {
         }
         task.resume()
     }
+
 }
