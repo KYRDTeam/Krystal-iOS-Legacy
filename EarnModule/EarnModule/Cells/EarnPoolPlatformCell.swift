@@ -23,6 +23,10 @@ class EarnPoolPlatformCell: UITableViewCell {
   @IBOutlet weak var dashView: DashedLineView!
   @IBOutlet weak var platformIcon: UIImageView!
     @IBOutlet weak var rewardApyIcon: UIImageView!
+    @IBOutlet weak var warningIconImageView: UIImageView!
+    @IBOutlet weak var typeLabelTrailingContraint: NSLayoutConstraint!
+    @IBOutlet weak var typeLabelSpaceWithWarningIcon: NSLayoutConstraint!
+    
     var platform: EarnPlatform?
   weak var delegate: EarnPoolPlatformCellDelegate?
     
@@ -52,6 +56,25 @@ class EarnPoolPlatformCell: UITableViewCell {
     self.platform = platform
       let hasRewardApy = platform.rewardApy > 0
       rewardApyIcon.isHidden = !hasRewardApy
+      
+      switch platform.status.lowercased() {
+      case "disabled":
+          typeLabelTrailingContraint.priority = UILayoutPriority(250)
+          typeLabelSpaceWithWarningIcon.priority = UILayoutPriority(999)
+          warningIconImageView.isHidden = false
+          let red = UIColor(hex: "F45532")
+          warningIconImageView.tintColor = red
+      case "warning":
+          typeLabelTrailingContraint.priority = UILayoutPriority(250)
+          typeLabelSpaceWithWarningIcon.priority = UILayoutPriority(999)
+          warningIconImageView.isHidden = false
+          let yellow = UIColor(hex: "F2BE37")
+          warningIconImageView.tintColor = yellow
+      default:
+          typeLabelTrailingContraint.priority = UILayoutPriority(999)
+          typeLabelSpaceWithWarningIcon.priority = UILayoutPriority(250)
+          warningIconImageView.isHidden = true
+      }
   }
     
     @objc func tapRewardApyIcon() {

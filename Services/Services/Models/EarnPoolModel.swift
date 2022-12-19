@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Services
 import Utilities
 
 public class EarnPoolModel {
@@ -53,6 +52,7 @@ public class EarnPlatform: Equatable, Hashable {
   public let desc: String
   public let apy, rewardApy: Double
   public let tvl: Double
+    public let status: String
 
   init(json: JSONDictionary) {
     self.name = json["name"] as? String ?? ""
@@ -62,6 +62,11 @@ public class EarnPlatform: Equatable, Hashable {
     self.apy = json["apy"] as? Double ?? 0
     self.tvl = json["tvl"] as? Double ?? 0
     self.rewardApy = json["rewardAPY"] as? Double ?? 0
+      if let statusDict = json["status"] as? JSONDictionary, let value = statusDict["value"] as? String {
+          status = value
+      } else {
+          status = ""
+      }
   }
     
    public init (platform: Platform, apy: Double, tvl: Double) {
@@ -72,6 +77,7 @@ public class EarnPlatform: Equatable, Hashable {
         self.apy = apy
         self.tvl = tvl
        self.rewardApy = 0
+       self.status = ""
     }
     
     public static func ==(lhs: EarnPlatform, rhs: EarnPlatform) -> Bool {
