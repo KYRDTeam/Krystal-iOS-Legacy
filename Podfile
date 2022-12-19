@@ -198,6 +198,7 @@ target 'DappBrowser' do
   pod 'TrustWalletCore'
   pod 'CryptoSwift'
   pod 'FittedSheets'
+  pod 'MBProgressHUD'
 end
 
 target 'KyberNetwork' do

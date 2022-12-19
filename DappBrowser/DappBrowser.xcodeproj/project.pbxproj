@@ -8,18 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		4AFBEF1132EDDE9E7897CD22 /* Pods_DappBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 608693D1FE4F76598383EE78 /* Pods_DappBrowser.framework */; };
+		A61012A329501A20006C9173 /* BrowserOptionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A61012A129501A20006C9173 /* BrowserOptionsViewController.xib */; };
+		A61012A429501A20006C9173 /* BrowserOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61012A229501A20006C9173 /* BrowserOptionsViewController.swift */; };
+		A61012A729503B4E006C9173 /* BrowserStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61012A629503B4E006C9173 /* BrowserStorage.swift */; };
+		A61012A929503B6E006C9173 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61012A829503B6E006C9173 /* Constants.swift */; };
 		A62A703B29481E1C00DA8B82 /* DappBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A703A29481E1C00DA8B82 /* DappBrowser.swift */; };
 		A64202FF294AD51500179189 /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64202FE294AD51500179189 /* Dependencies.framework */; };
-		A6420300294AD51500179189 /* Dependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A64202FE294AD51500179189 /* Dependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A6420303294B082400179189 /* SignMessagePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6420301294B082400179189 /* SignMessagePopup.swift */; };
 		A6420304294B082400179189 /* SignMessagePopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6420302294B082400179189 /* SignMessagePopup.xib */; };
 		A6420306294B108400179189 /* WebPageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6420305294B108400179189 /* WebPageInfo.swift */; };
 		A66395852949764E00A47F79 /* Web3ScriptHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66395842949764E00A47F79 /* Web3ScriptHandler.swift */; };
 		A66395872949765700A47F79 /* KrystalScriptHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66395862949765700A47F79 /* KrystalScriptHandler.swift */; };
 		A66395892949789200A47F79 /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A66395882949789200A47F79 /* KrystalWallets.framework */; };
-		A663958A2949789200A47F79 /* KrystalWallets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A66395882949789200A47F79 /* KrystalWallets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A663958D2949AFAC00A47F79 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A663958C2949AFAC00A47F79 /* AppState.framework */; };
-		A663958E2949AFAC00A47F79 /* AppState.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A663958C2949AFAC00A47F79 /* AppState.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A66395912949B08100A47F79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A66395902949B08100A47F79 /* Assets.xcassets */; };
 		A6A0063729470634002AF6E7 /* WKScriptMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A0063629470634002AF6E7 /* WKScriptMessage.swift */; };
 		A6A00639294706A1002AF6E7 /* TrustWeb3Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A00638294706A1002AF6E7 /* TrustWeb3Provider.swift */; };
@@ -27,30 +28,18 @@
 		A6A006402947095B002AF6E7 /* KrystalMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A0063F2947095B002AF6E7 /* KrystalMessage.swift */; };
 		A6B78C8A2947010000FBFCB5 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B78C892947010000FBFCB5 /* Utilities.framework */; };
 		A6CF70C22946EC400061E552 /* BrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6CF70BE2946EC400061E552 /* BrowserViewController.xib */; };
-		A6CF70C32946EC400061E552 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CF70BF2946EC400061E552 /* NavigationBar.swift */; };
-		A6CF70C42946EC400061E552 /* NavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6CF70C02946EC400061E552 /* NavigationBar.xib */; };
 		A6CF70C52946EC400061E552 /* BrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CF70C12946EC400061E552 /* BrowserViewController.swift */; };
 		A6FAFF0E29431040006F9E21 /* DappBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = A6FAFF0D29431040006F9E21 /* DappBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A6FF12F929505D4400435A63 /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6FF12F829505D4400435A63 /* BaseModule.framework */; };
+		A6FF12FD29505D6A00435A63 /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6FF12FC29505D6A00435A63 /* BaseWallet.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		A663958B2949789200A47F79 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				A663958E2949AFAC00A47F79 /* AppState.framework in Embed Frameworks */,
-				A663958A2949789200A47F79 /* KrystalWallets.framework in Embed Frameworks */,
-				A6420300294AD51500179189 /* Dependencies.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		608693D1FE4F76598383EE78 /* Pods_DappBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DappBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A61012A129501A20006C9173 /* BrowserOptionsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BrowserOptionsViewController.xib; sourceTree = "<group>"; };
+		A61012A229501A20006C9173 /* BrowserOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserOptionsViewController.swift; sourceTree = "<group>"; };
+		A61012A629503B4E006C9173 /* BrowserStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserStorage.swift; sourceTree = "<group>"; };
+		A61012A829503B6E006C9173 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A62A703A29481E1C00DA8B82 /* DappBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappBrowser.swift; sourceTree = "<group>"; };
 		A64202FE294AD51500179189 /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6420301294B082400179189 /* SignMessagePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignMessagePopup.swift; sourceTree = "<group>"; };
@@ -67,11 +56,11 @@
 		A6A0063F2947095B002AF6E7 /* KrystalMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalMessage.swift; sourceTree = "<group>"; };
 		A6B78C892947010000FBFCB5 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6CF70BE2946EC400061E552 /* BrowserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BrowserViewController.xib; sourceTree = "<group>"; };
-		A6CF70BF2946EC400061E552 /* NavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
-		A6CF70C02946EC400061E552 /* NavigationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NavigationBar.xib; sourceTree = "<group>"; };
 		A6CF70C12946EC400061E552 /* BrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
 		A6FAFF0A29431040006F9E21 /* DappBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DappBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6FAFF0D29431040006F9E21 /* DappBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DappBrowser.h; sourceTree = "<group>"; };
+		A6FF12F829505D4400435A63 /* BaseModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6FF12FC29505D6A00435A63 /* BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9E9186E63A6D2519A6BA7CD /* Pods-DappBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DappBrowser.release.xcconfig"; path = "Target Support Files/Pods-DappBrowser/Pods-DappBrowser.release.xcconfig"; sourceTree = "<group>"; };
 		DC171D0E9E0A4E69604E90EC /* Pods-DappBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DappBrowser.debug.xcconfig"; path = "Target Support Files/Pods-DappBrowser/Pods-DappBrowser.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -82,7 +71,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A663958D2949AFAC00A47F79 /* AppState.framework in Frameworks */,
+				A6FF12F929505D4400435A63 /* BaseModule.framework in Frameworks */,
 				4AFBEF1132EDDE9E7897CD22 /* Pods_DappBrowser.framework in Frameworks */,
+				A6FF12FD29505D6A00435A63 /* BaseWallet.framework in Frameworks */,
 				A66395892949789200A47F79 /* KrystalWallets.framework in Frameworks */,
 				A64202FF294AD51500179189 /* Dependencies.framework in Frameworks */,
 				A6B78C8A2947010000FBFCB5 /* Utilities.framework in Frameworks */,
@@ -102,6 +93,14 @@
 			path = ../Pods;
 			sourceTree = "<group>";
 		};
+		A61012A529503B42006C9173 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				A61012A629503B4E006C9173 /* BrowserStorage.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
 		A66395832949764200A47F79 /* ScriptHandler */ = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				A66395902949B08100A47F79 /* Assets.xcassets */,
+				A61012A829503B6E006C9173 /* Constants.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -139,8 +139,8 @@
 		A6CF70BD2946EC400061E552 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A6CF70BF2946EC400061E552 /* NavigationBar.swift */,
-				A6CF70C02946EC400061E552 /* NavigationBar.xib */,
+				A61012A229501A20006C9173 /* BrowserOptionsViewController.swift */,
+				A61012A129501A20006C9173 /* BrowserOptionsViewController.xib */,
 				A6CF70C12946EC400061E552 /* BrowserViewController.swift */,
 				A6CF70BE2946EC400061E552 /* BrowserViewController.xib */,
 				A6A0063C29470918002AF6E7 /* DAppMethod.swift */,
@@ -173,6 +173,7 @@
 		A6FAFF0C29431040006F9E21 /* DappBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				A61012A529503B42006C9173 /* Database */,
 				A663958F2949B07800A47F79 /* Resources */,
 				A66395832949764200A47F79 /* ScriptHandler */,
 				A6A0063E29470950002AF6E7 /* Models */,
@@ -186,6 +187,8 @@
 		EC5B7BA817BE103000DBA2FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6FF12FC29505D6A00435A63 /* BaseWallet.framework */,
+				A6FF12F829505D4400435A63 /* BaseModule.framework */,
 				A64202FE294AD51500179189 /* Dependencies.framework */,
 				A663958C2949AFAC00A47F79 /* AppState.framework */,
 				A66395882949789200A47F79 /* KrystalWallets.framework */,
@@ -218,7 +221,6 @@
 				A6FAFF0629431040006F9E21 /* Sources */,
 				A6FAFF0729431040006F9E21 /* Frameworks */,
 				A6FAFF0829431040006F9E21 /* Resources */,
-				A663958B2949789200A47F79 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -268,8 +270,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6CF70C22946EC400061E552 /* BrowserViewController.xib in Resources */,
+				A61012A329501A20006C9173 /* BrowserOptionsViewController.xib in Resources */,
 				A66395912949B08100A47F79 /* Assets.xcassets in Resources */,
-				A6CF70C42946EC400061E552 /* NavigationBar.xib in Resources */,
 				A6420304294B082400179189 /* SignMessagePopup.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -310,10 +312,12 @@
 				A62A703B29481E1C00DA8B82 /* DappBrowser.swift in Sources */,
 				A6A00639294706A1002AF6E7 /* TrustWeb3Provider.swift in Sources */,
 				A6A0063D29470918002AF6E7 /* DAppMethod.swift in Sources */,
+				A61012A429501A20006C9173 /* BrowserOptionsViewController.swift in Sources */,
 				A6420303294B082400179189 /* SignMessagePopup.swift in Sources */,
-				A6CF70C32946EC400061E552 /* NavigationBar.swift in Sources */,
 				A6CF70C52946EC400061E552 /* BrowserViewController.swift in Sources */,
+				A61012A929503B6E006C9173 /* Constants.swift in Sources */,
 				A6A006402947095B002AF6E7 /* KrystalMessage.swift in Sources */,
+				A61012A729503B4E006C9173 /* BrowserStorage.swift in Sources */,
 				A66395872949765700A47F79 /* KrystalScriptHandler.swift in Sources */,
 				A66395852949764E00A47F79 /* Web3ScriptHandler.swift in Sources */,
 				A6A0063729470634002AF6E7 /* WKScriptMessage.swift in Sources */,

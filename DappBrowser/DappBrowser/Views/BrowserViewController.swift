@@ -9,11 +9,16 @@ import UIKit
 import WebKit
 import TrustWeb3Provider
 import AppState
+import BaseModule
+import MBProgressHUD
+import FittedSheets
+import Dependencies
 
-class BrowserViewController: UIViewController {
-    @IBOutlet weak var navigationBar: NavigationBar!
+class BrowserViewController: BaseWalletOrientedViewController {
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var webViewContainer: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var chainIconImageView: UIImageView!
     
     var webView: WKWebView!
     
@@ -30,8 +35,9 @@ class BrowserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        titleLabel.text = ""
+        reloadChainUI()
         initScriptHandlers()
-        initNavigationBar()
         initWebView()
         observeNotification()
     }
@@ -41,29 +47,24 @@ class BrowserViewController: UIViewController {
         
         krystalScriptHandler?.setNavigationController(navigationController: navigationController!)
     }
-
+    
+    func reloadChainUI() {
+        chainIconImageView.image = AppState.shared.currentChain.squareIcon()
+    }
+    
     func observeNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(onAddressChange), name: .appAddressChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onChainChange), name: .appChainChanged, object: nil)
     }
     
     @objc func onAddressChange() {
-        navigationController?.popViewController(animated: true)
+        web3ScriptHandler.reloadWallet()
+        webView.reload()
     }
     
     @objc func onChainChange() {
         if AppState.shared.currentChain == .solana {
             navigationController?.popViewController(animated: true)
-        }
-    }
-    
-    func initNavigationBar() {
-        navigationBar.setLeftButtonAction {
-            if self.webView.canGoBack {
-                self.webView.goBack()
-            } else {
-                self.navigationController?.popViewController(animated: true)
-            }
         }
     }
     
@@ -146,13 +147,36 @@ class BrowserViewController: UIViewController {
             }
         }
         pageTitleObservation = webView.observe(\.title, options: [.new]) { _, _ in
-            self.navigationBar.title = self.webView.title
+            self.titleLabel.text = self.webView.title
         }
     }
     
     func loadNewPage(url: URL) {
         initWebView()
         webView.load(URLRequest(url: url))
+    }
+    
+    @IBAction func closeTapped(_ sender: Any) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func chainTapped(_ sender: Any) {
+        AppDependencies.router.openChainList(AppState.shared.currentChain, allowAllChainOption: false) { [weak self] chain in
+          self?.reloadChainUI()
+        }
+    }
+    
+    @IBAction func optionsTapped(_ sender: Any) {
+        let controller = BrowserOptionsViewController(
+            url: webView.url?.absoluteString ?? "",
+            canGoBack: webView.canGoBack,
+            canGoForward: webView.canGoForward
+        )
+        controller.delegate = self
+        controller.isNormalBrowser = true
+        let sheet = SheetViewController(controller: controller, sizes: [.fixed(350)], options: .init(pullBarHeight: 0, shouldExtendBackground: false, shrinkPresentingViewController: true))
+        sheet.allowPullingPastMaxHeight = false
+        self.present(sheet, animated: true)
     }
     
     deinit {
@@ -170,6 +194,36 @@ extension BrowserViewController: WKUIDelegate {
         let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true, completion: completionHandler)
+    }
+    
+}
+
+extension BrowserViewController: BrowserOptionsViewControllerDelegate {
+    
+    func browserOptionsViewController(_ controller: BrowserOptionsViewController, run event: BrowserOptionsViewEvent) {
+        switch event {
+        case .back:
+          self.webView.goBack()
+        case .forward:
+          self.webView.goForward()
+        case .refresh:
+          self.webView.reload()
+        case .share:
+          guard let text = self.webView.url?.absoluteString else { return }
+          let activitiy = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+          activitiy.title = NSLocalizedString("share.with.friends", value: "Share with friends", comment: "")
+          activitiy.popoverPresentationController?.sourceView = self.navigationController?.view!
+          self.present(activitiy, animated: true, completion: nil)
+        case .copy:
+          guard let text = self.webView.url?.absoluteString else { return }
+          UIPasteboard.general.string = text
+          let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+          hud.mode = .text
+          hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
+          hud.hide(animated: true, afterDelay: 1.5)
+        default:
+          return
+        }
     }
     
 }
