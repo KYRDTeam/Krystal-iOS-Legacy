@@ -246,9 +246,6 @@ PODS:
   - WalletConnectSwift (1.6.0):
     - CryptoSwift (~> 1.4)
     - Starscream (~> 3.1)
-  - WalletCore (1.3.5):
-    - BigInt
-    - TrezorCrypto (~> 0.0.6)
   - Web3 (0.4.2):
     - Web3/Core (= 0.4.2)
     - Web3/HTTPExtension (= 0.4.2)
@@ -315,7 +312,6 @@ DEPENDENCIES:
   - TrustWalletCore (~> 3)
   - TrustWeb3Provider (from `https://github.com/tungnguyen20/trust-web3-provider`, branch `develop`)
   - WalletConnectSwift
-  - WalletCore
   - Web3
 
 SPEC REPOS:
@@ -389,7 +385,6 @@ SPEC REPOS:
     - TrustKeystore
     - TrustWalletCore
     - WalletConnectSwift
-    - WalletCore
     - Web3
 
 EXTERNAL SOURCES:
@@ -486,9 +481,8 @@ SPEC CHECKSUMS:
   TrustWalletCore: 9e9aaef438d67674e4b38e3cbde07d2d0e0602bd
   TrustWeb3Provider: 0ab27d940de173e209d25d0307885c3dc5149d09
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
-  WalletCore: 70dd5da0d438a8e99d042c2a96f39ecc5cbe862d
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: 4f515e95aeeffc6cb177178597f54ff1876227ab
+PODFILE CHECKSUM: 06d106bd434be5ada318385381fb6aadd1a4de16
 
 COCOAPODS: 1.11.3

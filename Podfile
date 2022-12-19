@@ -42,6 +42,7 @@ def cryptoHelperPods
   pod 'TrustCore', '~> 0.0.7'
   pod 'WalletConnectSwift'
   pod 'Web3'
+#  pod 'WalletCore'
   # pod 'web3swift', :git=>'https://github.com/BANKEX/web3swift', :branch=>'master'
   pod 'TrustWeb3Provider', :git => 'https://github.com/tungnguyen20/trust-web3-provider', :branch => 'develop'
 end
@@ -194,7 +195,7 @@ target 'DappBrowser' do
   use_frameworks!
   
   pod 'TrustWeb3Provider', :git => 'https://github.com/tungnguyen20/trust-web3-provider', :branch => 'develop'
-  pod 'WalletCore'
+#  pod 'WalletCore'
   pod 'TrustWalletCore'
   pod 'CryptoSwift'
   pod 'FittedSheets'
