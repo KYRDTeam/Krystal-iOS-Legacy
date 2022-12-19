@@ -181,9 +181,3 @@ public struct EarnOptionValidation: Codable {
     public var maxUnstakeAmount: Double?
     public var stakeInterval: Double?
 }
-
-public struct TokenInfo: Codable {
-  public let address, symbol: String
-  public let logo: String
-  public let decimals: Int
-}
