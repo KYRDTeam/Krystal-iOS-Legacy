@@ -27,6 +27,8 @@ class EarnOverviewController: InAppBrowsingViewController {
   
   var childListViewControllers: [InAppBrowsingViewController] = []
   var viewModel: EarnOverViewModel!
+    let tabCount = AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.extraReward) ? 3 : 2
+
   override var supportAllChainOption: Bool {
     return true
   }
@@ -75,8 +77,15 @@ class EarnOverviewController: InAppBrowsingViewController {
       earnPoolVC.isSupportEarnv2.observeAndFire(on: self) { value in
           portfolioVC.updateSupportedEarnv2(value)
       }
-      let pendingRewardVC = PendingRewardViewController.instantiateFromNib()
-    childListViewControllers = [earnPoolVC, portfolioVC, pendingRewardVC]
+      
+      var vcs = [earnPoolVC, portfolioVC]
+      
+      if tabCount == 3 {
+          let pendingRewardVC = PendingRewardViewController.instantiateFromNib()
+          vcs.append(pendingRewardVC)
+      }
+      
+    childListViewControllers = vcs
   }
 
   func setupUI() {
@@ -86,9 +95,16 @@ class EarnOverviewController: InAppBrowsingViewController {
     segmentedControl.highlightSelectedSegment(width: 100)
     let width = UIScreen.main.bounds.size.width - 36
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: width, height: 30)
-    segmentedControl.setWidth(width / 3, forSegmentAt: 0)
-    segmentedControl.setWidth(width / 3, forSegmentAt: 1)
-      segmentedControl.setWidth(width / 3, forSegmentAt: 2)
+      if tabCount == 2 {
+          segmentedControl.setWidth(width / 2, forSegmentAt: 0)
+          segmentedControl.setWidth(width / 2, forSegmentAt: 1)
+          segmentedControl.removeSegment(at: 2, animated: false)
+      } else if tabCount == 3 {
+          segmentedControl.setWidth(width / 3, forSegmentAt: 0)
+          segmentedControl.setWidth(width / 3, forSegmentAt: 1)
+          segmentedControl.setWidth(width / 3, forSegmentAt: 2)
+      }
+   
   }
 
   func setupPageViewController() {
