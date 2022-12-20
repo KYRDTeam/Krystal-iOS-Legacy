@@ -127,6 +127,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
             self.searchFieldActionButton.setImage(UIImage(named: "close-search-icon"), for: .normal)
             self.view.layoutIfNeeded()
         }
+        viewModel.isEditing = true
     }
     
     func updateUIEndSearchingMode() {
@@ -136,10 +137,19 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
             self.view.endEditing(true)
             self.view.layoutIfNeeded()
         }
+        viewModel.isEditing = false
     }
     
     @IBAction func onSearchButtonTapped(_ sender: Any) {
-        self.updateUIStartSearchingMode()
+        if viewModel.isEditing {
+            updateUIEndSearchingMode()
+            searchTextField.text = ""
+            searchTextField.resignFirstResponder()
+            viewModel.searchText = ""
+            reloadUI()
+        } else {
+            updateUIStartSearchingMode()
+        }
     }
 
     @IBAction func filterButtonTapped(_ sender: Any) {

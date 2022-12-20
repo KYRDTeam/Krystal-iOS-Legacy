@@ -480,18 +480,11 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     func sendApprove(tokenAddress: String, remain: BigInt, symbol: String, toAddress: String) {
-        let vm = ApproveTokenViewModel(symbol: symbol, tokenAddress: tokenAddress, remain: remain, toAddress: toAddress, chain: AppState.shared.currentChain)
-        let vc = ApproveTokenViewController(viewModel: vm)
-        vc.onApproveSent = { hash in
+        let param = ApprovePopup.ApproveParam(symbol: symbol, tokenAddress: tokenAddress, remain: remain, toAddress: toAddress, chain: AppState.shared.currentChain, gasLimit: AppDependencies.gasConfig.defaultApproveGasLimit)
+        ApprovePopup.show(on: self, param: param) { hash in
             self.viewModel?.approveHash = hash
             self.viewModel.nextButtonStatus.value = .approving
         }
-        vc.onFailApprove = { [weak self] error in
-          self?.showTopBannerView(message: TxErrorParser.parse(error: AnyError(error)).message)
-          self?.viewModel.nextButtonStatus.value = .needApprove
-        }
-        
-        self.present(vc, animated: true, completion: nil)
     }
     
     func openStakeSummary(txObject: TxObject, settings: TxSettingObject, displayInfo: StakeDisplayInfo) {

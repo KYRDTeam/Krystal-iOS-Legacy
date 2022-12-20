@@ -835,6 +835,7 @@
 "supported.platforms" = "Supported Platforms";
 "reward.hunting" = "Reward Hunting";
 "bridge" = "Bridge";
+"loyalty" = "Loyalty";
 
 // Transaction History
 "contract" = "Contract";

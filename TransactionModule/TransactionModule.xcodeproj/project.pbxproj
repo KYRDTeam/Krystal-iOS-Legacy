@@ -18,6 +18,8 @@
 		A622D6AA291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A622D6A9291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift */; };
 		A622D6AD291A6155006BBDD9 /* TxInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A622D6AB291A6155006BBDD9 /* TxInfoCell.swift */; };
 		A622D6AE291A6155006BBDD9 /* TxInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A622D6AC291A6155006BBDD9 /* TxInfoCell.xib */; };
+		A6486C99295063520030CECB /* ApproveTokenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486C98295063520030CECB /* ApproveTokenViewModel.swift */; };
+		A6486C9B2950646C0030CECB /* ApprovePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486C9A2950646C0030CECB /* ApprovePopup.swift */; };
 		A64F1D49290B8109000D4733 /* TransactionModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A64F1D48290B8109000D4733 /* TransactionModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A64F1D54290B8132000D4733 /* TransactionSettingPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D52290B8132000D4733 /* TransactionSettingPopup.swift */; };
 		A64F1D55290B8132000D4733 /* TransactionSettingPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A64F1D53290B8132000D4733 /* TransactionSettingPopup.xib */; };
@@ -71,6 +73,8 @@
 		A622D6A9291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxConfirmViewModelProtocol.swift; sourceTree = "<group>"; };
 		A622D6AB291A6155006BBDD9 /* TxInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxInfoCell.swift; sourceTree = "<group>"; };
 		A622D6AC291A6155006BBDD9 /* TxInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxInfoCell.xib; sourceTree = "<group>"; };
+		A6486C98295063520030CECB /* ApproveTokenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApproveTokenViewModel.swift; sourceTree = "<group>"; };
+		A6486C9A2950646C0030CECB /* ApprovePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovePopup.swift; sourceTree = "<group>"; };
 		A64F1D45290B8109000D4733 /* TransactionModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TransactionModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A64F1D48290B8109000D4733 /* TransactionModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransactionModule.h; sourceTree = "<group>"; };
 		A64F1D52290B8132000D4733 /* TransactionSettingPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSettingPopup.swift; sourceTree = "<group>"; };
@@ -157,6 +161,8 @@
 				7E0BBE7F291CA4F60030EE44 /* TransitionDelegate.swift */,
 				7EAF4787291BB59100BF5D00 /* ApproveTokenViewController.swift */,
 				7EAF4788291BB59100BF5D00 /* ApproveTokenViewController.xib */,
+				A6486C98295063520030CECB /* ApproveTokenViewModel.swift */,
+				A6486C9A2950646C0030CECB /* ApprovePopup.swift */,
 			);
 			path = Approve;
 			sourceTree = "<group>";
@@ -455,11 +461,13 @@
 				A6D1F7FA291B8DF800ABA52B /* EthereumTransactionSigner.swift in Sources */,
 				A64F1D58290B817C000D4733 /* TransactionSettingBasicTab.swift in Sources */,
 				A6D1F7F7291B8C3D00ABA52B /* TxErrorParser.swift in Sources */,
+				A6486C99295063520030CECB /* ApproveTokenViewModel.swift in Sources */,
 				A64F1D74290BBF19000D4733 /* TransactionSettingBasicTabViewModel.swift in Sources */,
 				7ED1AF1C291E055600BA7C75 /* ApprovePendingTxInfo.swift in Sources */,
 				A64F1D5F290B8992000D4733 /* TxSettingObject.swift in Sources */,
 				A622D6AA291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift in Sources */,
 				A64F1D54290B8132000D4733 /* TransactionSettingPopup.swift in Sources */,
+				A6486C9B2950646C0030CECB /* ApprovePopup.swift in Sources */,
 				7E0BBE80291CA4F60030EE44 /* TransitionDelegate.swift in Sources */,
 				A64F1D78290BC093000D4733 /* Strings.swift in Sources */,
 				A6D1F7E4291B690000ABA52B /* StakeTxObject.swift in Sources */,

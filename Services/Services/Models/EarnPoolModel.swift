@@ -54,7 +54,7 @@ public class EarnPlatform: Equatable, Hashable {
   public let tvl: Double
     public let status: String
 
-  init(json: JSONDictionary) {
+  public init(json: JSONDictionary) {
     self.name = json["name"] as? String ?? ""
     self.logo = json["logo"] as? String ?? ""
     self.type = json["type"] as? String ?? ""

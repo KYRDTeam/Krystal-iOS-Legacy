@@ -13,6 +13,7 @@ import KrystalWallets
 import BaseModule
 import Dependencies
 import FittedSheets
+import DappBrowser
 
 protocol InvestCoordinatorDelegate: class {
   func investCoordinatorDidSelectManageWallet()
@@ -189,6 +190,11 @@ class InvestCoordinator: Coordinator {
     self.buyCryptoCoordinator = coordinator
   }
   
+    func openLoyalty() {
+        guard let url = URL(string: KNEnvironment.default.krystalWebUrl + "/loyalty" + "?preview=true") else { return }
+        DappBrowser.openURL(navigationController: navigationController, url: url)
+    }
+    
   func openRewardHunting() {
     let coordinator = RewardHuntingCoordinator(navigationController: self.navigationController)
     coordinator.start()
@@ -311,6 +317,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.openStakeView()
     case .openApprovals:
         openApprovals()
+    case .openLoyalty:
+        openLoyalty()
     }
   }
   
