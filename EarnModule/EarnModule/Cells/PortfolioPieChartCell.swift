@@ -124,7 +124,7 @@ extension PortfolioPieChartCell: UICollectionViewDataSource {
             if indexPath.row == 5 {
                 cell.updateUILastCell(totalValue: viewModel.earningAssets, remainValue: viewModel.remainUSDValue)
             } else {
-                cell.updateUI(earningBalance: viewModel.dataSource[indexPath.row], totalValue: viewModel.earningAssets, index: indexPath.row )
+                cell.updateUI(earningBalance: viewModel.dataSource[indexPath.row], totalValue: viewModel.earningAssets, shouldShowChainIcon: viewModel.chainID == nil, index: indexPath.row )
             }
         }
         return cell

@@ -27,10 +27,10 @@ class ChartLegendTokenCell: UICollectionViewCell {
         // Initialization code
     }
 
-    func updateUI(earningBalance: EarningBalance, totalValue: Double, index: Int) {
+    func updateUI(earningBalance: EarningBalance, totalValue: Double, shouldShowChainIcon: Bool, index: Int) {
         balanceLabelLeading.constant = 65
         tokenImageView.isHidden = false
-        chainImageView.isHidden = false
+        chainImageView.isHidden = !shouldShowChainIcon
         legendColorView.backgroundColor = AppTheme.current.chartColors[index]
         tokenImageView.loadImage(earningBalance.toUnderlyingToken.logo)
         chainImageView.image = ChainType.make(chainID: earningBalance.chainID)?.chainIcon()
