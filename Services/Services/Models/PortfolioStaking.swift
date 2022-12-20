@@ -93,7 +93,7 @@ public struct EarningBalance: Codable {
         case platform, stakingToken, toUnderlyingToken, underlyingUsd, apy, ratio, status, rewardApy
     }
     
-    func usdBigIntValue() -> BigInt? {
+    public func usdBigIntValue() -> BigInt? {
         if let toUnderlyingBalanceBigInt = BigInt(toUnderlyingToken.balance) {
             return BigInt(underlyingUsd * pow(10.0 , Double(toUnderlyingToken.decimals))) * toUnderlyingBalanceBigInt / BigInt(pow(10.0 , Double(toUnderlyingToken.decimals)))
         }
@@ -107,18 +107,13 @@ public struct EarningBalance: Codable {
         return 0.0
     }
     
-    public func balanceString(totalValue: Double) -> String {
-        var toUnderlyingBalanceString = toUnderlyingToken.symbol + " " + StringFormatter.percentString(value: usdValue() / totalValue)
-        return toUnderlyingBalanceString
-    }
-    
-    public func usdDetailString() -> String {
-        var detailString = "---"
-        if let usdBigIntValue = usdBigIntValue() {
-            detailString = "$" + usdBigIntValue.shortString(decimals: toUnderlyingToken.decimals, maxFractionDigits: 2)
+    public func balanceValue() -> Double {
+        if let toUnderlyingBalanceBigInt = BigInt(toUnderlyingToken.balance) {
+            return toUnderlyingBalanceBigInt.doubleValue(decimal: toUnderlyingToken.decimals)
         }
-        return detailString
+        return 0
     }
+
 }
 
 public struct StatusClass: Codable {
