@@ -69,14 +69,14 @@ public class EarnPlatform: Equatable, Hashable {
       }
   }
     
-   public init (platform: Platform, apy: Double, tvl: Double) {
+    public init (platform: Platform, apy: Double, rewardApy: Double, tvl: Double) {
         self.name = platform.name
         self.logo = platform.logo
         self.type = platform.type
         self.desc = platform.desc
         self.apy = apy
         self.tvl = tvl
-       self.rewardApy = 0
+       self.rewardApy = rewardApy
        self.status = ""
     }
     

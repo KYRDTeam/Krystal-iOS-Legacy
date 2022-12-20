@@ -64,6 +64,8 @@ class PendingRewardViewModel {
                 self.reloadDataSource()
             case .failure(let error):
                 print(error.description)
+                self.rewardData = []
+                self.reloadDataSource()
             }
             self.isLoading.value = false
         }

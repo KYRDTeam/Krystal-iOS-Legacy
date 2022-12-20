@@ -453,7 +453,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
                               address: earningBalance.toUnderlyingToken.address,
                               decimals: earningBalance.toUnderlyingToken.decimals,
                               logo: earningBalance.toUnderlyingToken.logo)
-            let earnPlatform = EarnPlatform(platform: earningBalance.platform, apy: earningBalance.apy, tvl: 0)
+            let earnPlatform = EarnPlatform(platform: earningBalance.platform, apy: earningBalance.apy, rewardApy: earningBalance.rewardApy, tvl: 0)
             self?.delegate?.didSelectPlatform(token: token, platform: earnPlatform, chainId: earningBalance.chainID)
         }
         let stakeImage = swipeCellImageView(title: plusTitleFor(earningType: earningType), icon: Images.greenPlus, color: AppTheme.current.primaryColor)
