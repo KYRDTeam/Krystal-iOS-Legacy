@@ -460,7 +460,15 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         stakeAction.image = stakeImage
         stakeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
         
-        return [unstakeAction, stakeAction]
+        let cellModel = viewModel.displayDataSource.value.0[indexPath.row]
+        
+        if cellModel.warningType == .none {
+            return [unstakeAction, stakeAction]
+        } else {
+            return [stakeAction]
+        }
+        
+        
     }
     
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
