@@ -107,22 +107,15 @@ public struct EarningBalance: Codable {
         return 0.0
     }
     
-    public func balanceString() -> String {
-        var toUnderlyingBalanceString = "---"
-        if let toUnderlyingBalanceBigInt = BigInt(toUnderlyingToken.balance) {
-            if toUnderlyingBalanceBigInt < BigInt(pow(10.0, Double(toUnderlyingToken.decimals - 6))) {
-                toUnderlyingBalanceString = "< 0.000001 \(toUnderlyingToken.symbol)"
-            } else {
-                toUnderlyingBalanceString = toUnderlyingBalanceBigInt.shortString(decimals: toUnderlyingToken.decimals) + " " + toUnderlyingToken.symbol
-            }
-        }
+    public func balanceString(totalValue: Double) -> String {
+        var toUnderlyingBalanceString = toUnderlyingToken.symbol + " " + StringFormatter.percentString(value: usdValue() / totalValue)
         return toUnderlyingBalanceString
     }
     
-    public func usdDetailString(totalValue: Double) -> String {
+    public func usdDetailString() -> String {
         var detailString = "---"
         if let usdBigIntValue = usdBigIntValue() {
-            detailString = "$" + usdBigIntValue.shortString(decimals: toUnderlyingToken.decimals, maxFractionDigits: 2) + " | " + StringFormatter.percentString(value: usdValue() / totalValue)
+            detailString = "$" + usdBigIntValue.shortString(decimals: toUnderlyingToken.decimals, maxFractionDigits: 2)
         }
         return detailString
     }

@@ -34,8 +34,8 @@ class ChartLegendTokenCell: UICollectionViewCell {
         legendColorView.backgroundColor = AppTheme.current.chartColors[index]
         tokenImageView.loadImage(earningBalance.toUnderlyingToken.logo)
         chainImageView.image = ChainType.make(chainID: earningBalance.chainID)?.chainIcon()
-        balanceLabel.text = earningBalance.balanceString()
-        detailLabel.text = earningBalance.usdDetailString(totalValue: totalValue)
+        balanceLabel.text = earningBalance.balanceString(totalValue: totalValue)
+        detailLabel.text = earningBalance.usdDetailString()
     }
     
     func updateUILastCell(totalValue: Double, remainValue: Double?) {
@@ -43,10 +43,11 @@ class ChartLegendTokenCell: UICollectionViewCell {
         tokenImageView.isHidden = true
         chainImageView.isHidden = true
         legendColorView.backgroundColor = AppTheme.current.chartColors.last
-        balanceLabel.text = Strings.other
         if let remainValue = remainValue {
-            detailLabel.text = StringFormatter.usdString(value: remainValue) + " | " +  StringFormatter.percentString(value: remainValue / totalValue)
+            balanceLabel.text = Strings.other + " " +  StringFormatter.percentString(value: remainValue / totalValue)
+            detailLabel.text = StringFormatter.usdString(value: remainValue)
         } else {
+            balanceLabel.text = Strings.other
             detailLabel.text = ""
         }
     }
