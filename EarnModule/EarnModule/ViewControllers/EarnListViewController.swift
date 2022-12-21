@@ -36,6 +36,7 @@ class EarnListViewController: InAppBrowsingViewController {
     var selectedPlatforms: Set<EarnPlatform>!
     var selectedTypes: [EarningType] = [.staking, .lending]
     var isSupportEarnv2: Observable<Bool> = .init(true)
+    var isEditingField: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -190,6 +191,7 @@ class EarnListViewController: InAppBrowsingViewController {
             self.searchFieldActionButton.setImage(UIImage(named: "close-search-icon"), for: .normal)
             self.view.layoutIfNeeded()
         }
+        isEditingField = true
     }
     
     func updateUIEndSearchingMode() {
@@ -199,6 +201,7 @@ class EarnListViewController: InAppBrowsingViewController {
             self.view.endEditing(true)
             self.view.layoutIfNeeded()
         }
+        isEditingField = false
     }
     
     @IBAction func filterButtonTapped(_ sender: Any) {
@@ -216,7 +219,14 @@ class EarnListViewController: InAppBrowsingViewController {
     }
     
     @IBAction func onSearchButtonTapped(_ sender: Any) {
-        self.updateUIStartSearchingMode()
+        if isEditingField {
+            updateUIEndSearchingMode()
+            searchTextField.text = ""
+            searchTextField.resignFirstResponder()
+            reloadUI()
+        } else {
+            updateUIStartSearchingMode()
+        }
     }
 }
 

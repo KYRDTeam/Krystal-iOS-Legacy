@@ -25,6 +25,22 @@ class PendingRewardViewModel {
     var isClaiming: Observable<Bool> = .init(false)
     var confirmViewModel: Observable<PendingRewardClaimConfirmPopUpViewModel?> = .init(nil)
     var errorMsg: Observable<String> = .init("")
+    var selectedTypes: [EarningType] = [.staking, .lending]
+    var selectedPlatforms: Set<EarnPlatform> = Set()
+    var isEditing: Bool = false
+    
+    func getAllPlatform() -> Set<EarnPlatform> {
+        let all = rewardData.map { $0.platform.toEarnPlatform() }
+        return Set(all)
+    }
+    
+    var isSelectedAllPlatform: Bool {
+        return selectedPlatforms.isEmpty || selectedPlatforms.count == getAllPlatform().count
+    }
+    
+    var isSelectAllType: Bool {
+        return selectedTypes.isEmpty || selectedTypes.count == 2
+    }
     
     func reloadDataSource() {
         dataSource.value.removeAll()
@@ -42,12 +58,26 @@ class PendingRewardViewModel {
                 return item.rewardToken.tokenInfo.symbol.lowercased().contains(searchText)
             })
         }
+        
+        if !isSelectedAllPlatform {
+            data = data.filter({ item in
+                return self.selectedPlatforms.contains(item.platform.toEarnPlatform())
+            })
+        }
+        
+        if !isSelectAllType {
+            data = data.filter({ item in
+                let earningType = EarningType(value: item.platform.earningType)
+                return self.selectedTypes.contains(earningType)
+            })
+        }
+        
         let cellModels = data.map { PendingRewardCellModel(item: $0) }
         dataSource.value = cellModels
     }
     
-    func requestData() {
-        isLoading.value = true
+    func requestData(showLoading: Bool = true) {
+        if showLoading { isLoading.value = true }
         apiService.getPendingReward(address: AppState.shared.currentAddress.addressString) { result in
             switch result {
             case .success(let rewards):
@@ -65,7 +95,7 @@ class PendingRewardViewModel {
             case .failure(let error):
                 print(error.description)
             }
-            self.isLoading.value = false
+            if showLoading { self.isLoading.value = false }
         }
     }
     

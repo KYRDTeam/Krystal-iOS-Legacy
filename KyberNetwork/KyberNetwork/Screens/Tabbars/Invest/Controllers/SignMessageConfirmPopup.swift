@@ -15,7 +15,7 @@ struct SignMessageConfirmViewModel {
   let onCancel: (() -> Void)
   
   var imageIconURL: String {
-    return "https://www.google.com/s2/favicons?sz=128&domain=\(self.url)/"
+    return "https://www.google.com/s2/favicons?sz=128&domain=\(self.url)"
   }
   
   var displayMessage: String {
