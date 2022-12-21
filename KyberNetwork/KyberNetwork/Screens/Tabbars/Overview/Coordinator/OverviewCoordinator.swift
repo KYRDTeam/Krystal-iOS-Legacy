@@ -136,7 +136,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
 
   func openChartView(token: Token, chainId: Int? = nil, animated: Bool = true) {
-      guard let chainID = chainId else { return }
+      let chainID = chainId ?? AppState.shared.currentChain.getChainId()
       Tracker.track(event: .marketOpenDetail)
       AppDependencies.router.openToken(navigationController: navigationController, address: token.address, chainID: chainID)
   }
