@@ -29,6 +29,7 @@ class UnstakeViewModel: BaseViewModel {
     let stakingTokenSymbol: String
     var toTokenSymbol: String
     var unwrapTokenSymbol: String
+    var unwrapTokenLogo: String?
     let balance: BigInt
     let platform: Platform
     var unstakeValue: BigInt = BigInt(0) {
@@ -136,6 +137,10 @@ class UnstakeViewModel: BaseViewModel {
         }
     }
     
+    var receiveTokenLogo: String {
+        return isUnWrap ? (unwrapTokenLogo ?? toTokenLogo) : toTokenLogo
+    }
+    
     var isUnWrap: Bool = false
 
     init(earningBalance: EarningBalance) {
@@ -153,8 +158,10 @@ class UnstakeViewModel: BaseViewModel {
         self.stakingTokenDecimal = earningBalance.stakingToken.decimals
         self.stakingTokenLogo = earningBalance.stakingToken.logo
         self.toTokenLogo = earningBalance.toUnderlyingToken.logo
+        self.unwrapTokenLogo = earningBalance.toUnderlyingToken.logo
         self.earningType = EarningType(value: earningBalance.platform.type)
     }
+    
     deinit {
         NotificationCenter.default.removeObserver(self, name: .kTxStatusUpdated, object: nil)
     }
@@ -180,6 +187,7 @@ class UnstakeViewModel: BaseViewModel {
         case .error, .drop:
             self.delegate?.didApproveToken(success: false)
         case .done:
+            self.stakingTokenAllowance = TransactionConstants.maxTokenAmount
             checkEnoughFeeForTx()
             self.delegate?.didApproveToken(success: true)
         default:
@@ -292,6 +300,7 @@ class UnstakeViewModel: BaseViewModel {
                         self?.wrapInfo = wrap
                         self?.delegate?.didGetWrapInfo(wrap: wrap)
                     }
+                    self?.unwrapTokenLogo = detail.token?.logo
                     let minAmount = detail.validation?.minUnstakeAmount ?? 0
                     self?.minUnstakeAmount = BigInt(minAmount * pow(10.0, Double(self?.stakingTokenDecimal ?? 0)))
                     let maxAmount = detail.validation?.maxUnstakeAmount ?? 0

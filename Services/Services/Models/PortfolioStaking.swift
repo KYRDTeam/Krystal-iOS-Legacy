@@ -144,6 +144,10 @@ public struct IngToken: Codable {
   public let logo: String
   public let balance: String
   public let decimals: Int
+    
+    public func toToken() -> Token {
+        return Token(name: symbol, symbol: symbol, address: address, decimals: decimals, logo: logo)
+    }
 }
 
 public struct WrapInfo: Codable {
@@ -157,6 +161,7 @@ public struct OptionDetailResponse: Codable {
     public let poolAddress: String
     public var validation: EarnOptionValidation?
     public let wrap: WrapInfo?
+    public var token: TokenInfo?
 }
 // MARK: - EarningToken
 public struct EarningToken: Codable {
@@ -176,4 +181,3 @@ public struct EarnOptionValidation: Codable {
     public var maxUnstakeAmount: Double?
     public var stakeInterval: Double?
 }
-
