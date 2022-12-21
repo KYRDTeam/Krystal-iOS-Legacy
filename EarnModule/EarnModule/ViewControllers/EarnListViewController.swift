@@ -117,7 +117,7 @@ class EarnListViewController: InAppBrowsingViewController {
         }
 
         self.emptyView.isHidden = !self.displayDataSource.isEmpty
-        self.isSupportEarnv2.value = !self.displayDataSource.isEmpty
+        self.isSupportEarnv2.value = !self.dataSource.isEmpty
         self.tableView.reloadData()
     }
     
