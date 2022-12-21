@@ -93,6 +93,7 @@ struct Strings {
     static let defaultErrorMessage = "default.error.message".toBeLocalised()
     static let claimInProgress = "claim.in.progress".toBeLocalised()
     static let myPortfolio = "my.portfolio".toBeLocalised()
+    static let myReward = "my.reward".toBeLocalised()
     static let close = "close".toBeLocalised()
     static let edit = "edit".toBeLocalised()
     static let supplyingInProgress = "supplying.in.progress".toBeLocalised()
@@ -143,4 +144,7 @@ struct Strings {
     static let stakeWarningMessage = "stake.warning.message".toBeLocalised()
     static let stakeDisableMessage = "stake.disable.message".toBeLocalised()
     static let selectType = "select.type".toBeLocalised()
+    static let noRewardYet = "no.reward.yet".toBeLocalised()
+    static let supplyApy = "supply.apy".toBeLocalised()
+    static let rewardApy = "reward.apy".toBeLocalised()
 }

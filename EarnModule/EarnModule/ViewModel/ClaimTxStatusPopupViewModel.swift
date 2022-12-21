@@ -14,6 +14,7 @@ import UIKit
 class ClaimTxStatusViewModel {
     var status: TxStatus = .processing
     let pendingTx: PendingClaimTxInfo
+    var isRewardClaim: Bool = false
     
     var onStatusUpdated: (() -> ())?
     
@@ -70,7 +71,12 @@ class ClaimTxStatusViewModel {
         case .processing:
             return ChainType.make(chainID: pendingTx.pendingUnstake.chainID)?.customRPC().webScanName ?? ""
         case .success:
-            return Strings.myPortfolio
+            if isRewardClaim {
+                return Strings.myReward
+            } else {
+                return Strings.myPortfolio
+            }
+            
         case .failure:
             return Strings.support
         }

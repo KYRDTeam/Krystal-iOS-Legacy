@@ -13,6 +13,7 @@ import DesignSystem
 import TransactionModule
 import FittedSheets
 import Services
+import BaseModule
 
 class PendingRewardViewController: InAppBrowsingViewController {
     
@@ -62,6 +63,7 @@ class PendingRewardViewController: InAppBrowsingViewController {
             TxConfirmPopup.show(onViewController: self, withViewModel: value) { pendingTx in
                 let vc = ClaimTxStatusPopup.instantiateFromNib()
                 vc.viewModel = ClaimTxStatusViewModel(pendingTx: pendingTx as! PendingClaimTxInfo)
+                vc.viewModel.isRewardClaim = true
                 let sheet = SheetViewController(controller: vc, sizes: [.intrinsic], options: .init(pullBarHeight: 0))
                 self.present(sheet, animated: true)
             }
@@ -108,7 +110,11 @@ class PendingRewardViewController: InAppBrowsingViewController {
     
     private func updateUIEmptyView() {
         guard isViewLoaded else { return }
-        
+        if viewModel.searchText.isEmpty {
+            emptyLabel.text = Strings.noRewardYet
+        } else {
+            emptyLabel.text = Strings.noRecordFound
+        }
         emptyViewContainer.isHidden = !viewModel.isEmpty()
     }
     
@@ -201,6 +207,14 @@ extension PendingRewardViewController: SkeletonTableViewDataSource {
         cell.updateCellModel(cellModel)
         cell.chainImageView.isHidden = viewModel.chainID != nil
         cell.onTap = { cm in
+            guard AppState.shared.currentChain.getChainId() == cm.rewardItem.chain.id else {
+                let chain = ChainType.make(chainID: cm.rewardItem.chain.id) ?? .eth
+                SwitchSpecificChainPopup.show(onViewController: self, destChain: chain) {
+                    self.viewModel.buildClaimReward(item: cm.rewardItem)
+                }
+                return
+            }
+                
             self.viewModel.buildClaimReward(item: cm.rewardItem)
         }
         return cell
