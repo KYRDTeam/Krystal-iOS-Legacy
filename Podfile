@@ -37,7 +37,7 @@ end
 def cryptoHelperPods
   pod 'BigInt', '~> 4.0'
   pod 'CryptoSwift'
-  pod 'TrustWalletCore', '~> 3'
+  pod 'TrustWalletCore', '~> 2.9'
   pod 'TrustKeystore', '~> 0.4.2'
   pod 'TrustCore', '~> 0.0.7'
   pod 'WalletConnectSwift'
@@ -235,7 +235,7 @@ target 'KrystalWallets' do
   use_frameworks!
 
   databasePods
-  pod 'TrustWalletCore', '~> 3'
+  pod 'TrustWalletCore', '~> 2.9'
   pod 'KeychainSwift'
   pod 'CryptoSwift'
 end
