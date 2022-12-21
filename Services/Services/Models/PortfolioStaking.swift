@@ -71,7 +71,7 @@ public struct Platform: Codable {
     }
     
     public func toEarnPlatform() -> EarnPlatform {
-        return EarnPlatform(platform: self, apy: -1, tvl: -1)
+        return EarnPlatform(platform: self, apy: -1, rewardApy: -1, tvl: -1)
     }
 }
 
