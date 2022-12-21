@@ -97,30 +97,30 @@ class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
                     guard let signature = self.cosmosSignature(from: input, output) else { return }
                     webview?.tw.send(network: network, result: signature, to: id)
                 }
-            case .aptos:
-                if var params = extractAptosParams(json: json) {
-                    aptosSigningInput(params: params) { [weak self, webview] input in
-                        switch input {
-                        case .failure(let error):
-                            print(error.localizedDescription)
-                        case .success(let input):
-                            self?.handleSignTransaction(network: network, id: id) { [weak webview] in
-                                let output: AptosSigningOutput = AnySigner.sign(input: input, coin: .aptos)
-                                let signature = try! JSONSerialization.jsonObject(with: output.json.data(using: .utf8)!) as! [String: Any]
-                                params["signature"] = signature
-
-                                if #available(iOS 13.0, *) {
-                                    let data = try! JSONSerialization.data(withJSONObject: params, options: [.withoutEscapingSlashes])
-                                    webview?.tw.send(network: network, result: data.hexString, to: id)
-                                } else {
-                                    let data = try! JSONSerialization.data(withJSONObject: params, options: [.fragmentsAllowed])
-                                    webview?.tw.send(network: network, result: data.hexString, to: id)
-                                }
-                                
-                            }
-                        }
-                    }
-                }
+//            case .aptos:
+//                if var params = extractAptosParams(json: json) {
+//                    aptosSigningInput(params: params) { [weak self, webview] input in
+//                        switch input {
+//                        case .failure(let error):
+//                            print(error.localizedDescription)
+//                        case .success(let input):
+//                            self?.handleSignTransaction(network: network, id: id) { [weak webview] in
+//                                let output: AptosSigningOutput = AnySigner.sign(input: input, coin: .aptos)
+//                                let signature = try! JSONSerialization.jsonObject(with: output.json.data(using: .utf8)!) as! [String: Any]
+//                                params["signature"] = signature
+//
+//                                if #available(iOS 13.0, *) {
+//                                    let data = try! JSONSerialization.data(withJSONObject: params, options: [.withoutEscapingSlashes])
+//                                    webview?.tw.send(network: network, result: data.hexString, to: id)
+//                                } else {
+//                                    let data = try! JSONSerialization.data(withJSONObject: params, options: [.fragmentsAllowed])
+//                                    webview?.tw.send(network: network, result: data.hexString, to: id)
+//                                }
+//
+//                            }
+//                        }
+//                    }
+//                }
             default: break
             }
 
@@ -134,19 +134,19 @@ class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
                 }
 
                 handleSignSolanaRawTransaction(id: id, raw: raw)
-            case .cosmos:
-                let input: CosmosSigningInput
-                if let params = json["object"] as? [String: Any] {
-                    input = self.cosmosSigningInputDirect(params: params)!
-                } else {
-                    fatalError("data is missing")
-                }
-
-                handleSignTransaction(network: network, id: id) { [weak webview] in
-                    let output: CosmosSigningOutput = AnySigner.sign(input: input, coin: self.cosmosCoin)
-                    guard let signature = self.cosmosSignature(from: input, output) else { return }
-                    webview?.tw.send(network: .cosmos, result: signature, to: id)
-                }
+//            case .cosmos:
+//                let input: CosmosSigningInput
+//                if let params = json["object"] as? [String: Any] {
+//                    input = self.cosmosSigningInputDirect(params: params)!
+//                } else {
+//                    fatalError("data is missing")
+//                }
+//
+//                handleSignTransaction(network: network, id: id) { [weak webview] in
+//                    let output: CosmosSigningOutput = AnySigner.sign(input: input, coin: self.cosmosCoin)
+//                    guard let signature = self.cosmosSignature(from: input, output) else { return }
+//                    webview?.tw.send(network: .cosmos, result: signature, to: id)
+//                }
             default:
                 print("\(network.rawValue) doesn't support signRawTransaction")
                 break
@@ -285,19 +285,21 @@ class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
                 let jsonString = String(data: json, encoding: .utf8)!
                 webview?.tw.send(network: network, result: jsonString, to: id)
             case .aptos:
-                guard let wallet = self.wallet else {
-                    return
-                }
-                guard let privateKey = WalletManager.shared.privateKey(wallet: wallet, forCoin: .aptos) else {
-                    return
-                }
-                let pubKey = privateKey.getPublicKeySecp256k1(compressed: true).description
-                let address = WalletManager.shared.address(wallet: wallet, forCoin: .aptos)
-                let json = try! JSONSerialization.data(
-                    withJSONObject: ["publicKey": pubKey, "address": address]
-                )
-                let jsonString = String(data: json, encoding: .utf8)!
-                webview?.tw.send(network: network, result: jsonString, to: id)
+                return
+//            case .aptos:
+//                guard let wallet = self.wallet else {
+//                    return
+//                }
+//                guard let privateKey = WalletManager.shared.privateKey(wallet: wallet, forCoin: .aptos) else {
+//                    return
+//                }
+//                let pubKey = privateKey.getPublicKeySecp256k1(compressed: true).description
+//                let address = WalletManager.shared.address(wallet: wallet, forCoin: .aptos)
+//                let json = try! JSONSerialization.data(
+//                    withJSONObject: ["publicKey": pubKey, "address": address]
+//                )
+//                let jsonString = String(data: json, encoding: .utf8)!
+//                webview?.tw.send(network: network, result: jsonString, to: id)
             }
 
 //        }))
@@ -357,8 +359,8 @@ class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
             webview?.tw.send(network: .solana, error: "Canceled", to: id)
         }))
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak webview] _ in
-            let coin: CoinType = network == .solana ? .solana : .aptos
-            if let wallet = self.wallet, let privateKey = WalletManager.shared.privateKey(wallet: wallet, forCoin: coin) {
+//            let coin: CoinType = network == .solana ? .solana : .aptos
+            if let wallet = self.wallet, let privateKey = WalletManager.shared.privateKey(wallet: wallet, forCoin: .solana) {
                 let signed = privateKey.sign(digest: data, curve: .ed25519)!
                 webview?.tw.send(network: network, result: "0x" + signed.hexString, to: id)
             }
@@ -653,28 +655,28 @@ class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
         }
     }
 
-    private func extractAptosParams(json: [String: Any]) -> [String: Any]? {
-        guard let object = json["object"] as? [String: Any], let payload = object["data"] as? [String: Any] else {
-            return nil
-        }
-        
-        guard let wallet = wallet else {
-            return nil
-        }
-        
-        guard let address = WalletManager.shared.address(wallet: wallet, forCoin: .aptos) else {
-            return nil
-        }
-
-        return [
-            "expiration_timestamp_secs": "3664390082",
-            "gas_unit_price": "100",
-            "max_gas_amount": "3296766",
-            "payload": payload,
-            "sender": address,
-            "sequence_number": "34"
-        ]
-    }
+//    private func extractAptosParams(json: [String: Any]) -> [String: Any]? {
+//        guard let object = json["object"] as? [String: Any], let payload = object["data"] as? [String: Any] else {
+//            return nil
+//        }
+//
+//        guard let wallet = wallet else {
+//            return nil
+//        }
+//
+//        guard let address = WalletManager.shared.address(wallet: wallet, forCoin: .aptos) else {
+//            return nil
+//        }
+//
+//        return [
+//            "expiration_timestamp_secs": "3664390082",
+//            "gas_unit_price": "100",
+//            "max_gas_amount": "3296766",
+//            "payload": payload,
+//            "sender": address,
+//            "sequence_number": "34"
+//        ]
+//    }
 
     private func signMessage(data: Data, addPrefix: Bool = true) -> Data {
         guard let wallet = wallet else { return Data() }
@@ -703,54 +705,54 @@ class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
         return prefix + data
     }
 
-    private func aptosSigningInput(params: [String: Any], completion: @escaping ((Result<AptosSigningInput, Error>) -> Void)) {
-        guard let wallet = wallet else {
-            return
-        }
-        
-        guard let privateKey = WalletManager.shared.privateKey(wallet: wallet, forCoin: .aptos) else {
-            return
-        }
+//    private func aptosSigningInput(params: [String: Any], completion: @escaping ((Result<AptosSigningInput, Error>) -> Void)) {
+//        guard let wallet = wallet else {
+//            return
+//        }
+//
+//        guard let privateKey = WalletManager.shared.privateKey(wallet: wallet, forCoin: .aptos) else {
+//            return
+//        }
+//
+//        params.postRequest(to: URL(string: "https://fullnode.devnet.aptoslabs.com/v1/transactions/encode_submission")!) { (result: Result<Data, Error>) -> Void in
+//            switch result {
+//            case .failure(let error):
+//                completion(.failure(error))
+//            case .success(let data):
+//                let input = AptosSigningInput.with {
+//                    $0.anyEncoded = String(data: data, encoding: .utf8)!.replacingOccurrences(of: "\"", with: "")
+//                    $0.privateKey = privateKey.data
+//                }
+//                completion(.success(input))
+//            }
+//        }
+//    }
 
-        params.postRequest(to: URL(string: "https://fullnode.devnet.aptoslabs.com/v1/transactions/encode_submission")!) { (result: Result<Data, Error>) -> Void in
-            switch result {
-            case .failure(let error):
-                completion(.failure(error))
-            case .success(let data):
-                let input = AptosSigningInput.with {
-                    $0.anyEncoded = String(data: data, encoding: .utf8)!.replacingOccurrences(of: "\"", with: "")
-                    $0.privateKey = privateKey.data
-                }
-                completion(.success(input))
-            }
-        }
-    }
-
-    private func cosmosSigningInputDirect(params: [String: Any]) -> CosmosSigningInput? {
-        guard let wallet = wallet else { return nil }
-        guard let privateKey = WalletManager.shared.privateKey(wallet: wallet, forCoin: cosmosCoin) else { return nil }
-        guard let accountNumberStr = params["account_number"] as? String, let accountNumber = UInt64(accountNumberStr) else { return nil }
-        guard let chainID = params["chain_id"] as? String else { return nil }
-        guard let authInfoBytesHex = params["auth_info_bytes"] as? String else { return nil }
-        guard let authInfoBytes = Data(hexString: authInfoBytesHex) else { return nil }
-        guard let bodyBytesHex = params["body_bytes"] as? String else { return nil }
-        guard let bodyBytes = Data(hexString: bodyBytesHex) else { return nil }
-
-        return CosmosSigningInput.with {
-            $0.accountNumber = accountNumber
-            $0.chainID = chainID
-            $0.messages = [
-                CosmosMessage.with {
-                    $0.signDirectMessage = CosmosMessage.SignDirect.with {
-                        $0.authInfoBytes = authInfoBytes
-                        $0.bodyBytes = bodyBytes
-                    }
-                }
-            ]
-            $0.signingMode = .protobuf
-            $0.privateKey = privateKey.data
-        }
-    }
+//    private func cosmosSigningInputDirect(params: [String: Any]) -> CosmosSigningInput? {
+//        guard let wallet = wallet else { return nil }
+//        guard let privateKey = WalletManager.shared.privateKey(wallet: wallet, forCoin: cosmosCoin) else { return nil }
+//        guard let accountNumberStr = params["account_number"] as? String, let accountNumber = UInt64(accountNumberStr) else { return nil }
+//        guard let chainID = params["chain_id"] as? String else { return nil }
+//        guard let authInfoBytesHex = params["auth_info_bytes"] as? String else { return nil }
+//        guard let authInfoBytes = Data(hexString: authInfoBytesHex) else { return nil }
+//        guard let bodyBytesHex = params["body_bytes"] as? String else { return nil }
+//        guard let bodyBytes = Data(hexString: bodyBytesHex) else { return nil }
+//
+//        return CosmosSigningInput.with {
+//            $0.accountNumber = accountNumber
+//            $0.chainID = chainID
+//            $0.messages = [
+//                CosmosMessage.with {
+//                    $0.signDirectMessage = CosmosMessage.SignDirect.with {
+//                        $0.authInfoBytes = authInfoBytes
+//                        $0.bodyBytes = bodyBytes
+//                    }
+//                }
+//            ]
+//            $0.signingMode = .protobuf
+//            $0.privateKey = privateKey.data
+//        }
+//    }
 
     private func cosmosSigningInputAmino(params: [String: Any]) -> CosmosSigningInput? {
         guard let wallet = wallet else { return nil }
