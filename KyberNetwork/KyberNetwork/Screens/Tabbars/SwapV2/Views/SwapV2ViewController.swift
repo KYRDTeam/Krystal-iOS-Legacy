@@ -553,6 +553,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
   
   @objc override func onAppSwitchChain() {
     super.onAppSwitchChain()
+    reloadWallet()
     viewModel.appDidSwitchChain()
   }
   

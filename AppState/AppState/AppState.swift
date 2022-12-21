@@ -42,13 +42,13 @@ public class AppState {
     AppEventManager.shared.postSwitchChainEvent(chain: chain)
   }
   
-    public func updateAddress(address: KAddress, targetChain: ChainType) {
-        currentAddress = address
-        if targetChain != currentChain {
-            updateChain(chain: targetChain)
-        }
-        AppEventManager.shared.postSwitchAddressEvent(address: address, switchChain: targetChain != currentChain)
+  public func updateAddress(address: KAddress, targetChain: ChainType) {
+    currentAddress = address
+    if targetChain != currentChain {
+        updateChain(chain: targetChain)
     }
+    AppEventManager.shared.postSwitchAddressEvent(address: address, switchChain: false)
+  }
   
   public var isBrowsingMode: Bool {
     return currentAddress.addressString.isEmpty

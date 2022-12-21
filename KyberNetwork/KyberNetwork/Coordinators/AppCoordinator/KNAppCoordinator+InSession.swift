@@ -206,13 +206,10 @@ extension KNAppCoordinator {
   }
   
   func onAddWallet(wallet: KWallet, chain: ChainType) {
-    let shouldRestartSession = WalletCache.shared.lastUsedAddress == nil || WalletCache.shared.lastUsedAddress?.addressString == ""
     self.switchWallet(wallet: wallet, chain: chain)
-    if shouldRestartSession {
-      AppDelegate.shared.coordinator.overviewTabCoordinator?.stop()
-      AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
-      AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
-    }
+    AppDelegate.shared.coordinator.overviewTabCoordinator?.stop()
+    AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
+    AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
   }
   
   func onAddWatchAddress(address: KAddress, chain: ChainType) {
