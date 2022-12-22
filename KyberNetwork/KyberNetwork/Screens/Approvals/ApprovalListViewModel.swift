@@ -171,11 +171,44 @@ class ApprovalListViewModel {
         }
     }
     
-    func requestRevoke(approval: Approval, setting: TxSettingObject, onCompleted: @escaping (Error?) -> Void) {
+    func getL1FeeIfNeeded(approval: Approval, onCompleted: @escaping (BigInt) -> Void) {
+        guard let chain = ChainType.make(chainID: approval.chainId), chain == .optimism else {
+            onCompleted(BigInt(0))
+            return
+        }
+        
+        getTxData(approval: approval) { data, error in
+            if let data = data {
+                let processor = EthereumTransactionProcessor(chain: chain)
+                processor.getL1FeeForTxIfHave(data: data.hexEncoded) { l1Fee in
+                    onCompleted(l1Fee)
+                }
+            } else {
+                onCompleted(BigInt(0))
+            }
+        }
+    }
+    
+    func getTxData(approval: Approval, onCompleted: @escaping (Data?, Error?) -> Void) {
         guard let chain = ChainType.make(chainID: approval.chainId) else {
             return
         }
         guard let spender = approval.spenderAddress else {
+            return
+        }
+        let service = EthereumNodeService(chain: chain)
+        service.getSendApproveERC20TokenEncodeData(spender: spender, value: .zero) { result in
+            switch result {
+            case .success(let hex):
+                onCompleted(hex, nil)
+            case .failure(let error):
+                onCompleted(nil, error)
+            }
+        }
+    }
+    
+    func requestRevoke(approval: Approval, setting: TxSettingObject, onCompleted: @escaping (Error?) -> Void) {
+        guard let chain = ChainType.make(chainID: approval.chainId) else {
             return
         }
         guard let tokenAddress = approval.tokenAddress else {
@@ -183,14 +216,15 @@ class ApprovalListViewModel {
         }
         let service = EthereumNodeService(chain: chain)
         let gasPrice = self.getGasPrice(chain: chain, setting: setting)
-        service.getSendApproveERC20TokenEncodeData(spender: spender, value: .zero) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let hex):
+
+        self.getTxData(approval: approval) { data, error in
+            if let error = error {
+                onCompleted(error)
+            } else if let data = data {
                 service.getTransactionCount(address: self.address) { result in
                     switch result {
                     case .success(let count):
-                        let signResult = KNGeneralProvider.shared.signTransactionData(chain: chain, address: AppState.shared.currentAddress, tokenAddress: tokenAddress, nonce: count, data: hex, gasPrice: gasPrice, gasLimit: setting.gasLimit)
+                        let signResult = KNGeneralProvider.shared.signTransactionData(chain: chain, address: AppState.shared.currentAddress, tokenAddress: tokenAddress, nonce: count, data: data, gasPrice: gasPrice, gasLimit: setting.gasLimit)
                         switch signResult {
                         case .success(let signature):
                             KNGeneralProvider.shared.sendSignedTransactionData(signature.0, chain: chain) { result in
@@ -210,8 +244,6 @@ class ApprovalListViewModel {
                         onCompleted(error)
                     }
                 }
-            case .failure(let error):
-                onCompleted(error)
             }
         }
     }

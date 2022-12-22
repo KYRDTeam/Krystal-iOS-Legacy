@@ -63,23 +63,25 @@ class ApprovalsCoordinator: Coordinator {
     }
     
     func openRevokeConfirm(approval: Approval) {
-        let viewModel = RevokeConfirmViewModel(approval: approval)
-        let vc = RevokeConfirmPopup.instantiateFromNib()
-        vc.viewModel = viewModel
-        vc.onSelectRevoke = { [weak self] in
-            guard let self = self else { return }
-            self.rootViewController.showLoadingHUD()
-            self.viewModel?.requestRevoke(approval: approval, setting: viewModel.setting, onCompleted: { error in
-                self.rootViewController.hideLoading()
-                if let error = error {
-                    self.showErrorMessage(AnyError(error), viewController: self.rootViewController)
-                }
-            })
-        }
-        
-        let options = SheetOptions(pullBarHeight: 0)
-        let sheet = SheetViewController(controller: vc, sizes: [.intrinsic], options: options)
-        navigationController.present(sheet, animated: true, completion: nil)
+        self.viewModel?.getL1FeeIfNeeded(approval: approval, onCompleted: { l1Fee in
+            let viewModel = RevokeConfirmViewModel(approval: approval, l1Fee: l1Fee)
+            let vc = RevokeConfirmPopup.instantiateFromNib()
+            vc.viewModel = viewModel
+            vc.onSelectRevoke = { [weak self] in
+                guard let self = self else { return }
+                self.rootViewController.showLoadingHUD()
+                self.viewModel?.requestRevoke(approval: approval, setting: viewModel.setting, onCompleted: { error in
+                    self.rootViewController.hideLoading()
+                    if let error = error {
+                        self.showErrorMessage(AnyError(error), viewController: self.rootViewController)
+                    }
+                })
+            }
+            
+            let options = SheetOptions(pullBarHeight: 0)
+            let sheet = SheetViewController(controller: vc, sizes: [.intrinsic], options: options)
+            self.navigationController.present(sheet, animated: true, completion: nil)
+        })
     }
     
     func onOpenTxStatusPopup(_ txHash: String, _ chain: ChainType) {

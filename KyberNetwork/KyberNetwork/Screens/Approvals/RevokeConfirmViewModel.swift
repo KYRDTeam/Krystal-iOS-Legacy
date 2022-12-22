@@ -22,6 +22,7 @@ class RevokeConfirmViewModel {
     var isVerified: Bool
     var spenderAddress: String?
     var amountString: String?
+    let l1Fee: BigInt
     let approval: Approval
     var setting: TxSettingObject = .default
     var chain: ChainType?
@@ -29,7 +30,7 @@ class RevokeConfirmViewModel {
     let tokenService = TokenService()
     var onFetchedQuoteTokenPrice: (() -> ())?
     
-    init(approval: Approval) {
+    init(approval: Approval, l1Fee: BigInt) {
         self.approval = approval
         contract = approval.tokenAddress
         symbol = approval.symbol
@@ -43,6 +44,7 @@ class RevokeConfirmViewModel {
                                         ? Strings.unlimitedAllowance
                                         : NumberFormatUtils.amount(value: bigIntAmount, decimals: approval.decimals)
         chain = ChainType.make(chainID: approval.chainId)
+        self.l1Fee = l1Fee
     }
     
     var maxFee: BigInt {
@@ -58,14 +60,14 @@ class RevokeConfirmViewModel {
         guard let chain = chain else {
             return ""
         }
-        let fee: BigInt = maxFee * setting.gasLimit
+        let fee: BigInt = maxFee * setting.gasLimit + l1Fee
         let valueEth = NumberFormatUtils.gasFee(value: fee) + " \(chain.customRPC().quoteToken)"
         return valueEth
     }
     
     var maxFeeTokenUSDString: String {
         if let usdRate = quoteTokenUsdPrice {
-            let fee: BigInt = maxFee * setting.gasLimit
+            let fee: BigInt = maxFee * setting.gasLimit + l1Fee
             let usdAmt = fee * BigInt(usdRate * pow(10.0, 18.0)) / BigInt(10).power(18)
             let value = NumberFormatUtils.gasFee(value: usdAmt)
             return "≈ \(value) USD"
