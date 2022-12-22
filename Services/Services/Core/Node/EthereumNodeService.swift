@@ -142,6 +142,29 @@ public class EthereumNodeService {
         }
     }
     
+    public func getL1FeeForTxIfHave(data: String, completion: @escaping (BigInt) -> Void) {
+        if AppState.shared.currentChain == .optimism {
+            let service = EthereumNodeService(chain: AppState.shared.currentChain)
+            service.getOPL1FeeEncodeData(for: data) { result in
+                switch result {
+                case .success(let encodeString):
+                    service.getOptimismL1Fee(for: encodeString) { feeResult in
+                        switch feeResult {
+                        case .success(let fee):
+                            completion(fee)
+                        case .failure(_):
+                            completion(BigInt(0))
+                        }
+                    }
+                case .failure(_):
+                    completion(BigInt(0))
+                }
+            }
+        } else {
+            completion(BigInt(0))
+        }
+    }
+    
     func requestDataForNFTTransfer(from: String, to: String, tokenID: String, amount: Int, isERC721: Bool, completion: @escaping (Result<Data, AnyError>) -> Void) {
         web3?.request(request: ContractNFTTransfer(from: from, to: to, tokenID: tokenID, amount: amount, isERC721Format: isERC721)) { (result) in
             switch result {

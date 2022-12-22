@@ -43,7 +43,7 @@ class StakingViewModel: BaseViewModel {
     }
     
     var isExpandProjection: Observable<Bool> = .init(false)
-    
+    var l1Fee: BigInt = BigInt(0)
     let tokenService = TokenService()
     var quoteTokenDetail: TokenDetailInfo?
     var stakingTokenDetail: TokenDetailInfo?
@@ -130,9 +130,9 @@ class StakingViewModel: BaseViewModel {
     
     var transactionFee: BigInt {
         if let basic = setting.basic {
-            return setting.gasLimit * self.getGasPrice(gasType: basic.gasType)
+            return setting.gasLimit * self.getGasPrice(gasType: basic.gasType) + self.l1Fee
           } else if let advance = setting.advanced {
-            return setting.gasLimit * advance.maxFee
+            return setting.gasLimit * advance.maxFee + self.l1Fee
           }
         return BigInt(0)
     }
@@ -364,16 +364,30 @@ extension StakingViewModel {
         }
     }
     
+    func getL1FeeIfNeed(data: String, onCompleted: @escaping (BigInt) -> Void) {
+        guard let chain = ChainType.make(chainID: chainId), chain == .optimism else {
+            onCompleted(BigInt(0))
+            return
+        }
+        let service = EthereumNodeService(chain: chain)
+        service.getL1FeeForTxIfHave(data: data.hexEncoded) { l1Fee in
+            onCompleted(l1Fee)
+        }
+    }
+    
     func requestBuildStakeTx(showLoading: Bool = false, completion: @escaping (Bool) -> () = { _ in }) {
         if showLoading { isLoading.value = true }
         apiService.buildStakeTx(param: buildTxRequestParams) { [weak self] result in
             switch result {
             case .success(let tx):
-                self?.txObject.value = tx
-                if let gasLimit = BigInt(tx.gasLimit.drop0x, radix: 16), gasLimit > 0 {
-                    self?.didGetTxGasLimit(gasLimit: gasLimit)
-                }
-                completion(true)
+                self?.getL1FeeIfNeed(data: tx.data, onCompleted: { l1Fee in
+                    self?.txObject.value = tx
+                    self?.l1Fee = l1Fee
+                    if let gasLimit = BigInt(tx.gasLimit.drop0x, radix: 16), gasLimit > 0 {
+                        self?.didGetTxGasLimit(gasLimit: gasLimit)
+                    }
+                    completion(true)
+                })
             case .failure(let error):
                 self?.error.value = error
                 completion(false)
