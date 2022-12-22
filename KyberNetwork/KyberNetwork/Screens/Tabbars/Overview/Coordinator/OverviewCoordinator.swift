@@ -136,7 +136,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
 
   func openChartView(token: Token, chainId: Int? = nil, animated: Bool = true) {
-      guard let chainID = chainId else { return }
+      let chainID = chainId ?? AppState.shared.currentChain.getChainId()
       Tracker.track(event: .marketOpenDetail)
       AppDependencies.router.openToken(navigationController: navigationController, address: token.address, chainID: chainID)
   }
@@ -712,7 +712,13 @@ extension OverviewCoordinator {
     let allChainIds = ChainType.getAllChain().map {
       return "\($0.getChainId())"
     }
-    let addressesString = AppDelegate.session.getCurrentWalletAddresses().map { address -> String in
+    let addresses: [KAddress] = {
+        if currentAddress.isWatchWallet {
+            return [currentAddress]
+        }
+        return WalletManager.shared.getAllAddresses(walletID: currentAddress.walletID)
+    }()
+    let addressesString = addresses.map { address -> String in
       if address.addressType == .evm {
         return "ethereum:\(address.addressString)"
       } else {

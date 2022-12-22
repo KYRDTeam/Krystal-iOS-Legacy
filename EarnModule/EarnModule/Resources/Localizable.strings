@@ -36,6 +36,7 @@
 "default.error.message" = "Something went wrong, please try again later";
 "claim.in.progress" = "Claim In Progress";
 "my.portfolio" = "My Portfolio";
+"my.reward" = "My Reward";
 "close" = "Close";
 "edit" = "Edit";
 "supplying.in.progress" = "Supplying In Progress";
@@ -88,7 +89,7 @@
 "my.supply" = "My supply";
 "unstaking.in.progress" = "Unstaking in progress";
 "unwrap.token" = "Unwrap %@";
-"unstake.eth.warning.pop.up" = "Currently, unstaking is not available, as this functionality is not yet supported by Ethereum.\nUnstaking will be enabled after the Shanghai upgrade that will follow The Merge in approximately 6-12 months (~Q2/Q3 2023)";
+"unstake.eth.warning.pop.up" = "Unstaking ETH is currently not available as this functionality is not yet supported by Ethereum. It will only be enabled after the Shanghai upgrade that will follow The Merge in approximately 6-12 months (~Q2/Q3 2023). An alternative to unstaking will be to swap this token to ETH. Swap to ETH";
 "all.platforms" = "All Platforms";
 "warning" = "Warning";
 "reward.apy.info.text" = "Sypply APY: %@ \nReward APY: %@";
@@ -98,3 +99,6 @@
 "other" = "OTHER";
 "select.platform" = "Select Platform";
 "select.type" = "Select Type";
+"no.reward.yet" = "No reward token yet";
+"supply.apy" = "Supply APY";
+"reward.apy" = "Reward APY";

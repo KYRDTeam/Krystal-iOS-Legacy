@@ -127,6 +127,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
             self.searchFieldActionButton.setImage(UIImage(named: "close-search-icon"), for: .normal)
             self.view.layoutIfNeeded()
         }
+        viewModel.isEditing = true
     }
     
     func updateUIEndSearchingMode() {
@@ -136,10 +137,19 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
             self.view.endEditing(true)
             self.view.layoutIfNeeded()
         }
+        viewModel.isEditing = false
     }
     
     @IBAction func onSearchButtonTapped(_ sender: Any) {
-        self.updateUIStartSearchingMode()
+        if viewModel.isEditing {
+            updateUIEndSearchingMode()
+            searchTextField.text = ""
+            searchTextField.resignFirstResponder()
+            viewModel.searchText = ""
+            reloadUI()
+        } else {
+            updateUIStartSearchingMode()
+        }
     }
 
     @IBAction func filterButtonTapped(_ sender: Any) {
@@ -165,6 +175,10 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         let currentChain = AppState.shared.currentChain
         viewModel.chainID = currentChain.getChainId()
         reloadUI()
+    }
+    
+    override func onAppSwitchAddress(switchChain: Bool) {
+        viewModel.requestData()
     }
     
     override func onAppSelectAllChain() {
@@ -234,11 +248,9 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
     
     func chartCell(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(PortfolioPieChartCell.self, indexPath: indexPath)!
-        if let portfolio = viewModel.portfolio {
-            cell.viewModel = PortfolioPieChartCellViewModel(earningBalances: portfolio.0, chainID: viewModel.chainID)
-            cell.updateUI(animate: viewModel.shouldAnimateChart)
-            viewModel.shouldAnimateChart = false
-        }
+        cell.viewModel = PortfolioPieChartCellViewModel(earningBalances: viewModel.filterEarningBalance(), chainID: viewModel.chainID)
+        cell.updateUI(animate: viewModel.shouldAnimateChart)
+        viewModel.shouldAnimateChart = false
         return cell
     }
     
@@ -413,7 +425,10 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
     func openUnstake(earningBalance: EarningBalance) {
         let earningType = EarningType(value: earningBalance.platform.type)
         if earningBalance.toUnderlyingToken.address.lowercased() == Constants.ethAddress.lowercased() && earningType == .staking {
-            self.showUnstakeETHWarning()
+            self.showUnstakeETHWarning(
+                from: earningBalance.stakingToken.toToken(),
+                to: earningBalance.toUnderlyingToken.toToken()
+            )
             return
         }
         let viewModel = UnstakeViewModel(earningBalance: earningBalance)
@@ -453,14 +468,22 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
                               address: earningBalance.toUnderlyingToken.address,
                               decimals: earningBalance.toUnderlyingToken.decimals,
                               logo: earningBalance.toUnderlyingToken.logo)
-            let earnPlatform = EarnPlatform(platform: earningBalance.platform, apy: earningBalance.apy, tvl: 0)
+            let earnPlatform = EarnPlatform(platform: earningBalance.platform, apy: earningBalance.apy, rewardApy: earningBalance.rewardApy, tvl: 0)
             self?.delegate?.didSelectPlatform(token: token, platform: earnPlatform, chainId: earningBalance.chainID)
         }
         let stakeImage = swipeCellImageView(title: plusTitleFor(earningType: earningType), icon: Images.greenPlus, color: AppTheme.current.primaryColor)
         stakeAction.image = stakeImage
         stakeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
         
-        return [unstakeAction, stakeAction]
+        let cellModel = viewModel.displayDataSource.value.0[indexPath.row]
+        
+        if cellModel.warningType == .none {
+            return [unstakeAction, stakeAction]
+        } else {
+            return [stakeAction]
+        }
+        
+        
     }
     
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
@@ -472,7 +495,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         return options
     }
     
-    private func showUnstakeETHWarning() {
+    private func showUnstakeETHWarning(from: Token, to: Token) {
         let alertController = KNPrettyAlertController(
             title: Strings.warning,
             isWarning: true,
@@ -484,6 +507,9 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
             firstButtonAction: {
             }
         )
+        alertController.swapLinkTap = {
+            AppDependencies.router.openSwap(from: from, to: to)
+        }
         
         alertController.popupHeight = 320
         present(alertController, animated: true, completion: nil)

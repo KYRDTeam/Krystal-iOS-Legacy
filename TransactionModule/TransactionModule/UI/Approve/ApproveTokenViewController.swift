@@ -13,282 +13,166 @@ import BaseModule
 import BaseWallet
 import Utilities
 import Services
-
-public class ApproveTokenViewModel {
-  var showEditSettingButton: Bool = false
-  var gasLimit: BigInt = AppDependencies.gasConfig.defaultApproveGasLimit
-  var value: BigInt = TransactionConstants.maxTokenAmount
-  var headerTitle: String = "Approve Token"
-  var chain: ChainType
-  var tokenAddress: String
-  var hash: String?
-  let remain: BigInt
-  var gasPrice: BigInt = AppDependencies.gasConfig.getStandardGasPrice(chain: AppState.shared.currentChain)
-  var toAddress: String
-  
-  var subTitleText: String {
-    return String(format: "You need to approve Krystal to spend %@", self.symbol.uppercased())
-  }
-  var state: Bool {
-    return false
-  }
-  var symbol: String
-  var setting: TxSettingObject = .default
-  
-  
-  func getFee() -> BigInt {
-    let fee = self.gasPrice * self.gasLimit
-    return fee
-  }
-
-  func getFeeString() -> String {
-    let fee = self.getFee()
-    return "\(NumberFormatUtils.gasFeeFormat(number: fee)) \(chain.quoteToken())"
-  }
-
-  func getFeeUSDString() -> String {
-    let quoteUSD = AppDependencies.priceStorage.getQuoteUsdRate(chain: chain) ?? 0
-    let feeUSD = self.getFee() * BigInt(quoteUSD * pow(10.0, 18.0)) / BigInt(10).power(18)
-    let valueString: String =  feeUSD.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
-    return "(~ \(valueString) USD)"
-  }
-
-  public init(symbol: String, tokenAddress: String, remain: BigInt, toAddress: String, chain: ChainType) {
-    self.symbol = symbol
-    self.tokenAddress = tokenAddress
-    self.remain = remain
-    self.toAddress = toAddress
-    self.chain = chain
-  }
-  
-  func getGasPrice(chain: ChainType, setting: TxSettingObject) -> BigInt {
-      if let basic = setting.basic {
-          switch basic.gasType {
-          case .slow:
-              return AppDependencies.gasConfig.getLowGasPrice(chain: chain)
-          case .regular:
-              return AppDependencies.gasConfig.getStandardGasPrice(chain: chain)
-          case .fast:
-              return AppDependencies.gasConfig.getFastGasPrice(chain: chain)
-          case .superFast:
-              return AppDependencies.gasConfig.getSuperFastGasPrice(chain: chain)
-          }
-      } else {
-          return setting.advanced?.maxFee ?? .zero
-      }
-  }
-  
-  func sendApproveRequest(value: BigInt, onCompleted: @escaping (Error?) -> Void) {
-    let service = EthereumNodeService(chain: chain)
-    let gasPrice = self.getGasPrice(chain: chain, setting: setting)
-    service.getSendApproveERC20TokenEncodeData(spender: toAddress, value: value) { [weak self] result in
-        guard let self = self else { return }
-        switch result {
-        case .success(let hex):
-            self.getLatestNonce { nonce in
-              guard let nonce = nonce else {
-                return
-              }
-              let gasLimit = self.setting.advanced?.gasLimit ?? self.gasLimit
-              let legacyTx = LegacyTransaction(
-                  value: BigInt(0),
-                  address: AppState.shared.currentAddress.addressString,
-                  to: self.tokenAddress,
-                  nonce: nonce,
-                  data: hex,
-                  gasPrice: gasPrice,
-                  gasLimit: gasLimit,
-                  chainID: self.chain.getChainId()
-              )
-              let signResult = EthereumTransactionSigner().signTransaction(address: AppState.shared.currentAddress, transaction: legacyTx)
-              switch signResult {
-              case .success(let signedData):
-                  TransactionManager.txProcessor.sendTx(data: signedData, chain: self.chain) { result in
-                      switch result {
-                      case .success(let hash):
-                          self.hash = hash
-                          onCompleted(nil)
-                          let pendingTx = ApprovePendingTxInfo(
-                              legacyTx: legacyTx,
-                              eip1559Tx: nil,
-                              chain: self.chain,
-                              date: Date(),
-                              hash: hash,
-                              nonce: legacyTx.nonce,
-                              walletAddress: AppState.shared.currentAddress.addressString,
-                              contractAddress: self.toAddress
-                          )
-                          TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
-                      case .failure(let error):
-                          onCompleted(error)
-                      }
-                  }
-              case .failure(let error):
-                  onCompleted(error)
-              }
-              
-            }
-        case .failure(let error):
-            onCompleted(error)
-        }
-    }
-  }
-  
-  func getLatestNonce(completion: @escaping (Int?) -> Void) {
-      let address = AppState.shared.currentAddress.addressString
-      let web3Client = EthereumNodeService(chain: AppState.shared.currentChain)
-      web3Client.getTransactionCount(address: address) { result in
-          switch result {
-          case .success(let nonce):
-              AppDependencies.nonceStorage.updateNonce(chain: AppState.shared.currentChain, address: address, value: nonce)
-              completion(nonce)
-          default:
-              completion(nil)
-          }
-      }
-  }
-}
+import Loady
+import Result
 
 public class ApproveTokenViewController: KNBaseViewController {
-  @IBOutlet weak var headerTitle: UILabel!
-  @IBOutlet weak var descriptionLabel: UILabel!
-  @IBOutlet weak var contractAddressLabel: UILabel!
-  @IBOutlet weak var gasFeeTitleLabel: UILabel!
-  @IBOutlet weak var gasFeeLabel: UILabel!
-  @IBOutlet weak var gasFeeEstUSDLabel: UILabel!
-  @IBOutlet weak var cancelButton: UIButton!
-  @IBOutlet weak var confirmButton: UIButton!
-  @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
-  @IBOutlet weak var contentView: UIView!
-  @IBOutlet weak var editIcon: UIImageView!
-  @IBOutlet weak var editLabel: UILabel!
-  @IBOutlet weak var editButton: UIButton!
-  @IBOutlet weak var chainIcon: UIImageView!
-  @IBOutlet weak var chainLabel: UILabel!
-  
-  var viewModel: ApproveTokenViewModel
-  let transitor = TransitionDelegate()
-  public var onFailApprove: ((Error) -> Void)? = nil
-  public var onDismiss: (() -> Void)? = nil
-  public var onApproveSent: ((String) -> Void)? = nil
+    @IBOutlet weak var headerTitle: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var contractAddressLabel: UILabel!
+    @IBOutlet weak var gasFeeTitleLabel: UILabel!
+    @IBOutlet weak var gasFeeLabel: UILabel!
+    @IBOutlet weak var gasFeeEstUSDLabel: UILabel!
+    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var confirmButton: LoadyButton!
+    @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var editIcon: UIImageView!
+    @IBOutlet weak var editLabel: UILabel!
+    @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var chainIcon: UIImageView!
+    @IBOutlet weak var chainLabel: UILabel!
+    @IBOutlet weak var actionsToErrorViewConstraint: NSLayoutConstraint!
+    @IBOutlet weak var actionsToGasViewConstraint: NSLayoutConstraint!
+    @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var errorView: UIView!
     
+    var viewModel: ApproveTokenViewModel
     
-  var approveValue: BigInt {
-    return self.viewModel.value
-  }
-  
-  var selectedGasPrice: BigInt {
-    return self.viewModel.gasPrice
-  }
-
-  public init(viewModel: ApproveTokenViewModel) {
-    self.viewModel = viewModel
-    super.init(nibName: "ApproveTokenViewController", bundle: nil)
-    self.modalPresentationStyle = .custom
-    self.transitioningDelegate = transitor
-  }
-
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  public override func viewDidLoad() {
-    super.viewDidLoad()
-
-    self.setupChainInfo()
-    self.gasFeeLabel.text = self.viewModel.getFeeString()
-    self.gasFeeEstUSDLabel.text = self.viewModel.getFeeUSDString()
-    self.cancelButton.rounded(radius: 16)
-    self.confirmButton.rounded(radius: 16)
-    self.descriptionLabel.text = self.viewModel.subTitleText
-    self.contractAddressLabel.text = self.viewModel.toAddress
-    if !self.viewModel.showEditSettingButton {
-      self.editIcon.isHidden = true
-      self.editLabel.isHidden = true
-      self.editButton.isHidden = true
+    public var onDismiss: (() -> Void)? = nil
+    public var onApproveSent: ((String) -> Void)? = nil
+    
+    var approveValue: BigInt {
+        return self.viewModel.value
     }
-    self.headerTitle.text = self.viewModel.headerTitle
-  }
-  
-  func setupChainInfo() {
-    chainIcon.image = viewModel.chain.squareIcon()
-    chainLabel.text = viewModel.chain.chainName()
-  }
-
-  @IBAction func confirmButtonTapped(_ sender: UIButton) {
-    if viewModel.remain.isZero {
-      sendApprove()
-    } else {
-      resetAllowanceBeforeSend()
+    
+    var selectedGasPrice: BigInt {
+        return self.viewModel.gasPrice
     }
-  }
-  
-  func sendApprove() {
-    self.showLoadingHUD()
-    self.viewModel.sendApproveRequest(value: TransactionConstants.maxTokenAmount) { error in
-      self.hideLoading()
-      if let error = error {
-        self.onFailApprove?(error)
-      } else {
-        if let hash = self.viewModel.hash {
-            self.onApproveSent?(hash)
+    
+    public init(viewModel: ApproveTokenViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: "ApproveTokenViewController", bundle: Bundle(for: ApproveTokenViewController.self))
+        self.modalPresentationStyle = .custom
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.confirmButton.setAnimation(LoadyAnimationType.indicator(with: .init(indicatorViewStyle: .black)))
+        self.setupChainInfo()
+        self.gasFeeLabel.text = self.viewModel.getFeeString()
+        self.gasFeeEstUSDLabel.text = self.viewModel.getFeeUSDString()
+        self.cancelButton.rounded(radius: 16)
+        self.confirmButton.rounded(radius: 16)
+        self.descriptionLabel.text = self.viewModel.subTitleText
+        self.contractAddressLabel.text = self.viewModel.toAddress
+        if !self.viewModel.showEditSettingButton {
+            self.editIcon.isHidden = true
+            self.editLabel.isHidden = true
+            self.editButton.isHidden = true
         }
-      }
-      self.dismiss(animated: true)
+        self.headerTitle.text = self.viewModel.headerTitle
     }
-  }
-  
-  func resetAllowanceBeforeSend() {
-    self.viewModel.sendApproveRequest(value: BigInt(0)) { error in
-      if error != nil {
-        self.sendApprove()
-      } else {
-        //TODO: Show error here
-      }
+    
+    func setupChainInfo() {
+        chainIcon.image = viewModel.chain.squareIcon()
+        chainLabel.text = viewModel.chain.chainName()
     }
-  }
-
-  @IBAction func editButtonTapped(_ sender: Any) {
-    TransactionSettingPopup.show(on: self, chain: viewModel.chain, currentSetting: viewModel.setting, onConfirmed: { [weak self] settingObject in
-        self?.viewModel.setting = settingObject
-        self?.updateGasFeeUI()
-    }, onCancelled: {
-        return
-    })
-  }
-
-  @IBAction func cancelButtonTapped(_ sender: UIButton) {
-    onDismiss?()
-    self.dismiss(animated: true, completion: nil)
-  }
-
-  @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
-    onDismiss?()
-    self.dismiss(animated: true, completion: nil)
-  }
-
-  fileprivate func updateGasFeeUI() {
-    self.gasFeeLabel.text = self.viewModel.getFeeString()
-    self.gasFeeEstUSDLabel.text = self.viewModel.getFeeUSDString()
-  }
-  
-  public func updateGasLimit(_ gas: BigInt) {
-    self.viewModel.gasLimit = gas
-    guard self.isViewLoaded else { return }
-    updateGasFeeUI()
-  }
-}
-
-extension ApproveTokenViewController: BottomPopUpAbstract {
-  public func setTopContrainConstant(value: CGFloat) {
-    self.contentViewTopContraint.constant = value
-  }
-
-  public func getPopupHeight() -> CGFloat {
-    return 380
-  }
-
-  public func getPopupContentView() -> UIView {
-    return self.contentView
-  }
+    
+    @IBAction func confirmButtonTapped(_ sender: UIButton) {
+        if viewModel.remain.isZero {
+            sendApprove()
+        } else {
+            showLoading()
+            resetAllowanceBeforeSend()
+        }
+    }
+    
+    func sendApprove() {
+        self.showLoading()
+        self.viewModel.sendApproveRequest(value: TransactionConstants.maxTokenAmount) { [weak self] error in
+            self?.hideLoading()
+            if let error = error {
+                self?.showError(message: TxErrorParser.parse(error: AnyError(error)).message)
+            } else {
+                if let hash = self?.viewModel.hash {
+                    self?.onApproveSent?(hash)
+                }
+                self?.dismiss(animated: true)
+            }
+        }
+    }
+    
+    func resetAllowanceBeforeSend() {
+        self.viewModel.sendApproveRequest(value: BigInt(0)) { [weak self] error in
+            if let error = error {
+                self?.hideLoading()
+                self?.showError(message: TxErrorParser.parse(error: AnyError(error)).message)
+            } else {
+                self?.sendApprove()
+            }
+        }
+    }
+    
+    @IBAction func editButtonTapped(_ sender: Any) {
+        TransactionSettingPopup.show(on: self, chain: viewModel.chain, currentSetting: viewModel.setting, onConfirmed: { [weak self] settingObject in
+            self?.viewModel.setting = settingObject
+            self?.updateGasFeeUI()
+        }, onCancelled: {
+            return
+        })
+    }
+    
+    @IBAction func cancelButtonTapped(_ sender: UIButton) {
+        onDismiss?()
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    fileprivate func updateGasFeeUI() {
+        self.gasFeeLabel.text = self.viewModel.getFeeString()
+        self.gasFeeEstUSDLabel.text = self.viewModel.getFeeUSDString()
+    }
+    
+    public func updateGasLimit(_ gas: BigInt) {
+        self.viewModel.gasLimit = gas
+        guard self.isViewLoaded else { return }
+        updateGasFeeUI()
+    }
+    
+    func showLoading() {
+        DispatchQueue.main.async {
+            self.cancelButton.isHidden = true
+            self.confirmButton.startLoading()
+        }
+    }
+    
+    func hideLoading() {
+        DispatchQueue.main.async {
+            self.cancelButton.isHidden = false
+            self.confirmButton.stopLoading()
+        }
+    }
+    
+    func showError(message: String) {
+        errorView.isHidden = false
+        errorLabel.text = message
+        actionsToErrorViewConstraint.isActive = true
+        actionsToGasViewConstraint.isActive = false
+        view.layoutIfNeeded()
+        sheetViewController?.updateIntrinsicHeight()
+        sheetViewController?.resize(to: .intrinsic)
+    }
+    
+    func hideError() {
+        errorView.isHidden = true
+        actionsToErrorViewConstraint.isActive = false
+        actionsToGasViewConstraint.isActive = true
+        view.layoutIfNeeded()
+        sheetViewController?.updateIntrinsicHeight()
+        sheetViewController?.resize(to: .intrinsic)
+    }
 }

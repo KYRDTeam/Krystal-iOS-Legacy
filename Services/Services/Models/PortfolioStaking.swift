@@ -71,7 +71,7 @@ public struct Platform: Codable {
     }
     
     public func toEarnPlatform() -> EarnPlatform {
-        return EarnPlatform(platform: self, apy: -1, tvl: -1)
+        return EarnPlatform(platform: self, apy: -1, rewardApy: -1, tvl: -1)
     }
 }
 
@@ -93,7 +93,7 @@ public struct EarningBalance: Codable {
         case platform, stakingToken, toUnderlyingToken, underlyingUsd, apy, ratio, status, rewardApy
     }
     
-    func usdBigIntValue() -> BigInt? {
+    public func usdBigIntValue() -> BigInt? {
         if let toUnderlyingBalanceBigInt = BigInt(toUnderlyingToken.balance) {
             return BigInt(underlyingUsd * pow(10.0 , Double(toUnderlyingToken.decimals))) * toUnderlyingBalanceBigInt / BigInt(pow(10.0 , Double(toUnderlyingToken.decimals)))
         }
@@ -107,25 +107,13 @@ public struct EarningBalance: Codable {
         return 0.0
     }
     
-    public func balanceString() -> String {
-        var toUnderlyingBalanceString = "---"
+    public func balanceValue() -> Double {
         if let toUnderlyingBalanceBigInt = BigInt(toUnderlyingToken.balance) {
-            if toUnderlyingBalanceBigInt < BigInt(pow(10.0, Double(toUnderlyingToken.decimals - 6))) {
-                toUnderlyingBalanceString = "< 0.000001 \(toUnderlyingToken.symbol)"
-            } else {
-                toUnderlyingBalanceString = toUnderlyingBalanceBigInt.shortString(decimals: toUnderlyingToken.decimals) + " " + toUnderlyingToken.symbol
-            }
+            return toUnderlyingBalanceBigInt.doubleValue(decimal: toUnderlyingToken.decimals)
         }
-        return toUnderlyingBalanceString
+        return 0
     }
-    
-    public func usdDetailString(totalValue: Double) -> String {
-        var detailString = "---"
-        if let usdBigIntValue = usdBigIntValue() {
-            detailString = "$" + usdBigIntValue.shortString(decimals: toUnderlyingToken.decimals, maxFractionDigits: 2) + " | " + StringFormatter.percentString(value: usdValue() / totalValue)
-        }
-        return detailString
-    }
+
 }
 
 public struct StatusClass: Codable {
@@ -144,6 +132,10 @@ public struct IngToken: Codable {
   public let logo: String
   public let balance: String
   public let decimals: Int
+    
+    public func toToken() -> Token {
+        return Token(name: symbol, symbol: symbol, address: address, decimals: decimals, logo: logo)
+    }
 }
 
 public struct WrapInfo: Codable {
@@ -157,6 +149,7 @@ public struct OptionDetailResponse: Codable {
     public let poolAddress: String
     public var validation: EarnOptionValidation?
     public let wrap: WrapInfo?
+    public var token: TokenInfo?
 }
 // MARK: - EarningToken
 public struct EarningToken: Codable {
@@ -176,4 +169,3 @@ public struct EarnOptionValidation: Codable {
     public var maxUnstakeAmount: Double?
     public var stakeInterval: Double?
 }
-
