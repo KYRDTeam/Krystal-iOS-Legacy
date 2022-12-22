@@ -16,6 +16,8 @@ import MBProgressHUD
 import WalletConnectSwift
 import KrystalWallets
 import Dependencies
+import AppState
+import Services
 
 class MultiSendCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
@@ -149,7 +151,13 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
           self.processingTx?.nonce = nonceStr
           if let tx = self.processingTx, let gasLimit = BigInt(tx.gasLimit.drop0x, radix: 16), !gasLimit.isZero {
             self.navigationController.hideLoading()
-            self.openConfirmView(items: items, txObject: tx)
+            if AppState.shared.currentChain == .optimism {
+                self.checkL1FeeIfNeed { fee in
+                    self.openConfirmView(items: items, txObject: tx, l1Fee: fee)
+                }
+            } else {
+                self.openConfirmView(items: items, txObject: tx, l1Fee: BigInt(0))
+            }
           } else {
             self.openConfirmViewAfterRequestBuildTx(items: items, nonce: nonceStr)
           }
@@ -176,10 +184,45 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
       self.processingTx?.nonce = nonce
       DispatchQueue.main.async {
         self.navigationController.hideLoading()
-        self.openConfirmView(items: items, txObject: object)
+        if AppState.shared.currentChain == .optimism {
+            self.checkL1FeeIfNeed { fee in
+                self.openConfirmView(items: items, txObject: object, l1Fee: fee)
+            }
+        } else {
+            self.openConfirmView(items: items, txObject: object, l1Fee: BigInt(0))
+        }
       }
     }
   }
+    
+    fileprivate func checkL1FeeIfNeed(completion: @escaping (BigInt) -> Void) {
+        guard let processingTx = self.processingTx else {
+            completion(BigInt(0))
+            return
+        }
+        let service = EthereumNodeService(chain: AppState.shared.currentChain)
+        service.getOPL1FeeEncodeData(for: processingTx.data) { result in
+            switch result {
+            case .success(let encodeString):
+                service.getOptimismL1Fee(for: encodeString) { feeResult in
+                    switch feeResult {
+                    case .success(let fee):
+                        completion(fee)
+                    case .failure(let error):
+                        completion(BigInt(0))
+                        self.showError(errorMsg: error.localizedDescription)
+                    }
+                }
+            case .failure(let error):
+                completion(BigInt(0))
+                self.showError(errorMsg: error.localizedDescription)
+            }
+        }
+    }
+    
+    func showError(errorMsg: String) {
+      UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.showErrorTopBannerMessage(message: errorMsg)
+    }
   
   fileprivate func requestBuildTx(items: [MultiSendItem], completion: @escaping (TxObject) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
@@ -267,10 +310,10 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     Tracker.track(event: .multisendApprove, customAttributes: ["numberAddress": items.count])
   }
   
-  fileprivate func openConfirmView(items: [MultiSendItem], txObject: TxObject) {
+  fileprivate func openConfirmView(items: [MultiSendItem], txObject: TxObject, l1Fee: BigInt) {
     guard self.confirmVC == nil else { return }
     let gasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16) ?? BigInt.zero
-    let vm = MultiSendConfirmViewModel(sendItems: items, gasPrice: KNGasCoordinator.shared.defaultKNGas, gasLimit: gasLimit, baseGasLimit: gasLimit)
+    let vm = MultiSendConfirmViewModel(sendItems: items, gasPrice: KNGasCoordinator.shared.defaultKNGas, gasLimit: gasLimit, baseGasLimit: gasLimit, l1Fee: l1Fee)
     let controller = MultiSendConfirmViewController(viewModel: vm)
     controller.delegate = self
     self.navigationController.present(controller, animated: true, completion: nil)

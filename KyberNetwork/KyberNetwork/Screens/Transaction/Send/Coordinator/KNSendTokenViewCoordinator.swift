@@ -187,6 +187,8 @@ extension KNSendTokenViewCoordinator {
 extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   func kSendTokenViewController(_ controller: KNBaseViewController, run event: KSendTokenViewEvent) {
     switch event {
+    case .updateL1Fee(let transaction):
+        self.updateTxDataForL1Fee(transaction)
     case .back:
       self.stop()
     case .setGasPrice:
@@ -225,8 +227,8 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       }
     case .validateSolana:
       self.rootViewController?.coordinatorDidValidateSolTransferTransaction()
-    case .send(let transaction, let ens):
-      self.openConfirmTransfer(transaction: transaction, ens: ens)
+    case .send(let transaction, let ens, let l1Fee):
+      self.openConfirmTransfer(transaction: transaction, ens: ens, l1Fee: l1Fee)
     case .addContact(let address, let ens):
       self.openNewContact(address: address, ens: ens)
     case .openContactList:
@@ -322,9 +324,9 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       }
   }
 
-  fileprivate func openConfirmTransfer(transaction: UnconfirmedTransaction, ens: String?) {
+  fileprivate func openConfirmTransfer(transaction: UnconfirmedTransaction, ens: String?, l1Fee: BigInt) {
     self.confirmVC = {
-      let viewModel = KConfirmSendViewModel(transaction: transaction, ens: ens)
+      let viewModel = KConfirmSendViewModel(transaction: transaction, ens: ens, l1Fee: l1Fee)
       let controller = KConfirmSendViewController(viewModel: viewModel)
       controller.delegate = self
       controller.loadViewIfNeeded()
@@ -447,6 +449,17 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
 
 // MARK: Network requests
 extension KNSendTokenViewCoordinator {
+    
+    fileprivate func updateTxDataForL1Fee(_ transaction: UnconfirmedTransaction) {
+        let processor = EthereumTransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+        processor.getTransferTokenData(amount: transaction.value, address: transaction.to ?? "", isQuoteToken: processor.isTransferQuoteToken(transaction: transaction)) { data in
+            
+            processor.getL1FeeForTxIfHave(data: data.hexEncoded) { l1Fee in
+                self.rootViewController?.coordinatorDidGetL1Fee(l1Fee: l1Fee)
+            }
+            
+        }
+    }
   
   fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction, historyTransaction: InternalHistoryTransaction) {
     

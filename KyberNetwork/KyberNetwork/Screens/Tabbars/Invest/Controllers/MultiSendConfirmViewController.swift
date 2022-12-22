@@ -26,6 +26,7 @@ class MultiSendConfirmViewModel {
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var gasPrice: BigInt
   fileprivate(set) var gasLimit: BigInt
+  fileprivate(set) var l1Fee: BigInt
   fileprivate(set) var baseGasLimit: BigInt
   fileprivate(set) var transferAmountDataSource: [String] = []
   fileprivate(set) var totalValueString: String = ""
@@ -62,16 +63,17 @@ class MultiSendConfirmViewModel {
     }
   }
   
-  init(sendItems: [MultiSendItem], gasPrice: BigInt, gasLimit: BigInt, baseGasLimit: BigInt) {
-    self.sendItems = sendItems
-    self.gasPrice = gasPrice
-    self.gasLimit = gasLimit
-    self.baseGasLimit = baseGasLimit
+    init(sendItems: [MultiSendItem], gasPrice: BigInt, gasLimit: BigInt, baseGasLimit: BigInt, l1Fee: BigInt) {
+        self.sendItems = sendItems
+        self.gasPrice = gasPrice
+        self.gasLimit = gasLimit
+        self.baseGasLimit = baseGasLimit
+        self.l1Fee = l1Fee
   }
   
   var transactionFeeETHString: String {
     let fee: BigInt = {
-      return self.gasPrice * self.gasLimit
+        return self.gasPrice * self.gasLimit + self.l1Fee
     }()
     let feeString: String = fee.displayRate(decimals: 18)
     return "\(feeString) \(KNGeneralProvider.shared.quoteToken)"
@@ -79,7 +81,7 @@ class MultiSendConfirmViewModel {
 
   var transactionFeeUSDString: String {
     let fee: BigInt = {
-      return self.gasPrice * self.gasLimit
+      return self.gasPrice * self.gasLimit + self.l1Fee
     }()
 
     guard let price = KNTrackerRateStorage.shared.getETHPrice() else { return "" }

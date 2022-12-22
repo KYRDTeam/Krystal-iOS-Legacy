@@ -4,8 +4,10 @@ import UIKit
 import BigInt
 import TrustKeystore
 import KrystalWallets
+import TransactionModule
+import BaseModule
 
-class KNSendTokenViewModel: NSObject {
+class KNSendTokenViewModel: BaseViewModel {
 
   fileprivate let gasPrices: [BigInt] = [
     KNGasConfiguration.gasPriceMin,
@@ -33,10 +35,6 @@ class KNSendTokenViewModel: NSObject {
   private(set) var isUsingEns: Bool = false
 
   var isSendAllBalanace: Bool = false
-
-  var currentAddress: KAddress {
-    return AppDelegate.session.address
-  }
   
   var addressName: String {
     return currentAddress.name
@@ -77,6 +75,8 @@ class KNSendTokenViewModel: NSObject {
   var allETHBalanceFee: BigInt {
     return self.gasPrice * self.gasLimit
   }
+    
+  var l1Fee: BigInt = BigInt(0)
 
   var allTokenBalanceString: String {
     if self.from.isQuoteToken {
@@ -156,7 +156,7 @@ class KNSendTokenViewModel: NSObject {
 
   fileprivate func formatFeeStringFor(gasPrice: BigInt) -> String {
     let sourceToken = KNGeneralProvider.shared.quoteToken
-    let fee = gasPrice * self.gasLimit
+    let fee = gasPrice * self.gasLimit + self.l1Fee
     let feeString: String = NumberFormatUtils.gasFeeFormat(number: fee)
     var typeString = ""
     switch self.selectedGasPriceType {
@@ -467,7 +467,7 @@ class KNSendTokenViewModel: NSObject {
       return ""
     }
     let baseFee = KNGasCoordinator.shared.baseFee ?? BigInt(0)
-    let fee = (baseFee + self.selectedPriorityFee) * self.gasLimit
+    let fee = (baseFee + self.selectedPriorityFee + self.l1Fee) * self.gasLimit
     let sourceToken = KNGeneralProvider.shared.quoteToken
     let feeString: String = NumberFormatUtils.gasFeeFormat(number: fee)
     return "\(feeString) \(sourceToken) "

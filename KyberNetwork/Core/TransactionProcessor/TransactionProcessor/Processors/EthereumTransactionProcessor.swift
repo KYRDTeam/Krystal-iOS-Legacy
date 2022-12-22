@@ -11,6 +11,8 @@ import Result
 import BigInt
 import CryptoSwift
 import TrustCore
+import AppState
+import Services
 
 class EthereumTransactionProcessor: TransactionProcessor {
   
@@ -83,44 +85,77 @@ class EthereumTransactionProcessor: TransactionProcessor {
       completion(.failure(error))
     }
   }
+    
+    func getL1FeeForTxIfHave(data: String, completion: @escaping (BigInt) -> Void) {
+        if AppState.shared.currentChain == .optimism {
+            let service = EthereumNodeService(chain: AppState.shared.currentChain)
+            service.getOPL1FeeEncodeData(for: data) { result in
+                switch result {
+                case .success(let encodeString):
+                    service.getOptimismL1Fee(for: encodeString) { feeResult in
+                        switch feeResult {
+                        case .success(let fee):
+                            completion(fee)
+                        case .failure(let error):
+                            self.showError(errorMsg: error.localizedDescription)
+                        }
+                    }
+                case .failure(let error):
+                    self.showError(errorMsg: error.localizedDescription)
+                }
+            }
+        } else {
+            completion(BigInt(0))
+        }
+    }
+
+    func showError(errorMsg: String) {
+      UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.showErrorTopBannerMessage(message: errorMsg)
+    }
+//
+    func getTransferTokenData(amount: BigInt, address: String, isQuoteToken: Bool, completion: @escaping (Data) -> ()) {
+        self.web3Service.getTransferTokenData(
+            transferQuoteToken: isQuoteToken,
+            amount: amount,
+            address: address
+        ) { transferTxResult in
+            switch transferTxResult {
+                case .success(let data):
+                    completion(data)
+                case .failure(let error):
+                    self.showError(errorMsg: error.localizedDescription)
+            }
+        }
+    }
   
   func transfer(address: KAddress, transaction: UnconfirmedTransaction, completion: @escaping (Result<TransferTransactionResultData, AnyError>) -> ()) {
-    web3Service.getTransactionCount(for: address.addressString) { result in
-      switch result {
-      case .success(let txCount):
-        self.nonceCache.updateNonce(address: address.addressString, chain: self.chain, nonce: txCount)
-        self.web3Service.getTransferTokenData(
-          transferQuoteToken: self.isTransferQuoteToken(transaction: transaction),
-          amount: transaction.value,
-          address: transaction.to ?? ""
-        ) { transferTxResult in
-          switch transferTxResult {
-          case .success(let data):
-            let nonce = self.nonceCache.getCachingNonce(address: address.addressString, chain: self.chain)
-            let signResult = self.transactionSigner.signTransactionData(address: address, transaction: transaction, nonce: nonce, data: data, chainID: self.chain.getChainId())
-            switch signResult {
-            case .success(let result):
-              self.generalProvider.sendSignedTransactionData(result.data, completion: { sendResult in
-                switch sendResult {
-                case .success(let hash):
-                  self.nonceCache.updateNonce(address: address.addressString, chain: self.chain, nonce: txCount + 1)
-                  completion(.success(TransferTransactionResultData(hash: hash, nonce: txCount, eip1559Transaction: nil, transaction: result.tx.toSignTransactionObject())))
-                case .failure(let error):
+      web3Service.getTransactionCount(for: address.addressString) { result in
+          switch result {
+              case .success(let txCount):
+                  self.nonceCache.updateNonce(address: address.addressString, chain: self.chain, nonce: txCount)
+                  self.getTransferTokenData(amount: transaction.value, address: transaction.to ?? "", isQuoteToken: self.isTransferQuoteToken(transaction: transaction)) { data in
+                      let nonce = self.nonceCache.getCachingNonce(address: address.addressString, chain: self.chain)
+                      let signResult = self.transactionSigner.signTransactionData(address: address, transaction: transaction, nonce: nonce, data: data, chainID: self.chain.getChainId())
+                      switch signResult {
+                          case .success(let result):
+                              self.generalProvider.sendSignedTransactionData(result.data, completion: { sendResult in
+                                  switch sendResult {
+                                      case .success(let hash):
+                                          self.nonceCache.updateNonce(address: address.addressString, chain: self.chain, nonce: txCount + 1)
+                                          completion(.success(TransferTransactionResultData(hash: hash, nonce: txCount, eip1559Transaction: nil, transaction: result.tx.toSignTransactionObject())))
+                                      case .failure(let error):
+                                          completion(.failure(error))
+                                  }
+                              })
+                          case .failure(let error):
+                              completion(.failure(error))
+                      }
+                  }
+                  
+              case .failure(let error):
                   completion(.failure(error))
-                }
-              })
-            case .failure(let error):
-              completion(.failure(error))
-            }
-          case .failure(let error):
-            completion(.failure(error))
           }
-          
-        }
-      case .failure(let error):
-        completion(.failure(error))
       }
-    }
   }
   
   func transferNFT(transferData: Data, from address: KAddress, to: String, gasLimit: BigInt, gasPrice: BigInt, amount: Int, isERC721: Bool, collectibleAddress: String, advancedPriorityFee: String?, advancedMaxfee: String?, advancedNonce: String?, completion: @escaping (Result<TransferTransactionResultData, AnyError>) -> Void) {

@@ -8,12 +8,13 @@ import Utilities
 struct KConfirmSendViewModel {
   let transaction: UnconfirmedTransaction
   let ens: String?
-  
+  let l1Fee: BigInt
   var currentChain = KNGeneralProvider.shared.currentChain
 
-  init(transaction: UnconfirmedTransaction, ens: String? = nil) {
+  init(transaction: UnconfirmedTransaction, ens: String? = nil, l1Fee: BigInt) {
     self.transaction = transaction
     self.ens = ens
+    self.l1Fee = l1Fee
   }
 
   var token: TokenObject {
@@ -93,9 +94,12 @@ struct KConfirmSendViewModel {
         guard let gasPrice = self.transaction.gasPrice, let gasLimit = self.transaction.gasLimit else { return nil }
         return gasPrice * gasLimit
       }()
+            
+            
       var feeString = "---"
       if let fee = fee {
-        feeString = NumberFormatUtils.balanceFormat(value: fee, decimals: 18)
+        let totalFee = fee + l1Fee
+        feeString = NumberFormatUtils.balanceFormat(value: totalFee, decimals: 18)
       }
         
       return "\(feeString) \(KNGeneralProvider.shared.quoteToken)"
@@ -109,7 +113,7 @@ struct KConfirmSendViewModel {
     }()
     guard let feeBigInt = fee else { return "" }
     guard let price = KNTrackerRateStorage.shared.getETHPrice() else { return "" }
-    let usd = feeBigInt * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
+    let usd = (feeBigInt + l1Fee) * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
     let valueString: String = usd.displayRate(decimals: 18)
     return "~ \(valueString) USD"
   }
