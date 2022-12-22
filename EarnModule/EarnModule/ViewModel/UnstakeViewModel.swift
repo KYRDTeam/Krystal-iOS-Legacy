@@ -58,7 +58,7 @@ class UnstakeViewModel: BaseViewModel {
     var approveHash: String?
     var wrapInfo: WrapInfo?
     let apiService = EarnServices()
-    
+    var l1Fee: BigInt = BigInt(0)
     var isLido: Bool {
         return platform.name.uppercased() == "LIDO"
     }
@@ -94,9 +94,12 @@ class UnstakeViewModel: BaseViewModel {
         return quoteTokenDetail?.markets["usd"]?.price ?? 0
     }
     var feeUSDString: String {
-        let usd = setting.transactionFee(chain: chain) * BigInt(quoteTokenUsdPrice * pow(10, 18)) / BigInt(10).power(18)
+        let usd = transactionFee * BigInt(quoteTokenUsdPrice * pow(10, 18)) / BigInt(10).power(18)
         let valueString = NumberFormatUtils.gasFee(value: usd)
         return " (~ $\(valueString))"
+    }
+    var transactionFee: BigInt {
+        return setting.transactionFee(chain: chain) + l1Fee
     }
     var txObject: TxObject?
     var onGasSettingUpdated: (() -> ())?
@@ -227,12 +230,11 @@ class UnstakeViewModel: BaseViewModel {
     }
     
     func checkEnoughFeeForTx() {
-        let fee = setting.transactionFee(chain: chain)
         let nodeService = EthereumNodeService(chain: chain)
         nodeService.getQuoteBalanace(address: currentAddress.addressString) { result in
             switch result {
             case .success(let balance):
-                if balance.value < fee {
+                if balance.value < self.transactionFee {
                     
                     // check if still enough fee for approve
                     if self.stakingTokenAllowance < self.unstakeValue {
@@ -271,7 +273,7 @@ class UnstakeViewModel: BaseViewModel {
     }
 
     func transactionFeeString() -> String {
-        return NumberFormatUtils.gasFee(value: setting.transactionFee(chain: chain)) + " " + AppState.shared.currentChain.quoteToken() + feeUSDString
+        return NumberFormatUtils.gasFee(value: transactionFee) + " " + AppState.shared.currentChain.quoteToken() + feeUSDString
     }
     
     func updateWrapInfo(isUnWrap: Bool) {
@@ -341,15 +343,29 @@ class UnstakeViewModel: BaseViewModel {
         }
     }
     
+    func getL1FeeIfNeed(data: String, onCompleted: @escaping (BigInt) -> Void) {
+            guard chain == .optimism else {
+                onCompleted(BigInt(0))
+                return
+            }
+            let service = EthereumNodeService(chain: chain)
+            service.getL1FeeForTxIfHave(data: data.hexEncoded) { l1Fee in
+                onCompleted(l1Fee)
+            }
+        }
+    
     func requestBuildUnstakeTx(showLoading: Bool = false, completion: @escaping ((Error?) -> Void) = {_ in }) {
         apiService.buildUnstakeTx(param: buildTxRequestParams) { [weak self] result in
             switch result {
             case .success(let tx):
-                self?.txObject = tx
-                if let gasLimit = BigInt(tx.gasLimit.drop0x, radix: 16), gasLimit > 0 {
-                    self?.didGetTxGasLimit(gasLimit: gasLimit)
-                }
-                completion(nil)
+                self?.getL1FeeIfNeed(data: tx.data, onCompleted: { l1Fee in
+                    self?.txObject = tx
+                    self?.l1Fee = l1Fee
+                    if let gasLimit = BigInt(tx.gasLimit.drop0x, radix: 16), gasLimit > 0 {
+                        self?.didGetTxGasLimit(gasLimit: gasLimit)
+                    }
+                    completion(nil)
+                })
             case .failure(let error):
                 completion(error)
             }
