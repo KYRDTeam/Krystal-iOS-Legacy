@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="180" id="KGk-i7-Jjw" customClass="TxSkeletonCell" customModule="TransactionModule" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="180"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="180"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="deK-iF-wvG">
+                        <rect key="frame" x="16" y="8" width="382" height="164"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="25A-Qg-7jM">
+                                <rect key="frame" x="16" y="16" width="36" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="36" id="X4G-eX-g8a"/>
+                                    <constraint firstAttribute="height" constant="36" id="uUY-uW-3nT"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="58f-M9-opy">
+                                <rect key="frame" x="68" y="26" width="298" height="16.5"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k2G-pg-uQT">
+                                <rect key="frame" x="16" y="64" width="350" height="49"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uiy-N0-g7L">
+                                <rect key="frame" x="16" y="131" width="100" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="T3n-oT-zQ8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qiQ-fC-Yvg">
+                                <rect key="frame" x="266" y="131" width="100" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="Xtj-zb-Lbr"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.1058823529" green="0.1137254902" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="qiQ-fC-Yvg" secondAttribute="trailing" constant="16" id="3zQ-YW-VxX"/>
+                            <constraint firstAttribute="trailing" secondItem="k2G-pg-uQT" secondAttribute="trailing" constant="16" id="9Kq-HP-dRl"/>
+                            <constraint firstAttribute="bottom" secondItem="qiQ-fC-Yvg" secondAttribute="bottom" constant="16" id="Cjz-VW-7Bi"/>
+                            <constraint firstAttribute="trailing" secondItem="58f-M9-opy" secondAttribute="trailing" constant="16" id="FWf-oy-ia4"/>
+                            <constraint firstItem="qiQ-fC-Yvg" firstAttribute="centerY" secondItem="Uiy-N0-g7L" secondAttribute="centerY" id="JBw-2j-CiH"/>
+                            <constraint firstItem="k2G-pg-uQT" firstAttribute="leading" secondItem="deK-iF-wvG" secondAttribute="leading" constant="16" id="K8W-4b-Onl"/>
+                            <constraint firstItem="Uiy-N0-g7L" firstAttribute="leading" secondItem="deK-iF-wvG" secondAttribute="leading" constant="16" id="NaA-gj-4w1"/>
+                            <constraint firstItem="25A-Qg-7jM" firstAttribute="top" secondItem="deK-iF-wvG" secondAttribute="top" constant="16" id="PGx-5x-n42"/>
+                            <constraint firstItem="58f-M9-opy" firstAttribute="centerY" secondItem="25A-Qg-7jM" secondAttribute="centerY" id="Tiz-E5-gvV"/>
+                            <constraint firstItem="25A-Qg-7jM" firstAttribute="leading" secondItem="deK-iF-wvG" secondAttribute="leading" constant="16" id="dQf-al-uxH"/>
+                            <constraint firstItem="k2G-pg-uQT" firstAttribute="top" secondItem="25A-Qg-7jM" secondAttribute="bottom" constant="12" id="fdv-xE-g1b"/>
+                            <constraint firstItem="Uiy-N0-g7L" firstAttribute="top" secondItem="k2G-pg-uQT" secondAttribute="bottom" constant="18" id="hXp-dR-HIj"/>
+                            <constraint firstItem="58f-M9-opy" firstAttribute="leading" secondItem="25A-Qg-7jM" secondAttribute="trailing" constant="16" id="y1L-MR-sU0"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                <real key="value" value="12"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="deK-iF-wvG" secondAttribute="bottom" constant="8" id="WeP-Nq-5sU"/>
+                    <constraint firstAttribute="trailing" secondItem="deK-iF-wvG" secondAttribute="trailing" constant="16" id="bzm-HD-jJt"/>
+                    <constraint firstItem="deK-iF-wvG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="hR1-SZ-rtW"/>
+                    <constraint firstItem="deK-iF-wvG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="vBi-oX-qQN"/>
+                </constraints>
+                <userDefinedRuntimeAttributes>
+                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                </userDefinedRuntimeAttributes>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+            </userDefinedRuntimeAttributes>
+            <point key="canvasLocation" x="204.34782608695653" y="93.080357142857139"/>
+        </tableViewCell>
+    </objects>
+</document>
