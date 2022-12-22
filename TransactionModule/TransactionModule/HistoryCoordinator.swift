@@ -24,4 +24,11 @@ public class HistoryCoordinator: Coordinator {
         navigationController.pushViewController(vc, animated: true)
     }
     
+    public static func createHistoryViewController() -> UIViewController {
+        let vc = TxHistoryViewController.instantiateFromNib()
+        let viewModel = TxHistoryViewModel()
+        vc.viewModel = viewModel
+        return vc
+    }
+    
 }

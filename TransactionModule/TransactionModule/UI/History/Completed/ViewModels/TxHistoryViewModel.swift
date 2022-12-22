@@ -13,7 +13,8 @@ import AppState
 
 class TxHistoryViewModel {
     
-    var rows: [TxHistoryRowType] = [] 
+    var rows: [TxHistoryRowType] = []
+    var txs: [TxRecord] = []
     
     var allChainIds: [Int] {
         return ChainType.getAllChain().map { $0.getChainId() }
@@ -23,13 +24,33 @@ class TxHistoryViewModel {
         return AppState.shared.currentAddress.addressString
     }
     
+    var isLoading = false
+    var canLoadMore = true
+    
     private let historyService = HistoryService()
     var onRowsUpdated: (() -> ())?
     
-    func loadTxHistory(endTime: Int?) {
-        historyService.getTxHistory(walletAddress: walletAddress, tokenAddress: nil, chainIds: allChainIds, limit: 20, endTime: nil) { [weak self] txRecords in
+    func load(shouldReset: Bool) {
+        let endTime = shouldReset ? nil : txs.last?.blockTime
+        isLoading = true
+        historyService.getTxHistory(walletAddress: walletAddress, tokenAddress: nil, chainIds: allChainIds, limit: 20, endTime: endTime) { [weak self] txRecords in
             guard let self = self else { return }
-            self.rows.append(contentsOf: txRecords.flatMap { self.constructRows(tx: $0) })
+            self.isLoading = false
+            if shouldReset { // Clear the list
+                self.txs = []
+                self.rows = []
+            }
+            self.canLoadMore = !txRecords.isEmpty
+            self.txs.append(contentsOf: txRecords)
+            var originalDate = Date(timeIntervalSince1970: 0)
+            txRecords.forEach { record in
+                let recordDate = Date(timeIntervalSince1970: Double(record.blockTime))
+                if Calendar.current.startOfDay(for: recordDate) != Calendar.current.startOfDay(for: originalDate) {
+                    originalDate = Calendar.current.startOfDay(for: recordDate)
+                    self.rows.append(.date(date: recordDate))
+                }
+                self.rows.append(contentsOf: self.constructRows(tx: record))
+            }
             self.onRowsUpdated?()
         }
     }

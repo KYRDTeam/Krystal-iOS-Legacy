@@ -695,6 +695,9 @@
 		A668BFDD292CCA99001A110D /* AppTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFDC292CCA99001A110D /* AppTokenStorage.swift */; };
 		A668BFEB292CD9CD001A110D /* AppFeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFEA292CD9CD001A110D /* AppFeatureFlag.swift */; };
 		A66B9C6C280818F6001B7A3D /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B9C6B280818F6001B7A3D /* ValidationResult.swift */; };
+		A66CD6E9295463DF00FF2EC9 /* HistoryV3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66CD6E7295463DE00FF2EC9 /* HistoryV3ViewController.swift */; };
+		A66CD6EA295463DF00FF2EC9 /* HistoryV3ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66CD6E8295463DE00FF2EC9 /* HistoryV3ViewController.xib */; };
+		A66CD6EC295468EA00FF2EC9 /* HistoryV3Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66CD6EB295468EA00FF2EC9 /* HistoryV3Coordinator.swift */; };
 		A66EC312287D176200D15FE0 /* MultiSendSubTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66EC310287D176200D15FE0 /* MultiSendSubTransactionCell.swift */; };
 		A66EC313287D176200D15FE0 /* MultiSendSubTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66EC311287D176200D15FE0 /* MultiSendSubTransactionCell.xib */; };
 		A66EC316287D20D400D15FE0 /* TxApplicationInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66EC314287D20D400D15FE0 /* TxApplicationInfoCell.swift */; };
@@ -1994,6 +1997,9 @@
 		A668BFDC292CCA99001A110D /* AppTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTokenStorage.swift; sourceTree = "<group>"; };
 		A668BFEA292CD9CD001A110D /* AppFeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeatureFlag.swift; sourceTree = "<group>"; };
 		A66B9C6B280818F6001B7A3D /* ValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationResult.swift; sourceTree = "<group>"; };
+		A66CD6E7295463DE00FF2EC9 /* HistoryV3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryV3ViewController.swift; sourceTree = "<group>"; };
+		A66CD6E8295463DE00FF2EC9 /* HistoryV3ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HistoryV3ViewController.xib; sourceTree = "<group>"; };
+		A66CD6EB295468EA00FF2EC9 /* HistoryV3Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryV3Coordinator.swift; sourceTree = "<group>"; };
 		A66EC310287D176200D15FE0 /* MultiSendSubTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendSubTransactionCell.swift; sourceTree = "<group>"; };
 		A66EC311287D176200D15FE0 /* MultiSendSubTransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSendSubTransactionCell.xib; sourceTree = "<group>"; };
 		A66EC314287D20D400D15FE0 /* TxApplicationInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxApplicationInfoCell.swift; sourceTree = "<group>"; };
@@ -3317,6 +3323,7 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				A66CD6E6295463CE00FF2EC9 /* HistoryV3 */,
 				A63655522907A341003B66F0 /* Approvals */,
 				A610B2D828ED66D600456965 /* Protocols */,
 				A69C5BD128D1BA73000DE825 /* Notification */,
@@ -5325,6 +5332,16 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		A66CD6E6295463CE00FF2EC9 /* HistoryV3 */ = {
+			isa = PBXGroup;
+			children = (
+				A66CD6E7295463DE00FF2EC9 /* HistoryV3ViewController.swift */,
+				A66CD6E8295463DE00FF2EC9 /* HistoryV3ViewController.xib */,
+				A66CD6EB295468EA00FF2EC9 /* HistoryV3Coordinator.swift */,
+			);
+			path = HistoryV3;
+			sourceTree = "<group>";
+		};
 		A6790C5628476E58007CE0CD /* Public */ = {
 			isa = PBXGroup;
 			children = (
@@ -7016,6 +7033,7 @@
 				C32D6E0027843587002886F1 /* FirstTimeWarningDappBrowserPopup.xib in Resources */,
 				A6DA40F027F6E1450078C58E /* ExploreBannersCell.xib in Resources */,
 				25929C5420DA5C760045CFA3 /* SF-Pro-Display-LightItalic.otf in Resources */,
+				A66CD6EA295463DF00FF2EC9 /* HistoryV3ViewController.xib in Resources */,
 				A6390B1328ACADF40083EF4C /* MigratingViewController.xib in Resources */,
 				25929C9020DA5CC10045CFA3 /* SFCompactDisplay-Medium.otf in Resources */,
 				25073D27211AF20D00833C92 /* Montserrat-ThinItalic.ttf in Resources */,
@@ -8331,6 +8349,7 @@
 				25CC0AB420591AFA0009D0D5 /* KNTransaction.swift in Sources */,
 				C35E9DF327DB56F800E1E7CE /* PromoCodeCell.swift in Sources */,
 				25CC0AAA2058F1A00009D0D5 /* KNGetUserCapInWei.swift in Sources */,
+				A66CD6EC295468EA00FF2EC9 /* HistoryV3Coordinator.swift in Sources */,
 				291A1B691F980E3400ADEC80 /* StackViewController.swift in Sources */,
 				A610B2D728ED5BAD00456965 /* EditWalletCoordinator.swift in Sources */,
 				7EFE440027144533006CF502 /* RewardsViewController.swift in Sources */,
@@ -8456,6 +8475,7 @@
 				A6E6C9D6281796C000EEB2E6 /* SolanaTransactionStorage.swift in Sources */,
 				25759623216D8E0D00AC490D /* Locale+Kyber.swift in Sources */,
 				C35279B3294048F9005E9575 /* FileStorage.swift in Sources */,
+				A66CD6E9295463DF00FF2EC9 /* HistoryV3ViewController.swift in Sources */,
 				A65D14DE28FD0B6000B12E84 /* AppTracker.swift in Sources */,
 				C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */,
 				2502AC18209475BE007F23CD /* KNListWalletsTableViewCell.swift in Sources */,

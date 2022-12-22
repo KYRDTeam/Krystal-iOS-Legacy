@@ -59,6 +59,8 @@
 		A64F1D84290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */; };
 		A65FF4C22934AEF400505333 /* TxNodeSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65FF4C12934AEF400505333 /* TxNodeSender.swift */; };
 		A65FF4C82934B78F00505333 /* TxSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65FF4C72934B78F00505333 /* TxSender.swift */; };
+		A66CD6EF29546D2700FF2EC9 /* TxDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66CD6ED29546D2700FF2EC9 /* TxDateCell.swift */; };
+		A66CD6F029546D2700FF2EC9 /* TxDateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66CD6EE29546D2700FF2EC9 /* TxDateCell.xib */; };
 		A69B5084291A072200D992D6 /* TxConfirmPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69B5082291A072200D992D6 /* TxConfirmPopup.swift */; };
 		A69B5085291A072200D992D6 /* TxConfirmPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69B5083291A072200D992D6 /* TxConfirmPopup.xib */; };
 		A69E8EA9291CA47B005B28CB /* PendingTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EA8291CA47B005B28CB /* PendingTxInfo.swift */; };
@@ -134,6 +136,8 @@
 		A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSettingAdvancedTabViewModel.swift; sourceTree = "<group>"; };
 		A65FF4C12934AEF400505333 /* TxNodeSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxNodeSender.swift; sourceTree = "<group>"; };
 		A65FF4C72934B78F00505333 /* TxSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxSender.swift; sourceTree = "<group>"; };
+		A66CD6ED29546D2700FF2EC9 /* TxDateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxDateCell.swift; sourceTree = "<group>"; };
+		A66CD6EE29546D2700FF2EC9 /* TxDateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxDateCell.xib; sourceTree = "<group>"; };
 		A69B5082291A072200D992D6 /* TxConfirmPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxConfirmPopup.swift; sourceTree = "<group>"; };
 		A69B5083291A072200D992D6 /* TxConfirmPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxConfirmPopup.xib; sourceTree = "<group>"; };
 		A69E8EA8291CA47B005B28CB /* PendingTxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTxInfo.swift; sourceTree = "<group>"; };
@@ -244,6 +248,8 @@
 				A6486CB32953FFDA0030CECB /* TxFooterCell.xib */,
 				A6486CB62953FFE70030CECB /* TxSkeletonCell.swift */,
 				A6486CB72953FFE70030CECB /* TxSkeletonCell.xib */,
+				A66CD6ED29546D2700FF2EC9 /* TxDateCell.swift */,
+				A66CD6EE29546D2700FF2EC9 /* TxDateCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -508,6 +514,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A64F1D76290BC06F000D4733 /* Localizable.strings in Resources */,
+				A66CD6F029546D2700FF2EC9 /* TxDateCell.xib in Resources */,
 				A69B5085291A072200D992D6 /* TxConfirmPopup.xib in Resources */,
 				A6486CAD2953103D0030CECB /* TxHeaderCell.xib in Resources */,
 				A64F1D59290B817C000D4733 /* TransactionSettingBasicTab.xib in Resources */,
@@ -562,6 +569,7 @@
 				A65FF4C82934B78F00505333 /* TxSender.swift in Sources */,
 				A6486CAC2953103D0030CECB /* TxHeaderCell.swift in Sources */,
 				A6486CCF29542AF60030CECB /* HistoryCoordinator.swift in Sources */,
+				A66CD6EF29546D2700FF2EC9 /* TxDateCell.swift in Sources */,
 				A6486CCB295423B10030CECB /* TxHistoryHeaderCellViewModel.swift in Sources */,
 				A6D1F7EF291B814B00ABA52B /* LegacyTransaction.swift in Sources */,
 				A6D1F7FE291B918200ABA52B /* TransactionSigner.swift in Sources */,

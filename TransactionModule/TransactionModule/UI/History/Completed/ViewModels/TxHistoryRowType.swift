@@ -8,6 +8,7 @@
 import Foundation
 
 enum TxHistoryRowType {
+    case date(date: Date)
     case header(viewModel: TxHistoryHeaderCellViewModel)
     case tokenChange(viewModel: TxHistoryTokenCellViewModel)
     case nft

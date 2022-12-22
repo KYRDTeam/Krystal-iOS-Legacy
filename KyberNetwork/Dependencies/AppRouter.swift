@@ -77,10 +77,12 @@ class AppRouter: AppRouterProtocol, Coordinator {
       self.historyCoordinator = coordinator
       coordinate(coordinator: coordinator)
     default:
-      let coordinator = KNHistoryCoordinator(navigationController: navigation)
-      coordinator.delegate = self
-      self.historyCoordinator = coordinator
-      coordinate(coordinator: coordinator)
+//      let coordinator = KNHistoryCoordinator(navigationController: navigation)
+//      coordinator.delegate = self
+//      self.historyCoordinator = coordinator
+//      coordinate(coordinator: coordinator)
+        let coordinator = HistoryV3Coordinator(navigationController: navigation)
+        coordinate(coordinator: coordinator)
     }
   }
   

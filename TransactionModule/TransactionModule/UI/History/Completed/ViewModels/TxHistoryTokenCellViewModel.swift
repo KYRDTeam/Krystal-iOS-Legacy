@@ -26,7 +26,18 @@ struct TxHistoryTokenCellViewModel {
         let amountSign = transfer.amount.starts(with: "-") ? "-" : "+"
         let absDoubleAmount = abs(Double(transfer.amount) ?? 0)
         isTokenChangePositive = amountSign == "+"
-        amount = amountSign + NumberFormatUtils.amount(value: BigInt(absDoubleAmount), decimals: transfer.token?.decimals ?? 18) + " " + (transfer.token?.symbol ?? "")
+        
+        var tokenSymbol = transfer.token?.symbol
+        if tokenSymbol.isNilOrEmpty {
+            tokenSymbol = "Unknown"
+        }
+        
+        var decimals = transfer.token?.decimals
+        if decimals == 0 {
+            decimals = 18
+        }
+        
+        amount = amountSign + NumberFormatUtils.amount(value: BigInt(absDoubleAmount), decimals: decimals ?? 18) + " " + (tokenSymbol ?? "")
         if transfer.historicalValueInUsd == 0 {
             usdValue = ""
         } else {

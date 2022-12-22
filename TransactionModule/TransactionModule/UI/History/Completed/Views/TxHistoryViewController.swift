@@ -13,15 +13,22 @@ import DesignSystem
 class TxHistoryViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    private let refreshControl = UIRefreshControl()
     
     var viewModel: TxHistoryViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupTableView()
+        setupViews()
         bindViewModel()
-        viewModel.loadTxHistory(endTime: nil)
+        viewModel.load(shouldReset: true)
+    }
+    
+    func setupViews() {
+        view.isUserInteractionDisabledWhenSkeletonIsActive = true
+        setupTableView()
+        setupRefreshControl()
     }
     
     func setupTableView() {
@@ -31,7 +38,27 @@ class TxHistoryViewController: UIViewController {
         tableView.registerCellNib(TxTokenCell.self)
         tableView.registerCellNib(TxFooterCell.self)
         tableView.registerCellNib(TxSkeletonCell.self)
+        tableView.registerCellNib(TxDateCell.self)
+        tableView.tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
+        tableView.contentInset = .init(top: 8, left: 0, bottom: 0, right: 0)
+        if #available(iOS 10.0, *) {
+            tableView.refreshControl = refreshControl
+        } else {
+            tableView.addSubview(refreshControl)
+        }
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
     }
+    
+    @objc func refreshData() {
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+            self.refreshControl.endRefreshing()
+            self.tableView.endUpdates()
+        }
+        showSkeletonLoading()
+        viewModel.load(shouldReset: true)
+    }
+    
     
     func bindViewModel() {
         showSkeletonLoading()
@@ -41,6 +68,10 @@ class TxHistoryViewController: UIViewController {
                 self?.tableView.reloadData()
             }
         }
+    }
+    
+    func setupRefreshControl() {
+        refreshControl.tintColor = UIColor.white.withAlphaComponent(0.5)
     }
     
     func showSkeletonLoading() {
@@ -78,8 +109,19 @@ extension TxHistoryViewController: UITableViewDelegate, UITableViewDataSource {
             cell.configure(viewModel: viewModel)
             cell.selectionStyle = .none
             return cell
+        case .date(let date):
+            let cell = tableView.dequeueReusableCell(TxDateCell.self, indexPath: indexPath)!
+            cell.configure(date: date)
+            cell.selectionStyle = .none
+            return cell
         default:
             return UITableViewCell()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if !viewModel.isLoading && indexPath.item == viewModel.rows.count - 15 && viewModel.canLoadMore {
+            self.viewModel.load(shouldReset: false)
         }
     }
     
