@@ -81,8 +81,9 @@ class PendingRewardViewModel {
         apiService.getPendingReward(address: AppState.shared.currentAddress.addressString) { result in
             switch result {
             case .success(let rewards):
+                guard rewards.0 == AppState.shared.currentAddress.addressString else { return }
                 var items: [RewardItem] = []
-                rewards.forEach { element in
+                rewards.1.forEach { element in
                     element.earningRewards.forEach { earningItem in
                         earningItem.rewardTokens?.forEach({ tokenItem in
                             let rewardItem = RewardItem(rewardToken: tokenItem, chain: earningItem.chain, platform: element.platform)
@@ -94,8 +95,6 @@ class PendingRewardViewModel {
                 self.reloadDataSource()
             case .failure(let error):
                 print(error.description)
-                self.rewardData = []
-                self.reloadDataSource()
             }
             if showLoading { self.isLoading.value = false }
         }

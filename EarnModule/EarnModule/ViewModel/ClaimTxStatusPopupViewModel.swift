@@ -10,6 +10,7 @@ import TransactionModule
 import Utilities
 import BigInt
 import UIKit
+import AppState
 
 class ClaimTxStatusViewModel {
     var status: TxStatus = .processing
@@ -69,7 +70,11 @@ class ClaimTxStatusViewModel {
     var primaryButtonTitle: String {
         switch status {
         case .processing:
-            return ChainType.make(chainID: pendingTx.pendingUnstake.chainID)?.customRPC().webScanName ?? ""
+            if isRewardClaim {
+                return AppState.shared.currentChain.customRPC().webScanName
+            } else {
+                return ChainType.make(chainID: pendingTx.pendingUnstake.chainID)?.customRPC().webScanName ?? ""
+            }
         case .success:
             if isRewardClaim {
                 return Strings.myReward

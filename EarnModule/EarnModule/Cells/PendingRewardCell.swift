@@ -33,7 +33,7 @@ struct PendingRewardCellModel {
         self.displayTokenName = item.rewardToken.tokenInfo.name
         self.displayPlatformName = item.platform.name.uppercased()
         let amountBigInt = BigInt(item.rewardToken.pendingReward.balance) ?? .zero
-        if amountBigInt < BigInt(pow(10.0, Double(item.rewardToken.tokenInfo.decimals))) {
+        if amountBigInt < BigInt(pow(10.0, Double(item.rewardToken.tokenInfo.decimals - 6))) {
             self.displayClaimAmount =  "< 0.000001 " + item.rewardToken.tokenInfo.symbol
         } else {
             self.displayClaimAmount = (amountBigInt.shortString(decimals: item.rewardToken.tokenInfo.decimals)) + " " + item.rewardToken.tokenInfo.symbol
