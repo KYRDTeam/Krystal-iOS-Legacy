@@ -117,7 +117,7 @@ class EarnListViewController: InAppBrowsingViewController {
         }
 
         self.emptyView.isHidden = !self.displayDataSource.isEmpty
-        self.isSupportEarnv2.value = !self.displayDataSource.isEmpty
+        self.isSupportEarnv2.value = !self.dataSource.isEmpty
         self.tableView.reloadData()
     }
     
@@ -339,7 +339,7 @@ extension EarnListViewController: UITextFieldDelegate {
 
 extension EarnListViewController: EarnPoolViewCellDelegate {
     func didSelectRewardApy(platform: EarnPlatform, pool: EarnPoolModel) {
-        let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: pool.apy), NumberFormatUtils.percent(value: platform.rewardApy))
+        let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: platform.apy), NumberFormatUtils.percent(value: platform.rewardApy))
         showTopBannerView(message: messge)
     }
     

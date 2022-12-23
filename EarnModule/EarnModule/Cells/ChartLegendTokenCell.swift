@@ -27,15 +27,15 @@ class ChartLegendTokenCell: UICollectionViewCell {
         // Initialization code
     }
 
-    func updateUI(earningBalance: EarningBalance, totalValue: Double, index: Int) {
+    func updateUI(model: PieChartModel, totalValue: Double, shouldShowChainIcon: Bool, index: Int) {
         balanceLabelLeading.constant = 65
         tokenImageView.isHidden = false
-        chainImageView.isHidden = false
+        chainImageView.isHidden = !shouldShowChainIcon
         legendColorView.backgroundColor = AppTheme.current.chartColors[index]
-        tokenImageView.loadImage(earningBalance.toUnderlyingToken.logo)
-        chainImageView.image = ChainType.make(chainID: earningBalance.chainID)?.chainIcon()
-        balanceLabel.text = earningBalance.balanceString()
-        detailLabel.text = earningBalance.usdDetailString(totalValue: totalValue)
+        tokenImageView.loadImage(model.logo)
+        chainImageView.image = ChainType.make(chainID: model.chainId)?.chainIcon()
+        balanceLabel.text = model.titleString(totalValue: totalValue)
+        detailLabel.text = model.usdDetailString()
     }
     
     func updateUILastCell(totalValue: Double, remainValue: Double?) {
@@ -43,10 +43,11 @@ class ChartLegendTokenCell: UICollectionViewCell {
         tokenImageView.isHidden = true
         chainImageView.isHidden = true
         legendColorView.backgroundColor = AppTheme.current.chartColors.last
-        balanceLabel.text = Strings.other
         if let remainValue = remainValue {
-            detailLabel.text = StringFormatter.usdString(value: remainValue) + " | " +  StringFormatter.percentString(value: remainValue / totalValue)
+            balanceLabel.text = Strings.other + " " +  StringFormatter.percentString(value: remainValue / totalValue)
+            detailLabel.text = StringFormatter.usdString(value: remainValue)
         } else {
+            balanceLabel.text = Strings.other
             detailLabel.text = ""
         }
     }

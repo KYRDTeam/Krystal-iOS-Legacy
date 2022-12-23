@@ -36,6 +36,7 @@
 "default.error.message" = "Something went wrong, please try again later";
 "claim.in.progress" = "Claim In Progress";
 "my.portfolio" = "My Portfolio";
+"my.reward" = "My Reward";
 "close" = "Close";
 "edit" = "Edit";
 "supplying.in.progress" = "Supplying In Progress";
@@ -98,3 +99,6 @@
 "other" = "OTHER";
 "select.platform" = "Select Platform";
 "select.type" = "Select Type";
+"no.reward.yet" = "No reward token yet";
+"supply.apy" = "Supply APY";
+"reward.apy" = "Reward APY";

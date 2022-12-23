@@ -169,6 +169,8 @@ extension EarnOverviewController: UIPageViewControllerDelegate {
     var newIndex = 0
     if pageViewController.viewControllers?.first is StakingPortfolioViewController {
       newIndex = 1
+    } else if pageViewController.viewControllers?.first is PendingRewardViewController {
+      newIndex = 2
     }
     segmentedControl.selectedSegmentIndex = newIndex
     selectedPageIndex = newIndex

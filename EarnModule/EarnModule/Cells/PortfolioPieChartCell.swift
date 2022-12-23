@@ -62,8 +62,8 @@ class PortfolioPieChartCell: UITableViewCell {
         if viewModel.dataSource.count > 5 {
             chartColors = AppTheme.current.chartColors.prefix(5) + [AppTheme.current.chartColors.last!]
             for index in 0..<5 {
-                let earningBalance = viewModel.dataSource[index]
-                let chartEntry = PieChartDataEntry(value: earningBalance.usdValue())
+                let model = viewModel.dataSource[index]
+                let chartEntry = PieChartDataEntry(value: model.usd)
                 entries.append(chartEntry)
             }
             let otherPiechartEntry = PieChartDataEntry(value: viewModel.remainUSDValue ?? 0)
@@ -71,8 +71,8 @@ class PortfolioPieChartCell: UITableViewCell {
         } else {
             chartColors = AppTheme.current.chartColors
             for index in 0..<viewModel.dataSource.count {
-                let earningBalance = viewModel.dataSource[index]
-                let chartEntry = PieChartDataEntry(value: earningBalance.usdValue())
+                let model = viewModel.dataSource[index]
+                let chartEntry = PieChartDataEntry(value: model.usd)
                 entries.append(chartEntry)
             }
         }
@@ -124,7 +124,7 @@ extension PortfolioPieChartCell: UICollectionViewDataSource {
             if indexPath.row == 5 {
                 cell.updateUILastCell(totalValue: viewModel.earningAssets, remainValue: viewModel.remainUSDValue)
             } else {
-                cell.updateUI(earningBalance: viewModel.dataSource[indexPath.row], totalValue: viewModel.earningAssets, index: indexPath.row )
+                cell.updateUI(model: viewModel.dataSource[indexPath.row], totalValue: viewModel.earningAssets, shouldShowChainIcon: viewModel.chainID == nil, index: indexPath.row )
             }
         }
         return cell

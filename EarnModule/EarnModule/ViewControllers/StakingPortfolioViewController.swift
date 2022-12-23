@@ -248,11 +248,9 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
     
     func chartCell(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(PortfolioPieChartCell.self, indexPath: indexPath)!
-        if let portfolio = viewModel.portfolio {
-            cell.viewModel = PortfolioPieChartCellViewModel(earningBalances: portfolio.0, chainID: viewModel.chainID)
-            cell.updateUI(animate: viewModel.shouldAnimateChart)
-            viewModel.shouldAnimateChart = false
-        }
+        cell.viewModel = PortfolioPieChartCellViewModel(earningBalances: viewModel.filterEarningBalance(), chainID: viewModel.chainID)
+        cell.updateUI(animate: viewModel.shouldAnimateChart)
+        viewModel.shouldAnimateChart = false
         return cell
     }
     
@@ -470,14 +468,22 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
                               address: earningBalance.toUnderlyingToken.address,
                               decimals: earningBalance.toUnderlyingToken.decimals,
                               logo: earningBalance.toUnderlyingToken.logo)
-            let earnPlatform = EarnPlatform(platform: earningBalance.platform, apy: earningBalance.apy, tvl: 0)
+            let earnPlatform = EarnPlatform(platform: earningBalance.platform, apy: earningBalance.apy, rewardApy: earningBalance.rewardApy, tvl: 0)
             self?.delegate?.didSelectPlatform(token: token, platform: earnPlatform, chainId: earningBalance.chainID)
         }
         let stakeImage = swipeCellImageView(title: plusTitleFor(earningType: earningType), icon: Images.greenPlus, color: AppTheme.current.primaryColor)
         stakeAction.image = stakeImage
         stakeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
         
-        return [unstakeAction, stakeAction]
+        let cellModel = viewModel.displayDataSource.value.0[indexPath.row]
+        
+        if cellModel.warningType == .none {
+            return [unstakeAction, stakeAction]
+        } else {
+            return [stakeAction]
+        }
+        
+        
     }
     
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
