@@ -127,12 +127,17 @@ class StakingPortfolioViewModel {
                 self.portfolio = portfolio
                 self.reloadDataSource()
                 if shouldShowLoading {
-                    self.selectedPlatforms = self.getAllPlatform()
+                    self.resetFilter()
                 }
             case .failure(let error):
                 self.error.value = error
             }
         }
+    }
+    
+    func resetFilter() {
+        self.selectedPlatforms = self.getAllPlatform()
+        self.selectedTypes = [.staking, .lending]
     }
     
     func getAllPlatform() -> Set<EarnPlatform> {
@@ -155,6 +160,10 @@ class StakingPortfolioViewModel {
     
     var isSelectedAllPlatform: Bool {
         return selectedPlatforms.isEmpty || selectedPlatforms.count == getAllPlatform().count
+    }
+    
+    var isSelectedAllType: Bool {
+        return selectedTypes.contains(.staking) && selectedTypes.contains(.lending)
     }
     
     var platformFilterButtonTitle: String {
