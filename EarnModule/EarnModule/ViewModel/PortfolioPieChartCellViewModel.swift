@@ -118,6 +118,9 @@ class PortfolioPieChartCellViewModel: BaseViewModel {
     }
     
     var annualYieldString: String {
+        if earningAssets * apyDouble < 0.01 {
+            return "< $0.01"
+        }
         return StringFormatter.usdString(value: earningAssets * apyDouble)
     }
     
