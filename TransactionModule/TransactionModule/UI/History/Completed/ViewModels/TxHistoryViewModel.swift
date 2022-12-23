@@ -17,8 +17,10 @@ class TxHistoryViewModel {
     var rows: [TxHistoryRowType] = []
     var txs: [TxRecord] = []
     
-    var allChainIds: [Int] {
-        return ChainType.getAllChain().map { $0.getChainId() }
+    var currentChain: ChainType = .all
+    
+    var chainIds: [Int] {
+        return currentChain == .all ? ChainType.getAllChain().map { $0.getChainId() } : [currentChain.getChainId()]
     }
     
     var walletAddress: String {
@@ -36,8 +38,8 @@ class TxHistoryViewModel {
     func load(shouldReset: Bool) {
         isLoading = true
         let endTime = shouldReset ? nil : txs.last?.blockTime
-        let chainIds = selectedFilterToken == nil ? allChainIds : [selectedFilterToken!.chainId]
-        historyService.getTxHistory(walletAddress: walletAddress, tokenAddress: selectedFilterToken?.id, chainIds: chainIds, limit: 20, endTime: endTime) { [weak self] txRecords in
+        let filterChainIds = selectedFilterToken == nil ? self.chainIds : [selectedFilterToken!.chainId]
+        historyService.getTxHistory(walletAddress: walletAddress, tokenAddress: selectedFilterToken?.id, chainIds: filterChainIds, limit: 20, endTime: endTime) { [weak self] txRecords in
             guard let self = self else { return }
             self.isLoading = false
             if shouldReset { // Clear the list

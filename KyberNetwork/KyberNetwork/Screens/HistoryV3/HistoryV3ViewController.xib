@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -109,6 +109,9 @@
                             <state key="normal" title="Ethereum" image="arrow_down_icon_white">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
+                            <connections>
+                                <action selector="onChainButtonTapped:" destination="-1" eventType="touchUpInside" id="HAf-tF-IXO"/>
+                            </connections>
                         </button>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="hRR-y1-1Uc">
                             <rect key="frame" x="51" y="51.5" width="12" height="12"/>

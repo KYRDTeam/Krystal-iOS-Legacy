@@ -9,6 +9,7 @@ import UIKit
 import BaseModule
 import TransactionModule
 import DesignSystem
+import AppState
 
 class HistoryV3ViewController: BaseWalletOrientedViewController {
     
@@ -22,11 +23,31 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
         return pageVC
     }()
     
+    override var supportAllChainOption: Bool {
+        return true
+    }
+    
+    override var currentChain: ChainType {
+        return selectedChain
+    }
+    
+    var selectedChain: ChainType = .all
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupPageController()
         setupSegmentControl()
+    }
+    
+    override func onAppSelectAllChain() {
+        selectedChain = .all
+        super.onAppSelectAllChain()
+    }
+    
+    override func onAppSwitchChain() {
+        selectedChain = AppState.shared.currentChain
+        reloadChain()
     }
     
     func setupPageController() {
@@ -43,8 +64,6 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
         pageViewController.didMove(toParent: self)
         removeSwipeGesture()
     }
-    
-    
     
     func removeSwipeGesture() {
         for view in pageViewController.view.subviews {

@@ -10,8 +10,10 @@ import Utilities
 import SkeletonView
 import DesignSystem
 import TokenModule
+import BaseModule
+import AppState
 
-class TxHistoryViewController: UIViewController {
+class TxHistoryViewController: BaseWalletOrientedViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchField: UITextField!
@@ -28,6 +30,7 @@ class TxHistoryViewController: UIViewController {
         super.viewDidLoad()
 
         setupViews()
+        observeNotifications()
         bindViewModel()
         viewModel.load(shouldReset: true)
     }
@@ -91,6 +94,15 @@ class TxHistoryViewController: UIViewController {
         }
     }
     
+    func resetFilterTokenUI() {
+        self.viewModel.selectedFilterToken = nil
+        self.searchField.resignFirstResponder()
+        self.searchField.text = nil
+        self.searchTokenLabel.text = nil
+        self.searchContainerView.isHidden = true
+        self.selectedSearchView.isHidden = true
+    }
+    
     @objc func refreshData() {
         DispatchQueue.main.async {
             self.tableView.beginUpdates()
@@ -101,6 +113,31 @@ class TxHistoryViewController: UIViewController {
         viewModel.load(shouldReset: true)
     }
     
+    func appDidSwitchChain() {
+        resetFilterTokenUI()
+        showSkeletonLoading()
+        viewModel.load(shouldReset: true)
+    }
+    
+    func appDidSwitchAddress() {
+        resetFilterTokenUI()
+        showSkeletonLoading()
+        viewModel.load(shouldReset: true)
+    }
+    
+    override func onAppSwitchChain() {
+        viewModel.currentChain = AppState.shared.currentChain
+        appDidSwitchChain()
+    }
+    
+    override func onAppSelectAllChain() {
+        viewModel.currentChain = .all
+        appDidSwitchChain()
+    }
+    
+    override func onAppSwitchAddress(switchChain: Bool) {
+        appDidSwitchAddress()
+    }
     
     func bindViewModel() {
         showSkeletonLoading()
