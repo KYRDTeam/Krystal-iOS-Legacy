@@ -10,6 +10,7 @@ import UIKit
 import Services
 import BaseWallet
 import AppState
+import BigInt
 
 class TxHistoryViewModel {
     
@@ -24,6 +25,8 @@ class TxHistoryViewModel {
         return AppState.shared.currentAddress.addressString
     }
     
+    var selectedFilterToken: AdvancedSearchToken?
+    
     var isLoading = false
     var canLoadMore = true
     
@@ -31,9 +34,10 @@ class TxHistoryViewModel {
     var onRowsUpdated: (() -> ())?
     
     func load(shouldReset: Bool) {
-        let endTime = shouldReset ? nil : txs.last?.blockTime
         isLoading = true
-        historyService.getTxHistory(walletAddress: walletAddress, tokenAddress: nil, chainIds: allChainIds, limit: 20, endTime: endTime) { [weak self] txRecords in
+        let endTime = shouldReset ? nil : txs.last?.blockTime
+        let chainIds = selectedFilterToken == nil ? allChainIds : [selectedFilterToken!.chainId]
+        historyService.getTxHistory(walletAddress: walletAddress, tokenAddress: selectedFilterToken?.id, chainIds: chainIds, limit: 20, endTime: endTime) { [weak self] txRecords in
             guard let self = self else { return }
             self.isLoading = false
             if shouldReset { // Clear the list
@@ -58,13 +62,32 @@ class TxHistoryViewModel {
     func constructRows(tx: TxRecord) -> [TxHistoryRowType] {
         var rows: [TxHistoryRowType] = []
         rows.append(.header(viewModel: .init(tx: tx)))
-        if let transfers = tx.tokenTransfers {
-            let viewModels = transfers.map { transfer in
-                return TxHistoryTokenCellViewModel(transfer: transfer)
+        let dict = Dictionary(grouping: tx.tokenTransfers ?? []) { element in
+            return element.token?.symbol
+        }
+        let keys = dict.keys.compactMap { $0 }.sorted()
+        keys.forEach { key in
+            let txs = dict[key] ?? []
+            let amount: BigInt = txs.reduce(.zero) { $0 + (BigInt($1.amount) ?? .zero) }
+            let usdValue: Double = txs.reduce(0) { $0 + $1.historicalValueInUsd }
+            if let token = txs.first?.token, token.isValid, amount != .zero {
+                let viewModel = TxHistoryTokenCellViewModel(token: token, amount: amount, usdValueInUsd: usdValue, isApproval: false)
+                rows.append(TxHistoryRowType.tokenChange(viewModel: viewModel))
             }
-            rows.append(contentsOf: viewModels.map { TxHistoryRowType.tokenChange(viewModel: $0) })
+        }
+        if let tokenApproval = tx.tokenApproval, let token = tokenApproval.token, token.isValid, let amount = BigInt(tokenApproval.amount), amount > 0 {
+            let viewModel = TxHistoryTokenCellViewModel(token: token, amount: amount, usdValueInUsd: 0, isApproval: true)
+            rows.append(TxHistoryRowType.tokenChange(viewModel: viewModel))
         }
         rows.append(.footer(viewModel: .init(tx: tx)))
         return rows
     }
+}
+
+fileprivate extension TokenInfo {
+    
+    var isValid: Bool {
+        return !symbol.isEmpty && decimals > 0
+    }
+    
 }

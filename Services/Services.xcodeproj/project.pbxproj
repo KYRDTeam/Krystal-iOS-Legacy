@@ -69,6 +69,7 @@
 		A6B6FA142907D56600109740 /* Approval.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6FA132907D56600109740 /* Approval.swift */; };
 		A6B6FA192907D6A100109740 /* ApprovalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6FA182907D6A100109740 /* ApprovalService.swift */; };
 		A6B6FA1B2907D6B600109740 /* BaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6FA1A2907D6B600109740 /* BaseService.swift */; };
+		A6C37C042955813000B6F3C6 /* AdvancedSearchToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C37C032955813000B6F3C6 /* AdvancedSearchToken.swift */; };
 		A6D1F7E6291B699800ABA52B /* TxObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7E5291B699800ABA52B /* TxObject.swift */; };
 		A6D1F7F5291B89AD00ABA52B /* EthereumServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7F4291B89AD00ABA52B /* EthereumServiceRequest.swift */; };
 		A6D1F802291BA98B00ABA52B /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D1F801291BA98B00ABA52B /* AppState.framework */; };
@@ -150,6 +151,7 @@
 		A6B6FA132907D56600109740 /* Approval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Approval.swift; sourceTree = "<group>"; };
 		A6B6FA182907D6A100109740 /* ApprovalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovalService.swift; sourceTree = "<group>"; };
 		A6B6FA1A2907D6B600109740 /* BaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseService.swift; sourceTree = "<group>"; };
+		A6C37C032955813000B6F3C6 /* AdvancedSearchToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSearchToken.swift; sourceTree = "<group>"; };
 		A6D1F7E5291B699800ABA52B /* TxObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxObject.swift; sourceTree = "<group>"; };
 		A6D1F7F4291B89AD00ABA52B /* EthereumServiceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumServiceRequest.swift; sourceTree = "<group>"; };
 		A6D1F801291BA98B00ABA52B /* AppState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -242,6 +244,7 @@
 				7EB129B12938AD6400CE6D1C /* SearchToken.swift */,
 				C357A49D2941E391009030CF /* PendingReward.swift */,
 				A6486CBD29540CAD0030CECB /* TxRecord.swift */,
+				A6C37C032955813000B6F3C6 /* AdvancedSearchToken.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -527,6 +530,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A64C2EB628F91CAA002FD64C /* GetDecimals.swift in Sources */,
+				A6C37C042955813000B6F3C6 /* AdvancedSearchToken.swift in Sources */,
 				A64C2EA628F91BF1002FD64C /* KNEstimateGasLimitRequest.swift in Sources */,
 				A64C2E9B28F91B2B002FD64C /* RPCServer.swift in Sources */,
 				A64C2EAE28F91C13002FD64C /* Web3Request.swift in Sources */,

@@ -9,11 +9,18 @@ import UIKit
 import Utilities
 import SkeletonView
 import DesignSystem
+import TokenModule
 
 class TxHistoryViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchField: UITextField!
+    @IBOutlet weak var selectedSearchView: UIView!
+    @IBOutlet weak var searchTokenLabel: UILabel!
+    @IBOutlet weak var searchContainerView: UIView!
+    
     private let refreshControl = UIRefreshControl()
+    var tokenSelectPopup: TokenSelectPopup?
     
     var viewModel: TxHistoryViewModel!
     
@@ -27,8 +34,17 @@ class TxHistoryViewController: UIViewController {
     
     func setupViews() {
         view.isUserInteractionDisabledWhenSkeletonIsActive = true
+        searchContainerView.isHidden = true
+        selectedSearchView.isHidden = true
+        setupSearchBar()
         setupTableView()
         setupRefreshControl()
+        setupTokenSelectPopup()
+    }
+    
+    func setupSearchBar() {
+        searchField.setPlaceholder(text: "Filter by token", color: AppTheme.current.secondaryTextColor)
+        searchField.delegate = self
     }
     
     func setupTableView() {
@@ -47,6 +63,32 @@ class TxHistoryViewController: UIViewController {
             tableView.addSubview(refreshControl)
         }
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+    }
+    
+    func setupTokenSelectPopup() {
+        let viewModel = TokenSelectViewModel()
+        tokenSelectPopup = TokenSelectPopup.instantiateFromNib()
+        tokenSelectPopup!.viewModel = viewModel
+        
+        tokenSelectPopup!.view.frame = searchContainerView.bounds
+        searchContainerView.addSubview(tokenSelectPopup!.view)
+        addChild(tokenSelectPopup!)
+        tokenSelectPopup!.didMove(toParent: self)
+        tokenSelectPopup!.onBackgroundTapped = { [weak self] in
+            self?.searchField.resignFirstResponder()
+            self?.searchField.text = nil
+            self?.searchContainerView.isHidden = true
+        }
+        tokenSelectPopup!.onSelectToken = { [weak self] token in
+            self?.searchField.resignFirstResponder()
+            self?.searchField.text = nil
+            self?.viewModel.selectedFilterToken = token
+            self?.searchTokenLabel.text = token.symbol
+            self?.searchContainerView.isHidden = true
+            self?.selectedSearchView.isHidden = false
+            self?.showSkeletonLoading()
+            self?.viewModel.load(shouldReset: true)
+        }
     }
     
     @objc func refreshData() {
@@ -83,6 +125,13 @@ class TxHistoryViewController: UIViewController {
         view.hideSkeleton()
     }
     
+    @IBAction func searchCloseTapped(_ sender: Any) {
+        selectedSearchView.isHidden = true
+        viewModel.selectedFilterToken = nil
+        showSkeletonLoading()
+        viewModel.load(shouldReset: true)
+    }
+
 }
 
 extension TxHistoryViewController: UITableViewDelegate, UITableViewDataSource {
@@ -140,3 +189,13 @@ extension TxHistoryViewController: SkeletonTableViewDataSource {
     
 }
 
+extension TxHistoryViewController: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+        tokenSelectPopup?.updateQuery(text: text)
+        searchContainerView.isHidden = text.isEmpty
+        return true
+    }
+    
+}

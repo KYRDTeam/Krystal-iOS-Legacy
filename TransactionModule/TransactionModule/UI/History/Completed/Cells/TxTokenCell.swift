@@ -18,7 +18,7 @@ class TxTokenCell: UITableViewCell {
     func configure(viewModel: TxHistoryTokenCellViewModel) {
         logoImageView.loadImage(viewModel.tokenIconUrl)
         verifyImageView.image = viewModel.verifyIcon
-        amountLabel.text = viewModel.amount
+        amountLabel.text = viewModel.amountString
         usdValueLabel.text = viewModel.usdValue
         amountLabel.textColor = viewModel.isTokenChangePositive ? AppTheme.current.primaryColor : AppTheme.current.primaryTextColor
     }

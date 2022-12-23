@@ -72,6 +72,7 @@
 		A6B6ED37290F9FE700514A01 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6ED36290F9FE700514A01 /* Constants.swift */; };
 		A6B6ED39290FBAAF00514A01 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED38290FBAAF00514A01 /* Services.framework */; };
 		A6C37A46291A485900AB81D3 /* TxInfoRowData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C37A45291A485900AB81D3 /* TxInfoRowData.swift */; };
+		A6C37C0F29558A7B00B6F3C6 /* TokenModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C37C0E29558A7B00B6F3C6 /* TokenModule.framework */; };
 		A6D1F7E4291B690000ABA52B /* StakeTxObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7E3291B690000ABA52B /* StakeTxObject.swift */; };
 		A6D1F7ED291B814100ABA52B /* EIP1559Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7EC291B814100ABA52B /* EIP1559Transaction.swift */; };
 		A6D1F7EF291B814B00ABA52B /* LegacyTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7EE291B814B00ABA52B /* LegacyTransaction.swift */; };
@@ -149,6 +150,7 @@
 		A6B6ED36290F9FE700514A01 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A6B6ED38290FBAAF00514A01 /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6C37A45291A485900AB81D3 /* TxInfoRowData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxInfoRowData.swift; sourceTree = "<group>"; };
+		A6C37C0E29558A7B00B6F3C6 /* TokenModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TokenModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6D1F7E3291B690000ABA52B /* StakeTxObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakeTxObject.swift; sourceTree = "<group>"; };
 		A6D1F7EC291B814100ABA52B /* EIP1559Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EIP1559Transaction.swift; sourceTree = "<group>"; };
 		A6D1F7EE291B814B00ABA52B /* LegacyTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyTransaction.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				A6B6ED32290F859700514A01 /* Utilities.framework in Frameworks */,
 				A61715DF291E2AF3001778C7 /* BaseModule.framework in Frameworks */,
 				A6B6ED2F290F82F200514A01 /* AppState.framework in Frameworks */,
+				A6C37C0F29558A7B00B6F3C6 /* TokenModule.framework in Frameworks */,
 				A613BC8929124730006DD220 /* Dependencies.framework in Frameworks */,
 				0E81F6026D12F409B8F03625 /* Pods_TransactionModule.framework in Frameworks */,
 				A64F1D68290B98C3000D4733 /* DesignSystem.framework in Frameworks */,
@@ -185,6 +188,7 @@
 		0EE45598E266B0540A9D667B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6C37C0E29558A7B00B6F3C6 /* TokenModule.framework */,
 				A61715DE291E2AF3001778C7 /* BaseModule.framework */,
 				A613BC8829124730006DD220 /* Dependencies.framework */,
 				A6B6ED38290FBAAF00514A01 /* Services.framework */,

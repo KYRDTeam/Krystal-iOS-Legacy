@@ -14,6 +14,7 @@ public class TokenService: BaseService {
   
   let provider = MoyaProvider<TokenEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
   var searchTokensProcess: Cancellable?
+    var advancedSearchCancellable: Cancellable?
   
   public func getTokenDetail(address: String, chainPath: String, completion: @escaping (TokenDetailInfo?) -> ()) {
     provider.request(.getTokenDetail(chainPath: chainPath, address: address)) { result in
@@ -106,5 +107,22 @@ public class TokenService: BaseService {
           }
         }
     }
-  
+    
+    public func advancedSearch(query: String, limit: Int = 50, completion: @escaping ([AdvancedSearchToken]) -> ()) {
+        advancedSearchCancellable?.cancel()
+        advancedSearchCancellable = provider.request(.advancedSearch(query: query, limit: limit)) { result in
+            switch result {
+            case .success(let response):
+//                do {
+                    let resp = try! JSONDecoder().decode(AdvancedSearchResponse.self, from: response.data)
+                    completion(resp.data?.tokens ?? [])
+//                } catch {
+//                    completion([])
+//                }
+            case .failure:
+                completion([])
+            }
+        }
+    }
+    
 }

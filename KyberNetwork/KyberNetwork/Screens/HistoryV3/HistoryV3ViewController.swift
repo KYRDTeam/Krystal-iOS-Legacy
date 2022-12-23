@@ -41,6 +41,17 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
         pageContainer.addSubview(pageViewController.view)
         addChild(pageViewController)
         pageViewController.didMove(toParent: self)
+        removeSwipeGesture()
+    }
+    
+    
+    
+    func removeSwipeGesture() {
+        for view in pageViewController.view.subviews {
+            if let subView = view as? UIScrollView {
+                subView.isScrollEnabled = false
+            }
+        }
     }
     
     func setupSegmentControl() {

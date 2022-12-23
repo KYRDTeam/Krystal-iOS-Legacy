@@ -14,34 +14,40 @@ import Utilities
 struct TxHistoryTokenCellViewModel {
     var tokenIconUrl: String?
     var verifyIcon: UIImage?
-    var amount: String
+    var amountString: String
     var usdValue: String
     var isTokenChangePositive: Bool
     
-    init(transfer: TxRecord.TokenTransfer) {
-        let status = TokenVerifyStatus(value: transfer.token?.tag ?? "")
-        tokenIconUrl = transfer.token?.logo
+    let minUnlimitedApprovalAmount: BigInt = BigInt(10).power(9)
+    
+    init(token: TokenInfo, amount: BigInt, usdValueInUsd: Double, isApproval: Bool) {
+        let status = TokenVerifyStatus(value: token.tag ?? "")
+        tokenIconUrl = token.logo
         verifyIcon = status.icon
         
-        let amountSign = transfer.amount.starts(with: "-") ? "-" : "+"
-        let absDoubleAmount = abs(Double(transfer.amount) ?? 0)
-        isTokenChangePositive = amountSign == "+"
+        let absAmount = abs(amount)
+        let amountSign = isApproval ? "" : (amount < 0 ? "-" : "+")
+        isTokenChangePositive = isApproval ? false : amount > 0
         
-        var tokenSymbol = transfer.token?.symbol
-        if tokenSymbol.isNilOrEmpty {
+        var tokenSymbol = token.symbol
+        if tokenSymbol.isEmpty {
             tokenSymbol = "Unknown"
         }
         
-        var decimals = transfer.token?.decimals
+        var decimals = token.decimals
         if decimals == 0 {
             decimals = 18
         }
         
-        amount = amountSign + NumberFormatUtils.amount(value: BigInt(absDoubleAmount), decimals: decimals ?? 18) + " " + (tokenSymbol ?? "")
-        if transfer.historicalValueInUsd == 0 {
+        amountString = absAmount > BigInt(10).power(token.decimals) * minUnlimitedApprovalAmount
+                        ? "Unlimited \(tokenSymbol)"
+                        : amountSign + NumberFormatUtils.amount(value: absAmount, decimals: decimals) + " " + tokenSymbol
+        
+        if usdValueInUsd == 0 {
             usdValue = ""
         } else {
-            usdValue = "$" + NumberFormatUtils.usdAmount(value: BigInt(abs(transfer.historicalValueInUsd) * pow(10, 18)), decimals: 18)
+            usdValue = "$" + NumberFormatUtils.usdAmount(value: BigInt(abs(usdValueInUsd) * pow(10, 18)), decimals: 18)
         }
     }
+    
 }
