@@ -346,6 +346,17 @@ extension EarnListViewController: EarnPoolViewCellDelegate {
     func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
         delegate?.didSelectPlatform(platform: platform, pool: pool)
     }
+    
+    func showWarning(_ type: String) {
+        switch type {
+        case "disabled":
+            self.showErrorTopBannerMessage(message: Strings.stakeDisableMessage)
+        case "warning":
+            self.showErrorTopBannerMessage(message: Strings.stakeWarningMessage)
+        default:
+            break
+        }
+    }
 }
 
 extension EarnListViewController: PlatformFilterViewControllerDelegate {

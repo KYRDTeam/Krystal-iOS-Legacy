@@ -150,7 +150,9 @@
                 <outlet property="apyValueLabel" destination="Z5T-5U-FyF" id="WSv-ed-kIz"/>
                 <outlet property="dashView" destination="ZHK-Oq-l8H" id="BWq-uZ-viJ"/>
                 <outlet property="nameLabel" destination="4Vp-qt-l8J" id="ZJ1-Ti-nIh"/>
+                <outlet property="platformContainerView" destination="cvg-Xx-b5L" id="lGM-Vc-9we"/>
                 <outlet property="platformIcon" destination="krA-XX-RNd" id="fnh-fj-Jm7"/>
+                <outlet property="plusButton" destination="7ps-oU-6tn" id="hB5-rA-heC"/>
                 <outlet property="rewardApyIcon" destination="e00-WF-oe9" id="iHv-FF-Br4"/>
                 <outlet property="tvlValueLabel" destination="w8h-4v-VAS" id="Dgz-Xw-VJv"/>
                 <outlet property="typeLabel" destination="2dT-C1-cno" id="gIT-Rc-k0u"/>

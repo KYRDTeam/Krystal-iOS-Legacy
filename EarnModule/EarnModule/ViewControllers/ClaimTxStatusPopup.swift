@@ -38,6 +38,7 @@ class ClaimTxStatusPopup: UIViewController {
         tokenAmountLabel.text = viewModel.tokenAmountString
         hashLabel.text = viewModel.hashString
         setupLoadingView()
+        primaryButton.setTitle(viewModel.primaryButtonTitle, for: .normal)
     }
     
     func setupLoadingView() {

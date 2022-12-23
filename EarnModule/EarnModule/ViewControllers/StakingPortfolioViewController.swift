@@ -482,7 +482,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         if cellModel.warningType == .none {
             return [unstakeAction, stakeAction]
         } else {
-            return [stakeAction]
+            return [unstakeAction]
         }
         
         
