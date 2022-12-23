@@ -162,20 +162,20 @@ public class EarnServices: BaseService {
         }
     }
     
-    public func getPendingReward(address: String, completion: @escaping (Result<PendingRewardResponse, AnyError>) -> Void) {
+    public func getPendingReward(address: String, completion: @escaping (Result<(String, PendingRewardResponse), AnyError>) -> Void) {
         provider.requestWithFilters(.getPendingReward(address: address)) { result in
             switch result {
             case .success(let resp):
               let decoder = JSONDecoder()
               do {
                 let data = try decoder.decode(PendingRewardResponse.self, from: resp.data)
-                completion(.success(data))
+                completion(.success((address, data)))
                 
-              } catch let error {
-                completion(.failure(AnyError(error)))
+              } catch {
+                  completion(.success((address, [])))
               }
-            case .failure(let error):
-              completion(.failure(AnyError(error)))
+            case .failure:
+                completion(.success((address, [])))
             }
         }
     }
