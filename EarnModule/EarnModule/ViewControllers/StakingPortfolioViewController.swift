@@ -93,7 +93,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     private func updateUIEmptyView() {
         guard isViewLoaded else { return }
         if viewModel.isSupportEarnv2 {
-            if viewModel.searchText.isEmpty {
+            if viewModel.searchText.isEmpty && viewModel.isSelectedAllPlatform && viewModel.isSelectedAllType {
                 emptyIcon.image = Images.emptyDeposit
                 emptyLabel.text = Strings.emptyTokenDeposit
             } else {
@@ -174,6 +174,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     @objc override func onAppSwitchChain() {
         let currentChain = AppState.shared.currentChain
         viewModel.chainID = currentChain.getChainId()
+        viewModel.resetFilter()
         reloadUI()
     }
     
@@ -183,6 +184,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     
     override func onAppSelectAllChain() {
         viewModel.chainID = nil
+        viewModel.resetFilter()
         reloadUI()
     }
     
