@@ -13,6 +13,7 @@ import Services
 protocol EarnPoolViewCellDelegate: class {
     func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel)
     func didSelectRewardApy(platform: EarnPlatform, pool: EarnPoolModel)
+    func showWarning(_ type: String)
 }
 
 class EarnPoolViewCellViewModel {
@@ -146,5 +147,9 @@ extension EarnPoolViewCell: EarnPoolPlatformCellDelegate {
     func didSelectStake(_ platform: EarnPlatform) {
         guard let model = viewModel?.earnPoolModel else { return }
         delegate?.didSelectPlatform(platform: platform, pool: model)
+    }
+    
+    func showWarning(_ type: String) {
+        delegate?.showWarning(type)
     }
 }
