@@ -32,7 +32,7 @@ class PieChartModel {
     }
     
     func usdDetailString() -> String {
-        return StringFormatter.usdString(value: usd)
+        return usd < 0.01 ? "< $0.01" : StringFormatter.usdString(value: usd)
     }
 }
 
