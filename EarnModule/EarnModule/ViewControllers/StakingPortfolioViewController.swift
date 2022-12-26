@@ -39,15 +39,11 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     @IBOutlet weak var emptyViewContainer: UIView!
     @IBOutlet weak var emptyIcon: UIImageView!
     @IBOutlet weak var emptyLabel: UILabel!
-    
+    @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var searchFieldActionButton: UIButton!
-    @IBOutlet weak var searchViewRightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var searchTextField: UITextField!
-    @IBOutlet weak var platformFilterButton: UIButton!
     
     weak var delegate: StakingPortfolioViewControllerDelegate?
-    
     
     let viewModel: StakingPortfolioViewModel = StakingPortfolioViewModel()
     var timer: Timer?
@@ -55,8 +51,9 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         registerCell()
+        portfolioTableView.backgroundColor = AppTheme.current.sectionBackgroundColor
         searchTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
-        viewModel.dataSource.observeAndFire(on: self) { _ in
+        viewModel.displayDataSource.observeAndFire(on: self) { _ in
             self.portfolioTableView.reloadData()
             
         }
@@ -78,23 +75,25 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        viewModel.shouldAnimateChart = true
         if viewModel.isEmpty() && viewModel.isLoading.value == false {
             viewModel.requestData()
         }
-        updateUIPlatformFilterButton()
+        portfolioTableView.reloadData()
 		AppDependencies.tracker.track("mob_earn_portfolio", properties: ["screenid": "earn_v2"])
     }
     
     private func registerCell() {
         portfolioTableView.registerCellNib(StakingPortfolioCell.self)
         portfolioTableView.registerCellNib(SkeletonCell.self)
+        portfolioTableView.registerCellNib(PortfolioPieChartCell.self)
         portfolioTableView.register(SkeletonBlankSectionHeader.self, forHeaderFooterViewReuseIdentifier: "SectionHeader")
     }
     
     private func updateUIEmptyView() {
         guard isViewLoaded else { return }
         if viewModel.isSupportEarnv2 {
-            if viewModel.searchText.isEmpty {
+            if viewModel.searchText.isEmpty && viewModel.isSelectedAllPlatform && viewModel.isSelectedAllType {
                 emptyIcon.image = Images.emptyDeposit
                 emptyLabel.text = Strings.emptyTokenDeposit
             } else {
@@ -125,38 +124,47 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     func updateUIStartSearchingMode() {
         self.view.layoutIfNeeded()
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
-            self.searchViewRightConstraint.constant = 77
-            self.cancelButton.isHidden = false
             self.searchFieldActionButton.setImage(UIImage(named: "close-search-icon"), for: .normal)
             self.view.layoutIfNeeded()
         }
+        viewModel.isEditing = true
     }
     
     func updateUIEndSearchingMode() {
         self.view.layoutIfNeeded()
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
-            self.searchViewRightConstraint.constant = 18
-            self.cancelButton.isHidden = true
             self.searchFieldActionButton.setImage(UIImage(named: "search_blue_icon"), for: .normal)
             self.view.endEditing(true)
             self.view.layoutIfNeeded()
         }
+        viewModel.isEditing = false
     }
     
     @IBAction func onSearchButtonTapped(_ sender: Any) {
-        if !self.cancelButton.isHidden {
+        if viewModel.isEditing {
+            updateUIEndSearchingMode()
             searchTextField.text = ""
+            searchTextField.resignFirstResponder()
             viewModel.searchText = ""
             reloadUI()
         } else {
-            self.updateUIStartSearchingMode()
+            updateUIStartSearchingMode()
         }
     }
-    
-    @IBAction func cancelButtonTapped(_ sender: Any) {
-        self.updateUIEndSearchingMode()
+
+    @IBAction func filterButtonTapped(_ sender: Any) {
+        let allPlatforms = viewModel.getAllPlatform()
+        let viewModel = PlatformFilterViewModel(dataSource: allPlatforms, selected: viewModel.selectedPlatforms)
+        viewModel.shouldShowType = true
+        viewModel.selectedType = self.viewModel.selectedTypes
+        let viewController = PlatformFilterViewController.instantiateFromNib()
+        viewController.viewModel = viewModel
+        viewController.delegate = self
+        let sheetOptions = SheetOptions(pullBarHeight: 0)
+        let sheet = SheetViewController(controller: viewController, sizes: [.intrinsic], options: sheetOptions)
+        present(sheet, animated: true)
     }
-    
+
     func reloadUI() {
         viewModel.reloadDataSource()
         portfolioTableView.reloadData()
@@ -166,11 +174,17 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     @objc override func onAppSwitchChain() {
         let currentChain = AppState.shared.currentChain
         viewModel.chainID = currentChain.getChainId()
+        viewModel.resetFilter()
         reloadUI()
+    }
+    
+    override func onAppSwitchAddress(switchChain: Bool) {
+        viewModel.requestData()
     }
     
     override func onAppSelectAllChain() {
         viewModel.chainID = nil
+        viewModel.resetFilter()
         reloadUI()
     }
     
@@ -188,22 +202,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
             AppDependencies.tracker.track("mob_portfolio_claim_confirm", properties: ["screenid": "earn_v2_claim_pop_up"])
         }
     }
-    
-    @IBAction func platformFilterButtonTapped(_ sender: UIButton) {
-        let allPlatforms = viewModel.getAllPlatform()
-        let viewModel = PlatformFilterViewModel(dataSource: allPlatforms, selected: viewModel.selectedPlatforms)
-        let viewController = PlatformFilterViewController.instantiateFromNib()
-        viewController.viewModel = viewModel
-        viewController.delegate = self
-        let sheetOptions = SheetOptions(pullBarHeight: 0)
-        let sheet = SheetViewController(controller: viewController, sizes: [.intrinsic], options: sheetOptions)
-        present(sheet, animated: true)
-    }
-    
-    private func updateUIPlatformFilterButton() {
-        platformFilterButton.setTitle(viewModel.platformFilterButtonTitle, for: .normal)
-    }
-    
+
     func updateSupportedEarnv2(_ value: Bool) {
         guard viewModel.isSupportEarnv2 != value else {
             return
@@ -211,20 +210,58 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         viewModel.isSupportEarnv2 = value
         updateUIEmptyView()
     }
+    
+    func animateChartCell(isExpand: Bool) {
+        if !isExpand {
+            self.view.layoutIfNeeded()
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+                if let cell = self.portfolioTableView.cellForRow(at: IndexPath(row: 0, section: 0)) {
+                    var rect = cell.frame
+                    rect.size.height = 0
+                    cell.frame = rect
+                }
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            self.view.layoutIfNeeded()
+            if let cell = self.portfolioTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? PortfolioPieChartCell {
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+                    var rect = cell.frame
+                    rect.size.height = 390
+                    cell.frame = rect
+                    self.view.layoutIfNeeded()
+                } completion: { complete in
+                    cell.updateUI(animate: true)
+                    self.viewModel.shouldAnimateChart = false
+                }
+            }
+        }
+    }
 }
 
 extension StakingPortfolioViewController: SkeletonTableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.dataSource.value.1.isEmpty ? 1 : 2
+        return viewModel.numberOfSection()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? viewModel.dataSource.value.0.count : viewModel.dataSource.value.1.count
+        return viewModel.numberOfRows(section: section)
+    }
+    
+    func chartCell(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(PortfolioPieChartCell.self, indexPath: indexPath)!
+        cell.viewModel = PortfolioPieChartCellViewModel(earningBalances: viewModel.filterEarningBalance(), chainID: viewModel.chainID)
+        cell.updateUI(animate: viewModel.shouldAnimateChart)
+        viewModel.shouldAnimateChart = false
+        return cell
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+            return chartCell(tableView, indexPath: indexPath)
+        }
         let cell = tableView.dequeueReusableCell(StakingPortfolioCell.self, indexPath: indexPath)!
-        let items = indexPath.section == 0 ? viewModel.dataSource.value.0 : viewModel.dataSource.value.1
+        let items = indexPath.section == 1 ? viewModel.displayDataSource.value.0 : viewModel.displayDataSource.value.1
         let cm = items[indexPath.row]
         cell.updateCellModel(cm)
         cell.delegate = self
@@ -236,6 +273,21 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
             guard let self = self else { return }
             guard let pendingUnstake = cm.pendingUnstake else { return }
             self.requestClaim(pendingUnstake: pendingUnstake)
+        }
+        cell.onTapRewardApy = { balance in
+            let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: balance.apy), NumberFormatUtils.percent(value: balance.rewardApy))
+            self.showBottomBannerView(message: messge)
+		}
+		
+        cell.onTapWarningIcon = { type in
+            switch type {
+            case .disable:
+                self.showErrorTopBannerMessage(message: Strings.stakeDisableMessage)
+            case .warning:
+                self.showErrorTopBannerMessage(message: Strings.stakeWarningMessage)
+            case .none:
+                break
+            }
         }
         return cell
     }
@@ -263,26 +315,35 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
 }
 
 extension StakingPortfolioViewController: SkeletonTableViewDelegate {
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+      return CGFloat(46.0)
+    }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat(1.0)
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return viewModel.viewForFooter(tableView)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
-        view.backgroundColor = AppTheme.current.sectionBackgroundColor
-        let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: UIScreen.main.bounds.size.width - 70, height: 40))
-        titleLabel.center.y = view.center.y
-        titleLabel.text = section == 0 ? Strings.mySupply.uppercased() : Strings.unstakingInProgress.uppercased()
-        titleLabel.font = .karlaReguler(ofSize: 14)
-        titleLabel.textColor = AppTheme.current.primaryTextColor
-        view.addSubview(titleLabel)
-        
+        let view = viewModel.viewForHeader(tableView, section: section)
+        view.onTapped = { isExpand in
+            self.viewModel.shouldAnimateChart = isExpand
+            self.viewModel.updateShowHideSection(section: section, isExpand: isExpand)
+            self.portfolioTableView.beginUpdates()
+            if section == 0 {
+                self.animateChartCell(isExpand: isExpand)
+            }
+            self.portfolioTableView.endUpdates()
+        }
         return view
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 160
+        return viewModel.heightForRow(section: indexPath.section)
     }
     
     func collectionSkeletonView(_ skeletonView: UITableView, identifierForHeaderInSection section: Int) -> ReusableHeaderFooterIdentifier? {
@@ -366,7 +427,10 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
     func openUnstake(earningBalance: EarningBalance) {
         let earningType = EarningType(value: earningBalance.platform.type)
         if earningBalance.toUnderlyingToken.address.lowercased() == Constants.ethAddress.lowercased() && earningType == .staking {
-            self.showUnstakeETHWarning()
+            self.showUnstakeETHWarning(
+                from: earningBalance.stakingToken.toToken(),
+                to: earningBalance.toUnderlyingToken.toToken()
+            )
             return
         }
         let viewModel = UnstakeViewModel(earningBalance: earningBalance)
@@ -376,8 +440,8 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        guard orientation == .right, indexPath.section == 0 else { return nil }
-        let earningBalances = self.viewModel.dataSource.value.0.map { $0.earnBalance }
+        guard orientation == .right, indexPath.section == 1 else { return nil }
+        let earningBalances = self.viewModel.displayDataSource.value.0.map { $0.earnBalance }
         guard let earningBalance = earningBalances[indexPath.row] else { return nil }
         let earningType = EarningType(value: earningBalance.platform.type)
         
@@ -406,14 +470,22 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
                               address: earningBalance.toUnderlyingToken.address,
                               decimals: earningBalance.toUnderlyingToken.decimals,
                               logo: earningBalance.toUnderlyingToken.logo)
-            let earnPlatform = EarnPlatform(platform: earningBalance.platform, apy: earningBalance.apy, tvl: 0)
+            let earnPlatform = EarnPlatform(platform: earningBalance.platform, apy: earningBalance.apy, rewardApy: earningBalance.rewardApy, tvl: 0)
             self?.delegate?.didSelectPlatform(token: token, platform: earnPlatform, chainId: earningBalance.chainID)
         }
         let stakeImage = swipeCellImageView(title: plusTitleFor(earningType: earningType), icon: Images.greenPlus, color: AppTheme.current.primaryColor)
         stakeAction.image = stakeImage
         stakeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
         
-        return [unstakeAction, stakeAction]
+        let cellModel = viewModel.displayDataSource.value.0[indexPath.row]
+        
+        if cellModel.warningType == .disable {
+            return [unstakeAction]
+        } else {
+            return [unstakeAction, stakeAction]
+        }
+        
+        
     }
     
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
@@ -425,7 +497,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         return options
     }
     
-    private func showUnstakeETHWarning() {
+    private func showUnstakeETHWarning(from: Token, to: Token) {
         let alertController = KNPrettyAlertController(
             title: Strings.warning,
             isWarning: true,
@@ -437,6 +509,10 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
             firstButtonAction: {
             }
         )
+        alertController.transitionText = "Swap to ETH"
+        alertController.swapLinkTap = {
+            AppDependencies.router.openSwap(from: from, to: to)
+        }
         
         alertController.popupHeight = 320
         present(alertController, animated: true, completion: nil)
@@ -444,9 +520,9 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
 }
 
 extension StakingPortfolioViewController: PlatformFilterViewControllerDelegate {
-    func didSelectPlatform(viewController: PlatformFilterViewController, selected: Set<EarnPlatform>) {
+    func didSelectPlatform(viewController: PlatformFilterViewController, selected: Set<EarnPlatform>, types: [EarningType]) {
         viewModel.selectedPlatforms = selected
+        viewModel.selectedTypes = types
         reloadUI()
-        updateUIPlatformFilterButton()
     }
 }

@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import BigInt
+import Utilities
 
 // MARK: - PendingUnstakesResponse
 public struct PendingUnstakesResponse: Codable {
@@ -22,6 +24,18 @@ public struct PendingUnstake: Codable {
   public let platform: Platform
   public let extraData: StakingExtraData
   public let priceUsd: Double
+    
+    public init(chainID: Int, address: String, symbol: String, logo: String, balance: String, decimals: Int, platform: Platform, extraData: StakingExtraData, priceUsd: Double) {
+        self.chainID = chainID
+        self.address = address
+        self.symbol = symbol
+        self.logo = logo
+        self.balance = balance
+        self.decimals = decimals
+        self.platform = platform
+        self.extraData = extraData
+        self.priceUsd = priceUsd
+    }
 
     enum CodingKeys: String, CodingKey {
         case chainID = "chainId"
@@ -32,6 +46,10 @@ public struct PendingUnstake: Codable {
 // MARK: - ExtraData
 public struct StakingExtraData: Codable {
   public let status, nftID: String?
+    public init(status: String) {
+        self.status = status
+        self.nftID = nil
+    }
 
     enum CodingKeys: String, CodingKey {
         case status
@@ -45,8 +63,15 @@ public struct Platform: Codable {
   public let logo: String
   public let type, desc: String
     
+    public init(name: String, logo: String) {
+        self.name = name
+        self.logo = logo
+        self.type = ""
+        self.desc = ""
+    }
+    
     public func toEarnPlatform() -> EarnPlatform {
-        return EarnPlatform(platform: self, apy: -1, tvl: -1)
+        return EarnPlatform(platform: self, apy: -1, rewardApy: -1, tvl: -1)
     }
 }
 
@@ -57,14 +82,47 @@ public struct EarningBalancesResponse: Codable {
 
 // MARK: - EarningBalance
 public struct EarningBalance: Codable {
-  public let chainID: Int
-  public let platform: Platform
-  public let stakingToken, toUnderlyingToken: IngToken
-  public let underlyingUsd, apy, ratio: Double
-
+    public let chainID: Int
+    public let platform: Platform
+    public let stakingToken, toUnderlyingToken: IngToken
+    public let underlyingUsd, apy, ratio, rewardApy: Double
+    public let status: StatusClass
+    
     enum CodingKeys: String, CodingKey {
         case chainID = "chainId"
-        case platform, stakingToken, toUnderlyingToken, underlyingUsd, apy, ratio
+        case platform, stakingToken, toUnderlyingToken, underlyingUsd, apy, ratio, status, rewardApy
+    }
+    
+    public func usdBigIntValue() -> BigInt? {
+        if let toUnderlyingBalanceBigInt = BigInt(toUnderlyingToken.balance) {
+            return BigInt(underlyingUsd * pow(10.0 , Double(toUnderlyingToken.decimals))) * toUnderlyingBalanceBigInt / BigInt(pow(10.0 , Double(toUnderlyingToken.decimals)))
+        }
+        return nil
+    }
+    
+    public func usdValue() -> Double {
+        if let usdBigIntValue = usdBigIntValue() {
+            return usdBigIntValue.doubleValue(decimal: toUnderlyingToken.decimals)
+        }
+        return 0.0
+    }
+    
+    public func balanceValue() -> Double {
+        if let toUnderlyingBalanceBigInt = BigInt(toUnderlyingToken.balance) {
+            return toUnderlyingBalanceBigInt.doubleValue(decimal: toUnderlyingToken.decimals)
+        }
+        return 0
+    }
+
+}
+
+public struct StatusClass: Codable {
+    public let value: String
+    public let detail: String
+
+    enum CodingKeys: String, CodingKey {
+        case value
+        case detail
     }
 }
 
@@ -74,6 +132,10 @@ public struct IngToken: Codable {
   public let logo: String
   public let balance: String
   public let decimals: Int
+    
+    public func toToken() -> Token {
+        return Token(name: symbol, symbol: symbol, address: address, decimals: decimals, logo: logo)
+    }
 }
 
 public struct WrapInfo: Codable {
@@ -87,6 +149,7 @@ public struct OptionDetailResponse: Codable {
     public let poolAddress: String
     public var validation: EarnOptionValidation?
     public let wrap: WrapInfo?
+    public var token: TokenInfo?
 }
 // MARK: - EarningToken
 public struct EarningToken: Codable {
@@ -106,4 +169,3 @@ public struct EarnOptionValidation: Codable {
     public var maxUnstakeAmount: Double?
     public var stakeInterval: Double?
 }
-

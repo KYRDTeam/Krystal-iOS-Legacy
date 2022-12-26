@@ -161,4 +161,40 @@ public class EarnServices: BaseService {
           }
         }
     }
+    
+    public func getPendingReward(address: String, completion: @escaping (Result<(String, PendingRewardResponse), AnyError>) -> Void) {
+        provider.requestWithFilters(.getPendingReward(address: address)) { result in
+            switch result {
+            case .success(let resp):
+              let decoder = JSONDecoder()
+              do {
+                let data = try decoder.decode(PendingRewardResponse.self, from: resp.data)
+                completion(.success((address, data)))
+                
+              } catch {
+                  completion(.success((address, [])))
+              }
+            case .failure:
+                completion(.success((address, [])))
+            }
+        }
+    }
+    
+    public func buildClaimReward(chainId: Int, from: String, platform: String, completion: @escaping (Result<TxObject, AnyError>) -> Void) {
+        provider.requestWithFilters(.buildClaimReward(chainId: chainId, from: from, platform: platform)) { result in
+            switch result {
+            case .success(let resp):
+                let decoder = JSONDecoder()
+                do {
+                    let data = try decoder.decode(TransactionResponse.self, from: resp.data)
+                    completion(.success(data.txObject))
+                    
+                } catch let error {
+                    completion(.failure(AnyError(error)))
+                }
+            case .failure(let error):
+                completion(.failure(AnyError(error)))
+            }
+        }
+    }
 }

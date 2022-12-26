@@ -7,6 +7,7 @@ import Dependencies
 import AppState
 import TransactionModule
 import SwapModule
+import EarnModule
 
 // MARK: This file for handling in session
 extension KNAppCoordinator {
@@ -60,13 +61,6 @@ extension KNAppCoordinator {
     investCoordinator.start()
     self.investCoordinator = investCoordinator
 
-    self.earnCoordinator = {
-      let coordinator = EarnCoordinator()
-      coordinator.delegate = self
-      return coordinator
-    }()
-    self.earnCoordinator?.start()
-
     self.addCoordinator(self.settingsCoordinator!)
     self.settingsCoordinator?.start()
     
@@ -77,6 +71,10 @@ extension KNAppCoordinator {
     image: UIImage(named: "tabbar_swap_icon"),
     selectedImage: nil
   )
+      
+    self.earnCoordinator = EarnModuleCoordinator()
+    self.earnCoordinator?.start()
+      
   self.swapV2Coordinator?.navigationController.tabBarItem.tag = 1
   self.tabbarController.viewControllers = [
     self.overviewTabCoordinator!.navigationController,
@@ -120,7 +118,12 @@ extension KNAppCoordinator {
       selectedImage: nil
     )
     self.earnCoordinator?.navigationController.tabBarItem.tag = 3
+      
     self.earnCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuEarn"
+      
+    if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.earnNewTag) {
+        self.tabbarController.addNewTag(toItemAt: 3)
+    }
 
     self.settingsCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: nil,
@@ -130,6 +133,8 @@ extension KNAppCoordinator {
     self.settingsCoordinator?.navigationController.tabBarItem.tag = 4
     self.settingsCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuSetting"
 
+    self.tabbarController.setupTabbarConstraints()
+      
     self.navigationController.pushViewController(self.tabbarController, animated: true) {
     }
 
@@ -202,13 +207,10 @@ extension KNAppCoordinator {
   }
   
   func onAddWallet(wallet: KWallet, chain: ChainType) {
-    let shouldRestartSession = WalletCache.shared.lastUsedAddress == nil || WalletCache.shared.lastUsedAddress?.addressString == ""
     self.switchWallet(wallet: wallet, chain: chain)
-    if shouldRestartSession {
-      AppDelegate.shared.coordinator.overviewTabCoordinator?.stop()
-      AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
-      AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
-    }
+    AppDelegate.shared.coordinator.overviewTabCoordinator?.stop()
+    AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
+    AppDelegate.shared.coordinator.overviewTabCoordinator?.start()
   }
   
   func onAddWatchAddress(address: KAddress, chain: ChainType) {
@@ -230,6 +232,7 @@ extension KNAppCoordinator {
         self.switchToWatchAddress(address: nextAddress, chain: KNGeneralProvider.shared.currentChain)
       } else if let wallet = walletManager.wallet(forAddress: nextAddress) {
           switchWallet(wallet: wallet, chain: KNGeneralProvider.shared.currentChain)
+          AppState.shared.updateAddress(address: AppState.shared.currentAddress, targetChain: AppState.shared.currentChain)
       } else {
         switchToLastImportedAddress()
       }

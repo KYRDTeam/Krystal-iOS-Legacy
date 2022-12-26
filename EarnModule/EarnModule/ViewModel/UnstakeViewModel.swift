@@ -29,6 +29,7 @@ class UnstakeViewModel: BaseViewModel {
     let stakingTokenSymbol: String
     var toTokenSymbol: String
     var unwrapTokenSymbol: String
+    var unwrapTokenLogo: String?
     let balance: BigInt
     let platform: Platform
     var unstakeValue: BigInt = BigInt(0) {
@@ -81,10 +82,10 @@ class UnstakeViewModel: BaseViewModel {
         ]
         if platform.name.lowercased() == "ankr" {
             var useC = false
-            if stakingTokenSymbol.suffix(1).description.lowercased() == "c" {
+            // start with "ankr"
+            if stakingTokenSymbol.starts(with: "ankr") {
                 useC = true
             }
-            
             params["extraData"] = ["ankr": ["useTokenC": useC]]
         }
         return params
@@ -136,6 +137,10 @@ class UnstakeViewModel: BaseViewModel {
         }
     }
     
+    var receiveTokenLogo: String {
+        return isUnWrap ? (unwrapTokenLogo ?? toTokenLogo) : toTokenLogo
+    }
+    
     var isUnWrap: Bool = false
 
     init(earningBalance: EarningBalance) {
@@ -153,8 +158,10 @@ class UnstakeViewModel: BaseViewModel {
         self.stakingTokenDecimal = earningBalance.stakingToken.decimals
         self.stakingTokenLogo = earningBalance.stakingToken.logo
         self.toTokenLogo = earningBalance.toUnderlyingToken.logo
+        self.unwrapTokenLogo = earningBalance.toUnderlyingToken.logo
         self.earningType = EarningType(value: earningBalance.platform.type)
     }
+    
     deinit {
         NotificationCenter.default.removeObserver(self, name: .kTxStatusUpdated, object: nil)
     }
@@ -180,6 +187,7 @@ class UnstakeViewModel: BaseViewModel {
         case .error, .drop:
             self.delegate?.didApproveToken(success: false)
         case .done:
+            self.stakingTokenAllowance = TransactionConstants.maxTokenAmount
             checkEnoughFeeForTx()
             self.delegate?.didApproveToken(success: true)
         default:
@@ -286,12 +294,13 @@ class UnstakeViewModel: BaseViewModel {
         apiService.getStakingOptionDetail(platform: platform.name, earningType: platform.type, chainID: "\(chain.getChainId())", tokenAddress: tokenAddress) { [weak self] result in
             switch result {
             case .success(let detail):
-                    if let earningToken = detail.earningTokens.first(where: { $0.address.lowercased() == self?.stakingTokenAddress.lowercased() }) {
+                if let earningToken = detail.earningTokens.first(where: { $0.address.lowercased() == self?.stakingTokenAddress.lowercased() }) {
                     self?.contractAddress = detail.poolAddress
                     if let wrap = detail.wrap {
                         self?.wrapInfo = wrap
                         self?.delegate?.didGetWrapInfo(wrap: wrap)
                     }
+                    self?.unwrapTokenLogo = detail.token?.logo
                     let minAmount = detail.validation?.minUnstakeAmount ?? 0
                     self?.minUnstakeAmount = BigInt(minAmount * pow(10.0, Double(self?.stakingTokenDecimal ?? 0)))
                     let maxAmount = detail.validation?.maxUnstakeAmount ?? 0
@@ -299,6 +308,7 @@ class UnstakeViewModel: BaseViewModel {
                     self?.checkNeedApprove(earningToken: earningToken, completion: completion)
                 } else {
                     completion()
+                    self?.stakingTokenAllowance = TransactionConstants.maxTokenAmount
                     self?.delegate?.didGetDataSuccess()
                 }
             case .failure(let error):

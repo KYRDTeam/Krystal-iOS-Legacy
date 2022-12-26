@@ -77,6 +77,7 @@
 		A6ED2D3C2911342600845EF2 /* GasPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ED2D3B2911342600845EF2 /* GasPrice.swift */; };
 		A6F6292228FD455E0085AE67 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6292128FD455E0085AE67 /* Token.swift */; };
 		A6F6292728FD49030085AE67 /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6292628FD49030085AE67 /* ErrorTracker.swift */; };
+		C357A49E2941E391009030CF /* PendingReward.swift in Sources */ = {isa = PBXBuildFile; fileRef = C357A49D2941E391009030CF /* PendingReward.swift */; };
 		DFBC1392A80048AF5E1D8B55 /* Pods_Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 577F9B8B04D43859B76C1799 /* Pods_Services.framework */; };
 /* End PBXBuildFile section */
 
@@ -157,6 +158,7 @@
 		A6ED2D3B2911342600845EF2 /* GasPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPrice.swift; sourceTree = "<group>"; };
 		A6F6292128FD455E0085AE67 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		A6F6292628FD49030085AE67 /* ErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
+		C357A49D2941E391009030CF /* PendingReward.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingReward.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +232,7 @@
 				A668BFE6292CD75B001A110D /* TokenPrice.swift */,
 				7EB129A82938A5DD00CE6D1C /* UnitValueModel.swift */,
 				7EB129B12938AD6400CE6D1C /* SearchToken.swift */,
+				C357A49D2941E391009030CF /* PendingReward.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -549,6 +552,7 @@
 				A64C2ED128F9202A002FD64C /* Web3Factory.swift in Sources */,
 				A64C2E0E28F6F27D002FD64C /* SwapEndpoint.swift in Sources */,
 				7EB129A92938A5DD00CE6D1C /* UnitValueModel.swift in Sources */,
+				C357A49E2941E391009030CF /* PendingReward.swift in Sources */,
 				A64C2EEE28F93C4F002FD64C /* TokenDetail.swift in Sources */,
 				A64C2EB928F91CAA002FD64C /* ContractERC20Transfer.swift in Sources */,
 				A64C2EC928F91DF9002FD64C /* GetTransactionCountRequest.swift in Sources */,

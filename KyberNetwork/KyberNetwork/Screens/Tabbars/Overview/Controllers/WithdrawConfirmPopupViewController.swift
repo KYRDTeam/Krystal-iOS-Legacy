@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import Dependencies
 
 protocol WithdrawAndClaimConfirmPopupViewModel: class {
   var displayBalance: NSAttributedString { get }
@@ -176,7 +177,10 @@ class WithdrawConfirmPopupViewController: KNBaseViewController {
   }
   
   @IBAction func secondButtonTapped(_ sender: Any) {
-    self.delegate?.withdrawConfirmPopupViewControllerDidSelectSecondButton(self, balance: self.viewModel.lendingBalance)
+      dismiss(animated: true) {
+          AppDependencies.router.openEarnPortfolio()
+      }
+//    self.delegate?.withdrawConfirmPopupViewControllerDidSelectSecondButton(self, balance: self.viewModel.lendingBalance)
   }
   
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {

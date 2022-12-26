@@ -99,6 +99,7 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
         let coordinator = AddWatchWalletCoordinator(parentViewController: navigationController, editingAddress: nil)
         coordinator.onCompleted = { [weak self] in
           self?.removeCoordinator(coordinator)
+          self?.rootViewController.reloadData()
         }
         coordinate(coordinator: coordinator)
       default:

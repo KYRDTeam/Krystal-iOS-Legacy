@@ -38,6 +38,10 @@ class StakingViewModel: BaseViewModel {
         }
     }
     
+    var hasRewardApy: Bool {
+        return selectedPlatform.rewardApy > 0
+    }
+    
     var isExpandProjection: Observable<Bool> = .init(false)
     
     let tokenService = TokenService()
@@ -118,6 +122,10 @@ class StakingViewModel: BaseViewModel {
     
     var displayAPY: String {
       return NumberFormatUtils.percent(value: selectedPlatform.apy)
+    }
+    
+    var displayRewardApy: String {
+        return NumberFormatUtils.percent(value: selectedPlatform.rewardApy)
     }
     
     var transactionFee: BigInt {

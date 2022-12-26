@@ -12,12 +12,15 @@ import Services
 
 protocol EarnPoolViewCellDelegate: class {
     func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel)
+    func didSelectRewardApy(platform: EarnPlatform, pool: EarnPoolModel)
+    func showWarning(_ type: String)
 }
 
 class EarnPoolViewCellViewModel {
     var isExpanse: Bool
     var earnPoolModel: EarnPoolModel
     var filteredPlatform: Set<EarnPlatform>?
+    var filteredType: [EarningType]?
     
     init(earnPool: EarnPoolModel) {
         self.isExpanse = false
@@ -37,12 +40,23 @@ class EarnPoolViewCellViewModel {
     }
     
     func platFormDataSource() -> [EarnPlatform] {
-        guard let filtered = filteredPlatform else {
-            return earnPoolModel.platforms
+        var platformDatas = earnPoolModel.platforms
+        
+        if let filteredPlatform = filteredPlatform {
+            platformDatas = platformDatas.filter { item in
+                filteredPlatform.contains(item)
+            }
+
         }
-        return earnPoolModel.platforms.filter { item in
-            return filtered.contains(item)
+
+        if let filteredType = filteredType {
+            platformDatas = platformDatas.filter { item in
+                let earningType = EarningType(value: item.type)
+                return filteredType.contains(earningType)
+            }
         }
+
+        return platformDatas
     }
 }
 
@@ -59,6 +73,8 @@ class EarnPoolViewCell: UITableViewCell {
     @IBOutlet weak var apyLabel: UILabel!
     @IBOutlet weak var arrowUpImage: UIImageView!
     @IBOutlet weak var chainImageContaintView: UIView!
+    
+    
     var viewModel: EarnPoolViewCellViewModel?
     weak var delegate: EarnPoolViewCellDelegate?
     override func awakeFromNib() {
@@ -123,8 +139,17 @@ extension EarnPoolViewCell: UITableViewDelegate {
 }
 
 extension EarnPoolViewCell: EarnPoolPlatformCellDelegate {
+    func didSelectRewardApy(_ platform: EarnPlatform) {
+        guard let model = viewModel?.earnPoolModel else { return }
+        delegate?.didSelectRewardApy(platform: platform, pool: model)
+    }
+    
     func didSelectStake(_ platform: EarnPlatform) {
         guard let model = viewModel?.earnPoolModel else { return }
         delegate?.didSelectPlatform(platform: platform, pool: model)
+    }
+    
+    func showWarning(_ type: String) {
+        delegate?.showWarning(type)
     }
 }

@@ -13,7 +13,7 @@ import BaseWallet
 import TransactionModule
 import TokenModule
 
-class Dependencies {
+class DependenciesRegister {
   
   static func register() {
     AppDependencies.router = AppRouter()

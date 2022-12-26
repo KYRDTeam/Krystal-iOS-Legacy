@@ -7,7 +7,7 @@ class KNWelcomeScreenCollectionViewCell: UICollectionViewCell {
   static let cellID: String = "kWelcomeScreenCollectionViewCellID"
   static let height: CGFloat = 292
 
-  @IBOutlet weak var animationView: AnimationView!
+  @IBOutlet weak var animationView: LottieAnimationView!
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -15,7 +15,7 @@ class KNWelcomeScreenCollectionViewCell: UICollectionViewCell {
   }
 
   func updateCell(with data: KNWelcomeScreenViewModel.KNWelcomeData) {
-    self.animationView.animation = Animation.named(data.jsonFileName)
+    self.animationView.animation = LottieAnimation.named(data.jsonFileName)
     self.animationView.contentMode = .scaleAspectFit
     self.animationView.loopMode = .loop
   }

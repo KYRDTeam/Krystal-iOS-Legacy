@@ -69,7 +69,7 @@ class OverviewLiquidityPoolViewModel {
     }
     let tokenModel = pairTokens[1]
     
-    return NumberFormatUtils.balanceFormat(value: tokenModel.getBalanceBigInt(), decimals: tokenModel.token.decimals) + " " + firstTokenSymbol()
+    return NumberFormatUtils.balanceFormat(value: tokenModel.getBalanceBigInt(), decimals: tokenModel.token.decimals) + " " + secondTokenSymbol()
   }
   
   func balanceValue() -> String {

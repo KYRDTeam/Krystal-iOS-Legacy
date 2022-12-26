@@ -8,6 +8,7 @@
 import Foundation
 import KrystalWallets
 import UIKit
+import WalletCore
 
 class AddWatchWalletCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
@@ -73,8 +74,26 @@ extension AddWatchWalletCoordinator: AddWatchWalletViewControllerDelegate {
   
   func addNewWatchWallet(address: String, name: String?, isAdd: Bool = true) {
     let currentChain = KNGeneralProvider.shared.currentChain
+    let targetChain: ChainType? = {
+        if AnyAddress.isValid(string: address, coin: .ethereum) {
+            return currentChain.isEVM ? currentChain : KNGeneralProvider.shared.defaultChain
+        }
+        if AnyAddress.isValid(string: address, coin: .solana) {
+            return .solana
+        }
+        return nil
+    }()
+    
+    guard let targetChain = targetChain else {
+        self.parentViewController.showSuccessTopBannerMessage(
+          with: Strings.failure,
+          message: Strings.invalidAddress
+        )
+        return
+    }
+
     do {
-      let watchAddress = try WalletManager.shared.addWatchWallet(address: address, addressType: currentChain.addressType, name: name.whenNilOrEmpty(Strings.imported))
+      let watchAddress = try WalletManager.shared.addWatchWallet(address: address, addressType: targetChain.addressType, name: name.whenNilOrEmpty(Strings.imported))
       if isAdd {
         self.parentViewController.showSuccessTopBannerMessage(
           with: Strings.walletImported,
@@ -94,7 +113,7 @@ extension AddWatchWalletCoordinator: AddWatchWalletViewControllerDelegate {
         chainType: watchAddress.addressType.importChainType.rawValue
       )
       KNContactStorage.shared.update(contacts: [contact])
-      AppDelegate.shared.coordinator.onAddWatchAddress(address: watchAddress, chain: currentChain)
+      AppDelegate.shared.coordinator.onAddWatchAddress(address: watchAddress, chain: targetChain)
       self.parentViewController.dismiss(animated: true, completion: nil)
       self.onCompleted?()
     } catch {

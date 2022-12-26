@@ -18,6 +18,7 @@ class EarnOverviewController: InAppBrowsingViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
   @IBOutlet weak var pageContainer: UIView!
   @IBOutlet weak var dotView: UIView!
+    
   var selectedPageIndex = 0
   let pageViewController: UIPageViewController = {
     let pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
@@ -26,6 +27,8 @@ class EarnOverviewController: InAppBrowsingViewController {
   
   var childListViewControllers: [InAppBrowsingViewController] = []
   var viewModel: EarnOverViewModel!
+    let tabCount = AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.extraReward) ? 3 : 2
+
   override var supportAllChainOption: Bool {
     return true
   }
@@ -33,6 +36,8 @@ class EarnOverviewController: InAppBrowsingViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+      
+    navigationController?.setNavigationBarHidden(true, animated: true)
     initChildViewControllers()
 
     setupUI()
@@ -61,7 +66,7 @@ class EarnOverviewController: InAppBrowsingViewController {
   @objc override func onAppSwitchChain() {
     super.onAppSwitchChain()
     currentSelectedChain = AppState.shared.currentChain
-//    viewModel.appDidSwitchChain()
+    reloadWallet()
   }
 
   func initChildViewControllers() {
@@ -72,7 +77,15 @@ class EarnOverviewController: InAppBrowsingViewController {
       earnPoolVC.isSupportEarnv2.observeAndFire(on: self) { value in
           portfolioVC.updateSupportedEarnv2(value)
       }
-    childListViewControllers = [earnPoolVC, portfolioVC]
+      
+      var vcs = [earnPoolVC, portfolioVC]
+      
+      if tabCount == 3 {
+          let pendingRewardVC = PendingRewardViewController.instantiateFromNib()
+          vcs.append(pendingRewardVC)
+      }
+      
+    childListViewControllers = vcs
   }
 
   func setupUI() {
@@ -80,10 +93,18 @@ class EarnOverviewController: InAppBrowsingViewController {
       reloadAllNetworksChain()
     }
     segmentedControl.highlightSelectedSegment(width: 100)
-    let width = UIScreen.main.bounds.size.width - 140
+    let width = UIScreen.main.bounds.size.width - 36
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: width, height: 30)
-    segmentedControl.setWidth(width / 2, forSegmentAt: 0)
-    segmentedControl.setWidth(width / 2, forSegmentAt: 1)
+      if tabCount == 2 {
+          segmentedControl.setWidth(width / 2, forSegmentAt: 0)
+          segmentedControl.setWidth(width / 2, forSegmentAt: 1)
+          segmentedControl.removeSegment(at: 2, animated: false)
+      } else if tabCount == 3 {
+          segmentedControl.setWidth(width / 3, forSegmentAt: 0)
+          segmentedControl.setWidth(width / 3, forSegmentAt: 1)
+          segmentedControl.setWidth(width / 3, forSegmentAt: 2)
+      }
+   
   }
 
   func setupPageViewController() {
@@ -95,10 +116,14 @@ class EarnOverviewController: InAppBrowsingViewController {
     addChild(pageViewController)
     pageViewController.didMove(toParent: self)
   }
-
-  @IBAction func backButtonPressed(_ sender: Any) {
-    self.navigationController?.popViewController(animated: true)
-  }
+    
+    func jumpToPage(index: Int) {
+        segmentedControl.selectedSegmentIndex = index
+        segmentedControl.underlineCenterPosition()
+        if index != selectedPageIndex {
+            selectPage(index: index)
+        }
+    }
 
   @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
     segmentedControl.underlineCenterPosition()
@@ -144,6 +169,8 @@ extension EarnOverviewController: UIPageViewControllerDelegate {
     var newIndex = 0
     if pageViewController.viewControllers?.first is StakingPortfolioViewController {
       newIndex = 1
+    } else if pageViewController.viewControllers?.first is PendingRewardViewController {
+      newIndex = 2
     }
     segmentedControl.selectedSegmentIndex = newIndex
     selectedPageIndex = newIndex

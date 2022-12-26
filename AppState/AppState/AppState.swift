@@ -38,17 +38,24 @@ public class AppState {
   }
   
   public func updateChain(chain: ChainType) {
-    currentChain = chain
-    AppEventManager.shared.postSwitchChainEvent(chain: chain)
+      if chain == .all {
+          currentChain = Constants.defaultChain
+          AppEventManager.shared.postSwitchChainEvent(chain: Constants.defaultChain)
+          AppEventManager.shared.postSelectAllChain()
+      } else {
+          currentChain = chain
+          AppEventManager.shared.postSwitchChainEvent(chain: chain)
+      }
+    
   }
   
-    public func updateAddress(address: KAddress, targetChain: ChainType) {
-        currentAddress = address
-        AppEventManager.shared.postSwitchAddressEvent(address: address, switchChain: targetChain != currentChain)
-        if targetChain != currentChain {
-            updateChain(chain: targetChain)
-        }
+  public func updateAddress(address: KAddress, targetChain: ChainType) {
+    currentAddress = address
+    if targetChain != currentChain {
+        updateChain(chain: targetChain)
     }
+    AppEventManager.shared.postSwitchAddressEvent(address: address, switchChain: false)
+  }
   
   public var isBrowsingMode: Bool {
     return currentAddress.addressString.isEmpty
