@@ -8,6 +8,7 @@
 import Foundation
 import KrystalWallets
 import AppState
+import TransactionModule
 
 class EtherscanTransactionStorage {
   static let shared = EtherscanTransactionStorage()
@@ -132,7 +133,9 @@ class EtherscanTransactionStorage {
         object: transaction,
         userInfo: nil
       )
-      
+        if let tx = transaction {
+            TransactionManager.onTransactionStatusUpdated(hash: hash, status: tx.state)
+        }
       self.removeInternalHistoryTransactionWithHash(hash.lowercased())
     }
   }
@@ -311,13 +314,13 @@ class EtherscanTransactionStorage {
   func getHistoryTransactionModel() -> [HistoryTransaction] {
     return self.historyTransactionModel
   }
-
-  func getInternalHistoryTransaction() -> [InternalHistoryTransaction] {
-    return self.internalHistoryTransactions.filter { transaction in
-      transaction.state == .pending
+    
+    func getInternalHistoryTransaction(chain: ChainType = AppState.shared.currentChain) -> [InternalHistoryTransaction] {
+        return self.internalHistoryTransactions.filter { transaction in
+            transaction.state == .pending && chain == transaction.chain
+        }
     }
-  }
-  
+    
   func getHandledInternalHistoryTransactionForUnsupportedApi() -> [InternalHistoryTransaction] {
     return self.internalHistoryTransactions.filter { transaction in
       transaction.state != .pending
@@ -331,6 +334,7 @@ class EtherscanTransactionStorage {
       object: tx,
       userInfo: nil
     )
+      TransactionManager.onTransactionStatusUpdated(hash: tx.txHash, status: tx.state)
     if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
       Storage.store(self.internalHistoryTransactions, as: address.addressString + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
     }

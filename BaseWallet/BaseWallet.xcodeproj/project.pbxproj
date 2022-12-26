@@ -10,8 +10,8 @@
 		A64C2E5F28F87862002FD64C /* AllChains.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E5E28F87862002FD64C /* AllChains.swift */; };
 		A64C2E6128F8787C002FD64C /* CustomRPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E6028F8787C002FD64C /* CustomRPC.swift */; };
 		A64C2E6628F87C31002FD64C /* NodeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E6528F87C31002FD64C /* NodeConfig.swift */; };
-		A64C2EF228F944FA002FD64C /* TokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EF128F944FA002FD64C /* TokenPrice.swift */; };
 		A673A6A328FFA1F400270DA7 /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A673A6A228FFA1F400270DA7 /* KrystalWallets.framework */; };
+		A676489B292DD10000065569 /* CurrencyMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676489A292DD10000065569 /* CurrencyMode.swift */; };
 		A6B1FCF628F69C8700894DCB /* ChainType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FCF528F69C8700894DCB /* ChainType.swift */; };
 		A6E4339C28F54F1300782F7D /* BaseWallet.h in Headers */ = {isa = PBXBuildFile; fileRef = A6E4339B28F54F1300782F7D /* BaseWallet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -21,8 +21,8 @@
 		A64C2E6028F8787C002FD64C /* CustomRPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRPC.swift; sourceTree = "<group>"; };
 		A64C2E6528F87C31002FD64C /* NodeConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeConfig.swift; sourceTree = "<group>"; };
 		A64C2EE128F933E2002FD64C /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A64C2EF128F944FA002FD64C /* TokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPrice.swift; sourceTree = "<group>"; };
 		A673A6A228FFA1F400270DA7 /* KrystalWallets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KrystalWallets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A676489A292DD10000065569 /* CurrencyMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyMode.swift; sourceTree = "<group>"; };
 		A6B1FCF528F69C8700894DCB /* ChainType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainType.swift; sourceTree = "<group>"; };
 		A6E4339828F54F1300782F7D /* BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6E4339B28F54F1300782F7D /* BaseWallet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseWallet.h; sourceTree = "<group>"; };
@@ -60,7 +60,7 @@
 		A64C2EE528F93513002FD64C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A64C2EF128F944FA002FD64C /* TokenPrice.swift */,
+				A676489A292DD10000065569 /* CurrencyMode.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -184,7 +184,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6B1FCF628F69C8700894DCB /* ChainType.swift in Sources */,
-				A64C2EF228F944FA002FD64C /* TokenPrice.swift in Sources */,
+				A676489B292DD10000065569 /* CurrencyMode.swift in Sources */,
 				A64C2E5F28F87862002FD64C /* AllChains.swift in Sources */,
 				A64C2E6128F8787C002FD64C /* CustomRPC.swift in Sources */,
 				A64C2E6628F87C31002FD64C /* NodeConfig.swift in Sources */,

@@ -106,7 +106,7 @@ extension ChainType {
     var allChains = ChainType.allCases
 
     if KNEnvironment.default == .production {
-      allChains = allChains.filter { $0 != .ropsten && $0 != .bscTestnet && $0 != .polygonTestnet && $0 != .avalancheTestnet }
+      allChains = allChains.filter { $0 != .goerli && $0 != .bscTestnet && $0 != .polygonTestnet && $0 != .avalancheTestnet }
     }
 
     let shouldShowAurora = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.auroraChainIntegration)
@@ -207,21 +207,21 @@ extension ChainType {
 //    }
 //    return self.customRPC().name
 //  }
-
-  func chainIcon() -> UIImage? {
-    if self == .all {
-      return UIImage(named: "chain_all_icon")
-    }
-    return UIImage(named: self.customRPC().chainIcon)
-  }
-
+//
+//  func chainIcon() -> UIImage? {
+//    if self == .all {
+//      return UIImage(named: "chain_all_icon")
+//    }
+//    return UIImage(named: self.customRPC().chainIcon)
+//  }
+//
   func squareIcon() -> UIImage {
     switch self {
     case .all:
       return Images.allNetworkSquare
     case .eth:
       return Images.chainEthSquare
-    case .ropsten:
+    case .goerli:
       return Images.chainEthSquare
     case .bsc:
       return Images.chainBscSquare
@@ -354,7 +354,7 @@ extension ChainType {
     switch self {
     case .eth:
       return KNSupportedTokenStorage.shared.kncToken
-    case .ropsten:
+    case .goerli:
       return KNSupportedTokenStorage.shared.kncToken
     case .bsc:
         return KNSupportedTokenStorage.shared.busdToken
@@ -465,47 +465,8 @@ extension ChainType {
   
 }
 
-enum CurrencyMode: Int {
-  case usd = 0
-  case eth
-  case btc
-  case quote
-
-  func symbol() -> String {
-    switch self {
-    case .usd:
-      return "$"
-    case .btc:
-      return "₿"
-    case .eth:
-      return "⧫"
-    case .quote:
-      return ""
-    }
-  }
-
-  func suffixSymbol() -> String {
-    switch self {
-    case .quote:
-      return " \(KNGeneralProvider.shared.currentChain.customRPC().quoteToken)"
-    default:
-      return ""
-    }
-  }
-
-  func toString() -> String {
-    switch self {
-    case .eth:
-      return "eth"
-    case .usd:
-      return "usd"
-    case .btc:
-      return "btc"
-    case .quote:
-      return KNGeneralProvider.shared.currentChain.customRPC().quoteToken.lowercased()
-    }
-  }
-
+extension CurrencyMode {
+  
   func decimalNumber() -> Int {
     switch self {
     case .eth:
@@ -518,8 +479,5 @@ enum CurrencyMode: Int {
       return DecimalNumber.quote
     }
   }
-
-  var isQuoteCurrency: Bool {
-    return self == .quote
-  }
+  
 }

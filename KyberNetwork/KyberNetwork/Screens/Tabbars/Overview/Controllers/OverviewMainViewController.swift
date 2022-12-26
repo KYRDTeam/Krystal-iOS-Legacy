@@ -64,7 +64,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     switch viewModel.overviewMode {
     case .overview:
       switch viewModel.currentMode {
-      case .market:
+      case .market, .favourite:
         return 280
       default:
         return 264
@@ -148,6 +148,27 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
       self.refreshControl.removeFromSuperview()
     }
   }
+    
+    override func reloadWallet() {
+        super.reloadWallet()
+        if self.viewModel.currentChain != .all {
+          self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
+        }
+        viewModel.badgeNumber = 0
+        getNotificationBadgeNumber()
+        guard self.isViewLoaded else { return }
+        calculatingQueue.async {
+          self.viewModel.reloadAllData()
+          self.delegate?.overviewMainViewController(self, run: .pullToRefreshed(current: self.viewModel.currentMode, overviewMode: self.viewModel.overviewMode))
+          DispatchQueue.main.async {
+            self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
+            self.tableView.reloadData()
+            self.infoCollectionView.reloadData()
+            self.showLoadingSkeleton()
+            self.updateUIBadgeNotification()
+          }
+        }
+    }
   
   @objc func refresh(_ sender: AnyObject) {
     if self.viewModel.isRefreshingTableView {
@@ -209,7 +230,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     self.viewModel.reloadAllData()
     self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
     self.currentPageNameLabel.text = self.viewModel.displayCurrentPageName
-    self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
+    self.sortingContainerView.isHidden = (self.viewModel.currentMode != .market(rightMode: .ch24) && self.viewModel.currentMode != .favourite(rightMode: .ch24)) || self.viewModel.overviewMode == .summary
     self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
     self.insestView.frame.size.height = self.insetViewHeight
     self.updateUIByFeatureFlags()
@@ -413,29 +434,8 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   }
   
   override func onAppSelectAllChain() {
+      super.onAppSelectAllChain()
     self.onChainSelected(chain: .all)
-  }
-  
-  @objc override func onAppSwitchAddress() {
-    super.onAppSwitchAddress()
-    
-    if self.viewModel.currentChain != .all {
-      self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
-    }
-    viewModel.badgeNumber = 0
-    getNotificationBadgeNumber()
-    guard self.isViewLoaded else { return }
-    calculatingQueue.async {
-      self.viewModel.reloadAllData()
-      self.delegate?.overviewMainViewController(self, run: .pullToRefreshed(current: self.viewModel.currentMode, overviewMode: self.viewModel.overviewMode))
-      DispatchQueue.main.async {
-        self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
-        self.tableView.reloadData()
-        self.infoCollectionView.reloadData()
-        self.showLoadingSkeleton()
-        self.updateUIBadgeNotification()
-      }
-    }
   }
   
   func coordinatorDidUpdateCurrencyMode(_ mode: CurrencyMode) {
@@ -465,7 +465,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   
   func overviewModeDidChanged(isSummary: Bool) {
     self.viewModel.overviewMode = isSummary ? .summary : .overview
-    self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
+    self.sortingContainerView.isHidden = (self.viewModel.currentMode != .market(rightMode: .ch24) && self.viewModel.currentMode != .favourite(rightMode: .ch24)) || self.viewModel.overviewMode == .summary
     self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
     self.tableViewTopConstraint.constant = 0
     self.insestView.frame.size.height = insetViewHeight

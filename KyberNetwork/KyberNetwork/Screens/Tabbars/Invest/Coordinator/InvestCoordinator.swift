@@ -11,6 +11,9 @@ import BigInt
 import WalletConnectSwift
 import KrystalWallets
 import BaseModule
+import Dependencies
+import FittedSheets
+import DappBrowser
 
 protocol InvestCoordinatorDelegate: class {
   func investCoordinatorDidSelectManageWallet()
@@ -49,7 +52,7 @@ class InvestCoordinator: Coordinator {
     coordinator.delegate = self
     return coordinator
   }()
-  
+
   init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
   }
@@ -151,9 +154,7 @@ class InvestCoordinator: Coordinator {
   }
   
   fileprivate func openStakeView() {
-    let viewModel = EarnOverViewModel()
-    let viewController = EarnOverviewV2Controller(viewModel: viewModel)
-    self.navigationController.pushViewController(viewController, animated: true)
+      AppDependencies.router.openEarn()
   }
   
   func openHistoryScreen() {
@@ -189,13 +190,18 @@ class InvestCoordinator: Coordinator {
     self.buyCryptoCoordinator = coordinator
   }
   
+    func openLoyalty() {
+        guard let url = URL(string: KNEnvironment.default.krystalWebUrl + "/loyalty" + "?preview=true") else { return }
+        DappBrowser.openURL(navigationController: navigationController, url: url)
+    }
+    
   func openRewardHunting() {
     let coordinator = RewardHuntingCoordinator(navigationController: self.navigationController)
     coordinator.start()
     coordinator.delegate = self
     self.rewardHuntingCoordinator = coordinator
   }
-  
+
   func appCoordinatorPendingTransactionsDidUpdate() {
     self.sendCoordinator?.coordinatorDidUpdatePendingTx()
     self.bridgeCoordinator?.coordinatorDidUpdatePendingTx()
@@ -311,6 +317,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.openStakeView()
     case .openApprovals:
         openApprovals()
+    case .openLoyalty:
+        openLoyalty()
     }
   }
   
@@ -340,16 +348,12 @@ extension InvestCoordinator: InvestViewControllerDelegate {
 
 extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
   
-  func sendTokenCoordinatorDidClose() {
+  func sendTokenCoordinatorDidClose(coordinator: KNSendTokenViewCoordinator) {
     self.sendCoordinator = nil
   }
   
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.investCoordinatorDidSelectAddToken(token)
-  }
-  
-  func sendTokenViewCoordinatorSelectOpenHistoryList() {
-    self.openHistoryScreen()
   }
   
 }

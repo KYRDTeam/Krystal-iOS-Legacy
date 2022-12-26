@@ -67,8 +67,7 @@ class ApprovalListViewModel {
     var totalAllowanceString: String?
     var sendingRequest: Cancellable?
     
-    @UserDefault(key: "user_has_interact_approval", defaultValue: false)
-    var userHasInteractApproval: Bool
+    var userHasInteractApproval: Bool = false
     
     var isRevokeAllowed: Bool {
         return !AppState.shared.currentAddress.isWatchWallet
@@ -80,6 +79,7 @@ class ApprovalListViewModel {
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidChangeAddress, object: nil)
+        NotificationCenter.default.removeObserver(self, name: AppEventCenter.shared.kAppDidSwitchChain, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name(kTransactionDidUpdateNotificationKey), object: nil)
     }
     
@@ -92,10 +92,20 @@ class ApprovalListViewModel {
         )
         NotificationCenter.default.addObserver(
             self,
+            selector: #selector(appDidSwitchChain),
+            name: AppEventCenter.shared.kAppDidSwitchChain,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
             selector: #selector(self.transactionStateDidUpdate),
             name: Notification.Name(kTransactionDidUpdateNotificationKey),
             object: nil
         )
+    }
+    
+    @objc func appDidSwitchChain() {
+        checkPendingTx()
     }
     
     @objc func appDidSwitchAddress() {
@@ -117,9 +127,14 @@ class ApprovalListViewModel {
         let chains: [Int] = selectedChain == .all ? ChainType.getAllChain().map { $0.customRPC().chainID } : [selectedChain.getChainId()]
         sendingRequest?.cancel()
         sendingRequest = service.getListApproval(address: address, chainIds: chains) { [weak self, selectedChain] response in
-            self?.approvals = response?.data?.approvals?.filter { approval in
-                return BigInt(approval.amount ?? "0") ?? .zero >= BigInt(10).power(approval.decimals) / BigInt(10).power(6) // Should > 0.000001
-            } ?? []
+            self?.approvals = response?.data?.approvals?
+                .filter { approval in
+                    // Should > 0.000001
+                    return BigInt(approval.amount ?? "0") ?? .zero >= BigInt(10).power(approval.decimals) / BigInt(10).power(6)
+                }
+                .sorted(by: { lhs, rhs in
+                    return Int(lhs.lastUpdateTimestamp ?? "0") ?? 0 > Int(rhs.lastUpdateTimestamp ?? "0") ?? 0
+                }) ?? []
             self?.filteredApprovals = self?.getFilteredApprovals(searchText: self?.searchText ?? "")
                 .map { approval in ApprovedTokenItemViewModel(approval: approval, showChainIcon: selectedChain == .all) } ?? []
             self?.totalAllowance = (response?.data?.atRisk?["usd"] as? Double) ?? 0
@@ -137,6 +152,7 @@ class ApprovalListViewModel {
                 || approval.name?.lowercased().contains(trimmedSearchText) ?? false
                 || approval.tokenAddress?.lowercased().contains(trimmedSearchText) ?? false
                 || approval.spenderAddress?.lowercased().contains(trimmedSearchText) ?? false
+                || approval.spenderName?.lowercased().contains(trimmedSearchText) ?? false
             }
         }
     }
@@ -180,7 +196,7 @@ class ApprovalListViewModel {
                             KNGeneralProvider.shared.sendSignedTransactionData(signature.0, chain: chain) { result in
                                 switch result {
                                 case .success(let hash):
-                                    self.savePendingTx(txCount: count, txHash: hash, approval: approval, transaction: signature.1)
+                                    self.savePendingTx(chain: chain, txCount: count, txHash: hash, approval: approval, transaction: signature.1)
                                     self.actions.onOpenStatus(hash, chain)
                                     onCompleted(nil)
                                 case .failure(let error):
@@ -200,8 +216,8 @@ class ApprovalListViewModel {
         }
     }
     
-    func savePendingTx(txCount: Int, txHash: String, approval: Approval, transaction: SignTransaction) {
-        let historyTransaction = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: approval.symbol ?? "", transactionDetailDescription: approval.tokenAddress ?? "", transactionObj: transaction.toSignTransactionObject(), eip1559Tx: nil)
+    func savePendingTx(chain: ChainType, txCount: Int, txHash: String, approval: Approval, transaction: SignTransaction) {
+        let historyTransaction = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: approval.symbol ?? "", transactionDetailDescription: approval.tokenAddress ?? "", transactionObj: transaction.toSignTransactionObject(), eip1559Tx: nil, chain: chain)
         historyTransaction.hash = txHash
         historyTransaction.time = Date()
         historyTransaction.nonce = txCount

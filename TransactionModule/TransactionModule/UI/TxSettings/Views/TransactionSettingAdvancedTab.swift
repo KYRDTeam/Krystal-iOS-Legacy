@@ -75,8 +75,16 @@ class TransactionSettingAdvancedTab: UIViewController {
     
     func updateSettings(settings: TxSettingObject) {
         viewModel.setting = settings
+        resetUI()
         reloadEstimatedGasUI()
         reloadSettingUI()
+    }
+    
+    func resetUI() {
+        gasLimitField?.text = viewModel.gasLimitText
+        priorityField?.text = viewModel.priorityText
+        maxFeeField?.text = viewModel.maxFeeText
+        nonceField?.text = viewModel.nonceText
     }
     
     func reloadEstimatedGasUI() {
@@ -111,6 +119,11 @@ class TransactionSettingAdvancedTab: UIViewController {
         reloadNonceUI()
     }
     
+    func onGasPriceUpdated() {
+        resetUI()
+        reloadEstimatedGasUI()
+    }
+    
     func reloadSettingUI() {
         reloadGasLimitUI()
         reloadPriorityUI()
@@ -120,11 +133,11 @@ class TransactionSettingAdvancedTab: UIViewController {
     
     func reloadGasLimitUI() {
         if let gasLimitError = viewModel.gasLimitError, gasLimitError == .low {
-            gasLimitField.textColor = AppTheme.current.errorTextColor
-            gasLimitErrorLabel.text = "Gas limit must be at least \(TransactionConstants.lowestGasLimit)"
+            gasLimitField?.textColor = AppTheme.current.errorTextColor
+            gasLimitErrorLabel?.text = "Gas limit must be at least \(TransactionConstants.lowestGasLimit)"
         } else {
-            gasLimitField.textColor = AppTheme.current.primaryTextColor
-            gasLimitErrorLabel.text = nil
+            gasLimitField?.textColor = AppTheme.current.primaryTextColor
+            gasLimitErrorLabel?.text = nil
         }
     }
 
@@ -132,15 +145,15 @@ class TransactionSettingAdvancedTab: UIViewController {
         if let priorityError = viewModel.priorityError {
             switch priorityError {
             case .high:
-                priorityField.textColor = AppTheme.current.errorTextColor
-                maxPriorityFeeErrorLabel.text = "Max Priority Fee is higher than necessary"
-                equivalentPriorityETHFeeLabel.textColor = AppTheme.current.errorTextColor.withAlphaComponent(0.5)
-                priorityAccessoryLabel.textColor = AppTheme.current.errorTextColor
+                priorityField?.textColor = AppTheme.current.errorTextColor
+                maxPriorityFeeErrorLabel?.text = "Max Priority Fee is higher than necessary"
+                equivalentPriorityETHFeeLabel?.textColor = AppTheme.current.errorTextColor.withAlphaComponent(0.5)
+                priorityAccessoryLabel?.textColor = AppTheme.current.errorTextColor
             case .low:
-                priorityField.textColor = AppTheme.current.errorTextColor
-                maxPriorityFeeErrorLabel.text = "Max Priority Fee is low for current network conditions"
-                equivalentPriorityETHFeeLabel.textColor = AppTheme.current.errorTextColor.withAlphaComponent(0.5)
-                priorityAccessoryLabel.textColor = AppTheme.current.errorTextColor
+                priorityField?.textColor = AppTheme.current.errorTextColor
+                maxPriorityFeeErrorLabel?.text = "Max Priority Fee is low for current network conditions"
+                equivalentPriorityETHFeeLabel?.textColor = AppTheme.current.errorTextColor.withAlphaComponent(0.5)
+                priorityAccessoryLabel?.textColor = AppTheme.current.errorTextColor
             case .empty:
                 priorityField?.textColor = AppTheme.current.primaryTextColor
                 maxPriorityFeeErrorLabel?.text = nil
@@ -160,46 +173,46 @@ class TransactionSettingAdvancedTab: UIViewController {
         if let maxFeeError = viewModel.maxFeeError {
             switch maxFeeError {
             case .high:
-                maxFeeErrorLabel.text = "Max Fee is higher than necessary"
-                maxFeeField.textColor = AppTheme.current.errorTextColor
-                maxFeeAccessoryLabel.textColor = AppTheme.current.errorTextColor
-                equivalentMaxETHFeeLabel.textColor = AppTheme.current.errorTextColor.withAlphaComponent(0.5)
+                maxFeeErrorLabel?.text = "Max Fee is higher than necessary"
+                maxFeeField?.textColor = AppTheme.current.errorTextColor
+                maxFeeAccessoryLabel?.textColor = AppTheme.current.errorTextColor
+                equivalentMaxETHFeeLabel?.textColor = AppTheme.current.errorTextColor.withAlphaComponent(0.5)
             case .low:
-                maxFeeErrorLabel.text = "Max Fee is low for current network conditions"
-                maxFeeField.textColor = AppTheme.current.errorTextColor
-                maxFeeAccessoryLabel.textColor = AppTheme.current.errorTextColor
-                equivalentMaxETHFeeLabel.textColor = AppTheme.current.errorTextColor.withAlphaComponent(0.5)
+                maxFeeErrorLabel?.text = "Max Fee is low for current network conditions"
+                maxFeeField?.textColor = AppTheme.current.errorTextColor
+                maxFeeAccessoryLabel?.textColor = AppTheme.current.errorTextColor
+                equivalentMaxETHFeeLabel?.textColor = AppTheme.current.errorTextColor.withAlphaComponent(0.5)
             case .empty:
-                maxFeeErrorLabel.text = nil
-                maxFeeField.textColor = AppTheme.current.primaryTextColor
-                maxFeeAccessoryLabel.textColor = AppTheme.current.primaryTextColor
-                equivalentMaxETHFeeLabel.textColor = AppTheme.current.secondaryTextColor
+                maxFeeErrorLabel?.text = nil
+                maxFeeField?.textColor = AppTheme.current.primaryTextColor
+                maxFeeAccessoryLabel?.textColor = AppTheme.current.primaryTextColor
+                equivalentMaxETHFeeLabel?.textColor = AppTheme.current.secondaryTextColor
             }
         } else {
-            maxFeeErrorLabel.text = nil
-            maxFeeField.textColor = AppTheme.current.primaryTextColor
-            maxFeeAccessoryLabel.textColor = AppTheme.current.primaryTextColor
-            equivalentMaxETHFeeLabel.textColor = AppTheme.current.secondaryTextColor
+            maxFeeErrorLabel?.text = nil
+            maxFeeField?.textColor = AppTheme.current.primaryTextColor
+            maxFeeAccessoryLabel?.textColor = AppTheme.current.primaryTextColor
+            equivalentMaxETHFeeLabel?.textColor = AppTheme.current.secondaryTextColor
         }
-        equivalentMaxETHFeeLabel.text = viewModel.displayEquivalentMaxETHFee
+        equivalentMaxETHFeeLabel?.text = viewModel.displayEquivalentMaxETHFee
     }
     
     func reloadNonceUI() {
         if let nonceError = viewModel.nonceError {
             switch nonceError {
             case .low:
-                nonceField.textColor = AppTheme.current.errorTextColor
-                currentNonceErrorLabel.text = "Nonce is too low"
+                nonceField?.textColor = AppTheme.current.errorTextColor
+                currentNonceErrorLabel?.text = "Nonce is too low"
             case .high:
-                nonceField.textColor = AppTheme.current.errorTextColor
-                currentNonceErrorLabel.text = "Nonce is too high"
+                nonceField?.textColor = AppTheme.current.errorTextColor
+                currentNonceErrorLabel?.text = "Nonce is too high"
             default:
-                nonceField.textColor = AppTheme.current.primaryTextColor
-                currentNonceErrorLabel.text = nil
+                nonceField?.textColor = AppTheme.current.primaryTextColor
+                currentNonceErrorLabel?.text = nil
             }
         } else {
-            nonceField.textColor = AppTheme.current.primaryTextColor
-            currentNonceErrorLabel.text = nil
+            nonceField?.textColor = AppTheme.current.primaryTextColor
+            currentNonceErrorLabel?.text = nil
         }
     }
     

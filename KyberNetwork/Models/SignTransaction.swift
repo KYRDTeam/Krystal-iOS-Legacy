@@ -6,31 +6,14 @@ import TrustCore
 import TrustKeystore
 import Result
 
-struct SignTransaction {
-    let value: BigInt
-    let address: String
-    let to: String?
-    let nonce: Int
-    let data: Data
-    let gasPrice: BigInt
-    let gasLimit: BigInt
-    let chainID: Int
+extension SignTransaction {
   
-  init(value: BigInt, account: Account, to: String?, nonce: Int, data: Data, gasPrice: BigInt, gasLimit: BigInt, chainID: Int) {
-    self.init(value: value, address: account.address.description, to: to, nonce: nonce, data: data, gasPrice: gasPrice, gasLimit: gasLimit, chainID: chainID)
-  }
-  
-  init(value: BigInt, address: String, to: String?, nonce: Int, data: Data, gasPrice: BigInt, gasLimit: BigInt, chainID: Int) {
-    self.value = value
-    self.address = address
-    self.to = to
-    self.nonce = nonce
-    self.data = data
-    self.gasPrice = gasPrice
-    self.gasLimit = gasLimit
-    self.chainID = chainID
-  }
+    init(value: BigInt, account: Account, to: String?, nonce: Int, data: Data, gasPrice: BigInt, gasLimit: BigInt, chainID: Int) {
+        self.init(value: value, address: account.address.description, to: to, nonce: nonce, data: data, gasPrice: gasPrice, gasLimit: gasLimit, chainID: chainID)
+    }
+    
 }
+
 
 extension SignTransaction {
   func toSignTransactionObject() -> SignTransactionObject {

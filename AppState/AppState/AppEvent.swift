@@ -20,11 +20,12 @@ public class AppEventManager {
     
   public static let shared = AppEventManager()
   
-  /// Change the current app selecting address
-  /// - Parameter address: The address switch to
-  public func postSwitchAddressEvent(address: KAddress) {
-      NotificationCenter.default.post(name: .appAddressChanged, object: nil)
-  }
+    /// Change the current app selecting address
+    /// - Parameter address: The address switch to
+    public func postSwitchAddressEvent(address: KAddress, switchChain: Bool = false) {
+        let userInfo: [String: Any] = ["switch_chain": switchChain]
+        NotificationCenter.default.post(name: .appAddressChanged, object: nil, userInfo: userInfo)
+    }
   
   public func postSwitchChainEvent(chain: ChainType) {
       NotificationCenter.default.post(name: .appChainChanged, object: nil)

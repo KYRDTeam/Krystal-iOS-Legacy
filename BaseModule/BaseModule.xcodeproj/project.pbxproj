@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A63E2800292FAAA30024328D /* SwitchSpecificChainPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63E27FE292FAAA30024328D /* SwitchSpecificChainPopup.swift */; };
+		A63E2801292FAAA30024328D /* SwitchSpecificChainPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63E27FF292FAAA30024328D /* SwitchSpecificChainPopup.xib */; };
 		A64C2DFD28F6D7DB002FD64C /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2DFC28F6D7DB002FD64C /* BaseCoordinator.swift */; };
 		A64C2DFF28F6D7E3002FD64C /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2DFE28F6D7E3002FD64C /* Coordinator.swift */; };
 		A64C2E6328F87973002FD64C /* InAppBrowsingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E6228F87973002FD64C /* InAppBrowsingViewController.swift */; };
 		A6512F2B28F6CDF800A84BC2 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6512F2A28F6CDF800A84BC2 /* AppState.framework */; };
 		A673A68928FE949400270DA7 /* ChainType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A673A68828FE949400270DA7 /* ChainType+.swift */; };
+		A69E8EB6291E1452005B28CB /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EB5291E1452005B28CB /* BaseViewModel.swift */; };
 		A6B1FCF928F69CCE00894DCB /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B1FCF828F69CCE00894DCB /* BaseWallet.framework */; };
 		A6B1FCFE28F69D0600894DCB /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B1FCFD28F69D0600894DCB /* KrystalWallets.framework */; };
 		A6B1FD0128F69D3000894DCB /* BaseWalletOrientedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FD0028F69D3000894DCB /* BaseWalletOrientedViewController.swift */; };
@@ -22,14 +25,19 @@
 		A6F6291A28FD303F0085AE67 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6291928FD303F0085AE67 /* UIImage.swift */; };
 		A6F6291C28FD30480085AE67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6F6291B28FD30480085AE67 /* Assets.xcassets */; };
 		A6F6292928FD4A2E0085AE67 /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6F6292828FD4A2E0085AE67 /* Dependencies.framework */; };
+		E597BACE2C4940922CE3EE35 /* Pods_BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F629B22906D5B858E9A189C4 /* Pods_BaseModule.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2341BC3B6D9E2CBBB39C5A75 /* Pods-BaseModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseModule.release.xcconfig"; path = "Target Support Files/Pods-BaseModule/Pods-BaseModule.release.xcconfig"; sourceTree = "<group>"; };
+		A63E27FE292FAAA30024328D /* SwitchSpecificChainPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchSpecificChainPopup.swift; sourceTree = "<group>"; };
+		A63E27FF292FAAA30024328D /* SwitchSpecificChainPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchSpecificChainPopup.xib; sourceTree = "<group>"; };
 		A64C2DFC28F6D7DB002FD64C /* BaseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinator.swift; sourceTree = "<group>"; };
 		A64C2DFE28F6D7E3002FD64C /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		A64C2E6228F87973002FD64C /* InAppBrowsingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppBrowsingViewController.swift; sourceTree = "<group>"; };
 		A6512F2A28F6CDF800A84BC2 /* AppState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A673A68828FE949400270DA7 /* ChainType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChainType+.swift"; sourceTree = "<group>"; };
+		A69E8EB5291E1452005B28CB /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		A6B1FCF828F69CCE00894DCB /* BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B1FCFD28F69D0600894DCB /* KrystalWallets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KrystalWallets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B1FD0028F69D3000894DCB /* BaseWalletOrientedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseWalletOrientedViewController.swift; sourceTree = "<group>"; };
@@ -41,6 +49,8 @@
 		A6F6291928FD303F0085AE67 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		A6F6291B28FD30480085AE67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A6F6292828FD4A2E0085AE67 /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE5765AC955E8AE95D7A48E4 /* Pods-BaseModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseModule.debug.xcconfig"; path = "Target Support Files/Pods-BaseModule/Pods-BaseModule.debug.xcconfig"; sourceTree = "<group>"; };
+		F629B22906D5B858E9A189C4 /* Pods_BaseModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BaseModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,12 +64,23 @@
 				A6512F2B28F6CDF800A84BC2 /* AppState.framework in Frameworks */,
 				A6B1FCF928F69CCE00894DCB /* BaseWallet.framework in Frameworks */,
 				A6F6292928FD4A2E0085AE67 /* Dependencies.framework in Frameworks */,
+				E597BACE2C4940922CE3EE35 /* Pods_BaseModule.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		404CFC4E8B4E288E9E2F07C3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EE5765AC955E8AE95D7A48E4 /* Pods-BaseModule.debug.xcconfig */,
+				2341BC3B6D9E2CBBB39C5A75 /* Pods-BaseModule.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
+			sourceTree = "<group>";
+		};
 		A64C2DFB28F6D7D2002FD64C /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
@@ -86,6 +107,7 @@
 				A6B1FD1828F6B43100894DCB /* Utilities.framework */,
 				A6B1FCFD28F69D0600894DCB /* KrystalWallets.framework */,
 				A6B1FCF828F69CCE00894DCB /* BaseWallet.framework */,
+				F629B22906D5B858E9A189C4 /* Pods_BaseModule.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -96,6 +118,9 @@
 				A6B1FD0028F69D3000894DCB /* BaseWalletOrientedViewController.swift */,
 				A6B1FD0228F69D5700894DCB /* KNBaseViewController.swift */,
 				A64C2E6228F87973002FD64C /* InAppBrowsingViewController.swift */,
+				A69E8EB5291E1452005B28CB /* BaseViewModel.swift */,
+				A63E27FE292FAAA30024328D /* SwitchSpecificChainPopup.swift */,
+				A63E27FF292FAAA30024328D /* SwitchSpecificChainPopup.xib */,
 			);
 			path = BaseViewControllers;
 			sourceTree = "<group>";
@@ -106,6 +131,7 @@
 				A6E433DA28F552A700782F7D /* BaseModule */,
 				A6E433D928F552A700782F7D /* Products */,
 				A6B1FCF728F69CCE00894DCB /* Frameworks */,
+				404CFC4E8B4E288E9E2F07C3 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -156,6 +182,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A6E433DF28F552A700782F7D /* Build configuration list for PBXNativeTarget "BaseModule" */;
 			buildPhases = (
+				E88E730B3CB4FDAAC68BC926 /* [CP] Check Pods Manifest.lock */,
 				A6E433D328F552A700782F7D /* Headers */,
 				A6E433D428F552A700782F7D /* Sources */,
 				A6E433D528F552A700782F7D /* Frameworks */,
@@ -208,11 +235,37 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A63E2801292FAAA30024328D /* SwitchSpecificChainPopup.xib in Resources */,
 				A6F6291C28FD30480085AE67 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E88E730B3CB4FDAAC68BC926 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BaseModule-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A6E433D428F552A700782F7D /* Sources */ = {
@@ -221,9 +274,11 @@
 			files = (
 				A673A68928FE949400270DA7 /* ChainType+.swift in Sources */,
 				A64C2DFF28F6D7E3002FD64C /* Coordinator.swift in Sources */,
+				A63E2800292FAAA30024328D /* SwitchSpecificChainPopup.swift in Sources */,
 				A6B1FD0328F69D5700894DCB /* KNBaseViewController.swift in Sources */,
 				A64C2DFD28F6D7DB002FD64C /* BaseCoordinator.swift in Sources */,
 				A6F6291A28FD303F0085AE67 /* UIImage.swift in Sources */,
+				A69E8EB6291E1452005B28CB /* BaseViewModel.swift in Sources */,
 				A6B1FD0128F69D3000894DCB /* BaseWalletOrientedViewController.swift in Sources */,
 				A64C2E6328F87973002FD64C /* InAppBrowsingViewController.swift in Sources */,
 			);
@@ -354,6 +409,7 @@
 		};
 		A6E433E028F552A700782F7D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EE5765AC955E8AE95D7A48E4 /* Pods-BaseModule.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -386,6 +442,7 @@
 		};
 		A6E433E128F552A700782F7D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2341BC3B6D9E2CBBB39C5A75 /* Pods-BaseModule.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;

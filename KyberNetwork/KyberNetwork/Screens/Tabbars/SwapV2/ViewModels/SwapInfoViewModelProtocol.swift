@@ -90,8 +90,8 @@ extension SwapInfoViewModelProtocol {
     return "\(NumberFormatUtils.amount(value: minReceivingAmount, decimals: destToken.decimals)) \(destToken.symbol)"
   }
   
-  func getEstimatedNetworkFeeString(rate: Rate) -> String {
-    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed ?? 0), gasPrice: self.gasPrice)
+  func getEstimatedNetworkFeeString(rate: Rate, l1Fee: BigInt) -> String {
+    let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed ?? 0), gasPrice: self.gasPrice) + self.getL1FeeUSD(l1Fee: l1Fee)
     if let basic = settings.basic {
       let typeString: String = {
         switch basic.gasPriceType {
@@ -113,12 +113,12 @@ extension SwapInfoViewModelProtocol {
     return "$\(NumberFormatUtils.gasFee(value: feeInUSD)) • \(typeString)"
   }
   
-  func getMaxNetworkFeeString(rate: Rate) -> String {
+  func getMaxNetworkFeeString(rate: Rate, l1Fee: BigInt) -> String {
     if let basic = settings.basic {
-      let feeInUSD = self.getGasFeeUSD(estGas: gasLimit, gasPrice: self.getGasPrice(forType: basic.gasPriceType))
+      let feeInUSD = self.getGasFeeUSD(estGas: gasLimit, gasPrice: self.getGasPrice(forType: basic.gasPriceType)) + self.getL1FeeUSD(l1Fee: l1Fee)
       return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
     } else if let advanced = settings.advanced {
-      let feeInUSD = self.getGasFeeUSD(estGas: gasLimit, gasPrice: advanced.maxFee)
+      let feeInUSD = self.getGasFeeUSD(estGas: gasLimit, gasPrice: advanced.maxFee) + self.getL1FeeUSD(l1Fee: l1Fee)
       return "$\(NumberFormatUtils.gasFee(value: feeInUSD))"
     }
     return ""
@@ -129,6 +129,14 @@ extension SwapInfoViewModelProtocol {
     let rateUSDDouble = KNGeneralProvider.shared.quoteTokenPrice?.usd ?? 0
     let rateBigInt = BigInt(rateUSDDouble * pow(10.0, Double(decimals)))
     let feeUSD = (estGas * gasPrice * rateBigInt) / BigInt(10).power(decimals)
+    return feeUSD
+  }
+    
+  func getL1FeeUSD(l1Fee: BigInt) -> BigInt {
+    let decimals = KNGeneralProvider.shared.quoteTokenObject.decimals
+    let rateUSDDouble = KNGeneralProvider.shared.quoteTokenPrice?.usd ?? 0
+    let rateBigInt = BigInt(rateUSDDouble * pow(10.0, Double(decimals)))
+    let feeUSD = (l1Fee * rateBigInt) / BigInt(10).power(decimals)
     return feeUSD
   }
   

@@ -19,7 +19,6 @@ public class AppState {
   public private(set) var currentChain: ChainType = Storage.retrieve(Constants.StorageKeys.currentChain, as: ChainType.self) ?? Constants.defaultChain {
     didSet {
       Storage.store(self.currentChain, as: Constants.StorageKeys.currentChain)
-      
     }
   }
   
@@ -39,16 +38,23 @@ public class AppState {
   }
   
   public func updateChain(chain: ChainType) {
-    currentChain = chain
-    AppEventManager.shared.postSwitchChainEvent(chain: chain)
+      if chain == .all {
+          currentChain = Constants.defaultChain
+          AppEventManager.shared.postSwitchChainEvent(chain: Constants.defaultChain)
+          AppEventManager.shared.postSelectAllChain()
+      } else {
+          currentChain = chain
+          AppEventManager.shared.postSwitchChainEvent(chain: chain)
+      }
+    
   }
   
   public func updateAddress(address: KAddress, targetChain: ChainType) {
     currentAddress = address
-    AppEventManager.shared.postSwitchAddressEvent(address: address)
     if targetChain != currentChain {
-      updateChain(chain: targetChain)
+        updateChain(chain: targetChain)
     }
+    AppEventManager.shared.postSwitchAddressEvent(address: address, switchChain: false)
   }
   
   public var isBrowsingMode: Bool {

@@ -80,11 +80,12 @@ public extension WalletManager {
   
   func getAllAddresses(addresses: [String]) -> [KAddress] {
     let realm = try! Realm()
-    return realm.objects(AddressObject.self)
-      .filter("%K IN %@", "address", addresses)
-      .map { $0.toAddress() }
+    let kAddresses = realm.objects(AddressObject.self)
+          .filter("%K IN %@", "address", addresses + addresses.map { $0.lowercased() })
+          .map { $0.toAddress() }
+    return kAddresses.map { $0 }
   }
-  
+
   func wallet(forAddress address: KAddress) -> KWallet? {
     let realm = try! Realm()
     return realm.objects(WalletObject.self)
@@ -146,13 +147,18 @@ public extension WalletManager {
       keyManager.save(value: newPassword, forKey: importedWallet.identifier)
       let wallet = WalletObject(id: importedWallet.identifier, importType: .privateKey, name: name)
       let account = try importedWallet.getAccount(password: "", coin: addressType.coinType)
-      let address = AddressObject(walletID: wallet.id, addressType: addressType, address: account.address, name: name)
+        let address = AddressObject(walletID: wallet.id, addressType: addressType, address: account.address.lowercased(), name: name)
       
       let existedAddresses = self.getAllAddresses(addresses: [account.address])
-      
-      guard existedAddresses.isEmpty else {
-        throw WalletManagerError.duplicatedWallet
-      }
+        
+        if existedAddresses.count > 0, !existedAddresses[0].isWatchWallet {
+            throw WalletManagerError.duplicatedWallet
+        }
+        
+        existedAddresses.forEach { address in
+            try? removeAddress(address: address)
+        }
+        
       let realm = try! Realm()
       try realm.write {
         realm.add(wallet)
@@ -179,9 +185,14 @@ public extension WalletManager {
       
       let existedAddresses = self.getAllAddresses(addresses: [address])
       
-      guard existedAddresses.isEmpty else {
-        throw WalletManagerError.duplicatedWallet
-      }
+        if existedAddresses.count > 0, !existedAddresses[0].isWatchWallet {
+            throw WalletManagerError.duplicatedWallet
+        }
+        
+        existedAddresses.forEach { address in
+            try? removeAddress(address: address)
+        }
+        
       let realm = try! Realm()
       try realm.write {
         realm.add(wallet)
@@ -207,9 +218,14 @@ public extension WalletManager {
       
       let existedAddresses = self.getAllAddresses(addresses: addresses.map(\.address))
       
-      guard existedAddresses.isEmpty else {
-        throw WalletManagerError.duplicatedWallet
-      }
+        if existedAddresses.count > 0, !existedAddresses[0].isWatchWallet {
+            throw WalletManagerError.duplicatedWallet
+        }
+        
+        existedAddresses.forEach { address in
+            try? removeAddress(address: address)
+        }
+        
       let realm = try! Realm()
       try realm.write {
         realm.add(walletObject)
@@ -453,4 +469,36 @@ extension WalletManager {
     }
   }
   
+}
+
+extension WalletManager {
+    
+    public func privateKey(wallet: KWallet, forCoin coinType: CoinType) -> PrivateKey? {
+        guard let addressType = getAddressType(coinType: coinType) else {
+            return nil
+        }
+        return try? getPrivateKey(wallet: wallet, forAddressType: addressType)
+    }
+    
+    public func address(wallet: KWallet, forCoin coinType: CoinType) -> String? {
+        guard let addressType = getAddressType(coinType: coinType) else {
+            return nil
+        }
+        guard let privateKey = privateKey(wallet: wallet, forCoin: coinType) else {
+            return nil
+        }
+        return getAddress(privateKey: privateKey, addressType: addressType)
+    }
+    
+    func getAddressType(coinType: CoinType) -> KAddressType? {
+        switch coinType {
+        case .ethereum:
+            return .evm
+        case .solana:
+            return .solana
+        default:
+            return nil
+        }
+    }
+    
 }

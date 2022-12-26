@@ -149,8 +149,8 @@ class BridgeCoordinator: NSObject, Coordinator {
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var isOpenGasSettingForApprove: Bool = false
   
-  @UserDefault(key: Constants.bridgeWarningAcceptedKey, defaultValue: false)
-  var bridgeWaringAccepted: Bool
+    @FileStorage(fileName: Constants.bridgeWarningSettingFile, defaultValue: UserDefaults.standard.bool(forKey: Constants.bridgeWarningAcceptedKey))
+    var bridgeWaringAccepted: Bool
   
   lazy var rootViewController: BridgeViewController = {
     let viewModel = BridgeViewModel()
@@ -514,6 +514,9 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       vm.headerTitle = "Approve Transfer"
       let vc = ApproveTokenViewController(viewModel: vm)
       vc.delegate = self
+      vc.onDismiss = {
+        self.rootViewController.coordinatorCancelApprove()
+      }
       self.navigationController.present(vc, animated: true, completion: nil)
       self.approveVC = vc
     case .selectMaxSource:

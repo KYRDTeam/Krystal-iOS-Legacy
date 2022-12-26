@@ -3,22 +3,26 @@
 import Foundation
 import JSONRPCKit
 
-struct SendRawTransactionRequest: JSONRPCKit.Request {
-    typealias Response = String
-
-    let signedTransaction: String
-
-    var method: String {
+public struct SendRawTransactionRequest: JSONRPCKit.Request {
+    public typealias Response = String
+    
+    public let signedTransaction: String
+    
+    public init(signedTransaction: String) {
+        self.signedTransaction = signedTransaction
+    }
+    
+    public var method: String {
         return "eth_sendRawTransaction"
     }
-
-    var parameters: Any? {
+    
+    public var parameters: Any? {
         return [
             signedTransaction,
         ]
     }
-
-    func response(from resultObject: Any) throws -> Response {
+    
+    public func response(from resultObject: Any) throws -> Response {
         if let response = resultObject as? Response {
             return response
         } else {

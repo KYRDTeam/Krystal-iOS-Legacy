@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TxToggleInfoView" customModule="DesignSystem" customModuleProvider="target">
+            <connections>
+                <outlet property="switchButton" destination="LDj-Ky-JZB" id="rLO-Iv-FGV"/>
+                <outlet property="titleLabel" destination="Us4-kn-bAL" id="s9D-HF-Bgy"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="450" height="219"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Us4-kn-bAL">
+                    <rect key="frame" x="0.0" y="114" width="391" height="16.333333333333343"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LDj-Ky-JZB">
+                    <rect key="frame" x="401" y="106.66666666666667" width="51" height="31.000000000000014"/>
+                    <connections>
+                        <action selector="onSwitchButtonTapped:" destination="-1" eventType="valueChanged" id="S31-f1-iKa"/>
+                    </connections>
+                </switch>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="LDj-Ky-JZB" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="7dm-ig-M1d"/>
+                <constraint firstItem="Us4-kn-bAL" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="FLz-t1-bYm"/>
+                <constraint firstItem="Us4-kn-bAL" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="bpm-AZ-PoQ"/>
+                <constraint firstItem="LDj-Ky-JZB" firstAttribute="leading" secondItem="Us4-kn-bAL" secondAttribute="trailing" constant="10" id="cYy-Ys-K3N"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="LDj-Ky-JZB" secondAttribute="trailing" id="gDS-DS-nOf"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="172.51908396946564" y="-169.36619718309859"/>
+        </view>
+    </objects>
+</document>

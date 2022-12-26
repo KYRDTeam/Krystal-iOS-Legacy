@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PendingRewardViewController" customModule="EarnModule" customModuleProvider="target">
+            <connections>
+                <outlet property="emptyIcon" destination="deQ-zj-Pfl" id="m3f-zu-Yj1"/>
+                <outlet property="emptyLabel" destination="F4W-Cd-7oz" id="FaS-Y7-JCk"/>
+                <outlet property="emptyViewContainer" destination="iES-Sd-LQT" id="2qy-RF-sL6"/>
+                <outlet property="rewardTableView" destination="suq-Kd-nNG" id="wGu-4Z-Bq9"/>
+                <outlet property="searchFieldActionButton" destination="Yuo-gS-IJa" id="NQH-Xl-TCp"/>
+                <outlet property="searchTextField" destination="Zax-Hf-eLl" id="Bci-fV-26s"/>
+                <outlet property="searchViewRightConstraint" destination="yd7-n0-EwK" id="gLJ-cU-g8e"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iES-Sd-LQT">
+                    <rect key="frame" x="0.0" y="96" width="385" height="571"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="empty_reward_icon" translatesAutoresizingMaskIntoConstraints="NO" id="deQ-zj-Pfl">
+                            <rect key="frame" x="134.5" y="220" width="116" height="131"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No reward token yet." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F4W-Cd-7oz">
+                            <rect key="frame" x="20" y="374" width="345" height="19"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <color key="textColor" red="0.54117647059999996" green="0.64313725489999995" blue="0.68235294120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstItem="F4W-Cd-7oz" firstAttribute="leading" secondItem="iES-Sd-LQT" secondAttribute="leading" constant="20" id="CoO-Oh-HgP"/>
+                        <constraint firstItem="deQ-zj-Pfl" firstAttribute="centerX" secondItem="iES-Sd-LQT" secondAttribute="centerX" id="Ffw-nE-9vc"/>
+                        <constraint firstItem="deQ-zj-Pfl" firstAttribute="centerY" secondItem="iES-Sd-LQT" secondAttribute="centerY" id="Mqo-y2-ztH"/>
+                        <constraint firstItem="F4W-Cd-7oz" firstAttribute="top" secondItem="deQ-zj-Pfl" secondAttribute="bottom" constant="23" id="QoV-C1-q4B"/>
+                        <constraint firstAttribute="trailing" secondItem="F4W-Cd-7oz" secondAttribute="trailing" constant="20" id="TeD-ga-HqE"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                            <real key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iRj-PU-7qE">
+                    <rect key="frame" x="18" y="27" width="284" height="42"/>
+                    <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Zax-Hf-eLl">
+                            <rect key="frame" x="16" y="0.0" width="229" height="42"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" name="buttonBackgroundColor"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="password"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtSearch"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="jEB-gd-vdF"/>
+                            </connections>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yuo-gS-IJa">
+                            <rect key="frame" x="250" y="9" width="24" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="24" id="3xi-qb-dBw"/>
+                                <constraint firstAttribute="height" constant="24" id="bqT-JB-CBb"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                            <color key="tintColor" name="textWhiteColor"/>
+                            <state key="normal" image="search_blue_icon">
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
+                            </state>
+                            <connections>
+                                <action selector="onSearchButtonTapped:" destination="-1" eventType="touchUpInside" id="aa8-cH-h8k"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstItem="Zax-Hf-eLl" firstAttribute="leading" secondItem="iRj-PU-7qE" secondAttribute="leading" constant="16" id="1mJ-ub-Zqp"/>
+                        <constraint firstAttribute="trailing" secondItem="Yuo-gS-IJa" secondAttribute="trailing" constant="10" id="2mR-VN-7cU"/>
+                        <constraint firstAttribute="height" constant="42" id="AeZ-cm-9jL"/>
+                        <constraint firstItem="Yuo-gS-IJa" firstAttribute="centerY" secondItem="iRj-PU-7qE" secondAttribute="centerY" id="BV4-tB-XUF"/>
+                        <constraint firstItem="Zax-Hf-eLl" firstAttribute="top" secondItem="iRj-PU-7qE" secondAttribute="top" id="JQ0-vB-FWS"/>
+                        <constraint firstItem="Yuo-gS-IJa" firstAttribute="leading" secondItem="Zax-Hf-eLl" secondAttribute="trailing" constant="5" id="Piu-U5-g4W"/>
+                        <constraint firstAttribute="bottom" secondItem="Zax-Hf-eLl" secondAttribute="bottom" id="Qdg-PN-fOy"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="16"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="suq-Kd-nNG">
+                    <rect key="frame" x="0.0" y="96" width="375" height="571"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="CbD-Kv-tMQ"/>
+                        <outlet property="delegate" destination="-1" id="fhC-Kf-rBJ"/>
+                    </connections>
+                </tableView>
+                <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dd7-GA-EsH">
+                    <rect key="frame" x="315" y="27" width="42" height="42"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="42" id="aci-zN-KFH"/>
+                        <constraint firstAttribute="height" constant="42" id="kA9-y2-HS1"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                    <color key="tintColor" name="normalTextColor"/>
+                    <state key="normal" image="filter_icon">
+                        <color key="titleColor" name="normalTextColor"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                            <integer key="value" value="12"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="filterButtonTapped:" destination="-1" eventType="touchUpInside" id="OPo-NQ-SBY"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="suq-Kd-nNG" firstAttribute="top" secondItem="iRj-PU-7qE" secondAttribute="bottom" constant="27" id="7WT-R6-W4y"/>
+                <constraint firstItem="iES-Sd-LQT" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" constant="10" id="H6I-ID-BoG"/>
+                <constraint firstItem="iES-Sd-LQT" firstAttribute="top" secondItem="iRj-PU-7qE" secondAttribute="bottom" constant="27" id="IT5-Yr-KPl"/>
+                <constraint firstItem="dd7-GA-EsH" firstAttribute="centerY" secondItem="iRj-PU-7qE" secondAttribute="centerY" id="JiU-RX-DB4"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="dd7-GA-EsH" secondAttribute="trailing" constant="18" id="KPH-JO-qdo"/>
+                <constraint firstItem="suq-Kd-nNG" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="MuB-Zq-arr"/>
+                <constraint firstItem="iRj-PU-7qE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="18" id="TlW-Z2-pfi"/>
+                <constraint firstItem="iRj-PU-7qE" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="27" id="eXQ-qb-RGT"/>
+                <constraint firstItem="suq-Kd-nNG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="hQ6-Un-kL0"/>
+                <constraint firstItem="iES-Sd-LQT" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="hvp-UL-yoF"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="iES-Sd-LQT" secondAttribute="bottom" id="jq5-MB-mDU"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="suq-Kd-nNG" secondAttribute="bottom" id="klt-4k-CPS"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="iRj-PU-7qE" secondAttribute="trailing" constant="73" id="yd7-n0-EwK"/>
+            </constraints>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                    <real key="value" value="20"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+            </userDefinedRuntimeAttributes>
+            <point key="canvasLocation" x="138.40000000000001" y="95.802098950524751"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="empty_reward_icon" width="116" height="131"/>
+        <image name="filter_icon" width="24" height="24"/>
+        <image name="search_blue_icon" width="16" height="16"/>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

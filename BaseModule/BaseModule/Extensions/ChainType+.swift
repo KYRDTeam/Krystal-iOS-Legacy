@@ -9,7 +9,7 @@ import Foundation
 import BaseWallet
 import UIKit
 
-extension ChainType {
+public extension ChainType {
   
   func squareIcon() -> UIImage {
     switch self {
@@ -17,7 +17,7 @@ extension ChainType {
       return .allNetworkSquare
     case .eth:
       return .chainEthSquare
-    case .ropsten:
+    case .goerli:
       return .chainEthSquare
     case .bsc:
       return .chainBscSquare

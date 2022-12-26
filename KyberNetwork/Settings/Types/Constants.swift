@@ -4,6 +4,8 @@ import Foundation
 import BigInt
 import Utilities
 
+typealias BlankBlock = () -> Void 
+
 enum ValidStatus: Equatable {
   case success
   case error(description: String)
@@ -90,6 +92,7 @@ public struct Constants {
   public static let lowLimitGas = 21000
   public static let slippageRateSaveKey = "slippage-rate-saving-key"
   public static let expertModeSaveKey = "expert-mode-saving-key"
+  public static let bridgeWarningSettingFile = "bridge_warning_setting.data"
   
 }
 

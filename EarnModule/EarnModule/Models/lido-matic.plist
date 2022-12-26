@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>question</key>
+		<string>What is liquid staking?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Liquid staking protocols allow users to earn staking rewards even without locking up their assets. Users can deposit tokens and receive tradable liquid tokens in return. The DAO-controlled smart contract stakes these tokens using elected staking providers. As users&amp;apos; funds are controlled by the DAO, staking providers never have direct access to the users&amp;apos; assets.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>What is Lido on Polygon?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Lido on Polygon is a liquid staking solution for MATIC backed by industry-leading staking providers. Lido lets users earn MATIC staking rewards without needing to maintain infrastructure and enables them to trade staked positions, as well as participate in on-chain decentralized finance with their staked assets. Lido on Polygon gives users options to:&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Stake their MATIC tokens in a decentralized and secure way&lt;/p&gt;
+&lt;p&gt;Use their stMATIC on the secondary market&lt;/p&gt;
+&lt;p&gt;Do all of the above simply and easily with a click of a button on the UI.&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Learn more &lt;a href=&quot;https://news.shardlabs.io/polido-lido-for-polygon-a491bbe4a81d&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>How does Lido on Polygon work?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;When staking with Lido on Polygon, users receive stMATIC tokens as soon as they submit MATIC. Lido will calculate the current stMATIC/MATIC ratio and send the correct amount to the user. MATIC tokens are then delegated across Polygon validators that are part of Lido on Polygon.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>What is stMATIC?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;stMATIC is an ERC20 token that represents the account&amp;rsquo;s share of the total supply of MATIC tokens inside PoLido system. It is a non-rebasable token, which means that the amount of tokens in the user&amp;rsquo;s wallet is not going to change. During time, the value of this token is changing, since the amount of MATIC tokens inside the protocol is not constant. stMATIC will be supported by a variety of DeFi applications across Ethereum and Polygon networks.&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>How long can I claim MATIC after requesting a withdrawal?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;The waiting period is around 3-4 days. After that, you will be able to claim your withdrawal request. &lt;br&gt;&lt;br&gt;Source: &lt;a href=&quot;https://wiki.polygon.technology/docs/maintain/delegate/delegator-faq/#what-is-the-unbonding-period&quot;&gt;Polygon documentation&lt;/a&gt;&lt;/p&gt;</string>
+	</dict>
+	<dict>
+		<key>question</key>
+		<string>What fee is applied by Lido? What is this used for?</string>
+		<key>answer</key>
+		<string>&lt;p&gt;Lido applies a 10% fee on a user&amp;rsquo;s staking rewards. This fee is split between node operators, the DAO, and a coverage fund.&lt;/p&gt;</string>
+	</dict>
+</array>
+</plist>

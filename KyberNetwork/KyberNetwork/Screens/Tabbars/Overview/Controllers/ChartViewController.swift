@@ -317,7 +317,7 @@ class ChartViewModel {
   }
   
   var baseTokenAddress: String {
-    if token.isQuoteToken {
+    if token.isQuoteToken() {
       let wsymbol = "W" + self.token.symbol
       if let wtoken = KNSupportedTokenStorage.shared.supportedToken.first { $0.symbol == wsymbol } {
         return wtoken.address
@@ -751,7 +751,7 @@ class ChartViewController: KNBaseViewController {
   
   fileprivate func getPoolList() {
     var address = self.viewModel.token.address
-    if self.viewModel.token.isQuoteToken {
+    if self.viewModel.token.isQuoteToken() {
       // incase current token is native token, find wrap token instead
       let wsymbol = "W" + self.viewModel.token.symbol
       if let wtoken = KNSupportedTokenStorage.shared.supportedToken.first { $0.symbol == wsymbol } {

@@ -11,6 +11,7 @@ import Moya
 import Sentry
 import KrystalWallets
 import AppState
+import TransactionModule
 
 class KNTransactionCoordinator {
 
@@ -444,6 +445,7 @@ extension KNTransactionCoordinator {
             object: transaction,
             userInfo: nil
           )
+            TransactionManager.onTransactionStatusUpdated(hash: transaction.txHash, status: state)
         }
       }
     } else {
@@ -463,6 +465,7 @@ extension KNTransactionCoordinator {
             object: transaction,
             userInfo: nil
           )
+            TransactionManager.onTransactionStatusUpdated(hash: transaction.txHash, status: transaction.state)
         case .failure:
           self.externalProvider?.getTransactionByHash(transaction.hash, completion: { pendingTransaction, error in
             if case .responseError(let err) = error, let respError = err as? JSONRPCError {
@@ -494,6 +497,7 @@ extension KNTransactionCoordinator {
                   object: transaction,
                   userInfo: nil
                 )
+                  TransactionManager.onTransactionStatusUpdated(hash: transaction.txHash, status: transaction.state)
               default: break
               }
             }

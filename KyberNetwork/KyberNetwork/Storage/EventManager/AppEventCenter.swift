@@ -47,6 +47,8 @@ class AppEventCenter {
     guard let wcURL = WCURL(url) else { return }
     if address.isWatchWallet {
       UIApplication.shared.topMostViewController()?.showTopBannerView(message: Strings.wcNotSupportWatchWallet)
+    } else if address.addressType != .evm {
+      UIApplication.shared.topMostViewController()?.showTopBannerView(message: Strings.wcNotSupportedNetwork)
     } else {
       let vc = WalletConnectViewController.instantiateFromNib()
       vc.address = address

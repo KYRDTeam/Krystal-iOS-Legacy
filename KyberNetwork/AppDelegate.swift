@@ -24,8 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   }
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    Dependencies.register()
-    
+    DependenciesRegister.register()
+      
     window = UIWindow(frame: UIScreen.main.bounds)
     setupImageProcessor()
     setupKeyboard()
@@ -222,27 +222,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     })
     
     if components.path == "/swap" {
-        self.coordinator.swapV2Coordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+        self.coordinator?.swapV2Coordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
     } else if components.path == "/token" {
-      self.coordinator.overviewTabCoordinator?.navigationController.tabBarController?.selectedIndex = 0
-      self.coordinator.overviewTabCoordinator?.navigationController.popToRootViewController(animated: false)
+      self.coordinator?.overviewTabCoordinator?.navigationController.tabBarController?.selectedIndex = 0
+      self.coordinator?.overviewTabCoordinator?.navigationController.popToRootViewController(animated: false)
       let supportedChainIds = ChainType.getAllChain().map { return $0.getChainId() }
       if let chainId = Int(parameters["chainId"] ?? "0"), supportedChainIds.contains(chainId) {
-        self.coordinator.overviewTabCoordinator?.appCoordinatorReceivedTokensDetailFromUniversalLink(tokenAddress: parameters["address"] ?? "", chainIdString: parameters["chainId"])
+        self.coordinator?.overviewTabCoordinator?.appCoordinatorReceivedTokensDetailFromUniversalLink(tokenAddress: parameters["address"] ?? "", chainIdString: parameters["chainId"])
       } else {
         let errorVC = ErrorViewController()
         errorVC.modalPresentationStyle = .fullScreen
-        self.coordinator.overviewTabCoordinator?.navigationController.present(errorVC, animated: false)
+        self.coordinator?.overviewTabCoordinator?.navigationController.present(errorVC, animated: false)
       }
         
     } else if components.path == "/notifications" && self.coordinator.session != nil && !KNGeneralProvider.shared.isBrowsingMode && FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.notiV2) {
-      self.coordinator.overviewTabCoordinator?.navigationController.tabBarController?.selectedIndex = 0
-      self.coordinator.overviewTabCoordinator?.navigationController.popToRootViewController(animated: false)
+      self.coordinator?.overviewTabCoordinator?.navigationController.tabBarController?.selectedIndex = 0
+      self.coordinator?.overviewTabCoordinator?.navigationController.popToRootViewController(animated: false)
       let vc = NotificationV2ViewController.instantiateFromNib()
       vc.hidesBottomBarWhenPushed = true
-      self.coordinator.overviewTabCoordinator?.navigationController.pushViewController(vc, animated: true)
+      self.coordinator?.overviewTabCoordinator?.navigationController.pushViewController(vc, animated: true)
     } else {
-      self.coordinator.overviewTabCoordinator?.navigationController.openSafari(with: url)
+      self.coordinator?.overviewTabCoordinator?.navigationController.openSafari(with: url)
     }
     return true
   }

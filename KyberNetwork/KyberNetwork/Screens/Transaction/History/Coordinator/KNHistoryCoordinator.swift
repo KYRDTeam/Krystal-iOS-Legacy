@@ -50,6 +50,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
   }
 
   func start() {
+    EtherscanTransactionStorage.shared.updateCurrentHistoryCache()
     self.navigationController.pushViewController(self.rootViewController, animated: true) {
       self.appCoordinatorTokensTransactionsDidUpdate(showLoading: true)
       self.appCoordinatorPendingTransactionDidUpdate()
@@ -69,13 +70,18 @@ class KNHistoryCoordinator: NSObject, Coordinator {
   }
   
   func removeObservers() {
-    NotificationCenter.default.removeObserver(
-      self,
-      name: AppEventCenter.shared.kAppDidChangeAddress,
-      object: nil
-    )
+      NotificationCenter.default.removeObserver(
+        self,
+        name: AppEventCenter.shared.kAppDidChangeAddress,
+        object: nil
+      )
+      NotificationCenter.default.removeObserver(
+        self,
+        name: Notification.Name(kTransactionDidUpdateNotificationKey),
+        object: nil
+      )
   }
-  
+    
   func observeAppEvents() {
     NotificationCenter.default.addObserver(
       self,
@@ -83,6 +89,13 @@ class KNHistoryCoordinator: NSObject, Coordinator {
       name: AppEventCenter.shared.kAppDidChangeAddress,
       object: nil
     )
+      
+      NotificationCenter.default.addObserver(
+        self,
+        selector: #selector(appDidUpdateTransactions),
+        name: Notification.Name(kTransactionDidUpdateNotificationKey),
+        object: nil
+      )
     
     let tokenTxListName = Notification.Name(kTokenTransactionListDidUpdateNotificationKey)
     NotificationCenter.default.addObserver(
@@ -92,6 +105,10 @@ class KNHistoryCoordinator: NSObject, Coordinator {
       object: nil
     )
   }
+    
+    @objc func appDidUpdateTransactions() {
+        appCoordinatorPendingTransactionDidUpdate()
+    }
   
   @objc func appDidSwitchAddress() {
     self.appCoordinatorTokensTransactionsDidUpdate()
@@ -453,7 +470,7 @@ extension KNHistoryCoordinator: QRCodeReaderDelegate {
 
 extension KNHistoryCoordinator: KNSendTokenViewCoordinatorDelegate {
   
-  func sendTokenCoordinatorDidClose() {
+  func sendTokenCoordinatorDidClose(coordinator: KNSendTokenViewCoordinator) {
     self.sendCoordinator = nil
   }
   
@@ -461,9 +478,6 @@ extension KNHistoryCoordinator: KNSendTokenViewCoordinatorDelegate {
     self.delegate?.historyCoordinatorDidSelectAddToken(token)
   }
   
-  func sendTokenViewCoordinatorSelectOpenHistoryList() {
-    self.navigationController.popViewController(animated: true)
-  }
 }
 
 extension KNHistoryCoordinator: GasFeeSelectorPopupViewControllerDelegate {

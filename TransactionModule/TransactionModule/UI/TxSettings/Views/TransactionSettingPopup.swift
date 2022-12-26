@@ -85,6 +85,19 @@ public class TransactionSettingPopup: UIViewController {
         pageController.setViewControllers([controllers[0]], direction: .forward, animated: false)
     }
     
+    func observeNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(onGasPriceUpdated), name: .kGasPriceUpdated, object: nil)
+    }
+    
+    @objc func onGasPriceUpdated() {
+        basicTab.onGasPriceUpdated()
+        advancedTab.onGasPriceUpdated()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .kGasPriceUpdated, object: nil)
+    }
+    
     @IBAction func segmentedControlValueChanged(_ sender: Any) {
         segmentControl.underlinePosition()
         if segmentControl.selectedSegmentIndex == 0 {
@@ -150,7 +163,7 @@ extension TransactionSettingPopup {
                             chain: ChainType,
                             currentSetting: TxSettingObject = .default,
                             onConfirmed: @escaping (TxSettingObject) -> Void,
-                            onCancelled: @escaping () -> Void) {
+                            onCancelled: @escaping (() -> Void) = {}) {
         let popup = TransactionSettingPopup.instantiateFromNib()
         popup.onCancelled = onCancelled
         popup.onConfirmed = onConfirmed

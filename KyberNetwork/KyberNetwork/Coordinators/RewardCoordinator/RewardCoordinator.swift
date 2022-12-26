@@ -154,7 +154,7 @@ class RewardCoordinator: Coordinator {
         }
       case .failure(let error):
         print("[Get rewards] \(error.localizedDescription)")
-        if error.code == 401 {
+        if error.errorCode() == 401 {
           // case error 401 mean login token is expired, need update it
           self.handleUpdateLoginTokenForClaimReward()
         }
@@ -323,6 +323,11 @@ class RewardCoordinator: Coordinator {
 }
 
 extension RewardCoordinator: RewardsViewControllerDelegate {
+
+  func reloadData(_ controller: RewardsViewController) {
+    loadRewards()
+  }
+  
   func loadClaimRewards(_ controller: RewardsViewController) {
     self.loadClaimRewards(shouldShowPopup: true)
   }

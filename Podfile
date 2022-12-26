@@ -31,6 +31,7 @@ def uiPods
   pod 'TagListView', :git => 'https://github.com/Expensify/TagListView.git'
   pod 'SkeletonView'
   pod 'FittedSheets'
+  pod 'loady'
 end
 
 def cryptoHelperPods
@@ -41,7 +42,9 @@ def cryptoHelperPods
   pod 'TrustCore', '~> 0.0.7'
   pod 'WalletConnectSwift'
   pod 'Web3'
+#  pod 'WalletCore'
   # pod 'web3swift', :git=>'https://github.com/BANKEX/web3swift', :branch=>'master'
+  pod 'TrustWeb3Provider', :git => 'https://github.com/tungnguyen20/trust-web3-provider', :branch => 'develop'
 end
 
 def networkingPods
@@ -52,13 +55,13 @@ def networkingPods
   pod 'Starscream', '~> 3.1'
   pod 'Kingfisher', '~> 7.0'
   pod 'Moya', '~> 10.0.1'
-  pod 'Mixpanel-swift'
+  pod 'Mixpanel-swift', '~> 3.1.7'
 end
 
 def databasePods
   pod 'KeychainSwift', '~> 13.0.0'
   pod 'SAMKeychain', '~> 1.5.3'
-  pod 'RealmSwift', '~> 3.19.0'
+  pod 'RealmSwift', '~> 10.32'
 end
 
 def utilitiesPods
@@ -78,6 +81,17 @@ def swapDependencies
   pod 'lottie-ios'
 end
 
+def earnDependencies
+  pod 'BigInt'
+  pod 'Moya'
+  pod 'JSONRPCKit'
+  pod 'APIKit'
+  pod 'lottie-ios'
+  pod 'FittedSheets'
+  pod 'TrustCore'
+  pod 'SwipeCellKit'
+end
+
 def servicesDependencies
   pod 'Moya'
   pod 'BigInt'
@@ -88,8 +102,10 @@ def servicesDependencies
 end
 
 def designSystemDependencies
+  pod 'SkeletonView'
   pod 'SwiftMessages'
   pod 'FittedSheets'
+  pod 'MBProgressHUD', '~> 1.1.0'
 end
 
 def dependenciesDependencies
@@ -99,6 +115,12 @@ end
 def transactionModuleDependencies
   pod 'FittedSheets'
   pod 'BigInt'
+  pod 'TrustWalletCore'
+  pod 'TrustCore'
+  pod 'JSONRPCKit'
+  pod 'APIKit'
+  pod 'CryptoSwift'
+  pod 'loady'
 end
 
 target 'Dependencies' do
@@ -136,12 +158,48 @@ target 'TransactionModule' do
   transactionModuleDependencies
 end
 
+target 'EarnModule' do
+  project 'EarnModule/EarnModule.xcodeproj'
+  use_frameworks!
+  uiPods
+  earnDependencies
+end
+
 target 'Utilities' do
   project 'Utilities/Utilities.xcodeproj'
   use_frameworks!
   
   pod 'BigInt'
   pod 'Kingfisher'
+end
+
+target 'TokenModule' do
+  project 'TokenModule/TokenModule.xcodeproj'
+  use_frameworks!
+  
+  pod 'BigInt'
+  pod 'MBProgressHUD', '~> 1.1.0'
+  pod 'Charts'
+  pod 'SkeletonView'
+end
+
+target 'BaseModule' do
+  project 'BaseModule/BaseModule.xcodeproj'
+  use_frameworks!
+  
+  pod 'FittedSheets'
+end
+
+target 'DappBrowser' do
+  project 'DappBrowser/DappBrowser.xcodeproj'
+  use_frameworks!
+  
+  pod 'TrustWeb3Provider', :git => 'https://github.com/tungnguyen20/trust-web3-provider', :branch => 'develop'
+#  pod 'WalletCore'
+  pod 'TrustWalletCore'
+  pod 'CryptoSwift'
+  pod 'FittedSheets'
+  pod 'MBProgressHUD'
 end
 
 target 'KyberNetwork' do

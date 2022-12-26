@@ -39,13 +39,13 @@ class TransactionSettingBasicTabViewModel: BaseTransactionSettingTabViewModel {
     
     func getEstimatedGasFee(gasType: GasSpeed) -> String {
         let fee = getGasPrice(gasType: gasType) * gasLimit
-        let feeString: String = NumberFormatUtils.gasFeeFormat(number: fee)
+        let feeString: String = NumberFormatUtils.gasFee(value: fee)
         let quoteToken = chain.customRPC().quoteToken
         return "~ \(feeString) \(quoteToken)"
     }
     
     func attributedString(for gasPrice: BigInt, text: String) -> NSAttributedString {
-        let gasPriceString: String = gasPrice.string(units: .gwei, minFractionDigits: 2, maxFractionDigits: 2)
+        let gasPriceString: String = NumberFormatUtils.gwei(value: gasPrice)
         let gasPriceAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.foregroundColor: AppTheme.current.primaryTextColor,
             NSAttributedString.Key.font: UIFont.karlaReguler(ofSize: 16),

@@ -19,8 +19,8 @@ enum ExploreMenuItem: CaseIterable {
     case rewardHunting
     case bridge
     case scanner
-    case stake
     case approvals
+    case loyalty
 }
 
 enum ExploreSection {
@@ -54,8 +54,8 @@ class ExploreViewModel {
         let isPromoCodeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
         let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
         let isScannerEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
-        let isStakeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.earnV2)
         let isTokenApprovalEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.tokenApproval)
+        let isLoyaltyEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.loyalty)
         let isNotBrowsing = !KNGeneralProvider.shared.isBrowsingMode
         
         var menuItems: [ExploreMenuItem] = []
@@ -75,11 +75,6 @@ class ExploreViewModel {
                 menuItems.append(.promotion)
             }
         }
-        
-        if isStakeEnabled {
-            menuItems.append(.stake)
-        }
-        
         if isRewardHuntingEnabled && isNotBrowsing {
             menuItems.append(.rewardHunting)
         }
@@ -90,6 +85,10 @@ class ExploreViewModel {
         
         if isTokenApprovalEnabled && isNotBrowsing {
             menuItems.append(.approvals)
+        }
+        
+        if isLoyaltyEnabled && isNotBrowsing {
+            menuItems.append(.loyalty)
         }
         
         if self.menuItems.value != menuItems {

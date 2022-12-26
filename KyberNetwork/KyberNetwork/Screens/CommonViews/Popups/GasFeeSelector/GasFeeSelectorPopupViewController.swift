@@ -9,6 +9,7 @@ import UIKit
 import BigInt
 import APIKit
 import JSONRPCKit
+import TransactionModule
 
 protocol GasFeeSelectorPopupViewControllerDelegate: class {
   func gasFeeSelectorPopupViewController(_ controller: KNBaseViewController, run event: GasFeeSelectorPopupViewEvent)
@@ -575,6 +576,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
             object: unwrapped,
             userInfo: nil
           )
+            TransactionManager.onTransactionStatusUpdated(hash: unwrapped.txHash, status: unwrapped.state)
         }
       case .failure(let error):
         var errorMessage = "Cancel failed"
@@ -619,6 +621,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
             object: unwrapped,
             userInfo: nil
           )
+            TransactionManager.onTransactionStatusUpdated(hash: unwrapped.txHash, status: unwrapped.state)
         }
       case .failure(let error):
         var errorMessage = "Cancel failed"

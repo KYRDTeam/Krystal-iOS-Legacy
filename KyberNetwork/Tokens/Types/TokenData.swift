@@ -7,26 +7,27 @@
 
 import Foundation
 import BigInt
+import Services
 
-class Token: Codable, Equatable, Hashable {
-  var address: String
-  var name: String
-  var symbol: String
-  var decimals: Int
-  var logo: String
-  var tag: String?
-
-  init(dictionary: JSONDictionary) {
-    self.name = dictionary["name"] as? String ?? ""
-    self.symbol = dictionary["symbol"] as? String ?? ""
-    self.address = (dictionary["address"] as? String ?? "")
-    self.decimals = dictionary["decimals"] as? Int ?? 0
-    self.logo = dictionary["logo"] as? String ?? ""
-    if let tag = dictionary["tag"] as? String, !tag.isEmpty {
-      self.tag = tag
-    }
-  }
-  
+extension Token {
+//  var address: String
+//  var name: String
+//  var symbol: String
+//  var decimals: Int
+//  var logo: String
+//  var tag: String?
+//
+//  init(dictionary: JSONDictionary) {
+//    self.name = dictionary["name"] as? String ?? ""
+//    self.symbol = dictionary["symbol"] as? String ?? ""
+//    self.address = (dictionary["address"] as? String ?? "")
+//    self.decimals = dictionary["decimals"] as? Int ?? 0
+//    self.logo = dictionary["logo"] as? String ?? ""
+//    if let tag = dictionary["tag"] as? String, !tag.isEmpty {
+//      self.tag = tag
+//    }
+//  }
+//
   static func blankToken() -> Token {
     return Token(name: "Search Token", symbol: "Search Token", address: "", decimals: 0, logo: "")
   }
@@ -35,13 +36,13 @@ class Token: Codable, Equatable, Hashable {
     return self.address == ""
   }
 
-  init(name: String, symbol: String, address: String, decimals: Int, logo: String) {
-    self.name = name
-    self.symbol = symbol
-    self.address = address
-    self.decimals = decimals
-    self.logo = logo
-  }
+//  init(name: String, symbol: String, address: String, decimals: Int, logo: String) {
+//    self.name = name
+//    self.symbol = symbol
+//    self.address = address
+//    self.decimals = decimals
+//    self.logo = logo
+//  }
 
   var isETH: Bool {
     return self.symbol == "ETH"
@@ -71,9 +72,9 @@ class Token: Codable, Equatable, Hashable {
     return self.address.lowercased() == AllChains.klaytnMainnetRPC.quoteTokenAddress.lowercased()
   }
 
-  var isQuoteToken: Bool {
-    return self.isETH || self.isBNB || self.isMatic || self.isAvax || self.isFtm || self.isCro || self.isKlay
-  }
+//  var isQuoteToken: Bool {
+//    return self.isETH || self.isBNB || self.isMatic || self.isAvax || self.isFtm || self.isCro || self.isKlay
+//  }
 
   func toObject(isCustom: Bool = false) -> TokenObject {
     let tokenObject = TokenObject(name: self.name, symbol: self.symbol, address: self.address, decimals: self.decimals, logo: self.logo)

@@ -8,15 +8,24 @@
 import Foundation
 
 enum NetworkError: Error {
-  case backendError(reponse: ErrorResponse)
+  case backendError(reponse: ErrorResponse, code: Int)
   case unknow(description: String)
   
   func localizedDescription() -> String {
     switch self {
-    case .backendError(let reponse):
+    case .backendError(let reponse, _):
       return reponse.error
     case .unknow(let description):
       return description
+    }
+  }
+  
+  func errorCode() -> Int? {
+    switch self {
+    case .backendError(_, let code):
+      return code
+    case .unknow(_):
+      return nil
     }
   }
   

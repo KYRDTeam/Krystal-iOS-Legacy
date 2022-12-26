@@ -30,11 +30,11 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
     }
     
     var priorityText: String {
-        return priorityFee.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1)
+        return NumberFormatUtils.gwei(value: priorityFee)
     }
     
     var maxFeeText: String {
-        return maxFee.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1)
+        return NumberFormatUtils.gwei(value: maxFee)
     }
     
     var nonceText: String {
@@ -133,7 +133,7 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
         } else {
             let basic = setting.basic
             setting.advanced = .init(
-                gasLimit: remoteGasLimit,
+                gasLimit: setting.gasLimit,
                 maxFee: self.getGasPrice(gasType: basic?.gasType ?? .regular),
                 maxPriorityFee: value,
                 nonce: currentNonce
@@ -148,7 +148,7 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
         } else {
             let basic = setting.basic
             setting.advanced = .init(
-                gasLimit: remoteGasLimit,
+                gasLimit: setting.gasLimit,
                 maxFee: value,
                 maxPriorityFee: self.getPriority(gasType: basic?.gasType ?? .regular) ?? .zero,
                 nonce: currentNonce
@@ -163,7 +163,7 @@ class TransactionSettingAdvancedTabViewModel: BaseTransactionSettingTabViewModel
         } else {
             let basic = setting.basic
             setting.advanced = .init(
-                gasLimit: remoteGasLimit,
+                gasLimit: setting.gasLimit,
                 maxFee: self.getGasPrice(gasType: basic?.gasType ?? .regular),
                 maxPriorityFee: self.getPriority(gasType: basic?.gasType ?? .regular) ?? .zero,
                 nonce: value
