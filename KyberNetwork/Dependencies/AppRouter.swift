@@ -72,23 +72,26 @@ class AppRouter: AppRouterProtocol, Coordinator {
   }
   
   func openTransactionHistory() {
-    guard let navigation = UIApplication.shared.topMostViewController() as? UINavigationController else { return }
-    switch KNGeneralProvider.shared.currentChain {
-    case .solana:
-      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigation, type: .solana)
-      coordinator.delegate = self
-      self.historyCoordinator = coordinator
-      coordinate(coordinator: coordinator)
-    default:
-//      let coordinator = KNHistoryCoordinator(navigationController: navigation)
-//      coordinator.delegate = self
-//      self.historyCoordinator = coordinator
-//      coordinate(coordinator: coordinator)
-        let coordinator = HistoryV3Coordinator(navigationController: navigation)
-        coordinate(coordinator: coordinator)
-    }
+      guard let navigation = UIApplication.shared.topMostViewController() as? UINavigationController else { return }
+      switch KNGeneralProvider.shared.currentChain {
+      case .solana:
+          let coordinator = KNTransactionHistoryCoordinator(navigationController: navigation, type: .solana)
+          coordinator.delegate = self
+          self.historyCoordinator = coordinator
+          coordinate(coordinator: coordinator)
+      default:
+          if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.historyV2) {
+              let coordinator = HistoryV3Coordinator(navigationController: navigation)
+              coordinate(coordinator: coordinator)
+          } else {
+              let coordinator = KNHistoryCoordinator(navigationController: navigation)
+              coordinator.delegate = self
+              self.historyCoordinator = coordinator
+              coordinate(coordinator: coordinator)
+          }
+      }
   }
-  
+    
   func openExternalURL(url: String) {
     UIApplication.shared.topMostViewController()?.openSafari(with: url)
   }

@@ -162,6 +162,9 @@
                     </segments>
                     <color key="tintColor" name="buttonBackgroundColor"/>
                     <color key="selectedSegmentTintColor" name="textWhiteColor"/>
+                    <connections>
+                        <action selector="segmentedControlValueChanged:" destination="-1" eventType="valueChanged" id="laI-Zj-jfa"/>
+                    </connections>
                 </segmentedControl>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

@@ -44,6 +44,12 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
         setupSegmentControl()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        MixPanelManager.track("history_open", properties: ["screenid": "history"])
+    }
+    
     override func onAppSelectAllChain() {
         selectedChain = .all
         super.onAppSelectAllChain()
@@ -56,7 +62,11 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
     
     func setupPageController() {
         let historyVC = HistoryCoordinator.createHistoryViewController()
-        let pendingVC = UIViewController()
+        
+        let pendingViewModel = PendingTxViewModel()
+        let pendingVC = PendingTxViewController.instantiateFromNib()
+        pendingVC.viewModel = pendingViewModel
+        
         viewControllers = [historyVC, pendingVC]
         
         pageViewController.view.frame = self.pageContainer.bounds
@@ -93,6 +103,19 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
     
     @IBAction func backTapped(_ sender: Any) {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+        segmentControl.underlineCenterPosition()
+      if sender.selectedSegmentIndex != selectedPageIndex {
+          selectPage(index: sender.selectedSegmentIndex)
+      }
+    }
+    
+    func selectPage(index: Int) {
+        let direction: UIPageViewController.NavigationDirection = index < selectedPageIndex ? .reverse : .forward
+        selectedPageIndex = index
+        pageViewController.setViewControllers([viewControllers[index]], direction: direction, animated: true)
     }
     
 }

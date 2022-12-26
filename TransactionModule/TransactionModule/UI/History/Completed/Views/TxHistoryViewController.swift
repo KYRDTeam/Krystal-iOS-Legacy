@@ -182,9 +182,8 @@ class TxHistoryViewController: BaseWalletOrientedViewController {
     }
     
     @IBAction func swapTapped(_ sender: Any) {
-        parent?.dismiss(animated: true) {
-            AppDependencies.router.openSwap()
-        }
+        parent?.navigationController?.popViewController(animated: true)
+        AppDependencies.router.openSwap()
     }
 
 }
