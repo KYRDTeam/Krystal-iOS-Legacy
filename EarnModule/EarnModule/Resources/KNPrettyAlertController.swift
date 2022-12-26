@@ -28,6 +28,7 @@ class KNPrettyAlertController: KNBaseViewController {
   var popupHeight: CGFloat = 300
     var tapRange: NSRange?
     var swapLinkTap: (() -> Void)?
+    var transitionText: String = ""
   init(title: String?,
        isWarning: Bool = false,
        message: String,
@@ -81,7 +82,7 @@ class KNPrettyAlertController: KNBaseViewController {
       let messageTopContraint = NSLayoutConstraint(item: self.contentLabel, attribute: .top, relatedBy: .equal, toItem: self.containerView, attribute: .top, multiplier: 1, constant: 33)
       self.containerView.addConstraint(messageTopContraint)
     }
-      if message.suffix(11) == "Swap to ETH" {
+      if !transitionText.isEmpty, message.suffix(transitionText.count) == transitionText {
           let linkAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.font: UIFont.karlaBold(ofSize: 16),
             NSAttributedString.Key.foregroundColor: UIColor(named: "buttonBackgroundColor")!,
