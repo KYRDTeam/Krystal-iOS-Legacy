@@ -509,6 +509,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
             firstButtonAction: {
             }
         )
+        alertController.transitionText = "Swap to ETH"
         alertController.swapLinkTap = {
             AppDependencies.router.openSwap(from: from, to: to)
         }
