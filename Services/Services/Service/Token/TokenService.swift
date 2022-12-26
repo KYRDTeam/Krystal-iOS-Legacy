@@ -113,12 +113,12 @@ public class TokenService: BaseService {
         advancedSearchCancellable = provider.request(.advancedSearch(query: query, limit: limit)) { result in
             switch result {
             case .success(let response):
-//                do {
-                    let resp = try! JSONDecoder().decode(AdvancedSearchResponse.self, from: response.data)
+                do {
+                    let resp = try JSONDecoder().decode(AdvancedSearchResponse.self, from: response.data)
                     completion(resp.data?.tokens ?? [])
-//                } catch {
-//                    completion([])
-//                }
+                } catch {
+                    completion([])
+                }
             case .failure:
                 completion([])
             }
