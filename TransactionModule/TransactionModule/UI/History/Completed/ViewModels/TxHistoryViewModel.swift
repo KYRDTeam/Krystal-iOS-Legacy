@@ -65,16 +65,21 @@ class TxHistoryViewModel {
         var rows: [TxHistoryRowType] = []
         rows.append(.header(viewModel: .init(tx: tx)))
         let dict = Dictionary(grouping: tx.tokenTransfers ?? []) { element in
-            return element.token?.symbol
+            return element.token?.address
         }
         let keys = dict.keys.compactMap { $0 }.sorted()
         keys.forEach { key in
             let txs = dict[key] ?? []
             let amount: BigInt = txs.reduce(.zero) { $0 + (BigInt($1.amount) ?? .zero) }
             let usdValue: Double = txs.reduce(0) { $0 + $1.historicalValueInUsd }
-            if let token = txs.first?.token, token.isValid, amount != .zero {
-                let viewModel = TxHistoryTokenCellViewModel(token: token, amount: amount, usdValueInUsd: usdValue, isApproval: false)
-                rows.append(TxHistoryRowType.tokenChange(viewModel: viewModel))
+            if let token = txs.first?.token, amount != .zero {
+                if token.isValid && txs.first?.tokenType == "ERC20" {
+                    let viewModel = TxHistoryTokenCellViewModel(token: token, amount: amount, usdValueInUsd: usdValue, isApproval: false)
+                    rows.append(TxHistoryRowType.tokenChange(viewModel: viewModel))
+                } else if txs.first?.tokenType == "ERC721" || txs.first?.tokenType == "ERC1155" {
+                    let viewModel = TxNFTCellViewModel(token: token, amount: Int(amount), tokenId: txs.first?.tokenId ?? "")
+                    rows.append(TxHistoryRowType.nft(viewModel: viewModel))
+                }
             }
         }
         if let tokenApproval = tx.tokenApproval, let token = tokenApproval.token, token.isValid, let amount = BigInt(tokenApproval.amount), amount > 0 {

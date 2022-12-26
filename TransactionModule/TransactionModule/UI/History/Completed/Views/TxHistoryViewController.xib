@@ -9,13 +9,17 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-SemiBold.ttf">
+            <string>Karla-SemiBold</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TxHistoryViewController" customModule="TransactionModule" customModuleProvider="target">
             <connections>
+                <outlet property="emptyView" destination="CJc-O1-W0n" id="Bdc-Vi-Csc"/>
                 <outlet property="searchContainerView" destination="XUj-37-rT3" id="yjX-GI-yaH"/>
                 <outlet property="searchField" destination="a8t-4Y-62S" id="lB6-ja-sk6"/>
                 <outlet property="searchTokenLabel" destination="O2W-Va-ndO" id="rUC-do-6d3"/>
@@ -36,6 +40,59 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                     </userDefinedRuntimeAttributes>
                 </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CJc-O1-W0n">
+                    <rect key="frame" x="0.0" y="108" width="414" height="788"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mo3-Yk-FpV">
+                            <rect key="frame" x="147" y="376" width="120" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="1s2-On-Gsi"/>
+                                <constraint firstAttribute="width" constant="120" id="t7B-bJ-J8I"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-SemiBold" family="Karla" pointSize="16"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Swap Now">
+                                <color key="titleColor" name="buttonBackgroundColor"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                    <real key="value" value="12"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="kn_borderColor">
+                                    <color key="value" name="buttonBackgroundColor"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_borderWidth">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="swapTapped:" destination="-1" eventType="touchUpInside" id="QSm-Ba-dg2"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No transaction yet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rIK-AM-0i1">
+                            <rect key="frame" x="148.5" y="335.5" width="117.5" height="16.5"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                            <color key="textColor" red="0.41568627450980389" green="0.43529411764705883" blue="0.43137254901960786" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="JBT-Da-eYE">
+                            <rect key="frame" x="175" y="255.5" width="64" height="64"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="64" id="Qqt-gu-zId"/>
+                                <constraint firstAttribute="height" constant="64" id="z4P-Tk-alm"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="JBT-Da-eYE" firstAttribute="centerX" secondItem="CJc-O1-W0n" secondAttribute="centerX" id="BSA-pq-2RT"/>
+                        <constraint firstItem="Mo3-Yk-FpV" firstAttribute="top" secondItem="rIK-AM-0i1" secondAttribute="bottom" constant="24" id="CkT-WE-hmE"/>
+                        <constraint firstItem="rIK-AM-0i1" firstAttribute="top" secondItem="JBT-Da-eYE" secondAttribute="bottom" constant="16" id="JJl-nu-J7j"/>
+                        <constraint firstItem="Mo3-Yk-FpV" firstAttribute="centerX" secondItem="CJc-O1-W0n" secondAttribute="centerX" id="MpV-hW-ijS"/>
+                        <constraint firstItem="Mo3-Yk-FpV" firstAttribute="centerY" secondItem="CJc-O1-W0n" secondAttribute="centerY" id="NyC-aX-tjf"/>
+                        <constraint firstItem="rIK-AM-0i1" firstAttribute="centerX" secondItem="CJc-O1-W0n" secondAttribute="centerX" id="aEm-CH-96J"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F0C-Mw-pjp">
                     <rect key="frame" x="16" y="52" width="382" height="40"/>
                     <subviews>
@@ -141,9 +198,12 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
+                <constraint firstItem="CJc-O1-W0n" firstAttribute="bottom" secondItem="emd-iS-eOG" secondAttribute="bottom" id="F3X-RD-GnU"/>
                 <constraint firstAttribute="bottom" secondItem="emd-iS-eOG" secondAttribute="bottom" id="Inw-Ny-Qsb"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="XUj-37-rT3" secondAttribute="trailing" id="LuB-0b-MOY"/>
                 <constraint firstItem="XUj-37-rT3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Vwu-of-O1E"/>
+                <constraint firstItem="CJc-O1-W0n" firstAttribute="trailing" secondItem="emd-iS-eOG" secondAttribute="trailing" id="WQq-aj-4YR"/>
+                <constraint firstItem="CJc-O1-W0n" firstAttribute="top" secondItem="emd-iS-eOG" secondAttribute="top" id="XAB-ED-Zrl"/>
                 <constraint firstItem="emd-iS-eOG" firstAttribute="top" secondItem="F0C-Mw-pjp" secondAttribute="bottom" constant="16" id="bYq-NO-i96"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="F0C-Mw-pjp" secondAttribute="trailing" constant="16" id="g6c-LG-41v"/>
                 <constraint firstItem="emd-iS-eOG" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="hYv-vp-usv"/>
@@ -151,6 +211,7 @@
                 <constraint firstItem="F0C-Mw-pjp" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="8" id="pP7-Vp-9cZ"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="XUj-37-rT3" secondAttribute="bottom" id="sFi-yo-QiR"/>
                 <constraint firstItem="XUj-37-rT3" firstAttribute="top" secondItem="F0C-Mw-pjp" secondAttribute="bottom" constant="16" id="sO2-1r-c3r"/>
+                <constraint firstItem="CJc-O1-W0n" firstAttribute="leading" secondItem="emd-iS-eOG" secondAttribute="leading" id="sog-vU-qY5"/>
                 <constraint firstItem="F0C-Mw-pjp" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="yf6-nW-8r6"/>
             </constraints>
             <userDefinedRuntimeAttributes>
@@ -162,6 +223,9 @@
     <resources>
         <image name="clear" width="24" height="24"/>
         <image name="search" width="24" height="24"/>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

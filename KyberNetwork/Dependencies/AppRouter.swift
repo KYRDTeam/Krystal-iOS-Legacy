@@ -42,7 +42,7 @@ class AppRouter: AppRouterProtocol, Coordinator {
     UIApplication.shared.topMostViewController()?.present(navigation, animated: true, completion: nil)
   }
   
-  func openChainList(_ selectedChain: ChainType, allowAllChainOption: Bool, onSelectChain: @escaping (ChainType) -> Void) {
+    func openChainList(_ selectedChain: ChainType, allowAllChainOption: Bool, showSolanaOption: Bool, onSelectChain: @escaping (ChainType) -> Void) {
     MixPanelManager.track("import_select_chain_open", properties: ["screenid": "import_select_chain"])
     let popup = SwitchChainViewController(selected: selectedChain)
     var chains = WalletManager.shared.getAllAddresses(walletID: AppState.shared.currentAddress.walletID).flatMap { address in
@@ -52,6 +52,9 @@ class AppRouter: AppRouterProtocol, Coordinator {
     }
     if allowAllChainOption {
       chains = [.all] + chains
+    }
+    if !showSolanaOption {
+        chains.removeAll { $0 == .solana }
     }
     popup.dataSource = chains
     popup.completionHandler = { selectedChain in

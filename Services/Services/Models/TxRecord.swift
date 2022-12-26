@@ -28,6 +28,8 @@ public struct TxRecord: Decodable {
         public var historicalPrice: Double
         public var historicalValueInUsd: Double
         public var token: TokenInfo?
+        public var tokenType: String
+        public var tokenId: String?
     }
     
     public struct TokenApproval: Decodable {

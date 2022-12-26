@@ -12,6 +12,7 @@ import DesignSystem
 import TokenModule
 import BaseModule
 import AppState
+import Dependencies
 
 class TxHistoryViewController: BaseWalletOrientedViewController {
 
@@ -20,9 +21,11 @@ class TxHistoryViewController: BaseWalletOrientedViewController {
     @IBOutlet weak var selectedSearchView: UIView!
     @IBOutlet weak var searchTokenLabel: UILabel!
     @IBOutlet weak var searchContainerView: UIView!
+    @IBOutlet weak var emptyView: UIView!
     
     private let refreshControl = UIRefreshControl()
     var tokenSelectPopup: TokenSelectPopup?
+    var onSwapTapped: (() -> ())?
     
     var viewModel: TxHistoryViewModel!
     
@@ -58,6 +61,7 @@ class TxHistoryViewController: BaseWalletOrientedViewController {
         tableView.registerCellNib(TxFooterCell.self)
         tableView.registerCellNib(TxSkeletonCell.self)
         tableView.registerCellNib(TxDateCell.self)
+        tableView.registerCellNib(TxNFTCell.self)
         tableView.tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
         tableView.contentInset = .init(top: 8, left: 0, bottom: 0, right: 0)
         if #available(iOS 10.0, *) {
@@ -89,6 +93,7 @@ class TxHistoryViewController: BaseWalletOrientedViewController {
             self?.searchTokenLabel.text = token.symbol
             self?.searchContainerView.isHidden = true
             self?.selectedSearchView.isHidden = false
+            self?.emptyView.isHidden = true
             self?.showSkeletonLoading()
             self?.viewModel.load(shouldReset: true)
         }
@@ -109,18 +114,21 @@ class TxHistoryViewController: BaseWalletOrientedViewController {
             self.refreshControl.endRefreshing()
             self.tableView.endUpdates()
         }
+        emptyView.isHidden = true
         showSkeletonLoading()
         viewModel.load(shouldReset: true)
     }
     
     func appDidSwitchChain() {
         resetFilterTokenUI()
+        emptyView.isHidden = true
         showSkeletonLoading()
         viewModel.load(shouldReset: true)
     }
     
     func appDidSwitchAddress() {
         resetFilterTokenUI()
+        emptyView.isHidden = true
         showSkeletonLoading()
         viewModel.load(shouldReset: true)
     }
@@ -140,11 +148,14 @@ class TxHistoryViewController: BaseWalletOrientedViewController {
     }
     
     func bindViewModel() {
+        emptyView.isHidden = true
         showSkeletonLoading()
         viewModel.onRowsUpdated = { [weak self] in
+            guard let self = self else { return }
             DispatchQueue.main.async {
-                self?.hideSkeletonLoading()
-                self?.tableView.reloadData()
+                self.hideSkeletonLoading()
+                self.tableView.reloadData()
+                self.emptyView.isHidden = !self.viewModel.rows.isEmpty
             }
         }
     }
@@ -165,8 +176,15 @@ class TxHistoryViewController: BaseWalletOrientedViewController {
     @IBAction func searchCloseTapped(_ sender: Any) {
         selectedSearchView.isHidden = true
         viewModel.selectedFilterToken = nil
+        emptyView.isHidden = true
         showSkeletonLoading()
         viewModel.load(shouldReset: true)
+    }
+    
+    @IBAction func swapTapped(_ sender: Any) {
+        parent?.dismiss(animated: true) {
+            AppDependencies.router.openSwap()
+        }
     }
 
 }
@@ -194,14 +212,20 @@ extension TxHistoryViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(TxFooterCell.self, indexPath: indexPath)!
             cell.configure(viewModel: viewModel)
             cell.selectionStyle = .none
+            cell.onSelectOpenExplore = { chainID, txHash in
+                AppDependencies.router.openTxHash(txHash: txHash, chainID: chainID)
+            }
             return cell
         case .date(let date):
             let cell = tableView.dequeueReusableCell(TxDateCell.self, indexPath: indexPath)!
             cell.configure(date: date)
             cell.selectionStyle = .none
             return cell
-        default:
-            return UITableViewCell()
+        case .nft(let viewModel):
+            let cell = tableView.dequeueReusableCell(TxNFTCell.self, indexPath: indexPath)!
+            cell.configure(viewModel: viewModel)
+            cell.selectionStyle = .none
+            return cell
         }
     }
     

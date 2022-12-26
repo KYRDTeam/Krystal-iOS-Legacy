@@ -7,10 +7,16 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TokenSelectPopup" customModule="TokenModule" customModuleProvider="target">
             <connections>
                 <outlet property="bottomView" destination="0mh-Ic-uLf" id="zEr-P7-3bf"/>
+                <outlet property="emptyView" destination="hdi-94-wOV" id="7l9-ea-pT3"/>
                 <outlet property="tableView" destination="ua4-eC-stH" id="Fyk-7l-JNw"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="8Yh-ft-eR9"/>
             </connections>
@@ -32,6 +38,32 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </tableView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hdi-94-wOV">
+                    <rect key="frame" x="16" y="44" width="382" height="168"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No token found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="URU-Q5-KQz">
+                            <rect key="frame" x="142" y="132" width="98" height="17"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                            <color key="textColor" red="0.41568627450000001" green="0.43529411759999997" blue="0.43137254899999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="u86-tr-z1k">
+                            <rect key="frame" x="159" y="52" width="64" height="64"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="64" id="CZA-O6-hvA"/>
+                                <constraint firstAttribute="width" constant="64" id="nUK-wy-KtF"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="u86-tr-z1k" firstAttribute="centerX" secondItem="hdi-94-wOV" secondAttribute="centerX" id="3Uk-tA-Dt4"/>
+                        <constraint firstItem="URU-Q5-KQz" firstAttribute="centerX" secondItem="hdi-94-wOV" secondAttribute="centerX" id="QrQ-Jb-Ibq"/>
+                        <constraint firstItem="u86-tr-z1k" firstAttribute="centerX" secondItem="hdi-94-wOV" secondAttribute="centerX" id="TbF-92-R1v"/>
+                        <constraint firstItem="URU-Q5-KQz" firstAttribute="top" secondItem="u86-tr-z1k" secondAttribute="bottom" constant="16" id="clw-LP-p8d"/>
+                        <constraint firstItem="u86-tr-z1k" firstAttribute="centerY" secondItem="hdi-94-wOV" secondAttribute="centerY" id="pMy-ck-RU2"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0mh-Ic-uLf">
                     <rect key="frame" x="0.0" y="212" width="414" height="650"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -41,14 +73,21 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="ua4-eC-stH" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="1YI-n5-Aqg"/>
+                <constraint firstItem="hdi-94-wOV" firstAttribute="trailing" secondItem="ua4-eC-stH" secondAttribute="trailing" id="1lW-Jj-prp"/>
                 <constraint firstItem="0mh-Ic-uLf" firstAttribute="top" secondItem="ua4-eC-stH" secondAttribute="bottom" id="P5k-RV-DDG"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ua4-eC-stH" secondAttribute="trailing" constant="16" id="R5q-tc-Pe1"/>
                 <constraint firstItem="0mh-Ic-uLf" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="a4x-Ug-Omn"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0mh-Ic-uLf" secondAttribute="trailing" id="jgc-g8-vdl"/>
                 <constraint firstItem="ua4-eC-stH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="laI-in-HRL"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="0mh-Ic-uLf" secondAttribute="bottom" id="nkH-Cj-LeY"/>
+                <constraint firstItem="hdi-94-wOV" firstAttribute="top" secondItem="ua4-eC-stH" secondAttribute="top" id="pOI-Ee-zRY"/>
+                <constraint firstItem="hdi-94-wOV" firstAttribute="bottom" secondItem="ua4-eC-stH" secondAttribute="bottom" id="xaW-SS-De9"/>
+                <constraint firstItem="hdi-94-wOV" firstAttribute="leading" secondItem="ua4-eC-stH" secondAttribute="leading" id="yDI-f0-PiF"/>
             </constraints>
             <point key="canvasLocation" x="139" y="110"/>
         </view>
     </objects>
+    <resources>
+        <image name="search" width="24" height="24"/>
+    </resources>
 </document>

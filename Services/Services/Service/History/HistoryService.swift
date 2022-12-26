@@ -16,12 +16,12 @@ public class HistoryService: BaseService {
         provider.request(.getHistory(walletAddress: walletAddress, tokenAddress: tokenAddress, chainIds: chainIds, limit: limit, endTime: endTime)) { result in
             switch result {
             case .success(let response):
-//                do {
+                do {
                     let resp = try! JSONDecoder().decode(HistoryResponse.self, from: response.data)
                     completion(resp.data ?? [])
-//                } catch {
-//                    completion([])
-//                }
+                } catch {
+                    completion([])
+                }
             case .failure:
                 completion([])
             }

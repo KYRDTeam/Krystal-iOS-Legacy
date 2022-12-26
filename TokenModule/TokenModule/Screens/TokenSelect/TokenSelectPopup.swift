@@ -10,6 +10,7 @@ import Services
 
 public class TokenSelectPopup: UIViewController, UIGestureRecognizerDelegate {
     
+    @IBOutlet weak var emptyView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bottomView: UIView!
     
@@ -47,6 +48,7 @@ public class TokenSelectPopup: UIViewController, UIGestureRecognizerDelegate {
         viewModel.onTokensUpdated = { [weak self] in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
+                self?.emptyView.isHidden = self?.viewModel.tokens.isEmpty == false
             }
         }
     }

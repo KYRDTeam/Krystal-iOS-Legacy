@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 extension UIImage {
+    static let txNFT = UIImage(imageName: "nft")
     static let txApprove = UIImage(imageName: "tx_approve")
     static let txBridge = UIImage(imageName: "tx_bridge")
     static let txClaim = UIImage(imageName: "tx_claim")

@@ -159,7 +159,7 @@ class BrowserViewController: BaseWalletOrientedViewController {
     }
     
     @IBAction func chainTapped(_ sender: Any) {
-        AppDependencies.router.openChainList(AppState.shared.currentChain, allowAllChainOption: false) { [weak self] chain in
+        AppDependencies.router.openChainList(AppState.shared.currentChain, allowAllChainOption: false, showSolanaOption: false) { [weak self] chain in
           self?.reloadChainUI()
         }
     }

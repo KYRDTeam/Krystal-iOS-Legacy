@@ -31,6 +31,10 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
         return selectedChain
     }
     
+    override var supportSolana: Bool {
+        return false
+    }
+    
     var selectedChain: ChainType = .all
     
     override func viewDidLoad() {
