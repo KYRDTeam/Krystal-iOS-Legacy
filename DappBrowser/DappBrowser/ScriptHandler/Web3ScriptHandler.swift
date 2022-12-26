@@ -244,6 +244,17 @@ class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
             break
         }
     }
+    
+    func connectSolanaWallet(network: ProviderNetwork, id: Int64) {
+        guard let wallet = wallet else {
+            return
+        }
+        guard let address = WalletManager.shared.address(wallet: wallet, forCoin: .solana) else {
+            return
+        }
+        webview?.tw.set(network: network.rawValue, address: address)
+        webview?.tw.send(network: network, results: [address], to: id)
+    }
 
     func handleRequestAccounts(network: ProviderNetwork, id: Int64) {
         guard let wallet = wallet else {
@@ -260,16 +271,19 @@ class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
 //        alert.addAction(UIAlertAction(title: "Connect", style: .default, handler: { [weak webview] _ in
             switch network {
             case .ethereum:
-                guard let address = WalletManager.shared.address(wallet: wallet, forCoin: .ethereum) else {
-                    return
+                switch AppState.shared.currentChain {
+                case .solana:
+                    self.connectSolanaWallet(network: network, id: id)
+                default:
+                    guard let address = WalletManager.shared.address(wallet: wallet, forCoin: .ethereum) else {
+                        return
+                    }
+                    webview?.tw.set(network: network.rawValue, address: address)
+                    webview?.tw.send(network: network, results: [address], to: id)
                 }
-                webview?.tw.set(network: network.rawValue, address: address)
-                webview?.tw.send(network: network, results: [address], to: id)
+                
             case .solana:
-                guard let address = WalletManager.shared.address(wallet: wallet, forCoin: .solana) else {
-                    return
-                }
-                webview?.tw.send(network: network, results: [address], to: id)
+                self.connectSolanaWallet(network: network, id: id)
             case .cosmos:
                 guard let wallet = self.wallet else {
                     return
