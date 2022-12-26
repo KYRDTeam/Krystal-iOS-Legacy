@@ -148,6 +148,27 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
       self.refreshControl.removeFromSuperview()
     }
   }
+    
+    override func reloadWallet() {
+        super.reloadWallet()
+        if self.viewModel.currentChain != .all {
+          self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
+        }
+        viewModel.badgeNumber = 0
+        getNotificationBadgeNumber()
+        guard self.isViewLoaded else { return }
+        calculatingQueue.async {
+          self.viewModel.reloadAllData()
+          self.delegate?.overviewMainViewController(self, run: .pullToRefreshed(current: self.viewModel.currentMode, overviewMode: self.viewModel.overviewMode))
+          DispatchQueue.main.async {
+            self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
+            self.tableView.reloadData()
+            self.infoCollectionView.reloadData()
+            self.showLoadingSkeleton()
+            self.updateUIBadgeNotification()
+          }
+        }
+    }
   
   @objc func refresh(_ sender: AnyObject) {
     if self.viewModel.isRefreshingTableView {
@@ -414,28 +435,6 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   
   override func onAppSelectAllChain() {
     self.onChainSelected(chain: .all)
-  }
-  
-  @objc override func onAppSwitchAddress() {
-    super.onAppSwitchAddress()
-    
-    if self.viewModel.currentChain != .all {
-      self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
-    }
-    viewModel.badgeNumber = 0
-    getNotificationBadgeNumber()
-    guard self.isViewLoaded else { return }
-    calculatingQueue.async {
-      self.viewModel.reloadAllData()
-      self.delegate?.overviewMainViewController(self, run: .pullToRefreshed(current: self.viewModel.currentMode, overviewMode: self.viewModel.overviewMode))
-      DispatchQueue.main.async {
-        self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
-        self.tableView.reloadData()
-        self.infoCollectionView.reloadData()
-        self.showLoadingSkeleton()
-        self.updateUIBadgeNotification()
-      }
-    }
   }
   
   func coordinatorDidUpdateCurrencyMode(_ mode: CurrencyMode) {

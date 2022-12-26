@@ -36,6 +36,7 @@ class EarnListViewController: InAppBrowsingViewController {
     var selectedPlatforms: Set<EarnPlatform>!
     var selectedTypes: [EarningType] = [.staking, .lending]
     var isSupportEarnv2: Observable<Bool> = .init(true)
+    var isEditingField: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -116,7 +117,7 @@ class EarnListViewController: InAppBrowsingViewController {
         }
 
         self.emptyView.isHidden = !self.displayDataSource.isEmpty
-        self.isSupportEarnv2.value = !self.displayDataSource.isEmpty
+        self.isSupportEarnv2.value = !self.dataSource.isEmpty
         self.tableView.reloadData()
     }
     
@@ -190,6 +191,7 @@ class EarnListViewController: InAppBrowsingViewController {
             self.searchFieldActionButton.setImage(UIImage(named: "close-search-icon"), for: .normal)
             self.view.layoutIfNeeded()
         }
+        isEditingField = true
     }
     
     func updateUIEndSearchingMode() {
@@ -199,6 +201,7 @@ class EarnListViewController: InAppBrowsingViewController {
             self.view.endEditing(true)
             self.view.layoutIfNeeded()
         }
+        isEditingField = false
     }
     
     @IBAction func filterButtonTapped(_ sender: Any) {
@@ -216,7 +219,14 @@ class EarnListViewController: InAppBrowsingViewController {
     }
     
     @IBAction func onSearchButtonTapped(_ sender: Any) {
-        self.updateUIStartSearchingMode()
+        if isEditingField {
+            updateUIEndSearchingMode()
+            searchTextField.text = ""
+            searchTextField.resignFirstResponder()
+            reloadUI()
+        } else {
+            updateUIStartSearchingMode()
+        }
     }
 }
 
@@ -329,12 +339,23 @@ extension EarnListViewController: UITextFieldDelegate {
 
 extension EarnListViewController: EarnPoolViewCellDelegate {
     func didSelectRewardApy(platform: EarnPlatform, pool: EarnPoolModel) {
-        let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: pool.apy), NumberFormatUtils.percent(value: platform.rewardApy))
+        let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: platform.apy), NumberFormatUtils.percent(value: platform.rewardApy))
         showTopBannerView(message: messge)
     }
     
     func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
         delegate?.didSelectPlatform(platform: platform, pool: pool)
+    }
+    
+    func showWarning(_ type: String) {
+        switch type {
+        case "disabled":
+            self.showErrorTopBannerMessage(message: Strings.stakeDisableMessage)
+        case "warning":
+            self.showErrorTopBannerMessage(message: Strings.stakeWarningMessage)
+        default:
+            break
+        }
     }
 }
 

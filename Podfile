@@ -42,7 +42,9 @@ def cryptoHelperPods
   pod 'TrustCore', '~> 0.0.7'
   pod 'WalletConnectSwift'
   pod 'Web3'
+#  pod 'WalletCore'
   # pod 'web3swift', :git=>'https://github.com/BANKEX/web3swift', :branch=>'master'
+  pod 'TrustWeb3Provider', :git => 'https://github.com/tungnguyen20/trust-web3-provider', :branch => 'develop'
 end
 
 def networkingPods
@@ -53,7 +55,7 @@ def networkingPods
   pod 'Starscream', '~> 3.1'
   pod 'Kingfisher', '~> 7.0'
   pod 'Moya', '~> 10.0.1'
-  pod 'Mixpanel-swift'
+  pod 'Mixpanel-swift', '~> 3.1.7'
 end
 
 def databasePods
@@ -186,6 +188,18 @@ target 'BaseModule' do
   use_frameworks!
   
   pod 'FittedSheets'
+end
+
+target 'DappBrowser' do
+  project 'DappBrowser/DappBrowser.xcodeproj'
+  use_frameworks!
+  
+  pod 'TrustWeb3Provider', :git => 'https://github.com/tungnguyen20/trust-web3-provider', :branch => 'develop'
+#  pod 'WalletCore'
+  pod 'TrustWalletCore'
+  pod 'CryptoSwift'
+  pod 'FittedSheets'
+  pod 'MBProgressHUD'
 end
 
 target 'KyberNetwork' do

@@ -53,6 +53,7 @@ class StakingViewController: InAppBrowsingViewController {
     @IBOutlet weak var amountReceiveInfoView: TxInfoView!
     @IBOutlet weak var rateInfoView: TxInfoView!
     @IBOutlet weak var networkFeeInfoView: TxInfoView!
+    @IBOutlet weak var rewardApyInfoView: TxInfoView!
     
     @IBOutlet weak var earningTokenContainerView: StakingEarningTokensView!
     @IBOutlet weak var infoAreaTopContraint: NSLayoutConstraint!
@@ -150,7 +151,12 @@ class StakingViewController: InAppBrowsingViewController {
         
         amountTextField.setPlaceholder(text: Strings.amount, color: AppTheme.current.secondaryTextColor)
         
-        apyInfoView.setTitle(title: Strings.apyTitle, underlined: false)
+        apyInfoView.setTitle(title: Strings.supplyApy, underlined: false)
+        if viewModel.hasRewardApy {
+            rewardApyInfoView.setTitle(title: Strings.rewardApy, underlined: false)
+        } else {
+            rewardApyInfoView.removeFromSuperview()
+        }
         
         amountReceiveInfoView.setTitle(title: Strings.youWillReceive, underlined: false)
         
@@ -259,6 +265,10 @@ class StakingViewController: InAppBrowsingViewController {
     private func bindingViewModel() {
         stakeTokenImageView.setImage(urlString: viewModel.token.logo, symbol: viewModel.token.symbol)
         apyInfoView.setValue(value: viewModel.displayAPY, highlighted: true)
+        
+        if viewModel.hasRewardApy {
+            rewardApyInfoView.setValue(value: viewModel.displayRewardApy, highlighted: true)
+        }
         
         viewModel.balance.observeAndFire(on: self) { [weak self] _ in
             self?.stakeTokenLabel.text = self?.viewModel.displayStakeToken
@@ -470,18 +480,11 @@ class StakingViewController: InAppBrowsingViewController {
     }
     
     func sendApprove(tokenAddress: String, remain: BigInt, symbol: String, toAddress: String) {
-        let vm = ApproveTokenViewModel(symbol: symbol, tokenAddress: tokenAddress, remain: remain, toAddress: toAddress, chain: AppState.shared.currentChain)
-        let vc = ApproveTokenViewController(viewModel: vm)
-        vc.onApproveSent = { hash in
+        let param = ApprovePopup.ApproveParam(symbol: symbol, tokenAddress: tokenAddress, remain: remain, toAddress: toAddress, chain: AppState.shared.currentChain, gasLimit: AppDependencies.gasConfig.defaultApproveGasLimit)
+        ApprovePopup.show(on: self, param: param) { hash in
             self.viewModel?.approveHash = hash
             self.viewModel.nextButtonStatus.value = .approving
         }
-        vc.onFailApprove = { [weak self] error in
-          self?.showTopBannerView(message: TxErrorParser.parse(error: AnyError(error)).message)
-          self?.viewModel.nextButtonStatus.value = .needApprove
-        }
-        
-        self.present(vc, animated: true, completion: nil)
     }
     
     func openStakeSummary(txObject: TxObject, settings: TxSettingObject, displayInfo: StakeDisplayInfo) {

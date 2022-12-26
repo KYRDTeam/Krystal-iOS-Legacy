@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -24,7 +24,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cvg-Xx-b5L">
-                        <rect key="frame" x="15" y="21" width="130.66666666666666" height="32"/>
+                        <rect key="frame" x="15" y="21" width="149.66666666666666" height="32"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chain_polygon_big_icon" translatesAutoresizingMaskIntoConstraints="NO" id="krA-XX-RNd">
                                 <rect key="frame" x="10" y="8" width="16" height="16"/>
@@ -45,14 +45,25 @@
                                 <color key="textColor" name="normalTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="warning_icon" translatesAutoresizingMaskIntoConstraints="NO" id="srF-48-50N">
+                                <rect key="frame" x="123.66666666666666" y="8" width="16" height="16"/>
+                                <color key="tintColor" name="warningColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="16" id="5at-Yg-z6c"/>
+                                    <constraint firstAttribute="height" constant="16" id="OdS-C1-kla"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" name="innerContainerBgColor"/>
                         <constraints>
                             <constraint firstItem="krA-XX-RNd" firstAttribute="centerY" secondItem="cvg-Xx-b5L" secondAttribute="centerY" id="2vr-8f-Sdd"/>
-                            <constraint firstAttribute="trailing" secondItem="2dT-C1-cno" secondAttribute="trailing" constant="12" id="6cN-1s-5wg"/>
+                            <constraint firstAttribute="trailing" secondItem="2dT-C1-cno" secondAttribute="trailing" priority="250" constant="12" id="6cN-1s-5wg"/>
                             <constraint firstAttribute="height" constant="32" id="CeE-no-Hoh"/>
+                            <constraint firstItem="srF-48-50N" firstAttribute="centerY" secondItem="cvg-Xx-b5L" secondAttribute="centerY" id="DJW-a9-r1U"/>
+                            <constraint firstItem="srF-48-50N" firstAttribute="leading" secondItem="2dT-C1-cno" secondAttribute="trailing" priority="999" constant="5" id="PGw-XT-Yum"/>
                             <constraint firstItem="4Vp-qt-l8J" firstAttribute="leading" secondItem="krA-XX-RNd" secondAttribute="trailing" constant="6" id="R0n-4y-lja"/>
                             <constraint firstItem="2dT-C1-cno" firstAttribute="leading" secondItem="4Vp-qt-l8J" secondAttribute="trailing" constant="6" id="dVW-im-Gnk"/>
+                            <constraint firstAttribute="trailing" secondItem="srF-48-50N" secondAttribute="trailing" constant="10" id="jWw-0m-G29"/>
                             <constraint firstItem="krA-XX-RNd" firstAttribute="leading" secondItem="cvg-Xx-b5L" secondAttribute="leading" constant="10" id="nMz-lB-RFy"/>
                             <constraint firstItem="2dT-C1-cno" firstAttribute="centerY" secondItem="cvg-Xx-b5L" secondAttribute="centerY" id="rvI-pd-X76"/>
                             <constraint firstItem="4Vp-qt-l8J" firstAttribute="centerY" secondItem="krA-XX-RNd" secondAttribute="centerY" id="wMn-zc-yPg"/>
@@ -95,7 +106,7 @@
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ps-oU-6tn">
-                        <rect key="frame" x="281" y="25.666666666666671" width="24" height="24"/>
+                        <rect key="frame" x="286" y="25.666666666666671" width="24" height="24"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="24" id="4Qs-tN-gXm"/>
                             <constraint firstAttribute="height" constant="24" id="Tsp-RB-5EB"/>
@@ -120,7 +131,7 @@
                     <constraint firstItem="Z5T-5U-FyF" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="D8p-BV-h7I"/>
                     <constraint firstItem="w8h-4v-VAS" firstAttribute="leading" secondItem="jTw-co-Rnv" secondAttribute="trailing" constant="5" id="Dfg-Ns-DbN"/>
                     <constraint firstItem="Z5T-5U-FyF" firstAttribute="leading" secondItem="Zei-zA-9ND" secondAttribute="trailing" constant="5" id="Gbw-8x-yV7"/>
-                    <constraint firstAttribute="trailing" secondItem="7ps-oU-6tn" secondAttribute="trailing" constant="20" id="Jr4-3p-Kjz"/>
+                    <constraint firstAttribute="trailing" secondItem="7ps-oU-6tn" secondAttribute="trailing" constant="15" id="Jr4-3p-Kjz"/>
                     <constraint firstAttribute="trailing" secondItem="ZHK-Oq-l8H" secondAttribute="trailing" constant="13" id="QA7-mA-Yy3"/>
                     <constraint firstAttribute="trailing" secondItem="w8h-4v-VAS" secondAttribute="trailing" constant="65" id="XVe-f5-dDS"/>
                     <constraint firstAttribute="bottom" secondItem="w8h-4v-VAS" secondAttribute="bottom" constant="12" id="cs4-2E-fzm"/>
@@ -128,6 +139,7 @@
                     <constraint firstItem="cvg-Xx-b5L" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="21" id="ejs-Vp-6Pb"/>
                     <constraint firstAttribute="trailing" secondItem="Z5T-5U-FyF" secondAttribute="trailing" constant="65" id="giK-nK-grx"/>
                     <constraint firstItem="w8h-4v-VAS" firstAttribute="centerY" secondItem="jTw-co-Rnv" secondAttribute="centerY" id="oiZ-28-VHX"/>
+                    <constraint firstItem="jTw-co-Rnv" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cvg-Xx-b5L" secondAttribute="trailing" constant="5" id="tRx-xr-kQt"/>
                     <constraint firstAttribute="bottom" secondItem="ZHK-Oq-l8H" secondAttribute="bottom" id="udc-3y-NKJ"/>
                     <constraint firstItem="7ps-oU-6tn" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="wo5-Pj-p7M"/>
                     <constraint firstItem="ZHK-Oq-l8H" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="13" id="z1A-h6-dDq"/>
@@ -138,10 +150,15 @@
                 <outlet property="apyValueLabel" destination="Z5T-5U-FyF" id="WSv-ed-kIz"/>
                 <outlet property="dashView" destination="ZHK-Oq-l8H" id="BWq-uZ-viJ"/>
                 <outlet property="nameLabel" destination="4Vp-qt-l8J" id="ZJ1-Ti-nIh"/>
+                <outlet property="platformContainerView" destination="cvg-Xx-b5L" id="lGM-Vc-9we"/>
                 <outlet property="platformIcon" destination="krA-XX-RNd" id="fnh-fj-Jm7"/>
+                <outlet property="plusButton" destination="7ps-oU-6tn" id="hB5-rA-heC"/>
                 <outlet property="rewardApyIcon" destination="e00-WF-oe9" id="iHv-FF-Br4"/>
                 <outlet property="tvlValueLabel" destination="w8h-4v-VAS" id="Dgz-Xw-VJv"/>
                 <outlet property="typeLabel" destination="2dT-C1-cno" id="gIT-Rc-k0u"/>
+                <outlet property="typeLabelSpaceWithWarningIcon" destination="PGw-XT-Yum" id="a5W-rc-izI"/>
+                <outlet property="typeLabelTrailingContraint" destination="6cN-1s-5wg" id="tl9-vx-TdO"/>
+                <outlet property="warningIconImageView" destination="srF-48-50N" id="j9J-nz-kmd"/>
             </connections>
             <point key="canvasLocation" x="117.69230769230769" y="67.890995260663502"/>
         </tableViewCell>
@@ -150,6 +167,7 @@
         <image name="chain_polygon_big_icon" width="84" height="84"/>
         <image name="green_plus_icon" width="24" height="24"/>
         <image name="reward_apy_icon" width="16" height="16.333333969116211"/>
+        <image name="warning_icon" width="16" height="16"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -164,6 +182,9 @@
         </namedColor>
         <namedColor name="textWhiteColor70">
             <color red="1" green="1" blue="1" alpha="0.69999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="warningColor">
+            <color red="1" green="0.75294117647058822" blue="0.035294117647058823" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

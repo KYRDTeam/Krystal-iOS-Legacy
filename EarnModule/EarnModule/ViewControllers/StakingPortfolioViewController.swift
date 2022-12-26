@@ -93,7 +93,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     private func updateUIEmptyView() {
         guard isViewLoaded else { return }
         if viewModel.isSupportEarnv2 {
-            if viewModel.searchText.isEmpty {
+            if viewModel.searchText.isEmpty && viewModel.isSelectedAllPlatform && viewModel.isSelectedAllType {
                 emptyIcon.image = Images.emptyDeposit
                 emptyLabel.text = Strings.emptyTokenDeposit
             } else {
@@ -127,6 +127,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
             self.searchFieldActionButton.setImage(UIImage(named: "close-search-icon"), for: .normal)
             self.view.layoutIfNeeded()
         }
+        viewModel.isEditing = true
     }
     
     func updateUIEndSearchingMode() {
@@ -136,10 +137,19 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
             self.view.endEditing(true)
             self.view.layoutIfNeeded()
         }
+        viewModel.isEditing = false
     }
     
     @IBAction func onSearchButtonTapped(_ sender: Any) {
-        self.updateUIStartSearchingMode()
+        if viewModel.isEditing {
+            updateUIEndSearchingMode()
+            searchTextField.text = ""
+            searchTextField.resignFirstResponder()
+            viewModel.searchText = ""
+            reloadUI()
+        } else {
+            updateUIStartSearchingMode()
+        }
     }
 
     @IBAction func filterButtonTapped(_ sender: Any) {
@@ -164,11 +174,17 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     @objc override func onAppSwitchChain() {
         let currentChain = AppState.shared.currentChain
         viewModel.chainID = currentChain.getChainId()
+        viewModel.resetFilter()
         reloadUI()
+    }
+    
+    override func onAppSwitchAddress(switchChain: Bool) {
+        viewModel.requestData()
     }
     
     override func onAppSelectAllChain() {
         viewModel.chainID = nil
+        viewModel.resetFilter()
         reloadUI()
     }
     
@@ -234,11 +250,9 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
     
     func chartCell(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(PortfolioPieChartCell.self, indexPath: indexPath)!
-        if let portfolio = viewModel.portfolio {
-            cell.viewModel = PortfolioPieChartCellViewModel(earningBalances: portfolio.0, chainID: viewModel.chainID)
-            cell.updateUI(animate: viewModel.shouldAnimateChart)
-            viewModel.shouldAnimateChart = false
-        }
+        cell.viewModel = PortfolioPieChartCellViewModel(earningBalances: viewModel.filterEarningBalance(), chainID: viewModel.chainID)
+        cell.updateUI(animate: viewModel.shouldAnimateChart)
+        viewModel.shouldAnimateChart = false
         return cell
     }
     
@@ -456,14 +470,22 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
                               address: earningBalance.toUnderlyingToken.address,
                               decimals: earningBalance.toUnderlyingToken.decimals,
                               logo: earningBalance.toUnderlyingToken.logo)
-            let earnPlatform = EarnPlatform(platform: earningBalance.platform, apy: earningBalance.apy, tvl: 0)
+            let earnPlatform = EarnPlatform(platform: earningBalance.platform, apy: earningBalance.apy, rewardApy: earningBalance.rewardApy, tvl: 0)
             self?.delegate?.didSelectPlatform(token: token, platform: earnPlatform, chainId: earningBalance.chainID)
         }
         let stakeImage = swipeCellImageView(title: plusTitleFor(earningType: earningType), icon: Images.greenPlus, color: AppTheme.current.primaryColor)
         stakeAction.image = stakeImage
         stakeAction.backgroundColor = AppTheme.current.sectionBackgroundColor
         
-        return [unstakeAction, stakeAction]
+        let cellModel = viewModel.displayDataSource.value.0[indexPath.row]
+        
+        if cellModel.warningType == .none {
+            return [unstakeAction, stakeAction]
+        } else {
+            return [unstakeAction]
+        }
+        
+        
     }
     
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {

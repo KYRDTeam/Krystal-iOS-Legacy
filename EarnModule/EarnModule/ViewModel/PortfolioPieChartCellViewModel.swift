@@ -11,27 +11,61 @@ import Services
 import Utilities
 import BigInt
 
+class PieChartModel {
+    let chainId: Int
+    let symbol: String
+    let logo: String
+    var balance: Double
+    var usd: Double
+    
+    init(chainId: Int, symbol: String, logo: String, balance: Double, usd: Double) {
+        self.chainId = chainId
+        self.symbol = symbol
+        self.logo = logo
+        self.balance = balance
+        self.usd = usd
+    }
+    
+    func titleString(totalValue: Double) -> String {
+        var toUnderlyingBalanceString = symbol + " " + StringFormatter.percentString(value: usd / totalValue)
+        return toUnderlyingBalanceString
+    }
+    
+    func usdDetailString() -> String {
+        return StringFormatter.usdString(value: usd)
+    }
+}
+
 class PortfolioPieChartCellViewModel: BaseViewModel {
     let earningBalances: [EarningBalance]
     let chainID: Int?
     
-    var dataSource: [EarningBalance] {
-        var earningBalanceData = earningBalances
-        if let chainID = chainID {
-            earningBalanceData = earningBalances.filter({ item in
-                return item.chainID == chainID
-            })
+    var dataSource: [PieChartModel] {
+        var earningBalanceData: [PieChartModel]  = []
+        
+        earningBalances.forEach { earningBalance in
+            var isContaint = false
+            for model in earningBalanceData {
+                if model.chainId == earningBalance.chainID, model.symbol == earningBalance.toUnderlyingToken.symbol {
+                    isContaint = true
+                    model.balance += earningBalance.balanceValue()
+                    model.usd += earningBalance.usdValue()
+                }
+            }
+            
+            if !isContaint {
+                let balance = earningBalance.balanceValue()
+                let usd = earningBalance.usdValue()
+                let pieChartModel = PieChartModel(chainId: earningBalance.chainID, symbol: earningBalance.toUnderlyingToken.symbol, logo: earningBalance.toUnderlyingToken.logo, balance: balance, usd: usd)
+                earningBalanceData.append(pieChartModel)
+            }
         }
         
-        earningBalanceData = earningBalanceData.sorted(by: { firstObject, secondObject in
-            let firstBalance = BigInt(firstObject.toUnderlyingToken.balance) ?? BigInt(0)
-            let firstUsdValue = BigInt(firstObject.underlyingUsd * pow(10.0 , Double(firstObject.toUnderlyingToken.decimals))) * firstBalance / BigInt(pow(10.0 , Double(firstObject.toUnderlyingToken.decimals)))
-            
-            
-            let secondBalance = BigInt(secondObject.toUnderlyingToken.balance) ?? BigInt(0)
-            let secondUsdValue = BigInt(secondObject.underlyingUsd * pow(10.0 , Double(secondObject.toUnderlyingToken.decimals))) * secondBalance / BigInt(pow(10.0 , Double(secondObject.toUnderlyingToken.decimals)))
-            return firstUsdValue > secondUsdValue
-        })
+        if let chainID = chainID {
+            earningBalanceData = earningBalanceData.filter({ $0.chainId == chainID })
+        }
+        
+        earningBalanceData = earningBalanceData.sorted(by: { $0.usd > $1.usd })
         return earningBalanceData
     }
     
@@ -39,8 +73,8 @@ class PortfolioPieChartCellViewModel: BaseViewModel {
         if dataSource.count > 5 {
             var total: Double = 0.0
             for index in 5..<dataSource.count {
-                let earningBalance = dataSource[index]
-                total += earningBalance.usdValue()
+                let model = dataSource[index]
+                total += model.usd
             }
             return total
         }
@@ -74,7 +108,7 @@ class PortfolioPieChartCellViewModel: BaseViewModel {
             })
         }
         for earningBalance in earningBalanceData {
-            total += (earningBalance.usdValue() * earningBalance.apy) / 100
+            total += (earningBalance.usdValue() * (earningBalance.apy + earningBalance.rewardApy) ) / 100
         }
         return total / earningAssets
     }
@@ -84,6 +118,9 @@ class PortfolioPieChartCellViewModel: BaseViewModel {
     }
     
     var annualYieldString: String {
+        if earningAssets * apyDouble < 0.01 {
+            return "< $0.01"
+        }
         return StringFormatter.usdString(value: earningAssets * apyDouble)
     }
     

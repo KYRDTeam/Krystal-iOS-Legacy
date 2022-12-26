@@ -26,6 +26,7 @@ class StakingPortfolioViewModel {
     var showStaking: Bool = false
     var showPending: Bool = false
     var shouldAnimateChart: Bool = true
+    var isEditing: Bool = false
 
     func cleanAllData() {
         displayDataSource.value.0.removeAll()
@@ -38,61 +39,12 @@ class StakingPortfolioViewModel {
     
     func reloadDataSource() {
         cleanAllData()
-        guard let data = portfolio else {
-            return
-        }
-
         var output: [StakingPortfolioCellModel] = []
         var pending: [StakingPortfolioCellModel] = []
         
-        var pendingUnstakeData = data.1
-        var earningBalanceData = data.0
-        
-        if !searchText.isEmpty {
-            pendingUnstakeData = pendingUnstakeData.filter({ item in
-                return item.symbol.lowercased().contains(searchText)
-            })
-        }
-        
-        if let unwrap = chainID {
-            pendingUnstakeData = pendingUnstakeData.filter({ item in
-                return item.chainID == unwrap
-            })
-        }
-        
-        if !searchText.isEmpty {
-            earningBalanceData = earningBalanceData.filter({ item in
-                return item.stakingToken.symbol.lowercased().contains(searchText) || item.toUnderlyingToken.symbol.lowercased().contains(searchText)
-            })
-        }
-        
-        if let unwrap = chainID {
-            earningBalanceData = earningBalanceData.filter({ item in
-                return item.chainID == unwrap
-            })
-        }
-        
-        if !isSelectedAllPlatform {
-            earningBalanceData = earningBalanceData.filter({ item in
-                return self.selectedPlatforms.contains(item.platform.toEarnPlatform())
-            })
-            
-            pendingUnstakeData = pendingUnstakeData.filter({ item in
-                return self.selectedPlatforms.contains(item.platform.toEarnPlatform())
-            })
-        }
-        
-        // filter type
-        earningBalanceData = earningBalanceData.filter({ item in
-            let earningType = EarningType(value: item.platform.type)
-            return self.selectedTypes.contains(earningType)
-        })
-        
-        pendingUnstakeData = pendingUnstakeData.filter({ item in
-            let earningType = EarningType(value: item.platform.type)
-            return self.selectedTypes.contains(earningType)
-        })
-        
+        var pendingUnstakeData = filterPendingUnstake()
+        var earningBalanceData = filterEarningBalance()
+
         pendingUnstakeData.forEach({ item in
             pending.append(StakingPortfolioCellModel(pendingUnstake: item))
         })
@@ -103,6 +55,62 @@ class StakingPortfolioViewModel {
         
         displayDataSource.value = (output, pending)
         dataSource.value = (output, pending)
+    }
+    
+    func filterEarningBalance() -> [EarningBalance] {
+        guard let data = portfolio else {
+            return []
+        }
+        var earningBalanceData = data.0
+        
+        if !searchText.isEmpty {
+            earningBalanceData = earningBalanceData.filter({ item in
+                return item.stakingToken.symbol.lowercased().contains(searchText) || item.toUnderlyingToken.symbol.lowercased().contains(searchText)
+            })
+        }
+        if let unwrap = chainID {
+            earningBalanceData = earningBalanceData.filter({ item in
+                return item.chainID == unwrap
+            })
+        }
+        if !isSelectedAllPlatform {
+            earningBalanceData = earningBalanceData.filter({ item in
+                return self.selectedPlatforms.contains(item.platform.toEarnPlatform())
+            })
+        }
+        earningBalanceData = earningBalanceData.filter({ item in
+            let earningType = EarningType(value: item.platform.type)
+            return self.selectedTypes.contains(earningType)
+        })
+
+        return earningBalanceData
+    }
+    
+    func filterPendingUnstake() -> [PendingUnstake] {
+        guard let data = portfolio else {
+            return []
+        }
+        var pendingUnstakeData = data.1
+        if !searchText.isEmpty {
+            pendingUnstakeData = pendingUnstakeData.filter({ item in
+                return item.symbol.lowercased().contains(searchText)
+            })
+        }
+        if let unwrap = chainID {
+            pendingUnstakeData = pendingUnstakeData.filter({ item in
+                return item.chainID == unwrap
+            })
+        }
+        if !isSelectedAllPlatform {
+            pendingUnstakeData = pendingUnstakeData.filter({ item in
+                return self.selectedPlatforms.contains(item.platform.toEarnPlatform())
+            })
+        }
+        pendingUnstakeData = pendingUnstakeData.filter({ item in
+            let earningType = EarningType(value: item.platform.type)
+            return self.selectedTypes.contains(earningType)
+        })
+        return pendingUnstakeData
     }
     
     func requestData(shouldShowLoading: Bool = true) {
@@ -119,12 +127,17 @@ class StakingPortfolioViewModel {
                 self.portfolio = portfolio
                 self.reloadDataSource()
                 if shouldShowLoading {
-                    self.selectedPlatforms = self.getAllPlatform()
+                    self.resetFilter()
                 }
             case .failure(let error):
                 self.error.value = error
             }
         }
+    }
+    
+    func resetFilter() {
+        self.selectedPlatforms = self.getAllPlatform()
+        self.selectedTypes = [.staking, .lending]
     }
     
     func getAllPlatform() -> Set<EarnPlatform> {
@@ -147,6 +160,10 @@ class StakingPortfolioViewModel {
     
     var isSelectedAllPlatform: Bool {
         return selectedPlatforms.isEmpty || selectedPlatforms.count == getAllPlatform().count
+    }
+    
+    var isSelectedAllType: Bool {
+        return selectedTypes.contains(.staking) && selectedTypes.contains(.lending)
     }
     
     var platformFilterButtonTitle: String {
