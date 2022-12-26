@@ -63,9 +63,7 @@ class BrowserViewController: BaseWalletOrientedViewController {
     }
     
     @objc func onChainChange() {
-        if AppState.shared.currentChain == .solana {
-            navigationController?.popViewController(animated: true)
-        }
+        webView.reload()
     }
     
     func initScriptHandlers() {
