@@ -54,15 +54,18 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         portfolioTableView.backgroundColor = AppTheme.current.sectionBackgroundColor
         searchTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
         viewModel.displayDataSource.observeAndFire(on: self) { _ in
-            self.portfolioTableView.reloadData()
-            
+            DispatchQueue.main.async {
+                self.portfolioTableView.reloadData()
+            }
         }
-        viewModel.isLoading.observeAndFire(on: self) { status in
-            if status {
-                self.showLoadingSkeleton()
-            } else {
-                self.hideLoadingSkeleton()
-                self.updateUIEmptyView()
+        viewModel.isLoading.observeAndFire(on: self) { isLoading in
+            DispatchQueue.main.async {
+                if isLoading {
+                    self.showLoadingSkeleton()
+                } else {
+                    self.hideLoadingSkeleton()
+                    self.updateUIEmptyView()
+                }
             }
         }
         let currentChain = AppState.shared.currentChain
