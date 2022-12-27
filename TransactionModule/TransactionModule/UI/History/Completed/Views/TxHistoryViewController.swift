@@ -253,7 +253,7 @@ extension TxHistoryViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-        tokenSelectPopup?.updateQuery(text: text)
+        tokenSelectPopup?.updateQuery(text: text, chain: viewModel.currentChain)
         searchContainerView.isHidden = text.isEmpty
         return true
     }

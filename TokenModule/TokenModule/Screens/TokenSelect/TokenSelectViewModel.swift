@@ -7,21 +7,12 @@
 
 import Foundation
 import Services
+import BaseWallet
 
 public class TokenSelectViewModel {
     
     var tokens: [AdvancedSearchToken] = []
-    
-    var query: String = "" {
-        didSet {
-            if query.isEmpty {
-                self.tokens = []
-                self.onTokensUpdated?()
-            } else {
-                self.search()
-            }
-        }
-    }
+    var query: String = ""
     var onTokensUpdated: (() -> ())?
     
     let service = TokenService()
@@ -30,9 +21,23 @@ public class TokenSelectViewModel {
         
     }
     
-    func search() {
+    func updateQuery(query: String, chainType: ChainType) {
+        self.query = query
+        if query.isEmpty {
+            self.tokens = []
+            self.onTokensUpdated?()
+        } else {
+            self.search(chainType: chainType)
+        }
+    }
+    
+    func search(chainType: ChainType) {
         service.advancedSearch(query: query) { [weak self] tokens in
-            self?.tokens = tokens
+            if chainType == .all {
+                self?.tokens = tokens
+            } else {
+                self?.tokens = tokens.filter { $0.chainId == chainType.getChainId() }
+            }
             self?.onTokensUpdated?()
         }
     }

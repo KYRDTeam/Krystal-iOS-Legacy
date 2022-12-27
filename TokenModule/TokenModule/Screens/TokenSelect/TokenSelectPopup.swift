@@ -9,6 +9,7 @@ import UIKit
 import Services
 import SkeletonView
 import DesignSystem
+import BaseWallet
 
 public class TokenSelectPopup: UIViewController, UIGestureRecognizerDelegate {
     
@@ -62,12 +63,12 @@ public class TokenSelectPopup: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    public func updateQuery(text: String) {
+    public func updateQuery(text: String, chain: ChainType) {
         showSkeletonLoading()
         emptyView.isHidden = true
         typingTimer?.invalidate()
         typingTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { [weak self] _ in
-            self?.viewModel.query = text
+            self?.viewModel.updateQuery(query: text, chainType: chain)
         })
     }
 
