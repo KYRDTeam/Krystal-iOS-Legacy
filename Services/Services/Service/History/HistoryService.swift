@@ -17,7 +17,7 @@ public class HistoryService: BaseService {
             switch result {
             case .success(let response):
                 do {
-                    let resp = try! JSONDecoder().decode(HistoryResponse.self, from: response.data)
+                    let resp = try JSONDecoder().decode(HistoryResponse.self, from: response.data)
                     completion(resp.data ?? [])
                 } catch {
                     completion([])

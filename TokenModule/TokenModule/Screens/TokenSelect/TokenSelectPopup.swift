@@ -7,6 +7,8 @@
 
 import UIKit
 import Services
+import SkeletonView
+import DesignSystem
 
 public class TokenSelectPopup: UIViewController, UIGestureRecognizerDelegate {
     
@@ -18,12 +20,18 @@ public class TokenSelectPopup: UIViewController, UIGestureRecognizerDelegate {
     public var onBackgroundTapped: (() -> ())?
     public var onSelectToken: ((AdvancedSearchToken) -> ())?
     
+    var typingTimer: Timer?
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
         setupView()
         setupTableView()
         bindViewModel()
+    }
+    
+    deinit {
+        typingTimer?.invalidate()
     }
     
     func setupView() {
@@ -47,6 +55,7 @@ public class TokenSelectPopup: UIViewController, UIGestureRecognizerDelegate {
     func bindViewModel() {
         viewModel.onTokensUpdated = { [weak self] in
             DispatchQueue.main.async {
+                self?.hideSkeletonLoading()
                 self?.tableView.reloadData()
                 self?.emptyView.isHidden = self?.viewModel.tokens.isEmpty == false
             }
@@ -54,7 +63,12 @@ public class TokenSelectPopup: UIViewController, UIGestureRecognizerDelegate {
     }
     
     public func updateQuery(text: String) {
-        viewModel.query = text
+        showSkeletonLoading()
+        emptyView.isHidden = true
+        typingTimer?.invalidate()
+        typingTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { [weak self] _ in
+            self?.viewModel.query = text
+        })
     }
 
     private func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
@@ -62,6 +76,15 @@ public class TokenSelectPopup: UIViewController, UIGestureRecognizerDelegate {
             return false
         }
         return true
+    }
+    
+    func showSkeletonLoading() {
+        let gradient = SkeletonGradient(baseColor: AppTheme.current.sectionBackgroundColor)
+        view.showAnimatedGradientSkeleton(usingGradient: gradient)
+    }
+
+    func hideSkeletonLoading() {
+        view.hideSkeleton()
     }
     
 }
@@ -85,6 +108,19 @@ extension TokenSelectPopup: UITableViewDataSource, UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         onSelectToken?(viewModel.tokens[indexPath.row])
+    }
+    
+}
+
+
+extension TokenSelectPopup: SkeletonTableViewDataSource {
+    
+    public func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return TokenSelectCell.className
+    }
+    
+    public func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
     }
     
 }

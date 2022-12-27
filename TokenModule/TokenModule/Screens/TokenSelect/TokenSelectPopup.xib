@@ -36,6 +36,7 @@
                         <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
                             <real key="value" value="12"/>
                         </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                     </userDefinedRuntimeAttributes>
                 </tableView>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hdi-94-wOV">
@@ -84,6 +85,9 @@
                 <constraint firstItem="hdi-94-wOV" firstAttribute="bottom" secondItem="ua4-eC-stH" secondAttribute="bottom" id="xaW-SS-De9"/>
                 <constraint firstItem="hdi-94-wOV" firstAttribute="leading" secondItem="ua4-eC-stH" secondAttribute="leading" id="yDI-f0-PiF"/>
             </constraints>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+            </userDefinedRuntimeAttributes>
             <point key="canvasLocation" x="139" y="110"/>
         </view>
     </objects>
