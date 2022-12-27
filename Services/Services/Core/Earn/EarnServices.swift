@@ -66,7 +66,7 @@ public class EarnServices: BaseService {
         anyError = AnyError(error)
       }
       group.leave()
-    } as? Cancellable
+    }
     
     group.enter()
     provider.requestWithFilters(.getPendingUnstakes(address: address)) { result in
