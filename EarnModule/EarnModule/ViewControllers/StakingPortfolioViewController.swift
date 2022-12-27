@@ -58,9 +58,9 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
                 self.portfolioTableView.reloadData()
             }
         }
-        viewModel.isLoading.observeAndFire(on: self) { status in
+        viewModel.isLoading.observeAndFire(on: self) { isLoading in
             DispatchQueue.main.async {
-                if status {
+                if isLoading {
                     self.showLoadingSkeleton()
                 } else {
                     self.hideLoadingSkeleton()
