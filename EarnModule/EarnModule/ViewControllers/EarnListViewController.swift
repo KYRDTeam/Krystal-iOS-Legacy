@@ -74,7 +74,7 @@ class EarnListViewController: InAppBrowsingViewController {
     }
     
     private func isSelectedAllType() -> Bool {
-        return selectedTypes.isEmpty || (selectedTypes.contains(.staking) && selectedTypes.contains(.lending))
+        return selectedTypes.contains(.staking) && selectedTypes.contains(.lending)
     }
     
     func reloadUI() {
@@ -89,6 +89,10 @@ class EarnListViewController: InAppBrowsingViewController {
                 self.emptyIcon.image = UIImage(named: "empty-search-token")
                 self.emptyLabel.text = Strings.noRecordFound
             }
+        }
+        
+        if selectedTypes.isEmpty {
+            displayDataSource.removeAll()
         }
 
         if !isSelectedAllType() {

@@ -27,7 +27,8 @@ class PieChartModel {
     }
     
     func titleString(totalValue: Double) -> String {
-        var toUnderlyingBalanceString = symbol + " " + StringFormatter.percentString(value: usd / totalValue)
+        let percentString = (usd / totalValue) * 100 < 0.01 ? "< 0.01%" : StringFormatter.percentString(value: usd / totalValue)
+        var toUnderlyingBalanceString = symbol + " " + percentString
         return toUnderlyingBalanceString
     }
     
