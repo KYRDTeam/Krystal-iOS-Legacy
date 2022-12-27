@@ -8,7 +8,13 @@
 import Foundation
 
 public protocol FeatureFlag {
-    func isFeatureEnabled(key: String) -> Bool
+    func isFeatureEnabled(key: String, defaultValue: Bool) -> Bool
+}
+
+extension FeatureFlag {
+    public func isFeatureEnabled(key: String) -> Bool {
+        return isFeatureEnabled(key: key, defaultValue: false)
+    }
 }
 
 public struct FeatureFlagKeys {
