@@ -16,6 +16,7 @@ import Dependencies
 
 class TxHistoryViewController: BaseWalletOrientedViewController {
 
+    @IBOutlet weak var searchRightButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchField: UITextField!
     @IBOutlet weak var selectedSearchView: UIView!
@@ -28,6 +29,7 @@ class TxHistoryViewController: BaseWalletOrientedViewController {
     var onSwapTapped: (() -> ())?
     
     var viewModel: TxHistoryViewModel!
+    var isSearchFieldFocus: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +48,20 @@ class TxHistoryViewController: BaseWalletOrientedViewController {
         setupTableView()
         setupRefreshControl()
         setupTokenSelectPopup()
+    }
+    
+    @IBAction func rightSearchButtonTapped(_ sender: Any) {
+        if isSearchFieldFocus {
+            isSearchFieldFocus = false
+            searchField.resignFirstResponder()
+            searchField.text = nil
+            searchContainerView.isHidden = true
+            updateUIEndSearchingMode()
+        } else {
+            isSearchFieldFocus = true
+            searchField.becomeFirstResponder()
+            updateUIStartSearchingMode()
+        }
     }
     
     func setupSearchBar() {
@@ -173,6 +189,22 @@ class TxHistoryViewController: BaseWalletOrientedViewController {
         view.hideSkeleton()
     }
     
+    func updateUIStartSearchingMode() {
+        self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+            self.searchRightButton.setImage(.closeSearch, for: .normal)
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func updateUIEndSearchingMode() {
+        self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+            self.searchRightButton.setImage(.search, for: .normal)
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     @IBAction func searchCloseTapped(_ sender: Any) {
         selectedSearchView.isHidden = true
         viewModel.selectedFilterToken = nil
@@ -255,6 +287,17 @@ extension TxHistoryViewController: UITextFieldDelegate {
         let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
         tokenSelectPopup?.updateQuery(text: text, chain: viewModel.currentChain)
         searchContainerView.isHidden = text.isEmpty
+        return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        isSearchFieldFocus = true
+        updateUIStartSearchingMode()
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        isSearchFieldFocus = false
+        updateUIEndSearchingMode()
         return true
     }
     

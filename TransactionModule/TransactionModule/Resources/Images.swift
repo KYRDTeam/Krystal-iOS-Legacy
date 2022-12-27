@@ -23,6 +23,8 @@ extension UIImage {
     static let verifyToken = UIImage(imageName: "blueTick_icon")
     static let promotedToken = UIImage(imageName: "green-checked-tag-icon")
     static let unverifiedToken = UIImage(imageName: "warning-tag-icon")
+    static let search = UIImage(imageName: "search")
+    static let closeSearch = UIImage(imageName: "close_search")
 }
 
 
