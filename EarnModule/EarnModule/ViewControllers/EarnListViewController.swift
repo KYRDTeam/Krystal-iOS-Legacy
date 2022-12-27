@@ -73,6 +73,10 @@ class EarnListViewController: InAppBrowsingViewController {
         return selectedPlatforms.isEmpty || selectedPlatforms.count == getAllPlatform().count
     }
     
+    private func isSelectedAllType() -> Bool {
+        return selectedTypes.isEmpty || (selectedTypes.contains(.staking) && selectedTypes.contains(.lending))
+    }
+    
     func reloadUI() {
         displayDataSource = dataSource
         if let text = self.searchTextField.text, !text.isEmpty {
@@ -86,15 +90,17 @@ class EarnListViewController: InAppBrowsingViewController {
                 self.emptyLabel.text = Strings.noRecordFound
             }
         }
-        
-        displayDataSource = displayDataSource.filter { element in
-            let filterPlatforms = element.earnPoolModel.platforms.filter { platform in
-                let earningType = EarningType(value: platform.type)
-                return self.selectedTypes.contains(earningType)
+
+        if !isSelectedAllType() {
+            displayDataSource = displayDataSource.filter { element in
+                let filterPlatforms = element.earnPoolModel.platforms.filter { platform in
+                    let earningType = EarningType(value: platform.type)
+                    return self.selectedTypes.contains(earningType)
+                }
+                return filterPlatforms.count >= 1
             }
-            return filterPlatforms.count >= 1
         }
-        
+
         if !isSelectedAllPlatforms() {
             self.displayDataSource = self.displayDataSource.filter { element in
                 let modelPfSet: Set<EarnPlatform> = Set(element.earnPoolModel.platforms)
@@ -145,6 +151,9 @@ class EarnListViewController: InAppBrowsingViewController {
             if data.isEmpty {
                 self.emptyIcon.image = UIImage(named: "empty_earn_icon")
                 self.emptyLabel.text = Strings.earnIsCurrentlyNotSupportedOnThisChainYet
+            } else {
+                self.emptyIcon.image = UIImage(named: "empty-search-token")
+                self.emptyLabel.text = Strings.noRecordFound
             }
             
             self.dataSource = data
@@ -340,11 +349,22 @@ extension EarnListViewController: UITextFieldDelegate {
 extension EarnListViewController: EarnPoolViewCellDelegate {
     func didSelectRewardApy(platform: EarnPlatform, pool: EarnPoolModel) {
         let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: platform.apy), NumberFormatUtils.percent(value: platform.rewardApy))
-        showTopBannerView(message: messge)
+        showBottomBannerView(message: messge)
     }
     
     func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
         delegate?.didSelectPlatform(platform: platform, pool: pool)
+    }
+    
+    func showWarning(_ type: String) {
+        switch type {
+        case "disabled":
+            self.showErrorTopBannerMessage(message: Strings.stakeDisableMessage)
+        case "warning":
+            self.showErrorTopBannerMessage(message: Strings.stakeWarningMessage)
+        default:
+            break
+        }
     }
 }
 

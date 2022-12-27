@@ -38,8 +38,15 @@ public class AppState {
   }
   
   public func updateChain(chain: ChainType) {
-    currentChain = chain
-    AppEventManager.shared.postSwitchChainEvent(chain: chain)
+      if chain == .all {
+          currentChain = Constants.defaultChain
+          AppEventManager.shared.postSwitchChainEvent(chain: Constants.defaultChain)
+          AppEventManager.shared.postSelectAllChain()
+      } else {
+          currentChain = chain
+          AppEventManager.shared.postSwitchChainEvent(chain: chain)
+      }
+    
   }
   
   public func updateAddress(address: KAddress, targetChain: ChainType) {

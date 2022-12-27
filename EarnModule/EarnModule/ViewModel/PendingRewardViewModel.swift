@@ -39,7 +39,7 @@ class PendingRewardViewModel {
     }
     
     var isSelectAllType: Bool {
-        return selectedTypes.isEmpty || selectedTypes.count == 2
+        return selectedTypes.count == 2
     }
     
     func reloadDataSource() {

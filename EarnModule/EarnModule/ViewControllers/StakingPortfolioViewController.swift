@@ -54,15 +54,18 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         portfolioTableView.backgroundColor = AppTheme.current.sectionBackgroundColor
         searchTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
         viewModel.displayDataSource.observeAndFire(on: self) { _ in
-            self.portfolioTableView.reloadData()
-            
+            DispatchQueue.main.async {
+                self.portfolioTableView.reloadData()
+            }
         }
-        viewModel.isLoading.observeAndFire(on: self) { status in
-            if status {
-                self.showLoadingSkeleton()
-            } else {
-                self.hideLoadingSkeleton()
-                self.updateUIEmptyView()
+        viewModel.isLoading.observeAndFire(on: self) { isLoading in
+            DispatchQueue.main.async {
+                if isLoading {
+                    self.showLoadingSkeleton()
+                } else {
+                    self.hideLoadingSkeleton()
+                    self.updateUIEmptyView()
+                }
             }
         }
         let currentChain = AppState.shared.currentChain
@@ -276,7 +279,7 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
         }
         cell.onTapRewardApy = { balance in
             let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: balance.apy), NumberFormatUtils.percent(value: balance.rewardApy))
-            self.showTopBannerView(message: messge)
+            self.showBottomBannerView(message: messge)
 		}
 		
         cell.onTapWarningIcon = { type in
@@ -479,10 +482,10 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         
         let cellModel = viewModel.displayDataSource.value.0[indexPath.row]
         
-        if cellModel.warningType == .none {
-            return [unstakeAction, stakeAction]
+        if cellModel.warningType == .disable {
+            return [unstakeAction]
         } else {
-            return [stakeAction]
+            return [unstakeAction, stakeAction]
         }
         
         
@@ -509,6 +512,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
             firstButtonAction: {
             }
         )
+        alertController.transitionText = "Swap to ETH"
         alertController.swapLinkTap = {
             AppDependencies.router.openSwap(from: from, to: to)
         }
