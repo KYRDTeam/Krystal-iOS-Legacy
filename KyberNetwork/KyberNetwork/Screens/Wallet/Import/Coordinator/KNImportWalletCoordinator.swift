@@ -63,6 +63,7 @@ extension KNImportWalletCoordinator: SelectChainDelegate {
       return
     case .importMultiChain:
       importVC.importType = .multiChain
+        importVC.selectedChainType = .all
     case .importEVM(let type):
       importVC.importType = .evm
       importVC.selectedChainType = type
