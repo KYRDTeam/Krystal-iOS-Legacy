@@ -76,7 +76,7 @@ class KNAddNewWalletCoordinator: Coordinator {
     }
   }
   
-  fileprivate func createNewWallet(chain: ChainType = KNGeneralProvider.shared.currentChain) {
+  fileprivate func createNewWallet(chain: ChainType) {
     self.createWalletCoordinator = KNCreateWalletCoordinator(
       navigationController: self.navigationController,
       newWallet: nil,
@@ -163,7 +163,7 @@ extension KNAddNewWalletCoordinator: AddWalletViewControllerDelegate {
   func addWalletViewController(_ controller: AddWalletViewController, run event: AddWalletViewControllerEvent) {
     switch event {
     case .createWallet:
-      self.createNewWallet()
+        self.createNewWallet(chain: .all)
     case .importWallet:
       self.importAWallet()
     case .close:

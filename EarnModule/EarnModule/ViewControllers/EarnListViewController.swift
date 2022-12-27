@@ -349,11 +349,22 @@ extension EarnListViewController: UITextFieldDelegate {
 extension EarnListViewController: EarnPoolViewCellDelegate {
     func didSelectRewardApy(platform: EarnPlatform, pool: EarnPoolModel) {
         let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: platform.apy), NumberFormatUtils.percent(value: platform.rewardApy))
-        showTopBannerView(message: messge)
+        showBottomBannerView(message: messge)
     }
     
     func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
         delegate?.didSelectPlatform(platform: platform, pool: pool)
+    }
+    
+    func showWarning(_ type: String) {
+        switch type {
+        case "disabled":
+            self.showErrorTopBannerMessage(message: Strings.stakeDisableMessage)
+        case "warning":
+            self.showErrorTopBannerMessage(message: Strings.stakeWarningMessage)
+        default:
+            break
+        }
     }
 }
 

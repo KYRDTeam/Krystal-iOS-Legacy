@@ -279,7 +279,7 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
         }
         cell.onTapRewardApy = { balance in
             let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: balance.apy), NumberFormatUtils.percent(value: balance.rewardApy))
-            self.showTopBannerView(message: messge)
+            self.showBottomBannerView(message: messge)
 		}
 		
         cell.onTapWarningIcon = { type in
@@ -482,10 +482,10 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         
         let cellModel = viewModel.displayDataSource.value.0[indexPath.row]
         
-        if cellModel.warningType == .none {
-            return [unstakeAction, stakeAction]
+        if cellModel.warningType == .disable {
+            return [unstakeAction]
         } else {
-            return [stakeAction]
+            return [unstakeAction, stakeAction]
         }
         
         
@@ -512,6 +512,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
             firstButtonAction: {
             }
         )
+        alertController.transitionText = "Swap to ETH"
         alertController.swapLinkTap = {
             AppDependencies.router.openSwap(from: from, to: to)
         }
