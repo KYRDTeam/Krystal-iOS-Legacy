@@ -14,6 +14,7 @@ import AppState
 import Dependencies
 import BaseModule
 import Services
+import TransactionModule
 
 public class SwapCoordinator: NSObject, Coordinator {
     public var coordinators: [Coordinator] = []
@@ -56,6 +57,13 @@ public class SwapCoordinator: NSObject, Coordinator {
         }
     }
     
+    public func appCoordinatorOpenSwap(from: Token, to: Token) {
+        self.navigationController.popToRootViewController(animated: true)
+        self.rootViewController.viewModel.currentChain.value = AppState.shared.currentChain
+        self.rootViewController.viewModel.updateSourceToken(token: from)
+        self.rootViewController.viewModel.updateDestToken(token: to)
+    }
+    
     func openSwapConfirm(object: SwapObject, quoteToken: TokenDetailInfo) {
         let viewModel = SwapSummaryViewModel(swapObject: object)
         viewModel.quoteTokenDetail = quoteToken
@@ -90,9 +98,8 @@ public class SwapCoordinator: NSObject, Coordinator {
     }
     
     func openApprove(token: Token, amount: BigInt) {
-//        let vc = ApproveTokenViewController(viewModel: ApproveTokenViewModelForTokenObject(token: token, res: amount))
-//        vc.delegate = self
-//        navigationController.present(vc, animated: true, completion: nil)
+        let param = ApprovePopup.ApproveParam(symbol: token.symbol, tokenAddress: token.address, remain: amount, toAddress: AppState.shared.currentChain.proxyAddress(), chain: AppState.shared.currentChain, gasLimit: AppDependencies.gasConfig.defaultApproveGasLimit)
+        ApprovePopup.show(on: rootViewController, param: param) { txHash in }
     }
     
     func openTransactionHistory() {
@@ -100,26 +107,6 @@ public class SwapCoordinator: NSObject, Coordinator {
     }
 }
 
-
-//extension SwapV2Coordinator: ApproveTokenViewControllerDelegate {
-//
-//    func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt) {
-//        rootViewController.viewModel.approve(tokenAddress: token.address, currentAllowance: remain, gasLimit: gasLimit)
-//    }
-//
-//    func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt) {
-//        rootViewController.viewModel.approve(tokenAddress: address, currentAllowance: remain, gasLimit: gasLimit)
-//    }
-//
-//    func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: String, value: BigInt) {
-//
-//    }
-//
-//    func approveTokenViewControllerDidSelectGasSetting(_ controller: ApproveTokenViewController, gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?) {
-//
-//    }
-//
-//}
 
 public extension SwapCoordinator {
     func appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: String?, destTokenAddress: String?, chainIdString: String?) {

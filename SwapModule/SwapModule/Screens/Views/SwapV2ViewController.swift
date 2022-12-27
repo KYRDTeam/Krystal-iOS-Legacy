@@ -30,7 +30,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
     @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var expandIcon: UIImageView!
     @IBOutlet weak var sourceTextField: UITextField!
-    @IBOutlet weak var fetchingAnimationView: AnimationView!
+    @IBOutlet weak var fetchingAnimationView: LottieAnimationView!
     @IBOutlet weak var infoExpandButton: UIButton!
     @IBOutlet weak var infoSeparatorView: UIView!
     @IBOutlet weak var sourceTokenView: UIView!
@@ -165,7 +165,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
     
     func setupAnimation() {
         DispatchQueue.main.async {
-            self.fetchingAnimationView.animation = Animation.named("rocket")
+            self.fetchingAnimationView.animation = LottieAnimation.named("rocket")
             self.fetchingAnimationView.contentMode = .scaleAspectFit
             self.fetchingAnimationView.loopMode = .loop
             self.fetchingAnimationView.play()
