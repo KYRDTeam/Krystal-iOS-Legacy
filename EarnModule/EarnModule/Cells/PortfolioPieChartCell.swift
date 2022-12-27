@@ -8,6 +8,7 @@
 import UIKit
 import Charts
 import DesignSystem
+import Utilities
 
 class PortfolioPieChartCell: UITableViewCell {
     @IBOutlet weak var dailyEarningLabel: UILabel!
@@ -139,7 +140,7 @@ extension PortfolioPieChartCell: UICollectionViewDelegate {
 
 extension PortfolioPieChartCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-      return UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 0, left: UIDevice.isIphone6 ? 4 : 18, bottom: 0, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

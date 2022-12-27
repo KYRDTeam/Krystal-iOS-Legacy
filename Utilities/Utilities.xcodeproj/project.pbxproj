@@ -13,6 +13,7 @@
 		7EB129B42938B1AF00CE6D1C /* NSObject+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB129B32938B1AF00CE6D1C /* NSObject+.swift */; };
 		7ECC45C62939B07100B37D30 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECC45C52939B07100B37D30 /* Images.swift */; };
 		7ECC45C82939B47700B37D30 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ECC45C72939B47700B37D30 /* Assets.xcassets */; };
+		7EF91081295ADF40001B9853 /* UIDevice+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF91080295ADF40001B9853 /* UIDevice+.swift */; };
 		A64C2DE528F6D57A002FD64C /* BaseXibView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2DE428F6D57A002FD64C /* BaseXibView.swift */; };
 		A64C2DFA28F6D657002FD64C /* NumberFormatUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2DF928F6D657002FD64C /* NumberFormatUtils.swift */; };
 		A64C2E0128F6D833002FD64C /* UIViewController+nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E0028F6D833002FD64C /* UIViewController+nib.swift */; };
@@ -53,6 +54,7 @@
 		7EB129B32938B1AF00CE6D1C /* NSObject+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+.swift"; sourceTree = "<group>"; };
 		7ECC45C52939B07100B37D30 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		7ECC45C72939B47700B37D30 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7EF91080295ADF40001B9853 /* UIDevice+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+.swift"; sourceTree = "<group>"; };
 		A64C2DE428F6D57A002FD64C /* BaseXibView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseXibView.swift; sourceTree = "<group>"; };
 		A64C2DF928F6D657002FD64C /* NumberFormatUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatUtils.swift; sourceTree = "<group>"; };
 		A64C2E0028F6D833002FD64C /* UIViewController+nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+nib.swift"; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				A668BFD6292CC554001A110D /* URL+.swift */,
 				7EB129B32938B1AF00CE6D1C /* NSObject+.swift */,
 				A6B78C87294700CA00FBFCB5 /* UIControl+.swift */,
+				7EF91080295ADF40001B9853 /* UIDevice+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 				A64C2E7D28F911D1002FD64C /* EthereumUnit.swift in Sources */,
 				A668BFD7292CC554001A110D /* URL+.swift in Sources */,
 				A64C2E0128F6D833002FD64C /* UIViewController+nib.swift in Sources */,
+				7EF91081295ADF40001B9853 /* UIDevice+.swift in Sources */,
 				A64C2E5328F8121F002FD64C /* UITextField+.swift in Sources */,
 				A6B1FD0828F69EC500894DCB /* Storage.swift in Sources */,
 				A64C2E7928F91165002FD64C /* Data+hex.swift in Sources */,
