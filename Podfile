@@ -53,7 +53,7 @@ def networkingPods
   pod 'JavaScriptKit', '~> 1.0.0'
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
   pod 'Starscream', '~> 3.1'
-  pod 'Kingfisher', '~> 7.0'
+  pod 'Kingfisher', '~> 7.2.0'
   pod 'Moya', '~> 10.0.1'
   pod 'Mixpanel-swift', '~> 3.1.7'
 end
