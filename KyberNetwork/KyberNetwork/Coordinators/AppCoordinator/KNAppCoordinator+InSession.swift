@@ -120,7 +120,7 @@ extension KNAppCoordinator {
       
     self.earnCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuEarn"
       
-    if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.earnNewTag) {
+    if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.earnNewTag, defaultValue: true) {
         self.tabbarController.addNewTag(toItemAt: 3)
     }
 

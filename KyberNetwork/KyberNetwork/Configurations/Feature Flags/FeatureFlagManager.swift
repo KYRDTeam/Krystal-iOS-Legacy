@@ -28,10 +28,10 @@ class FeatureFlagManager {
     }
   }
 
-  func showFeature(forKey flagKey: String) -> Bool {
-    guard let client = LDClient.get() else { return false }
-    return client.variation(forKey: flagKey, defaultValue: false)
-  }
+    func showFeature(forKey flagKey: String, defaultValue: Bool = false) -> Bool {
+        guard let client = LDClient.get() else { return defaultValue }
+        return client.variation(forKey: flagKey, defaultValue: defaultValue)
+    }
 }
 
 func runIfFeatureEnabled(key: String, block: () -> ()) {
