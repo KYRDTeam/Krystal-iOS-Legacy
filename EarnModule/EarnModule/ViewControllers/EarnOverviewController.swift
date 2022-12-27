@@ -104,7 +104,7 @@ class EarnOverviewController: InAppBrowsingViewController {
           segmentedControl.setWidth(width / 3, forSegmentAt: 1)
           segmentedControl.setWidth(width / 3, forSegmentAt: 2)
       }
-   
+      segmentedControl.underlineCenterPosition()
   }
 
   func setupPageViewController() {
