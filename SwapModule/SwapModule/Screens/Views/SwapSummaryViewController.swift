@@ -53,7 +53,6 @@ class SwapSummaryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.setupContinueButton()
         self.setupUI()
         self.viewModel.updateData()
@@ -203,23 +202,6 @@ class SwapSummaryViewController: UIViewController {
         }
     }
     
-    func updateErrorUI(isTxFailed: Bool) {
-        UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
-            self.errorView.isHidden = !isTxFailed
-            self.confirmSwapButtonTopConstraint.constant = isTxFailed ? 165 : 85
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    func updateSuccessUI(isTxDone: Bool) {
-        UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
-            self.signSuccessView.isHidden = !isTxDone
-            self.confirmSwapButton.isHidden = isTxDone
-            self.confirmSwapButtonTopConstraint.constant = isTxDone ? 165 : 85
-            self.view.layoutIfNeeded()
-        }
-    }
-    
     func updateRateChangedViewUI(rateChanged: Bool) {
         if let newRateHint = viewModel.newRate.value?.hint, newRateHint != viewModel.swapObject.rate.hint {
             let message = String(format: Strings.swapAlertPlatformChanged,
@@ -228,17 +210,17 @@ class SwapSummaryViewController: UIViewController {
             showTopBannerView(message: message)
             return
         }
-        
+
         if rateChanged {
             self.confirmSwapButton.isEnabled = false
-            self.confirmSwapButton.setBackgroundColor(UIColor(named: "navButtonBgColor")!, forState: .disabled)
+            self.confirmSwapButton.backgroundColor = UIColor(named: "navButtonBgColor")!
         } else {
             self.confirmSwapButton.isEnabled = true
-            self.confirmSwapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
+            self.confirmSwapButton.backgroundColor = UIColor(named: "buttonBackgroundColor")!
         }
-        
+
         rateChangedLabel.text = Strings.swapAlertRateChanged
-        
+
         UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
             self.rateChangedView.isHidden = !rateChanged
             self.stackViewTopConstraint.constant = rateChanged ? 86 : 26
@@ -254,11 +236,15 @@ class SwapSummaryViewController: UIViewController {
     }
     
     func showLoading() {
-        confirmSwapButton.startLoading()
+        DispatchQueue.main.async {
+            self.confirmSwapButton.startLoading()
+        }
     }
     
     func hideLoading() {
-        confirmSwapButton.stopLoading()
+        DispatchQueue.main.async {
+            self.confirmSwapButton.stopLoading()
+        }
     }
     
     func showError(errorMsg: String) {
