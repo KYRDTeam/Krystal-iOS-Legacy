@@ -110,7 +110,7 @@ class PendingRewardViewController: InAppBrowsingViewController {
     
     private func updateUIEmptyView() {
         guard isViewLoaded else { return }
-        if viewModel.searchText.isEmpty || !viewModel.isSelectedAllPlatform || !viewModel.isSelectAllType {
+        if viewModel.searchText.isEmpty && viewModel.isSelectedAllPlatform && viewModel.isSelectAllType {
             emptyLabel.text = Strings.noRewardYet
         } else {
             emptyLabel.text = Strings.noRecordFound

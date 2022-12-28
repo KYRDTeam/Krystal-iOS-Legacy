@@ -27,8 +27,10 @@ class StakingPortfolioViewModel {
     var showPending: Bool = false
     var shouldAnimateChart: Bool = true
     var isEditing: Bool = false
-
+    
     func cleanAllData() {
+        dataSource.value.0.removeAll()
+        dataSource.value.1.removeAll()
         displayDataSource.value.0.removeAll()
         displayDataSource.value.1.removeAll()
     }
@@ -125,10 +127,10 @@ class StakingPortfolioViewModel {
             switch result {
             case .success(let portfolio):
                 self.portfolio = portfolio
-                self.reloadDataSource()
                 if shouldShowLoading {
                     self.resetFilter()
                 }
+                self.reloadDataSource()
             case .failure(let error):
                 self.error.value = error
             }

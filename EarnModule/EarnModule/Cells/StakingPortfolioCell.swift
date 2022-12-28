@@ -50,15 +50,29 @@ struct StakingPortfolioCellModel {
     var toUnderlyingBalanceString = (BigInt(earnBalance.toUnderlyingToken.balance)?.shortString(decimals: earnBalance.toUnderlyingToken.decimals) ?? "---") + " " + earnBalance.toUnderlyingToken.symbol
 
     if let stakingBalanceBigInt = BigInt(earnBalance.stakingToken.balance), let toUnderlyingBalanceBigInt = BigInt(earnBalance.toUnderlyingToken.balance) {
+        
       if toUnderlyingBalanceBigInt < BigInt(pow(10.0, Double(earnBalance.toUnderlyingToken.decimals - 6))) {
         toUnderlyingBalanceString = "< 0.000001 \(earnBalance.toUnderlyingToken.symbol)"
+      } else if toUnderlyingBalanceBigInt.shortString(decimals: earnBalance.toUnderlyingToken.decimals) == "0" {
+          var numString = toUnderlyingBalanceBigInt.fullString(decimals: earnBalance.toUnderlyingToken.decimals)
+          if numString.count > 10 {
+              numString = String(numString.prefix(10))
+          }
+          toUnderlyingBalanceString = numString + " " + earnBalance.toUnderlyingToken.symbol
       }
       if stakingBalanceBigInt < BigInt(pow(10.0, Double(earnBalance.stakingToken.decimals - 6))) {
           stakingBalanceString = "< 0.000001 \(earnBalance.stakingToken.symbol)"
+      } else if stakingBalanceBigInt.shortString(decimals: earnBalance.stakingToken.decimals) == "0" {
+          var numString = stakingBalanceBigInt.fullString(decimals: earnBalance.stakingToken.decimals)
+          if numString.count > 10 {
+              numString = String(numString.prefix(10))
+          }
+          stakingBalanceString = numString + " " + earnBalance.stakingToken.symbol
       }
       if stakingBalanceBigInt > BigInt(0) {
         let usdBigIntValue = BigInt(earnBalance.underlyingUsd * pow(10.0 , Double(earnBalance.toUnderlyingToken.decimals))) * toUnderlyingBalanceBigInt / BigInt(pow(10.0 , Double(earnBalance.toUnderlyingToken.decimals)))
         let usdString = usdBigIntValue < BigInt(pow(10.0, Double(earnBalance.toUnderlyingToken.decimals - 2))) ? " | < $0.01" : " | $\(usdBigIntValue.shortString(decimals: earnBalance.toUnderlyingToken.decimals, maxFractionDigits: 2))"
+          
         stakingBalanceString = stakingBalanceString + usdString
       }
     }

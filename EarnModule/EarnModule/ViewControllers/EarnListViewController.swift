@@ -73,6 +73,10 @@ class EarnListViewController: InAppBrowsingViewController {
         return selectedPlatforms.isEmpty || selectedPlatforms.count == getAllPlatform().count
     }
     
+    private func isSelectedAllType() -> Bool {
+        return selectedTypes.contains(.staking) && selectedTypes.contains(.lending)
+    }
+    
     func reloadUI() {
         displayDataSource = dataSource
         if let text = self.searchTextField.text, !text.isEmpty {
@@ -87,14 +91,20 @@ class EarnListViewController: InAppBrowsingViewController {
             }
         }
         
-        displayDataSource = displayDataSource.filter { element in
-            let filterPlatforms = element.earnPoolModel.platforms.filter { platform in
-                let earningType = EarningType(value: platform.type)
-                return self.selectedTypes.contains(earningType)
-            }
-            return filterPlatforms.count >= 1
+        if selectedTypes.isEmpty {
+            displayDataSource.removeAll()
         }
-        
+
+        if !isSelectedAllType() {
+            displayDataSource = displayDataSource.filter { element in
+                let filterPlatforms = element.earnPoolModel.platforms.filter { platform in
+                    let earningType = EarningType(value: platform.type)
+                    return self.selectedTypes.contains(earningType)
+                }
+                return filterPlatforms.count >= 1
+            }
+        }
+
         if !isSelectedAllPlatforms() {
             self.displayDataSource = self.displayDataSource.filter { element in
                 let modelPfSet: Set<EarnPlatform> = Set(element.earnPoolModel.platforms)
@@ -145,6 +155,9 @@ class EarnListViewController: InAppBrowsingViewController {
             if data.isEmpty {
                 self.emptyIcon.image = UIImage(named: "empty_earn_icon")
                 self.emptyLabel.text = Strings.earnIsCurrentlyNotSupportedOnThisChainYet
+            } else {
+                self.emptyIcon.image = UIImage(named: "empty-search-token")
+                self.emptyLabel.text = Strings.noRecordFound
             }
             
             self.dataSource = data

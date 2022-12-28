@@ -434,6 +434,7 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   }
   
   override func onAppSelectAllChain() {
+      super.onAppSelectAllChain()
     self.onChainSelected(chain: .all)
   }
   
