@@ -81,6 +81,7 @@ class PendingRewardViewController: InAppBrowsingViewController {
     override func reloadWallet() {
         super.reloadWallet()
         viewModel.requestData()
+        viewModel.resetFilter()
     }
 
     func updateUIStartSearchingMode() {
@@ -155,11 +156,13 @@ class PendingRewardViewController: InAppBrowsingViewController {
     @objc override func onAppSwitchChain() {
         let currentChain = AppState.shared.currentChain
         viewModel.chainID = currentChain.getChainId()
+        viewModel.resetFilter()
         reloadUI()
     }
     
     override func onAppSelectAllChain() {
         viewModel.chainID = nil
+        viewModel.resetFilter()
         reloadUI()
     }
     

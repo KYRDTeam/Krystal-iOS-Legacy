@@ -55,7 +55,7 @@ class PendingRewardViewModel {
         
         if !searchText.isEmpty {
             data = data.filter({ item in
-                return item.rewardToken.tokenInfo.symbol.lowercased().contains(searchText)
+                return item.rewardToken.tokenInfo.symbol.lowercased().contains(searchText) || item.rewardToken.tokenInfo.name.lowercased().contains(searchText)
             })
         }
         
@@ -117,5 +117,10 @@ class PendingRewardViewModel {
             }
             self.isClaiming.value = false
         }
+    }
+    
+    func resetFilter() {
+        selectedPlatforms = []
+        selectedTypes = [.staking, .lending]
     }
 }
