@@ -13,7 +13,6 @@ import Result
 public class EarnServices: BaseService {
   let provider = MoyaProvider<EarnEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
   var currentProcess: Cancellable?
-  var earningBalanceProcess: Cancellable?
 
   public func getEarnListData(chainId: String?, completion: @escaping ([EarnPoolModel]) -> ()) {
     if let currentProcess = currentProcess {
@@ -46,13 +45,9 @@ public class EarnServices: BaseService {
     var pu: [PendingUnstake]?
     
     var anyError: AnyError?
-    if let earningBalanceProcess = earningBalanceProcess {
-        earningBalanceProcess.cancel()
-    }
-    
     group.enter()
     
-    self.earningBalanceProcess = provider.requestWithFilters(.getEarningBalances(address: address, chainId: chainId)) { result in
+    provider.requestWithFilters(.getEarningBalances(address: address, chainId: chainId)) { result in
       switch result {
       case .success(let response):
         let decoder = JSONDecoder()
