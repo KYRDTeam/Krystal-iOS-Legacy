@@ -20,7 +20,7 @@ class TxNFTCell: UITableViewCell {
             iconImageView.loadImage(viewModel.imageUrl, placeholder: .txNFT)
         }
         nameLabel.text = viewModel.amountString
-        nameLabel.textColor = viewModel.isPositiveAmount ? AppTheme.current.primaryColor : AppTheme.current.primaryTextColor
+        nameLabel.textColor = viewModel.isPositiveAmount ? AppTheme.current.positiveTextColor : AppTheme.current.primaryTextColor
     }
     
 }

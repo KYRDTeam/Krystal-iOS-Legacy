@@ -20,7 +20,7 @@ class TxTokenCell: UITableViewCell {
         verifyImageView.image = viewModel.verifyIcon
         amountLabel.text = viewModel.amountString
         usdValueLabel.text = viewModel.usdValue
-        amountLabel.textColor = viewModel.isTokenChangePositive ? AppTheme.current.primaryColor : AppTheme.current.primaryTextColor
+        amountLabel.textColor = viewModel.isTokenChangePositive ? AppTheme.current.positiveTextColor : AppTheme.current.primaryTextColor
     }
     
 }
