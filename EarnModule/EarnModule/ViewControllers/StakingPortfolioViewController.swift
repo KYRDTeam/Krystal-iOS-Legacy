@@ -183,6 +183,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     
     override func onAppSwitchAddress(switchChain: Bool) {
         viewModel.requestData()
+        viewModel.resetFilter()
     }
     
     override func onAppSelectAllChain() {

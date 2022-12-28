@@ -67,7 +67,7 @@ class StakingPortfolioViewModel {
         
         if !searchText.isEmpty {
             earningBalanceData = earningBalanceData.filter({ item in
-                return item.stakingToken.symbol.lowercased().contains(searchText) || item.toUnderlyingToken.symbol.lowercased().contains(searchText)
+                return item.stakingToken.symbol.lowercased().contains(searchText) || item.toUnderlyingToken.symbol.lowercased().contains(searchText) || item.stakingToken.name.lowercased().contains(searchText) || item.toUnderlyingToken.name.lowercased().contains(searchText)
             })
         }
         if let unwrap = chainID {
@@ -138,7 +138,7 @@ class StakingPortfolioViewModel {
     }
     
     func resetFilter() {
-        self.selectedPlatforms = self.getAllPlatform()
+        self.selectedPlatforms = []
         self.selectedTypes = [.staking, .lending]
     }
     
