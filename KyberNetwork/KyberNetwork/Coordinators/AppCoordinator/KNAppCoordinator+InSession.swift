@@ -12,6 +12,8 @@ import EarnModule
 extension KNAppCoordinator {
   
   func startNewSession(address: KAddress) {
+    let isEarnV2Enabled = AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.earnV2)
+    
       GasPriceManager.shared.scheduleFetchAllChainGasPrice()
     self.walletCache.lastUsedAddress = address
 //    self.currentAddress = address
@@ -59,6 +61,18 @@ extension KNAppCoordinator {
     investCoordinator.delegate = self
     investCoordinator.start()
     self.investCoordinator = investCoordinator
+    
+    if isEarnV2Enabled {
+        self.earnV2Coordinator = EarnModuleCoordinator()
+        self.earnV2Coordinator?.start()
+    } else {
+        self.earnV1Coordinator = {
+            let coordinator = EarnCoordinator()
+            coordinator.delegate = self
+            return coordinator
+        }()
+        self.earnV1Coordinator?.start()
+    }
 
     self.addCoordinator(self.settingsCoordinator!)
     self.settingsCoordinator?.start()
@@ -71,15 +85,13 @@ extension KNAppCoordinator {
     selectedImage: nil
   )
       
-    self.earnCoordinator = EarnModuleCoordinator()
-    self.earnCoordinator?.start()
-      
   self.swapV2Coordinator?.navigationController.tabBarItem.tag = 1
+      
   self.tabbarController.viewControllers = [
     self.overviewTabCoordinator!.navigationController,
     self.swapV2Coordinator!.navigationController,
     self.investCoordinator!.navigationController,
-    self.earnCoordinator!.navigationController,
+    isEarnV2Enabled ? self.earnV2Coordinator!.navigationController : self.earnV1Coordinator!.navigationController,
     self.settingsCoordinator!.navigationController,
   ]
     
@@ -111,16 +123,25 @@ extension KNAppCoordinator {
     self.investCoordinator?.navigationController.tabBarItem.tag = 2
     self.investCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuExplore"
 
-    self.earnCoordinator?.navigationController.tabBarItem = UITabBarItem(
-      title: nil,
-      image: UIImage(named: "tabbar_earn_icon"),
-      selectedImage: nil
-    )
-    self.earnCoordinator?.navigationController.tabBarItem.tag = 3
+    if isEarnV2Enabled {
+        self.earnV2Coordinator?.navigationController.tabBarItem.tag = 3
+        self.earnV2Coordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuEarn"
+        self.earnV2Coordinator?.navigationController.tabBarItem = UITabBarItem(
+            title: nil,
+            image: UIImage(named: "tabbar_earn_icon"),
+            selectedImage: nil
+        )
+    } else {
+        self.earnV1Coordinator?.navigationController.tabBarItem.tag = 3
+        self.earnV1Coordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuEarn"
+        self.earnV1Coordinator?.navigationController.tabBarItem = UITabBarItem(
+            title: nil,
+            image: UIImage(named: "tabbar_earn_icon"),
+            selectedImage: nil
+        )
+    }
       
-    self.earnCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuEarn"
-      
-    if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.earnNewTag, defaultValue: true) {
+    if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.earnNewTag, defaultValue: false) {
         self.tabbarController.addNewTag(toItemAt: 3)
     }
 
