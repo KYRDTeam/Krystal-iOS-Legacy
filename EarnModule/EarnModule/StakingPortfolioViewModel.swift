@@ -121,9 +121,7 @@ class StakingPortfolioViewModel {
         }
         
         apiService.getStakingPortfolio(address: AppState.shared.currentAddress.addressString, chainId: nil) { result in
-            if shouldShowLoading {
-                self.isLoading.value = false
-            }
+            
             switch result {
             case .success(let portfolio):
                 self.portfolio = portfolio
@@ -133,6 +131,9 @@ class StakingPortfolioViewModel {
                 self.reloadDataSource()
             case .failure(let error):
                 self.error.value = error
+            }
+            if shouldShowLoading {
+                self.isLoading.value = false
             }
         }
     }
