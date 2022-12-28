@@ -30,7 +30,13 @@ class PendingRewardViewModel {
     var isEditing: Bool = false
     
     func getAllPlatform() -> Set<EarnPlatform> {
-        let all = rewardData.map { $0.platform.toEarnPlatform() }
+        var data = rewardData
+        if let chainID = chainID {
+            data = data.filter({ item in
+                return item.chain.id == chainID
+            })
+        }
+        let all = data.map { $0.platform.toEarnPlatform() }
         return Set(all)
     }
     
