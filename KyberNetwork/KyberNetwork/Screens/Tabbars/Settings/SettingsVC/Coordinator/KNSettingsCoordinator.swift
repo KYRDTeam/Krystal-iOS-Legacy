@@ -3,6 +3,7 @@
 import UIKit
 import MessageUI
 import KrystalWallets
+import Dependencies
 
 protocol KNSettingsCoordinatorDelegate: class {
   func settingsCoordinatorUserDidSelectExit()
@@ -111,20 +112,7 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   }
   
   func openHistoryScreen() {
-    switch KNGeneralProvider.shared.currentChain {
-    case .solana:
-      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, type: .solana)
-      coordinator.delegate = self
-      coordinate(coordinator: coordinator)
-    default:
-      self.historyCoordinator = nil
-      self.historyCoordinator = KNHistoryCoordinator(
-        navigationController: self.navigationController
-      )
-      self.historyCoordinator?.delegate = self
-      self.historyCoordinator?.appDidSwitchAddress()
-      self.historyCoordinator?.start()
-    }
+      AppDependencies.router.openTransactionHistory()
   }
   
   func openWalletList() {
