@@ -52,16 +52,27 @@ class EarnListViewController: InAppBrowsingViewController {
         super.viewWillAppear(animated)
     }
     
+    func resetFilter() {
+        self.selectedPlatforms = []
+        self.selectedTypes = [.staking, .lending]
+    }
+    
     override func onAppSwitchChain() {
         isNeedReloadFilter = true
         currentSelectedChain = AppState.shared.currentChain
         fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
+        resetFilter()
     }
     
     override func onAppSelectAllChain() {
         isNeedReloadFilter = true
         currentSelectedChain = .all
         fetchData()
+        resetFilter()
+    }
+    
+    override func onAppSwitchAddress(switchChain: Bool) {
+        resetFilter()
     }
     
     func setupUI() {
