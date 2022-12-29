@@ -16,11 +16,11 @@ let UNVERIFIED_TAG = "UNVERIFIED"
 
 public extension UIImageView {
     
-    func loadImage(_ urlString: String?) {
+    func loadImage(_ urlString: String?, placeholder: UIImage? = nil) {
         guard let urlString = urlString, let url = URL(string: urlString) else {
             return
         }
-        kf.setImage(with: url)
+        kf.setImage(with: url, placeholder: placeholder)
     }
     
     func setImage(urlString: String, symbol: String, _ size: CGSize? = nil) {

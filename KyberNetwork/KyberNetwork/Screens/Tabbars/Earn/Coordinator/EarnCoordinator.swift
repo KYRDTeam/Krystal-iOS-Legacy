@@ -15,6 +15,8 @@ import APIKit
 import JSONRPCKit
 import WalletConnectSwift
 import KrystalWallets
+import Dependencies
+
 //swiftlint:disable file_length
 protocol NavigationBarDelegate: class {
   func viewControllerDidSelectHistory(_ controller: KNBaseViewController)
@@ -959,18 +961,7 @@ extension EarnCoordinator: ApproveTokenViewControllerDelegate {
   }
   
   fileprivate func openHistoryScreen() {
-    switch KNGeneralProvider.shared.currentChain {
-    case .solana:
-      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, type: .solana)
-      coordinator.delegate = self
-      coordinate(coordinator: coordinator)
-    default:
-      self.historyCoordinator = nil
-      self.historyCoordinator = KNHistoryCoordinator(navigationController: self.navigationController)
-      self.historyCoordinator?.delegate = self
-      self.historyCoordinator?.appDidSwitchAddress()
-      self.historyCoordinator?.start()
-    }
+      AppDependencies.router.openTransactionHistory()
   }
 }
 

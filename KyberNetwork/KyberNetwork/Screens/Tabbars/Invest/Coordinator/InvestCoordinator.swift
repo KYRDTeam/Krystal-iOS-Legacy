@@ -158,20 +158,7 @@ class InvestCoordinator: Coordinator {
   }
   
   func openHistoryScreen() {
-    switch KNGeneralProvider.shared.currentChain {
-    case .solana:
-      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, type: .solana)
-      coordinator.delegate = self
-      coordinate(coordinator: coordinator)
-    default:
-      self.historyCoordinator = nil
-      self.historyCoordinator = KNHistoryCoordinator(
-        navigationController: self.navigationController
-      )
-      self.historyCoordinator?.delegate = self
-      self.historyCoordinator?.appDidSwitchAddress()
-      self.historyCoordinator?.start()
-    }
+      AppDependencies.router.openTransactionHistory()
   }
   
   func openDappBrowserScreen() {
@@ -191,7 +178,7 @@ class InvestCoordinator: Coordinator {
   }
   
     func openLoyalty() {
-        guard let url = URL(string: KNEnvironment.default.krystalWebUrl + "/loyalty" + "?preview=true") else { return }
+        guard let url = URL(string: "http://192.168.1.73:3000" + "/loyalty" + "?preview=true") else { return }
         DappBrowser.openURL(navigationController: navigationController, url: url)
     }
     

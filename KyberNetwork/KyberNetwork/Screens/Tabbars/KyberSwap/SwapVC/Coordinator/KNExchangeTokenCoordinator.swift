@@ -12,6 +12,7 @@ import JSONRPCKit
 import WalletConnectSwift
 import MBProgressHUD
 import KrystalWallets
+import Dependencies
 
 protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoordinator(didAdd wallet: KWallet, chain: ChainType)
@@ -893,20 +894,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
   
   fileprivate func openHistoryScreen() {
-    switch KNGeneralProvider.shared.currentChain {
-    case .solana:
-      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, type: .solana)
-      coordinator.delegate = self
-      coordinate(coordinator: coordinator)
-    default:
-      self.historyCoordinator = nil
-      self.historyCoordinator = KNHistoryCoordinator(
-        navigationController: self.navigationController
-      )
-      self.historyCoordinator?.delegate = self
-      self.historyCoordinator?.appDidSwitchAddress()
-      self.historyCoordinator?.start()
-    }
+      AppDependencies.router.openTransactionHistory()
   }
 
   fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {

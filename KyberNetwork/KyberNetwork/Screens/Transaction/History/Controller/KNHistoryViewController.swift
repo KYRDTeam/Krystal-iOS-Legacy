@@ -24,7 +24,7 @@ protocol KNHistoryViewControllerDelegate: class {
   func historyViewController(_ controller: KNHistoryViewController, run event: KNHistoryViewEvent)
 }
 
-struct KNHistoryViewModel {
+class KNHistoryViewModel {
   fileprivate lazy var dateFormatter: DateFormatter = {
     return DateFormatterUtil.shared.limitOrderFormatter
   }()
@@ -92,11 +92,11 @@ struct KNHistoryViewModel {
       return EtherscanTransactionStorage.shared.getInternalHistoryTransaction(chain: AppState.shared.currentChain).isNotEmpty
   }
 
-  mutating func updateIsShowingPending(_ isShowingPending: Bool) {
+  func updateIsShowingPending(_ isShowingPending: Bool) {
     self.isShowingPending = isShowingPending
   }
 
-  mutating func update(tokens: [Token]) {
+  func update(tokens: [Token]) {
     self.tokens = tokens
     self.filters = KNTransactionFilter(
       from: nil,
@@ -116,31 +116,31 @@ struct KNHistoryViewModel {
     self.updateDisplayingData()
   }
 
-  mutating func update(completedKrystalTxData: [String: [KrystalHistoryTransaction]], completedKrystalTxHeaders: [String]) {
+  func update(completedKrystalTxData: [String: [KrystalHistoryTransaction]], completedKrystalTxHeaders: [String]) {
     self.completedKrystalTxData = completedKrystalTxData
     self.completedKrystalTxHeaders = completedKrystalTxHeaders
     self.updateDisplayingData(isPending: false)
   }
 
-  mutating func update(pendingTxData: [String: [InternalHistoryTransaction]], pendingTxHeaders: [String]) {
+   func update(pendingTxData: [String: [InternalHistoryTransaction]], pendingTxHeaders: [String]) {
     self.pendingTxData = pendingTxData
     self.pendingTxHeaders = pendingTxHeaders
     self.updateDisplayingData(isCompleted: false)
   }
 
-  mutating func update(handledTxData: [String: [InternalHistoryTransaction]], handledTxHeaders: [String]) {
+   func update(handledTxData: [String: [InternalHistoryTransaction]], handledTxHeaders: [String]) {
     self.handledTxData = handledTxData
     self.handledTxHeaders = handledTxHeaders
     self.updateDisplayingData(isCompleted: false)
   }
 
-  mutating func update(completedTxData: [String: [HistoryTransaction]], completedTxHeaders: [String]) {
+   func update(completedTxData: [String: [HistoryTransaction]], completedTxHeaders: [String]) {
     self.completedTxData = completedTxData
     self.completedTxHeaders = completedTxHeaders
     self.updateDisplayingData(isPending: false)
   }
 
-//  mutating func updateCurrentWallet(_ currentWallet: KNWalletObject) {
+//   func updateCurrentWallet(_ currentWallet: KNWalletObject) {
 //    self.currentWallet = currentWallet
 //  }
 
@@ -242,7 +242,7 @@ struct KNHistoryViewModel {
     return nil
   }
 
-  mutating func updateDisplayingKrystalData() {
+   func updateDisplayingKrystalData() {
     let fromDate = self.filters.from ?? Date().addingTimeInterval(-200.0 * 360.0 * 24.0 * 60.0 * 60.0)
     let toDate = self.filters.to ?? Date().addingTimeInterval(24.0 * 60.0 * 60.0)
     let displayHeaders: [String] = {
@@ -265,7 +265,7 @@ struct KNHistoryViewModel {
     self.displayingCompletedKrystalTxHeaders = filtered
   }
 
-  mutating func updateDisplayingData(isPending: Bool = true, isCompleted: Bool = true) {
+   func updateDisplayingData(isPending: Bool = true, isCompleted: Bool = true) {
     let fromDate = self.filters.from ?? Date().addingTimeInterval(-200.0 * 360.0 * 24.0 * 60.0 * 60.0)
     let toDate = self.filters.to ?? Date().addingTimeInterval(24.0 * 60.0 * 60.0)
 
@@ -398,7 +398,7 @@ struct KNHistoryViewModel {
     NSAttributedString.Key.foregroundColor: UIColor.Kyber.enygold,
   ]
 
-  mutating func updateFilters(_ filters: KNTransactionFilter) {
+   func updateFilters(_ filters: KNTransactionFilter) {
     self.filters = filters
     self.updateDisplayingData()
     KNAppTracker.saveHistoryFilterData(filters)

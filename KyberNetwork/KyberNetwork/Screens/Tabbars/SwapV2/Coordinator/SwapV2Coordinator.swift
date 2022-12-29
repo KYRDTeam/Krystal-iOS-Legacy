@@ -12,6 +12,7 @@ import WalletConnectSwift
 import KrystalWallets
 import BigInt
 import Utilities
+import Dependencies
 
 class SwapV2Coordinator: NSObject, Coordinator {
   var coordinators: [Coordinator] = []
@@ -98,18 +99,7 @@ class SwapV2Coordinator: NSObject, Coordinator {
   }
 
   func openTransactionHistory() {
-    switch KNGeneralProvider.shared.currentChain {
-    case .solana:
-      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, type: .solana)
-      coordinator.delegate = self
-      self.historyCoordinator = coordinator
-      coordinate(coordinator: coordinator)
-    default:
-      let coordinator = KNHistoryCoordinator(navigationController: self.navigationController)
-      coordinator.delegate = self
-      self.historyCoordinator = coordinator
-      coordinate(coordinator: coordinator)
-    }
+      AppDependencies.router.openTransactionHistory()
   }
 }
 

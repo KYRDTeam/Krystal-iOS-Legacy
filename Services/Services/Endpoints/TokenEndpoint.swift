@@ -14,6 +14,7 @@ enum TokenEndpoint {
   case getPoolList(tokenAddress: String, chainID: Int, limit: Int)
   case getChartData(chainPath: String, address: String, quote: String, from: Int, to: Int)
   case getSearchToken(chainPath: String, address: String, query: String, orderBy: String)
+    case advancedSearch(query: String, limit: Int)
 }
 
 extension TokenEndpoint: TargetType {
@@ -34,6 +35,8 @@ extension TokenEndpoint: TargetType {
       return "/\(chainPath)/v1/market/priceSeries"
     case .getSearchToken(let chainPath, _, _, _):
       return "/\(chainPath)/v1/token/search"
+    case .advancedSearch:
+        return "/all/v1/advancedSearch/search"
     }
   }
   
@@ -80,6 +83,12 @@ extension TokenEndpoint: TargetType {
         json["address"] = address
       }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .advancedSearch(let query, let limit):
+        let json: [String: Any] = [
+          "query": query,
+          "limit": limit
+        ]
+        return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
   }
   
