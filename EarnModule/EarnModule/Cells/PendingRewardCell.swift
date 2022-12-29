@@ -40,19 +40,19 @@ struct PendingRewardCellModel {
             if numString.count > 10 {
                 numString = String(numString.prefix(10))
             }
-            self.displayClaimAmount = numString
+            self.displayClaimAmount = numString + " " + item.rewardToken.tokenInfo.symbol
         } else {
             self.displayClaimAmount = (amountBigInt.shortString(decimals: item.rewardToken.tokenInfo.decimals)) + " " + item.rewardToken.tokenInfo.symbol
         }
         
         let usdBigIntValue = BigInt(item.rewardToken.pendingReward.balancePriceUsd * pow(10.0 , Double(item.rewardToken.tokenInfo.decimals))) * amountBigInt / BigInt(pow(10.0 , Double(item.rewardToken.tokenInfo.decimals)))
         let usdNumString = usdBigIntValue.shortString(decimals: item.rewardToken.tokenInfo.decimals)
-        if usdBigIntValue < BigInt(pow(10.0, Double(item.rewardToken.tokenInfo.decimals - 6))) {
-            self.displayClaimValue = "< $0.000001 "
+        if usdBigIntValue < BigInt(pow(10.0, Double(item.rewardToken.tokenInfo.decimals - 2))) {
+            self.displayClaimValue = "<0.01$"
         } else if usdNumString == "0" {
             var usdFullString = usdBigIntValue.fullString(decimals: item.rewardToken.tokenInfo.decimals)
-            if usdFullString.count > 10 {
-                usdFullString = String(usdFullString.prefix(10))
+            if usdFullString.count > 5 {
+                usdFullString = String(usdFullString.prefix(5))
             }
             self.displayClaimValue = "$\(usdFullString)"
         } else {
