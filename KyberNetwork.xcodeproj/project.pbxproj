@@ -714,7 +714,6 @@
 		A685D4912848766A0066E177 /* GasCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4902848766A0066E177 /* GasCalculator.swift */; };
 		A685D494284877DF0066E177 /* SolanaGasCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D493284877DF0066E177 /* SolanaGasCalculator.swift */; };
 		A685D496284877EA0066E177 /* EthGasCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D495284877EA0066E177 /* EthGasCalculator.swift */; };
-		A685D49E2848B6C30066E177 /* WalletCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D49D2848B6C30066E177 /* WalletCache.swift */; };
 		A685D4A32848B78F0066E177 /* KWallet+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4A22848B78F0066E177 /* KWallet+Codable.swift */; };
 		A685D4AA2849F2620066E177 /* KAddress+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4A92849F2620066E177 /* KAddress+Codable.swift */; };
 		A685D4AD2849FC870066E177 /* AppEventCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4AC2849FC870066E177 /* AppEventCenter.swift */; };
@@ -2029,7 +2028,6 @@
 		A685D4902848766A0066E177 /* GasCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasCalculator.swift; sourceTree = "<group>"; };
 		A685D493284877DF0066E177 /* SolanaGasCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaGasCalculator.swift; sourceTree = "<group>"; };
 		A685D495284877EA0066E177 /* EthGasCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthGasCalculator.swift; sourceTree = "<group>"; };
-		A685D49D2848B6C30066E177 /* WalletCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCache.swift; sourceTree = "<group>"; };
 		A685D4A22848B78F0066E177 /* KWallet+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KWallet+Codable.swift"; sourceTree = "<group>"; };
 		A685D4A92849F2620066E177 /* KAddress+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KAddress+Codable.swift"; sourceTree = "<group>"; };
 		A685D4AC2849FC870066E177 /* AppEventCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEventCenter.swift; sourceTree = "<group>"; };
@@ -5417,7 +5415,6 @@
 		A685D49C2848B6BA0066E177 /* Caching */ = {
 			isa = PBXGroup;
 			children = (
-				A685D49D2848B6C30066E177 /* WalletCache.swift */,
 				A6F5DCAD28572FF200FD02C9 /* NonceCache.swift */,
 			);
 			path = Caching;
@@ -8078,7 +8075,6 @@
 				C337E15E27744D37001C8B03 /* RPCServers.swift in Sources */,
 				7E59E5832872F10900DFD01C /* SettingsBundleHelper.swift in Sources */,
 				291795011F95F5E200539A30 /* GetBalance.swift in Sources */,
-				A685D49E2848B6C30066E177 /* WalletCache.swift in Sources */,
 				C3FA3D972591AB3E00E17B47 /* ChooseRateViewController.swift in Sources */,
 				25EE4A6D20C54AD200E2282F /* KNAppCoordinator+InSession.swift in Sources */,
 				C33C33B725ECC70700F347E5 /* AddTokenViewController.swift in Sources */,
