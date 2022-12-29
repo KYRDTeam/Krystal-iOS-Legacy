@@ -107,7 +107,6 @@ public class ApproveTokenViewModel {
                             switch result {
                             case .success(let hash):
                                 self.hash = hash
-                                onCompleted(nil)
                                 let pendingTx = ApprovePendingTxInfo(
                                     legacyTx: legacyTx,
                                     eip1559Tx: nil,
@@ -119,6 +118,7 @@ public class ApproveTokenViewModel {
                                     contractAddress: self.toAddress
                                 )
                                 TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
+                                onCompleted(nil)
                             case .failure(let error):
                                 onCompleted(error)
                             }

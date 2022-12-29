@@ -99,7 +99,9 @@ public class SwapCoordinator: NSObject, Coordinator {
     
     func openApprove(token: Token, amount: BigInt) {
         let param = ApprovePopup.ApproveParam(symbol: token.symbol, tokenAddress: token.address, remain: amount, toAddress: AppState.shared.currentChain.proxyAddress(), chain: AppState.shared.currentChain, gasLimit: AppDependencies.gasConfig.defaultApproveGasLimit)
-        ApprovePopup.show(on: rootViewController, param: param) { txHash in }
+        ApprovePopup.show(on: rootViewController, param: param) { [weak self] txHash in
+            self?.rootViewController.viewModel.state.value = .approving
+        }
     }
     
     func openTransactionHistory() {

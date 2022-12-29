@@ -472,10 +472,17 @@ extension SwapV2ViewModel {
         )
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(checkPendingTx),
-            name: .kPendingTxListUpdated,
+            selector: #selector(onTxStatusUpdated),
+            name: .kTxStatusUpdated,
             object: nil
         )
+    }
+    
+    @objc func onTxStatusUpdated(notification: Notification) {
+        checkPendingTx()
+        if let status = notification.userInfo?["status"] as? InternalTransactionState, status == .done {
+            checkAllowance()
+        }
     }
     
     @objc func appDidSwitchChain() {
