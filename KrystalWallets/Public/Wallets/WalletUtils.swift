@@ -24,5 +24,9 @@ public class WalletUtils {
       return keyPairString
     }
   }
+    
+    public static func isAddressValid(address: String, addressType: KAddressType) -> Bool {
+      return WalletManager.shared.validateAddress(address: address, forAddressType: addressType)
+    }
   
 }

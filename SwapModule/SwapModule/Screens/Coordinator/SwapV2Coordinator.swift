@@ -15,6 +15,7 @@ import Dependencies
 import BaseModule
 import Services
 import TransactionModule
+import BaseWallet
 
 public class SwapCoordinator: NSObject, Coordinator {
     public var coordinators: [Coordinator] = []
@@ -113,62 +114,40 @@ public class SwapCoordinator: NSObject, Coordinator {
 public extension SwapCoordinator {
     func appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: String?, destTokenAddress: String?, chainIdString: String?) {
         // default swap screen
-//        self.navigationController.tabBarController?.selectedIndex = 1
-//        self.navigationController.popToRootViewController(animated: false)
-//        guard let chainIdString = chainIdString else {
-//            return
-//        }
-//        
-//        let chainId = Int(chainIdString) ?? AllChains.ethMainnetPRC.chainID
-//        //switch chain if need
-//        if KNGeneralProvider.shared.customRPC.chainID != chainId {
-//            let chain = ChainType.make(chainID: chainId) ?? .eth
-//            self.rootViewController.showSwitchChainAlert(chain, "Please switch to \(chain.chainName()) to swap".toBeLocalised()) {
-//                self.prepareTokensForSwap(srcTokenAddress: srcTokenAddress, destTokenAddress: destTokenAddress, chainId: chainId, isFromDeepLink: true)
-//            }
-//        } else {
-//            self.prepareTokensForSwap(srcTokenAddress: srcTokenAddress, destTokenAddress: destTokenAddress, chainId: chainId, isFromDeepLink: true)
-//        }
+        self.navigationController.tabBarController?.selectedIndex = 1
+        self.navigationController.popToRootViewController(animated: false)
+        guard let chainIdString = chainIdString else {
+            return
+        }
+        
+        let chainId = Int(chainIdString) ?? AllChains.ethMainnetPRC.chainID
+        //switch chain if need
+        if AppState.shared.currentChain.customRPC().chainID != chainId {
+            let chain = ChainType.make(chainID: chainId) ?? .eth
+            SwitchSpecificChainPopup.show(onViewController: navigationController, destChain: chain) {
+                self.prepareTokensForSwap(srcTokenAddress: srcTokenAddress, destTokenAddress: destTokenAddress, chainId: chainId, isFromDeepLink: true)
+            }
+        } else {
+            self.prepareTokensForSwap(srcTokenAddress: srcTokenAddress, destTokenAddress: destTokenAddress, chainId: chainId, isFromDeepLink: true)
+        }
     }
     
     func prepareTokensForSwap(srcTokenAddress: String?, destTokenAddress: String?, chainId: Int, isFromDeepLink: Bool = false) {
-        // default token
-//        var fromToken = KNGeneralProvider.shared.currentChain.quoteTokenObject()
-//        var toToken = KNGeneralProvider.shared.currentChain.defaultToSwapToken()
-//
-//        var newAddress: [String] = []
-//        guard let srcTokenAddress = srcTokenAddress, let destTokenAddress = destTokenAddress else {
-//            self.rootViewController.viewModel.loadBaseToken()
-//            return
-//        }
-//
-//        let isValidSrcAddress = KNGeneralProvider.shared.isAddressValid(address: srcTokenAddress)
-//        let isValidDestTokenAddress = KNGeneralProvider.shared.isAddressValid(address: destTokenAddress)
-//
-//        guard isValidSrcAddress, isValidDestTokenAddress else {
-//            self.rootViewController.viewModel.loadBaseToken()
-//            return
-//        }
-//        // in case can get token with given address
-//        if let token = KNSupportedTokenStorage.shared.get(forPrimaryKey: srcTokenAddress) {
-//            fromToken = token
-//        } else {
-//            newAddress.append(srcTokenAddress)
-//        }
-//
-//        if let token = KNSupportedTokenStorage.shared.get(forPrimaryKey: destTokenAddress) {
-//            toToken = token
-//        } else {
-//            newAddress.append(destTokenAddress)
-//        }
-//        if newAddress.isEmpty {
-//            // there are no new address then show swap screen
-//            self.updateToken(sourceToken: fromToken.toToken(), destToken: toToken.toToken())
-//        } else if isFromDeepLink {
-//            self.getTokenDetailInfo(sourceAddress: srcTokenAddress, destAddress: destTokenAddress) { sourceToken, destToken in
-//                self.updateToken(sourceToken: sourceToken, destToken: destToken)
-//            }
-//        }
+        guard let srcTokenAddress = srcTokenAddress, let destTokenAddress = destTokenAddress else {
+            self.rootViewController.viewModel.loadBaseToken()
+            return
+        }
+
+        let isValidSrcAddress = WalletUtils.isAddressValid(address: srcTokenAddress, addressType: .evm)
+        let isValidDestTokenAddress = WalletUtils.isAddressValid(address: destTokenAddress, addressType: .evm)
+
+        guard isValidSrcAddress, isValidDestTokenAddress else {
+            self.rootViewController.viewModel.loadBaseToken()
+            return
+        }
+        self.getTokenDetailInfo(sourceAddress: srcTokenAddress, destAddress: destTokenAddress) { sourceToken, destToken in
+            self.updateToken(sourceToken: sourceToken, destToken: destToken)
+        }
     }
     
     func updateToken(sourceToken: Token?, destToken: Token?) {
@@ -183,12 +162,13 @@ public extension SwapCoordinator {
     func getTokenDetailInfo(sourceAddress: String?, destAddress: String?, completion: @escaping (_ sourceToken: Token?, _ destToken: Token?) -> Void) {
         var sourceToken: Token?
         var destToken: Token?
+        let tokenService = TokenService()
         
         let group = DispatchGroup()
         self.rootViewController.showLoadingHUD()
         if let sourceAddress = sourceAddress {
             group.enter()
-            self.swapRepository.getTokenDetail(tokenAddress: sourceAddress) { token in
+            tokenService.getTokenDetail(address: sourceAddress, chainPath: AppState.shared.currentChain.apiChainPath()) { token in
                 group.leave()
                 if let token = token {
                     sourceToken = Token(name: token.name, symbol: token.symbol, address: token.address, decimals: token.decimals, logo: token.logo)
@@ -198,7 +178,7 @@ public extension SwapCoordinator {
         
         if let destAddress = destAddress {
             group.enter()
-            self.swapRepository.getTokenDetail(tokenAddress: destAddress) { token in
+            tokenService.getTokenDetail(address: destAddress, chainPath: AppState.shared.currentChain.apiChainPath()) { token in
                 group.leave()
                 if let token = token {
                     destToken = Token(name: token.name, symbol: token.symbol, address: token.address, decimals: token.decimals, logo: token.logo)
