@@ -13,8 +13,6 @@ extension KNAppCoordinator {
   
   func startNewSession(address: KAddress) {
       GasPriceManager.shared.scheduleFetchAllChainGasPrice()
-    self.walletCache.lastUsedAddress = address
-//    self.currentAddress = address
     
     AppState.shared.updateAddress(address: address, targetChain: AppState.shared.currentChain)
       
@@ -148,7 +146,6 @@ extension KNAppCoordinator {
   
   func stopAllSessions() {
     self.walletManager.removeAll()
-    self.walletCache.lastUsedAddress = nil
     self.session.stopSession()
     AppState.shared.updateAddress(address: self.walletManager.createEmptyAddress(), targetChain: AppState.shared.currentChain)
     self.settingsCoordinator?.stop()
@@ -218,10 +215,10 @@ extension KNAppCoordinator {
   
   func onRemoveWallet(wallet: KWallet) {
     if wallet.id == session.address.walletID {
-      NonceCache.shared.resetNonce(wallet: wallet)
-      walletCache.unmarkWalletBackedUp(walletID: wallet.id)
-      session.clearWalletData(wallet: wallet)
-      switchToNextAddress(of: session.address)
+        NonceCache.shared.resetNonce(wallet: wallet)
+        AppState.shared.unmarkWalletBackedUp(walletID: wallet.id)
+        session.clearWalletData(wallet: wallet)
+        switchToNextAddress(of: session.address)
     }
   }
   
