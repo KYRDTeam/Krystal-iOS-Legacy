@@ -33,6 +33,10 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
     open var allowSwitchChain: Bool {
         return true
     }
+    
+    open var supportSolana: Bool {
+        return true
+    }
   
   override open func viewDidLoad() {
     super.viewDidLoad()
@@ -183,7 +187,7 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
   }
   
   @objc open func handleChainButtonTapped() {
-    AppDependencies.router.openChainList(currentChain, allowAllChainOption: supportAllChainOption) { [weak self] chain in
+      AppDependencies.router.openChainList(currentChain, allowAllChainOption: supportAllChainOption, showSolanaOption: supportSolana) { [weak self] chain in
       self?.onChainSelected(chain: chain)
     }
   }

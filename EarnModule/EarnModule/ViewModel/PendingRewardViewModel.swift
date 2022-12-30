@@ -30,7 +30,13 @@ class PendingRewardViewModel {
     var isEditing: Bool = false
     
     func getAllPlatform() -> Set<EarnPlatform> {
-        let all = rewardData.map { $0.platform.toEarnPlatform() }
+        var data = rewardData
+        if let chainID = chainID {
+            data = data.filter({ item in
+                return item.chain.id == chainID
+            })
+        }
+        let all = data.map { $0.platform.toEarnPlatform() }
         return Set(all)
     }
     
@@ -55,7 +61,7 @@ class PendingRewardViewModel {
         
         if !searchText.isEmpty {
             data = data.filter({ item in
-                return item.rewardToken.tokenInfo.symbol.lowercased().contains(searchText)
+                return item.rewardToken.tokenInfo.symbol.lowercased().contains(searchText) || item.rewardToken.tokenInfo.name.lowercased().contains(searchText)
             })
         }
         
@@ -117,5 +123,10 @@ class PendingRewardViewModel {
             }
             self.isClaiming.value = false
         }
+    }
+    
+    func resetFilter() {
+        selectedPlatforms = []
+        selectedTypes = [.staking, .lending]
     }
 }

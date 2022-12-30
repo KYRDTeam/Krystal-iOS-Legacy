@@ -29,6 +29,7 @@ public protocol ThemeProtocol {
     var placeholderTextColor: UIColor { get }
     var navigationButtonBackgroundColor: UIColor { get }
     var chartColors: [UIColor] { get }
+    var positiveTextColor: UIColor { get }
 }
 
 

@@ -7,6 +7,7 @@
 
 import UIKit
 import KrystalWallets
+import AppState
 
 protocol ConfirmBackupViewControllerDelegate: class {
   func didFinishBackup(_ controller: ConfirmBackupViewController)
@@ -84,7 +85,7 @@ class ConfirmBackupViewController: KNBaseViewController {
   
   func showSuccessBackup() {
     if let walletId = walletId {
-      WalletCache.shared.markWalletBackedUp(walletID: walletId)
+        AppState.shared.markWalletBackedUp(walletID: walletId)
     }
     let successBackupVC = BackupSuccessViewController()
     successBackupVC.delegate = self

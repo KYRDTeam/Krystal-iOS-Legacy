@@ -36,7 +36,7 @@ public class EarnServices: BaseService {
       case .failure:
         completion([])
       }
-    } as? Cancellable
+    }
   }
   
   public func getStakingPortfolio(address: String, chainId: String?, completion: @escaping (Result<([EarningBalance], [PendingUnstake]), AnyError>) -> Void) {
@@ -45,7 +45,6 @@ public class EarnServices: BaseService {
     var pu: [PendingUnstake]?
     
     var anyError: AnyError?
-    
     group.enter()
     
     provider.requestWithFilters(.getEarningBalances(address: address, chainId: chainId)) { result in

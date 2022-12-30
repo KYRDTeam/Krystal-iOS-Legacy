@@ -212,12 +212,20 @@ extension SearchTokenViewController: UICollectionViewDelegateFlowLayout {
         
         return CGSize(width: symbolWidth + 50, height: 36)
     }
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return collectionViewCellPadding
-    }
-    
+
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let rightPadding = UIScreen.main.bounds.size.width - (collectionViewLeftPadding + defaultCommonTokensInOneRow * collectionViewCellWidth + (defaultCommonTokensInOneRow - 1) * collectionViewCellPadding)
+        var contentSize = 0.0
+        if self.viewModel.commonBaseTokens.count >= Int(defaultCommonTokensInOneRow) {
+            for index in 0..<Int(defaultCommonTokensInOneRow) {
+                let token = self.viewModel.commonBaseTokens[index]
+                let symbolWidth =  token.symbol.width(withConstrainedHeight: 18, font: UIFont.karlaReguler(ofSize: 14))
+                contentSize += (symbolWidth + 50)
+            }
+        } else {
+            contentSize =  defaultCommonTokensInOneRow * collectionViewCellWidth
+        }
+
+        let rightPadding = UIScreen.main.bounds.size.width - (collectionViewLeftPadding + contentSize + (defaultCommonTokensInOneRow - 1) * collectionViewCellPadding)
         return UIEdgeInsets(top: 8, left: collectionViewLeftPadding, bottom: 8, right: rightPadding)
     }
     

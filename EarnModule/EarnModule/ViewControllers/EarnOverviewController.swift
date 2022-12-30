@@ -13,6 +13,7 @@ import DesignSystem
 import Services
 import BigInt
 import TransactionModule
+import Utilities
 
 class EarnOverviewController: InAppBrowsingViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
@@ -27,7 +28,12 @@ class EarnOverviewController: InAppBrowsingViewController {
   
   var childListViewControllers: [InAppBrowsingViewController] = []
   var viewModel: EarnOverViewModel!
-    let tabCount = AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.extraReward) ? 3 : 2
+    
+    var tabCount: Int {
+        return AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.extraReward) ? 3 : 2
+    }
+    
+    let appear = Once()
 
   override var supportAllChainOption: Bool {
     return true
@@ -37,15 +43,19 @@ class EarnOverviewController: InAppBrowsingViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
       
+      initChildViewControllers()
+      
     navigationController?.setNavigationBarHidden(true, animated: true)
-    initChildViewControllers()
-
-    setupUI()
-    setupPageViewController()
   }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        appear.run {
+            setupUI()
+            setupPageViewController()
+        }
+        
         AppDependencies.tracker.track(
             "earn_v2_open",
             properties: ["screenid": "earn_v2"]
@@ -58,7 +68,7 @@ class EarnOverviewController: InAppBrowsingViewController {
   }
 
   override func handleChainButtonTapped() {
-    AppDependencies.router.openChainList(currentSelectedChain, allowAllChainOption: supportAllChainOption) { [weak self] chain in
+    AppDependencies.router.openChainList(currentSelectedChain, allowAllChainOption: supportAllChainOption, showSolanaOption: supportSolana) { [weak self] chain in
       self?.onChainSelected(chain: chain)
     }
   }
@@ -70,22 +80,16 @@ class EarnOverviewController: InAppBrowsingViewController {
   }
 
   func initChildViewControllers() {
-    let earnPoolVC = EarnListViewController.instantiateFromNib()
-    earnPoolVC.delegate = self
-    let portfolioVC = StakingPortfolioViewController.instantiateFromNib()
-    portfolioVC.delegate = self
+      let earnPoolVC = EarnListViewController.instantiateFromNib()
+      earnPoolVC.delegate = self
+      let portfolioVC = StakingPortfolioViewController.instantiateFromNib()
+      portfolioVC.delegate = self
       earnPoolVC.isSupportEarnv2.observeAndFire(on: self) { value in
           portfolioVC.updateSupportedEarnv2(value)
       }
-      
-      var vcs = [earnPoolVC, portfolioVC]
-      
-      if tabCount == 3 {
-          let pendingRewardVC = PendingRewardViewController.instantiateFromNib()
-          vcs.append(pendingRewardVC)
-      }
-      
-    childListViewControllers = vcs
+      let pendingRewardVC = PendingRewardViewController.instantiateFromNib()
+      let vcs = [earnPoolVC, portfolioVC, pendingRewardVC]
+      childListViewControllers = vcs
   }
 
   func setupUI() {
@@ -104,7 +108,7 @@ class EarnOverviewController: InAppBrowsingViewController {
           segmentedControl.setWidth(width / 3, forSegmentAt: 1)
           segmentedControl.setWidth(width / 3, forSegmentAt: 2)
       }
-   
+      segmentedControl.underlineCenterPosition()
   }
 
   func setupPageViewController() {
@@ -147,7 +151,7 @@ class EarnOverviewController: InAppBrowsingViewController {
 extension EarnOverviewController: UIPageViewControllerDataSource {
   func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
     if let vc = viewController as? InAppBrowsingViewController, let index = childListViewControllers.index(of: vc) {
-      if index + 1 < childListViewControllers.count {
+      if index + 1 < childListViewControllers.count && index + 1 < tabCount {
         return childListViewControllers[index + 1]
       }
     }

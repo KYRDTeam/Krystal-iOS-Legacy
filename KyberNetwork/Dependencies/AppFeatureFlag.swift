@@ -10,8 +10,8 @@ import Dependencies
 
 class AppFeatureFlag: FeatureFlag {
   
-  func isFeatureEnabled(key: String) -> Bool {
-    return FeatureFlagManager.shared.showFeature(forKey: key)
-  }
+    func isFeatureEnabled(key: String, defaultValue: Bool) -> Bool {
+        return FeatureFlagManager.shared.showFeature(forKey: key, defaultValue: defaultValue)
+    }
   
 }
