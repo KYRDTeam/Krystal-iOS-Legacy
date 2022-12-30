@@ -8,6 +8,7 @@
 import UIKit
 import Services
 import BaseWallet
+import Utilities
 
 class TokenSelectCell: UITableViewCell {
     @IBOutlet weak var iconImageView: UIImageView!
@@ -17,7 +18,11 @@ class TokenSelectCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     
     func configure(token: AdvancedSearchToken) {
-        iconImageView.loadImage(token.logo)
+        if token.logo.isEmpty {
+            iconImageView.image = Images.defaultToken
+        } else {
+            iconImageView.loadImage(token.logo)
+        }
         symbolLabel.text = token.symbol
         nameLabel.text = token.name
         chainImageView.image = ChainType.make(chainID: token.chainId)?.squareIcon()
