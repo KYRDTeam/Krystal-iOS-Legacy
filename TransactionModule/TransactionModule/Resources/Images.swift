@@ -25,6 +25,7 @@ extension UIImage {
     static let unverifiedToken = UIImage(imageName: "warning-tag-icon")
     static let search = UIImage(imageName: "search")
     static let closeSearch = UIImage(imageName: "close_search")
+    static let defaultToken = UIImage(imageName: "default_token")
 }
 
 

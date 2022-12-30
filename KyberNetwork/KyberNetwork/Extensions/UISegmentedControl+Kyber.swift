@@ -31,7 +31,7 @@ class SegmentedControl: UISegmentedControl {
     let lineWidth: CGFloat = self.frame.size.width / CGFloat(self.numberOfSegments)
     let lineHeight: CGFloat = 2.0
     let lineXPosition = CGFloat(selectedSegmentIndex * Int(lineWidth)) + (lineWidth - (width ?? lineWidth)) / 2
-    let lineYPosition = self.bounds.size.height - 6.0
+    let lineYPosition = self.bounds.size.height - 2
     let underlineFrame = CGRect(x: lineXPosition, y: lineYPosition, width: width ?? lineWidth, height: lineHeight)
     let underLine = UIView(frame: underlineFrame)
     underLine.backgroundColor = UIColor(named: "buttonBackgroundColor")

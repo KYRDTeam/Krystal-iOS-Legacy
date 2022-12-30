@@ -67,7 +67,7 @@ public class TokenSelectPopup: UIViewController, UIGestureRecognizerDelegate {
         showSkeletonLoading()
         emptyView.isHidden = true
         typingTimer?.invalidate()
-        typingTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { [weak self] _ in
+        typingTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] _ in
             self?.viewModel.updateQuery(query: text, chainType: chain)
         })
     }
