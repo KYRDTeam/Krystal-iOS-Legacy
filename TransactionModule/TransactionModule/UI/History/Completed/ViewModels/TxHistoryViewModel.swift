@@ -46,7 +46,7 @@ class TxHistoryViewModel {
                 self.txs = []
                 self.rows = []
             }
-            self.canLoadMore = !txRecords.isEmpty
+            self.canLoadMore = txRecords.count >= 20
             self.txs.append(contentsOf: txRecords)
             var originalDate = Date(timeIntervalSince1970: 0)
             txRecords.forEach { record in
