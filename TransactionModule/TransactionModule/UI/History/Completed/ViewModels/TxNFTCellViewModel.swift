@@ -16,9 +16,8 @@ struct TxNFTCellViewModel {
     var isPositiveAmount: Bool
     
     var amountString: String {
-        let sign = amount < 0 ? "-" : "+"
         let symbolString = symbol.isEmpty ? "" : " \(symbol)"
-        return "\(sign)\(amount)\(symbolString) #\(tokenId)"
+        return "\(amount)\(symbolString) #\(tokenId)"
     }
     
     init(token: TokenInfo, amount: Int, tokenId: String) {

@@ -46,7 +46,12 @@ struct TxHistoryTokenCellViewModel {
         if usdValueInUsd == 0 {
             usdValue = ""
         } else {
-            usdValue = "$" + NumberFormatUtils.usdAmount(value: BigInt(abs(usdValueInUsd) * pow(10, 18)), decimals: 18)
+            let usdAmountString = NumberFormatUtils.usdAmount(value: BigInt(abs(usdValueInUsd) * pow(10, 18)), decimals: 18)
+            if usdAmountString == "0" {
+                usdValue = NumberFormatUtils.lessThanMinUsdAmountString()
+            } else {
+                usdValue = "$" + usdAmountString
+            }
         }
     }
     
