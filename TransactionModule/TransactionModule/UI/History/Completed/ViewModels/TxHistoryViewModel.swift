@@ -46,7 +46,7 @@ class TxHistoryViewModel {
                 self.txs = []
                 self.rows = []
             }
-            self.canLoadMore = !txRecords.isEmpty
+            self.canLoadMore = txRecords.count >= 20
             self.txs.append(contentsOf: txRecords)
             var originalDate = Date(timeIntervalSince1970: 0)
             txRecords.forEach { record in
@@ -63,7 +63,7 @@ class TxHistoryViewModel {
     
     func constructRows(tx: TxRecord) -> [TxHistoryRowType] {
         var rows: [TxHistoryRowType] = []
-        rows.append(.header(viewModel: .init(tx: tx)))
+        rows.append(.header(viewModel: .init(tx: tx, isSelectedSpecificChain: currentChain != .all)))
         let dict = Dictionary(grouping: tx.tokenTransfers ?? []) { element in
             return element.token?.address
         }

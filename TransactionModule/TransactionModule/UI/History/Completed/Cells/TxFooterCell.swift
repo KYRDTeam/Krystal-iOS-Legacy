@@ -10,6 +10,8 @@ import Utilities
 import BaseWallet
 
 class TxFooterCell: UITableViewCell {
+    
+    @IBOutlet weak var gasIcon: UIImageView!
     @IBOutlet weak var gasAmountLabel: UILabel!
     @IBOutlet weak var gasValueLabel: UILabel!
     @IBOutlet weak var hashLabel: UILabel!
@@ -31,6 +33,9 @@ class TxFooterCell: UITableViewCell {
         gasAmountLabel.text = viewModel.gasAmount
         gasValueLabel.text = viewModel.gasUsdValue
         hashLabel.text = viewModel.shortenedTxHash
+        [gasIcon, gasAmountLabel, gasValueLabel].forEach { view in
+            view?.isHidden = !viewModel.isGasPositive
+        }
     }
     
     @IBAction func openLinkTapped(_ sender: Any) {

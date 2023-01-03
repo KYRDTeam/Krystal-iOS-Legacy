@@ -35,6 +35,10 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
         return false
     }
     
+    var hasPendingTx: Bool {
+        return TransactionManager.txProcessor.hasPendingTx()
+    }
+    
     var selectedChain: ChainType = .all
     
     override func viewDidLoad() {
@@ -42,6 +46,10 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
         
         setupPageController()
         setupSegmentControl()
+        
+        if hasPendingTx {
+            jumpToPage(index: 1)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -107,9 +115,17 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
     
     @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
         segmentControl.underlineCenterPosition()
-      if sender.selectedSegmentIndex != selectedPageIndex {
-          selectPage(index: sender.selectedSegmentIndex)
-      }
+        if sender.selectedSegmentIndex != selectedPageIndex {
+            selectPage(index: sender.selectedSegmentIndex)
+        }
+    }
+    
+    func jumpToPage(index: Int) {
+        segmentControl.selectedSegmentIndex = index
+        segmentControl.underlineCenterPosition()
+        if index != selectedPageIndex {
+            selectPage(index: index)
+        }
     }
     
     func selectPage(index: Int) {

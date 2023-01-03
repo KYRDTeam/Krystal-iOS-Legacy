@@ -15,15 +15,31 @@ struct TxHistoryHeaderCellViewModel {
     var typeString: String
     var contract: String
     var isSuccess: Bool
+    var shouldHideChainIcon: Bool
     
-    init(tx: TxRecord) {
-        let type = TxRecordType(name: tx.contractInteraction?.methodName ?? "")
-        typeIcon = type.icon
-        typeString = tx.contractInteraction?.methodName ?? "Contract Interaction"
+    init(tx: TxRecord, isSelectedSpecificChain: Bool) {
+        self.shouldHideChainIcon = isSelectedSpecificChain
+        var type = TxRecordType(name: tx.contractInteraction?.methodName ?? "")
         chainIcon = tx.chain.chainLogo
-        isSuccess = tx.status.isEmpty
+        isSuccess = tx.status.isEmpty || tx.status.lowercased() == "success"
+        
+        if type == .contractInteraction {
+            if tx.tokenApproval != nil {
+                type = .approve
+            } else if tx.tokenTransfers?.count == 1 {
+                if tx.walletAddress == tx.from {
+                    type = .transfer
+                } else if tx.walletAddress == tx.to {
+                    type = .receive
+                }
+            }
+        }
+        
+        typeString = (tx.contractInteraction?.methodName ?? type.rawValue).capitalized
+        typeIcon = type.icon
+        
         switch type {
-        case .send:
+        case .transfer:
             contract = tx.to.shortTypeAddress
         case .receive:
             contract = tx.from.shortTypeAddress
@@ -38,7 +54,7 @@ struct TxHistoryHeaderCellViewModel {
             let contractName = tx.contractInteraction?.contractName
             if contractName.isNilOrEmpty {
                 if tx.to.isEmpty {
-                    contract = tx.walletAddress.shortTypeAddress
+                    contract = "-/-"
                 } else {
                     contract = tx.to.shortTypeAddress
                 }
@@ -47,4 +63,6 @@ struct TxHistoryHeaderCellViewModel {
             }
         }
     }
+    
+    
 }

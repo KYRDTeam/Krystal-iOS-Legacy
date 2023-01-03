@@ -8,9 +8,9 @@
 import Foundation
 import UIKit
 
-enum TxRecordType {
+enum TxRecordType: String {
     case swap
-    case send
+    case transfer
     case receive
     case multisend
     case earn
@@ -18,14 +18,14 @@ enum TxRecordType {
     case claim
     case mint
     case bridge
-    case contractInteract
+    case contractInteraction
     
     init(name: String) {
-        switch name {
+        switch name.lowercased() {
         case "swap":
             self = .swap
         case "transfer":
-            self = .send
+            self = .transfer
         case "receive":
             self = .receive
         case "multisend":
@@ -41,7 +41,7 @@ enum TxRecordType {
         case "bridge":
             self = .bridge
         default:
-            self = .contractInteract
+            self = .contractInteraction
         }
     }
     
@@ -49,7 +49,7 @@ enum TxRecordType {
         switch self {
         case .swap:
             return .txSwap
-        case .send:
+        case .transfer:
             return .txSend
         case .receive:
             return .txReceive
@@ -65,7 +65,7 @@ enum TxRecordType {
             return .txMint
         case .bridge:
             return .txBridge
-        case .contractInteract:
+        case .contractInteraction:
             return .txContractInteract
         }
     }
