@@ -41,9 +41,6 @@ class KNSession {
       return
     }
     AppState.shared.currentAddress = address
-//    WalletCache.shared.lastUsedAddress = address
-//    AppEventCenter.shared.currentAddressUpdated()
-    
     AppEventManager.shared.postWalletListUpdatedEvent()
   }
   
@@ -88,8 +85,6 @@ class KNSession {
   }
   
   func switchAddress(address: KAddress) {
-//    AppEventCenter.shared.switchAddress(address: address)
-    WalletCache.shared.lastUsedAddress = address
     self.configureDatabase()
     self.configureWeb3()
     self.configureProvider()
@@ -119,8 +114,6 @@ class KNSession {
     self.transactionCoordinator = nil
 
     KNAppTracker.resetAllAppTrackerData()
-    let address = walletManager.createEmptyAddress()
-    WalletCache.shared.lastUsedAddress = address
   }
 
   func clearWalletData(wallet: KWallet) {

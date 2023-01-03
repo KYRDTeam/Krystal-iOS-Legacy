@@ -459,8 +459,10 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
       return toAddress
     } else if let toAddressEIP = self.transaction.eip1559Transaction?.toAddress {
       return toAddressEIP
+    } else if let address = self.transaction.transactionObject?.to {
+      return address
     } else {
-      return ""
+        return ""
     }
   }
 

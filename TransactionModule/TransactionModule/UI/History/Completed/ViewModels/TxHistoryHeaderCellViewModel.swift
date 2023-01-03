@@ -17,11 +17,17 @@ struct TxHistoryHeaderCellViewModel {
     var isSuccess: Bool
     
     init(tx: TxRecord) {
-        let type = TxRecordType(name: tx.contractInteraction?.methodName ?? "")
-        typeIcon = type.icon
-        typeString = tx.contractInteraction?.methodName ?? "Contract Interaction"
+        var type = TxRecordType(name: tx.contractInteraction?.methodName ?? "")
         chainIcon = tx.chain.chainLogo
-        isSuccess = tx.status.isEmpty
+        isSuccess = tx.status.isEmpty || tx.status.lowercased() == "success"
+        
+        if tx.tokenApproval != nil && type == .contractInteraction {
+            type = .approve
+        }
+        
+        typeString = tx.contractInteraction?.methodName ?? type.rawValue
+        typeIcon = type.icon
+        
         switch type {
         case .send:
             contract = tx.to.shortTypeAddress
@@ -38,7 +44,7 @@ struct TxHistoryHeaderCellViewModel {
             let contractName = tx.contractInteraction?.contractName
             if contractName.isNilOrEmpty {
                 if tx.to.isEmpty {
-                    contract = tx.walletAddress.shortTypeAddress
+                    contract = "-/-"
                 } else {
                     contract = tx.to.shortTypeAddress
                 }

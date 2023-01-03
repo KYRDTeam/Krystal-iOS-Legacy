@@ -43,6 +43,9 @@ class PendingInternalHistoryTransactonViewModel: TransactionHistoryItemViewModel
       if let toAddress = self.internalTransaction.transactionObject?.to {
         return NSLocalizedString("To", value: "To", comment: "") + ": \(toAddress)"
       }
+        if let toAddress = self.internalTransaction.eip1559Transaction?.toAddress {
+            return NSLocalizedString("To", value: "To", comment: "") + ": \(toAddress)"
+        }
       return ""
     case .bridge:
       guard !isError else {

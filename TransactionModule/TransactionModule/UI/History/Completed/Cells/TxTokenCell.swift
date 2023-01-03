@@ -16,7 +16,11 @@ class TxTokenCell: UITableViewCell {
     @IBOutlet weak var usdValueLabel: UILabel!
     
     func configure(viewModel: TxHistoryTokenCellViewModel) {
-        logoImageView.loadImage(viewModel.tokenIconUrl)
+        if viewModel.tokenIconUrl.isNilOrEmpty {
+            logoImageView.image = .defaultToken
+        } else {
+            logoImageView.loadImage(viewModel.tokenIconUrl)
+        }
         verifyImageView.image = viewModel.verifyIcon
         amountLabel.text = viewModel.amountString
         usdValueLabel.text = viewModel.usdValue
