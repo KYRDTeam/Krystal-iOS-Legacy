@@ -91,6 +91,7 @@
             <connections>
                 <outlet property="containerView" destination="fHk-M0-JET" id="os4-qP-UAE"/>
                 <outlet property="gasAmountLabel" destination="cnc-Tb-cvO" id="r3N-xi-2Cb"/>
+                <outlet property="gasIcon" destination="hfL-Rm-KQd" id="ouO-l5-Pm5"/>
                 <outlet property="gasValueLabel" destination="mf5-bt-id3" id="GbL-4s-L1D"/>
                 <outlet property="hashLabel" destination="Gcr-d8-gXI" id="ieD-IE-WDb"/>
             </connections>

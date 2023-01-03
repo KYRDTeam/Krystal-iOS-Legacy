@@ -29,6 +29,7 @@ class TxHeaderCell: UITableViewCell {
         typeNameLabel.text = viewModel.typeString
         contractLabel.text = viewModel.contract
         chainIconImageView.loadImage(viewModel.chainIcon)
+        chainIconImageView.isHidden = viewModel.shouldHideChainIcon
     }
     
 }
