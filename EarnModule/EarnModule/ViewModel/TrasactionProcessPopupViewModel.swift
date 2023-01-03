@@ -59,7 +59,7 @@ class StakingTransactionProcessPopupViewModel: TrasactionProcessPopupViewModel {
     }
     
     var finishButtonString: String {
-        return Strings.viewMyPool
+        return Strings.viewMyPortfolio
     }
   
     func trackPopupOpenEvent() {
