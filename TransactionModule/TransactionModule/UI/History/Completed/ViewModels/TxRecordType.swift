@@ -10,7 +10,7 @@ import UIKit
 
 enum TxRecordType: String {
     case swap
-    case send
+    case transfer
     case receive
     case multisend
     case earn
@@ -25,7 +25,7 @@ enum TxRecordType: String {
         case "swap":
             self = .swap
         case "transfer":
-            self = .send
+            self = .transfer
         case "receive":
             self = .receive
         case "multisend":
@@ -49,7 +49,7 @@ enum TxRecordType: String {
         switch self {
         case .swap:
             return .txSwap
-        case .send:
+        case .transfer:
             return .txSend
         case .receive:
             return .txReceive
