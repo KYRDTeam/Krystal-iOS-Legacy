@@ -121,6 +121,7 @@ def transactionModuleDependencies
   pod 'APIKit'
   pod 'CryptoSwift'
   pod 'loady'
+  pod 'SkeletonView'
 end
 
 target 'Dependencies' do

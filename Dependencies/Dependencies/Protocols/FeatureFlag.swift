@@ -34,4 +34,5 @@ public struct FeatureFlagKeys {
     public static let earnNewTag = "earn-new-tag"
     public static let extraReward = "extra-rewards"
     public static let loyalty = "loyalty"
+    public static let historyV2 = "history-v2"
 }

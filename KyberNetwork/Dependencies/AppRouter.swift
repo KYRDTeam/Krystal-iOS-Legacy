@@ -42,7 +42,7 @@ class AppRouter: AppRouterProtocol, Coordinator {
     UIApplication.shared.topMostViewController()?.present(navigation, animated: true, completion: nil)
   }
   
-  func openChainList(_ selectedChain: ChainType, allowAllChainOption: Bool, onSelectChain: @escaping (ChainType) -> Void) {
+    func openChainList(_ selectedChain: ChainType, allowAllChainOption: Bool, showSolanaOption: Bool, onSelectChain: @escaping (ChainType) -> Void) {
     MixPanelManager.track("import_select_chain_open", properties: ["screenid": "import_select_chain"])
     let popup = SwitchChainViewController(selected: selectedChain)
     var chains = WalletManager.shared.getAllAddresses(walletID: AppState.shared.currentAddress.walletID).flatMap { address in
@@ -52,6 +52,9 @@ class AppRouter: AppRouterProtocol, Coordinator {
     }
     if allowAllChainOption {
       chains = [.all] + chains
+    }
+    if !showSolanaOption {
+        chains.removeAll { $0 == .solana }
     }
     popup.dataSource = chains
     popup.completionHandler = { selectedChain in
@@ -69,21 +72,26 @@ class AppRouter: AppRouterProtocol, Coordinator {
   }
   
   func openTransactionHistory() {
-    guard let navigation = UIApplication.shared.topMostViewController() as? UINavigationController else { return }
-    switch KNGeneralProvider.shared.currentChain {
-    case .solana:
-      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigation, type: .solana)
-      coordinator.delegate = self
-      self.historyCoordinator = coordinator
-      coordinate(coordinator: coordinator)
-    default:
-      let coordinator = KNHistoryCoordinator(navigationController: navigation)
-      coordinator.delegate = self
-      self.historyCoordinator = coordinator
-      coordinate(coordinator: coordinator)
-    }
+      guard let navigation = UIApplication.shared.topMostViewController() as? UINavigationController else { return }
+      switch KNGeneralProvider.shared.currentChain {
+      case .solana:
+          let coordinator = KNTransactionHistoryCoordinator(navigationController: navigation, type: .solana)
+          coordinator.delegate = self
+          self.historyCoordinator = coordinator
+          coordinate(coordinator: coordinator)
+      default:
+          if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.historyV2) {
+              let coordinator = HistoryV3Coordinator(navigationController: navigation)
+              coordinate(coordinator: coordinator)
+          } else {
+              let coordinator = KNHistoryCoordinator(navigationController: navigation)
+              coordinator.delegate = self
+              self.historyCoordinator = coordinator
+              coordinate(coordinator: coordinator)
+          }
+      }
   }
-  
+    
   func openExternalURL(url: String) {
     UIApplication.shared.topMostViewController()?.openSafari(with: url)
   }

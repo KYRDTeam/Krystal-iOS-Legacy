@@ -27,6 +27,7 @@ public protocol ThemeProtocol {
     var infoTextColor: UIColor { get }
     var orangeColor: UIColor { get }
     var chartColors: [UIColor] { get }
+    var positiveTextColor: UIColor { get }
 }
 
 
