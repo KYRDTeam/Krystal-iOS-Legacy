@@ -9,6 +9,7 @@ import UIKit
 import Services
 import AppState
 import DesignSystem
+import KrystalWallets
 
 class StakingPortfolioViewModel {
     var portfolio: ([EarningBalance], [PendingUnstake])?
@@ -119,8 +120,10 @@ class StakingPortfolioViewModel {
         if shouldShowLoading {
             isLoading.value = true
         }
-        
-        apiService.getStakingPortfolio(address: AppState.shared.currentAddress.addressString, chainId: nil) { result in
+        guard let evmAddress = WalletManager.shared.address(walletID: AppState.shared.currentAddress.walletID, addressType: .evm)?.addressString else {
+            return
+        }
+        apiService.getStakingPortfolio(address: evmAddress, chainId: nil) { result in
             
             switch result {
             case .success(let portfolio):
@@ -128,7 +131,7 @@ class StakingPortfolioViewModel {
                 if shouldShowLoading {
                     self.resetFilter()
                 }
-                self.reloadDataSource()
+                self.reloadDataSource()   
             case .failure(let error):
                 self.error.value = error
             }
