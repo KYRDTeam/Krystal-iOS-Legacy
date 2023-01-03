@@ -308,7 +308,11 @@ extension SwapSummaryViewController: SwapProcessPopupDelegate {
                 AppDependencies.router.openSupportURL()
             case .viewToken(let address):
                 guard let nav = self.navigationController else { return }
-                AppDependencies.router.openToken(navigationController: nav, address: address, chainID: AppState.shared.currentChain.getChainId())
+                nav.dismiss(animated: true) {
+                    if let topNav = UIApplication.shared.topMostNav() {
+                        AppDependencies.router.openToken(navigationController: topNav, address: address, chainID: AppState.shared.currentChain.getChainId())
+                    }
+                }
             case .close:
                 self.dismiss(animated: true)
             }

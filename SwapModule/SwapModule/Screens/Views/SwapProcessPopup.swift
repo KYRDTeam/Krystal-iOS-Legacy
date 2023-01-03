@@ -121,7 +121,7 @@ class SwapProcessPopup: KNBaseViewController {
         case .processing:
             self.txHashButtonTapped(sender)
         case .success:
-            self.delegate?.swapProcessPopup(self, action: .viewToken(sym: pendingTx.destSymbol ?? ""))
+            self.delegate?.swapProcessPopup(self, action: .viewToken(sym: self.pendingTx.destToken.address))
         case .failure:
             self.delegate?.swapProcessPopup(self, action: .goToSupport)
         case .none:
