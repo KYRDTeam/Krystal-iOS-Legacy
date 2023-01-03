@@ -227,8 +227,9 @@ class MultiSendViewController: InAppBrowsingViewController {
   
   override func reloadChain() {
     super.reloadChain()
-    
+    updateUIUseLast()
     mainView.isHidden = !KNGeneralProvider.shared.currentChain.supportMultisend
+      
   }
   
   override func updateChainInfo() {
@@ -242,6 +243,7 @@ class MultiSendViewController: InAppBrowsingViewController {
     
     let title = KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.transfer
     sendButton.setTitle(title, for: .normal)
+      updateUIUseLast()
   }
 
   fileprivate func updateUIPendingTxIndicatorView() {
