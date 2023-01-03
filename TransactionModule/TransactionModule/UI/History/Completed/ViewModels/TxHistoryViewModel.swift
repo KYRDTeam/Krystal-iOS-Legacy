@@ -63,7 +63,7 @@ class TxHistoryViewModel {
     
     func constructRows(tx: TxRecord) -> [TxHistoryRowType] {
         var rows: [TxHistoryRowType] = []
-        rows.append(.header(viewModel: .init(tx: tx)))
+        rows.append(.header(viewModel: .init(tx: tx, isSelectedSpecificChain: currentChain != .all)))
         let dict = Dictionary(grouping: tx.tokenTransfers ?? []) { element in
             return element.token?.address
         }
