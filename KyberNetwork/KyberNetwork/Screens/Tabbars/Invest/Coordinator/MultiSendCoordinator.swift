@@ -16,6 +16,7 @@ import MBProgressHUD
 import WalletConnectSwift
 import KrystalWallets
 import Dependencies
+import TokenModule
 
 class MultiSendCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
@@ -38,7 +39,6 @@ class MultiSendCoordinator: NSObject, Coordinator {
     return controller
   }()
   
-  fileprivate(set) var searchTokensVC: KNSearchTokenViewController?
   fileprivate(set) var approveVC: MultiSendApproveViewController?
   fileprivate(set) weak var gasPriceSelector: GasFeeSelectorPopupViewController?
   fileprivate(set) var confirmVC: MultiSendConfirmViewController?
@@ -202,15 +202,9 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   }
   
   fileprivate func openSearchToken(selectedToken: TokenObject) {
-    let tokens = KNSupportedTokenStorage.shared.getAllTokenObject()
-    let viewModel = KNSearchTokenViewModel(
-      supportedTokens: tokens
-    )
-    let controller = KNSearchTokenViewController(viewModel: viewModel)
-    controller.loadViewIfNeeded()
-    controller.delegate = self
-    self.navigationController.present(controller, animated: true, completion: nil)
-    self.searchTokensVC = controller
+      TokenModule.openSearchToken(on: self.rootViewController) { selected in
+          self.rootViewController.coordinatorDidUpdateSendToken(selected.token)
+      }
   }
   
   fileprivate func checkAllowance(contractAddress: String, items: [ApproveMultiSendItem], completion: @escaping ([ApproveMultiSendItem]) -> Void) {
@@ -322,19 +316,6 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     controller.delegate = self
     self.navigationController.present(controller, animated: true, completion: nil)
     self.transactionStatusVC = controller
-  }
-}
-
-extension MultiSendCoordinator: KNSearchTokenViewControllerDelegate {
-  func searchTokenViewController(_ controller: KNSearchTokenViewController, run event: KNSearchTokenViewEvent) {
-    controller.dismiss(animated: true) {
-      self.searchTokensVC = nil
-      if case .select(let token) = event {
-        self.rootViewController.coordinatorDidUpdateSendToken(token.toToken())
-      } else if case .add(let token) = event {
-        self.delegate?.sendTokenCoordinatorDidSelectAddToken(token)
-      }
-    }
   }
 }
 
