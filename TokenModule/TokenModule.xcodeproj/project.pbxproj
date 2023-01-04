@@ -42,7 +42,13 @@
 		A668BFD9292CC650001A110D /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFD8292CC650001A110D /* String+.swift */; };
 		A668BFDF292CCEAD001A110D /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFDE292CCEAD001A110D /* String.swift */; };
 		A668BFE5292CD46B001A110D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFE4292CD46B001A110D /* Constants.swift */; };
+		A66CD6F42955684500FF2EC9 /* TokenSelectPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66CD6F22955684500FF2EC9 /* TokenSelectPopup.swift */; };
+		A66CD6F52955684500FF2EC9 /* TokenSelectPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66CD6F32955684500FF2EC9 /* TokenSelectPopup.xib */; };
+		A66CD6F829556AE600FF2EC9 /* TokenSelectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66CD6F629556AE600FF2EC9 /* TokenSelectCell.swift */; };
+		A66CD6F929556AE600FF2EC9 /* TokenSelectCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66CD6F729556AE600FF2EC9 /* TokenSelectCell.xib */; };
 		A6B4A6A9292E139900F6F0F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6B4A6A8292E139900F6F0F5 /* Assets.xcassets */; };
+		A6C37C082955833500B6F3C6 /* TokenVerifyStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C37C072955833500B6F3C6 /* TokenVerifyStatus.swift */; };
+		A6C37C0A2955840F00B6F3C6 /* TokenSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C37C092955840F00B6F3C6 /* TokenSelectViewModel.swift */; };
 		F9A227AEF3E7FA65E153EC7E /* Pods_TokenModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B80AE15B9D1F9B99D8DA7934 /* Pods_TokenModule.framework */; };
 /* End PBXBuildFile section */
 
@@ -83,7 +89,13 @@
 		A668BFD8292CC650001A110D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		A668BFDE292CCEAD001A110D /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		A668BFE4292CD46B001A110D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A66CD6F22955684500FF2EC9 /* TokenSelectPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSelectPopup.swift; sourceTree = "<group>"; };
+		A66CD6F32955684500FF2EC9 /* TokenSelectPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TokenSelectPopup.xib; sourceTree = "<group>"; };
+		A66CD6F629556AE600FF2EC9 /* TokenSelectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSelectCell.swift; sourceTree = "<group>"; };
+		A66CD6F729556AE600FF2EC9 /* TokenSelectCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TokenSelectCell.xib; sourceTree = "<group>"; };
 		A6B4A6A8292E139900F6F0F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A6C37C072955833500B6F3C6 /* TokenVerifyStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenVerifyStatus.swift; sourceTree = "<group>"; };
+		A6C37C092955840F00B6F3C6 /* TokenSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSelectViewModel.swift; sourceTree = "<group>"; };
 		B80AE15B9D1F9B99D8DA7934 /* Pods_TokenModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokenModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C10B00C3C97E49A742A85D59 /* Pods-TokenModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenModule.release.xcconfig"; path = "Target Support Files/Pods-TokenModule/Pods-TokenModule.release.xcconfig"; sourceTree = "<group>"; };
 		D465846A183AABBCF04E5485 /* Pods-TokenModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenModule.debug.xcconfig"; path = "Target Support Files/Pods-TokenModule/Pods-TokenModule.debug.xcconfig"; sourceTree = "<group>"; };
@@ -190,6 +202,7 @@
 		A668BF9A292CB869001A110D /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				A66CD6F12955682D00FF2EC9 /* TokenSelect */,
 				7EB129A029389D9D00CE6D1C /* SearchToken */,
 				A668BF9D292CB890001A110D /* TokenDetail */,
 			);
@@ -250,6 +263,19 @@
 				A668BFC8292CBE92001A110D /* TradingView.swift */,
 			);
 			path = TradingView;
+			sourceTree = "<group>";
+		};
+		A66CD6F12955682D00FF2EC9 /* TokenSelect */ = {
+			isa = PBXGroup;
+			children = (
+				A66CD6F22955684500FF2EC9 /* TokenSelectPopup.swift */,
+				A66CD6F32955684500FF2EC9 /* TokenSelectPopup.xib */,
+				A66CD6F629556AE600FF2EC9 /* TokenSelectCell.swift */,
+				A66CD6F729556AE600FF2EC9 /* TokenSelectCell.xib */,
+				A6C37C072955833500B6F3C6 /* TokenVerifyStatus.swift */,
+				A6C37C092955840F00B6F3C6 /* TokenSelectViewModel.swift */,
+			);
+			path = TokenSelect;
 			sourceTree = "<group>";
 		};
 		C6B66BB1B65B4FC6BD942FBF /* Frameworks */ = {
@@ -341,7 +367,9 @@
 				A668BFA0292CB8B9001A110D /* TokenDetailViewController.xib in Resources */,
 				7ECC45B72939A31900B37D30 /* Localizable.strings in Resources */,
 				A6B4A6A9292E139900F6F0F5 /* Assets.xcassets in Resources */,
+				A66CD6F929556AE600FF2EC9 /* TokenSelectCell.xib in Resources */,
 				A63E27FD292FA1050024328D /* mobile-charting-library in Resources */,
+				A66CD6F52955684500FF2EC9 /* TokenSelectPopup.xib in Resources */,
 				A668BFD4292CC26B001A110D /* TokenPoolCell.xib in Resources */,
 				7ECC45C02939A5E600B37D30 /* CommonBaseTokenCell.xib in Resources */,
 				7ECC45BF2939A5E600B37D30 /* SearchTokenViewCell.xib in Resources */,
@@ -383,7 +411,9 @@
 			files = (
 				7EB129B02938AA6600CE6D1C /* SearchTokenViewModel.swift in Sources */,
 				7EB129A429389DE300CE6D1C /* SearchTokenViewController.swift in Sources */,
+				A6C37C0A2955840F00B6F3C6 /* TokenSelectViewModel.swift in Sources */,
 				A668BFA1292CB8B9001A110D /* TokenDetailViewController.swift in Sources */,
+				A66CD6F829556AE600FF2EC9 /* TokenSelectCell.swift in Sources */,
 				A668BFD5292CC26B001A110D /* TokenPoolCell.swift in Sources */,
 				A668BFC9292CBE92001A110D /* TradingViewController.swift in Sources */,
 				7ECC45BE2939A5E600B37D30 /* SearchTokenViewCell.swift in Sources */,
@@ -392,12 +422,14 @@
 				A668BFE5292CD46B001A110D /* Constants.swift in Sources */,
 				A668BFA3292CB8F3001A110D /* TokenDetailViewModel.swift in Sources */,
 				A668BFDF292CCEAD001A110D /* String.swift in Sources */,
+				A66CD6F42955684500FF2EC9 /* TokenSelectPopup.swift in Sources */,
 				A668BFA9292CBD57001A110D /* ChartPeriodType.swift in Sources */,
 				7ECC45BD2939A5E600B37D30 /* CommonBaseTokenCell.swift in Sources */,
 				A668BFCA292CBE92001A110D /* Period.swift in Sources */,
 				A668BFCC292CBE92001A110D /* ChartType.swift in Sources */,
 				A668BFCF292CBE92001A110D /* TradingView.swift in Sources */,
 				A668BFD9292CC650001A110D /* String+.swift in Sources */,
+				A6C37C082955833500B6F3C6 /* TokenVerifyStatus.swift in Sources */,
 				7ECC45CA2939E71F00B37D30 /* Images.swift in Sources */,
 				A668BFAB292CBD82001A110D /* TokenModule.swift in Sources */,
 				A668BFCD292CBE92001A110D /* TradingView+Action.swift in Sources */,

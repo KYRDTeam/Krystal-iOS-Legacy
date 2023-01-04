@@ -9,6 +9,7 @@ import Foundation
 import KrystalWallets
 import TrustKeystore
 import Result
+import AppState
 
 class MigratingWalletOperation: AsyncOperation {
   
@@ -16,7 +17,6 @@ class MigratingWalletOperation: AsyncOperation {
   let walletObject: KNWalletObject
   let keystore: Keystore
   let walletManager = WalletManager.shared
-  let walletCache = WalletCache.shared
   var onComplete: (() -> ())?
   
   init(keystore: Keystore, wallet: Wallet, walletObject: KNWalletObject) {
@@ -61,7 +61,7 @@ class MigratingWalletOperation: AsyncOperation {
             DispatchQueue.main.async {
               if let wallet = try? self.walletManager.import(mnemonic: mnemonic, name: self.walletObject.name) {
                 if self.walletObject.isBackedUp {
-                  self.walletCache.markWalletBackedUp(walletID: wallet.id)
+                    AppState.shared.markWalletBackedUp(walletID: wallet.id)
                 }
               }
               self.finish()
@@ -84,7 +84,7 @@ class MigratingWalletOperation: AsyncOperation {
                   case .success(let json):
                     if let wallet = try? self.walletManager.import(keystore: json, addressType: addressType, password: password, name: self.walletObject.name) {
                       if self.walletObject.isBackedUp {
-                        self.walletCache.markWalletBackedUp(walletID: wallet.id)
+                          AppState.shared.markWalletBackedUp(walletID: wallet.id)
                       }
                     }
                   case .failure:
@@ -101,7 +101,7 @@ class MigratingWalletOperation: AsyncOperation {
             case .success(let key):
               if let wallet = try? self.walletManager.import(privateKey: key.toHexString(), addressType: addressType, name: self.walletObject.name) {
                 if self.walletObject.isBackedUp {
-                  self.walletCache.markWalletBackedUp(walletID: wallet.id)
+                    AppState.shared.markWalletBackedUp(walletID: wallet.id)
                 }
               }
             case .failure:
@@ -119,7 +119,7 @@ class MigratingWalletOperation: AsyncOperation {
         self.finish()
         return
       }
-      self.walletCache.markWalletBackedUp(walletID: wallet.id)
+        AppState.shared.markWalletBackedUp(walletID: wallet.id)
       self.finish()
     case .watch:
       let addressString = walletObject.address

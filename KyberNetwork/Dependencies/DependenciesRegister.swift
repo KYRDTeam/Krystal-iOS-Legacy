@@ -27,6 +27,7 @@ class DependenciesRegister {
     
     TransactionManager.txProcessor = AppTxProcessor()
     
+    ServiceConfig.platformWallet = Constants.platformWallet
     ServiceConfig.baseAPIURL = KNEnvironment.default.krystalEndpoint
     ServiceConfig.errorTracker = AppErrorTracker()
     

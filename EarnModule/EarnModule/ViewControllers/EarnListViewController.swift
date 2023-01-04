@@ -52,16 +52,27 @@ class EarnListViewController: InAppBrowsingViewController {
         super.viewWillAppear(animated)
     }
     
+    func resetFilter() {
+        self.selectedPlatforms = []
+        self.selectedTypes = [.staking, .lending]
+    }
+    
     override func onAppSwitchChain() {
         isNeedReloadFilter = true
         currentSelectedChain = AppState.shared.currentChain
         fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
+        resetFilter()
     }
     
     override func onAppSelectAllChain() {
         isNeedReloadFilter = true
         currentSelectedChain = .all
         fetchData()
+        resetFilter()
+    }
+    
+    override func onAppSwitchAddress(switchChain: Bool) {
+        resetFilter()
     }
     
     func setupUI() {
@@ -108,7 +119,11 @@ class EarnListViewController: InAppBrowsingViewController {
         if !isSelectedAllPlatforms() {
             self.displayDataSource = self.displayDataSource.filter { element in
                 let modelPfSet: Set<EarnPlatform> = Set(element.earnPoolModel.platforms)
-                return modelPfSet.intersection(self.selectedPlatforms).count >= 1
+                var filterPlatform = modelPfSet.intersection(self.selectedPlatforms).filter { platform in
+                    let earningType = EarningType(value: platform.type)
+                    return self.selectedTypes.contains(earningType)
+                }
+                return filterPlatform.count >= 1
             }
             
             displayDataSource.forEach { item in
@@ -352,7 +367,7 @@ extension EarnListViewController: UITextFieldDelegate {
 
 extension EarnListViewController: EarnPoolViewCellDelegate {
     func didSelectRewardApy(platform: EarnPlatform, pool: EarnPoolModel) {
-        let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: platform.apy), NumberFormatUtils.percent(value: platform.rewardApy))
+        let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: platform.apy.roundedValue()), NumberFormatUtils.percent(value: platform.rewardApy.roundedValue()))
         showBottomBannerView(message: messge)
     }
     

@@ -219,7 +219,8 @@ class KSendTokenViewController: InAppBrowsingViewController {
 
   @IBAction func maxButtonTapped(_ sender: UIButton) {
     self.tokenBalanceLabelTapped(sender)
-    MixPanelManager.track("transfer_enter_amount", properties: ["screenid": "transfer"])
+      MixPanelManager.track("transfer_max_amount", properties: ["screenid": "transfer"])
+      MixPanelManager.track("transfer_enter_amount", properties: ["screenid": "transfer"])
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

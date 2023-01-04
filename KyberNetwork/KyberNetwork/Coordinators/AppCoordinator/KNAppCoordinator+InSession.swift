@@ -6,6 +6,7 @@ import KrystalWallets
 import Dependencies
 import AppState
 import TransactionModule
+import SwapModule
 import EarnModule
 
 // MARK: This file for handling in session
@@ -13,8 +14,6 @@ extension KNAppCoordinator {
   
   func startNewSession(address: KAddress) {
       GasPriceManager.shared.scheduleFetchAllChainGasPrice()
-    self.walletCache.lastUsedAddress = address
-//    self.currentAddress = address
     
     AppState.shared.updateAddress(address: address, targetChain: AppState.shared.currentChain)
       
@@ -63,21 +62,34 @@ extension KNAppCoordinator {
     self.addCoordinator(self.settingsCoordinator!)
     self.settingsCoordinator?.start()
     
-  self.swapV2Coordinator = SwapV2Coordinator()
-  self.swapV2Coordinator?.start()
-  self.swapV2Coordinator?.navigationController.tabBarItem = UITabBarItem(
-    title: nil,
-    image: UIImage(named: "tabbar_swap_icon"),
-    selectedImage: nil
-  )
+      let isSwapModuleEnabled = AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.swapModule)
+      
+      if isSwapModuleEnabled {
+          self.swapModuleCoordinator = SwapModule.createSwapCoordinator()
+          self.swapModuleCoordinator?.start()
+          self.swapModuleCoordinator?.navigationController.tabBarItem = UITabBarItem(
+            title: nil,
+            image: UIImage(named: "tabbar_swap_icon"),
+            selectedImage: nil
+          )
+          self.swapModuleCoordinator?.navigationController.tabBarItem.tag = 1
+      } else {
+          self.swapV2Coordinator = SwapV2Coordinator()
+          self.swapV2Coordinator?.start()
+          self.swapV2Coordinator?.navigationController.tabBarItem = UITabBarItem(
+            title: nil,
+            image: UIImage(named: "tabbar_swap_icon"),
+            selectedImage: nil
+          )
+          self.swapV2Coordinator?.navigationController.tabBarItem.tag = 1
+      }
       
     self.earnCoordinator = EarnModuleCoordinator()
     self.earnCoordinator?.start()
       
-  self.swapV2Coordinator?.navigationController.tabBarItem.tag = 1
   self.tabbarController.viewControllers = [
     self.overviewTabCoordinator!.navigationController,
-    self.swapV2Coordinator!.navigationController,
+    isSwapModuleEnabled ? self.swapModuleCoordinator!.navigationController : self.swapV2Coordinator!.navigationController,
     self.investCoordinator!.navigationController,
     self.earnCoordinator!.navigationController,
     self.settingsCoordinator!.navigationController,
@@ -148,7 +160,6 @@ extension KNAppCoordinator {
   
   func stopAllSessions() {
     self.walletManager.removeAll()
-    self.walletCache.lastUsedAddress = nil
     self.session.stopSession()
     AppState.shared.updateAddress(address: self.walletManager.createEmptyAddress(), targetChain: AppState.shared.currentChain)
     self.settingsCoordinator?.stop()
@@ -218,10 +229,10 @@ extension KNAppCoordinator {
   
   func onRemoveWallet(wallet: KWallet) {
     if wallet.id == session.address.walletID {
-      NonceCache.shared.resetNonce(wallet: wallet)
-      walletCache.unmarkWalletBackedUp(walletID: wallet.id)
-      session.clearWalletData(wallet: wallet)
-      switchToNextAddress(of: session.address)
+        NonceCache.shared.resetNonce(wallet: wallet)
+        AppState.shared.unmarkWalletBackedUp(walletID: wallet.id)
+        session.clearWalletData(wallet: wallet)
+        switchToNextAddress(of: session.address)
     }
   }
   

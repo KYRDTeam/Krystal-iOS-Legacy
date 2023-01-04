@@ -22,6 +22,8 @@ public struct TxProcessResult {
 
 public protocol TxProcessorProtocol {
     var txSender: TxNodeSenderProtocol { get set }
+    
+    func isTokenApproving(address: String) -> Bool
     func hasPendingTx() -> Bool
     func observePendingTxListChanged()
     func process(address: KAddress, chain: ChainType, txObject: TxObject, setting: TxSettingObject,

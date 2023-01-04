@@ -26,7 +26,10 @@ public protocol ThemeProtocol {
     var warningTextColor: UIColor { get }
     var infoTextColor: UIColor { get }
     var orangeColor: UIColor { get }
+    var placeholderTextColor: UIColor { get }
+    var navigationButtonBackgroundColor: UIColor { get }
     var chartColors: [UIColor] { get }
+    var positiveTextColor: UIColor { get }
 }
 
 

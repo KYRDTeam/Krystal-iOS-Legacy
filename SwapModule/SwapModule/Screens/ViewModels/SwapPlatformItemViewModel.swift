@@ -7,9 +7,8 @@
 
 import Foundation
 import BigInt
-import Utilities
 import Services
-import BaseWallet
+import Utilities
 
 class SwapPlatformItemViewModel {
   var icon: String
@@ -22,7 +21,7 @@ class SwapPlatformItemViewModel {
   var savedAmountString: String
   var rate: Rate
   
-  init(platformRate: Rate, isSelected: Bool, destToken: Token, destTokenPrice: Double?, gasFeeUsd: BigInt, showSaveTag: Bool, savedAmount: BigInt) {
+  init(platformRate: Rate, isSelected: Bool, quoteToken: Token, destToken: Token, destTokenPrice: Double?, gasFeeUsd: BigInt, showSaveTag: Bool, savedAmount: BigInt) {
     self.rate = platformRate
     self.icon = platformRate.platformIcon
     self.name = platformRate.platformShort
@@ -46,7 +45,7 @@ class SwapPlatformItemViewModel {
     }
     
     self.isSelected = isSelected
-    self.gasFeeString = String(format: Strings.swapNetworkFee, NumberFormatUtils.usdAmount(value: gasFeeUsd, decimals: 18))
+    self.gasFeeString = String(format: Strings.swapNetworkFee, NumberFormatUtils.gasFee(value: gasFeeUsd))
   }
 
 }

@@ -24,3 +24,4 @@ typealias CurrencyMode = BaseWallet.CurrencyMode
 typealias Token = Services.Token
 
 typealias FeatureFlagKeys = Dependencies.FeatureFlagKeys
+typealias Coordinator = BaseModule.Coordinator

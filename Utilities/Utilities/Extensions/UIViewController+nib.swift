@@ -40,4 +40,11 @@ public extension UIApplication {
     func topMostViewController() -> UIViewController? {
         return self.keyWindow?.rootViewController?.topMostViewController()
     }
+    
+    func topMostNav() -> UINavigationController? {
+        if let nav = topMostViewController() as? UINavigationController {
+            return nav
+        }
+        return topMostViewController()?.navigationController
+    }
 }

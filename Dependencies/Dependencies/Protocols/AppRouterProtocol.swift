@@ -15,7 +15,7 @@ public protocol AppRouterProtocol {
     func openWalletList(currentChain: ChainType, allowAllChainOption: Bool,
                         onSelectWallet: @escaping (KWallet) -> (),
                         onSelectWatchAddress: @escaping (KAddress) -> ())
-    func openChainList(_ selectedChain: ChainType, allowAllChainOption: Bool, onSelectChain: @escaping (ChainType) -> Void)
+    func openChainList(_ selectedChain: ChainType, allowAllChainOption: Bool, showSolanaOption: Bool, onSelectChain: @escaping (ChainType) -> Void)
     func openAddWallet()
     func openTransactionHistory()
     func openExternalURL(url: String)

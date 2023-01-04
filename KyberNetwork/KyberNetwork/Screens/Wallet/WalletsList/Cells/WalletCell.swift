@@ -7,6 +7,7 @@
 
 import UIKit
 import KrystalWallets
+import AppState
 
 protocol WalletCellModel {
   func displayAvatar() -> UIImage?
@@ -32,7 +33,7 @@ struct RealWalletCellModel: WalletCellModel {
   }
   
   func isBackupedWallet() -> Bool {
-    return WalletCache.shared.isWalletBackedUp(walletID: wallet.id)
+    return AppState.shared.isWalletBackedUp(walletID: wallet.id)
   }
   
   func isCurrentWallet() -> Bool {

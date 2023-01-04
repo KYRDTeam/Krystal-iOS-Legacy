@@ -61,6 +61,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         viewModel.isLoading.observeAndFire(on: self) { isLoading in
             DispatchQueue.main.async {
                 if isLoading {
+                    self.emptyViewContainer.isHidden = true
                     self.showLoadingSkeleton()
                 } else {
                     self.hideLoadingSkeleton()
@@ -70,7 +71,6 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         }
         let currentChain = AppState.shared.currentChain
         viewModel.chainID = AppState.shared.isSelectedAllChain ? nil : currentChain.getChainId()
-        viewModel.requestData()
         Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { [weak self] _ in
             self?.viewModel.requestData(shouldShowLoading: false)
         }
@@ -183,6 +183,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     
     override func onAppSwitchAddress(switchChain: Bool) {
         viewModel.requestData()
+        viewModel.resetFilter()
     }
     
     override func onAppSelectAllChain() {
@@ -278,7 +279,7 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
             self.requestClaim(pendingUnstake: pendingUnstake)
         }
         cell.onTapRewardApy = { balance in
-            let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: balance.apy), NumberFormatUtils.percent(value: balance.rewardApy))
+            let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: balance.apy.roundedValue()), NumberFormatUtils.percent(value: balance.rewardApy.roundedValue()))
             self.showBottomBannerView(message: messge)
 		}
 		

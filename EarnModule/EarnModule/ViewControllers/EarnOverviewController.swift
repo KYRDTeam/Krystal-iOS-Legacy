@@ -68,7 +68,7 @@ class EarnOverviewController: InAppBrowsingViewController {
   }
 
   override func handleChainButtonTapped() {
-    AppDependencies.router.openChainList(currentSelectedChain, allowAllChainOption: supportAllChainOption) { [weak self] chain in
+    AppDependencies.router.openChainList(currentSelectedChain, allowAllChainOption: supportAllChainOption, showSolanaOption: supportSolana) { [weak self] chain in
       self?.onChainSelected(chain: chain)
     }
   }

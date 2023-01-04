@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="60" id="KGk-i7-Jjw" customClass="TxFooterCell" customModule="TransactionModule" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="358" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="358" height="60"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fHk-M0-JET">
+                        <rect key="frame" x="16" y="0.0" width="326" height="44"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gas_gray" translatesAutoresizingMaskIntoConstraints="NO" id="hfL-Rm-KQd">
+                                <rect key="frame" x="16" y="10" width="16" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="Ehm-PM-Yun"/>
+                                    <constraint firstAttribute="width" constant="16" id="i0a-qv-4Kn"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00024 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cnc-Tb-cvO">
+                                <rect key="frame" x="42" y="9.5" width="80" height="17"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                <color key="textColor" red="0.41568627450980389" green="0.43529411764705883" blue="0.43137254901960786" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$2.5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mf5-bt-id3">
+                                <rect key="frame" x="126" y="9.5" width="28" height="17"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                <color key="textColor" red="0.41568627450000001" green="0.43529411759999997" blue="0.43137254899999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x05321d...3999" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gcr-d8-gXI">
+                                <rect key="frame" x="208" y="9.5" width="102" height="17"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                <color key="textColor" red="0.41568627450000001" green="0.43529411759999997" blue="0.43137254899999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gR8-lM-NDS">
+                                <rect key="frame" x="182" y="10" width="16" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="U1a-i9-uxB"/>
+                                    <constraint firstAttribute="width" constant="16" id="UXw-ZT-MtF"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="open_link"/>
+                                <connections>
+                                    <action selector="openLinkTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ch1-RL-9vS"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.1058823529" green="0.1137254902" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="hfL-Rm-KQd" firstAttribute="top" secondItem="fHk-M0-JET" secondAttribute="top" constant="10" id="0f7-dk-nhH"/>
+                            <constraint firstItem="Gcr-d8-gXI" firstAttribute="leading" secondItem="gR8-lM-NDS" secondAttribute="trailing" constant="10" id="2VG-Lf-mjq"/>
+                            <constraint firstItem="cnc-Tb-cvO" firstAttribute="leading" secondItem="hfL-Rm-KQd" secondAttribute="trailing" constant="10" id="3Vc-R0-ed9"/>
+                            <constraint firstItem="hfL-Rm-KQd" firstAttribute="leading" secondItem="fHk-M0-JET" secondAttribute="leading" constant="16" id="4tQ-wU-mRU"/>
+                            <constraint firstItem="gR8-lM-NDS" firstAttribute="centerY" secondItem="Gcr-d8-gXI" secondAttribute="centerY" id="8Ib-hQ-ffw"/>
+                            <constraint firstItem="mf5-bt-id3" firstAttribute="centerY" secondItem="cnc-Tb-cvO" secondAttribute="centerY" id="NtY-01-gJg"/>
+                            <constraint firstItem="cnc-Tb-cvO" firstAttribute="centerY" secondItem="hfL-Rm-KQd" secondAttribute="centerY" id="ODc-nY-IwR"/>
+                            <constraint firstAttribute="bottom" secondItem="hfL-Rm-KQd" secondAttribute="bottom" constant="18" id="it7-UO-Gng"/>
+                            <constraint firstItem="mf5-bt-id3" firstAttribute="leading" secondItem="cnc-Tb-cvO" secondAttribute="trailing" constant="4" id="lxQ-mk-vhL"/>
+                            <constraint firstAttribute="trailing" secondItem="Gcr-d8-gXI" secondAttribute="trailing" constant="16" id="q0E-iu-iDZ"/>
+                            <constraint firstItem="gR8-lM-NDS" firstAttribute="top" secondItem="fHk-M0-JET" secondAttribute="top" constant="10" id="qj6-mp-y7a"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="fHk-M0-JET" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="55I-51-GpP"/>
+                    <constraint firstAttribute="bottom" secondItem="fHk-M0-JET" secondAttribute="bottom" constant="16" id="LkH-z7-awm"/>
+                    <constraint firstItem="fHk-M0-JET" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="kX1-uU-PXI"/>
+                    <constraint firstAttribute="trailing" secondItem="fHk-M0-JET" secondAttribute="trailing" constant="16" id="mvm-2Q-opT"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="containerView" destination="fHk-M0-JET" id="os4-qP-UAE"/>
+                <outlet property="gasAmountLabel" destination="cnc-Tb-cvO" id="r3N-xi-2Cb"/>
+                <outlet property="gasIcon" destination="hfL-Rm-KQd" id="ouO-l5-Pm5"/>
+                <outlet property="gasValueLabel" destination="mf5-bt-id3" id="GbL-4s-L1D"/>
+                <outlet property="hashLabel" destination="Gcr-d8-gXI" id="ieD-IE-WDb"/>
+            </connections>
+            <point key="canvasLocation" x="165.21739130434784" y="30.803571428571427"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="gas_gray" width="16" height="16"/>
+        <image name="open_link" width="16" height="16"/>
+    </resources>
+</document>

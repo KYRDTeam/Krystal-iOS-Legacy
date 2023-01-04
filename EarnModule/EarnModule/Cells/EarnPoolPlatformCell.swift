@@ -58,7 +58,8 @@ class EarnPoolPlatformCell: UITableViewCell {
     nameLabel.text = platform.name.uppercased()
     typeLabel.text = "| \(platform.type)".capitalized
     platformIcon.setImage(urlString: platform.logo, symbol: "")
-      let totalApy = platform.apy + platform.rewardApy
+      
+      let totalApy = platform.apy.roundedValue() + platform.rewardApy.roundedValue()
     apyValueLabel.text = NumberFormatUtils.percent(value: totalApy)
     tvlValueLabel.text = "$" + NumberFormatUtils.volFormat(number: platform.tvl)
     self.platform = platform

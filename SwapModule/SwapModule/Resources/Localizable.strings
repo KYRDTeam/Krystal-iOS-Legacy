@@ -61,6 +61,7 @@
 "checking.allowance" = "Checking Allowance";
 "approve.token" = "Approve %@";
 "approving.token" = "Approving %@";
+"rate" = "Rate";
 
 "rate.might.change" = "Rate might change";
 "invalid.input" = "Invalid Input";

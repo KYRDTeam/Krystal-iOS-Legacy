@@ -11,6 +11,7 @@ import Moya
 public typealias WrappedCompletion = (_ result: Result<Moya.Response, NetworkError>) -> Void
 
 public extension MoyaProvider {
+    @discardableResult
     func requestWithFilters(successCodes: ClosedRange<Int> = 200...299, _ target: Target, completion: @escaping WrappedCompletion) -> Cancellable {
         return self.request(target) { result in
             switch result {

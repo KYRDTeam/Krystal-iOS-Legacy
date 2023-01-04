@@ -176,8 +176,9 @@ class BridgeViewController: InAppBrowsingViewController {
         )
       }
         
-      self.delegate?.bridgeViewControllerController(self, run: .selectMaxSource)
-      MixPanelManager.track("bridge_enter_amount", properties: ["screenid": "bridge"])
+        self.delegate?.bridgeViewControllerController(self, run: .selectMaxSource)
+        MixPanelManager.track("bridge_max_amount", properties: ["screenid": "bridge"])
+        MixPanelManager.track("bridge_enter_amount", properties: ["screenid": "bridge"])
     }
     
     self.viewModel.scanQRBlock = {

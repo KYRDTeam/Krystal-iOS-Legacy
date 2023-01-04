@@ -18,8 +18,30 @@
 		A622D6AA291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A622D6A9291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift */; };
 		A622D6AD291A6155006BBDD9 /* TxInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A622D6AB291A6155006BBDD9 /* TxInfoCell.swift */; };
 		A622D6AE291A6155006BBDD9 /* TxInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A622D6AC291A6155006BBDD9 /* TxInfoCell.xib */; };
+		A63AAE4129594DE20098A138 /* TxNFTCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63AAE3F29594DE20098A138 /* TxNFTCell.swift */; };
+		A63AAE4229594DE20098A138 /* TxNFTCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63AAE4029594DE20098A138 /* TxNFTCell.xib */; };
+		A63AAE4429594F3C0098A138 /* TxNFTCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63AAE4329594F3C0098A138 /* TxNFTCellViewModel.swift */; };
 		A6486C99295063520030CECB /* ApproveTokenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486C98295063520030CECB /* ApproveTokenViewModel.swift */; };
 		A6486C9B2950646C0030CECB /* ApprovePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486C9A2950646C0030CECB /* ApprovePopup.swift */; };
+		A6486CA229530CC70030CECB /* TxHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CA029530CC70030CECB /* TxHistoryViewController.swift */; };
+		A6486CA329530CC70030CECB /* TxHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6486CA129530CC70030CECB /* TxHistoryViewController.xib */; };
+		A6486CA629530D0E0030CECB /* TxHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CA529530D0E0030CECB /* TxHistoryViewModel.swift */; };
+		A6486CAC2953103D0030CECB /* TxHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CAA2953103D0030CECB /* TxHeaderCell.swift */; };
+		A6486CAD2953103D0030CECB /* TxHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6486CAB2953103D0030CECB /* TxHeaderCell.xib */; };
+		A6486CB0295312A70030CECB /* TxTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CAE295312A70030CECB /* TxTokenCell.swift */; };
+		A6486CB1295312A70030CECB /* TxTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6486CAF295312A70030CECB /* TxTokenCell.xib */; };
+		A6486CB42953FFDA0030CECB /* TxFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CB22953FFDA0030CECB /* TxFooterCell.swift */; };
+		A6486CB52953FFDA0030CECB /* TxFooterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6486CB32953FFDA0030CECB /* TxFooterCell.xib */; };
+		A6486CB82953FFE70030CECB /* TxSkeletonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CB62953FFE70030CECB /* TxSkeletonCell.swift */; };
+		A6486CB92953FFE70030CECB /* TxSkeletonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6486CB72953FFE70030CECB /* TxSkeletonCell.xib */; };
+		A6486CC3295413C40030CECB /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CC2295413C40030CECB /* Images.swift */; };
+		A6486CC52954177A0030CECB /* TxRecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CC42954177A0030CECB /* TxRecordType.swift */; };
+		A6486CC72954178F0030CECB /* TxHistoryRowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CC62954178F0030CECB /* TxHistoryRowType.swift */; };
+		A6486CC929541D590030CECB /* TokenVerifyStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CC829541D590030CECB /* TokenVerifyStatus.swift */; };
+		A6486CCB295423B10030CECB /* TxHistoryHeaderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CCA295423B10030CECB /* TxHistoryHeaderCellViewModel.swift */; };
+		A6486CCD295423BE0030CECB /* TxHistoryTokenCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CCC295423BE0030CECB /* TxHistoryTokenCellViewModel.swift */; };
+		A6486CCF29542AF60030CECB /* HistoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CCE29542AF60030CECB /* HistoryCoordinator.swift */; };
+		A6486CD129543F7A0030CECB /* TxHistoryFooterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CD029543F7A0030CECB /* TxHistoryFooterCellViewModel.swift */; };
 		A64F1D49290B8109000D4733 /* TransactionModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A64F1D48290B8109000D4733 /* TransactionModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A64F1D54290B8132000D4733 /* TransactionSettingPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D52290B8132000D4733 /* TransactionSettingPopup.swift */; };
 		A64F1D55290B8132000D4733 /* TransactionSettingPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A64F1D53290B8132000D4733 /* TransactionSettingPopup.xib */; };
@@ -40,6 +62,8 @@
 		A64F1D84290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */; };
 		A65FF4C22934AEF400505333 /* TxNodeSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65FF4C12934AEF400505333 /* TxNodeSender.swift */; };
 		A65FF4C82934B78F00505333 /* TxSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65FF4C72934B78F00505333 /* TxSender.swift */; };
+		A66CD6EF29546D2700FF2EC9 /* TxDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66CD6ED29546D2700FF2EC9 /* TxDateCell.swift */; };
+		A66CD6F029546D2700FF2EC9 /* TxDateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66CD6EE29546D2700FF2EC9 /* TxDateCell.xib */; };
 		A69B5084291A072200D992D6 /* TxConfirmPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69B5082291A072200D992D6 /* TxConfirmPopup.swift */; };
 		A69B5085291A072200D992D6 /* TxConfirmPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69B5083291A072200D992D6 /* TxConfirmPopup.xib */; };
 		A69E8EA9291CA47B005B28CB /* PendingTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EA8291CA47B005B28CB /* PendingTxInfo.swift */; };
@@ -50,7 +74,11 @@
 		A6B6ED32290F859700514A01 /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED31290F859700514A01 /* Utilities.framework */; };
 		A6B6ED37290F9FE700514A01 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6ED36290F9FE700514A01 /* Constants.swift */; };
 		A6B6ED39290FBAAF00514A01 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B6ED38290FBAAF00514A01 /* Services.framework */; };
+		A6C256D1293E021F00D4B2BE /* RateTxPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6C256CF293E021F00D4B2BE /* RateTxPopup.xib */; };
+		A6C256D2293E021F00D4B2BE /* RateTxPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C256D0293E021F00D4B2BE /* RateTxPopup.swift */; };
+		A6C256D9293E04A000D4B2BE /* ModuleTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C256D8293E04A000D4B2BE /* ModuleTransaction.swift */; };
 		A6C37A46291A485900AB81D3 /* TxInfoRowData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C37A45291A485900AB81D3 /* TxInfoRowData.swift */; };
+		A6C37C0F29558A7B00B6F3C6 /* TokenModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C37C0E29558A7B00B6F3C6 /* TokenModule.framework */; };
 		A6D1F7E4291B690000ABA52B /* StakeTxObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7E3291B690000ABA52B /* StakeTxObject.swift */; };
 		A6D1F7ED291B814100ABA52B /* EIP1559Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7EC291B814100ABA52B /* EIP1559Transaction.swift */; };
 		A6D1F7EF291B814B00ABA52B /* LegacyTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7EE291B814B00ABA52B /* LegacyTransaction.swift */; };
@@ -73,8 +101,30 @@
 		A622D6A9291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxConfirmViewModelProtocol.swift; sourceTree = "<group>"; };
 		A622D6AB291A6155006BBDD9 /* TxInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxInfoCell.swift; sourceTree = "<group>"; };
 		A622D6AC291A6155006BBDD9 /* TxInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxInfoCell.xib; sourceTree = "<group>"; };
+		A63AAE3F29594DE20098A138 /* TxNFTCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxNFTCell.swift; sourceTree = "<group>"; };
+		A63AAE4029594DE20098A138 /* TxNFTCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxNFTCell.xib; sourceTree = "<group>"; };
+		A63AAE4329594F3C0098A138 /* TxNFTCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxNFTCellViewModel.swift; sourceTree = "<group>"; };
 		A6486C98295063520030CECB /* ApproveTokenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApproveTokenViewModel.swift; sourceTree = "<group>"; };
 		A6486C9A2950646C0030CECB /* ApprovePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovePopup.swift; sourceTree = "<group>"; };
+		A6486CA029530CC70030CECB /* TxHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxHistoryViewController.swift; sourceTree = "<group>"; };
+		A6486CA129530CC70030CECB /* TxHistoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxHistoryViewController.xib; sourceTree = "<group>"; };
+		A6486CA529530D0E0030CECB /* TxHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxHistoryViewModel.swift; sourceTree = "<group>"; };
+		A6486CAA2953103D0030CECB /* TxHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxHeaderCell.swift; sourceTree = "<group>"; };
+		A6486CAB2953103D0030CECB /* TxHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxHeaderCell.xib; sourceTree = "<group>"; };
+		A6486CAE295312A70030CECB /* TxTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxTokenCell.swift; sourceTree = "<group>"; };
+		A6486CAF295312A70030CECB /* TxTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxTokenCell.xib; sourceTree = "<group>"; };
+		A6486CB22953FFDA0030CECB /* TxFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxFooterCell.swift; sourceTree = "<group>"; };
+		A6486CB32953FFDA0030CECB /* TxFooterCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxFooterCell.xib; sourceTree = "<group>"; };
+		A6486CB62953FFE70030CECB /* TxSkeletonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxSkeletonCell.swift; sourceTree = "<group>"; };
+		A6486CB72953FFE70030CECB /* TxSkeletonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxSkeletonCell.xib; sourceTree = "<group>"; };
+		A6486CC2295413C40030CECB /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		A6486CC42954177A0030CECB /* TxRecordType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxRecordType.swift; sourceTree = "<group>"; };
+		A6486CC62954178F0030CECB /* TxHistoryRowType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxHistoryRowType.swift; sourceTree = "<group>"; };
+		A6486CC829541D590030CECB /* TokenVerifyStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenVerifyStatus.swift; sourceTree = "<group>"; };
+		A6486CCA295423B10030CECB /* TxHistoryHeaderCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxHistoryHeaderCellViewModel.swift; sourceTree = "<group>"; };
+		A6486CCC295423BE0030CECB /* TxHistoryTokenCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxHistoryTokenCellViewModel.swift; sourceTree = "<group>"; };
+		A6486CCE29542AF60030CECB /* HistoryCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCoordinator.swift; sourceTree = "<group>"; };
+		A6486CD029543F7A0030CECB /* TxHistoryFooterCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxHistoryFooterCellViewModel.swift; sourceTree = "<group>"; };
 		A64F1D45290B8109000D4733 /* TransactionModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TransactionModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A64F1D48290B8109000D4733 /* TransactionModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransactionModule.h; sourceTree = "<group>"; };
 		A64F1D52290B8132000D4733 /* TransactionSettingPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSettingPopup.swift; sourceTree = "<group>"; };
@@ -96,6 +146,8 @@
 		A64F1D83290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSettingAdvancedTabViewModel.swift; sourceTree = "<group>"; };
 		A65FF4C12934AEF400505333 /* TxNodeSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxNodeSender.swift; sourceTree = "<group>"; };
 		A65FF4C72934B78F00505333 /* TxSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxSender.swift; sourceTree = "<group>"; };
+		A66CD6ED29546D2700FF2EC9 /* TxDateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxDateCell.swift; sourceTree = "<group>"; };
+		A66CD6EE29546D2700FF2EC9 /* TxDateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxDateCell.xib; sourceTree = "<group>"; };
 		A69B5082291A072200D992D6 /* TxConfirmPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxConfirmPopup.swift; sourceTree = "<group>"; };
 		A69B5083291A072200D992D6 /* TxConfirmPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxConfirmPopup.xib; sourceTree = "<group>"; };
 		A69E8EA8291CA47B005B28CB /* PendingTxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTxInfo.swift; sourceTree = "<group>"; };
@@ -106,7 +158,11 @@
 		A6B6ED31290F859700514A01 /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B6ED36290F9FE700514A01 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A6B6ED38290FBAAF00514A01 /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6C256CF293E021F00D4B2BE /* RateTxPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RateTxPopup.xib; sourceTree = "<group>"; };
+		A6C256D0293E021F00D4B2BE /* RateTxPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RateTxPopup.swift; sourceTree = "<group>"; };
+		A6C256D8293E04A000D4B2BE /* ModuleTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleTransaction.swift; sourceTree = "<group>"; };
 		A6C37A45291A485900AB81D3 /* TxInfoRowData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxInfoRowData.swift; sourceTree = "<group>"; };
+		A6C37C0E29558A7B00B6F3C6 /* TokenModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TokenModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6D1F7E3291B690000ABA52B /* StakeTxObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakeTxObject.swift; sourceTree = "<group>"; };
 		A6D1F7EC291B814100ABA52B /* EIP1559Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EIP1559Transaction.swift; sourceTree = "<group>"; };
 		A6D1F7EE291B814B00ABA52B /* LegacyTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyTransaction.swift; sourceTree = "<group>"; };
@@ -129,6 +185,7 @@
 				A6B6ED32290F859700514A01 /* Utilities.framework in Frameworks */,
 				A61715DF291E2AF3001778C7 /* BaseModule.framework in Frameworks */,
 				A6B6ED2F290F82F200514A01 /* AppState.framework in Frameworks */,
+				A6C37C0F29558A7B00B6F3C6 /* TokenModule.framework in Frameworks */,
 				A613BC8929124730006DD220 /* Dependencies.framework in Frameworks */,
 				0E81F6026D12F409B8F03625 /* Pods_TransactionModule.framework in Frameworks */,
 				A64F1D68290B98C3000D4733 /* DesignSystem.framework in Frameworks */,
@@ -143,6 +200,7 @@
 		0EE45598E266B0540A9D667B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6C37C0E29558A7B00B6F3C6 /* TokenModule.framework */,
 				A61715DE291E2AF3001778C7 /* BaseModule.framework */,
 				A613BC8829124730006DD220 /* Dependencies.framework */,
 				A6B6ED38290FBAAF00514A01 /* Services.framework */,
@@ -177,6 +235,75 @@
 			path = ../Pods;
 			sourceTree = "<group>";
 		};
+		A6486C9F29530CB90030CECB /* History */ = {
+			isa = PBXGroup;
+			children = (
+				A6486CA429530CEA0030CECB /* Completed */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		A6486CA429530CEA0030CECB /* Completed */ = {
+			isa = PBXGroup;
+			children = (
+				A6486CA9295310160030CECB /* ViewModels */,
+				A6486CA8295310100030CECB /* Views */,
+				A6486CA72953100C0030CECB /* Cells */,
+			);
+			path = Completed;
+			sourceTree = "<group>";
+		};
+		A6486CA72953100C0030CECB /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A6486CAA2953103D0030CECB /* TxHeaderCell.swift */,
+				A6486CAB2953103D0030CECB /* TxHeaderCell.xib */,
+				A6486CAE295312A70030CECB /* TxTokenCell.swift */,
+				A6486CAF295312A70030CECB /* TxTokenCell.xib */,
+				A6486CB22953FFDA0030CECB /* TxFooterCell.swift */,
+				A6486CB32953FFDA0030CECB /* TxFooterCell.xib */,
+				A6486CB62953FFE70030CECB /* TxSkeletonCell.swift */,
+				A6486CB72953FFE70030CECB /* TxSkeletonCell.xib */,
+				A66CD6ED29546D2700FF2EC9 /* TxDateCell.swift */,
+				A66CD6EE29546D2700FF2EC9 /* TxDateCell.xib */,
+				A63AAE3F29594DE20098A138 /* TxNFTCell.swift */,
+				A63AAE4029594DE20098A138 /* TxNFTCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		A6486CA8295310100030CECB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A6486CA129530CC70030CECB /* TxHistoryViewController.xib */,
+				A6486CA029530CC70030CECB /* TxHistoryViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A6486CA9295310160030CECB /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A6486CA529530D0E0030CECB /* TxHistoryViewModel.swift */,
+				A6486CC42954177A0030CECB /* TxRecordType.swift */,
+				A6486CC62954178F0030CECB /* TxHistoryRowType.swift */,
+				A6486CC829541D590030CECB /* TokenVerifyStatus.swift */,
+				A6486CCA295423B10030CECB /* TxHistoryHeaderCellViewModel.swift */,
+				A6486CCC295423BE0030CECB /* TxHistoryTokenCellViewModel.swift */,
+				A6486CD029543F7A0030CECB /* TxHistoryFooterCellViewModel.swift */,
+				A63AAE4329594F3C0098A138 /* TxNFTCellViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A6486CC1295413B90030CECB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A6486CC2295413C40030CECB /* Images.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		A64F1D3B290B8109000D4733 = {
 			isa = PBXGroup;
 			children = (
@@ -198,6 +325,7 @@
 		A64F1D47290B8109000D4733 /* TransactionModule */ = {
 			isa = PBXGroup;
 			children = (
+				A6486CC1295413B90030CECB /* Resources */,
 				A64F1D50290B811A000D4733 /* Core */,
 				A64F1D4F290B8117000D4733 /* UI */,
 				A64F1D48290B8109000D4733 /* TransactionModule.h */,
@@ -206,6 +334,8 @@
 				A64F1D77290BC093000D4733 /* Strings.swift */,
 				A64F1D79290BC0C4000D4733 /* String+.swift */,
 				A6B6ED36290F9FE700514A01 /* Constants.swift */,
+				A6C256D8293E04A000D4B2BE /* ModuleTransaction.swift */,
+				A6486CCE29542AF60030CECB /* HistoryCoordinator.swift */,
 			);
 			path = TransactionModule;
 			sourceTree = "<group>";
@@ -213,6 +343,8 @@
 		A64F1D4F290B8117000D4733 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				A6C256CE293E020300D4B2BE /* RateTx */,
+				A6486C9F29530CB90030CECB /* History */,
 				7EAF4786291BB4E800BF5D00 /* Approve */,
 				A6C37A40291A3FB400AB81D3 /* TransactionInfoView */,
 				A69B5081291A070F00D992D6 /* TxConfirm */,
@@ -289,6 +421,15 @@
 				7ED1AF1B291E055600BA7C75 /* ApprovePendingTxInfo.swift */,
 			);
 			path = Txs;
+			sourceTree = "<group>";
+		};
+		A6C256CE293E020300D4B2BE /* RateTx */ = {
+			isa = PBXGroup;
+			children = (
+				A6C256D0293E021F00D4B2BE /* RateTxPopup.swift */,
+				A6C256CF293E021F00D4B2BE /* RateTxPopup.xib */,
+			);
+			path = RateTx;
 			sourceTree = "<group>";
 		};
 		A6C37A40291A3FB400AB81D3 /* TransactionInfoView */ = {
@@ -403,13 +544,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				A64F1D76290BC06F000D4733 /* Localizable.strings in Resources */,
+				A66CD6F029546D2700FF2EC9 /* TxDateCell.xib in Resources */,
+				A63AAE4229594DE20098A138 /* TxNFTCell.xib in Resources */,
 				A69B5085291A072200D992D6 /* TxConfirmPopup.xib in Resources */,
+				A6486CAD2953103D0030CECB /* TxHeaderCell.xib in Resources */,
 				A64F1D59290B817C000D4733 /* TransactionSettingBasicTab.xib in Resources */,
+				A6C256D1293E021F00D4B2BE /* RateTxPopup.xib in Resources */,
+				A6486CB52953FFDA0030CECB /* TxFooterCell.xib in Resources */,
 				A64F1D5D290B818E000D4733 /* TransactionSettingAdvancedTab.xib in Resources */,
 				A64F1D64290B9351000D4733 /* Assets.xcassets in Resources */,
+				A6486CA329530CC70030CECB /* TxHistoryViewController.xib in Resources */,
+				A6486CB92953FFE70030CECB /* TxSkeletonCell.xib in Resources */,
 				7EAF478A291BB59100BF5D00 /* ApproveTokenViewController.xib in Resources */,
 				A64F1D55290B8132000D4733 /* TransactionSettingPopup.xib in Resources */,
 				A622D6AE291A6155006BBDD9 /* TxInfoCell.xib in Resources */,
+				A6486CB1295312A70030CECB /* TxTokenCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,12 +596,19 @@
 			files = (
 				A64F1D84290BE3F1000D4733 /* TransactionSettingAdvancedTabViewModel.swift in Sources */,
 				A65FF4C22934AEF400505333 /* TxNodeSender.swift in Sources */,
+				A63AAE4129594DE20098A138 /* TxNFTCell.swift in Sources */,
 				A6C37A46291A485900AB81D3 /* TxInfoRowData.swift in Sources */,
 				A6B6ED37290F9FE700514A01 /* Constants.swift in Sources */,
 				A65FF4C82934B78F00505333 /* TxSender.swift in Sources */,
+				A6486CAC2953103D0030CECB /* TxHeaderCell.swift in Sources */,
+				A6486CCF29542AF60030CECB /* HistoryCoordinator.swift in Sources */,
+				A66CD6EF29546D2700FF2EC9 /* TxDateCell.swift in Sources */,
+				A6486CCB295423B10030CECB /* TxHistoryHeaderCellViewModel.swift in Sources */,
 				A6D1F7EF291B814B00ABA52B /* LegacyTransaction.swift in Sources */,
+				A63AAE4429594F3C0098A138 /* TxNFTCellViewModel.swift in Sources */,
 				A6D1F7FE291B918200ABA52B /* TransactionSigner.swift in Sources */,
 				A6D1F7F3291B85BA00ABA52B /* TxConverter.swift in Sources */,
+				A6486CB0295312A70030CECB /* TxTokenCell.swift in Sources */,
 				A64F1D7C290BCC53000D4733 /* BaseTransactionSettingTab.swift in Sources */,
 				7EAF4789291BB59100BF5D00 /* ApproveTokenViewController.swift in Sources */,
 				A69E8EAF291CEA1A005B28CB /* InternalTransactionState.swift in Sources */,
@@ -461,25 +617,37 @@
 				A6D1F7FA291B8DF800ABA52B /* EthereumTransactionSigner.swift in Sources */,
 				A64F1D58290B817C000D4733 /* TransactionSettingBasicTab.swift in Sources */,
 				A6D1F7F7291B8C3D00ABA52B /* TxErrorParser.swift in Sources */,
+				A6486CC52954177A0030CECB /* TxRecordType.swift in Sources */,
 				A6486C99295063520030CECB /* ApproveTokenViewModel.swift in Sources */,
+				A6486CCD295423BE0030CECB /* TxHistoryTokenCellViewModel.swift in Sources */,
 				A64F1D74290BBF19000D4733 /* TransactionSettingBasicTabViewModel.swift in Sources */,
 				7ED1AF1C291E055600BA7C75 /* ApprovePendingTxInfo.swift in Sources */,
 				A64F1D5F290B8992000D4733 /* TxSettingObject.swift in Sources */,
+				A6C256D2293E021F00D4B2BE /* RateTxPopup.swift in Sources */,
+				A6486CB42953FFDA0030CECB /* TxFooterCell.swift in Sources */,
 				A622D6AA291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift in Sources */,
 				A64F1D54290B8132000D4733 /* TransactionSettingPopup.swift in Sources */,
 				A6486C9B2950646C0030CECB /* ApprovePopup.swift in Sources */,
 				7E0BBE80291CA4F60030EE44 /* TransitionDelegate.swift in Sources */,
 				A64F1D78290BC093000D4733 /* Strings.swift in Sources */,
 				A6D1F7E4291B690000ABA52B /* StakeTxObject.swift in Sources */,
+				A6486CC3295413C40030CECB /* Images.swift in Sources */,
 				A6D1F7ED291B814100ABA52B /* EIP1559Transaction.swift in Sources */,
+				A6486CC72954178F0030CECB /* TxHistoryRowType.swift in Sources */,
 				A6ED2D3E2911354F00845EF2 /* GasPriceManager.swift in Sources */,
 				7EAF475B291B602300BF5D00 /* TxStatus.swift in Sources */,
+				A6486CB82953FFE70030CECB /* TxSkeletonCell.swift in Sources */,
 				A69E8EAD291CABD6005B28CB /* TxProcessorProtocol.swift in Sources */,
 				A69B5084291A072200D992D6 /* TxConfirmPopup.swift in Sources */,
 				A64F1D7A290BC0C4000D4733 /* String+.swift in Sources */,
 				A64F1D5C290B818E000D4733 /* TransactionSettingAdvancedTab.swift in Sources */,
 				A69E8EAB291CABA6005B28CB /* TransactionManager.swift in Sources */,
+				A6486CA229530CC70030CECB /* TxHistoryViewController.swift in Sources */,
+				A6486CC929541D590030CECB /* TokenVerifyStatus.swift in Sources */,
+				A6486CD129543F7A0030CECB /* TxHistoryFooterCellViewModel.swift in Sources */,
+				A6486CA629530D0E0030CECB /* TxHistoryViewModel.swift in Sources */,
 				A6D1F7FC291B8EA400ABA52B /* EIP1559TransactionSigner.swift in Sources */,
+				A6C256D9293E04A000D4B2BE /* ModuleTransaction.swift in Sources */,
 				A69E8EA9291CA47B005B28CB /* PendingTxInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
