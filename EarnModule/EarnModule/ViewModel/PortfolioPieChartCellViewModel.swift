@@ -97,6 +97,9 @@ class PortfolioPieChartCellViewModel: BaseViewModel {
     }
     
     var earningAssetsString: String {
+        if earningAssets < 0.01 {
+            return "< $0.01"
+        }
         return StringFormatter.usdString(value: earningAssets)
     }
     
