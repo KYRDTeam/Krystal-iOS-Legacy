@@ -119,7 +119,11 @@ class EarnListViewController: InAppBrowsingViewController {
         if !isSelectedAllPlatforms() {
             self.displayDataSource = self.displayDataSource.filter { element in
                 let modelPfSet: Set<EarnPlatform> = Set(element.earnPoolModel.platforms)
-                return modelPfSet.intersection(self.selectedPlatforms).count >= 1
+                var filterPlatform = modelPfSet.intersection(self.selectedPlatforms).filter { platform in
+                    let earningType = EarningType(value: platform.type)
+                    return self.selectedTypes.contains(earningType)
+                }
+                return filterPlatform.count >= 1
             }
             
             displayDataSource.forEach { item in
