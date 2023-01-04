@@ -34,7 +34,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     setupFirebase()
     setupOneSignal(launchOptions)
     Tracker.track(event: .openApp)
-    setupMixPanel()
     setupSentryIfNeeded()
     do {
       let keystore = try EtherKeystore()
@@ -65,6 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     coordinator = KNAppCoordinator(window: window!, keystore: keystore)
     coordinator.start()
     coordinator.appDidFinishLaunch()
+    setupMixPanel()
     // promptForPushNotifications will show the native iOS notification permission prompt.
     // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
     OneSignal.promptForPushNotifications(userResponse: { accepted in
