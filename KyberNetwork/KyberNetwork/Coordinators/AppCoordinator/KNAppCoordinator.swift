@@ -23,7 +23,8 @@ class KNAppCoordinator: NSObject, Coordinator {
   
   internal var loadBalanceCoordinator: KNLoadBalanceCoordinator?
 
-    internal var swapV2Coordinator: SwapCoordinator?
+    internal var swapModuleCoordinator: SwapCoordinator?
+    internal var swapV2Coordinator: SwapV2Coordinator?
 //  internal var balanceTabCoordinator: KNBalanceTabCoordinator?
   internal var overviewTabCoordinator: OverviewCoordinator?
   internal var settingsCoordinator: KNSettingsCoordinator?

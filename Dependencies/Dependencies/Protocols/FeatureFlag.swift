@@ -35,4 +35,5 @@ public struct FeatureFlagKeys {
     public static let extraReward = "extra-rewards"
     public static let loyalty = "loyalty"
     public static let historyV2 = "history-v2"
+    public static let swapModule = "swap-module"
 }
