@@ -33,6 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     setupFirebase()
     setupOneSignal(launchOptions)
     Tracker.track(event: .openApp)
+    setupMixPanel()
+    setupSentryIfNeeded()
     do {
       let keystore = try EtherKeystore()
       migrationManager = AppMigrationManager(keystore: keystore)
@@ -67,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     OneSignal.promptForPushNotifications(userResponse: { accepted in
       print("User accepted notifications: \(accepted)")
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        self.requestAcceptTrackingFirebaseIfNeeded()
+        self.requestAcceptTrackingIfNeeded()
       }
     })
   }
@@ -99,7 +101,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     OneSignal.setNotificationOpenedHandler(notificationOpenedBlock)
   }
   
-  fileprivate func setupSentry() {
+  fileprivate func setupSentryIfNeeded() {
+    guard !SentrySDK.isEnabled else { return }
     SentrySDK.start { options in
       options.dsn = KNSecret.sentryURL
       options.debug = true // Enabled debug when first installing is always helpful
@@ -108,29 +111,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
   }
 
-  fileprivate func requestAcceptTrackingFirebaseIfNeeded() {
+  fileprivate func requestAcceptTrackingIfNeeded() {
     if #available(iOS 14, *) {
-      ATTrackingManager.requestTrackingAuthorization { (status) in
-        if status == .authorized {
-          self.setupTrackingTools()
-        }
-      }
-    } else {
-      self.setupTrackingTools()
+      ATTrackingManager.requestTrackingAuthorization { _ in }
     }
-  }
-  
-  fileprivate func setupTrackingTools() {
-    var shouldConfigTrackingTool = true
-    if #available(iOS 14, *) {
-      let status = ATTrackingManager.trackingAuthorizationStatus
-      shouldConfigTrackingTool = status == .authorized
-    }
-    guard shouldConfigTrackingTool else { return }
-    setupMixPanel()
-    
-    guard !SentrySDK.isEnabled else { return }
-    self.setupSentry()
   }
   
   func setupMixPanel() {
