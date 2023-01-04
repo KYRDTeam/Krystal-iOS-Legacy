@@ -279,7 +279,7 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
             self.requestClaim(pendingUnstake: pendingUnstake)
         }
         cell.onTapRewardApy = { balance in
-            let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: balance.apy), NumberFormatUtils.percent(value: balance.rewardApy))
+            let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: balance.apy.roundedValue()), NumberFormatUtils.percent(value: balance.rewardApy.roundedValue()))
             self.showBottomBannerView(message: messge)
 		}
 		

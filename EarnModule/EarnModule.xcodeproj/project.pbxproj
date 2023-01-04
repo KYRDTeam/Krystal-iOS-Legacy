@@ -84,6 +84,7 @@
 		A6FDE58E2924BCDA009BC64B /* ClaimTxStatusPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FDE58C2924BCDA009BC64B /* ClaimTxStatusPopup.swift */; };
 		A6FDE58F2924BCDA009BC64B /* ClaimTxStatusPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6FDE58D2924BCDA009BC64B /* ClaimTxStatusPopup.xib */; };
 		A6FDE5912924BE34009BC64B /* ClaimTxStatusPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FDE5902924BE34009BC64B /* ClaimTxStatusPopupViewModel.swift */; };
+		C320D63129652D87000A02FB /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C320D63029652D86000A02FB /* Double+.swift */; };
 		C34122B52947401D001CD2E1 /* PendingRewardClaimConfirmPopUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34122B42947401D001CD2E1 /* PendingRewardClaimConfirmPopUpViewModel.swift */; };
 		C34E9C5A2943396E00ECC56B /* PendingRewardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34E9C582943396E00ECC56B /* PendingRewardViewController.swift */; };
 		C34E9C5B2943396E00ECC56B /* PendingRewardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C34E9C592943396E00ECC56B /* PendingRewardViewController.xib */; };
@@ -190,6 +191,7 @@
 		A6FDE58D2924BCDA009BC64B /* ClaimTxStatusPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClaimTxStatusPopup.xib; sourceTree = "<group>"; };
 		A6FDE5902924BE34009BC64B /* ClaimTxStatusPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimTxStatusPopupViewModel.swift; sourceTree = "<group>"; };
 		B5969EB6F30F2999141BBB05 /* Pods_EarnModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EarnModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C320D63029652D86000A02FB /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 		C34122B42947401D001CD2E1 /* PendingRewardClaimConfirmPopUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingRewardClaimConfirmPopUpViewModel.swift; sourceTree = "<group>"; };
 		C34E9C582943396E00ECC56B /* PendingRewardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingRewardViewController.swift; sourceTree = "<group>"; };
 		C34E9C592943396E00ECC56B /* PendingRewardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PendingRewardViewController.xib; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 				7E6EBD6429091F7A00069B33 /* Assets.xcassets */,
 				7E6EBD71290929A400069B33 /* Localizable.strings */,
 				A6D1F7F0291B847800ABA52B /* Constants.swift */,
+				C320D63029652D86000A02FB /* Double+.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -633,6 +636,7 @@
 				7EB252BE2907F30300648438 /* EarnModule.swift in Sources */,
 				C3851890292CAB48004E9661 /* PlatformFilterViewController.swift in Sources */,
 				A69E8EB1291DDEBB005B28CB /* PendingStakingTxInfo.swift in Sources */,
+				C320D63129652D87000A02FB /* Double+.swift in Sources */,
 				7EAF477B291B7C5800BF5D00 /* KNPrettyAlertController.swift in Sources */,
 				A61B297729236F2E0064C3FE /* StakingConfirmClaimPopupViewModel.swift in Sources */,
 				7E6EBD70290928D400069B33 /* Strings.swift in Sources */,
