@@ -13,6 +13,7 @@
 		7EB129B42938B1AF00CE6D1C /* NSObject+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB129B32938B1AF00CE6D1C /* NSObject+.swift */; };
 		7ECC45C62939B07100B37D30 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECC45C52939B07100B37D30 /* Images.swift */; };
 		7ECC45C82939B47700B37D30 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ECC45C72939B47700B37D30 /* Assets.xcassets */; };
+		A62F0F0229370B3D00937677 /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62F0F0129370B3D00937677 /* UINavigationController+.swift */; };
 		7EF91081295ADF40001B9853 /* UIDevice+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF91080295ADF40001B9853 /* UIDevice+.swift */; };
 		A64C2DE528F6D57A002FD64C /* BaseXibView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2DE428F6D57A002FD64C /* BaseXibView.swift */; };
 		A64C2DFA28F6D657002FD64C /* NumberFormatUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2DF928F6D657002FD64C /* NumberFormatUtils.swift */; };
@@ -55,6 +56,7 @@
 		7EB129B32938B1AF00CE6D1C /* NSObject+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+.swift"; sourceTree = "<group>"; };
 		7ECC45C52939B07100B37D30 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		7ECC45C72939B47700B37D30 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A62F0F0129370B3D00937677 /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
 		7EF91080295ADF40001B9853 /* UIDevice+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+.swift"; sourceTree = "<group>"; };
 		A64C2DE428F6D57A002FD64C /* BaseXibView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseXibView.swift; sourceTree = "<group>"; };
 		A64C2DF928F6D657002FD64C /* NumberFormatUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatUtils.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				C3A408132923536E008C1220 /* UIColor+.swift */,
 				A668BFD6292CC554001A110D /* URL+.swift */,
 				7EB129B32938B1AF00CE6D1C /* NSObject+.swift */,
+				A62F0F0129370B3D00937677 /* UINavigationController+.swift */,
 				A6B78C87294700CA00FBFCB5 /* UIControl+.swift */,
 				7EF91080295ADF40001B9853 /* UIDevice+.swift */,
 			);
@@ -324,6 +327,7 @@
 				A6799DA6295AD47C00ACE89D /* Once.swift in Sources */,
 				A64C2E7728F9113C002FD64C /* String+number.swift in Sources */,
 				A64C2E0528F6F159002FD64C /* Observable.swift in Sources */,
+				A62F0F0229370B3D00937677 /* UINavigationController+.swift in Sources */,
 				A64C2E4228F7F3FE002FD64C /* UIView+.swift in Sources */,
 				A64C2E9128F9166C002FD64C /* StringFormatter.swift in Sources */,
 				A64C2DFA28F6D657002FD64C /* NumberFormatUtils.swift in Sources */,

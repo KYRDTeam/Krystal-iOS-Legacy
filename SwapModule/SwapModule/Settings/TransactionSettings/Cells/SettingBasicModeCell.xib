@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="SettingBasicModeCell" customModule="Krystal" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="222"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="222"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Gf9-1n-JzF">
+                        <rect key="frame" x="25" y="20" width="270" height="182"/>
+                        <subviews>
+                            <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cco-dc-XT1">
+                                <rect key="frame" x="0.0" y="0.0" width="270" height="42"/>
+                                <subviews>
+                                    <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8RV-E8-Cez">
+                                        <rect key="frame" x="0.0" y="0.0" width="270" height="42"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <connections>
+                                            <action selector="optionButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="abW-XK-706"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FAST" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VyN-Uc-vei">
+                                        <rect key="frame" x="10" y="14" width="26" height="14.5"/>
+                                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                                        <color key="textColor" name="normalTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="settingName"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1080 Gwei" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gV8-t6-xOx">
+                                        <rect key="frame" x="205" y="14" width="55" height="14.5"/>
+                                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                                        <color key="textColor" name="normalTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="settingGas"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="9" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~$2.12 • 30s" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZn-ce-eYz">
+                                        <rect key="frame" x="98" y="13" width="74" height="16.5"/>
+                                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                        <color key="textColor" name="textWhiteColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="settingFeeAndTime"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="gV8-t6-xOx" secondAttribute="trailing" constant="10" id="6PF-V0-6co"/>
+                                    <constraint firstItem="qZn-ce-eYz" firstAttribute="centerY" secondItem="Cco-dc-XT1" secondAttribute="centerY" id="MbX-Ax-Jfv"/>
+                                    <constraint firstItem="qZn-ce-eYz" firstAttribute="centerX" secondItem="Cco-dc-XT1" secondAttribute="centerX" id="NZi-nI-iNe"/>
+                                    <constraint firstItem="VyN-Uc-vei" firstAttribute="centerY" secondItem="Cco-dc-XT1" secondAttribute="centerY" id="Tv2-Ls-qJM"/>
+                                    <constraint firstItem="gV8-t6-xOx" firstAttribute="centerY" secondItem="Cco-dc-XT1" secondAttribute="centerY" id="cUf-Cl-EFg"/>
+                                    <constraint firstAttribute="height" constant="42" id="fvF-zX-uMA"/>
+                                    <constraint firstItem="VyN-Uc-vei" firstAttribute="leading" secondItem="Cco-dc-XT1" secondAttribute="leading" constant="10" id="iBr-MJ-DBh"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                        <real key="value" value="14"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="kn_borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="kn_borderColor">
+                                        <color key="value" name="normalTextColor"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="fastSetting"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mBt-kM-ghl">
+                                <rect key="frame" x="0.0" y="70" width="270" height="42"/>
+                                <subviews>
+                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5yN-CW-8cP">
+                                        <rect key="frame" x="0.0" y="0.0" width="270" height="42"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <connections>
+                                            <action selector="optionButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="nJL-UK-Ecf"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="STANDARD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YrF-0A-dc3">
+                                        <rect key="frame" x="10" y="14" width="58" height="14.5"/>
+                                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                                        <color key="textColor" name="normalTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="settingName"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1080 Gwei" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gs8-qP-DNX">
+                                        <rect key="frame" x="205" y="14" width="55" height="14.5"/>
+                                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                                        <color key="textColor" name="normalTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="settingGas"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="9" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~$2.12 • 30s" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DTg-PH-iuF">
+                                        <rect key="frame" x="98" y="13" width="74" height="16.5"/>
+                                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                        <color key="textColor" name="buttonBackgroundColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="settingFeeAndTime"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstItem="YrF-0A-dc3" firstAttribute="leading" secondItem="mBt-kM-ghl" secondAttribute="leading" constant="10" id="4e5-uH-9cn"/>
+                                    <constraint firstItem="5yN-CW-8cP" firstAttribute="leading" secondItem="mBt-kM-ghl" secondAttribute="leading" id="6zO-IB-Iwa"/>
+                                    <constraint firstAttribute="trailing" secondItem="Gs8-qP-DNX" secondAttribute="trailing" constant="10" id="8YS-fy-mZn"/>
+                                    <constraint firstItem="5yN-CW-8cP" firstAttribute="top" secondItem="mBt-kM-ghl" secondAttribute="top" id="IRV-2z-7VJ"/>
+                                    <constraint firstItem="Gs8-qP-DNX" firstAttribute="centerY" secondItem="mBt-kM-ghl" secondAttribute="centerY" id="Yd6-Rx-E8J"/>
+                                    <constraint firstAttribute="height" constant="42" id="ZRe-yu-mIU"/>
+                                    <constraint firstItem="DTg-PH-iuF" firstAttribute="centerY" secondItem="mBt-kM-ghl" secondAttribute="centerY" id="cRY-S6-ZaD"/>
+                                    <constraint firstAttribute="trailing" secondItem="5yN-CW-8cP" secondAttribute="trailing" id="cXh-fF-l4V"/>
+                                    <constraint firstItem="YrF-0A-dc3" firstAttribute="centerY" secondItem="mBt-kM-ghl" secondAttribute="centerY" id="lVO-sh-Iv6"/>
+                                    <constraint firstAttribute="bottom" secondItem="5yN-CW-8cP" secondAttribute="bottom" id="muI-Ev-Sgc"/>
+                                    <constraint firstItem="DTg-PH-iuF" firstAttribute="centerX" secondItem="mBt-kM-ghl" secondAttribute="centerX" id="oCx-ao-0yo"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                        <real key="value" value="14"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="kn_borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="kn_borderColor">
+                                        <color key="value" name="buttonBackgroundColor"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="standardSetting"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YCy-Ry-BwD">
+                                <rect key="frame" x="0.0" y="140" width="270" height="42"/>
+                                <subviews>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MUT-iU-sg9">
+                                        <rect key="frame" x="0.0" y="0.0" width="270" height="42"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <connections>
+                                            <action selector="optionButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="9Ir-AP-ZS3"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SLOW" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dku-xx-HkO">
+                                        <rect key="frame" x="10" y="14" width="31.5" height="14.5"/>
+                                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                                        <color key="textColor" name="normalTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="settingName"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1080 Gwei" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zWd-O1-IOC">
+                                        <rect key="frame" x="205" y="14" width="55" height="14.5"/>
+                                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                                        <color key="textColor" name="normalTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="settingGas"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="9" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~$2.12 • 30s" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hCX-2a-O3X">
+                                        <rect key="frame" x="98" y="13" width="74" height="16.5"/>
+                                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                        <color key="textColor" name="textWhiteColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="settingFeeAndTime"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstItem="dku-xx-HkO" firstAttribute="leading" secondItem="YCy-Ry-BwD" secondAttribute="leading" constant="10" id="B5v-Lg-bHG"/>
+                                    <constraint firstAttribute="trailing" secondItem="zWd-O1-IOC" secondAttribute="trailing" constant="10" id="H51-aA-jV9"/>
+                                    <constraint firstItem="hCX-2a-O3X" firstAttribute="centerY" secondItem="YCy-Ry-BwD" secondAttribute="centerY" id="QsV-9B-vzB"/>
+                                    <constraint firstAttribute="trailing" secondItem="MUT-iU-sg9" secondAttribute="trailing" id="TS5-62-1Xf"/>
+                                    <constraint firstItem="zWd-O1-IOC" firstAttribute="centerY" secondItem="YCy-Ry-BwD" secondAttribute="centerY" id="XrG-LF-bKa"/>
+                                    <constraint firstItem="MUT-iU-sg9" firstAttribute="top" secondItem="YCy-Ry-BwD" secondAttribute="top" id="eWA-oY-EIQ"/>
+                                    <constraint firstItem="hCX-2a-O3X" firstAttribute="centerX" secondItem="YCy-Ry-BwD" secondAttribute="centerX" id="gcX-fY-ngM"/>
+                                    <constraint firstItem="MUT-iU-sg9" firstAttribute="leading" secondItem="YCy-Ry-BwD" secondAttribute="leading" id="gkn-2x-GP0"/>
+                                    <constraint firstAttribute="height" constant="42" id="oc4-Et-gy6"/>
+                                    <constraint firstItem="dku-xx-HkO" firstAttribute="centerY" secondItem="YCy-Ry-BwD" secondAttribute="centerY" id="rhB-Fi-rBD"/>
+                                    <constraint firstAttribute="bottom" secondItem="MUT-iU-sg9" secondAttribute="bottom" id="sqr-Od-cLP"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                        <real key="value" value="14"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="kn_borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="kn_borderColor">
+                                        <color key="value" name="normalTextColor"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="slowSetting"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cri-9y-eYr">
+                        <rect key="frame" x="25" y="221" width="270" height="1"/>
+                        <viewLayoutGuide key="safeArea" id="1ul-P9-Z4X"/>
+                        <color key="backgroundColor" red="0.29803921570000003" green="0.40000000000000002" blue="0.43921568630000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="P5s-qG-sMf"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" name="mainViewBgColor"/>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="Cri-9y-eYr" secondAttribute="trailing" constant="25" id="6FU-oH-bhN"/>
+                    <constraint firstItem="Gf9-1n-JzF" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="Bd2-SM-qIM"/>
+                    <constraint firstAttribute="trailing" secondItem="Gf9-1n-JzF" secondAttribute="trailing" constant="25" id="IXc-c8-K99"/>
+                    <constraint firstItem="Gf9-1n-JzF" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Kf4-YW-nQY"/>
+                    <constraint firstAttribute="bottom" secondItem="Gf9-1n-JzF" secondAttribute="bottom" constant="20" id="TlF-Ui-Gnf"/>
+                    <constraint firstItem="Cri-9y-eYr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="clh-m8-GEf"/>
+                    <constraint firstItem="Gf9-1n-JzF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="jS3-gN-lFV"/>
+                    <constraint firstAttribute="bottom" secondItem="Cri-9y-eYr" secondAttribute="bottom" id="lL6-qW-RIi"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="fastContainerView" destination="Cco-dc-XT1" id="F3c-PV-K6I"/>
+                <outlet property="slowContainerView" destination="YCy-Ry-BwD" id="YSU-J1-0mw"/>
+                <outlet property="standardContainerView" destination="mBt-kM-ghl" id="BS8-A1-aZ1"/>
+                <outletCollection property="optionViews" destination="Cco-dc-XT1" collectionClass="NSMutableArray" id="9tI-4f-gJb"/>
+                <outletCollection property="optionViews" destination="mBt-kM-ghl" collectionClass="NSMutableArray" id="IKP-Fb-i92"/>
+                <outletCollection property="optionViews" destination="YCy-Ry-BwD" collectionClass="NSMutableArray" id="ClI-sc-hqx"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="116.51785714285714"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
