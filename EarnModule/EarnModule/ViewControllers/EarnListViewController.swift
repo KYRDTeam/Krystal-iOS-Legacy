@@ -367,7 +367,7 @@ extension EarnListViewController: UITextFieldDelegate {
 
 extension EarnListViewController: EarnPoolViewCellDelegate {
     func didSelectRewardApy(platform: EarnPlatform, pool: EarnPoolModel) {
-        let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: platform.apy), NumberFormatUtils.percent(value: platform.rewardApy))
+        let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: platform.apy.roundedValue()), NumberFormatUtils.percent(value: platform.rewardApy.roundedValue()))
         showBottomBannerView(message: messge)
     }
     
