@@ -749,3 +749,22 @@ extension SwapV2ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
 }
+
+extension SwapV2ViewController: SwapSummaryViewControllerDelegate {
+    
+    func onUpdateSettings(settings: SwapTransactionSettings) {
+        viewModel.updateSettings(settings: settings)
+    }
+
+    func onSwapSummaryViewClose(selectedPlatformHint: String) {
+        loadingIndicator.isHidden = false
+        loadingIndicator.start(beginingValue: 1)
+        viewModel.selectPlatform(hint: selectedPlatformHint)
+        viewModel.reloadPlatformRatesViewModels()
+        viewModel.reloadRates(isRefresh: true)
+    }
+
+    func onSwapSummarySubmitTransaction() {
+        viewModel.updateSettings(settings: SwapTransactionSettings.getDefaultSettings())
+    }
+}

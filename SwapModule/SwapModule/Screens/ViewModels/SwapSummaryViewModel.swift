@@ -83,7 +83,6 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
     }
     
     fileprivate var updateRateTimer: Timer?
-    let swapRepository = SwapRepository()
     let swapService = SwapService()
     
     init(swapObject: SwapObject) {
@@ -165,7 +164,10 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
     }
     
     func fetchRate() {
-        swapRepository.getAllRates(address: currentAddress.addressString, srcTokenContract: self.swapObject.sourceToken.address.lowercased(), destTokenContract: self.swapObject.destToken.address.lowercased(), amount: self.swapObject.sourceAmount, focusSrc: true) { [weak self] rates in
+        let chainPath = AppState.shared.currentChain.apiChainPath()
+        let srcContract = swapObject.sourceToken.address.lowercased()
+        let dstContract = swapObject.destToken.address.lowercased()
+        swapService.getAllRates(chainPath: chainPath, address: currentAddress.addressString, srcTokenContract: srcContract, destTokenContract: dstContract, amount: self.swapObject.sourceAmount, focusSrc: true) { [weak self] rates in
             guard let self = self else { return }
             let sortedRates = rates.sorted { lhs, rhs in
                 return self.diffInUSD(lhs: lhs, rhs: rhs, destToken: self.swapObject.destToken, destTokenPrice: self.swapObject.destTokenPrice) > 0

@@ -138,7 +138,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     var state: Observable<SwapState> = .init(.emptyAmount)
     var settingsObservable: Observable<SwapTransactionSettings> = .init(SwapTransactionSettings.getDefaultSettings())
     
-    private let swapRepository = SwapRepository()
     private let tokenService = TokenService()
     private let swapService = SwapService()
     
@@ -327,19 +326,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
         }
         EthereumNodeService(chain: AppState.shared.currentChain).getBalance(address: addressString, tokenAddress: destToken.address) { [weak self] balance in
             self?.destBalance.value = balance
-        }
-    }
-    
-    func approve(tokenAddress: String, currentAllowance: BigInt, gasLimit: BigInt) {
-        state.value = .approving
-        swapRepository.approve(address: currentAddress.value, tokenAddress: tokenAddress, currentAllowance: currentAllowance, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
-            switch result {
-            case .success:
-                return
-            case .failure(let error):
-                self?.error.value = .approvalFailed(error: error)
-                self?.state.value = .notApproved(currentAllowance: currentAllowance)
-            }
         }
     }
     

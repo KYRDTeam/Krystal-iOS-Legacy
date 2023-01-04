@@ -46,7 +46,6 @@
 		A6512F5228F6D1C900A84BC2 /* PriceImpactState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3728F6D1C900A84BC2 /* PriceImpactState.swift */; };
 		A6512F5328F6D1C900A84BC2 /* SwapError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3828F6D1C900A84BC2 /* SwapError.swift */; };
 		A6512F5428F6D1C900A84BC2 /* SwapTransactionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3928F6D1C900A84BC2 /* SwapTransactionSettings.swift */; };
-		A6512F5528F6D1C900A84BC2 /* SwapRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3B28F6D1C900A84BC2 /* SwapRepository.swift */; };
 		A6512F5628F6D1C900A84BC2 /* SwapPlatformItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3D28F6D1C900A84BC2 /* SwapPlatformItemViewModel.swift */; };
 		A6512F5728F6D1C900A84BC2 /* SwapInfoViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3E28F6D1C900A84BC2 /* SwapInfoViewModelProtocol.swift */; };
 		A6512F5828F6D1C900A84BC2 /* SwapV2ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6512F3F28F6D1C900A84BC2 /* SwapV2ViewModel.swift */; };
@@ -116,7 +115,6 @@
 		A6512F3728F6D1C900A84BC2 /* PriceImpactState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PriceImpactState.swift; sourceTree = "<group>"; };
 		A6512F3828F6D1C900A84BC2 /* SwapError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapError.swift; sourceTree = "<group>"; };
 		A6512F3928F6D1C900A84BC2 /* SwapTransactionSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapTransactionSettings.swift; sourceTree = "<group>"; };
-		A6512F3B28F6D1C900A84BC2 /* SwapRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapRepository.swift; sourceTree = "<group>"; };
 		A6512F3D28F6D1C900A84BC2 /* SwapPlatformItemViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapPlatformItemViewModel.swift; sourceTree = "<group>"; };
 		A6512F3E28F6D1C900A84BC2 /* SwapInfoViewModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapInfoViewModelProtocol.swift; sourceTree = "<group>"; };
 		A6512F3F28F6D1C900A84BC2 /* SwapV2ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapV2ViewModel.swift; sourceTree = "<group>"; };
@@ -264,7 +262,6 @@
 				A64C2E2D28F7B86B002FD64C /* Resources */,
 				A6512F4E28F6D1C900A84BC2 /* Coordinator */,
 				A6512F3528F6D1C900A84BC2 /* Models */,
-				A6512F3A28F6D1C900A84BC2 /* Repository */,
 				A6512F3C28F6D1C900A84BC2 /* ViewModels */,
 				A6512F4128F6D1C900A84BC2 /* Views */,
 				A6512F2328F6CBDB00A84BC2 /* SwapModule.h */,
@@ -286,15 +283,6 @@
 			);
 			name = Models;
 			path = Screens/Models;
-			sourceTree = "<group>";
-		};
-		A6512F3A28F6D1C900A84BC2 /* Repository */ = {
-			isa = PBXGroup;
-			children = (
-				A6512F3B28F6D1C900A84BC2 /* SwapRepository.swift */,
-			);
-			name = Repository;
-			path = Screens/Repository;
 			sourceTree = "<group>";
 		};
 		A6512F3C28F6D1C900A84BC2 /* ViewModels */ = {
@@ -499,7 +487,6 @@
 				A64C2E7528F910D3002FD64C /* KNSelectedGasPriceType.swift in Sources */,
 				A62F0EFA29360A6C00937677 /* ExpertModeWarningViewController.swift in Sources */,
 				A64C2E5528F812A5002FD64C /* Images.swift in Sources */,
-				A6512F5528F6D1C900A84BC2 /* SwapRepository.swift in Sources */,
 				A6512F5228F6D1C900A84BC2 /* PriceImpactState.swift in Sources */,
 				A6512F5428F6D1C900A84BC2 /* SwapTransactionSettings.swift in Sources */,
 				A62F0EF729360A6C00937677 /* SlippageRateCell.swift in Sources */,

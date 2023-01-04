@@ -23,7 +23,6 @@ public class SwapCoordinator: NSObject, Coordinator {
     public var navigationController: UINavigationController!
     
     var historyCoordinator: Coordinator?
-    private let swapRepository = SwapRepository()
     
     public func start() {
         let vc = SwapV2ViewController.instantiateFromNib()
@@ -70,7 +69,7 @@ public class SwapCoordinator: NSObject, Coordinator {
         viewModel.quoteTokenDetail = quoteToken
         let swapSummaryVC = SwapSummaryViewController.instantiateFromNib()
         swapSummaryVC.viewModel = viewModel
-//        swapSummaryVC.delegate = rootViewController
+        swapSummaryVC.delegate = rootViewController
         let nav = UINavigationController(rootViewController: swapSummaryVC)
         nav.modalPresentationStyle = .overFullScreen
         self.rootViewController.present(nav, animated: true)
