@@ -611,6 +611,8 @@
 		A61715F0291E4C93001778C7 /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6042C6A28FD6899001F4C40 /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A61715F1291E4C97001778C7 /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; };
 		A61715F2291E4C97001778C7 /* KrystalWallets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A62F0F0429374FDD00937677 /* SwapModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A62F0F0329374FDD00937677 /* SwapModule.framework */; };
+		A62F0F0529374FDD00937677 /* SwapModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A62F0F0329374FDD00937677 /* SwapModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A63655552907A352003B66F0 /* ApprovalListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63655532907A352003B66F0 /* ApprovalListViewController.swift */; };
 		A63655562907A352003B66F0 /* ApprovalListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63655542907A352003B66F0 /* ApprovalListViewController.xib */; };
 		A63655592907B6BB003B66F0 /* ApprovedTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63655572907B6BB003B66F0 /* ApprovedTokenCell.swift */; };
@@ -1274,6 +1276,7 @@
 			files = (
 				A6B78C8F2947010D00FBFCB5 /* DappBrowser.framework in Embed Frameworks */,
 				A6684644290A2DEB006BBE29 /* Services.framework in Embed Frameworks */,
+				A62F0F0529374FDD00937677 /* SwapModule.framework in Embed Frameworks */,
 				A61715EC291E4C8B001778C7 /* BaseModule.framework in Embed Frameworks */,
 				A61715EE291E4C8E001778C7 /* AppState.framework in Embed Frameworks */,
 				A61715E4291E4C86001778C7 /* DesignSystem.framework in Embed Frameworks */,
@@ -1917,6 +1920,7 @@
 		A6156B5228856E4F00276120 /* CustomSegmentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomSegmentView.xib; sourceTree = "<group>"; };
 		A6156B5428856E6800276120 /* BaseXibView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseXibView.swift; sourceTree = "<group>"; };
 		A6156B562885A43400276120 /* CGPoint+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+.swift"; sourceTree = "<group>"; };
+		A62F0F0329374FDD00937677 /* SwapModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwapModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A63655532907A352003B66F0 /* ApprovalListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovalListViewController.swift; sourceTree = "<group>"; };
 		A63655542907A352003B66F0 /* ApprovalListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApprovalListViewController.xib; sourceTree = "<group>"; };
 		A63655572907B6BB003B66F0 /* ApprovedTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovedTokenCell.swift; sourceTree = "<group>"; };
@@ -2550,6 +2554,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A668BF98292CB860001A110D /* TokenModule.framework in Frameworks */,
+				A62F0F0429374FDD00937677 /* SwapModule.framework in Frameworks */,
 				7EB252CB2907FD1100648438 /* EarnModule.framework in Frameworks */,
 				C626BEDE238D871700C96410 /* iAd.framework in Frameworks */,
 				A64F1D61290B904E000D4733 /* TransactionModule.framework in Frameworks */,
@@ -6710,8 +6715,8 @@
 		FAD3F374A5C639BD900944DB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A62F0F0329374FDD00937677 /* SwapModule.framework */,
 				A6B78C8D2947010D00FBFCB5 /* DappBrowser.framework */,
-				A6FAFF14294310DE006F9E21 /* DappBrowser.framework */,
 				A668BF97292CB860001A110D /* TokenModule.framework */,
 				A64F1D60290B904E000D4733 /* TransactionModule.framework */,
 				7EB252CA2907FD1100648438 /* EarnModule.framework */,
@@ -7646,12 +7651,12 @@
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/Web3/Web3.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1.swift/secp256k1.framework",
+				"${BUILT_PRODUCTS_DIR}/loady/Loady.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/TrezorCrypto/TrezorCrypto.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustCore/TrustCore.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustWalletCore/WalletCore.framework",
-				"${BUILT_PRODUCTS_DIR}/loady/Loady.framework",
 				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/FSPagerView/FSPagerView.framework",
@@ -7712,12 +7717,12 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Web3.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Loady.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftProtobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrezorCrypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WalletCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Loady.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSPagerView.framework",

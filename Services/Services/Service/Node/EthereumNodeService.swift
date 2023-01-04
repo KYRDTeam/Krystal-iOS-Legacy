@@ -44,7 +44,7 @@ public class EthereumNodeService {
         }
     }
     
-    public func getAllowance(for address: String, networkAddress: String, tokenAddress: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    public func getAllowance(address: String, networkAddress: String, tokenAddress: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
       if tokenAddress.lowercased() == AppState.shared.currentChain.customRPC().quoteTokenAddress.lowercased() {
             completion(.success(BigInt(2).power(255)))
             return
