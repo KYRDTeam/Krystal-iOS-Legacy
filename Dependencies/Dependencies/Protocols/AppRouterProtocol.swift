@@ -27,5 +27,6 @@ public protocol AppRouterProtocol {
     func openSwap()
     func openEarn()
     func openEarnPortfolio()
+    func openEarnReward()
 	func openSwap(from: Token, to: Token)
 }

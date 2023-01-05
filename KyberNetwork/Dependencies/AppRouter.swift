@@ -147,6 +147,12 @@ class AppRouter: AppRouterProtocol, Coordinator {
         AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
         AppDelegate.shared.coordinator.earnCoordinator?.openPortfolio()
     }
+    
+    func openEarnReward() {
+        AppDelegate.shared.coordinator.tabbarController.selectedIndex = 3
+        AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
+        AppDelegate.shared.coordinator.earnCoordinator?.openEarnReward()
+    }
 
 	func openSwap(from: Token, to: Token) {
         AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorOpenSwap(from: from, to: to)
