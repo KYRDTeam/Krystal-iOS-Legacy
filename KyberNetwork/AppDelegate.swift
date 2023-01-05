@@ -93,7 +93,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             parameters[element.name] = element.value
           })
           if components.path == "/swap" {
-            self.coordinator?.swapV2Coordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+              if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.swapModule) {
+                  self.coordinator?.swapModuleCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+              } else {
+                  self.coordinator?.swapV2Coordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+              }
           } else {
             self.coordinator?.overviewTabCoordinator?.navigationController.openSafari(with: url)
           }

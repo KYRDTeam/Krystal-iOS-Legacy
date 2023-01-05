@@ -132,7 +132,11 @@ class AppRouter: AppRouterProtocol, Coordinator {
     }
   
   func openSwap(token: Token) {
-      AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: false)
+      if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.swapModule) {
+          AppDelegate.shared.coordinator.swapModuleCoordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: false)
+      } else {
+          AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: false)
+      }
       AppDelegate.shared.coordinator.tabbarController.selectedIndex = 1
   }
     
@@ -155,7 +159,11 @@ class AppRouter: AppRouterProtocol, Coordinator {
     }
 
 	func openSwap(from: Token, to: Token) {
-        AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorOpenSwap(from: from, to: to)
+        if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.swapModule) {
+            AppDelegate.shared.coordinator.swapModuleCoordinator?.appCoordinatorOpenSwap(from: from, to: to)
+        } else {
+            AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorOpenSwap(from: from, to: to)
+        }
         AppDelegate.shared.coordinator.tabbarController.selectedIndex = 1
     }
   

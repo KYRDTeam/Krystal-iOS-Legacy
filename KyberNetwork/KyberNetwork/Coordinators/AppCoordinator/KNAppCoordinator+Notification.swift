@@ -5,6 +5,7 @@ import BigInt
 import Result
 import KrystalWallets
 import AppState
+import Dependencies
 
 /*
  Handling notification from many fetchers, views, ...
@@ -318,8 +319,7 @@ extension KNAppCoordinator {
 
   @objc func openExchangeTokenView(_ sender: Any?) {
     if self.session == nil { return }
-    self.tabbarController.selectedIndex = 1
-    self.swapV2Coordinator?.navigationController.popToRootViewController(animated: true)
+    AppDependencies.router.openSwap()
   }
   
   @objc func handleNewReceiveTx(_ sender: Notification) {
