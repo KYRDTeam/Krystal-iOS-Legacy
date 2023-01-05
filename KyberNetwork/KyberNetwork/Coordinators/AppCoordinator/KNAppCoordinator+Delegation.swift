@@ -137,8 +137,12 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
   }
 
   func overviewCoordinatorDidSelectSwapToken(token: Token, isBuy: Bool) {
-      self.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: isBuy)
       self.tabbarController.selectedIndex = 1
+      if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.swapModule) {
+          self.swapModuleCoordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: isBuy)
+      } else {
+          self.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: isBuy)
+      }
   }
   
   func overviewCoordinatorOpenCreateChainWalletMenu(chainType: ChainType) {
