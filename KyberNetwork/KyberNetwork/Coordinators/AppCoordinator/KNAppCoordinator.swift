@@ -141,7 +141,8 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
 
   fileprivate func startFirstSessionIfNeeded() {
-      if !UserDefaults.standard.bool(forKey: Constants.isAppOpenAlready) {
+      let isOpenAppData = Storage.retrieve(Constants.isAppOpenAlready, as: Bool.self) ?? false
+      guard UserDefaults.standard.bool(forKey: Constants.isAppOpenAlready) || isOpenAppData else {
           return
       }
       let address = AppState.shared.currentAddress
