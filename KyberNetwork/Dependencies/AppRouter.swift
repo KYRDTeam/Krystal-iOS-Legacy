@@ -44,7 +44,7 @@ class AppRouter: AppRouterProtocol, Coordinator {
   
     func openChainList(_ selectedChain: ChainType, allowAllChainOption: Bool, showSolanaOption: Bool, onSelectChain: @escaping (ChainType) -> Void) {
     MixPanelManager.track("import_select_chain_open", properties: ["screenid": "import_select_chain"])
-    let popup = SwitchChainViewController(selected: selectedChain)
+    let popup = SwitchChainViewController(includedAll: allowAllChainOption, selected: selectedChain)
     var chains = WalletManager.shared.getAllAddresses(walletID: AppState.shared.currentAddress.walletID).flatMap { address in
       return ChainType.getAllChain().filter { chain in
         return chain != .all && chain.addressType == address.addressType
