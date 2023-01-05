@@ -5,6 +5,7 @@ import SwipeCellKit
 import Swinject
 import KrystalWallets
 import BaseModule
+import AppState
 
 class KNTransactionHistoryViewController: BaseWalletOrientedViewController {
 
@@ -95,9 +96,12 @@ class KNTransactionHistoryViewController: BaseWalletOrientedViewController {
 //    viewModel.didTapSelectWallet()
 //  }
   
-  func updateWallet(address: KAddress) {
-    self.childListViewControllers.forEach { $0.updateAddress(address: address) }
-  }
+    override func onAppSwitchAddress(switchChain: Bool) {
+        super.onAppSwitchAddress(switchChain: switchChain)
+        
+        self.childListViewControllers.forEach { $0.updateAddress(address: AppState.shared.currentAddress) }
+    }
+
 }
 
 extension KNTransactionHistoryViewController {
