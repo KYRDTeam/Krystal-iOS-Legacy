@@ -3,7 +3,7 @@ name: MobSF Security
 on:
   push:
     branches:
-      - main
+      - SRE-341/use-mobsf-latest-version
   pull_request:
     branches:
       - main
@@ -30,7 +30,7 @@ jobs:
           python-version: 3.8
 
       - name: Run mobsfscan
-        uses: MobSF/mobsfscan@a60d10a83af68e23e0b30611c6515da604f06f65
+        uses: MobSF/mobsfscan@main
         with:
           args: . --sarif --output results.sarif || true
 
