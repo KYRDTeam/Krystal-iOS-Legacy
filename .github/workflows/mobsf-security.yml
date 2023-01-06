@@ -11,7 +11,7 @@ on:
       - feat/mobsf-security-scan
   pull_request:
     branches:
-      - feat/mobsf-security-scan
+      - main
 #  schedule:
 #    - cron: '39 17 * * 2'
 
