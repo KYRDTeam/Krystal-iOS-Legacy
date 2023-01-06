@@ -1,19 +1,14 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: MobSF Security
 
 on:
   push:
     branches:
-      - feat/mobsf-security-scan
+      - main
   pull_request:
     branches:
       - main
-#  schedule:
-#    - cron: '39 17 * * 2'
+ schedule:
+   - cron: '33 01 * * 2'
 
 permissions:
   contents: read
