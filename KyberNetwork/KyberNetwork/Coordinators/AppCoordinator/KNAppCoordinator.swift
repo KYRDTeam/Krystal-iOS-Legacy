@@ -28,7 +28,8 @@ class KNAppCoordinator: NSObject, Coordinator {
 //  internal var balanceTabCoordinator: KNBalanceTabCoordinator?
   internal var overviewTabCoordinator: OverviewCoordinator?
   internal var settingsCoordinator: KNSettingsCoordinator?
-    var earnCoordinator: EarnModuleCoordinator?
+    var earnModuleCoordinator: EarnModuleCoordinator?
+    var earnCoordinator: EarnCoordinator?
   internal var rewardCoordinator: RewardCoordinator?
   internal var investCoordinator: InvestCoordinator?
 

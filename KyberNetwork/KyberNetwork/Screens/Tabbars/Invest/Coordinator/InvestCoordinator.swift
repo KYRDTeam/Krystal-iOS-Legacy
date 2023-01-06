@@ -153,10 +153,6 @@ class InvestCoordinator: Coordinator {
     self.bridgeCoordinator = coordinator
   }
   
-  fileprivate func openStakeView() {
-      AppDependencies.router.openEarn()
-  }
-  
   func openHistoryScreen() {
       AppDependencies.router.openTransactionHistory()
   }
@@ -300,8 +296,6 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         }
       }
       MixPanelManager.track("scanner_open", properties: ["screenid": "scanner"])
-    case .stake:
-      self.openStakeView()
     case .openApprovals:
         openApprovals()
     case .openLoyalty:
