@@ -92,7 +92,7 @@ class KNPrettyAlertController: KNBaseViewController {
             NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor")!,
           ]
           let attributionString = NSMutableAttributedString(string: message, attributes: textAttributes)
-          let highlightRange = NSString(string: message).range(of: "Swap to ETH")
+          let highlightRange = NSString(string: message).range(of: transitionText)
           attributionString.setAttributes(linkAttributes, range: highlightRange)
           contentLabel.attributedText = attributionString
           contentLabel.isUserInteractionEnabled = true
