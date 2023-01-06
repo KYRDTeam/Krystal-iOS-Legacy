@@ -5,10 +5,7 @@ on:
   push:
     branches:
       - main
-      - ci-test
-      - testflight-build
-      - debug-action
-      - feature/slack-notification
+      - chore/added-codeql
 
 concurrency: 
   group: ios-build-dev-${{ github.ref }}
@@ -125,6 +122,11 @@ jobs:
           submodules: recursive
           token: '${{ secrets.KRYSTAL_BOT_GH_PAT }}'
 
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: java
+
       - name: Get configuration items
         run: |
           echo $SSH_PRIVATE_KEY | base64 --decode > private.key
@@ -206,6 +208,11 @@ jobs:
         with:
           lane: fda
           bundle-install-path: "vendor/bundle"
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:java"
 
       - name: Prepare bump build number
         run: |
