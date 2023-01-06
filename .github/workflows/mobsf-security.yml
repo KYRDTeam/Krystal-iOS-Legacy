@@ -3,7 +3,7 @@ name: MobSF Security
 on:
   push:
     branches:
-      - SRE-341/use-mobsf-latest-version
+      - main
   pull_request:
     branches:
       - main
