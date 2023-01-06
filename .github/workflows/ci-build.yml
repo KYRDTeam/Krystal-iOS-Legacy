@@ -122,10 +122,10 @@ jobs:
           submodules: recursive
           token: '${{ secrets.KRYSTAL_BOT_GH_PAT }}'
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: java
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: java
 
       - name: Get configuration items
         run: |
