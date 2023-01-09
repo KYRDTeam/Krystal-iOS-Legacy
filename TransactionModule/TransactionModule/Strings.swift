@@ -22,4 +22,7 @@ struct Strings {
     static let maxFeeAbout = "max.fee.about".toBeLocalised()
     static let gasPriceAbout = "gas.price.about".toBeLocalised()
     static let nonceAbout = "nonce.about".toBeLocalised()
+    static let totalTransaction = "total.transaction".toBeLocalised()
+    static let totalGasFee = "total.gas.fee".toBeLocalised()
+    static let totalVolume = "total.volume".toBeLocalised()
 }
