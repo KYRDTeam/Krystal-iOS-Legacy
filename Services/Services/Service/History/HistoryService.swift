@@ -28,4 +28,20 @@ public class HistoryService: BaseService {
         }
     }
     
+    public func getTxStats(address: String, chainIds: [Int], completion: @escaping (TxStatsData?) -> ()) {
+        provider.request(.txStats(address: address, chainIds: chainIds)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let resp = try JSONDecoder().decode(TxStatsResponse.self, from: response.data)
+                    completion(resp.data)
+                } catch {
+                    completion(nil)
+                }
+            case .failure:
+                completion(nil)
+            }
+        }
+    }
+    
 }

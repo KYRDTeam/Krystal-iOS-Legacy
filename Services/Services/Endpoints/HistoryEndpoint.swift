@@ -10,6 +10,7 @@ import Moya
 
 enum HistoryEndpoint {
     case getHistory(walletAddress: String, tokenAddress: String?, chainIds: [Int], limit: Int, endTime: Int?)
+    case txStats(address: String, chainIds: [Int])
 }
 
 extension HistoryEndpoint: TargetType {
@@ -19,7 +20,13 @@ extension HistoryEndpoint: TargetType {
     }
     
     var path: String {
-        return "/all/v1/txHistory/getHistory"
+        switch self {
+        case .getHistory:
+            return "/all/v1/txHistory/getHistory"
+        case .txStats:
+            return "/all/v1/analytics/txStats"
+        }
+        
     }
     
     var method: Moya.Method {
@@ -39,6 +46,12 @@ extension HistoryEndpoint: TargetType {
             params["chainIds"] = chainIds.map { "\($0)" }.joined(separator: ",")
             params["limit"] = limit
             params["endTime"] = endTime
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
+        case .txStats(let address, let chainIds):
+            let params: [String: Any] = [
+                "address": address,
+                "chainIds": chainIds
+            ]
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
         }
     }
