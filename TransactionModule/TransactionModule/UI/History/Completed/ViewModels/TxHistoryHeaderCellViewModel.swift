@@ -8,6 +8,7 @@
 import Foundation
 import Services
 import UIKit
+import BigInt
 
 struct TxHistoryHeaderCellViewModel {
     var typeIcon: UIImage?
@@ -26,11 +27,11 @@ struct TxHistoryHeaderCellViewModel {
         if type == .contractInteraction {
             if tx.tokenApproval != nil {
                 type = .approve
-            } else if tx.tokenTransfers?.count == 1 {
-                if tx.walletAddress == tx.from {
-                    type = .transfer
-                } else if tx.walletAddress == tx.to {
+            } else if tx.tokenTransfers?.count == 1, let transferTx = tx.tokenTransfers?[0] {
+                if (BigInt(transferTx.amount) ?? .zero) >= .zero {
                     type = .receive
+                } else {
+                    type = .transfer
                 }
             }
         }
@@ -40,9 +41,17 @@ struct TxHistoryHeaderCellViewModel {
         
         switch type {
         case .transfer:
-            contract = tx.to.shortTypeAddress
+            if tx.to.isEmpty {
+                contract = tx.tokenTransfers?.first?.otherAddress.shortTypeAddress ?? ""
+            } else {
+                contract = tx.to.shortTypeAddress
+            }
         case .receive:
-            contract = tx.from.shortTypeAddress
+            if tx.from.isEmpty {
+                contract = tx.tokenTransfers?.first?.otherAddress.shortTypeAddress ?? ""
+            } else {
+                contract = tx.from.shortTypeAddress
+            }
         case .approve:
             let spenderName = tx.tokenApproval?.spenderName
             if spenderName.isNilOrEmpty {
