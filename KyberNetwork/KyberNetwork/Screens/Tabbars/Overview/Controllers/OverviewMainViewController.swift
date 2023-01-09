@@ -12,6 +12,8 @@ import MBProgressHUD
 import KrystalWallets
 import SkeletonView
 import BaseModule
+import DesignSystem
+import TransactionModule
 
 protocol OverviewMainViewControllerDelegate: class {
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent)
