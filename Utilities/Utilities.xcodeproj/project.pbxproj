@@ -43,6 +43,7 @@
 		A6B1FD1728F6B40800894DCB /* UIScreen+statusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FD1628F6B40800894DCB /* UIScreen+statusBar.swift */; };
 		A6B78C88294700CA00FBFCB5 /* UIControl+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B78C87294700CA00FBFCB5 /* UIControl+.swift */; };
 		A6E433C428F54F6F00782F7D /* Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = A6E433C328F54F6F00782F7D /* Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C320D633296535E5000A02FB /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C320D632296535E4000A02FB /* Double+.swift */; };
 		C3A408142923536E008C1220 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A408132923536E008C1220 /* UIColor+.swift */; };
 /* End PBXBuildFile section */
 
@@ -87,6 +88,7 @@
 		A6B78C87294700CA00FBFCB5 /* UIControl+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+.swift"; sourceTree = "<group>"; };
 		A6E433C028F54F6F00782F7D /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6E433C328F54F6F00782F7D /* Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
+		C320D632296535E4000A02FB /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 		C3A408132923536E008C1220 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -139,6 +141,7 @@
 		A6B1FD1528F6B3F100894DCB /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C320D632296535E4000A02FB /* Double+.swift */,
 				7EAF4769291B695000BF5D00 /* UICollectionView+register.swift */,
 				A6B1FD1628F6B40800894DCB /* UIScreen+statusBar.swift */,
 				A64C2E0028F6D833002FD64C /* UIViewController+nib.swift */,
@@ -338,6 +341,7 @@
 				A64C2E8C28F91540002FD64C /* BigInt+.swift in Sources */,
 				A66846162908EA60006BBE29 /* Collection+.swift in Sources */,
 				A64C2E4428F7F58A002FD64C /* CAGradientLayer+.swift in Sources */,
+				C320D633296535E5000A02FB /* Double+.swift in Sources */,
 				A64C2E7328F91051002FD64C /* Error+pretty.swift in Sources */,
 				7EB129B42938B1AF00CE6D1C /* NSObject+.swift in Sources */,
 				A64C2E1828F6F95B002FD64C /* UIView+accessiblityID.swift in Sources */,
