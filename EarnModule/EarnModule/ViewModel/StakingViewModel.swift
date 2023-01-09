@@ -121,11 +121,11 @@ class StakingViewModel: BaseViewModel {
     }
     
     var displayAPY: String {
-      return NumberFormatUtils.percent(value: selectedPlatform.apy)
+        return NumberFormatUtils.percent(value: selectedPlatform.apy.roundedValue())
     }
     
     var displayRewardApy: String {
-        return NumberFormatUtils.percent(value: selectedPlatform.rewardApy)
+        return NumberFormatUtils.percent(value: selectedPlatform.rewardApy.roundedValue())
     }
     
     var transactionFee: BigInt {
