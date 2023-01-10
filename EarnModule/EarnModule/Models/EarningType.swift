@@ -12,6 +12,13 @@ enum EarningType: String {
     case lending
     
     init(value: String) {
-        self = .init(rawValue: value) ?? .lending
+        switch value.lowercased() {
+        case "stake", "staking":
+            self = .staking
+        case "lend", "lending":
+            self = .lending
+        default:
+            self = .lending
+        }
     }
 }
