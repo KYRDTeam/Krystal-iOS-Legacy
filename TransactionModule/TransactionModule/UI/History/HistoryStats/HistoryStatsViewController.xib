@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+        <array key="Karla-SemiBold.ttf">
+            <string>Karla-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HistoryStatsViewController" customModule="TransactionModule" customModuleProvider="target">
+            <connections>
+                <outlet property="tableView" destination="pxN-ki-bLt" id="cB2-cw-D6v"/>
+                <outlet property="tableViewHeight" destination="ZBb-d9-5i7" id="o3J-J0-Bn5"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="History Stats" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rhT-cO-9Uj">
+                    <rect key="frame" x="16" y="68" width="382" height="609"/>
+                    <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="18"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="pxN-ki-bLt">
+                    <rect key="frame" x="0.0" y="693" width="414" height="96"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="96" id="ZBb-d9-5i7"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3jb-ka-zBV">
+                    <rect key="frame" x="0.0" y="805" width="414" height="1"/>
+                    <color key="backgroundColor" red="0.16078431372549018" green="0.1764705882352941" blue="0.17254901960784313" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="a4d-QC-wap"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bRd-95-H9h">
+                    <rect key="frame" x="186.5" y="814" width="41" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="HNR-iN-lRJ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Karla-SemiBold" family="Karla" pointSize="16"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Close">
+                        <color key="titleColor" name="buttonBackgroundColor"/>
+                    </state>
+                    <connections>
+                        <action selector="closeTapped:" destination="-1" eventType="touchUpInside" id="L9j-4e-r7A"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="popupBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="3jb-ka-zBV" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="2Kq-jr-Qle"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="rhT-cO-9Uj" secondAttribute="trailing" constant="16" id="JTg-UL-n1Q"/>
+                <constraint firstItem="rhT-cO-9Uj" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="LhG-Hm-VGq"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="pxN-ki-bLt" secondAttribute="trailing" id="Y1h-vx-QrV"/>
+                <constraint firstItem="pxN-ki-bLt" firstAttribute="top" secondItem="rhT-cO-9Uj" secondAttribute="bottom" constant="16" id="Yvc-ry-Lbc"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="bRd-95-H9h" secondAttribute="bottom" constant="8" id="bhG-6e-EoR"/>
+                <constraint firstItem="pxN-ki-bLt" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="kJl-nH-Ggr"/>
+                <constraint firstItem="3jb-ka-zBV" firstAttribute="top" secondItem="pxN-ki-bLt" secondAttribute="bottom" constant="16" id="m1m-nR-orD"/>
+                <constraint firstItem="rhT-cO-9Uj" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="24" id="o4V-fi-md0"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="3jb-ka-zBV" secondAttribute="trailing" id="rX7-NR-2Fx"/>
+                <constraint firstItem="bRd-95-H9h" firstAttribute="top" secondItem="3jb-ka-zBV" secondAttribute="bottom" constant="8" id="uuu-C1-oFI"/>
+                <constraint firstItem="bRd-95-H9h" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="zjN-7C-K1i"/>
+            </constraints>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+            </userDefinedRuntimeAttributes>
+            <point key="canvasLocation" x="137.68115942028987" y="90.401785714285708"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="popupBackgroundColor">
+            <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

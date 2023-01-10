@@ -96,7 +96,7 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
     }
     
     func setupSegmentControl() {
-        let width = UIScreen.main.bounds.size.width - 32
+        let width = segmentControl.frame.size.width - 32
         segmentControl.backgroundColor = .clear
         segmentControl.tintColor = AppTheme.current.primaryColor
         segmentControl.frame = CGRect(x: self.segmentControl.frame.minX,
@@ -106,7 +106,7 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
         segmentControl.setWidth(width / 2, forSegmentAt: 1)
         segmentControl.selectedSegmentIndex = 0
         segmentControl.setTitleTextAttributes([.font: UIFont.karlaReguler(ofSize: 16)], for: .normal)
-        segmentControl.highlightSelectedSegment()
+        segmentControl.highlightSelectedSegment(width: width / 2)
     }
     
     @IBAction func backTapped(_ sender: Any) {
@@ -132,6 +132,15 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
         let direction: UIPageViewController.NavigationDirection = index < selectedPageIndex ? .reverse : .forward
         selectedPageIndex = index
         pageViewController.setViewControllers([viewControllers[index]], direction: direction, animated: true)
+    }
+    
+    @IBAction func statsTapped(_ sender: Any) {
+        let viewModel = HistoryStatsViewModel(chain: currentChain, address: AppState.shared.currentAddress.addressString)
+        let vc = HistoryStatsViewController.instantiateFromNib()
+        vc.viewModel = viewModel
+        vc.view.layoutIfNeeded()
+        let popup = PopupViewController(vc: vc, configuration: PopupConfiguration(height: .intrinsic))
+        present(popup, animated: true)
     }
     
 }
