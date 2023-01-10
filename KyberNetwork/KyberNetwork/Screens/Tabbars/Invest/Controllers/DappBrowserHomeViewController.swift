@@ -125,6 +125,13 @@ class DappBrowserHomeViewController: UIViewController {
   }
 
   private func setupSuggestionSection() {
+      guard !AppDelegate.session.address.isWatchWallet else {
+          suggestionTagsView.isHidden = true
+          suggestionTitleLabel.isHidden = true
+          return
+      }
+      suggestionTagsView.isHidden = false
+      suggestionTitleLabel.isHidden = false
     self.viewModel.suggestDataSource.forEach { item in
       self.suggestionTagsView.addTag(item.title.limit(scope: limitTagLength), image: UIImage(named: item.image ?? ""))
     }
