@@ -47,32 +47,37 @@ class AppRouter: AppRouterProtocol, Coordinator {
   }
   
     func openChainList(_ selectedChain: ChainType, allowAllChainOption: Bool, showSolanaOption: Bool, onSelectChain: @escaping (ChainType) -> Void) {
-    MixPanelManager.track("import_select_chain_open", properties: ["screenid": "import_select_chain"])
-    let popup = SwitchChainViewController(includedAll: allowAllChainOption, selected: selectedChain)
-    var chains = WalletManager.shared.getAllAddresses(walletID: AppState.shared.currentAddress.walletID).flatMap { address in
-      return ChainType.getAllChain().filter { chain in
-        return chain != .all && chain.addressType == address.addressType
-      }
-    }
-    if allowAllChainOption {
-      chains = [.all] + chains
-    }
-    if !showSolanaOption {
-        chains.removeAll { $0 == .solana }
-    }
-    popup.dataSource = chains
-    popup.completionHandler = { selectedChain in
-      AppState.shared.isSelectedAllChain = (selectedChain == .all)
-      if allowAllChainOption && selectedChain == .all {
-        AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = .all
-        AppDelegate.shared.coordinator.loadBalanceCoordinator?.resume()
-        AppEventManager.shared.postSelectAllChain()
-      } else {
-        AppState.shared.updateChain(chain: selectedChain)
-      }
-      onSelectChain(selectedChain)
-    }
-    UIApplication.shared.topMostViewController()?.present(popup, animated: true, completion: nil)
+        MixPanelManager.track("import_select_chain_open", properties: ["screenid": "import_select_chain"])
+        let popup = SwitchChainViewController(includedAll: allowAllChainOption, selected: selectedChain)
+        
+        var chains: [ChainType] = []
+        
+        if !AppState.shared.isBrowsingMode {
+            chains = WalletManager.shared.getAllAddresses(walletID: AppState.shared.currentAddress.walletID).flatMap { address in
+                return ChainType.getAllChain().filter { chain in
+                    return chain != .all && chain.addressType == address.addressType
+                }
+            }
+            if allowAllChainOption {
+              chains = [.all] + chains
+            }
+            if !showSolanaOption {
+                chains.removeAll { $0 == .solana }
+            }
+        }
+        popup.dataSource = chains
+        popup.completionHandler = { selectedChain in
+          AppState.shared.isSelectedAllChain = (selectedChain == .all)
+          if allowAllChainOption && selectedChain == .all {
+            AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = .all
+            AppDelegate.shared.coordinator.loadBalanceCoordinator?.resume()
+            AppEventManager.shared.postSelectAllChain()
+          } else {
+            AppState.shared.updateChain(chain: selectedChain)
+          }
+          onSelectChain(selectedChain)
+        }
+        UIApplication.shared.topMostViewController()?.present(popup, animated: true, completion: nil)
   }
   
   func openTransactionHistory() {
