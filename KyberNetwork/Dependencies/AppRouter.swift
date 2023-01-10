@@ -174,7 +174,6 @@ class AppRouter: AppRouterProtocol, Coordinator {
             AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorOpenSwap(from: from, to: to)
         }
     }
-  
 }
 
 extension AppRouter: KNHistoryCoordinatorDelegate {

@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 enum AddWalletViewControllerEvent {
   case createWallet
   case importWallet

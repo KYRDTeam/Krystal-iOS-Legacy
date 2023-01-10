@@ -119,11 +119,6 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
     }
   }
 
-  func resetNavigationToRoot() {
-    navigationController.popToRootViewController(animated: true)
-    navigationController.viewControllers = [self.rootViewController]
-  }
-  
 }
 
 extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {

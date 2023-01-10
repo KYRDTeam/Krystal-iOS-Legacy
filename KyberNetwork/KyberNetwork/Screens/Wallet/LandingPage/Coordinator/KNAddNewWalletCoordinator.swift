@@ -62,11 +62,8 @@ class KNAddNewWalletCoordinator: Coordinator {
     self.navigationController.popToRootViewController(animated: false)
     switch type {
     case .full, .onlyReal:
-      let popup = AddWalletViewController()
-      popup.delegate = self
-      parentViewController.present(self.navigationController, animated: false) {
-        self.navigationController.pushViewController(popup, animated: true)
-      }
+        let coordinator = AddWalletCoordinator(parent: parentViewController, navigation: navigationController, delegate: self)
+        coordinate(coordinator: coordinator)
     case .watch:
       let coordinator = AddWatchWalletCoordinator(parentViewController: parentViewController, editingAddress: nil)
       coordinator.start()

@@ -9,6 +9,7 @@ import UIKit
 import KrystalWallets
 import WalletConnectSwift
 import AppState
+import Dependencies
 
 class WalletListV2ViewModel {
   var wallets: [KWallet] = []
@@ -133,7 +134,7 @@ class WalletListV2ViewController: KNBaseViewController, Coordinator {
   
   @IBAction func addWalletButtonTapped(_ sender: Any) {
     self.dismiss(animated: true) {
-      self.openAddWallet()
+        AppDependencies.router.openAddWallet()
     }
   }
 

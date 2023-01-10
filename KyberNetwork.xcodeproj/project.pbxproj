@@ -613,6 +613,7 @@
 		A61715F2291E4C97001778C7 /* KrystalWallets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A62F0F0429374FDD00937677 /* SwapModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A62F0F0329374FDD00937677 /* SwapModule.framework */; };
 		A62F0F0529374FDD00937677 /* SwapModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A62F0F0329374FDD00937677 /* SwapModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A631DADC296D7114007ADF12 /* AddWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A631DADB296D7114007ADF12 /* AddWalletCoordinator.swift */; };
 		A63655552907A352003B66F0 /* ApprovalListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63655532907A352003B66F0 /* ApprovalListViewController.swift */; };
 		A63655562907A352003B66F0 /* ApprovalListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63655542907A352003B66F0 /* ApprovalListViewController.xib */; };
 		A63655592907B6BB003B66F0 /* ApprovedTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63655572907B6BB003B66F0 /* ApprovedTokenCell.swift */; };
@@ -1921,6 +1922,7 @@
 		A6156B5428856E6800276120 /* BaseXibView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseXibView.swift; sourceTree = "<group>"; };
 		A6156B562885A43400276120 /* CGPoint+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+.swift"; sourceTree = "<group>"; };
 		A62F0F0329374FDD00937677 /* SwapModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwapModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A631DADB296D7114007ADF12 /* AddWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWalletCoordinator.swift; sourceTree = "<group>"; };
 		A63655532907A352003B66F0 /* ApprovalListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovalListViewController.swift; sourceTree = "<group>"; };
 		A63655542907A352003B66F0 /* ApprovalListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApprovalListViewController.xib; sourceTree = "<group>"; };
 		A63655572907B6BB003B66F0 /* ApprovedTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovedTokenCell.swift; sourceTree = "<group>"; };
@@ -3827,6 +3829,7 @@
 				25C151C320C5414500A6F684 /* KNCreateWalletCoordinator.swift */,
 				25EE4A7320C54F2F00E2282F /* KNAddNewWalletCoordinator.swift */,
 				253F50E121E5B40E0068813D /* KNPromoCodeCoordinator.swift */,
+				A631DADB296D7114007ADF12 /* AddWalletCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -8237,6 +8240,7 @@
 				A668461E290946B0006BBE29 /* RevokeConfirmViewModel.swift in Sources */,
 				A65C7A742818E3C6000FA9CE /* NavigationBar.swift in Sources */,
 				7EB47FF427C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift in Sources */,
+				A631DADC296D7114007ADF12 /* AddWalletCoordinator.swift in Sources */,
 				7ED5FA8527D214D000F0CB8E /* SelectNetworkCell.swift in Sources */,
 				25931F1420AEEBF000BAC774 /* KNBackUpWalletViewModel.swift in Sources */,
 				25C45ADA20AD40F400CDA1FF /* KNImportPrivateKeyViewController.swift in Sources */,
