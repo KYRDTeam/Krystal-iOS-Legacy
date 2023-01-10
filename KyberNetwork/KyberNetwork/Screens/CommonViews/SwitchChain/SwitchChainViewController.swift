@@ -23,6 +23,8 @@ class SwitchChainViewController: KNBaseViewController {
   var displayingChains: [ChainType] {
     if dataSource.isEmpty {
       return ChainType.getAllChain(includeAll: self.isIncludedAllOption)
+    } else if let chain = dataSource.first, chain == .all {
+        return ChainType.getAllChain(includeAll: self.isIncludedAllOption)
     }
     return dataSource
   }

@@ -122,10 +122,11 @@ class EarnOverviewController: InAppBrowsingViewController {
   }
     
     func jumpToPage(index: Int) {
-        segmentedControl.selectedSegmentIndex = index
+        let pageIndex = min(tabCount, index)
+        segmentedControl.selectedSegmentIndex = pageIndex
         segmentedControl.underlineCenterPosition()
-        if index != selectedPageIndex {
-            selectPage(index: index)
+        if pageIndex != selectedPageIndex {
+            selectPage(index: pageIndex)
         }
     }
 

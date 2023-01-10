@@ -34,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     setupFirebase()
     setupOneSignal(launchOptions)
     Tracker.track(event: .openApp)
+    setupSentryIfNeeded()
     do {
       let keystore = try EtherKeystore()
       migrationManager = AppMigrationManager(keystore: keystore)
@@ -63,12 +64,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     coordinator = KNAppCoordinator(window: window!, keystore: keystore)
     coordinator.start()
     coordinator.appDidFinishLaunch()
+    setupMixPanel()
     // promptForPushNotifications will show the native iOS notification permission prompt.
     // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
     OneSignal.promptForPushNotifications(userResponse: { accepted in
       print("User accepted notifications: \(accepted)")
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        self.requestAcceptTrackingFirebaseIfNeeded()
+        self.requestAcceptTrackingIfNeeded()
       }
     })
   }
@@ -91,7 +93,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             parameters[element.name] = element.value
           })
           if components.path == "/swap" {
-            self.coordinator?.swapV2Coordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+              if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.swapModule) {
+                  self.coordinator?.swapModuleCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+              } else {
+                  self.coordinator?.swapV2Coordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+              }
           } else {
             self.coordinator?.overviewTabCoordinator?.navigationController.openSafari(with: url)
           }
@@ -100,7 +106,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     OneSignal.setNotificationOpenedHandler(notificationOpenedBlock)
   }
   
-  fileprivate func setupSentry() {
+  fileprivate func setupSentryIfNeeded() {
+    guard !SentrySDK.isEnabled else { return }
     SentrySDK.start { options in
       options.dsn = KNSecret.sentryURL
       options.debug = true // Enabled debug when first installing is always helpful
@@ -109,29 +116,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
   }
 
-  fileprivate func requestAcceptTrackingFirebaseIfNeeded() {
+  fileprivate func requestAcceptTrackingIfNeeded() {
     if #available(iOS 14, *) {
-      ATTrackingManager.requestTrackingAuthorization { (status) in
-        if status == .authorized {
-          self.setupTrackingTools()
-        }
-      }
-    } else {
-      self.setupTrackingTools()
+      ATTrackingManager.requestTrackingAuthorization { _ in }
     }
-  }
-  
-  fileprivate func setupTrackingTools() {
-    var shouldConfigTrackingTool = true
-    if #available(iOS 14, *) {
-      let status = ATTrackingManager.trackingAuthorizationStatus
-      shouldConfigTrackingTool = status == .authorized
-    }
-    guard shouldConfigTrackingTool else { return }
-    setupMixPanel()
-    
-    guard !SentrySDK.isEnabled else { return }
-    self.setupSentry()
   }
   
   func setupMixPanel() {

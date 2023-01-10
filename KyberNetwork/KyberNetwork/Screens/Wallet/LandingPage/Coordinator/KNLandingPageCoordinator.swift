@@ -4,6 +4,7 @@ import UIKit
 import SafariServices
 import MessageUI
 import KrystalWallets
+import AppState
 
 protocol KNLandingPageCoordinatorDelegate: class {
   func landingPageCoordinator(import wallet: KWallet, chain: ChainType)
@@ -83,7 +84,8 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
   func start() {
     let wallets = walletManager.getAllWallets()
     if wallets.isEmpty && KNPasscodeUtil.shared.currentPasscode() != nil {
-      if !UserDefaults.standard.bool(forKey: Constants.isAppOpenAlready) {
+      let isOpenAppData = Storage.retrieve(Constants.isAppOpenAlready, as: Bool.self) ?? false
+      if !UserDefaults.standard.bool(forKey: Constants.isAppOpenAlready) && !isOpenAppData {
         self.navigationController.viewControllers = [self.rootViewController]
       }
       return
@@ -132,6 +134,7 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
         self.termViewController.nextAction = {
           self.delegate?.landingPageCoordinatorStartedBrowsing()
           UserDefaults.standard.set(true, forKey: Constants.isAppOpenAlready)
+          Storage.store(true, as: Constants.isAppOpenAlready)
         }
         self.navigationController.present(self.termViewController, animated: true, completion: nil)
         return
