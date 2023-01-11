@@ -713,6 +713,7 @@
 		A6799D9129598BC000ACE89D /* PendingTxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6799D8F29598BC000ACE89D /* PendingTxViewController.swift */; };
 		A6799D9229598BC000ACE89D /* PendingTxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6799D9029598BC000ACE89D /* PendingTxViewController.xib */; };
 		A6799D9429598CA000ACE89D /* PendingTxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6799D9329598CA000ACE89D /* PendingTxViewModel.swift */; };
+		A67F5C5B296E74B900C3D691 /* AppStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67F5C5A296E74B900C3D691 /* AppStorage.swift */; };
 		A685D4912848766A0066E177 /* GasCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4902848766A0066E177 /* GasCalculator.swift */; };
 		A685D494284877DF0066E177 /* SolanaGasCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D493284877DF0066E177 /* SolanaGasCalculator.swift */; };
 		A685D496284877EA0066E177 /* EthGasCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D495284877EA0066E177 /* EthGasCalculator.swift */; };
@@ -2023,6 +2024,7 @@
 		A6799D8F29598BC000ACE89D /* PendingTxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTxViewController.swift; sourceTree = "<group>"; };
 		A6799D9029598BC000ACE89D /* PendingTxViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PendingTxViewController.xib; sourceTree = "<group>"; };
 		A6799D9329598CA000ACE89D /* PendingTxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTxViewModel.swift; sourceTree = "<group>"; };
+		A67F5C5A296E74B900C3D691 /* AppStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorage.swift; sourceTree = "<group>"; };
 		A685D47B2847B1300066E177 /* AddressObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressObject.swift; sourceTree = "<group>"; };
 		A685D4812847BCD10066E177 /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
 		A685D4832847BCF70066E177 /* ImportType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportType.swift; sourceTree = "<group>"; };
@@ -3063,6 +3065,7 @@
 				25D3D3EB20F61DC10071D599 /* KNTrackerRateStorage.swift */,
 				C365812125E2503F00A6DA4B /* BalanceStorage.swift */,
 				C31D05FE25F723E8000739D2 /* EtherscanTransactionStorage.swift */,
+				A67F5C5A296E74B900C3D691 /* AppStorage.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -5154,6 +5157,7 @@
 		A63C5E5328339F6200CDD75F /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
+				A6FAFF14294310DE006F9E21 /* DappBrowser.framework */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -8488,6 +8492,7 @@
 				A6E6C9D6281796C000EEB2E6 /* SolanaTransactionStorage.swift in Sources */,
 				25759623216D8E0D00AC490D /* Locale+Kyber.swift in Sources */,
 				C35279B3294048F9005E9575 /* FileStorage.swift in Sources */,
+				A67F5C5B296E74B900C3D691 /* AppStorage.swift in Sources */,
 				A66CD6E9295463DF00FF2EC9 /* HistoryV3ViewController.swift in Sources */,
 				A65D14DE28FD0B6000B12E84 /* AppTracker.swift in Sources */,
 				C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */,
@@ -8818,7 +8823,7 @@
 				CODE_SIGN_ENTITLEMENTS = "KyberNetwork/KyberSwap - Crypto ExchangeDebug.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 13;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				ENABLE_BITCODE = NO;
@@ -8852,7 +8857,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 13;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				ENABLE_BITCODE = NO;
@@ -8980,7 +8985,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 12;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -9006,7 +9011,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -9030,12 +9035,12 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 12;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -9072,11 +9077,11 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -9110,7 +9115,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 12;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -9135,7 +9140,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -9160,7 +9165,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 13;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
@@ -9194,7 +9199,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

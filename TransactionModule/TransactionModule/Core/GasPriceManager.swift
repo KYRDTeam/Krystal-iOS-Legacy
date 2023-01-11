@@ -34,7 +34,8 @@ public class GasPriceManager {
     
     func fetchAllNetworkGasPrice() {
         let group = DispatchGroup()
-        ChainType.allCases.forEach { chain in
+        let chains = ChainType.getAllChain().filter { $0.isEVM }
+        chains.forEach { chain in
             group.enter()
             fetchGasPrice(chain: chain) {
                 group.leave()

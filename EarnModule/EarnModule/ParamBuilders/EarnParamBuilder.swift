@@ -22,7 +22,7 @@ extension EarnParamBuilder {
     
     func buildStakingTxParam(amount: BigInt, token: Token, chainID: Int, platform: EarnPlatform, earningToken: EarningToken?) -> JSONDictionary {
         var earningType = platform.type
-        if earningType == "staking" && token.symbol.uppercased() == "MATIC" {
+        if (earningType == "staking" || earningType == "stake") && token.symbol.uppercased() == "MATIC" {
             earningType = "stakingMATIC"
         }
         let params: JSONDictionary = [

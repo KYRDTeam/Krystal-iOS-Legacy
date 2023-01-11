@@ -23,7 +23,6 @@ enum InvestViewEvent {
   case rewardHunting
   case bridge
   case scanner
-  case stake
     case openApprovals
     case openLoyalty
 }

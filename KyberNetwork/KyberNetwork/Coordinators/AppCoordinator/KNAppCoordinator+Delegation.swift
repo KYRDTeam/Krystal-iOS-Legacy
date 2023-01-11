@@ -126,6 +126,10 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
   
   func overviewCoordinatorDidStart() {
   }
+    
+    func overviewCoordinatorDidChangeHideBalanceStatus(_ status: Bool) {
+      self.earnCoordinator?.appCoodinatorDidUpdateHideBalanceStatus(status)
+    }
 
   func overviewCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.tabbarController.selectedIndex = 4
@@ -133,12 +137,22 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
   }
 
   func overviewCoordinatorDidSelectDepositMore(tokenAddress: String) {
-      AppDependencies.router.openEarn()
+      if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.earnV2) {
+          AppDependencies.router.openEarn()
+      } else {
+          self.earnCoordinator?.navigationController.popToRootViewController(animated: false)
+          self.tabbarController.selectedIndex = 3
+          self.earnCoordinator?.appCoodinatorDidOpenEarnView(tokenAddress: tokenAddress)
+      }
   }
 
   func overviewCoordinatorDidSelectSwapToken(token: Token, isBuy: Bool) {
-      self.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: isBuy)
       self.tabbarController.selectedIndex = 1
+      if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.swapModule) {
+          self.swapModuleCoordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: isBuy)
+      } else {
+          self.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: isBuy)
+      }
   }
   
   func overviewCoordinatorOpenCreateChainWalletMenu(chainType: ChainType) {
