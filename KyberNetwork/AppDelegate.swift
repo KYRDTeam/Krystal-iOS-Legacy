@@ -233,7 +233,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       self.coordinator?.overviewTabCoordinator?.navigationController.tabBarController?.selectedIndex = 0
       self.coordinator?.overviewTabCoordinator?.navigationController.popToRootViewController(animated: false)
       let vc = NotificationV2ViewController.instantiateFromNib()
-      vc.hidesBottomBarWhenPushed = true
       self.coordinator?.overviewTabCoordinator?.navigationController.pushViewController(vc, animated: true)
     } else {
       self.coordinator?.overviewTabCoordinator?.navigationController.openSafari(with: url)
