@@ -111,12 +111,16 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     }
     
     func showLoadingSkeleton() {
-        let gradient = SkeletonGradient(baseColor: AppTheme.current.sectionBackgroundColor)
-        view.showAnimatedGradientSkeleton(usingGradient: gradient)
+        DispatchQueue.main.async {
+            let gradient = SkeletonGradient(baseColor: AppTheme.current.sectionBackgroundColor)
+            self.view.showAnimatedGradientSkeleton(usingGradient: gradient)
+        }
     }
-    
+
     func hideLoadingSkeleton() {
-        view.hideSkeleton()
+        DispatchQueue.main.async {
+            self.view.hideSkeleton()
+        }
     }
     
     override func reloadWallet() {
