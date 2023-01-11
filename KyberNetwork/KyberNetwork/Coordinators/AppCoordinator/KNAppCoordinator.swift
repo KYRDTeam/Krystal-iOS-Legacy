@@ -142,10 +142,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
 
   fileprivate func startFirstSessionIfNeeded() {
-      let isOpenAppData = Storage.retrieve(Constants.isAppOpenAlready, as: Bool.self) ?? false
-      guard UserDefaults.standard.bool(forKey: Constants.isAppOpenAlready) || isOpenAppData else {
-          return
-      }
+      guard AppStorage.shared.isAppOpenedBefore else { return }
       let address = AppState.shared.currentAddress
       // For security, should always have passcode protection when user has imported wallets
       if KNPasscodeUtil.shared.currentPasscode() != nil {
