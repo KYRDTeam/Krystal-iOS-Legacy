@@ -32,7 +32,9 @@ class PendingRewardClaimConfirmPopUpViewModel: BaseViewModel, TxConfirmViewModel
     }
     
     var tokenAmountString: String {
-        return (BigInt(item.rewardToken.pendingReward.balance)?.shortString(decimals: item.rewardToken.tokenInfo.decimals) ?? "---") + " " + item.rewardToken.tokenInfo.symbol
+        let amountString = BigInt(item.rewardToken.pendingReward.balance)?.shortString(decimals: item.rewardToken.tokenInfo.decimals) ?? "---"
+        let amountDisplay = amountString == "0" ? "~0" : amountString
+        return amountDisplay + " " + item.rewardToken.tokenInfo.symbol
     }
     
     var platformName: String {
