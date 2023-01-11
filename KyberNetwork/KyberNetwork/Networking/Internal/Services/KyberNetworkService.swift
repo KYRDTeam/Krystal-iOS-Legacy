@@ -1002,7 +1002,7 @@ extension KrytalService: TargetType {
     case .getNTFBalance:
       return "/v1/account/nftBalances"
     case .registerNFTFavorite(_, _, _, _, _, let chain):
-      return chain.chainPath() + "/v1/account/registerFavoriteNft"
+      return "/v1/account/registerFavoriteNft"
     case .getTransactionsHistory:
       return "/v1/account/transactions"
     case .getLiquidityPool:

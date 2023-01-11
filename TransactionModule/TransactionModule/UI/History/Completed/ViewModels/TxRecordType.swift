@@ -26,7 +26,7 @@ enum TxRecordType: String {
             self = .swap
         case "transfer":
             self = .transfer
-        case "receive":
+        case "receive", "safetransferfrom":
             self = .receive
         case "multisend":
             self = .multisend

@@ -596,6 +596,8 @@ class SwapV2ViewController: InAppBrowsingViewController {
             )
         }
         onSourceAmountChange(value: allBalanceText)
+        AppDependencies.tracker.track("swap_max_amount", properties: ["screenid": "swap"])
+        AppDependencies.tracker.track("swap_enter_amount", properties: ["screenid": "swap"])
     }
 }
 
