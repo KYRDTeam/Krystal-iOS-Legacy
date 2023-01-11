@@ -5,7 +5,6 @@ import SafariServices
 import MessageUI
 import KrystalWallets
 import AppState
-import SwiftUI
 
 protocol KNLandingPageCoordinatorDelegate: class {
   func landingPageCoordinator(import wallet: KWallet, chain: ChainType)
