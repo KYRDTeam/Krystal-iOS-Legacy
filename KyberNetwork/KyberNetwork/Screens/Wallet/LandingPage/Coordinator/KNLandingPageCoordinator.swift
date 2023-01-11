@@ -5,6 +5,7 @@ import SafariServices
 import MessageUI
 import KrystalWallets
 import AppState
+import SwiftUI
 
 protocol KNLandingPageCoordinatorDelegate: class {
   func landingPageCoordinator(import wallet: KWallet, chain: ChainType)
@@ -80,12 +81,11 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
     self.navigationController = navigationController
     self.navigationController.setNavigationBarHidden(true, animated: false)
   }
-
+  
   func start() {
     let wallets = walletManager.getAllWallets()
     if wallets.isEmpty && KNPasscodeUtil.shared.currentPasscode() != nil {
-      let isOpenAppData = Storage.retrieve(Constants.isAppOpenAlready, as: Bool.self) ?? false
-      if !UserDefaults.standard.bool(forKey: Constants.isAppOpenAlready) && !isOpenAppData {
+      if !AppStorage.shared.isAppOpenedBefore {
         self.navigationController.viewControllers = [self.rootViewController]
       }
       return
@@ -96,6 +96,8 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
         self.navigationController.viewControllers = [self.rootViewController]
         self.newWallet = wallets.first
         self.passcodeCoordinator.start()
+      } else if !AppStorage.shared.isAppOpenedBefore {
+        AppStorage.shared.markAppAsOpenedBefore()
       }
     } else {
       self.navigationController.viewControllers = [self.rootViewController]
@@ -133,8 +135,7 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
       if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
         self.termViewController.nextAction = {
           self.delegate?.landingPageCoordinatorStartedBrowsing()
-          UserDefaults.standard.set(true, forKey: Constants.isAppOpenAlready)
-          Storage.store(true, as: Constants.isAppOpenAlready)
+          AppStorage.shared.markAppAsOpenedBefore()
         }
         self.navigationController.present(self.termViewController, animated: true, completion: nil)
         return
