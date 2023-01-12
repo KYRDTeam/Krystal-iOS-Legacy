@@ -929,7 +929,7 @@ extension KrytalService: TargetType {
       urlComponents.queryItems = queryItems
       return urlComponents.url!
     case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance, .getAllLendingBalance, .getAllLendingDistributionBalance, .getMultichainBalance, .getLiquidityPool, .getEarningBalances, .getPendingUnstakes,
-        .getEarningOptionDetail, .buildStakeTx:
+            .getEarningOptionDetail, .buildStakeTx, .registerNFTFavorite:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     case .getChartData(chainPath: let chainPath, address: _, quote: _, from: _), .getTokenDetail(chainPath: let chainPath, address: _):
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -1001,8 +1001,8 @@ extension KrytalService: TargetType {
       return "/v1/market/priceSeries"
     case .getNTFBalance:
       return "/v1/account/nftBalances"
-    case .registerNFTFavorite(_, _, _, _, _, let chain):
-      return "/v1/account/registerFavoriteNft"
+    case .registerNFTFavorite(_, _, _, _, _, _):
+      return "/v1/nft/registerFavoriteNft"
     case .getTransactionsHistory:
       return "/v1/account/transactions"
     case .getLiquidityPool:
@@ -1292,10 +1292,11 @@ extension KrytalService: TargetType {
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .registerNFTFavorite(address: let address, collectibleAddress: let collectibleAddress, tokenID: let tokenID, favorite: let favorite, signature: let signature, chain: let chain):
       let json: JSONDictionary = [
+        "chainId": chain.getChainId(),
         "address": address,
         "collectibleAddress": collectibleAddress,
         "tokenID": tokenID,
-        "favorite": favorite ? "1" : "0",
+        "favorite": favorite,
         "signature": signature,
       ]
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
