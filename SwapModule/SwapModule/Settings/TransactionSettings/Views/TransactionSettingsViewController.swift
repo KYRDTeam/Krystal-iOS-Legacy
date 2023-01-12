@@ -8,7 +8,6 @@
 import UIKit
 import BigInt
 import Result
-import SwiftUI
 import AppState
 import BaseModule
 import Services

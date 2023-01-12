@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 @propertyWrapper
 struct FileStorage<T: Codable> {

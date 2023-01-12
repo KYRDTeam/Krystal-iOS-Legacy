@@ -459,7 +459,7 @@ extension SwapV2ViewModel {
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(self.transactionStateDidUpdate),
-      name: Notification.Name(kTransactionDidUpdateNotificationKey),
+      name: .kTxStatusUpdated,
       object: nil
     )
   }
@@ -500,6 +500,7 @@ extension SwapV2ViewModel {
   
   @objc func transactionStateDidUpdate() {
     checkPendingTx()
+    checkAllowance()
   }
   
   func checkPendingTx() {
