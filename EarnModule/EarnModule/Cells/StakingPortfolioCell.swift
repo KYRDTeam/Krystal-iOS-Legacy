@@ -43,7 +43,7 @@ struct StakingPortfolioCellModel {
     self.tokenLogo = earnBalance.toUnderlyingToken.logo
     self.chainLogo = ChainType.make(chainID: earnBalance.chainID)?.chainIcon()
     self.platformLogo = earnBalance.platform.logo
-      let totalApy = earnBalance.apy + earnBalance.rewardApy
+      let totalApy = earnBalance.apy.roundedValue() + earnBalance.rewardApy.roundedValue()
     self.displayAPYValue = StringFormatter.percentString(value: totalApy / 100)
 
     var stakingBalanceString = (BigInt(earnBalance.stakingToken.balance)?.shortString(decimals: earnBalance.stakingToken.decimals) ?? "---") + " " + earnBalance.stakingToken.symbol

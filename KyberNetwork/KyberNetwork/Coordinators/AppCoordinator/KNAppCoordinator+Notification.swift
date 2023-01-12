@@ -5,6 +5,7 @@ import BigInt
 import Result
 import KrystalWallets
 import AppState
+import Dependencies
 
 /*
  Handling notification from many fetchers, views, ...
@@ -239,6 +240,7 @@ extension KNAppCoordinator {
     self.investCoordinator?.appCoordinatorDidUpdateChain()
     self.loadBalanceCoordinator?.loadLendingBalances(completion: { _ in
     })
+    self.earnCoordinator?.appCoordinatorDidUpdateChain()
     self.settingsCoordinator?.appCoordinatorDidUpdateChain()
     self.session.externalProvider?.minTxCount = 0
   }
@@ -251,6 +253,8 @@ extension KNAppCoordinator {
     let otherTokensBalance: [String: Balance] = loadBalanceCoordinator.otherTokensBalance
 
     self.settingsCoordinator?.appCoordinatorTokenBalancesDidUpdate(balances: otherTokensBalance)
+      
+    self.earnCoordinator?.appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: totalUSD, totalBalanceInETH: totalETH, otherTokensBalance: otherTokensBalance)
     
     self.investCoordinator?.appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: totalUSD, totalBalanceInETH: totalETH, otherTokensBalance: otherTokensBalance)
     
@@ -264,10 +268,13 @@ extension KNAppCoordinator {
     self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     self.investCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     self.settingsCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
+    self.earnCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
 
     let updateOverview = self.overviewTabCoordinator?.appCoordinatorUpdateTransaction(transaction) ?? false
     let updateInvest = self.investCoordinator?.appCoordinatorUpdateTransaction(transaction) ?? false
-    if !(updateOverview || updateInvest) {
+    let updateEarn = self.earnCoordinator?.appCoordinatorUpdateTransaction(transaction) ?? false
+
+    if !(updateOverview || updateEarn || updateInvest) {
       guard transaction.chain == KNGeneralProvider.shared.currentChain else {
         return
       }
@@ -296,6 +303,7 @@ extension KNAppCoordinator {
   @objc func tokenTransactionListDidUpdate(_ sender: Any?) {
     if self.session == nil { return }
     self.overviewTabCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
+    self.earnCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
     self.investCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
   }
 
@@ -318,8 +326,7 @@ extension KNAppCoordinator {
 
   @objc func openExchangeTokenView(_ sender: Any?) {
     if self.session == nil { return }
-    self.tabbarController.selectedIndex = 1
-    self.swapV2Coordinator?.navigationController.popToRootViewController(animated: true)
+    AppDependencies.router.openSwap()
   }
   
   @objc func handleNewReceiveTx(_ sender: Notification) {

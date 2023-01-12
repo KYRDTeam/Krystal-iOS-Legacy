@@ -61,7 +61,9 @@ class ExploreViewModel {
         var menuItems: [ExploreMenuItem] = []
         menuItems.append(.swap)
         menuItems.append(.transfer)
-        menuItems.append(.buyCrypto)
+        if isNotBrowsing {
+            menuItems.append(.buyCrypto)
+        }
         menuItems.append(.bridge)
         
         if KNGeneralProvider.shared.currentChain.isSupportSwap() {

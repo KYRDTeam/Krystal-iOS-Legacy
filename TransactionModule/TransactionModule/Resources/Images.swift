@@ -26,6 +26,9 @@ extension UIImage {
     static let search = UIImage(imageName: "search")
     static let closeSearch = UIImage(imageName: "close_search")
     static let defaultToken = UIImage(imageName: "default_token")
+    static let totalTx = UIImage(imageName: "txIcon")
+    static let totalGas = UIImage(imageName: "txGas")
+    static let totalVolume = UIImage(imageName: "txVolumn")
 }
 
 
