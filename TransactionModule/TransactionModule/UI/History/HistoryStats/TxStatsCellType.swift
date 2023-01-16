@@ -42,11 +42,9 @@ enum TxStatsCellType {
             let bigIntValue = BigInt(Double(value) * pow(10, 18))
             return NumberFormatUtils.format(value: bigIntValue, decimals: 18, maxDecimalMeaningDigits: 0, maxDecimalDigits: 0)
         case .totalGasFee(let value):
-            let bigIntValue = BigInt(value * pow(10, 18))
-            return "$" + NumberFormatUtils.usdAmount(value: bigIntValue, decimals: 18)
+            return NumberFormatUtils.billionBasedVolume(value: value)
         case .totalVolume(let value):
-            let bigIntValue = BigInt(value * pow(10, 18))
-            return "$" + NumberFormatUtils.usdAmount(value: bigIntValue, decimals: 18)
+            return NumberFormatUtils.billionBasedVolume(value: value)
         }
     }
 }
