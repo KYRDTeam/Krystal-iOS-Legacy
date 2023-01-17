@@ -866,7 +866,6 @@ enum KrytalService {
   case login(address: String, timestamp: Int, signature: String)
   case getClaimHistory(address: String, accessToken: String)
   case claimReward(address: String, amount: Double, accessToken: String)
-  case getBalances(address: String, forceSync: Bool)
   case getOverviewMarket(addresses: [String], quotes: [String])
   case getTokenDetail(chainPath: String, address: String)
   case getChartData(chainPath: String, address: String, quote: String, from: Int)
@@ -984,8 +983,6 @@ extension KrytalService: TargetType {
       return "/v1/account/claimHistory"
     case .claimReward:
       return "/v1/account/claimReward"
-    case .getBalances:
-      return "/v1/account/balances"
     case .getOverviewMarket:
       return "/v1/market/overview"
     case .getTokenDetail:
@@ -1249,12 +1246,6 @@ extension KrytalService: TargetType {
         "amount": amount
       ]
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
-    case .getBalances(address: let address, forceSync: let forceSync):
-      let json: JSONDictionary = [
-        "address": address,
-        "forceSync": forceSync
-      ]
-      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getOverviewMarket(addresses: let addresses, quotes: let quotes):
       var json: JSONDictionary = [
         "quoteCurrencies": quotes.joined(separator: ","),
