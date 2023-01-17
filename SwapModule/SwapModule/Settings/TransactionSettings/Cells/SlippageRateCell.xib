@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
+        </array>
+        <array key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="120" id="KGk-i7-Jjw" customClass="SlippageRateCell" customModule="Krystal" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JjU-iS-vno">
+                        <rect key="frame" x="25" y="0.0" width="270" height="120"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Slippage tolerance" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cyt-KK-4Tn">
+                                <rect key="frame" x="0.0" y="0.0" width="254" height="19"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                <color key="textColor" name="textWhiteColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Your transaction may be frontrun" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cbA-bY-JJM">
+                                <rect key="frame" x="0.0" y="87" width="212" height="16.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16.5" id="cqF-Ge-2I9"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                <color key="textColor" name="warningColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rlp-pe-9n1">
+                                <rect key="frame" x="0.0" y="33" width="46.5" height="36"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="VYZ-SB-2cz"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                <color key="tintColor" name="textWhiteColor"/>
+                                <state key="normal" title="0.1%"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnSlippage"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="customRateButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="AA5-Lb-yAe"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GhS-0P-Z5y">
+                                <rect key="frame" x="122.5" y="33" width="46.5" height="36"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                <color key="tintColor" name="textWhiteColor"/>
+                                <state key="normal" title="1%"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnSlippage"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="customRateButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="SYN-Hj-msr"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Custom" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sT5-Z8-zO3">
+                                <rect key="frame" x="184" y="33" width="86" height="36"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="86" id="Ih1-0o-Th0"/>
+                                </constraints>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="txtCustomSlippage"/>
+                                </userDefinedRuntimeAttributes>
+                            </textField>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JrE-Qe-6wp">
+                                <rect key="frame" x="61.5" y="33" width="46" height="36"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                <color key="tintColor" name="textWhiteColor"/>
+                                <state key="normal" title="0.5%"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityID" value="btnSlippage"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="customRateButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ZvP-Id-BIz"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aYv-ub-x2N">
+                                <rect key="frame" x="0.0" y="119" width="270" height="1"/>
+                                <color key="backgroundColor" red="0.29803921570000003" green="0.40000000000000002" blue="0.43921568630000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="s78-Js-KBN"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Cyt-KK-4Tn" secondAttribute="trailing" constant="16" id="2lM-Ri-ywN"/>
+                            <constraint firstItem="Cyt-KK-4Tn" firstAttribute="top" secondItem="JjU-iS-vno" secondAttribute="top" id="3uR-hK-Y2y"/>
+                            <constraint firstItem="rlp-pe-9n1" firstAttribute="top" secondItem="Cyt-KK-4Tn" secondAttribute="bottom" constant="14" id="8Y4-1x-8Oi"/>
+                            <constraint firstItem="cbA-bY-JJM" firstAttribute="leading" secondItem="JjU-iS-vno" secondAttribute="leading" id="CMo-zD-l8C"/>
+                            <constraint firstItem="GhS-0P-Z5y" firstAttribute="leading" secondItem="JrE-Qe-6wp" secondAttribute="trailing" constant="15" id="Djb-Kg-h0J"/>
+                            <constraint firstItem="sT5-Z8-zO3" firstAttribute="leading" secondItem="GhS-0P-Z5y" secondAttribute="trailing" constant="15" id="GO5-4y-T0v"/>
+                            <constraint firstAttribute="bottom" secondItem="aYv-ub-x2N" secondAttribute="bottom" id="ISG-rB-NrS"/>
+                            <constraint firstItem="aYv-ub-x2N" firstAttribute="top" secondItem="cbA-bY-JJM" secondAttribute="bottom" constant="15.5" id="LY9-2G-EWE"/>
+                            <constraint firstItem="JrE-Qe-6wp" firstAttribute="centerY" secondItem="rlp-pe-9n1" secondAttribute="centerY" id="Soa-3w-KrA"/>
+                            <constraint firstAttribute="trailing" secondItem="sT5-Z8-zO3" secondAttribute="trailing" id="UH1-t6-mq6"/>
+                            <constraint firstItem="JrE-Qe-6wp" firstAttribute="height" secondItem="rlp-pe-9n1" secondAttribute="height" id="Uz5-oX-Dbz"/>
+                            <constraint firstItem="aYv-ub-x2N" firstAttribute="leading" secondItem="JjU-iS-vno" secondAttribute="leading" id="WsW-zD-kmf"/>
+                            <constraint firstAttribute="trailing" secondItem="aYv-ub-x2N" secondAttribute="trailing" id="XTB-rp-pYV"/>
+                            <constraint firstItem="sT5-Z8-zO3" firstAttribute="centerY" secondItem="rlp-pe-9n1" secondAttribute="centerY" id="XlG-Ji-31J"/>
+                            <constraint firstItem="rlp-pe-9n1" firstAttribute="leading" secondItem="JjU-iS-vno" secondAttribute="leading" id="afH-yh-Iz3"/>
+                            <constraint firstItem="GhS-0P-Z5y" firstAttribute="centerY" secondItem="rlp-pe-9n1" secondAttribute="centerY" id="fQF-Zd-Ucg"/>
+                            <constraint firstItem="Cyt-KK-4Tn" firstAttribute="leading" secondItem="JjU-iS-vno" secondAttribute="leading" id="fdm-bW-Hfe"/>
+                            <constraint firstItem="GhS-0P-Z5y" firstAttribute="height" secondItem="rlp-pe-9n1" secondAttribute="height" id="ia5-Me-kAg"/>
+                            <constraint firstItem="GhS-0P-Z5y" firstAttribute="width" secondItem="rlp-pe-9n1" secondAttribute="width" id="lMS-EB-Cad"/>
+                            <constraint firstItem="sT5-Z8-zO3" firstAttribute="height" secondItem="rlp-pe-9n1" secondAttribute="height" id="pN8-f0-0fs"/>
+                            <constraint firstItem="cbA-bY-JJM" firstAttribute="top" secondItem="rlp-pe-9n1" secondAttribute="bottom" constant="18" id="prU-6A-6BE"/>
+                            <constraint firstItem="JrE-Qe-6wp" firstAttribute="leading" secondItem="rlp-pe-9n1" secondAttribute="trailing" constant="15" id="tCq-wz-oFs"/>
+                            <constraint firstItem="JrE-Qe-6wp" firstAttribute="width" secondItem="rlp-pe-9n1" secondAttribute="width" id="ylN-in-0b4"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" name="mainViewBgColor"/>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="JjU-iS-vno" secondAttribute="bottom" id="9ke-O8-fVr"/>
+                    <constraint firstItem="JjU-iS-vno" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="PqL-fH-CDu"/>
+                    <constraint firstItem="JjU-iS-vno" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="bDc-ph-aW9"/>
+                    <constraint firstAttribute="trailing" secondItem="JjU-iS-vno" secondAttribute="trailing" constant="25" id="rxK-Jg-ozN"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="advancedCustomRateTextField" destination="sT5-Z8-zO3" id="vdv-fa-l6d"/>
+                <outlet property="firstOptionSlippageButton" destination="rlp-pe-9n1" id="x3g-0g-q09"/>
+                <outlet property="secondOptionSippageButton" destination="JrE-Qe-6wp" id="SQr-6U-r7I"/>
+                <outlet property="thirdOptionSlippageButton" destination="GhS-0P-Z5y" id="DY9-s9-h7B"/>
+                <outlet property="warningSlippageLabel" destination="cbA-bY-JJM" id="Gm0-lx-ED0"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="104.46428571428571"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="warningColor">
+            <color red="1" green="0.75294117647058822" blue="0.035294117647058823" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

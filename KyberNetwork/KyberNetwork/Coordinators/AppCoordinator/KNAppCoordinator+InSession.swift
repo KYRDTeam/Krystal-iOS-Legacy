@@ -6,6 +6,7 @@ import KrystalWallets
 import Dependencies
 import AppState
 import TransactionModule
+import SwapModule
 import EarnModule
 
 // MARK: This file for handling in session
@@ -13,8 +14,6 @@ extension KNAppCoordinator {
   
   func startNewSession(address: KAddress) {
       GasPriceManager.shared.scheduleFetchAllChainGasPrice()
-    self.walletCache.lastUsedAddress = address
-//    self.currentAddress = address
     
     AppState.shared.updateAddress(address: address, targetChain: AppState.shared.currentChain)
       
@@ -63,23 +62,60 @@ extension KNAppCoordinator {
     self.addCoordinator(self.settingsCoordinator!)
     self.settingsCoordinator?.start()
     
-  self.swapV2Coordinator = SwapV2Coordinator()
-  self.swapV2Coordinator?.start()
-  self.swapV2Coordinator?.navigationController.tabBarItem = UITabBarItem(
-    title: nil,
-    image: UIImage(named: "tabbar_swap_icon"),
-    selectedImage: nil
-  )
+      let isSwapModuleEnabled = AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.swapModule)
+      let isEarnV2Enabled = AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.earnV2)
       
-    self.earnCoordinator = EarnModuleCoordinator()
-    self.earnCoordinator?.start()
+      if isSwapModuleEnabled {
+          self.swapModuleCoordinator = SwapModule.createSwapCoordinator()
+          self.swapModuleCoordinator?.start()
+          self.swapModuleCoordinator?.navigationController.tabBarItem = UITabBarItem(
+            title: nil,
+            image: UIImage(named: "tabbar_swap_icon"),
+            selectedImage: nil
+          )
+          self.swapModuleCoordinator?.navigationController.tabBarItem.tag = 1
+      } else {
+          self.swapV2Coordinator = SwapV2Coordinator()
+          self.swapV2Coordinator?.start()
+          self.swapV2Coordinator?.navigationController.tabBarItem = UITabBarItem(
+            title: nil,
+            image: UIImage(named: "tabbar_swap_icon"),
+            selectedImage: nil
+          )
+          self.swapV2Coordinator?.navigationController.tabBarItem.tag = 1
+      }
       
-  self.swapV2Coordinator?.navigationController.tabBarItem.tag = 1
+      if isEarnV2Enabled {
+          self.earnModuleCoordinator = EarnModuleCoordinator()
+          self.earnModuleCoordinator?.start()
+          self.earnModuleCoordinator?.navigationController.tabBarItem = UITabBarItem(
+            title: nil,
+            image: UIImage(named: "tabbar_earn_icon"),
+            selectedImage: nil
+          )
+          self.earnModuleCoordinator?.navigationController.tabBarItem.tag = 3
+          self.earnModuleCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuEarn"
+      } else {
+          self.earnCoordinator = {
+              let coordinator = EarnCoordinator()
+              coordinator.delegate = self
+              return coordinator
+          }()
+          self.earnCoordinator?.start()
+          self.earnCoordinator?.navigationController.tabBarItem = UITabBarItem(
+            title: nil,
+            image: UIImage(named: "tabbar_earn_icon"),
+            selectedImage: nil
+          )
+          self.earnCoordinator?.navigationController.tabBarItem.tag = 3
+          self.earnCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuEarn"
+      }
+      
   self.tabbarController.viewControllers = [
     self.overviewTabCoordinator!.navigationController,
-    self.swapV2Coordinator!.navigationController,
+    isSwapModuleEnabled ? self.swapModuleCoordinator!.navigationController : self.swapV2Coordinator!.navigationController,
     self.investCoordinator!.navigationController,
-    self.earnCoordinator!.navigationController,
+    isEarnV2Enabled ? self.earnModuleCoordinator!.navigationController : self.earnCoordinator!.navigationController,
     self.settingsCoordinator!.navigationController,
   ]
     
@@ -111,15 +147,6 @@ extension KNAppCoordinator {
     self.investCoordinator?.navigationController.tabBarItem.tag = 2
     self.investCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuExplore"
 
-    self.earnCoordinator?.navigationController.tabBarItem = UITabBarItem(
-      title: nil,
-      image: UIImage(named: "tabbar_earn_icon"),
-      selectedImage: nil
-    )
-    self.earnCoordinator?.navigationController.tabBarItem.tag = 3
-      
-    self.earnCoordinator?.navigationController.tabBarItem.accessibilityIdentifier = "menuEarn"
-      
     if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.earnNewTag) {
         self.tabbarController.addNewTag(toItemAt: 3)
     }
@@ -148,7 +175,6 @@ extension KNAppCoordinator {
   
   func stopAllSessions() {
     self.walletManager.removeAll()
-    self.walletCache.lastUsedAddress = nil
     self.session.stopSession()
     AppState.shared.updateAddress(address: self.walletManager.createEmptyAddress(), targetChain: AppState.shared.currentChain)
     self.settingsCoordinator?.stop()
@@ -218,10 +244,10 @@ extension KNAppCoordinator {
   
   func onRemoveWallet(wallet: KWallet) {
     if wallet.id == session.address.walletID {
-      NonceCache.shared.resetNonce(wallet: wallet)
-      walletCache.unmarkWalletBackedUp(walletID: wallet.id)
-      session.clearWalletData(wallet: wallet)
-      switchToNextAddress(of: session.address)
+        NonceCache.shared.resetNonce(wallet: wallet)
+        AppState.shared.unmarkWalletBackedUp(walletID: wallet.id)
+        session.clearWalletData(wallet: wallet)
+        switchToNextAddress(of: session.address)
     }
   }
   

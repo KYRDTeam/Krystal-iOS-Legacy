@@ -47,6 +47,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     
     let viewModel: StakingPortfolioViewModel = StakingPortfolioViewModel()
     var timer: Timer?
+    var reloadingTimer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,21 +55,27 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         portfolioTableView.backgroundColor = AppTheme.current.sectionBackgroundColor
         searchTextField.setPlaceholder(text: Strings.searchToken, color: AppTheme.current.secondaryTextColor)
         viewModel.displayDataSource.observeAndFire(on: self) { _ in
-            self.portfolioTableView.reloadData()
-            
+            DispatchQueue.main.async {
+                self.portfolioTableView.reloadData()
+            }
         }
-        viewModel.isLoading.observeAndFire(on: self) { status in
-            if status {
-                self.showLoadingSkeleton()
-            } else {
-                self.hideLoadingSkeleton()
-                self.updateUIEmptyView()
+        viewModel.isLoading.observeAndFire(on: self) { isLoading in
+            DispatchQueue.main.async {
+                if isLoading {
+                    self.emptyViewContainer.isHidden = true
+                    self.showLoadingSkeleton()
+                } else {
+                    self.hideLoadingSkeleton()
+                    self.updateUIEmptyView()
+                }
             }
         }
         let currentChain = AppState.shared.currentChain
         viewModel.chainID = AppState.shared.isSelectedAllChain ? nil : currentChain.getChainId()
-        viewModel.requestData()
-        Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { [weak self] _ in
+        reloadingTimer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { [weak self] _ in
+            guard UIApplication.shared.applicationState == .active else {
+                return
+            }
             self?.viewModel.requestData(shouldShowLoading: false)
         }
     }
@@ -83,6 +90,11 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
 		AppDependencies.tracker.track("mob_earn_portfolio", properties: ["screenid": "earn_v2"])
     }
     
+    deinit {
+        reloadingTimer?.invalidate()
+        reloadingTimer = nil
+    }
+    
     private func registerCell() {
         portfolioTableView.registerCellNib(StakingPortfolioCell.self)
         portfolioTableView.registerCellNib(SkeletonCell.self)
@@ -93,7 +105,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     private func updateUIEmptyView() {
         guard isViewLoaded else { return }
         if viewModel.isSupportEarnv2 {
-            if viewModel.searchText.isEmpty {
+            if viewModel.searchText.isEmpty && viewModel.isSelectedAllPlatform && viewModel.isSelectedAllType {
                 emptyIcon.image = Images.emptyDeposit
                 emptyLabel.text = Strings.emptyTokenDeposit
             } else {
@@ -108,12 +120,16 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     }
     
     func showLoadingSkeleton() {
-        let gradient = SkeletonGradient(baseColor: AppTheme.current.sectionBackgroundColor)
-        view.showAnimatedGradientSkeleton(usingGradient: gradient)
+        DispatchQueue.main.async {
+            let gradient = SkeletonGradient(baseColor: AppTheme.current.sectionBackgroundColor)
+            self.view.showAnimatedGradientSkeleton(usingGradient: gradient)
+        }
     }
-    
+
     func hideLoadingSkeleton() {
-        view.hideSkeleton()
+        DispatchQueue.main.async {
+            self.view.hideSkeleton()
+        }
     }
     
     override func reloadWallet() {
@@ -174,15 +190,18 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     @objc override func onAppSwitchChain() {
         let currentChain = AppState.shared.currentChain
         viewModel.chainID = currentChain.getChainId()
+        viewModel.resetFilter()
         reloadUI()
     }
     
     override func onAppSwitchAddress(switchChain: Bool) {
         viewModel.requestData()
+        viewModel.resetFilter()
     }
     
     override func onAppSelectAllChain() {
         viewModel.chainID = nil
+        viewModel.resetFilter()
         reloadUI()
     }
     
@@ -273,8 +292,8 @@ extension StakingPortfolioViewController: SkeletonTableViewDataSource {
             self.requestClaim(pendingUnstake: pendingUnstake)
         }
         cell.onTapRewardApy = { balance in
-            let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: balance.apy), NumberFormatUtils.percent(value: balance.rewardApy))
-            self.showTopBannerView(message: messge)
+            let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: balance.apy.roundedValue()), NumberFormatUtils.percent(value: balance.rewardApy.roundedValue()))
+            self.showBottomBannerView(message: messge)
 		}
 		
         cell.onTapWarningIcon = { type in
@@ -477,10 +496,10 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
         
         let cellModel = viewModel.displayDataSource.value.0[indexPath.row]
         
-        if cellModel.warningType == .none {
-            return [unstakeAction, stakeAction]
+        if cellModel.warningType == .disable {
+            return [unstakeAction]
         } else {
-            return [stakeAction]
+            return [unstakeAction, stakeAction]
         }
         
         
@@ -507,6 +526,7 @@ extension StakingPortfolioViewController: SwipeTableViewCellDelegate {
             firstButtonAction: {
             }
         )
+        alertController.transitionText = "Swap to ETH"
         alertController.swapLinkTap = {
             AppDependencies.router.openSwap(from: from, to: to)
         }

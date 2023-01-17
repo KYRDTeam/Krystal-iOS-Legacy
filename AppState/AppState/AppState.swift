@@ -22,24 +22,37 @@ public class AppState {
     }
   }
   
-  public var currentAddress: KAddress {
-    get {
-      guard let data = UserDefaults.standard.data(forKey: Constants.UserDefaultKeys.kLastUsedAddress) else {
-        return WalletManager.shared.createEmptyAddress()
-      }
-      return (try? decoder.decode(KAddress.self, from: data)) ?? WalletManager.shared.createEmptyAddress()
+    public var currentAddress: KAddress = WalletManager.shared.createEmptyAddress() {
+        didSet {
+            Storage.store(self.currentAddress, as: Constants.StorageKeys.currentAddress)
+        }
     }
-    set {
-      guard let data = try? encoder.encode(newValue) else {
-        return
-      }
-      UserDefaults.standard.set(data, forKey: Constants.UserDefaultKeys.kLastUsedAddress)
+    
+    var lastUserDefaultAddress: KAddress? {
+        guard let data = UserDefaults.standard.data(forKey: Constants.UserDefaultKeys.kLastUsedAddress) else {
+          return nil
+        }
+        return (try? decoder.decode(KAddress.self, from: data))
     }
-  }
+    
+    var lastStorageAddress: KAddress? {
+        return Storage.retrieve(Constants.StorageKeys.currentAddress, as: KAddress.self)
+    }
+    
+    private init() {
+        currentAddress = lastStorageAddress ?? lastUserDefaultAddress ?? WalletManager.shared.createEmptyAddress()
+    }
   
   public func updateChain(chain: ChainType) {
-    currentChain = chain
-    AppEventManager.shared.postSwitchChainEvent(chain: chain)
+      if chain == .all {
+          currentChain = Constants.defaultChain
+          AppEventManager.shared.postSwitchChainEvent(chain: Constants.defaultChain)
+          AppEventManager.shared.postSelectAllChain()
+      } else {
+          currentChain = chain
+          AppEventManager.shared.postSwitchChainEvent(chain: chain)
+      }
+    
   }
   
   public func updateAddress(address: KAddress, targetChain: ChainType) {
@@ -60,16 +73,24 @@ public class AppState {
     if let wallet = WalletManager.shared.getWallet(id: walletID), wallet.importType != .mnemonic {
       return true
     }
-    return UserDefaults.standard.bool(forKey: Constants.UserDefaultKeys.kIsWalletBackedUp + walletID)
+      return isWalletBackedUpMarkedByStorage(walletID: walletID) ?? isWalletBackedUpMarkedByUserDefaults(walletID: walletID)
   }
   
   public func markWalletBackedUp(walletID: String) {
-    UserDefaults.standard.set(true, forKey: Constants.UserDefaultKeys.kIsWalletBackedUp + walletID)
+      Storage.store(true, as: Constants.StorageKeys.isWalletBackedUp + walletID)
   }
   
   public func unmarkWalletBackedUp(walletID: String) {
-    UserDefaults.standard.removeObject(forKey: Constants.UserDefaultKeys.kIsWalletBackedUp + walletID)
+      Storage.store(false, as: Constants.StorageKeys.isWalletBackedUp + walletID)
   }
+    
+    func isWalletBackedUpMarkedByStorage(walletID: String) -> Bool? {
+        return Storage.retrieve(Constants.StorageKeys.isWalletBackedUp + walletID, as: Bool.self)
+    }
+    
+    func isWalletBackedUpMarkedByUserDefaults(walletID: String) -> Bool {
+        return UserDefaults.standard.bool(forKey: Constants.UserDefaultKeys.kIsWalletBackedUp + walletID)
+    }
   
   private func getAddresses(wallet: KWallet, chain: ChainType) -> [KAddress] {
     let addressType = getAddressType(forChain: chain)
@@ -84,6 +105,5 @@ public class AppState {
       return .evm
     }
   }
-  
   
 }

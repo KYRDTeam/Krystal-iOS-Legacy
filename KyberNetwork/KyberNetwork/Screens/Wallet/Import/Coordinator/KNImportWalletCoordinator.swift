@@ -5,6 +5,7 @@ import Moya
 import TrustKeystore
 import KrystalWallets
 import Utilities
+import AppState
 
 protocol KNImportWalletCoordinatorDelegate: class {
   func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType)
@@ -63,6 +64,7 @@ extension KNImportWalletCoordinator: SelectChainDelegate {
       return
     case .importMultiChain:
       importVC.importType = .multiChain
+        importVC.selectedChainType = .all
     case .importEVM(let type):
       importVC.importType = .evm
       importVC.selectedChainType = type
@@ -110,7 +112,7 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
     case .privateKey(let privateKey):
       do {
         let wallet = try walletManager.import(privateKey: privateKey, addressType: addressType, name: name.whenNilOrEmpty("Imported"))
-        WalletCache.shared.markWalletBackedUp(walletID: wallet.id)
+        AppState.shared.markWalletBackedUp(walletID: wallet.id)
         Tracker.track(event: .iwPKSuccess)
         onImportWalletSuccess(wallet: wallet, chain: selectedChain)
       } catch {
@@ -120,7 +122,7 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
     case .mnemonic(let words, _):
       do {
         let wallet = try walletManager.import(mnemonic: words.joined(separator: " "), name: name.whenNilOrEmpty("Imported"))
-        WalletCache.shared.markWalletBackedUp(walletID: wallet.id)
+        AppState.shared.markWalletBackedUp(walletID: wallet.id)
         Tracker.track(event: .iwSeedSuccess)
         onImportWalletSuccess(wallet: wallet, chain: selectedChain)
       } catch {
@@ -130,7 +132,7 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
     case .keystore(let key, let password):
       do {
         let wallet = try walletManager.import(keystore: key, addressType: addressType, password: password, name: name.whenNilOrEmpty("Imported"))
-        WalletCache.shared.markWalletBackedUp(walletID: wallet.id)
+        AppState.shared.markWalletBackedUp(walletID: wallet.id)
         Tracker.track(event: .iwJSONSuccess)
         onImportWalletSuccess(wallet: wallet, chain: selectedChain)
       } catch {

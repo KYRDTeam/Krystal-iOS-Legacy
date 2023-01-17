@@ -33,14 +33,32 @@ struct PendingRewardCellModel {
         self.displayTokenName = item.rewardToken.tokenInfo.name
         self.displayPlatformName = item.platform.name.uppercased()
         let amountBigInt = BigInt(item.rewardToken.pendingReward.balance) ?? .zero
-        if amountBigInt < BigInt(pow(10.0, Double(item.rewardToken.tokenInfo.decimals))) {
+        if amountBigInt < BigInt(pow(10.0, Double(item.rewardToken.tokenInfo.decimals - 6))) {
             self.displayClaimAmount =  "< 0.000001 " + item.rewardToken.tokenInfo.symbol
+        } else if amountBigInt.shortString(decimals: item.rewardToken.tokenInfo.decimals) == "0" {
+            var numString = amountBigInt.fullString(decimals: item.rewardToken.tokenInfo.decimals)
+            if numString.count > 10 {
+                numString = String(numString.prefix(10))
+            }
+            self.displayClaimAmount = numString + " " + item.rewardToken.tokenInfo.symbol
         } else {
             self.displayClaimAmount = (amountBigInt.shortString(decimals: item.rewardToken.tokenInfo.decimals)) + " " + item.rewardToken.tokenInfo.symbol
         }
         
         let usdBigIntValue = BigInt(item.rewardToken.pendingReward.balancePriceUsd * pow(10.0 , Double(item.rewardToken.tokenInfo.decimals))) * amountBigInt / BigInt(pow(10.0 , Double(item.rewardToken.tokenInfo.decimals)))
-        self.displayClaimValue = "$\(usdBigIntValue.shortString(decimals: item.rewardToken.tokenInfo.decimals))"
+        let usdNumString = usdBigIntValue.shortString(decimals: item.rewardToken.tokenInfo.decimals)
+        if usdBigIntValue < BigInt(pow(10.0, Double(item.rewardToken.tokenInfo.decimals - 2))) {
+            self.displayClaimValue = "<$0.01"
+        } else if usdNumString == "0" {
+            var usdFullString = usdBigIntValue.fullString(decimals: item.rewardToken.tokenInfo.decimals)
+            if usdFullString.count > 5 {
+                usdFullString = String(usdFullString.prefix(5))
+            }
+            self.displayClaimValue = "$\(usdFullString)"
+        } else {
+            self.displayClaimValue = "$\(usdNumString)"
+        }
+        
         self.rewardItem = item
     }
 }

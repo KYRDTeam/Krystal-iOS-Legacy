@@ -522,12 +522,12 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
           let maxFeeBigInt = maxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
           
           if self.viewModel.isSpeedupMode {
-            self.speedupTransaction(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
+            self.speedupTransaction(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFeeBigInt.description)
             print("[GasSelector][Legacy][Speedup] \(gasLimitBigInt.description) \(maxFeeBigInt.description)")
           }
 
           if self.viewModel.isCancelMode {
-            self.cancelTransaction(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
+              self.cancelTransaction(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFeeBigInt.description)
             print("[GasSelector][Legacy][Cancel] \(gasLimitBigInt.description) \(maxFeeBigInt.description)")
           }
         } else {
@@ -600,10 +600,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
         return EthereumTransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
       }
     }()
-    
-    let gasLimit = self.advancedGasLimitField.text ?? ""
-    let maxPriorityFee = self.advancedPriorityFeeField.text ?? ""
-    let maxFee = self.advancedMaxFeeField.text ?? ""
     
     let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
     

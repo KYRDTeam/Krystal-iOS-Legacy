@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
+        </array>
+        <array key="Lato-Bold.ttf">
+            <string>Lato-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ExpertModeWarningViewController" customModule="SwapModule" customModuleProvider="target">
+            <connections>
+                <outlet property="confirmTextField" destination="fA3-zw-u74" id="8JX-IH-0Qu"/>
+                <outlet property="contentView" destination="gxs-Gj-eke" id="nL6-hg-g6d"/>
+                <outlet property="messageLabel" destination="Evn-qW-t1p" id="X3R-Fx-DfM"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gxs-Gj-eke">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are you sure?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hm1-hX-eZy">
+                            <rect key="frame" x="0.0" y="48" width="375" height="23"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="23" id="PVt-Il-6a8"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                            <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Evn-qW-t1p">
+                            <rect key="frame" x="37" y="99" width="301" height="355.5"/>
+                            <string key="text">Expert Mode turns off the ‘Confirm’ transaction prompt and alows high slippage trades that can result in bad rates and lost funds.
+Please type the word ‘confirm’ below to enable Expert Mode.</string>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ofr-VI-NEL">
+                            <rect key="frame" x="37" y="488.5" width="301" height="42"/>
+                            <subviews>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fA3-zw-u74">
+                                    <rect key="frame" x="20" y="0.0" width="261" height="42"/>
+                                    <color key="textColor" name="textWhiteColor"/>
+                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
+                            </subviews>
+                            <color key="backgroundColor" red="0.1058823529" green="0.1137254902" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="fA3-zw-u74" secondAttribute="bottom" id="6MY-dR-NvI"/>
+                                <constraint firstAttribute="trailing" secondItem="fA3-zw-u74" secondAttribute="trailing" constant="20" id="7DC-Dh-fgg"/>
+                                <constraint firstItem="fA3-zw-u74" firstAttribute="leading" secondItem="ofr-VI-NEL" secondAttribute="leading" constant="20" id="A5N-PQ-7az"/>
+                                <constraint firstAttribute="height" constant="42" id="LPH-wM-B8r"/>
+                                <constraint firstItem="fA3-zw-u74" firstAttribute="top" secondItem="ofr-VI-NEL" secondAttribute="top" id="aVS-QC-vyD"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                    <real key="value" value="14"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Only use this mode if you are aware of the risks." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ttg-i1-cjb">
+                            <rect key="frame" x="37" y="540.5" width="301" height="14.5"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                            <color key="textColor" name="normalTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JRs-AK-fOV">
+                            <rect key="frame" x="195" y="579" width="143" height="38"/>
+                            <color key="backgroundColor" name="navButtonBgColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="38" id="pIZ-sl-4LR"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" name="normalTextColor"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                    <real key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="cancelButtonTapped:" destination="-1" eventType="touchUpInside" id="OCd-vM-oC7"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d3f-07-gbp">
+                            <rect key="frame" x="37" y="579" width="143" height="38"/>
+                            <color key="backgroundColor" red="1" green="0.43137254901960786" blue="0.25098039215686274" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="38" id="m1h-lj-9yw"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
+                            <state key="normal" title="Confirm">
+                                <color key="titleColor" name="mainViewBgColor"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                    <real key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="confirmButtonTapped:" destination="-1" eventType="touchUpInside" id="mes-D3-WNj"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" name="popupBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="Evn-qW-t1p" secondAttribute="trailing" constant="37" id="3ea-lI-fzC"/>
+                        <constraint firstAttribute="bottom" secondItem="d3f-07-gbp" secondAttribute="bottom" constant="50" id="3nc-01-bZZ"/>
+                        <constraint firstAttribute="trailing" secondItem="ofr-VI-NEL" secondAttribute="trailing" constant="37" id="5W6-Fb-1fS"/>
+                        <constraint firstItem="d3f-07-gbp" firstAttribute="leading" secondItem="gxs-Gj-eke" secondAttribute="leading" constant="37" id="DD5-kU-yLy"/>
+                        <constraint firstItem="hm1-hX-eZy" firstAttribute="top" secondItem="gxs-Gj-eke" secondAttribute="top" constant="48" id="ETz-1c-DcO"/>
+                        <constraint firstAttribute="trailing" secondItem="hm1-hX-eZy" secondAttribute="trailing" id="EaI-uv-vp7"/>
+                        <constraint firstItem="JRs-AK-fOV" firstAttribute="leading" secondItem="d3f-07-gbp" secondAttribute="trailing" constant="15" id="Lkb-DM-1Kf"/>
+                        <constraint firstItem="d3f-07-gbp" firstAttribute="width" secondItem="JRs-AK-fOV" secondAttribute="width" id="TjI-Oq-dbA"/>
+                        <constraint firstItem="d3f-07-gbp" firstAttribute="top" secondItem="Ttg-i1-cjb" secondAttribute="bottom" constant="24" id="e2X-0P-4Kq"/>
+                        <constraint firstItem="ofr-VI-NEL" firstAttribute="top" secondItem="Evn-qW-t1p" secondAttribute="bottom" constant="34" id="huG-l7-Yrh"/>
+                        <constraint firstItem="ofr-VI-NEL" firstAttribute="leading" secondItem="gxs-Gj-eke" secondAttribute="leading" constant="37" id="mgW-fP-gUu"/>
+                        <constraint firstItem="Ttg-i1-cjb" firstAttribute="top" secondItem="ofr-VI-NEL" secondAttribute="bottom" constant="10" id="phw-zi-pyg"/>
+                        <constraint firstItem="hm1-hX-eZy" firstAttribute="leading" secondItem="gxs-Gj-eke" secondAttribute="leading" id="rMh-Zc-L42"/>
+                        <constraint firstItem="Evn-qW-t1p" firstAttribute="top" secondItem="hm1-hX-eZy" secondAttribute="bottom" constant="28" id="t7k-qJ-NK9"/>
+                        <constraint firstItem="Evn-qW-t1p" firstAttribute="leading" secondItem="gxs-Gj-eke" secondAttribute="leading" constant="37" id="u9e-op-Tln"/>
+                        <constraint firstItem="Ttg-i1-cjb" firstAttribute="trailing" secondItem="ofr-VI-NEL" secondAttribute="trailing" id="vPA-p1-cOD"/>
+                        <constraint firstAttribute="trailing" secondItem="JRs-AK-fOV" secondAttribute="trailing" constant="37" id="vwt-KV-Qyg"/>
+                        <constraint firstItem="Ttg-i1-cjb" firstAttribute="leading" secondItem="ofr-VI-NEL" secondAttribute="leading" id="wID-ef-49d"/>
+                        <constraint firstItem="d3f-07-gbp" firstAttribute="centerY" secondItem="JRs-AK-fOV" secondAttribute="centerY" id="zgk-Ru-0bE"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="gxs-Gj-eke" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="MbJ-bb-YZm"/>
+                <constraint firstItem="gxs-Gj-eke" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="lps-31-sxt"/>
+                <constraint firstItem="gxs-Gj-eke" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="nkW-DE-yG8"/>
+                <constraint firstItem="gxs-Gj-eke" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="tS4-Y8-Roy"/>
+            </constraints>
+            <point key="canvasLocation" x="138.40000000000001" y="120.98950524737631"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="navButtonBgColor">
+            <color red="0.29411764705882354" green="0.30980392156862746" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="popupBackgroundColor">
+            <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

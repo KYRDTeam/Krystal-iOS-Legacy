@@ -30,7 +30,13 @@ class PendingRewardViewModel {
     var isEditing: Bool = false
     
     func getAllPlatform() -> Set<EarnPlatform> {
-        let all = rewardData.map { $0.platform.toEarnPlatform() }
+        var data = rewardData
+        if let chainID = chainID {
+            data = data.filter({ item in
+                return item.chain.id == chainID
+            })
+        }
+        let all = data.map { $0.platform.toEarnPlatform() }
         return Set(all)
     }
     
@@ -39,7 +45,7 @@ class PendingRewardViewModel {
     }
     
     var isSelectAllType: Bool {
-        return selectedTypes.isEmpty || selectedTypes.count == 2
+        return selectedTypes.count == 2
     }
     
     func reloadDataSource() {
@@ -55,7 +61,7 @@ class PendingRewardViewModel {
         
         if !searchText.isEmpty {
             data = data.filter({ item in
-                return item.rewardToken.tokenInfo.symbol.lowercased().contains(searchText)
+                return item.rewardToken.tokenInfo.symbol.lowercased().contains(searchText) || item.rewardToken.tokenInfo.name.lowercased().contains(searchText)
             })
         }
         
@@ -81,8 +87,9 @@ class PendingRewardViewModel {
         apiService.getPendingReward(address: AppState.shared.currentAddress.addressString) { result in
             switch result {
             case .success(let rewards):
+                guard rewards.0 == AppState.shared.currentAddress.addressString else { return }
                 var items: [RewardItem] = []
-                rewards.forEach { element in
+                rewards.1.forEach { element in
                     element.earningRewards.forEach { earningItem in
                         earningItem.rewardTokens?.forEach({ tokenItem in
                             let rewardItem = RewardItem(rewardToken: tokenItem, chain: earningItem.chain, platform: element.platform)
@@ -94,8 +101,6 @@ class PendingRewardViewModel {
                 self.reloadDataSource()
             case .failure(let error):
                 print(error.description)
-                self.rewardData = []
-                self.reloadDataSource()
             }
             if showLoading { self.isLoading.value = false }
         }
@@ -118,5 +123,10 @@ class PendingRewardViewModel {
             }
             self.isClaiming.value = false
         }
+    }
+    
+    func resetFilter() {
+        selectedPlatforms = []
+        selectedTypes = [.staking, .lending]
     }
 }

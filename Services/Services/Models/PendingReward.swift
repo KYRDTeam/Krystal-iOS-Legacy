@@ -43,6 +43,7 @@ public struct TokenInfo: Codable {
     public let address, name, symbol: String
     public let logo: String
     public let decimals: Int
+    public let tag: String?
 }
 
 // MARK: - Platform

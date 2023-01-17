@@ -121,11 +121,11 @@ class StakingViewModel: BaseViewModel {
     }
     
     var displayAPY: String {
-      return NumberFormatUtils.percent(value: selectedPlatform.apy)
+        return NumberFormatUtils.percent(value: selectedPlatform.apy.roundedValue())
     }
     
     var displayRewardApy: String {
-        return NumberFormatUtils.percent(value: selectedPlatform.rewardApy)
+        return NumberFormatUtils.percent(value: selectedPlatform.rewardApy.roundedValue())
     }
     
     var transactionFee: BigInt {
@@ -410,7 +410,7 @@ extension StakingViewModel {
         
         let contractAddress = tx.to
         let service = EthereumNodeService(chain: currentChain)
-        service.getAllowance(for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: token.address) { result in
+        service.getAllowance(address: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: token.address) { result in
             switch result {
             case .success(let number):
                 self.tokenAllowance = number

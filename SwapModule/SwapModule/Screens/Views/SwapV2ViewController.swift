@@ -8,11 +8,12 @@
 import UIKit
 import Lottie
 import BigInt
-import DesignSystem
-import Utilities
 import BaseModule
+import DesignSystem
 import AppState
 import Dependencies
+import Utilities
+import TokenModule
 
 class SwapV2ViewController: InAppBrowsingViewController {
     @IBOutlet weak var platformTableView: UITableView!
@@ -29,7 +30,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
     @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var expandIcon: UIImageView!
     @IBOutlet weak var sourceTextField: UITextField!
-    @IBOutlet weak var fetchingAnimationView: AnimationView!
+    @IBOutlet weak var fetchingAnimationView: LottieAnimationView!
     @IBOutlet weak var infoExpandButton: UIButton!
     @IBOutlet weak var infoSeparatorView: UIView!
     @IBOutlet weak var sourceTokenView: UIView!
@@ -97,6 +98,12 @@ class SwapV2ViewController: InAppBrowsingViewController {
         configureViews()
         resetViews()
         bindViewModel()
+        viewModel.onViewLoaded()
+    }
+    
+    override func handleAddWalletTapped() {
+        super.handleAddWalletTapped()
+        AppDependencies.tracker.track("swap_connect_wallet", properties: ["screenid": "swap"])
     }
     
     override func handleWalletButtonTapped() {
@@ -158,7 +165,7 @@ class SwapV2ViewController: InAppBrowsingViewController {
     
     func setupAnimation() {
         DispatchQueue.main.async {
-            self.fetchingAnimationView.animation = Animation.named("rocket")
+            self.fetchingAnimationView.animation = LottieAnimation.named("rocket")
             self.fetchingAnimationView.contentMode = .scaleAspectFit
             self.fetchingAnimationView.loopMode = .loop
             self.fetchingAnimationView.play()
@@ -566,19 +573,15 @@ class SwapV2ViewController: InAppBrowsingViewController {
     }
     
     @objc func openSourceTokenSearch() {
-//        let controller = SearchTokenViewController(viewModel: SearchTokenViewModel())
-//        controller.onSelectTokenCompletion = { [weak self] selectedToken in
-//            self?.viewModel.updateSourceToken(token: selectedToken.token)
-//        }
-//        self.present(controller, animated: true, completion: nil)
+        TokenModule.openSearchToken(on: self) { [weak self] selectedToken in
+            self?.viewModel.updateSourceToken(token: selectedToken.token)
+        }
     }
     
     @objc func openDestTokenSearch() {
-//        let controller = SearchTokenViewController(viewModel: SearchTokenViewModel())
-//        controller.onSelectTokenCompletion = { [weak self] selectedToken in
-//            self?.viewModel.updateDestToken(token: selectedToken.token)
-//        }
-//        self.present(controller, animated: true, completion: nil)
+        TokenModule.openSearchToken(on: self) { [weak self] selectedToken in
+            self?.viewModel.updateDestToken(token: selectedToken.token)
+        }
     }
     
     @objc func sourceBalanceTapped() {
@@ -589,10 +592,12 @@ class SwapV2ViewController: InAppBrowsingViewController {
         sourceTextField.resignFirstResponder()
         if viewModel.isSourceTokenQuote {
             showSuccessTopBannerMessage(
-                message: String(format: Strings.swapSmallAmountOfQuoteTokenUsedForFee, AppState.shared.currentChain.customRPC().quoteToken)
+                message: String(format: Strings.swapSmallAmountOfQuoteTokenUsedForFee, AppState.shared.currentChain.quoteToken())
             )
         }
         onSourceAmountChange(value: allBalanceText)
+        AppDependencies.tracker.track("swap_max_amount", properties: ["screenid": "swap"])
+        AppDependencies.tracker.track("swap_enter_amount", properties: ["screenid": "swap"])
     }
 }
 
@@ -698,7 +703,7 @@ extension SwapV2ViewController {
         
         if amountToChange > viewModel.maxAvailableSourceTokenAmount && amountToChange <= sourceBalance {
             showSuccessTopBannerMessage(
-                message: String(format: Strings.swapSmallAmountOfQuoteTokenUsedForFee, AppState.shared.currentChain.customRPC().quoteToken)
+                message: String(format: Strings.swapSmallAmountOfQuoteTokenUsedForFee, AppState.shared.currentChain.quoteToken())
             )
             sourceTextField.text = NumberFormatUtils.amount(value: viewModel.maxAvailableSourceTokenAmount, decimals: sourceToken.decimals)
             viewModel.sourceAmount.value = viewModel.maxAvailableSourceTokenAmount
@@ -747,17 +752,21 @@ extension SwapV2ViewController: UITableViewDelegate, UITableViewDataSource {
     
 }
 
-//extension SwapV2ViewController: SwapSummaryViewControllerDelegate {
-//
-//    func onSwapSummaryViewClose(selectedPlatformHint: String) {
-//        loadingIndicator.isHidden = false
-//        loadingIndicator.start(beginingValue: 1)
-//        viewModel.selectPlatform(hint: selectedPlatformHint)
-//        viewModel.reloadPlatformRatesViewModels()
-//        viewModel.reloadRates(isRefresh: true)
-//    }
-//
-//    func onSwapSummarySubmitTransaction() {
-//        viewModel.updateSettings(settings: SwapTransactionSettings.getDefaultSettings())
-//    }
-//}
+extension SwapV2ViewController: SwapSummaryViewControllerDelegate {
+    
+    func onUpdateSettings(settings: SwapTransactionSettings) {
+        viewModel.updateSettings(settings: settings)
+    }
+
+    func onSwapSummaryViewClose(selectedPlatformHint: String) {
+        loadingIndicator.isHidden = false
+        loadingIndicator.start(beginingValue: 1)
+        viewModel.selectPlatform(hint: selectedPlatformHint)
+        viewModel.reloadPlatformRatesViewModels()
+        viewModel.reloadRates(isRefresh: true)
+    }
+
+    func onSwapSummarySubmitTransaction() {
+        viewModel.updateSettings(settings: SwapTransactionSettings.getDefaultSettings())
+    }
+}

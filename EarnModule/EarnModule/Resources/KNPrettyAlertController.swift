@@ -28,6 +28,7 @@ class KNPrettyAlertController: KNBaseViewController {
   var popupHeight: CGFloat = 300
     var tapRange: NSRange?
     var swapLinkTap: (() -> Void)?
+    var transitionText: String = ""
   init(title: String?,
        isWarning: Bool = false,
        message: String,
@@ -81,7 +82,7 @@ class KNPrettyAlertController: KNBaseViewController {
       let messageTopContraint = NSLayoutConstraint(item: self.contentLabel, attribute: .top, relatedBy: .equal, toItem: self.containerView, attribute: .top, multiplier: 1, constant: 33)
       self.containerView.addConstraint(messageTopContraint)
     }
-      if message.suffix(11) == "Swap to ETH" {
+      if !transitionText.isEmpty, message.suffix(transitionText.count) == transitionText {
           let linkAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.font: UIFont.karlaBold(ofSize: 16),
             NSAttributedString.Key.foregroundColor: UIColor(named: "buttonBackgroundColor")!,
@@ -91,7 +92,7 @@ class KNPrettyAlertController: KNBaseViewController {
             NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor")!,
           ]
           let attributionString = NSMutableAttributedString(string: message, attributes: textAttributes)
-          let highlightRange = NSString(string: message).range(of: "Swap to ETH")
+          let highlightRange = NSString(string: message).range(of: transitionText)
           attributionString.setAttributes(linkAttributes, range: highlightRange)
           contentLabel.attributedText = attributionString
           contentLabel.isUserInteractionEnabled = true
@@ -190,7 +191,7 @@ extension UITapGestureRecognizer {
         let locationOfTouchInTextContainer = CGPoint(x: locationOfTouchInLabel.x - textContainerOffset.x,
                                                      y: locationOfTouchInLabel.y - textContainerOffset.y);
         var indexOfCharacter = layoutManager.characterIndex(for: locationOfTouchInTextContainer, in: textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
-        indexOfCharacter = indexOfCharacter + 4
+//        indexOfCharacter = indexOfCharacter + 4
         return NSLocationInRange(indexOfCharacter, targetRange)
     }
     

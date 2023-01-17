@@ -82,10 +82,10 @@ class UnstakeViewModel: BaseViewModel {
         ]
         if platform.name.lowercased() == "ankr" {
             var useC = false
-            if stakingTokenSymbol.suffix(1).description.lowercased() == "c" {
+            // start with "ankr"
+            if stakingTokenSymbol.starts(with: "ankr") {
                 useC = true
             }
-            
             params["extraData"] = ["ankr": ["useTokenC": useC]]
         }
         return params
@@ -296,7 +296,7 @@ class UnstakeViewModel: BaseViewModel {
         apiService.getStakingOptionDetail(platform: platform.name, earningType: platform.type, chainID: "\(chain.getChainId())", tokenAddress: tokenAddress) { [weak self] result in
             switch result {
             case .success(let detail):
-                    if let earningToken = detail.earningTokens.first(where: { $0.address.lowercased() == self?.stakingTokenAddress.lowercased() }) {
+                if let earningToken = detail.earningTokens.first(where: { $0.address.lowercased() == self?.stakingTokenAddress.lowercased() }) {
                     self?.contractAddress = detail.poolAddress
                     if let wrap = detail.wrap {
                         self?.wrapInfo = wrap
@@ -310,6 +310,7 @@ class UnstakeViewModel: BaseViewModel {
                     self?.checkNeedApprove(earningToken: earningToken, completion: completion)
                 } else {
                     completion()
+                    self?.stakingTokenAllowance = TransactionConstants.maxTokenAmount
                     self?.delegate?.didGetDataSuccess()
                 }
             case .failure(let error):
@@ -323,7 +324,7 @@ class UnstakeViewModel: BaseViewModel {
         guard let contractAddress = contractAddress else { return }
         let service = EthereumNodeService(chain: chain)
         if earningToken.requireApprove {
-            service.getAllowance(for: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: earningToken.address) { result in
+            service.getAllowance(address: AppState.shared.currentAddress.addressString, networkAddress: contractAddress, tokenAddress: earningToken.address) { result in
                 completion()
                 switch result {
                 case .success(let number):

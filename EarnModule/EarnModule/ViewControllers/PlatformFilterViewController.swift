@@ -23,8 +23,11 @@ class PlatformFilterViewModel {
         self.dataSource = Array(dataSource).sorted { (left, right) -> Bool in
             return left.name < right.name
         }
-        
-        self.selected = dataSource.intersection(selected)
+        if selected.isEmpty {
+            self.selected = dataSource
+        } else {
+            self.selected = dataSource.intersection(selected)
+        }
     }
     
     func platformForRow(row: Int) -> EarnPlatform? {

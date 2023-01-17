@@ -12,6 +12,8 @@ struct Constants {
     
     struct StorageKeys {
         static let currentChain = "current-chain-save-key.data"
+        static let currentAddress = "current-address-save-key.data"
+        static let isWalletBackedUp = "is-wallet-backed-up-"
     }
     
     struct UserDefaultKeys {

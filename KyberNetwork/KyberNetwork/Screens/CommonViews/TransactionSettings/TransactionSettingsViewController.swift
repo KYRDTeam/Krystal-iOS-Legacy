@@ -8,7 +8,7 @@
 import UIKit
 import BigInt
 import Result
-import SwiftUI
+import FittedSheets
 
 typealias BasicSettingsInfo = (type: KNSelectedGasPriceType, value: BigInt)
 typealias AdvancedSettingsInfo = (maxPriority: String, maxFee: String, gasLimit: String)
@@ -308,9 +308,9 @@ class TransactionSettingsViewController: KNBaseViewController {
           self.viewModel.switchExpertMode.isOn = false
           self.reloadUI()
         }
-        
       }
-      self.present(warningPopup, animated: true, completion: nil)
+    let sheet = SheetViewController(controller: warningPopup, sizes: [.fixed(454)], options: SheetOptions(pullBarHeight: 0))
+      self.present(sheet, animated: true, completion: nil)
     }
     
     viewModel.advancedSettingValueChangeHander = {

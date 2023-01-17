@@ -44,8 +44,9 @@ class ChartLegendTokenCell: UICollectionViewCell {
         chainImageView.isHidden = true
         legendColorView.backgroundColor = AppTheme.current.chartColors.last
         if let remainValue = remainValue {
-            balanceLabel.text = Strings.other + " " +  StringFormatter.percentString(value: remainValue / totalValue)
-            detailLabel.text = StringFormatter.usdString(value: remainValue)
+            let remainPercent = remainValue / totalValue < 0.01 ? "< 0.01%" : StringFormatter.percentString(value: remainValue / totalValue)
+            balanceLabel.text = Strings.other + " " +  remainPercent
+            detailLabel.text = remainValue < 0.01 ? "< $0.01" : StringFormatter.usdString(value: remainValue)
         } else {
             balanceLabel.text = Strings.other
             detailLabel.text = ""

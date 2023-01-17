@@ -79,6 +79,8 @@ def swapDependencies
   pod 'JSONRPCKit'
   pod 'APIKit'
   pod 'lottie-ios'
+  pod 'FittedSheets'
+  pod 'loady'
 end
 
 def earnDependencies
@@ -121,6 +123,7 @@ def transactionModuleDependencies
   pod 'APIKit'
   pod 'CryptoSwift'
   pod 'loady'
+  pod 'SkeletonView'
 end
 
 target 'Dependencies' do

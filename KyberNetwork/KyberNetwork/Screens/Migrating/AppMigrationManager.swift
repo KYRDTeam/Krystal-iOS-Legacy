@@ -14,7 +14,6 @@ class AppMigrationManager {
   
   let keystore: Keystore
   let walletManager = WalletManager.shared
-  let walletCache = WalletCache.shared
   let operationQueue = OperationQueue()
   
   init(keystore: Keystore) {

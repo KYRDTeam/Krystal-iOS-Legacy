@@ -52,16 +52,27 @@ class EarnListViewController: InAppBrowsingViewController {
         super.viewWillAppear(animated)
     }
     
+    func resetFilter() {
+        self.selectedPlatforms = []
+        self.selectedTypes = [.staking, .lending]
+    }
+    
     override func onAppSwitchChain() {
         isNeedReloadFilter = true
         currentSelectedChain = AppState.shared.currentChain
         fetchData(chainId: currentSelectedChain == .all ? nil : currentSelectedChain.getChainId())
+        resetFilter()
     }
     
     override func onAppSelectAllChain() {
         isNeedReloadFilter = true
         currentSelectedChain = .all
         fetchData()
+        resetFilter()
+    }
+    
+    override func onAppSwitchAddress(switchChain: Bool) {
+        resetFilter()
     }
     
     func setupUI() {
@@ -71,6 +82,10 @@ class EarnListViewController: InAppBrowsingViewController {
     
     private func isSelectedAllPlatforms() -> Bool {
         return selectedPlatforms.isEmpty || selectedPlatforms.count == getAllPlatform().count
+    }
+    
+    private func isSelectedAllType() -> Bool {
+        return selectedTypes.contains(.staking) && selectedTypes.contains(.lending)
     }
     
     func reloadUI() {
@@ -87,18 +102,28 @@ class EarnListViewController: InAppBrowsingViewController {
             }
         }
         
-        displayDataSource = displayDataSource.filter { element in
-            let filterPlatforms = element.earnPoolModel.platforms.filter { platform in
-                let earningType = EarningType(value: platform.type)
-                return self.selectedTypes.contains(earningType)
-            }
-            return filterPlatforms.count >= 1
+        if selectedTypes.isEmpty {
+            displayDataSource.removeAll()
         }
-        
+
+        if !isSelectedAllType() {
+            displayDataSource = displayDataSource.filter { element in
+                let filterPlatforms = element.earnPoolModel.platforms.filter { platform in
+                    let earningType = EarningType(value: platform.type)
+                    return self.selectedTypes.contains(earningType)
+                }
+                return filterPlatforms.count >= 1
+            }
+        }
+
         if !isSelectedAllPlatforms() {
             self.displayDataSource = self.displayDataSource.filter { element in
                 let modelPfSet: Set<EarnPlatform> = Set(element.earnPoolModel.platforms)
-                return modelPfSet.intersection(self.selectedPlatforms).count >= 1
+                var filterPlatform = modelPfSet.intersection(self.selectedPlatforms).filter { platform in
+                    let earningType = EarningType(value: platform.type)
+                    return self.selectedTypes.contains(earningType)
+                }
+                return filterPlatform.count >= 1
             }
             
             displayDataSource.forEach { item in
@@ -145,6 +170,9 @@ class EarnListViewController: InAppBrowsingViewController {
             if data.isEmpty {
                 self.emptyIcon.image = UIImage(named: "empty_earn_icon")
                 self.emptyLabel.text = Strings.earnIsCurrentlyNotSupportedOnThisChainYet
+            } else {
+                self.emptyIcon.image = UIImage(named: "empty-search-token")
+                self.emptyLabel.text = Strings.noRecordFound
             }
             
             self.dataSource = data
@@ -339,12 +367,23 @@ extension EarnListViewController: UITextFieldDelegate {
 
 extension EarnListViewController: EarnPoolViewCellDelegate {
     func didSelectRewardApy(platform: EarnPlatform, pool: EarnPoolModel) {
-        let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: pool.apy), NumberFormatUtils.percent(value: platform.rewardApy))
-        showTopBannerView(message: messge)
+        let messge = String(format: Strings.rewardApyInfoText, NumberFormatUtils.percent(value: platform.apy.roundedValue()), NumberFormatUtils.percent(value: platform.rewardApy.roundedValue()))
+        showBottomBannerView(message: messge)
     }
     
     func didSelectPlatform(platform: EarnPlatform, pool: EarnPoolModel) {
         delegate?.didSelectPlatform(platform: platform, pool: pool)
+    }
+    
+    func showWarning(_ type: String) {
+        switch type {
+        case "disabled":
+            self.showErrorTopBannerMessage(message: Strings.stakeDisableMessage)
+        case "warning":
+            self.showErrorTopBannerMessage(message: Strings.stakeWarningMessage)
+        default:
+            break
+        }
     }
 }
 

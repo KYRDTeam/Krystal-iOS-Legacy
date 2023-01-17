@@ -5,6 +5,7 @@ import BigInt
 import Moya
 import KrystalWallets
 import AppState
+import SwapModule
 import EarnModule
 
 class KNAppCoordinator: NSObject, Coordinator {
@@ -15,7 +16,6 @@ class KNAppCoordinator: NSObject, Coordinator {
   internal var session: KNSession!
   
   let walletManager = WalletManager.shared
-  let walletCache = WalletCache.shared
   
   var currentAddress: KAddress? {
     return AppState.shared.currentAddress
@@ -23,11 +23,13 @@ class KNAppCoordinator: NSObject, Coordinator {
   
   internal var loadBalanceCoordinator: KNLoadBalanceCoordinator?
 
-  internal var swapV2Coordinator: SwapV2Coordinator?
+    internal var swapModuleCoordinator: SwapCoordinator?
+    internal var swapV2Coordinator: SwapV2Coordinator?
 //  internal var balanceTabCoordinator: KNBalanceTabCoordinator?
   internal var overviewTabCoordinator: OverviewCoordinator?
   internal var settingsCoordinator: KNSettingsCoordinator?
-    var earnCoordinator: EarnModuleCoordinator?
+    var earnModuleCoordinator: EarnModuleCoordinator?
+    var earnCoordinator: EarnCoordinator?
   internal var rewardCoordinator: RewardCoordinator?
   internal var investCoordinator: InvestCoordinator?
 
@@ -92,12 +94,11 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
   
   func switchWallet(wallet: KWallet, chain: ChainType) {
-    if let address = getAddresses(wallet: wallet, chain: chain).first {
-//      KNGeneralProvider.shared.currentChain = chain
-      self.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
-      switchAddress(address: address)
-      AppState.shared.updateChain(chain: chain)
-    }
+      if let address = getAddresses(wallet: wallet, chain: chain).first {
+        self.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
+        switchAddress(address: address)
+        AppState.shared.updateChain(chain: chain)
+      }
   }
   
   func didSelectManageWallet() {
@@ -112,13 +113,13 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
   
   func switchAddress(address: KAddress) {
-    WalletCache.shared.lastUsedAddress = address
-    KNAppTracker.updateAllTransactionLastBlockLoad(0, for: address.addressString)
-    if self.tabbarController == nil {
-      self.startNewSession(address: address)
-    } else {
-      self.restartSession(address: address)
-    }
+      AppState.shared.currentAddress = address
+      KNAppTracker.updateAllTransactionLastBlockLoad(0, for: address.addressString)
+      if self.tabbarController == nil {
+          self.startNewSession(address: address)
+      } else {
+          self.restartSession(address: address)
+      }
   }
   
   private func getAddresses(wallet: KWallet, chain: ChainType) -> [KAddress] {
@@ -141,14 +142,15 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
 
   fileprivate func startFirstSessionIfNeeded() {
-    let lastUsedAddress = walletCache.lastUsedAddress
-    let addresses = walletManager.getAllWallets().flatMap { walletManager.getAllAddresses(walletID: $0.id) }
-    
-    // For security, should always have passcode protection when user has imported wallets
-    if let address = lastUsedAddress ?? addresses.first, KNPasscodeUtil.shared.currentPasscode() != nil {
-      self.startNewSession(address: address)
-      Tracker.updateUserID(address.addressString)
-    }
+      guard AppStorage.shared.isAppOpenedBefore else { return }
+      let address = AppState.shared.currentAddress
+      // For security, should always have passcode protection when user has imported wallets
+      if KNPasscodeUtil.shared.currentPasscode() != nil {
+          self.startNewSession(address: address)
+          if !address.addressString.isEmpty {
+              Tracker.updateUserID(address.addressString)
+          }
+      }
   }
 
   func sendRefCode(_ code: String) {

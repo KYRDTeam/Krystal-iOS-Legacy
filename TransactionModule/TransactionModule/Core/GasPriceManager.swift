@@ -34,7 +34,8 @@ public class GasPriceManager {
     
     func fetchAllNetworkGasPrice() {
         let group = DispatchGroup()
-        ChainType.allCases.forEach { chain in
+        let chains = ChainType.getAllChain().filter { $0.isEVM }
+        chains.forEach { chain in
             group.enter()
             fetchGasPrice(chain: chain) {
                 group.leave()
@@ -113,6 +114,18 @@ extension GasPriceManager: GasConfig {
     
     public func getBaseFee(chain: ChainType) -> BigInt? {
         return gasConfig[chain]?.baseFee?.shortBigInt(units: UnitConfiguration.gasPriceUnit)
+    }
+    
+    public func getFastEstTime(chain: ChainType) -> Int? {
+        return gasConfig[chain]?.estTime.fast
+    }
+    
+    public func getStandardEstTime(chain: ChainType) -> Int? {
+        return gasConfig[chain]?.estTime.standard
+    }
+    
+    public func getSlowEstTime(chain: ChainType) -> Int? {
+        return gasConfig[chain]?.estTime.slow
     }
     
 }

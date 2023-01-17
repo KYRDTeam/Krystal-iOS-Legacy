@@ -15,6 +15,7 @@
 		7EBC5508292E1880000EB8E0 /* TxToggleInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EBC5507292E1880000EB8E0 /* TxToggleInfoView.xib */; };
 		7ECC45C32939A70200B37D30 /* OverviewSkeletonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECC45C12939A70200B37D30 /* OverviewSkeletonCell.swift */; };
 		7ECC45C42939A70200B37D30 /* OverviewSkeletonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ECC45C22939A70200B37D30 /* OverviewSkeletonCell.xib */; };
+		A61822242964306700EAF0A4 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61822222964306700EAF0A4 /* PopupViewController.swift */; };
 		A63E21B1292F70110024328D /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63E21B0292F70110024328D /* ErrorView.swift */; };
 		A63E21B3292F701C0024328D /* ErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63E21B2292F701C0024328D /* ErrorView.xib */; };
 		A64C2E1628F6F8AF002FD64C /* DashedLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E1528F6F8AF002FD64C /* DashedLineView.swift */; };
@@ -39,6 +40,7 @@
 		A6B1FD3228F6BA2300894DCB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6B1FD3128F6BA2300894DCB /* Assets.xcassets */; };
 		A6B1FD3528F6BF2600894DCB /* KrystalTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FD3428F6BF2600894DCB /* KrystalTheme.swift */; };
 		A6B1FD3728F6C20300894DCB /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FD3628F6C20300894DCB /* AppTheme.swift */; };
+		A6C256CD293DFF6400D4B2BE /* RectangularDashedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C256CC293DFF6400D4B2BE /* RectangularDashedView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +51,7 @@
 		7EBC5507292E1880000EB8E0 /* TxToggleInfoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxToggleInfoView.xib; sourceTree = "<group>"; };
 		7ECC45C12939A70200B37D30 /* OverviewSkeletonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverviewSkeletonCell.swift; sourceTree = "<group>"; };
 		7ECC45C22939A70200B37D30 /* OverviewSkeletonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverviewSkeletonCell.xib; sourceTree = "<group>"; };
+		A61822222964306700EAF0A4 /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
 		A63E21B0292F70110024328D /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		A63E21B2292F701C0024328D /* ErrorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ErrorView.xib; sourceTree = "<group>"; };
 		A64C2E1528F6F8AF002FD64C /* DashedLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedLineView.swift; sourceTree = "<group>"; };
@@ -74,6 +77,7 @@
 		A6B1FD3128F6BA2300894DCB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A6B1FD3428F6BF2600894DCB /* KrystalTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalTheme.swift; sourceTree = "<group>"; };
 		A6B1FD3628F6C20300894DCB /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		A6C256CC293DFF6400D4B2BE /* RectangularDashedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectangularDashedView.swift; sourceTree = "<group>"; };
 		F23EBAA94EB71BAC3B317ABE /* Pods_DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F88EAA441FE04BF11AF27BAB /* Pods-DesignSystem.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DesignSystem.release.xcconfig"; path = "Target Support Files/Pods-DesignSystem/Pods-DesignSystem.release.xcconfig"; sourceTree = "<group>"; };
 		FCF7F2DAA54858DEE3D45C8C /* Pods-DesignSystem.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DesignSystem.debug.xcconfig"; path = "Target Support Files/Pods-DesignSystem/Pods-DesignSystem.debug.xcconfig"; sourceTree = "<group>"; };
@@ -102,11 +106,21 @@
 			path = ../Pods;
 			sourceTree = "<group>";
 		};
+		A61822212964303200EAF0A4 /* Popup */ = {
+			isa = PBXGroup;
+			children = (
+				A61822222964306700EAF0A4 /* PopupViewController.swift */,
+			);
+			path = Popup;
+			sourceTree = "<group>";
+		};
 		A64C2E1428F6F891002FD64C /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				A61822212964303200EAF0A4 /* Popup */,
 				7ECC45C12939A70200B37D30 /* OverviewSkeletonCell.swift */,
 				7ECC45C22939A70200B37D30 /* OverviewSkeletonCell.xib */,
+				A6C256CC293DFF6400D4B2BE /* RectangularDashedView.swift */,
 				A668BFD0292CBEDE001A110D /* GrowingTextView.swift */,
 				7E36E36B291A658C009BC8FE /* TxInfoView.swift */,
 				7E36E36C291A658C009BC8FE /* TxInfoView.xib */,
@@ -319,6 +333,7 @@
 				A6B1FD3528F6BF2600894DCB /* KrystalTheme.swift in Sources */,
 				A66846132908DE16006BBE29 /* ListEmptyView.swift in Sources */,
 				A64C2E2728F6FD28002FD64C /* CircleProgressView.swift in Sources */,
+				A61822242964306700EAF0A4 /* PopupViewController.swift in Sources */,
 				A64C2E1D28F6FA28002FD64C /* Font.swift in Sources */,
 				A6B1FD3028F6B8E200894DCB /* ThemeProtocol.swift in Sources */,
 				7EAF4759291B5CB500BF5D00 /* UIViewController.swift in Sources */,
@@ -333,6 +348,7 @@
 				7ECC45C32939A70200B37D30 /* OverviewSkeletonCell.swift in Sources */,
 				7EBC5506292E183E000EB8E0 /* TxToggleInfoView.swift in Sources */,
 				7E36E36D291A658D009BC8FE /* TxInfoView.swift in Sources */,
+				A6C256CD293DFF6400D4B2BE /* RectangularDashedView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

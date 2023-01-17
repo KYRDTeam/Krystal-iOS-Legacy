@@ -324,9 +324,10 @@ extension ChainType {
   }
 
   func quoteTokenObject() -> TokenObject {
+    let decimal = self == .solana ? 9 : 18
     let token = KNSupportedTokenStorage.shared.supportedToken.first { (token) -> Bool in
       return token.symbol == self.customRPC().quoteToken && token.address == self.customRPC().quoteTokenAddress
-    } ?? Token(name: self.customRPC().quoteToken, symbol: self.customRPC().quoteToken, address: self.customRPC().quoteTokenAddress, decimals: 18, logo: self.customRPC().quoteToken.lowercased())
+    } ?? Token(name: self.customRPC().quoteToken, symbol: self.customRPC().quoteToken, address: self.customRPC().quoteTokenAddress, decimals: decimal, logo: self.customRPC().quoteToken.lowercased())
     return token.toObject()
   }
 

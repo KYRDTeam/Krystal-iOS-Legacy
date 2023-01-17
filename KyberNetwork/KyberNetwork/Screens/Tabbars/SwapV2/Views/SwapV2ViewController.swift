@@ -592,6 +592,8 @@ class SwapV2ViewController: InAppBrowsingViewController {
       )
     }
     onSourceAmountChange(value: allBalanceText)
+      MixPanelManager.track("swap_max_amount", properties: ["screenid": "swap"])
+      MixPanelManager.track("swap_enter_amount", properties: ["screenid": "swap"])
   }
 }
 

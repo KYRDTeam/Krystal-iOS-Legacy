@@ -15,6 +15,14 @@ class AppTxProcessor: TxProcessorProtocol {
     
     var txSender: TxNodeSenderProtocol = TxNodeSender()
     
+    func isTokenApproving(address: String) -> Bool {
+        let allTransactions = EtherscanTransactionStorage.shared.getInternalHistoryTransaction()
+        let pendingApproveTxs = allTransactions.filter { tx in
+            return tx.transactionDetailDescription.lowercased() == address.lowercased() && tx.type == .allowance
+        }
+        return !pendingApproveTxs.isEmpty
+    }
+    
     func hasPendingTx() -> Bool {
         return !EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty
     }

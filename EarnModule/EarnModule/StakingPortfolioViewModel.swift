@@ -9,6 +9,7 @@ import UIKit
 import Services
 import AppState
 import DesignSystem
+import KrystalWallets
 
 class StakingPortfolioViewModel {
     var portfolio: ([EarningBalance], [PendingUnstake])?
@@ -27,8 +28,10 @@ class StakingPortfolioViewModel {
     var showPending: Bool = false
     var shouldAnimateChart: Bool = true
     var isEditing: Bool = false
-
+    
     func cleanAllData() {
+        dataSource.value.0.removeAll()
+        dataSource.value.1.removeAll()
         displayDataSource.value.0.removeAll()
         displayDataSource.value.1.removeAll()
     }
@@ -42,8 +45,8 @@ class StakingPortfolioViewModel {
         var output: [StakingPortfolioCellModel] = []
         var pending: [StakingPortfolioCellModel] = []
         
-        var pendingUnstakeData = filterPendingUnstake()
-        var earningBalanceData = filterEarningBalance()
+        let pendingUnstakeData = filterPendingUnstake()
+        let earningBalanceData = filterEarningBalance()
 
         pendingUnstakeData.forEach({ item in
             pending.append(StakingPortfolioCellModel(pendingUnstake: item))
@@ -65,7 +68,7 @@ class StakingPortfolioViewModel {
         
         if !searchText.isEmpty {
             earningBalanceData = earningBalanceData.filter({ item in
-                return item.stakingToken.symbol.lowercased().contains(searchText) || item.toUnderlyingToken.symbol.lowercased().contains(searchText)
+                return item.stakingToken.symbol.lowercased().contains(searchText) || item.toUnderlyingToken.symbol.lowercased().contains(searchText) || item.stakingToken.name.lowercased().contains(searchText) || item.toUnderlyingToken.name.lowercased().contains(searchText)
             })
         }
         if let unwrap = chainID {
@@ -117,22 +120,30 @@ class StakingPortfolioViewModel {
         if shouldShowLoading {
             isLoading.value = true
         }
-        
-        apiService.getStakingPortfolio(address: AppState.shared.currentAddress.addressString, chainId: nil) { result in
-            if shouldShowLoading {
-                self.isLoading.value = false
-            }
+        guard let evmAddress = WalletManager.shared.address(walletID: AppState.shared.currentAddress.walletID, addressType: .evm)?.addressString else {
+            return
+        }
+        apiService.getStakingPortfolio(address: evmAddress, chainId: nil) { result in
+            
             switch result {
             case .success(let portfolio):
                 self.portfolio = portfolio
-                self.reloadDataSource()
                 if shouldShowLoading {
-                    self.selectedPlatforms = self.getAllPlatform()
+                    self.resetFilter()
                 }
+                self.reloadDataSource()   
             case .failure(let error):
                 self.error.value = error
             }
+            if shouldShowLoading {
+                self.isLoading.value = false
+            }
         }
+    }
+    
+    func resetFilter() {
+        self.selectedPlatforms = []
+        self.selectedTypes = [.staking, .lending]
     }
     
     func getAllPlatform() -> Set<EarnPlatform> {
@@ -140,13 +151,26 @@ class StakingPortfolioViewModel {
             return Set()
         }
         
+        var earningBalances = portfolio.0
+        if let chainID = chainID {
+            earningBalances = earningBalances.filter({ item in
+                return item.chainID == chainID
+            })
+        }
+        var pendingUnstakes = portfolio.1
+        if let chainID = chainID {
+            pendingUnstakes = pendingUnstakes.filter({ item in
+                return item.chainID == chainID
+            })
+        }
+        
         var platformSet = Set<EarnPlatform>()
         
-        portfolio.0.map { $0.platform.toEarnPlatform() }.forEach { element in
+        earningBalances.map { $0.platform.toEarnPlatform() }.forEach { element in
             platformSet.insert(element)
         }
         
-        portfolio.1.map { $0.platform.toEarnPlatform() }.forEach { element in
+        pendingUnstakes.map { $0.platform.toEarnPlatform() }.forEach { element in
             platformSet.insert(element)
         }
         
@@ -155,6 +179,10 @@ class StakingPortfolioViewModel {
     
     var isSelectedAllPlatform: Bool {
         return selectedPlatforms.isEmpty || selectedPlatforms.count == getAllPlatform().count
+    }
+    
+    var isSelectedAllType: Bool {
+        return selectedTypes.contains(.staking) && selectedTypes.contains(.lending)
     }
     
     var platformFilterButtonTitle: String {

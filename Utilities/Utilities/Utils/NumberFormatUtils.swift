@@ -60,6 +60,10 @@ public class NumberFormatUtils {
         return "0" + separator.decimal + decimalPart
     }
     
+    public static func lessThanMinUsdAmountString() -> String {
+        return "<$0" + separator.decimal + "01"
+    }
+    
     public static func format(value: BigInt, decimals: Int, maxDecimalMeaningDigits: Int?, maxDecimalDigits: Int?) -> String {
         if value.isZero {
             return "0"
@@ -187,6 +191,18 @@ public class NumberFormatUtils {
             return format(value: number, decimals: 18, maxDecimalMeaningDigits: 4, maxDecimalDigits: nil)
         } else {
             return format(value: number, decimals: 18, maxDecimalMeaningDigits: nil, maxDecimalDigits: 2)
+        }
+    }
+    
+    public static func billionBasedVolume(value: Double) -> String {
+        let oneBil = 1_000_000_000
+        let numberOfBillions = value / Double(oneBil)
+        if floor(numberOfBillions) > 0 {
+            let bigIntValue = BigInt(numberOfBillions * pow(10, 18))
+            return "$" + NumberFormatUtils.usdAmount(value: bigIntValue, decimals: 18) + "B"
+        } else {
+            let bigIntValue = BigInt(value * pow(10, 18))
+            return "$" + NumberFormatUtils.usdAmount(value: bigIntValue, decimals: 18)
         }
     }
 }

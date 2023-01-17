@@ -98,7 +98,7 @@ class KSendTokenViewController: InAppBrowsingViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+    self.viewModel.getNodeBalance()
     self.addressTextField.setupCustomDeleteIcon()
     self.amountTextField.setupCustomDeleteIcon()
     self.setupDelegates()
@@ -144,6 +144,10 @@ class KSendTokenViewController: InAppBrowsingViewController {
       self.getEnsAddressFromName(address)
       self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     })
+      
+      viewModel.onGetBalanceFromNodeCompleted = {
+          self.updateUIBalanceDidChange()
+      }
   }
 
   override func handleWalletButtonTapped() {
@@ -219,7 +223,8 @@ class KSendTokenViewController: InAppBrowsingViewController {
 
   @IBAction func maxButtonTapped(_ sender: UIButton) {
     self.tokenBalanceLabelTapped(sender)
-    MixPanelManager.track("transfer_enter_amount", properties: ["screenid": "transfer"])
+      MixPanelManager.track("transfer_max_amount", properties: ["screenid": "transfer"])
+      MixPanelManager.track("transfer_enter_amount", properties: ["screenid": "transfer"])
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -526,7 +531,6 @@ extension KSendTokenViewController {
   }
 
   func coordinatorUpdateBalances(_ balances: [String: Balance]) {
-    self.viewModel.updateBalance(balances)
     self.updateUIBalanceDidChange()
   }
 

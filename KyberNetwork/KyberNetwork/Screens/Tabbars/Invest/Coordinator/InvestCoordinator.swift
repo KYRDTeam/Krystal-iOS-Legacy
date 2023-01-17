@@ -153,25 +153,8 @@ class InvestCoordinator: Coordinator {
     self.bridgeCoordinator = coordinator
   }
   
-  fileprivate func openStakeView() {
-      AppDependencies.router.openEarn()
-  }
-  
   func openHistoryScreen() {
-    switch KNGeneralProvider.shared.currentChain {
-    case .solana:
-      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, type: .solana)
-      coordinator.delegate = self
-      coordinate(coordinator: coordinator)
-    default:
-      self.historyCoordinator = nil
-      self.historyCoordinator = KNHistoryCoordinator(
-        navigationController: self.navigationController
-      )
-      self.historyCoordinator?.delegate = self
-      self.historyCoordinator?.appDidSwitchAddress()
-      self.historyCoordinator?.start()
-    }
+      AppDependencies.router.openTransactionHistory()
   }
   
   func openDappBrowserScreen() {
@@ -313,8 +296,6 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         }
       }
       MixPanelManager.track("scanner_open", properties: ["screenid": "scanner"])
-    case .stake:
-      self.openStakeView()
     case .openApprovals:
         openApprovals()
     case .openLoyalty:

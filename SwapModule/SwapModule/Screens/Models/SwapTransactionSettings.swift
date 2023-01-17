@@ -7,6 +7,7 @@
 
 import Foundation
 import BigInt
+import TransactionModule
 
 struct SwapTransactionSettings {
     var slippage: Double
@@ -22,6 +23,21 @@ struct SwapTransactionSettings {
             advanced: nil,
             expertModeOn: UserDefaults.standard.bool(forKey: Constants.expertModeSaveKey)
         )
+    }
+    
+    func toCommonTxSettings() -> TxSettingObject {
+        var txBasic: TxBasicSetting?
+        var txAdvanced: TxAdvancedSetting?
+        
+        if let basic = basic {
+            txBasic = .init(gasLimit: basic.gasPriceType.getGasValue(), gasType: .regular)
+        }
+        
+        if let advanced = advanced {
+            txAdvanced = .init(gasLimit: advanced.gasLimit, maxFee: advanced.maxFee, maxPriorityFee: advanced.maxPriorityFee, nonce: advanced.nonce)
+        }
+        
+        return .init(basic: txBasic, advanced: txAdvanced)
     }
     
 }

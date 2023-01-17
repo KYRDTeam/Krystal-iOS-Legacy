@@ -4,6 +4,8 @@ import UIKit
 import BigInt
 import TrustKeystore
 import KrystalWallets
+import Services
+import AppState
 import TransactionModule
 import BaseModule
 
@@ -33,8 +35,19 @@ class KNSendTokenViewModel: BaseViewModel {
   private(set) var inputAddress: String = ""
   private(set) var address: String?
   private(set) var isUsingEns: Bool = false
+  var onGetBalanceFromNodeCompleted: (() -> Void)?
 
   var isSendAllBalanace: Bool = false
+    
+  var sourceBalance: BigInt = BigInt(0) {
+    didSet {
+        onGetBalanceFromNodeCompleted?()
+    }
+  }
+
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
   
   var addressName: String {
     return currentAddress.name
@@ -80,12 +93,11 @@ class KNSendTokenViewModel: BaseViewModel {
 
   var allTokenBalanceString: String {
     if self.from.isQuoteToken {
-      let balance = self.from.getBalanceBigInt()
       var availableValue = BigInt(0)
       if KNGeneralProvider.shared.currentChain == .solana {
-        availableValue = max(BigInt(0), balance - self.solanaFeeBigInt)
+        availableValue = max(BigInt(0), sourceBalance - self.solanaFeeBigInt)
       } else {
-        availableValue = max(BigInt(0), balance - self.allETHBalanceFee)
+        availableValue = max(BigInt(0), sourceBalance - self.allETHBalanceFee)
       }
       let string = availableValue.string(
         decimals: self.from.decimals,
@@ -198,7 +210,7 @@ class KNSendTokenViewModel: BaseViewModel {
   }
 
   var displayBalance: String {
-    return NumberFormatUtils.balanceFormat(value: self.from.getBalanceBigInt(), decimals: self.from.decimals)
+    return NumberFormatUtils.balanceFormat(value: self.sourceBalance, decimals: self.from.decimals)
   }
 
   var totalBalanceText: String {
@@ -261,8 +273,7 @@ class KNSendTokenViewModel: BaseViewModel {
   }
 
   var isAmountTooBig: Bool {
-    let balanceVal = self.from.getBalanceBigInt()
-    return amountBigInt > balanceVal
+    return amountBigInt > sourceBalance
   }
 
   var isAmountValid: Bool {
@@ -304,10 +315,9 @@ class KNSendTokenViewModel: BaseViewModel {
       if self.from.isQuoteToken {
         // eth needs to minus some fee
         if !self.isSendAllBalanace { return self.amountBigInt } // not send all balance
-        let balance = self.from.getBalanceBigInt()
-        return max(BigInt(0), balance - self.allETHBalanceFee)
+        return max(BigInt(0), sourceBalance - self.allETHBalanceFee)
       }
-      return self.isSendAllBalanace ? self.from.getBalanceBigInt() : self.amountBigInt
+      return self.isSendAllBalanace ? self.sourceBalance : self.amountBigInt
     }()
 
     if KNGeneralProvider.shared.isUseEIP1559 {
@@ -388,10 +398,14 @@ class KNSendTokenViewModel: BaseViewModel {
     self.isSendAllBalanace = false
     self.gasLimit = KNGasConfiguration.calculateDefaultGasLimitTransfer(token: self.from)
     self.baseGasLimit = self.gasLimit
+    self.getNodeBalance()
   }
 
-  func updateBalance(_ balances: [String: Balance]) {
-  }
+    func getNodeBalance() {
+        EthereumNodeService(chain: AppState.shared.currentChain).getBalance(address: currentAddress.addressString, tokenAddress: self.from.address) { [weak self] balance in
+            self?.sourceBalance = balance
+        }
+    }
 
   func updateAmount(_ amount: String, forSendAllETH: Bool = false) {
     self.amount = amount

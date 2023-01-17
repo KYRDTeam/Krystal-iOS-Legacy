@@ -89,7 +89,7 @@ open class InAppBrowsingViewController: BaseWalletOrientedViewController {
     }
   
   override open func handleChainButtonTapped() {
-    AppDependencies.router.openChainList(currentChain, allowAllChainOption: supportAllChainOption) { [weak self] chain in
+    AppDependencies.router.openChainList(currentChain, allowAllChainOption: supportAllChainOption, showSolanaOption: supportSolana) { [weak self] chain in
       self?.onChainSelected(chain: chain)
     }
   }
@@ -99,7 +99,7 @@ open class InAppBrowsingViewController: BaseWalletOrientedViewController {
     }
     
     @IBAction func onSwitchChainButtonTapped(_ sender: Any) {
-      AppDependencies.router.openChainList(currentChain, allowAllChainOption: supportAllChainOption) { [weak self] chain in
+      AppDependencies.router.openChainList(currentChain, allowAllChainOption: supportAllChainOption, showSolanaOption: supportSolana) { [weak self] chain in
         self?.onChainSelected(chain: chain)
       }
     }

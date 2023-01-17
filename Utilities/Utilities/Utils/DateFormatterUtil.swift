@@ -11,6 +11,13 @@ public class DateFormatterUtil {
 
   public static let shared = DateFormatterUtil()
 
+    public lazy var MMMMddYYYY: DateFormatter = {
+      let formatter = DateFormatter()
+      formatter.locale = Locale(identifier: "en_US_POSIX")
+      formatter.dateFormat = "MMMM dd, YYYY"
+      return formatter
+    }()
+    
   public lazy var MMMddYYYHHmma: DateFormatter = {
     let formatter = DateFormatter()
     formatter.locale = Locale(identifier: "en_US_POSIX")

@@ -27,12 +27,13 @@ class PieChartModel {
     }
     
     func titleString(totalValue: Double) -> String {
-        var toUnderlyingBalanceString = symbol + " " + StringFormatter.percentString(value: usd / totalValue)
+        let percentString = (usd / totalValue) * 100 < 0.01 ? "< 0.01%" : StringFormatter.percentString(value: usd / totalValue)
+        var toUnderlyingBalanceString = symbol + " " + percentString
         return toUnderlyingBalanceString
     }
     
     func usdDetailString() -> String {
-        return StringFormatter.usdString(value: usd)
+        return usd < 0.01 ? "< $0.01" : StringFormatter.usdString(value: usd)
     }
 }
 
@@ -96,6 +97,9 @@ class PortfolioPieChartCellViewModel: BaseViewModel {
     }
     
     var earningAssetsString: String {
+        if earningAssets < 0.01 {
+            return "< $0.01"
+        }
         return StringFormatter.usdString(value: earningAssets)
     }
     
@@ -118,6 +122,9 @@ class PortfolioPieChartCellViewModel: BaseViewModel {
     }
     
     var annualYieldString: String {
+        if earningAssets * apyDouble < 0.01 {
+            return "< $0.01"
+        }
         return StringFormatter.usdString(value: earningAssets * apyDouble)
     }
     
