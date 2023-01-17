@@ -45,10 +45,6 @@ class KNSendTokenViewModel: BaseViewModel {
     }
   }
 
-  var currentAddress: KAddress {
-    return AppDelegate.session.address
-  }
-  
   var addressName: String {
     return currentAddress.name
   }

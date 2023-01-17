@@ -18,6 +18,7 @@ import KrystalWallets
 import Dependencies
 import TokenModule
 import Services
+import AppState
 
 class MultiSendCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
