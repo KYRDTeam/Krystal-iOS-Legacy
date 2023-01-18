@@ -14,6 +14,8 @@ import JSONRPCKit
 import APIKit
 import Result
 import KrystalWallets
+import Services
+import AppState
 
 class PoolInfo: Codable {
   var anyToken: String = ""
@@ -148,6 +150,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var isOpenGasSettingForApprove: Bool = false
+  var l1Fee: BigInt = BigInt(0)
   
     @FileStorage(fileName: Constants.bridgeWarningSettingFile, defaultValue: UserDefaults.standard.bool(forKey: Constants.bridgeWarningAcceptedKey))
     var bridgeWaringAccepted: Bool
@@ -454,12 +457,6 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
     case .willSelectDestChain:
       self.willSelectDestChain()
     case .selectSourceToken:
-//      var tokens = KNSupportedTokenStorage.shared.getAllTokenObject()
-//      let supportedAddress = self.data.map { return $0.address.lowercased() }
-//      tokens = tokens.filter({
-//        supportedAddress.contains($0.address.lowercased())
-//      })
-        
       let supportedTokens = self.data.map { sourceBridgeToken -> TokenObject in
         let token = TokenObject(name: sourceBridgeToken.name, symbol: sourceBridgeToken.symbol, address: sourceBridgeToken.address, decimals: sourceBridgeToken.decimals, logo: sourceBridgeToken.logoUrl)
         return token
@@ -500,7 +497,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
             bridgeFeeString = StringFormatter.amountString(value: currentDestToken.minimumSwapFee) + " \(currentSourceToken.symbol)"
           }
 
-          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.currentAddress.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, bridgeFee: bridgeFeeString, token: currentSourceToken, gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
+          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.currentAddress.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, bridgeFee: bridgeFeeString, token: currentSourceToken, gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit, signTransaction: self.currentSignTransaction, eip1559Transaction: nil, l1Fee: self.l1Fee)
           let vc = ConfirmBridgeViewController(viewModel: bridgeViewModel)
           vc.delegate = self
           self.confirmVC = vc
@@ -596,6 +593,31 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       }
     }
   }
+    
+    func getL1FeeForTxIfHave(object: TxObject, completion: @escaping (BigInt, TxObject) -> Void) {
+        if AppState.shared.currentChain == .optimism {
+            let service = EthereumNodeService(chain: AppState.shared.currentChain)
+            service.getOPL1FeeEncodeData(for: object.data) { result in
+                switch result {
+                case .success(let encodeString):
+                    service.getOptimismL1Fee(for: encodeString) { feeResult in
+                        switch feeResult {
+                        case .success(let fee):
+                            completion(fee, object)
+                        case .failure(let error):
+                            completion(BigInt(0), object)
+                            UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.showErrorTopBannerMessage(message: error.localizedDescription)
+                        }
+                    }
+                case .failure(let error):
+                    completion(BigInt(0), object)
+                    UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.showErrorTopBannerMessage(message: error.localizedDescription)
+                }
+            }
+        } else {
+            completion(BigInt(0), object)
+        }
+    }
   
   func getBuildTx(_ completion: (() -> Void)? = nil) {
     self.getLatestNonce { result in
@@ -603,21 +625,26 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       case .success(let nonce):
         self.buildSwapChainTx { txObject in
           if let txObject = txObject {
-            let viewModel = self.rootViewController.viewModel
-            let newTxObject = TxObject(nonce: BigInt(nonce).hexEncoded, from: txObject.from, to: txObject.to, data: txObject.data, value: txObject.value, gasPrice: self.gasPrice.hexEncoded, gasLimit: txObject.gasLimit)
-            self.bridgeContract = txObject.to
-            guard let signTx = self.buildSignTx(newTxObject) else {
-              if let completion = completion {
-                completion()
+              self.getL1FeeForTxIfHave(object: txObject) { l1Fee, txObject in
+                  self.l1Fee = l1Fee
+                  let viewModel = self.rootViewController.viewModel
+                  let newTxObject = TxObject(nonce: BigInt(nonce).hexEncoded, from: txObject.from, to: txObject.to, data: txObject.data, value: txObject.value, gasPrice: self.gasPrice.hexEncoded, gasLimit: txObject.gasLimit)
+                  self.bridgeContract = txObject.to
+                  guard let signTx = self.buildSignTx(newTxObject) else {
+                    if let completion = completion {
+                      completion()
+                    }
+                    return
+                  }
+                  self.currentSignTransaction = signTx
+                  self.estimateGasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16) ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+                  self.getAllowance(token: viewModel.currentSourceToken)
+                  if let completion = completion {
+                    completion()
+                  }
               }
-              return
-            }
-            self.currentSignTransaction = signTx
-            self.estimateGasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16) ?? KNGasConfiguration.exchangeTokensGasLimitDefault
-            self.getAllowance(token: viewModel.currentSourceToken)
-            if let completion = completion {
-              completion()
-            }
+              
+            
           }
         }
       case .failure(let error):

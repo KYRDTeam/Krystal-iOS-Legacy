@@ -23,6 +23,7 @@ struct ConfirmBridgeViewModel {
   var gasLimit: BigInt
   let signTransaction: SignTransaction?
   let eip1559Transaction: EIP1559Transaction?
+  var l1Fee:BigInt
   
   init(fromChain: ChainType?,
        fromValue: String,
@@ -35,7 +36,8 @@ struct ConfirmBridgeViewModel {
        gasPrice: BigInt,
        gasLimit: BigInt,
        signTransaction: SignTransaction?,
-       eip1559Transaction: EIP1559Transaction?) {
+       eip1559Transaction: EIP1559Transaction?,
+       l1Fee: BigInt) {
     self.fromChain = fromChain
     self.fromValue = fromValue
     self.fromAddress = fromAddress
@@ -48,6 +50,7 @@ struct ConfirmBridgeViewModel {
     self.gasLimit = gasLimit
     self.signTransaction = signTransaction
     self.eip1559Transaction = eip1559Transaction
+    self.l1Fee = l1Fee
   }
   
   var feeUSDString: String {
@@ -72,7 +75,7 @@ struct ConfirmBridgeViewModel {
   }
   
   var fee: BigInt {
-    return self.gasPrice * self.gasLimit
+    return self.gasPrice * self.gasLimit + self.l1Fee
   }
 }
 
