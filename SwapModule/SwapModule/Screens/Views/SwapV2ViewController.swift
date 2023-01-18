@@ -327,6 +327,9 @@ class SwapV2ViewController: InAppBrowsingViewController {
         
         viewModel.estimatedGasFeeString.observeAndFire(on: self) { [weak self] string in
             self?.gasFeeInfoView.setValue(value: string, highlighted: true)
+            if self?.currentChain == .optimism {
+                self?.platformTableView.reloadData()
+            }
         }
         
         viewModel.maxGasFeeString.observeAndFire(on: self) { [weak self] string in

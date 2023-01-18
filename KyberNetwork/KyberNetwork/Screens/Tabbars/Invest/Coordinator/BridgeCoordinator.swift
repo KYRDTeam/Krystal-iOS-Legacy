@@ -150,7 +150,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var isOpenGasSettingForApprove: Bool = false
-  var l1Fee: BigInt = BigInt(0)
+  fileprivate(set) var l1Fee: BigInt = BigInt(0)
   
     @FileStorage(fileName: Constants.bridgeWarningSettingFile, defaultValue: UserDefaults.standard.bool(forKey: Constants.bridgeWarningAcceptedKey))
     var bridgeWaringAccepted: Bool
@@ -497,7 +497,19 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
             bridgeFeeString = StringFormatter.amountString(value: currentDestToken.minimumSwapFee) + " \(currentSourceToken.symbol)"
           }
 
-          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.currentAddress.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, bridgeFee: bridgeFeeString, token: currentSourceToken, gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit, signTransaction: self.currentSignTransaction, eip1559Transaction: nil, l1Fee: self.l1Fee)
+          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain,
+                                                       fromValue: fromValue,
+                                                       fromAddress: self.currentAddress.addressString,
+                                                       toChain: viewModel.currentDestChain,
+                                                       toValue: toValue,
+                                                       toAddress: viewModel.currentSendToAddress,
+                                                       bridgeFee: bridgeFeeString,
+                                                       token: currentSourceToken,
+                                                       gasPrice: self.gasPrice,
+                                                       gasLimit: self.estimateGasLimit,
+                                                       signTransaction: self.currentSignTransaction,
+                                                       eip1559Transaction: nil,
+                                                       l1Fee: self.l1Fee)
           let vc = ConfirmBridgeViewController(viewModel: bridgeViewModel)
           vc.delegate = self
           self.confirmVC = vc

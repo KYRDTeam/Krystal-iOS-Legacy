@@ -40,10 +40,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
                 return self.getMinReceiveString(destToken: destToken, rate: $0)
             }
             self.estimatedGasFeeString.value = self.selectedPlatformRate.value.map {
-                return self.getEstimatedNetworkFeeString(rate: $0)
+                return self.getEstimatedNetworkFeeString(rate: $0, l1Fee: self.l1Fee)
             }
             self.maxGasFeeString.value = self.selectedPlatformRate.value.map {
-                return self.getMaxNetworkFeeString(rate: $0)
+                return self.getMaxNetworkFeeString(rate: $0, l1Fee: self.l1Fee)
             }
             self.priceImpactString.value = self.selectedPlatformRate.value.map {
                 return self.getPriceImpactString(rate: $0)
@@ -65,6 +65,12 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
         }
     }
     
+    var l1Fee: BigInt = BigInt(0) {
+      didSet {
+          self.updateInfo()
+      }
+    }
+
     var isInputValid: Bool {
         return sourceToken.value != nil && destToken.value != nil && !(sourceAmount.value ?? .zero).isZero
     }
@@ -306,7 +312,58 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
         self.state.value = isRefresh ? .refreshingRates : .fetchingRates
         self.swapService.getAllRates(chainPath: self.currentChain.value.apiChainPath(), address: addressString, srcTokenContract: sourceToken.address, destTokenContract: destToken.address, amount: amount, focusSrc: true) { [weak self] rates in
             self?.platformRates.value = rates
+            self?.updateTxData()
         }
+    }
+    
+    func updateTxData() {
+        TransactionManager.txProcessor.getLatestNonce(address: currentAddress.value, chain: currentChain.value) { nonce in
+            guard let nonce = nonce else {
+                return
+            }
+            self.buildTx(nonce: nonce)
+        }
+    }
+
+    func buildTx(nonce: Int) {
+        guard let request = buildTxRequest(latestNonce: nonce) else { return }
+        swapService.buildTx(chainPath: AppState.shared.currentChain.apiChainPath(), request: request) { [weak self] result in
+            switch result {
+            case .success(let txObject):
+                self?.swapService.getL1FeeForTxIfHave(object: txObject) { l1Fee, object in
+                    self?.l1Fee = l1Fee
+                    
+                    //TODO: reload rate for platform here
+                    self?.reloadPlatformRatesViewModels()
+                }
+            case .failure(let error):
+                print(TxErrorParser.parse(error: error).message)
+            }
+        }
+    }
+    
+    func buildTxRequest(latestNonce: Int) -> SwapBuildTxRequest? {
+        guard let sourceToken = sourceToken.value,
+              let destToken = destToken.value,
+              let selectedRate = selectedPlatformRate.value,
+              let sourceAmount = sourceAmount.value
+        else {
+            return nil
+        }
+        let toAmount = BigInt(selectedRate.amount) ?? BigInt(0)
+        let minDestQty = toAmount * BigInt(10000.0 - self.settings.slippage * 100.0) / BigInt(10000.0)
+        
+        return SwapBuildTxRequest(
+            userAddress: currentAddress.value.addressString,
+            src: sourceToken.address ,
+            dest: destToken.address,
+            srcQty: sourceAmount.description,
+            minDesQty: minDestQty.description,
+            gasPrice: self.gasPrice.description,
+            nonce: latestNonce,
+            hint: selectedRate.hint,
+            useGasToken: false
+        )
     }
     
     func reloadSourceBalance() {
@@ -413,12 +470,13 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
             savedAmount = diffInUSD(lhs: sortedRates[0], rhs: sortedRates[1], destToken: destToken, destTokenPrice: destTokenPrice.value ?? 0)
         }
         return sortedRates.enumerated().map { index, rate in
+            let gasFeeUsd = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed ?? 0), gasPrice: self.gasPrice) + self.getL1FeeUSD(l1Fee: self.l1Fee)
             return SwapPlatformItemViewModel(platformRate: rate,
                                              isSelected: rate.hint == selectedPlatformHint,
                                              quoteToken: AppDependencies.tokenStorage.quoteToken(forChain: currentChain.value),
                                              destToken: destToken,
                                              destTokenPrice: destTokenPrice.value,
-                                             gasFeeUsd: self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed ?? 0), gasPrice: self.gasPrice),
+                                             gasFeeUsd: gasFeeUsd,
                                              showSaveTag: index == 0,
                                              savedAmount: savedAmount)
         }
@@ -574,10 +632,10 @@ extension SwapV2ViewModel {
             return self.getMinReceiveString(destToken: destToken, rate: $0)
         }
         self.estimatedGasFeeString.value = self.selectedPlatformRate.value.map {
-            return self.getEstimatedNetworkFeeString(rate: $0)
+            return self.getEstimatedNetworkFeeString(rate: $0, l1Fee: self.l1Fee)
         }
         self.maxGasFeeString.value = self.selectedPlatformRate.value.map {
-            return self.getMaxNetworkFeeString(rate: $0)
+            return self.getMaxNetworkFeeString(rate: $0, l1Fee: self.l1Fee)
         }
     }
     

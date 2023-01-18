@@ -10,6 +10,7 @@ import Moya
 import BigInt
 import Utilities
 import Result
+import AppState
 
 public class SwapService: BaseService {
     
@@ -50,4 +51,26 @@ public class SwapService: BaseService {
         }
     }
     
+    public func getL1FeeForTxIfHave(object: TxObject, completion: @escaping (BigInt, TxObject) -> Void) {
+        if AppState.shared.currentChain == .optimism {
+            let service = EthereumNodeService(chain: AppState.shared.currentChain)
+            service.getOPL1FeeEncodeData(for: object.data) { result in
+                switch result {
+                case .success(let encodeString):
+                    service.getOptimismL1Fee(for: encodeString) { feeResult in
+                        switch feeResult {
+                        case .success(let fee):
+                            completion(fee, object)
+                        case .failure(_):
+                            completion(BigInt(0), object)
+                        }
+                    }
+                case .failure(_):
+                    completion(BigInt(0), object)
+                }
+            }
+        } else {
+            completion(BigInt(0), object)
+        }
+    }
 }

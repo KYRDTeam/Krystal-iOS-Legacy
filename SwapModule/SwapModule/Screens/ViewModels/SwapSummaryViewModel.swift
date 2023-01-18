@@ -17,6 +17,7 @@ import Services
 import AppState
 import Dependencies
 import TransactionModule
+import BaseWallet
 
 class SwapSummaryViewModel: SwapInfoViewModelProtocol {
     var quoteTokenDetail: TokenDetailInfo?
@@ -54,8 +55,18 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
         }
     }
     
+    var l1Fee: BigInt = BigInt(0) {
+        didSet {
+            self.updateInfo()
+        }
+    }
+    
     var currentAddress: KAddress {
         return AppState.shared.currentAddress
+    }
+    
+    var currentChain: ChainType {
+        return AppState.shared.currentChain
     }
     
     var toAmount: BigInt {
@@ -94,10 +105,10 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
     func updateData() {
         rateString.value = getRateString(sourceToken: swapObject.sourceToken, destToken: swapObject.destToken)
         minReceiveString.value = calculateMinReceiveString(rate: swapObject.rate)
-        estimatedGasFeeString.value = getEstimatedNetworkFeeString(rate: swapObject.rate)
+        estimatedGasFeeString.value = getEstimatedNetworkFeeString(rate: swapObject.rate, l1Fee: l1Fee)
         priceImpactString.value = getPriceImpactString(rate: swapObject.rate)
         priceImpactState.value = getPriceImpactState(change: Double(swapObject.rate.priceImpact) / 100)
-        maxGasFeeString.value = getMaxNetworkFeeString(rate: swapObject.rate)
+        maxGasFeeString.value = getMaxNetworkFeeString(rate: swapObject.rate, l1Fee: l1Fee)
         slippageString.value = "\(String(format: "%.1f", self.minRatePercent))%"
     }
     
@@ -117,8 +128,8 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
     func updateInfo() {
         self.slippageString.value = "\(String(format: "%.1f", self.settings.slippage))%"
         self.minReceiveString.value = self.getMinReceiveString(destToken: swapObject.destToken, rate: swapObject.rate)
-        self.estimatedGasFeeString.value = self.getEstimatedNetworkFeeString(rate: swapObject.rate)
-        self.maxGasFeeString.value = self.getMaxNetworkFeeString(rate: swapObject.rate)
+        self.estimatedGasFeeString.value = self.getEstimatedNetworkFeeString(rate: swapObject.rate, l1Fee: l1Fee)
+        self.maxGasFeeString.value = self.getMaxNetworkFeeString(rate: swapObject.rate, l1Fee: l1Fee)
     }
     
     func updateSettings(settings: SwapTransactionSettings) {
@@ -189,16 +200,13 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
                 }
             }
         }
+        updateTxData { _ in
+        }
     }
     
     func didConfirmSwap() {
-        getLatestNonce { result in
-            switch result {
-            case .success(let nonce):
-                self.buildTx(nonce: nonce)
-            case .failure(let error):
-                self.onTxFailed?(TxErrorParser.parse(error: error).message)
-            }
+        updateTxData { txObject in
+            self.sendTransaction(txObject: txObject)
         }
     }
     
@@ -206,27 +214,25 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
 
 // MARK: Tx related
 extension SwapSummaryViewModel {
-    
-    func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
-        let nodeService = EthereumNodeService(chain: AppState.shared.currentChain)
-        nodeService.getTransactionCount(address: AppState.shared.currentAddress.addressString) { result in
-            switch result {
-            case .success(let res):
-                AppDependencies.nonceStorage.updateNonce(chain: AppState.shared.currentChain, address: self.currentAddress.addressString, value: res)
-                completion(.success(res))
-            case .failure(let error):
-                completion(.failure(error))
+    func updateTxData(completion: @escaping (TxObject) -> Void) {
+        TransactionManager.txProcessor.getLatestNonce(address: currentAddress, chain: currentChain) { nonce in
+            guard let nonce = nonce else {
+                return
             }
+            self.buildTx(nonce: nonce, completion: completion)
         }
     }
     
-    func buildTx(nonce: Int) {
+    func buildTx(nonce: Int, completion: @escaping (TxObject) -> Void) {
         let request = buildTxRequest(latestNonce: nonce)
         
         swapService.buildTx(chainPath: AppState.shared.currentChain.apiChainPath(), request: request) { [weak self] result in
             switch result {
             case .success(let txObject):
-                self?.sendTransaction(txObject: txObject)
+                self?.swapService.getL1FeeForTxIfHave(object: txObject) { l1Fee, object in
+                    self?.l1Fee = l1Fee
+                    completion(txObject)
+                }
             case .failure(let error):
                 self?.onTxFailed?(TxErrorParser.parse(error: error).message)
             }
