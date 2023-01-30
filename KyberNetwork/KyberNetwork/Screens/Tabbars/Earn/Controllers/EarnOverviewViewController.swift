@@ -77,6 +77,11 @@ class EarnOverviewViewController: InAppBrowsingViewController {
     
     depositViewController.coordinatorDidUpdateDidUpdateTokenList()
   }
+    
+    @objc override func onAppSwitchChain() {
+      super.onAppSwitchChain()
+      reloadWallet()
+    }
   
   fileprivate func updateUIPendingTxIndicatorView() {
     guard self.isViewLoaded else {
