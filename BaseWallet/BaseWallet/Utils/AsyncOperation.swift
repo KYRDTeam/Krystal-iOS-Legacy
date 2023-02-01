@@ -7,15 +7,15 @@
 
 import Foundation
 
-class AsyncOperation: Operation {
+public class AsyncOperation: Operation {
     private let lockQueue = DispatchQueue(label: "queue.async.lock", attributes: .concurrent)
     
-    override var isAsynchronous: Bool {
+    public override var isAsynchronous: Bool {
         return true
     }
     
     private var _isExecuting: Bool = false
-    override private(set) var isExecuting: Bool {
+    public override private(set) var isExecuting: Bool {
         get {
             return lockQueue.sync { () -> Bool in
                 return _isExecuting
@@ -31,7 +31,7 @@ class AsyncOperation: Operation {
     }
     
     private var _isFinished: Bool = false
-    override private(set) var isFinished: Bool {
+    public override private(set) var isFinished: Bool {
         get {
             return lockQueue.sync { () -> Bool in
                 return _isFinished
@@ -46,7 +46,7 @@ class AsyncOperation: Operation {
         }
     }
     
-    override func start() {
+    public override func start() {
         guard !isCancelled else {
             finish()
             return
@@ -57,7 +57,7 @@ class AsyncOperation: Operation {
         main()
     }
     
-    override func main() {
+    public override func main() {
         fatalError("Subclasses must implement `main` without overriding super.")
     }
     

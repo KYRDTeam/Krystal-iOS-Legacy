@@ -6,11 +6,25 @@
 //
 
 import Foundation
+import FirebaseRemoteConfig
 
-class RemoteConfigChainSyncOperation: ChainSyncOperation {
+public class RemoteConfigChainSyncOperation: ChainSyncOperation {
     
-    override func execute(completion: @escaping ([Chain]) -> ()) {
-
+    let remoteConfig = RemoteConfig.remoteConfig()
+    
+    override func execute(completion: @escaping () -> ()) {
+        remoteConfig.fetch { _, error in
+            self.remoteConfig.activate()
+            ChainDB.shared.save(chainModels: self.getConfiguredChains())
+            self.finish()
+            completion()
+        }
+    }
+    
+    func getConfiguredChains() -> [ChainModel] {
+        let data = remoteConfig.configValue(forKey: "chains").dataValue
+        let chains = try? JSONDecoder().decode([ChainModel].self, from: data)
+        return chains ?? []
     }
     
 }

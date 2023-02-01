@@ -9,11 +9,23 @@
                 "name": "SUPPORT_EIP_1559",
                 "value": "false"
             },
+            {
+                "name": "SUPPORT_BALANCE_API",
+                "value": "true"
+            },
+            {
+                "name": "SUPPORT_TOKEN_LIST_API",
+                "value": "true"
+            },
         ],
         "smartContracts": [
             {
                 "address": "0x70270C228c5B4279d1578799926873aa72446CcD",
                 "type": "PROXY_ADDRESS"
+            },
+            {
+                "address": "0x70270C228c5B4279d1578799926873aa72446CcD",
+                "type": "MULTI_CALL_ADDRESS"
             }
         ],
         "urls": [

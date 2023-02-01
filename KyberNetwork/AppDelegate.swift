@@ -9,6 +9,7 @@ import AppTrackingTransparency
 import WalletConnectSwift
 import IQKeyboardManager
 import Dependencies
+import BaseWallet
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -29,24 +30,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       
     migrateWalletData()
     window = UIWindow(frame: UIScreen.main.bounds)
-    setupImageProcessor()
-    setupKeyboard()
-    KNReachability.shared.startNetworkReachabilityObserver()
+      
     setupFirebase()
-    setupOneSignal(launchOptions)
-    Tracker.track(event: .openApp)
-    setupSentryIfNeeded()
-    do {
-      let keystore = try EtherKeystore()
-      migrationManager = AppMigrationManager(keystore: keystore)
-      if migrationManager.needMigrate {
-        self.startMigration(keystore: keystore)
-      } else {
-        self.coordinatorFinishLaunching(keystore: keystore)
+      
+      let worker = ChainSyncWorker(operations: [
+        DefaultChainSyncOperation(),
+        RemoteConfigChainSyncOperation()
+      ])
+      
+      
+      worker.asyncWaitAll {
+          print("SYNC COMPLETED")
       }
-    } catch {
-      print("EtherKeystore init issue.")
-    }
+      
+      window?.rootViewController = ChainListViewController.instantiateFromNib()
+      window?.makeKeyAndVisible()
+      
+//    setupImageProcessor()
+//    setupKeyboard()
+//    KNReachability.shared.startNetworkReachabilityObserver()
+//    setupFirebase()
+//    setupOneSignal(launchOptions)
+//    Tracker.track(event: .openApp)
+//    setupSentryIfNeeded()
+//    do {
+//      let keystore = try EtherKeystore()
+//      migrationManager = AppMigrationManager(keystore: keystore)
+//      if migrationManager.needMigrate {
+//        self.startMigration(keystore: keystore)
+//      } else {
+//        self.coordinatorFinishLaunching(keystore: keystore)
+//      }
+//    } catch {
+//      print("EtherKeystore init issue.")
+//    }
     
     return true
   }

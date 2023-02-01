@@ -1,5 +1,5 @@
 //
-//  ChainSyncOperation.swift
+//  BalanceSyncOperation.swift
 //  BaseWallet
 //
 //  Created by Tung Nguyen on 01/02/2023.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class ChainSyncOperation: AsyncOperation {
+public class BalanceSyncOperation: AsyncOperation {
     
     public override func main() {
         execute {

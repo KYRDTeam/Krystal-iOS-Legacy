@@ -198,6 +198,8 @@ target 'BaseWallet' do
   use_frameworks!
   
   pod 'RealmSwift', '~> 10.32'
+  pod 'Moya'
+  pod 'FirebaseRemoteConfig', '~> 10.0.0'
 end
 
 target 'DappBrowser' do

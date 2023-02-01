@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Worker {
+public protocol Worker {
     var operations: [Operation] { get }
     var queue: OperationQueue { get }
     
@@ -17,7 +17,7 @@ protocol Worker {
     func syncByPriority(completion: @escaping () -> ())
 }
 
-extension Worker {
+public extension Worker {
     
     func asyncWaitAll(completion: @escaping () -> ()) {
         let group = DispatchGroup()

@@ -10,6 +10,8 @@ import RealmSwift
 
 public class ChainDB {
     
+    public static let shared = ChainDB()
+    
     public func activeChains() -> [Chain] {
         return getListChains { lhs, rhs in
             return lhs.isAddedByUser
