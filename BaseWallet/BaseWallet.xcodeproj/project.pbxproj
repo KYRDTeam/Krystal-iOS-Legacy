@@ -7,16 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3772D3F68CFEB1862D1613F4 /* Pods_BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7118866FE1C55B90292C81C1 /* Pods_BaseWallet.framework */; };
 		A64C2E5F28F87862002FD64C /* AllChains.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E5E28F87862002FD64C /* AllChains.swift */; };
 		A64C2E6128F8787C002FD64C /* CustomRPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E6028F8787C002FD64C /* CustomRPC.swift */; };
 		A64C2E6628F87C31002FD64C /* NodeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E6528F87C31002FD64C /* NodeConfig.swift */; };
 		A673A6A328FFA1F400270DA7 /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A673A6A228FFA1F400270DA7 /* KrystalWallets.framework */; };
 		A676489B292DD10000065569 /* CurrencyMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676489A292DD10000065569 /* CurrencyMode.swift */; };
 		A6B1FCF628F69C8700894DCB /* ChainType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FCF528F69C8700894DCB /* ChainType.swift */; };
+		A6E356082987D39200CA3D3D /* ChainObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E356072987D39200CA3D3D /* ChainObject.swift */; };
+		A6E3560A29891B7600CA3D3D /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3560929891B7600CA3D3D /* AppSetting.swift */; };
+		A6E35619298A191F00CA3D3D /* Chain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E35618298A191F00CA3D3D /* Chain.swift */; };
+		A6E3561C298A195700CA3D3D /* Converter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3561B298A195700CA3D3D /* Converter.swift */; };
+		A6E35624298A218000CA3D3D /* ChainDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E35623298A218000CA3D3D /* ChainDB.swift */; };
+		A6E35626298A219F00CA3D3D /* ChainObjectConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E35625298A219F00CA3D3D /* ChainObjectConverter.swift */; };
+		A6E35629298A236000CA3D3D /* RealmResults+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E35628298A236000CA3D3D /* RealmResults+.swift */; };
+		A6E35630298A390500CA3D3D /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3562F298A390500CA3D3D /* AsyncOperation.swift */; };
+		A6E35633298A3C2E00CA3D3D /* default_chains.json in Resources */ = {isa = PBXBuildFile; fileRef = A6E35632298A3C2E00CA3D3D /* default_chains.json */; };
+		A6E35636298A3C6D00CA3D3D /* ChainSyncWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E35635298A3C6D00CA3D3D /* ChainSyncWorker.swift */; };
+		A6E35638298A3C8500CA3D3D /* Worker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E35637298A3C8500CA3D3D /* Worker.swift */; };
+		A6E3563B298A3CB200CA3D3D /* DefaultChainSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3563A298A3CB200CA3D3D /* DefaultChainSyncOperation.swift */; };
+		A6E3563D298A3D2300CA3D3D /* ChainSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3563C298A3D2300CA3D3D /* ChainSyncOperation.swift */; };
+		A6E3563F298A3D9700CA3D3D /* RemoteConfigChainSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3563E298A3D9700CA3D3D /* RemoteConfigChainSyncOperation.swift */; };
+		A6E35641298A433B00CA3D3D /* ApiChainSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E35640298A433B00CA3D3D /* ApiChainSyncOperation.swift */; };
 		A6E4339C28F54F1300782F7D /* BaseWallet.h in Headers */ = {isa = PBXBuildFile; fileRef = A6E4339B28F54F1300782F7D /* BaseWallet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F9BBB986FF3A81232374E32 /* Pods-BaseWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseWallet.debug.xcconfig"; path = "Target Support Files/Pods-BaseWallet/Pods-BaseWallet.debug.xcconfig"; sourceTree = "<group>"; };
+		7118866FE1C55B90292C81C1 /* Pods_BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A64C2E5E28F87862002FD64C /* AllChains.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllChains.swift; sourceTree = "<group>"; };
 		A64C2E6028F8787C002FD64C /* CustomRPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRPC.swift; sourceTree = "<group>"; };
 		A64C2E6528F87C31002FD64C /* NodeConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeConfig.swift; sourceTree = "<group>"; };
@@ -24,8 +42,24 @@
 		A673A6A228FFA1F400270DA7 /* KrystalWallets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KrystalWallets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A676489A292DD10000065569 /* CurrencyMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyMode.swift; sourceTree = "<group>"; };
 		A6B1FCF528F69C8700894DCB /* ChainType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainType.swift; sourceTree = "<group>"; };
+		A6E356072987D39200CA3D3D /* ChainObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainObject.swift; sourceTree = "<group>"; };
+		A6E3560929891B7600CA3D3D /* AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
+		A6E35618298A191F00CA3D3D /* Chain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chain.swift; sourceTree = "<group>"; };
+		A6E3561B298A195700CA3D3D /* Converter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Converter.swift; sourceTree = "<group>"; };
+		A6E35623298A218000CA3D3D /* ChainDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainDB.swift; sourceTree = "<group>"; };
+		A6E35625298A219F00CA3D3D /* ChainObjectConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainObjectConverter.swift; sourceTree = "<group>"; };
+		A6E35628298A236000CA3D3D /* RealmResults+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RealmResults+.swift"; sourceTree = "<group>"; };
+		A6E3562F298A390500CA3D3D /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		A6E35632298A3C2E00CA3D3D /* default_chains.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = default_chains.json; sourceTree = "<group>"; };
+		A6E35635298A3C6D00CA3D3D /* ChainSyncWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainSyncWorker.swift; sourceTree = "<group>"; };
+		A6E35637298A3C8500CA3D3D /* Worker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Worker.swift; sourceTree = "<group>"; };
+		A6E3563A298A3CB200CA3D3D /* DefaultChainSyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultChainSyncOperation.swift; sourceTree = "<group>"; };
+		A6E3563C298A3D2300CA3D3D /* ChainSyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainSyncOperation.swift; sourceTree = "<group>"; };
+		A6E3563E298A3D9700CA3D3D /* RemoteConfigChainSyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigChainSyncOperation.swift; sourceTree = "<group>"; };
+		A6E35640298A433B00CA3D3D /* ApiChainSyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiChainSyncOperation.swift; sourceTree = "<group>"; };
 		A6E4339828F54F1300782F7D /* BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6E4339B28F54F1300782F7D /* BaseWallet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseWallet.h; sourceTree = "<group>"; };
+		EE98CFD2D4B342D5F1BE478D /* Pods-BaseWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseWallet.release.xcconfig"; path = "Target Support Files/Pods-BaseWallet/Pods-BaseWallet.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,12 +68,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				A673A6A328FFA1F400270DA7 /* KrystalWallets.framework in Frameworks */,
+				3772D3F68CFEB1862D1613F4 /* Pods_BaseWallet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		482DCE877704E3F70FB508F4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3F9BBB986FF3A81232374E32 /* Pods-BaseWallet.debug.xcconfig */,
+				EE98CFD2D4B342D5F1BE478D /* Pods-BaseWallet.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
+			sourceTree = "<group>";
+		};
 		A64C2E6428F87C2A002FD64C /* Node */ = {
 			isa = PBXGroup;
 			children = (
@@ -53,6 +98,7 @@
 			children = (
 				A673A6A228FFA1F400270DA7 /* KrystalWallets.framework */,
 				A64C2EE128F933E2002FD64C /* Dependencies.framework */,
+				7118866FE1C55B90292C81C1 /* Pods_BaseWallet.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -60,19 +106,91 @@
 		A64C2EE528F93513002FD64C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A676489A292DD10000065569 /* CurrencyMode.swift */,
+				A6E35618298A191F00CA3D3D /* Chain.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
 		};
-		A6B1FCF428F69C7E00894DCB /* Chain */ = {
+		A6B1FCF428F69C7E00894DCB /* Core */ = {
 			isa = PBXGroup;
 			children = (
 				A6B1FCF528F69C8700894DCB /* ChainType.swift */,
+				A676489A292DD10000065569 /* CurrencyMode.swift */,
 				A64C2E5E28F87862002FD64C /* AllChains.swift */,
 				A64C2E6028F8787C002FD64C /* CustomRPC.swift */,
+				A6E3560929891B7600CA3D3D /* AppSetting.swift */,
 			);
-			path = Chain;
+			path = Core;
+			sourceTree = "<group>";
+		};
+		A6E35614298A18F400CA3D3D /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				A6E356072987D39200CA3D3D /* ChainObject.swift */,
+				A6E35623298A218000CA3D3D /* ChainDB.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		A6E35615298A18FC00CA3D3D /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		A6E3561A298A194A00CA3D3D /* Converter */ = {
+			isa = PBXGroup;
+			children = (
+				A6E3561B298A195700CA3D3D /* Converter.swift */,
+				A6E35625298A219F00CA3D3D /* ChainObjectConverter.swift */,
+			);
+			path = Converter;
+			sourceTree = "<group>";
+		};
+		A6E35627298A235600CA3D3D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A6E35628298A236000CA3D3D /* RealmResults+.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A6E3562E298A38F900CA3D3D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A6E3562F298A390500CA3D3D /* AsyncOperation.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		A6E35631298A3C1E00CA3D3D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A6E35632298A3C2E00CA3D3D /* default_chains.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A6E35634298A3C5B00CA3D3D /* Worker */ = {
+			isa = PBXGroup;
+			children = (
+				A6E35637298A3C8500CA3D3D /* Worker.swift */,
+				A6E35639298A3C9E00CA3D3D /* ChainSync */,
+			);
+			path = Worker;
+			sourceTree = "<group>";
+		};
+		A6E35639298A3C9E00CA3D3D /* ChainSync */ = {
+			isa = PBXGroup;
+			children = (
+				A6E35635298A3C6D00CA3D3D /* ChainSyncWorker.swift */,
+				A6E3563C298A3D2300CA3D3D /* ChainSyncOperation.swift */,
+				A6E3563A298A3CB200CA3D3D /* DefaultChainSyncOperation.swift */,
+				A6E3563E298A3D9700CA3D3D /* RemoteConfigChainSyncOperation.swift */,
+				A6E35640298A433B00CA3D3D /* ApiChainSyncOperation.swift */,
+			);
+			path = ChainSync;
 			sourceTree = "<group>";
 		};
 		A6E4338E28F54F1300782F7D = {
@@ -81,6 +199,7 @@
 				A6E4339A28F54F1300782F7D /* BaseWallet */,
 				A6E4339928F54F1300782F7D /* Products */,
 				A64C2EE028F933E2002FD64C /* Frameworks */,
+				482DCE877704E3F70FB508F4 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -95,9 +214,16 @@
 		A6E4339A28F54F1300782F7D /* BaseWallet */ = {
 			isa = PBXGroup;
 			children = (
+				A6E35634298A3C5B00CA3D3D /* Worker */,
+				A6E35631298A3C1E00CA3D3D /* Resources */,
+				A6E3562E298A38F900CA3D3D /* Utils */,
+				A6E35627298A235600CA3D3D /* Extensions */,
+				A6E3561A298A194A00CA3D3D /* Converter */,
+				A6E35615298A18FC00CA3D3D /* Networking */,
+				A6E35614298A18F400CA3D3D /* Database */,
 				A64C2EE528F93513002FD64C /* Models */,
 				A64C2E6428F87C2A002FD64C /* Node */,
-				A6B1FCF428F69C7E00894DCB /* Chain */,
+				A6B1FCF428F69C7E00894DCB /* Core */,
 				A6E4339B28F54F1300782F7D /* BaseWallet.h */,
 			);
 			path = BaseWallet;
@@ -121,6 +247,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A6E4339F28F54F1300782F7D /* Build configuration list for PBXNativeTarget "BaseWallet" */;
 			buildPhases = (
+				CFC87C70FDE7590CCB348D90 /* [CP] Check Pods Manifest.lock */,
 				A6E4339328F54F1300782F7D /* Headers */,
 				A6E4339428F54F1300782F7D /* Sources */,
 				A6E4339528F54F1300782F7D /* Frameworks */,
@@ -173,21 +300,61 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6E35633298A3C2E00CA3D3D /* default_chains.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CFC87C70FDE7590CCB348D90 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BaseWallet-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A6E4339428F54F1300782F7D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6E3563B298A3CB200CA3D3D /* DefaultChainSyncOperation.swift in Sources */,
 				A6B1FCF628F69C8700894DCB /* ChainType.swift in Sources */,
 				A676489B292DD10000065569 /* CurrencyMode.swift in Sources */,
+				A6E35619298A191F00CA3D3D /* Chain.swift in Sources */,
+				A6E3561C298A195700CA3D3D /* Converter.swift in Sources */,
+				A6E35636298A3C6D00CA3D3D /* ChainSyncWorker.swift in Sources */,
+				A6E3563F298A3D9700CA3D3D /* RemoteConfigChainSyncOperation.swift in Sources */,
+				A6E35629298A236000CA3D3D /* RealmResults+.swift in Sources */,
+				A6E3563D298A3D2300CA3D3D /* ChainSyncOperation.swift in Sources */,
+				A6E35630298A390500CA3D3D /* AsyncOperation.swift in Sources */,
+				A6E3560A29891B7600CA3D3D /* AppSetting.swift in Sources */,
 				A64C2E5F28F87862002FD64C /* AllChains.swift in Sources */,
+				A6E35641298A433B00CA3D3D /* ApiChainSyncOperation.swift in Sources */,
+				A6E35624298A218000CA3D3D /* ChainDB.swift in Sources */,
+				A6E35638298A3C8500CA3D3D /* Worker.swift in Sources */,
+				A6E356082987D39200CA3D3D /* ChainObject.swift in Sources */,
 				A64C2E6128F8787C002FD64C /* CustomRPC.swift in Sources */,
 				A64C2E6628F87C31002FD64C /* NodeConfig.swift in Sources */,
+				A6E35626298A219F00CA3D3D /* ChainObjectConverter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,6 +483,7 @@
 		};
 		A6E433A028F54F1300782F7D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3F9BBB986FF3A81232374E32 /* Pods-BaseWallet.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -341,13 +509,14 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		A6E433A128F54F1300782F7D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EE98CFD2D4B342D5F1BE478D /* Pods-BaseWallet.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -372,7 +541,7 @@
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

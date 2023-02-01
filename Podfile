@@ -193,6 +193,13 @@ target 'BaseModule' do
   pod 'FittedSheets'
 end
 
+target 'BaseWallet' do
+  project 'BaseWallet/BaseWallet.xcodeproj'
+  use_frameworks!
+  
+  pod 'RealmSwift', '~> 10.32'
+end
+
 target 'DappBrowser' do
   project 'DappBrowser/DappBrowser.xcodeproj'
   use_frameworks!
