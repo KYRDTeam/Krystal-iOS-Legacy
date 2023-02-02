@@ -1,0 +1,785 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A6B5848B298B8E2000B1FF9A /* ChainModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A6B5848A298B8E2000B1FF9A /* ChainModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A6B584D2298B8E4700B1FF9A /* MulticallBalanceSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58494298B8E4700B1FF9A /* MulticallBalanceSyncOperation.swift */; };
+		A6B584D3298B8E4700B1FF9A /* BalanceSyncWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58495298B8E4700B1FF9A /* BalanceSyncWorker.swift */; };
+		A6B584D4298B8E4700B1FF9A /* ApiBalanceSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58496298B8E4700B1FF9A /* ApiBalanceSyncOperation.swift */; };
+		A6B584D5298B8E4700B1FF9A /* SingleCallBalanceSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58497298B8E4700B1FF9A /* SingleCallBalanceSyncOperation.swift */; };
+		A6B584D6298B8E4700B1FF9A /* BalanceSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58498298B8E4700B1FF9A /* BalanceSyncOperation.swift */; };
+		A6B584D7298B8E4700B1FF9A /* TokenSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5849A298B8E4700B1FF9A /* TokenSyncOperation.swift */; };
+		A6B584D8298B8E4700B1FF9A /* TokenSyncWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5849B298B8E4700B1FF9A /* TokenSyncWorker.swift */; };
+		A6B584D9298B8E4700B1FF9A /* ApiTokenSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5849C298B8E4700B1FF9A /* ApiTokenSyncOperation.swift */; };
+		A6B584DA298B8E4700B1FF9A /* Worker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5849D298B8E4700B1FF9A /* Worker.swift */; };
+		A6B584DB298B8E4700B1FF9A /* DefaultChainSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5849F298B8E4700B1FF9A /* DefaultChainSyncOperation.swift */; };
+		A6B584DC298B8E4700B1FF9A /* RemoteConfigChainSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584A0298B8E4700B1FF9A /* RemoteConfigChainSyncOperation.swift */; };
+		A6B584DD298B8E4700B1FF9A /* ChainSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584A1298B8E4700B1FF9A /* ChainSyncOperation.swift */; };
+		A6B584DE298B8E4700B1FF9A /* ChainSyncWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584A2298B8E4700B1FF9A /* ChainSyncWorker.swift */; };
+		A6B584DF298B8E4700B1FF9A /* ApiChainSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584A3298B8E4700B1FF9A /* ApiChainSyncOperation.swift */; };
+		A6B584E0298B8E4700B1FF9A /* ChainObjectConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584A5298B8E4700B1FF9A /* ChainObjectConverter.swift */; };
+		A6B584E1298B8E4700B1FF9A /* Converter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584A6298B8E4700B1FF9A /* Converter.swift */; };
+		A6B584E7298B8E4700B1FF9A /* Chain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584AE298B8E4700B1FF9A /* Chain.swift */; };
+		A6B584E8298B8E4700B1FF9A /* ChainDB+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584B0298B8E4700B1FF9A /* ChainDB+Model.swift */; };
+		A6B584E9298B8E4700B1FF9A /* ChainDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584B1298B8E4700B1FF9A /* ChainDB.swift */; };
+		A6B584EA298B8E4700B1FF9A /* ChainObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584B2298B8E4700B1FF9A /* ChainObject.swift */; };
+		A6B584EB298B8E4700B1FF9A /* TokenDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584B3298B8E4700B1FF9A /* TokenDB.swift */; };
+		A6B584EC298B8E4700B1FF9A /* TokenEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584B4298B8E4700B1FF9A /* TokenEntity.swift */; };
+		A6B584ED298B8E4700B1FF9A /* TokenPriceObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584B5298B8E4700B1FF9A /* TokenPriceObject.swift */; };
+		A6B584EE298B8E4700B1FF9A /* TokenBalanceEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584B6298B8E4700B1FF9A /* TokenBalanceEntity.swift */; };
+		A6B584F0298B8E4700B1FF9A /* RealmResults+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584B9298B8E4700B1FF9A /* RealmResults+.swift */; };
+		A6B584F1298B8E4700B1FF9A /* TokenEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584BC298B8E4700B1FF9A /* TokenEndpoint.swift */; };
+		A6B584F2298B8E4700B1FF9A /* ChainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584BE298B8E4700B1FF9A /* ChainModel.swift */; };
+		A6B584F3298B8E4700B1FF9A /* TokenListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584BF298B8E4700B1FF9A /* TokenListResponse.swift */; };
+		A6B584F4298B8E4700B1FF9A /* TokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584C0298B8E4700B1FF9A /* TokenModel.swift */; };
+		A6B584F6298B8E4700B1FF9A /* TokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584C3298B8E4700B1FF9A /* TokenService.swift */; };
+		A6B584F7298B8E4700B1FF9A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584C6298B8E4700B1FF9A /* Constants.swift */; };
+		A6B584F8298B8E4700B1FF9A /* default_chains.json in Resources */ = {isa = PBXBuildFile; fileRef = A6B584C7298B8E4700B1FF9A /* default_chains.json */; };
+		A6B584F9298B8E4700B1FF9A /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584C9298B8E4700B1FF9A /* AsyncOperation.swift */; };
+		A6B584FA298B8E4700B1FF9A /* ChainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6B584CC298B8E4700B1FF9A /* ChainCell.xib */; };
+		A6B584FB298B8E4700B1FF9A /* ChainListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6B584CD298B8E4700B1FF9A /* ChainListViewController.xib */; };
+		A6B584FC298B8E4700B1FF9A /* TokenListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584CE298B8E4700B1FF9A /* TokenListViewController.swift */; };
+		A6B584FD298B8E4700B1FF9A /* ChainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584CF298B8E4700B1FF9A /* ChainCell.swift */; };
+		A6B584FE298B8E4700B1FF9A /* TokenListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6B584D0298B8E4700B1FF9A /* TokenListViewController.xib */; };
+		A6B584FF298B8E4700B1FF9A /* ChainListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584D1298B8E4700B1FF9A /* ChainListViewController.swift */; };
+		A6B58502298B8E7700B1FF9A /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B58501298B8E7700B1FF9A /* Utilities.framework */; };
+		A6B58503298B8E7700B1FF9A /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B58501298B8E7700B1FF9A /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A6B58506298B8E7C00B1FF9A /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B58505298B8E7C00B1FF9A /* Services.framework */; };
+		A6B58507298B8E7C00B1FF9A /* Services.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B58505298B8E7C00B1FF9A /* Services.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A6B5850E298B969C00B1FF9A /* ChainBalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5850D298B969C00B1FF9A /* ChainBalanceModel.swift */; };
+		A6B58510298B96BA00B1FF9A /* TokenBalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5850F298B96BA00B1FF9A /* TokenBalanceModel.swift */; };
+		A6B58512298B973900B1FF9A /* BalanceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58511298B973900B1FF9A /* BalanceResponse.swift */; };
+		A6B58514298B998900B1FF9A /* TokenBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58513298B998900B1FF9A /* TokenBalance.swift */; };
+		A6B58516298B9C4400B1FF9A /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58515298B9C4400B1FF9A /* Token.swift */; };
+		A6B58518298BB12600B1FF9A /* NodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58517298BB12600B1FF9A /* NodeService.swift */; };
+		A6B5851B298BB14000B1FF9A /* CallRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5851A298BB14000B1FF9A /* CallRequest.swift */; };
+		A6B5851D298BB1B100B1FF9A /* EtherServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5851C298BB1B100B1FF9A /* EtherServiceRequest.swift */; };
+		A6B5851F298BB29A00B1FF9A /* Web3Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5851E298BB29A00B1FF9A /* Web3Client.swift */; };
+		A6B58521298BB2B700B1FF9A /* Web3Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58520298BB2B700B1FF9A /* Web3Request.swift */; };
+		A6B58523298BB2F400B1FF9A /* Web3ClientFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58522298BB2F400B1FF9A /* Web3ClientFactory.swift */; };
+		A6B58525298BB39400B1FF9A /* GetERC20Balance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58524298BB39400B1FF9A /* GetERC20Balance.swift */; };
+		A6B58527298BB5B700B1FF9A /* NativeTokenBalanceSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58526298BB5B700B1FF9A /* NativeTokenBalanceSyncOperation.swift */; };
+		A6B58529298BB61900B1FF9A /* BalanceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58528298BB61900B1FF9A /* BalanceRequest.swift */; };
+		A6B5852B298BB64E00B1FF9A /* CastError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5852A298BB64E00B1FF9A /* CastError.swift */; };
+		A6B5852D298BBCF000B1FF9A /* TokenEntityConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5852C298BBCF000B1FF9A /* TokenEntityConverter.swift */; };
+		B02686AA19E1F346612CC27D /* Pods_ChainModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EFAA67CC187B79B28D3E4DC /* Pods_ChainModule.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A6B58504298B8E7700B1FF9A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A6B58507298B8E7C00B1FF9A /* Services.framework in Embed Frameworks */,
+				A6B58503298B8E7700B1FF9A /* Utilities.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		54590EA83EEB5A5B467F9AA8 /* Pods-ChainModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChainModule.release.xcconfig"; path = "Target Support Files/Pods-ChainModule/Pods-ChainModule.release.xcconfig"; sourceTree = "<group>"; };
+		7EFAA67CC187B79B28D3E4DC /* Pods_ChainModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChainModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6B58487298B8E2000B1FF9A /* ChainModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ChainModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6B5848A298B8E2000B1FF9A /* ChainModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChainModule.h; sourceTree = "<group>"; };
+		A6B58494298B8E4700B1FF9A /* MulticallBalanceSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MulticallBalanceSyncOperation.swift; sourceTree = "<group>"; };
+		A6B58495298B8E4700B1FF9A /* BalanceSyncWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalanceSyncWorker.swift; sourceTree = "<group>"; };
+		A6B58496298B8E4700B1FF9A /* ApiBalanceSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiBalanceSyncOperation.swift; sourceTree = "<group>"; };
+		A6B58497298B8E4700B1FF9A /* SingleCallBalanceSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleCallBalanceSyncOperation.swift; sourceTree = "<group>"; };
+		A6B58498298B8E4700B1FF9A /* BalanceSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalanceSyncOperation.swift; sourceTree = "<group>"; };
+		A6B5849A298B8E4700B1FF9A /* TokenSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenSyncOperation.swift; sourceTree = "<group>"; };
+		A6B5849B298B8E4700B1FF9A /* TokenSyncWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenSyncWorker.swift; sourceTree = "<group>"; };
+		A6B5849C298B8E4700B1FF9A /* ApiTokenSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiTokenSyncOperation.swift; sourceTree = "<group>"; };
+		A6B5849D298B8E4700B1FF9A /* Worker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Worker.swift; sourceTree = "<group>"; };
+		A6B5849F298B8E4700B1FF9A /* DefaultChainSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultChainSyncOperation.swift; sourceTree = "<group>"; };
+		A6B584A0298B8E4700B1FF9A /* RemoteConfigChainSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteConfigChainSyncOperation.swift; sourceTree = "<group>"; };
+		A6B584A1298B8E4700B1FF9A /* ChainSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainSyncOperation.swift; sourceTree = "<group>"; };
+		A6B584A2298B8E4700B1FF9A /* ChainSyncWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainSyncWorker.swift; sourceTree = "<group>"; };
+		A6B584A3298B8E4700B1FF9A /* ApiChainSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiChainSyncOperation.swift; sourceTree = "<group>"; };
+		A6B584A5298B8E4700B1FF9A /* ChainObjectConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainObjectConverter.swift; sourceTree = "<group>"; };
+		A6B584A6298B8E4700B1FF9A /* Converter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Converter.swift; sourceTree = "<group>"; };
+		A6B584AE298B8E4700B1FF9A /* Chain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chain.swift; sourceTree = "<group>"; };
+		A6B584B0298B8E4700B1FF9A /* ChainDB+Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChainDB+Model.swift"; sourceTree = "<group>"; };
+		A6B584B1298B8E4700B1FF9A /* ChainDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainDB.swift; sourceTree = "<group>"; };
+		A6B584B2298B8E4700B1FF9A /* ChainObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainObject.swift; sourceTree = "<group>"; };
+		A6B584B3298B8E4700B1FF9A /* TokenDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenDB.swift; sourceTree = "<group>"; };
+		A6B584B4298B8E4700B1FF9A /* TokenEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenEntity.swift; sourceTree = "<group>"; };
+		A6B584B5298B8E4700B1FF9A /* TokenPriceObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenPriceObject.swift; sourceTree = "<group>"; };
+		A6B584B6298B8E4700B1FF9A /* TokenBalanceEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenBalanceEntity.swift; sourceTree = "<group>"; };
+		A6B584B9298B8E4700B1FF9A /* RealmResults+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RealmResults+.swift"; sourceTree = "<group>"; };
+		A6B584BC298B8E4700B1FF9A /* TokenEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenEndpoint.swift; sourceTree = "<group>"; };
+		A6B584BE298B8E4700B1FF9A /* ChainModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainModel.swift; sourceTree = "<group>"; };
+		A6B584BF298B8E4700B1FF9A /* TokenListResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenListResponse.swift; sourceTree = "<group>"; };
+		A6B584C0298B8E4700B1FF9A /* TokenModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenModel.swift; sourceTree = "<group>"; };
+		A6B584C3298B8E4700B1FF9A /* TokenService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenService.swift; sourceTree = "<group>"; };
+		A6B584C6298B8E4700B1FF9A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A6B584C7298B8E4700B1FF9A /* default_chains.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = default_chains.json; sourceTree = "<group>"; };
+		A6B584C9298B8E4700B1FF9A /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		A6B584CC298B8E4700B1FF9A /* ChainCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChainCell.xib; sourceTree = "<group>"; };
+		A6B584CD298B8E4700B1FF9A /* ChainListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChainListViewController.xib; sourceTree = "<group>"; };
+		A6B584CE298B8E4700B1FF9A /* TokenListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenListViewController.swift; sourceTree = "<group>"; };
+		A6B584CF298B8E4700B1FF9A /* ChainCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainCell.swift; sourceTree = "<group>"; };
+		A6B584D0298B8E4700B1FF9A /* TokenListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokenListViewController.xib; sourceTree = "<group>"; };
+		A6B584D1298B8E4700B1FF9A /* ChainListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainListViewController.swift; sourceTree = "<group>"; };
+		A6B58501298B8E7700B1FF9A /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6B58505298B8E7C00B1FF9A /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6B5850D298B969C00B1FF9A /* ChainBalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainBalanceModel.swift; sourceTree = "<group>"; };
+		A6B5850F298B96BA00B1FF9A /* TokenBalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenBalanceModel.swift; sourceTree = "<group>"; };
+		A6B58511298B973900B1FF9A /* BalanceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceResponse.swift; sourceTree = "<group>"; };
+		A6B58513298B998900B1FF9A /* TokenBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenBalance.swift; sourceTree = "<group>"; };
+		A6B58515298B9C4400B1FF9A /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		A6B58517298BB12600B1FF9A /* NodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeService.swift; sourceTree = "<group>"; };
+		A6B5851A298BB14000B1FF9A /* CallRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallRequest.swift; sourceTree = "<group>"; };
+		A6B5851C298BB1B100B1FF9A /* EtherServiceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherServiceRequest.swift; sourceTree = "<group>"; };
+		A6B5851E298BB29A00B1FF9A /* Web3Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3Client.swift; sourceTree = "<group>"; };
+		A6B58520298BB2B700B1FF9A /* Web3Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3Request.swift; sourceTree = "<group>"; };
+		A6B58522298BB2F400B1FF9A /* Web3ClientFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3ClientFactory.swift; sourceTree = "<group>"; };
+		A6B58524298BB39400B1FF9A /* GetERC20Balance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetERC20Balance.swift; sourceTree = "<group>"; };
+		A6B58526298BB5B700B1FF9A /* NativeTokenBalanceSyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeTokenBalanceSyncOperation.swift; sourceTree = "<group>"; };
+		A6B58528298BB61900B1FF9A /* BalanceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceRequest.swift; sourceTree = "<group>"; };
+		A6B5852A298BB64E00B1FF9A /* CastError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastError.swift; sourceTree = "<group>"; };
+		A6B5852C298BBCF000B1FF9A /* TokenEntityConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenEntityConverter.swift; sourceTree = "<group>"; };
+		AFEAE5013D72EFB44726E57D /* Pods-ChainModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChainModule.debug.xcconfig"; path = "Target Support Files/Pods-ChainModule/Pods-ChainModule.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A6B58484298B8E2000B1FF9A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6B58506298B8E7C00B1FF9A /* Services.framework in Frameworks */,
+				A6B58502298B8E7700B1FF9A /* Utilities.framework in Frameworks */,
+				B02686AA19E1F346612CC27D /* Pods_ChainModule.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2FD2DA8411E67FCA23AE997B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AFEAE5013D72EFB44726E57D /* Pods-ChainModule.debug.xcconfig */,
+				54590EA83EEB5A5B467F9AA8 /* Pods-ChainModule.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		A6B5847D298B8E2000B1FF9A = {
+			isa = PBXGroup;
+			children = (
+				A6B58489298B8E2000B1FF9A /* ChainModule */,
+				A6B58488298B8E2000B1FF9A /* Products */,
+				A6B58500298B8E7700B1FF9A /* Frameworks */,
+				2FD2DA8411E67FCA23AE997B /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		A6B58488298B8E2000B1FF9A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A6B58487298B8E2000B1FF9A /* ChainModule.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A6B58489298B8E2000B1FF9A /* ChainModule */ = {
+			isa = PBXGroup;
+			children = (
+				A6B584A4298B8E4700B1FF9A /* Converter */,
+				A6B584AF298B8E4700B1FF9A /* Database */,
+				A6B584B7298B8E4700B1FF9A /* Extensions */,
+				A6B584AD298B8E4700B1FF9A /* Models */,
+				A6B584BA298B8E4700B1FF9A /* Networking */,
+				A6B584C5298B8E4700B1FF9A /* Resources */,
+				A6B584CA298B8E4700B1FF9A /* Screen */,
+				A6B584C8298B8E4700B1FF9A /* Utils */,
+				A6B58491298B8E4700B1FF9A /* Worker */,
+				A6B5848A298B8E2000B1FF9A /* ChainModule.h */,
+			);
+			path = ChainModule;
+			sourceTree = "<group>";
+		};
+		A6B58491298B8E4700B1FF9A /* Worker */ = {
+			isa = PBXGroup;
+			children = (
+				A6B58492298B8E4700B1FF9A /* PriceSync */,
+				A6B58493298B8E4700B1FF9A /* BalanceSync */,
+				A6B58499298B8E4700B1FF9A /* TokenSync */,
+				A6B5849D298B8E4700B1FF9A /* Worker.swift */,
+				A6B5849E298B8E4700B1FF9A /* ChainSync */,
+			);
+			path = Worker;
+			sourceTree = "<group>";
+		};
+		A6B58492298B8E4700B1FF9A /* PriceSync */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = PriceSync;
+			sourceTree = "<group>";
+		};
+		A6B58493298B8E4700B1FF9A /* BalanceSync */ = {
+			isa = PBXGroup;
+			children = (
+				A6B58495298B8E4700B1FF9A /* BalanceSyncWorker.swift */,
+				A6B58498298B8E4700B1FF9A /* BalanceSyncOperation.swift */,
+				A6B58496298B8E4700B1FF9A /* ApiBalanceSyncOperation.swift */,
+				A6B58497298B8E4700B1FF9A /* SingleCallBalanceSyncOperation.swift */,
+				A6B58494298B8E4700B1FF9A /* MulticallBalanceSyncOperation.swift */,
+				A6B58526298BB5B700B1FF9A /* NativeTokenBalanceSyncOperation.swift */,
+			);
+			path = BalanceSync;
+			sourceTree = "<group>";
+		};
+		A6B58499298B8E4700B1FF9A /* TokenSync */ = {
+			isa = PBXGroup;
+			children = (
+				A6B5849A298B8E4700B1FF9A /* TokenSyncOperation.swift */,
+				A6B5849B298B8E4700B1FF9A /* TokenSyncWorker.swift */,
+				A6B5849C298B8E4700B1FF9A /* ApiTokenSyncOperation.swift */,
+			);
+			path = TokenSync;
+			sourceTree = "<group>";
+		};
+		A6B5849E298B8E4700B1FF9A /* ChainSync */ = {
+			isa = PBXGroup;
+			children = (
+				A6B5849F298B8E4700B1FF9A /* DefaultChainSyncOperation.swift */,
+				A6B584A0298B8E4700B1FF9A /* RemoteConfigChainSyncOperation.swift */,
+				A6B584A1298B8E4700B1FF9A /* ChainSyncOperation.swift */,
+				A6B584A2298B8E4700B1FF9A /* ChainSyncWorker.swift */,
+				A6B584A3298B8E4700B1FF9A /* ApiChainSyncOperation.swift */,
+			);
+			path = ChainSync;
+			sourceTree = "<group>";
+		};
+		A6B584A4298B8E4700B1FF9A /* Converter */ = {
+			isa = PBXGroup;
+			children = (
+				A6B584A5298B8E4700B1FF9A /* ChainObjectConverter.swift */,
+				A6B584A6298B8E4700B1FF9A /* Converter.swift */,
+				A6B5852C298BBCF000B1FF9A /* TokenEntityConverter.swift */,
+			);
+			path = Converter;
+			sourceTree = "<group>";
+		};
+		A6B584AD298B8E4700B1FF9A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A6B584AE298B8E4700B1FF9A /* Chain.swift */,
+				A6B58513298B998900B1FF9A /* TokenBalance.swift */,
+				A6B58515298B9C4400B1FF9A /* Token.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A6B584AF298B8E4700B1FF9A /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				A6B584B0298B8E4700B1FF9A /* ChainDB+Model.swift */,
+				A6B584B1298B8E4700B1FF9A /* ChainDB.swift */,
+				A6B584B2298B8E4700B1FF9A /* ChainObject.swift */,
+				A6B584B3298B8E4700B1FF9A /* TokenDB.swift */,
+				A6B584B4298B8E4700B1FF9A /* TokenEntity.swift */,
+				A6B584B5298B8E4700B1FF9A /* TokenPriceObject.swift */,
+				A6B584B6298B8E4700B1FF9A /* TokenBalanceEntity.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		A6B584B7298B8E4700B1FF9A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A6B584B9298B8E4700B1FF9A /* RealmResults+.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A6B584BA298B8E4700B1FF9A /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				A6B58519298BB13300B1FF9A /* Request */,
+				A6B584BB298B8E4700B1FF9A /* Endpoints */,
+				A6B584BD298B8E4700B1FF9A /* Models */,
+				A6B584C1298B8E4700B1FF9A /* Services */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		A6B584BB298B8E4700B1FF9A /* Endpoints */ = {
+			isa = PBXGroup;
+			children = (
+				A6B584BC298B8E4700B1FF9A /* TokenEndpoint.swift */,
+			);
+			path = Endpoints;
+			sourceTree = "<group>";
+		};
+		A6B584BD298B8E4700B1FF9A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A6B584BE298B8E4700B1FF9A /* ChainModel.swift */,
+				A6B584BF298B8E4700B1FF9A /* TokenListResponse.swift */,
+				A6B584C0298B8E4700B1FF9A /* TokenModel.swift */,
+				A6B5850D298B969C00B1FF9A /* ChainBalanceModel.swift */,
+				A6B5850F298B96BA00B1FF9A /* TokenBalanceModel.swift */,
+				A6B58511298B973900B1FF9A /* BalanceResponse.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A6B584C1298B8E4700B1FF9A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A6B584C3298B8E4700B1FF9A /* TokenService.swift */,
+				A6B58517298BB12600B1FF9A /* NodeService.swift */,
+				A6B5851E298BB29A00B1FF9A /* Web3Client.swift */,
+				A6B58522298BB2F400B1FF9A /* Web3ClientFactory.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A6B584C5298B8E4700B1FF9A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A6B584C6298B8E4700B1FF9A /* Constants.swift */,
+				A6B584C7298B8E4700B1FF9A /* default_chains.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A6B584C8298B8E4700B1FF9A /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A6B584C9298B8E4700B1FF9A /* AsyncOperation.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		A6B584CA298B8E4700B1FF9A /* Screen */ = {
+			isa = PBXGroup;
+			children = (
+				A6B584CB298B8E4700B1FF9A /* Demo */,
+			);
+			path = Screen;
+			sourceTree = "<group>";
+		};
+		A6B584CB298B8E4700B1FF9A /* Demo */ = {
+			isa = PBXGroup;
+			children = (
+				A6B584CC298B8E4700B1FF9A /* ChainCell.xib */,
+				A6B584CD298B8E4700B1FF9A /* ChainListViewController.xib */,
+				A6B584CE298B8E4700B1FF9A /* TokenListViewController.swift */,
+				A6B584CF298B8E4700B1FF9A /* ChainCell.swift */,
+				A6B584D0298B8E4700B1FF9A /* TokenListViewController.xib */,
+				A6B584D1298B8E4700B1FF9A /* ChainListViewController.swift */,
+			);
+			path = Demo;
+			sourceTree = "<group>";
+		};
+		A6B58500298B8E7700B1FF9A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A6B58505298B8E7C00B1FF9A /* Services.framework */,
+				A6B58501298B8E7700B1FF9A /* Utilities.framework */,
+				7EFAA67CC187B79B28D3E4DC /* Pods_ChainModule.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A6B58519298BB13300B1FF9A /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				A6B5851A298BB14000B1FF9A /* CallRequest.swift */,
+				A6B5851C298BB1B100B1FF9A /* EtherServiceRequest.swift */,
+				A6B58520298BB2B700B1FF9A /* Web3Request.swift */,
+				A6B58524298BB39400B1FF9A /* GetERC20Balance.swift */,
+				A6B58528298BB61900B1FF9A /* BalanceRequest.swift */,
+				A6B5852A298BB64E00B1FF9A /* CastError.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		A6B58482298B8E2000B1FF9A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6B5848B298B8E2000B1FF9A /* ChainModule.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		A6B58486298B8E2000B1FF9A /* ChainModule */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A6B5848E298B8E2000B1FF9A /* Build configuration list for PBXNativeTarget "ChainModule" */;
+			buildPhases = (
+				F9DAE35B478ECBCFE867E128 /* [CP] Check Pods Manifest.lock */,
+				A6B58482298B8E2000B1FF9A /* Headers */,
+				A6B58483298B8E2000B1FF9A /* Sources */,
+				A6B58484298B8E2000B1FF9A /* Frameworks */,
+				A6B58485298B8E2000B1FF9A /* Resources */,
+				A6B58504298B8E7700B1FF9A /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ChainModule;
+			productName = ChainModule;
+			productReference = A6B58487298B8E2000B1FF9A /* ChainModule.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A6B5847E298B8E2000B1FF9A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1340;
+				TargetAttributes = {
+					A6B58486298B8E2000B1FF9A = {
+						CreatedOnToolsVersion = 13.4;
+					};
+				};
+			};
+			buildConfigurationList = A6B58481298B8E2000B1FF9A /* Build configuration list for PBXProject "ChainModule" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A6B5847D298B8E2000B1FF9A;
+			productRefGroup = A6B58488298B8E2000B1FF9A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A6B58486298B8E2000B1FF9A /* ChainModule */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A6B58485298B8E2000B1FF9A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6B584FE298B8E4700B1FF9A /* TokenListViewController.xib in Resources */,
+				A6B584F8298B8E4700B1FF9A /* default_chains.json in Resources */,
+				A6B584FB298B8E4700B1FF9A /* ChainListViewController.xib in Resources */,
+				A6B584FA298B8E4700B1FF9A /* ChainCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F9DAE35B478ECBCFE867E128 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ChainModule-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A6B58483298B8E2000B1FF9A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6B584F6298B8E4700B1FF9A /* TokenService.swift in Sources */,
+				A6B584F9298B8E4700B1FF9A /* AsyncOperation.swift in Sources */,
+				A6B584F7298B8E4700B1FF9A /* Constants.swift in Sources */,
+				A6B5852D298BBCF000B1FF9A /* TokenEntityConverter.swift in Sources */,
+				A6B584DE298B8E4700B1FF9A /* ChainSyncWorker.swift in Sources */,
+				A6B58514298B998900B1FF9A /* TokenBalance.swift in Sources */,
+				A6B584F0298B8E4700B1FF9A /* RealmResults+.swift in Sources */,
+				A6B584EC298B8E4700B1FF9A /* TokenEntity.swift in Sources */,
+				A6B584F2298B8E4700B1FF9A /* ChainModel.swift in Sources */,
+				A6B58523298BB2F400B1FF9A /* Web3ClientFactory.swift in Sources */,
+				A6B5850E298B969C00B1FF9A /* ChainBalanceModel.swift in Sources */,
+				A6B584D2298B8E4700B1FF9A /* MulticallBalanceSyncOperation.swift in Sources */,
+				A6B5851F298BB29A00B1FF9A /* Web3Client.swift in Sources */,
+				A6B584E1298B8E4700B1FF9A /* Converter.swift in Sources */,
+				A6B584ED298B8E4700B1FF9A /* TokenPriceObject.swift in Sources */,
+				A6B584E7298B8E4700B1FF9A /* Chain.swift in Sources */,
+				A6B58512298B973900B1FF9A /* BalanceResponse.swift in Sources */,
+				A6B58529298BB61900B1FF9A /* BalanceRequest.swift in Sources */,
+				A6B584DA298B8E4700B1FF9A /* Worker.swift in Sources */,
+				A6B584DB298B8E4700B1FF9A /* DefaultChainSyncOperation.swift in Sources */,
+				A6B584F3298B8E4700B1FF9A /* TokenListResponse.swift in Sources */,
+				A6B584D5298B8E4700B1FF9A /* SingleCallBalanceSyncOperation.swift in Sources */,
+				A6B5852B298BB64E00B1FF9A /* CastError.swift in Sources */,
+				A6B58521298BB2B700B1FF9A /* Web3Request.swift in Sources */,
+				A6B584E9298B8E4700B1FF9A /* ChainDB.swift in Sources */,
+				A6B584E0298B8E4700B1FF9A /* ChainObjectConverter.swift in Sources */,
+				A6B58516298B9C4400B1FF9A /* Token.swift in Sources */,
+				A6B584FC298B8E4700B1FF9A /* TokenListViewController.swift in Sources */,
+				A6B5851B298BB14000B1FF9A /* CallRequest.swift in Sources */,
+				A6B584E8298B8E4700B1FF9A /* ChainDB+Model.swift in Sources */,
+				A6B584D3298B8E4700B1FF9A /* BalanceSyncWorker.swift in Sources */,
+				A6B584F1298B8E4700B1FF9A /* TokenEndpoint.swift in Sources */,
+				A6B584EE298B8E4700B1FF9A /* TokenBalanceEntity.swift in Sources */,
+				A6B584DC298B8E4700B1FF9A /* RemoteConfigChainSyncOperation.swift in Sources */,
+				A6B584F4298B8E4700B1FF9A /* TokenModel.swift in Sources */,
+				A6B584D8298B8E4700B1FF9A /* TokenSyncWorker.swift in Sources */,
+				A6B58525298BB39400B1FF9A /* GetERC20Balance.swift in Sources */,
+				A6B584D6298B8E4700B1FF9A /* BalanceSyncOperation.swift in Sources */,
+				A6B584DF298B8E4700B1FF9A /* ApiChainSyncOperation.swift in Sources */,
+				A6B584DD298B8E4700B1FF9A /* ChainSyncOperation.swift in Sources */,
+				A6B584D7298B8E4700B1FF9A /* TokenSyncOperation.swift in Sources */,
+				A6B584EB298B8E4700B1FF9A /* TokenDB.swift in Sources */,
+				A6B584EA298B8E4700B1FF9A /* ChainObject.swift in Sources */,
+				A6B584FF298B8E4700B1FF9A /* ChainListViewController.swift in Sources */,
+				A6B58510298B96BA00B1FF9A /* TokenBalanceModel.swift in Sources */,
+				A6B584D4298B8E4700B1FF9A /* ApiBalanceSyncOperation.swift in Sources */,
+				A6B58518298BB12600B1FF9A /* NodeService.swift in Sources */,
+				A6B58527298BB5B700B1FF9A /* NativeTokenBalanceSyncOperation.swift in Sources */,
+				A6B584FD298B8E4700B1FF9A /* ChainCell.swift in Sources */,
+				A6B5851D298BB1B100B1FF9A /* EtherServiceRequest.swift in Sources */,
+				A6B584D9298B8E4700B1FF9A /* ApiTokenSyncOperation.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A6B5848C298B8E2000B1FF9A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		A6B5848D298B8E2000B1FF9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		A6B5848F298B8E2000B1FF9A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AFEAE5013D72EFB44726E57D /* Pods-ChainModule.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = G9CRYMTLBL;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kryd.ChainModule;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A6B58490298B8E2000B1FF9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 54590EA83EEB5A5B467F9AA8 /* Pods-ChainModule.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = G9CRYMTLBL;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kryd.ChainModule;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A6B58481298B8E2000B1FF9A /* Build configuration list for PBXProject "ChainModule" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A6B5848C298B8E2000B1FF9A /* Debug */,
+				A6B5848D298B8E2000B1FF9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A6B5848E298B8E2000B1FF9A /* Build configuration list for PBXNativeTarget "ChainModule" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A6B5848F298B8E2000B1FF9A /* Debug */,
+				A6B58490298B8E2000B1FF9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A6B5847E298B8E2000B1FF9A /* Project object */;
+}

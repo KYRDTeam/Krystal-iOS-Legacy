@@ -202,6 +202,21 @@ target 'BaseWallet' do
   pod 'FirebaseRemoteConfig', '~> 10.0.0'
 end
 
+target 'ChainModule' do
+  project 'ChainModule/ChainModule.xcodeproj'
+  use_frameworks!
+  
+  pod 'RealmSwift', '~> 10.32'
+  pod 'Moya'
+  pod 'FirebaseRemoteConfig', '~> 10.0.0'
+  pod 'JSONRPCKit', '~> 3.0.0'
+  pod 'APIKit', '~> 3.2.1'
+  pod 'BigInt'
+  pod 'JavaScriptKit', '~> 1.0.0'
+  pod 'JavaScriptKit', '~> 1.0.0'
+end
+
+
 target 'DappBrowser' do
   project 'DappBrowser/DappBrowser.xcodeproj'
   use_frameworks!

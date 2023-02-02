@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:ChainModule/ChainModule.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:DappBrowser/DappBrowser.xcodeproj">
    </FileRef>
    <FileRef

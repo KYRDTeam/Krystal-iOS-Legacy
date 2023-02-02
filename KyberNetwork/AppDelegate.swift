@@ -10,6 +10,7 @@ import WalletConnectSwift
 import IQKeyboardManager
 import Dependencies
 import BaseWallet
+import ChainModule
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -43,7 +44,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
           print("SYNC COMPLETED")
       }
       
-      window?.rootViewController = ChainListViewController.instantiateFromNib()
+      _ = TokenDB.shared
+      
+      window?.rootViewController = TokenListViewController.instantiateFromNib()
       window?.makeKeyAndVisible()
       
 //    setupImageProcessor()

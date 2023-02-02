@@ -1,0 +1,47 @@
+[
+    {
+        "chainID": 1,
+        "name": "Ethereum",
+        "iconUrl": "https://d33wubrfki0l68.cloudfront.net/fcd4ecd90386aeb50a235ddc4f0063cfbb8a7b66/4295e/static/bfc04ac72981166c740b189463e1f74c/40129/eth-diamond-black-white.jpg",
+        "isDefault": true,
+        "configs": [
+            {
+                "name": "SUPPORT_EIP_1559",
+                "value": "false"
+            },
+            {
+                "name": "SUPPORT_BALANCE_API",
+                "value": "true"
+            },
+            {
+                "name": "SUPPORT_TOKEN_LIST_API",
+                "value": "true"
+            },
+            {
+                "name": "CHAIN_API_PATH",
+                "value": "ethereum"
+            },
+            {
+                "name": "CHAIN_ADDRESS_PREFIX",
+                "value": "ethereum"
+            }
+        ],
+        "smartContracts": [
+            {
+                "address": "0x70270C228c5B4279d1578799926873aa72446CcD",
+                "type": "PROXY_ADDRESS"
+            },
+            {
+                "address": "0x70270C228c5B4279d1578799926873aa72446CcD",
+                "type": "MULTI_CALL_ADDRESS"
+            }
+        ],
+        "urls": [
+            {
+                "url": "https://etherscan.io",
+                "type": "BLOCK_EXPLORER_URL",
+                "name": "Etherscan"
+            }
+        ]
+    }
+]

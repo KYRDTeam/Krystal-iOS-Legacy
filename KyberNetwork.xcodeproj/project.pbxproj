@@ -794,6 +794,8 @@
 		A6B3CD7928124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD7828124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift */; };
 		A6B3CD8228125737005D0D66 /* KrystalApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD8128125737005D0D66 /* KrystalApi.swift */; };
 		A6B3CD84281258CD005D0D66 /* KrystalSolanaTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD83281258CD005D0D66 /* KrystalSolanaTransaction.swift */; };
+		A6B5850B298B902E00B1FF9A /* ChainModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B5850A298B902E00B1FF9A /* ChainModule.framework */; };
+		A6B5850C298B902E00B1FF9A /* ChainModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B5850A298B902E00B1FF9A /* ChainModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A6B6ED35290F8BF600514A01 /* AppNonceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B6ED34290F8BF600514A01 /* AppNonceStorage.swift */; };
 		A6B78C8E2947010D00FBFCB5 /* DappBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B78C8D2947010D00FBFCB5 /* DappBrowser.framework */; };
 		A6B78C8F2947010D00FBFCB5 /* DappBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B78C8D2947010D00FBFCB5 /* DappBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1120,7 +1122,7 @@
 		C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38E5D7825F63FC000E5FC48 /* TransactionHistory.swift */; };
 		C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */; };
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
-		C39A7EED24778B03003EA57D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		C39D311428F5645800EC26ED /* StakingPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D311228F5645800EC26ED /* StakingPortfolioViewController.swift */; };
 		C39D311528F5645800EC26ED /* StakingPortfolioViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C39D311328F5645800EC26ED /* StakingPortfolioViewController.xib */; };
 		C39D311928F5679700EC26ED /* StakingPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D311728F5679700EC26ED /* StakingPortfolioCell.swift */; };
@@ -1284,6 +1286,7 @@
 				A61715EE291E4C8E001778C7 /* AppState.framework in Embed Frameworks */,
 				A61715E4291E4C86001778C7 /* DesignSystem.framework in Embed Frameworks */,
 				A668BF99292CB860001A110D /* TokenModule.framework in Embed Frameworks */,
+				A6B5850C298B902E00B1FF9A /* ChainModule.framework in Embed Frameworks */,
 				7EB252CC2907FD1100648438 /* EarnModule.framework in Embed Frameworks */,
 				A61715F0291E4C93001778C7 /* Utilities.framework in Embed Frameworks */,
 				A61715EA291E4C8A001778C7 /* BaseWallet.framework in Embed Frameworks */,
@@ -2103,6 +2106,7 @@
 		A6B3CD7828124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InternalHistoryTransaction+TransactionHistoryItem.swift"; sourceTree = "<group>"; };
 		A6B3CD8128125737005D0D66 /* KrystalApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalApi.swift; sourceTree = "<group>"; };
 		A6B3CD83281258CD005D0D66 /* KrystalSolanaTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalSolanaTransaction.swift; sourceTree = "<group>"; };
+		A6B5850A298B902E00B1FF9A /* ChainModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ChainModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B6ED34290F8BF600514A01 /* AppNonceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNonceStorage.swift; sourceTree = "<group>"; };
 		A6B78C8D2947010D00FBFCB5 /* DappBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DappBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6BA4C9C28A0CEC6002E2B30 /* NumberFormatUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatUtils.swift; sourceTree = "<group>"; };
@@ -2565,6 +2569,7 @@
 				A61715E3291E4C86001778C7 /* DesignSystem.framework in Frameworks */,
 				A61715E7291E4C88001778C7 /* CloudKit.framework in Frameworks */,
 				A61715E5291E4C87001778C7 /* Dependencies.framework in Frameworks */,
+				A6B5850B298B902E00B1FF9A /* ChainModule.framework in Frameworks */,
 				A61715EB291E4C8B001778C7 /* BaseModule.framework in Frameworks */,
 				A6FAFF15294310DE006F9E21 /* DappBrowser.framework in Frameworks */,
 				A61715E9291E4C8A001778C7 /* BaseWallet.framework in Frameworks */,
@@ -6701,6 +6706,7 @@
 		FAD3F374A5C639BD900944DB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6B5850A298B902E00B1FF9A /* ChainModule.framework */,
 				A62F0F0329374FDD00937677 /* SwapModule.framework */,
 				A6B78C8D2947010D00FBFCB5 /* DappBrowser.framework */,
 				A668BF97292CB860001A110D /* TokenModule.framework */,
@@ -7814,7 +7820,7 @@
 				7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */,
 				7EE92A0F286307E10050DC8D /* ShowAllCell.swift in Sources */,
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
-				C39A7EED24778B03003EA57D /* BuildFile in Sources */,
+				C39A7EED24778B03003EA57D /* (null) in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				C3233EFE2807DF4D0086C2BC /* CopyAddressCell.swift in Sources */,
 				A69C5BCE28D1B342000DE825 /* NotificationEndpoint.swift in Sources */,
