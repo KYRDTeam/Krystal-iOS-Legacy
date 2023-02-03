@@ -79,11 +79,33 @@ class KNTransactionStatusPopUp: KNBaseViewController {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+    
+    func observeEvents() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.txStatusUpdated(_:)),
+            name: .kTxStatusUpdated,
+            object: nil
+        )
+    }
 
   deinit {
     let name = Notification.Name(rawValue: "viewDidBecomeActive")
     NotificationCenter.default.removeObserver(self, name: name, object: nil)
+      NotificationCenter.default.removeObserver(self, name: .kTxStatusUpdated, object: nil)
   }
+    
+    @objc func txStatusUpdated(_ notification: Notification) {
+        guard let hash = notification.userInfo?["hash"] as? String, let status = notification.userInfo?["status"] as? InternalTransactionState else {
+            return
+        }
+        guard hash == transaction.hash else {
+            return
+        }
+        transaction.state = status
+        updateView(with: transaction)
+        
+    }
 
   override func viewDidLoad() {
     super.viewDidLoad()
