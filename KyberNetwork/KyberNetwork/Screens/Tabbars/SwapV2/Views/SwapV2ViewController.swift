@@ -245,14 +245,16 @@ class SwapV2ViewController: InAppBrowsingViewController {
     platformTableView.dataSource = self
     destViewHeight.constant = 112
   }
+    
+  override func onAppSwitchAddress() {
+    super.onAppSwitchAddress()
+      
+    self.sourceTextField.text = nil
+  }
   
   func bindViewModel() {
     viewModel.currentChain.observeAndFire(on: self) { [weak self] chain in
       self?.containerView.isHidden = !KNGeneralProvider.shared.currentChain.isSupportSwap()
-    }
-    
-    viewModel.currentAddress.observeAndFire(on: self) { [weak self] address in
-      self?.sourceTextField.text = nil
     }
     
     viewModel.platformRatesViewModels.observe(on: self) { [weak self] _ in

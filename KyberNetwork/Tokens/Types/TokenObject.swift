@@ -115,7 +115,8 @@ class TokenObject: Object {
   }
 
   func toData() -> Token {
-    return Token(name: self.name, symbol: self.symbol, address: self.contract, decimals: self.decimals, logo: self.icon)
+      let iconUrl = self.icon.starts(with: "http") ? self.icon : String(format: Constants.defaultTokenIconURL, self.symbol.lowercased())
+      return Token(name: self.name, symbol: self.symbol, address: self.contract, decimals: self.decimals, logo: iconUrl)
   }
 
   func getBalanceBigInt() -> BigInt {
