@@ -71,7 +71,7 @@ struct StakingPortfolioCellModel {
       }
       if stakingBalanceBigInt > BigInt(0) {
         let usdBigIntValue = BigInt(earnBalance.underlyingUsd * pow(10.0 , Double(earnBalance.toUnderlyingToken.decimals))) * toUnderlyingBalanceBigInt / BigInt(pow(10.0 , Double(earnBalance.toUnderlyingToken.decimals)))
-        let usdString = usdBigIntValue < BigInt(pow(10.0, Double(earnBalance.toUnderlyingToken.decimals - 2))) ? " | < $0.01" : " | $\(usdBigIntValue.shortString(decimals: earnBalance.toUnderlyingToken.decimals, maxFractionDigits: 2))"
+        let usdString = usdBigIntValue < BigInt(pow(10.0, Double(earnBalance.toUnderlyingToken.decimals - 2))) ? " | \(NumberFormatUtils.lessThanMinUsdAmountStringWithSpace())" : " | $\(usdBigIntValue.shortString(decimals: earnBalance.toUnderlyingToken.decimals, maxFractionDigits: 2))"
           
         stakingBalanceString = stakingBalanceString + usdString
       }
