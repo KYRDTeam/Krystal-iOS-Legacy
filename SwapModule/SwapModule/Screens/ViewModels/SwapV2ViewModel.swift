@@ -272,7 +272,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     func checkAllowance() {
         self.state.value = .checkingAllowance
         let nodeService = EthereumNodeService(chain: currentChain.value)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             nodeService.getAllowance(address: self.currentAddress.value.addressString, networkAddress: self.currentChain.value.proxyAddress(), tokenAddress: self.sourceToken.value?.address ?? "") { [weak self] result in
                 guard let self = self else { return }
                 switch result {
