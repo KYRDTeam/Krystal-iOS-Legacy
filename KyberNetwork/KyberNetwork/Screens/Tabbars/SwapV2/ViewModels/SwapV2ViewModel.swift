@@ -162,7 +162,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     guard let sourceToken = sourceToken.value else { return }
     swapRepository.getTokenDetail(tokenAddress: sourceToken.address) { [weak self] token in
       guard let token = token else { return }
-      if token.address == sourceToken.address { // Needed to handle case swap pair
+      if token.address.lowercased() == sourceToken.address.lowercased() { // Needed to handle case swap pair
         self?.sourceTokenPrice.value = token.markets["usd"]?.price
         self?.sourceToken.value = Token(name: token.name, symbol: token.symbol, address: token.address, decimals: token.decimals, logo: token.logo)
       } else {
@@ -175,7 +175,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     guard let destToken = destToken.value else { return }
     swapRepository.getTokenDetail(tokenAddress: destToken.address) { [weak self] token in
       guard let token = token else { return }
-      if token.address == destToken.address { // Needed to handle case swap pair
+      if token.address.lowercased() == destToken.address.lowercased() { // Needed to handle case swap pair
         self?.destTokenPrice.value = token.markets["usd"]?.price
         self?.destToken.value = Token(name: token.name, symbol: token.symbol, address: token.address, decimals: token.decimals, logo: token.logo)
       } else {
