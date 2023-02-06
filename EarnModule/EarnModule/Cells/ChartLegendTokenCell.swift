@@ -12,7 +12,7 @@ import Utilities
 import BigInt
 
 class ChartLegendTokenCell: UICollectionViewCell {
-    static let legendSize: CGSize = CGSize(width: 180, height: 44)
+    static let legendSize: CGSize = CGSize(width: 182, height: 44)
     
     @IBOutlet weak var legendColorView: UIView!
     @IBOutlet weak var tokenImageView: UIImageView!
