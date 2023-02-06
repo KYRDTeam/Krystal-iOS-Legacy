@@ -87,6 +87,13 @@ class KNTransactionStatusPopUp: KNBaseViewController {
             name: .kTxStatusUpdated,
             object: nil
         )
+        let name = Notification.Name(rawValue: "viewDidBecomeActive")
+        NotificationCenter.default.addObserver(
+          self,
+          selector: #selector(self.viewDidBecomeActive(_:)),
+          name: name,
+          object: nil
+        )
     }
 
   deinit {
@@ -107,17 +114,11 @@ class KNTransactionStatusPopUp: KNBaseViewController {
         
     }
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    self.commontSetup()
-    let name = Notification.Name(rawValue: "viewDidBecomeActive")
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.viewDidBecomeActive(_:)),
-      name: name,
-      object: nil
-    )
-  }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.commontSetup()
+        observeEvents()
+    }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
