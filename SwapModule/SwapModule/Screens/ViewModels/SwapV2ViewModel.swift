@@ -357,7 +357,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
     
     func updateDestToken(token: Token) {
-        if token.address == sourceToken.value?.address {
+        if token.address.lowercased() == sourceToken.value?.address.lowercased() {
             error.value = .sameSourceDestToken
             return
         }
