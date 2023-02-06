@@ -115,10 +115,10 @@ class AppRouter: AppRouterProtocol, Coordinator {
     UIApplication.shared.topMostViewController()?.openSafari(with: url)
   }
   
-  func openToken(navigationController: UINavigationController, address: String, chainID: Int) {
+  func openToken(navigationController: UINavigationController, address: String, chainID: Int, tokenName: String?) {
     guard let chain = ChainType.make(chainID: chainID) else { return }
     let currencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .quote
-    guard let vc = TokenModule.createTokenDetailViewController(address: address, chain: chain, currencyMode: currencyMode) else { return }
+    guard let vc = TokenModule.createTokenDetailViewController(address: address, chain: chain, tokenName: tokenName, currencyMode: currencyMode) else { return }
     vc.hidesBottomBarWhenPushed = false
     navigationController.pushViewController(vc, animated: true, completion: nil)
   }
