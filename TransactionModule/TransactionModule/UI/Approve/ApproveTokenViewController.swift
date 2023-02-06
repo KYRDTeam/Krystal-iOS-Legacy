@@ -76,6 +76,9 @@ public class ApproveTokenViewController: KNBaseViewController {
             self.editButton.isHidden = true
         }
         self.headerTitle.text = self.viewModel.headerTitle
+        viewModel.getEstimateGasLimit { error in
+            self.updateGasFeeUI()
+        }
     }
     
     func setupChainInfo() {
