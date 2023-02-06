@@ -72,6 +72,8 @@ class AppTxProcessor: TxProcessorProtocol {
             return .contractInteraction
         case .unstake:
             return .withdraw
+        case .swap:
+            return .swap
         }
     }
     

@@ -25,7 +25,7 @@ class PendingSwapTxInfo: PendingTxInfo {
         self.sourceAmount = sourceAmount
         self.destAmount = destAmount
         self.detailString = detailString
-        super.init(type: .earn, legacyTx: legacyTx, eip1559Tx: eip1559Tx, chain: chain, date: date, hash: hash)
+        super.init(type: .swap, legacyTx: legacyTx, eip1559Tx: eip1559Tx, chain: chain, date: date, hash: hash)
     }
     
     override var destSymbol: String? {
