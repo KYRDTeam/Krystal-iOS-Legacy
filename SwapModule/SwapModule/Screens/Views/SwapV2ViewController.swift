@@ -504,8 +504,8 @@ class SwapV2ViewController: InAppBrowsingViewController {
                 self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact5.withLineSpacing()
                 self.piWarningLabel.textColor = AppTheme.current.errorTextColor
                 self.piWarningView.isHidden = false
-                self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
-                self.priceImpactInfoView.valueLabel.textColor = AppTheme.current.errorTextColor
+                self.priceImpactInfoView.setValue(value: "-", highlighted: false)
+                self.priceImpactInfoView.valueLabel.textColor = .white.withAlphaComponent(0.5)
             }
         }
         

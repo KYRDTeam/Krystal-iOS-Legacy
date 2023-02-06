@@ -29,6 +29,7 @@ class TokenDetailViewModel {
   let currencyMode: CurrencyMode
   
   var chain: ChainType
+  var tokenName: String?
   
   var hideBalanceStatus: Bool {
     get {
@@ -72,11 +73,12 @@ class TokenDetailViewModel {
   var address: String
   var tokenDetail: TokenDetailInfo?
 
-  init(address: String, chain: ChainType, currencyMode: CurrencyMode) {
+  init(address: String, chain: ChainType, tokenName: String? = nil, currencyMode: CurrencyMode) {
     self.address = address
     self.currencyMode = currencyMode
     self.chain = chain
     self.currency = currencyMode.toString(chain: chain)
+    self.tokenName = tokenName
   }
   
   func updateChartData(_ data: [[Double]]) {
