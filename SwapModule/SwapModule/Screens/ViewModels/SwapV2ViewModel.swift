@@ -173,7 +173,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     func loadSourceTokenPrice() {
         guard let sourceToken = sourceToken.value else { return }
         tokenService.getTokenDetail(address: sourceToken.address, chainPath: currentChain.value.apiChainPath()) { [weak self] token in
-            if token?.address == sourceToken.address { // Needed to handle case swap pair
+            if token?.address.lowercased() == sourceToken.address.lowercased() { // Needed to handle case swap pair
                 self?.sourceTokenPrice.value = token?.markets["usd"]?.price
             } else {
                 self?.sourceTokenPrice.value = nil
@@ -184,7 +184,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     func loadDestTokenPrice() {
         guard let destToken = destToken.value else { return }
         tokenService.getTokenDetail(address: destToken.address, chainPath: currentChain.value.apiChainPath()) { [weak self] token in
-            if token?.address == destToken.address { // Needed to handle case swap pair
+            if token?.address.lowercased() == destToken.address.lowercased() { // Needed to handle case swap pair
                 self?.destTokenPrice.value = token?.markets["usd"]?.price
             } else {
                 self?.destTokenPrice.value = nil
