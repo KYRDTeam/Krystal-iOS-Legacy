@@ -496,8 +496,8 @@ class SwapV2ViewController: InAppBrowsingViewController {
                 self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact4.withLineSpacing()
                 self.piWarningLabel.textColor = AppTheme.current.errorTextColor
                 self.piWarningView.isHidden = false
-                self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
-                self.priceImpactInfoView.valueLabel.textColor = AppTheme.current.errorTextColor
+                self.priceImpactInfoView.setValue(value: "-", highlighted: false)
+                self.priceImpactInfoView.valueLabel.textColor = .white.withAlphaComponent(0.5)
             case .outOfPositiveRange:
                 self.piWarningView.backgroundColor = AppTheme.current.errorTextColor.withAlphaComponent(0.1)
                 self.piWarningIcon.image = .swapWarningRed
