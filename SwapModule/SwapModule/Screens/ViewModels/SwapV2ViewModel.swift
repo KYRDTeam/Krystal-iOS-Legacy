@@ -173,8 +173,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     func loadSourceTokenPrice() {
         guard let sourceToken = sourceToken.value else { return }
         tokenService.getTokenDetail(address: sourceToken.address, chainPath: currentChain.value.apiChainPath()) { [weak self] token in
-            if token?.address.lowercased() == sourceToken.address.lowercased() { // Needed to handle case swap pair
-                self?.sourceTokenPrice.value = token?.markets["usd"]?.price
+            guard let token = token else { return }
+            if token.address.lowercased() == sourceToken.address.lowercased() { // Needed to handle case swap pair
+                self?.sourceTokenPrice.value = token.markets["usd"]?.price
+                self?.sourceToken.value = Token(name: token.name, symbol: token.symbol, address: token.address, decimals: token.decimals, logo: token.logo)
             } else {
                 self?.sourceTokenPrice.value = nil
             }
@@ -184,8 +186,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     func loadDestTokenPrice() {
         guard let destToken = destToken.value else { return }
         tokenService.getTokenDetail(address: destToken.address, chainPath: currentChain.value.apiChainPath()) { [weak self] token in
-            if token?.address.lowercased() == destToken.address.lowercased() { // Needed to handle case swap pair
-                self?.destTokenPrice.value = token?.markets["usd"]?.price
+            guard let token = token else { return }
+            if token.address.lowercased() == destToken.address.lowercased() { // Needed to handle case swap pair
+                self?.destTokenPrice.value = token.markets["usd"]?.price
+                self?.destToken.value = Token(name: token.name, symbol: token.symbol, address: token.address, decimals: token.decimals, logo: token.logo)
             } else {
                 self?.destTokenPrice.value = nil
             }
@@ -489,8 +493,8 @@ extension SwapV2ViewModel {
             timer = nil
             scheduleFetchingBalance()
             loadBaseToken()
-            reloadSourceBalance()
         }
+        reloadSourceBalance()
     }
     
     @objc func appDidSwitchAddress() {
