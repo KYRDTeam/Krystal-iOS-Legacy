@@ -93,7 +93,7 @@ public struct Constants {
   public static let slippageRateSaveKey = "slippage-rate-saving-key"
   public static let expertModeSaveKey = "expert-mode-saving-key"
   public static let bridgeWarningSettingFile = "bridge_warning_setting.data"
-  
+  public static let defaultTokenIconURL = "https://files.kyberswap.com/DesignAssets/tokens/iOS/%@.png"
 }
 
 public struct UnitConfiguration {

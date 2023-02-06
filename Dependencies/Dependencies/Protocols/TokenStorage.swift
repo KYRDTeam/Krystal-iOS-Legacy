@@ -19,13 +19,15 @@ public protocol TokenStorage {
 public extension TokenStorage {
     
     func quoteToken(forChain chain: ChainType) -> Token {
+        let defaultTokenImageUrl = "https://files.kyberswap.com/DesignAssets/tokens/iOS/%@.png"
+        let tokenSymbol = chain.customRPC().quoteToken
         return AppDependencies.tokenStorage.getAllSupportedTokens().first { token in
-            return token.symbol == chain.customRPC().quoteToken && token.address == chain.customRPC().quoteTokenAddress
+            return token.symbol == tokenSymbol && token.address == chain.customRPC().quoteTokenAddress
         } ?? Token(name: chain.customRPC().quoteToken,
                    symbol: chain.customRPC().quoteToken,
                    address: chain.customRPC().quoteTokenAddress,
                    decimals: 18,
-                   logo: chain.customRPC().quoteToken.lowercased())
+                   logo: String(format: defaultTokenImageUrl, tokenSymbol.lowercased()))
     }
     
 }
