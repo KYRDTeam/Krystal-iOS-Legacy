@@ -267,7 +267,6 @@ class SwapV2ViewController: InAppBrowsingViewController {
         viewModel.sourceToken.observeAndFire(on: self) { [weak self] token in
             DispatchQueue.main.async {
                 self?.sourceTokenLabel.text = token?.symbol
-                self?.sourceTextField.text = nil
                 if let token = token {
                     self?.sourceTokenIcon.isHidden = false
                     self?.sourceTokenIcon.setImage(urlString: token.logo, symbol: token.symbol)
@@ -276,6 +275,10 @@ class SwapV2ViewController: InAppBrowsingViewController {
                     self?.sourceTokenLabel.text = Strings.selectToken
                 }
             }
+        }
+        
+        viewModel.onChangeSourceToken = { [weak self] in
+            self?.sourceTextField.text = nil
         }
         
         viewModel.destToken.observeAndFire(on: self) { [weak self] token in
