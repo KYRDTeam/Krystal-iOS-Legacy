@@ -122,11 +122,10 @@ class KNTransactionStatusPopUp: KNBaseViewController {
     }
     
     @objc func fireTimer() {
-        guard EtherscanTransactionStorage.shared.getInternalHistoryTransaction(chain: AppState.shared.currentChain).isNotEmpty else {
-            return
+        if EtherscanTransactionStorage.shared.getInternalHistoryTransaction(chain: AppState.shared.currentChain).isEmpty {
+            transaction.state = .done
+            updateView(with: transaction)
         }
-        transaction.state = .done
-        updateView(with: transaction)
     }
 
     override func viewDidLoad() {
