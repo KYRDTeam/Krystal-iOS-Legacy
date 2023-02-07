@@ -141,6 +141,8 @@ class SwapSummaryViewController: UIViewController {
             let controller = SwapProcessPopup.instantiateFromNib()
             controller.pendingTx = pendingTx
             let sheet = SheetViewController(controller: controller, sizes: [.intrinsic], options: .init(pullBarHeight: 0))
+            sheet.dismissOnOverlayTap = false
+            sheet.dismissOnPull = false
             controller.delegate = self
             self?.present(sheet, animated: true)
             self?.delegate?.onSwapSummarySubmitTransaction()
