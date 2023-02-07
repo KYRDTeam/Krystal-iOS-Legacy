@@ -200,6 +200,17 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
         self.navigationController.showTopBannerView(message: Strings.watchWalletNotSupportOperation)
         return
       }
+      self.checkEligibleWallet { isEligible in
+          if isEligible {
+              self.rootViewController?.coordinatorDidValidateTransferTransaction()
+          } else {
+              self.navigationController.showErrorTopBannerMessage(
+                          with: NSLocalizedString("error", value: "Error", comment: ""),
+                          message: Strings.notAnEligibleWallet,
+                          time: 2.0
+                        )
+          }
+      }
       self.rootViewController?.coordinatorDidValidateTransferTransaction()
     case .validateSolana:
       self.rootViewController?.coordinatorDidValidateSolTransferTransaction()
@@ -260,6 +271,18 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       Tracker.track(event: .transferClickMultipleTransfer)
     }
   }
+    
+  fileprivate  func checkEligibleWallet(completion: @escaping (Bool) -> Void) {
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      let address = self.currentAddress.addressString
+      provider.requestWithFilter(.checkEligibleWallet(address: address)) { (result) in
+        if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let isEligible = json["result"] as? Bool {
+          completion(isEligible)
+        } else {
+          completion(false)
+        }
+      }
+    }
 
   fileprivate func estimateGasLimit(for transaction: UnconfirmedTransaction) {
     if currentAddress.isWatchWallet {
