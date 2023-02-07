@@ -64,6 +64,10 @@ public class NumberFormatUtils {
         return "<$0" + separator.decimal + "01"
     }
     
+    public static func lessThanMinUsdAmountStringWithSpace() -> String {
+        return "< $0" + separator.decimal + "01"
+    }
+    
     public static func format(value: BigInt, decimals: Int, maxDecimalMeaningDigits: Int?, maxDecimalDigits: Int?) -> String {
         if value.isZero {
             return "0"

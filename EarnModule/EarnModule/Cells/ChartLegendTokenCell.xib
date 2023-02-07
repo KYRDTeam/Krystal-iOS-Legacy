@@ -17,14 +17,14 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="ChartLegendTokenCell" customModule="EarnModule" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="170" height="44"/>
+            <rect key="frame" x="0.0" y="0.0" width="182" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="170" height="44"/>
+                <rect key="frame" x="0.0" y="0.0" width="182" height="44"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UJA-eP-7Mu">
-                        <rect key="frame" x="0.0" y="0.0" width="170" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="182" height="44"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="phE-d4-iet">
                                 <rect key="frame" x="8" y="16" width="8" height="8"/>
@@ -53,8 +53,8 @@
                                     <constraint firstAttribute="height" constant="12" id="SmG-C2-CSx"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="6,500 USDC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JQ6-gO-7tQ">
-                                <rect key="frame" x="65" y="6" width="105" height="16"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WMATIC 88.88%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JQ6-gO-7tQ">
+                                <rect key="frame" x="65" y="6" width="117" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="iAr-OT-8x8"/>
                                 </constraints>
@@ -63,7 +63,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$6,508 | 16.2%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wze-80-a9v">
-                                <rect key="frame" x="65" y="22" width="105" height="16"/>
+                                <rect key="frame" x="65" y="22" width="117" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="Zuv-bu-LJr"/>
                                 </constraints>
@@ -104,7 +104,7 @@
                 <constraint firstItem="UJA-eP-7Mu" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="emd-80-zni"/>
                 <constraint firstItem="UJA-eP-7Mu" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="xsg-oL-6In"/>
             </constraints>
-            <size key="customSize" width="170" height="63"/>
+            <size key="customSize" width="246" height="63"/>
             <connections>
                 <outlet property="balanceLabel" destination="JQ6-gO-7tQ" id="a88-eU-BO6"/>
                 <outlet property="balanceLabelLeading" destination="Vrz-dD-1FG" id="Xzj-Gg-YbT"/>
@@ -114,7 +114,7 @@
                 <outlet property="legendColorView" destination="phE-d4-iet" id="W8I-3c-GN6"/>
                 <outlet property="tokenImageView" destination="FhY-Hs-wEd" id="s0s-I7-s2B"/>
             </connections>
-            <point key="canvasLocation" x="154.19847328244273" y="23.943661971830988"/>
+            <point key="canvasLocation" x="212.21374045801525" y="23.943661971830988"/>
         </collectionViewCell>
     </objects>
     <resources>

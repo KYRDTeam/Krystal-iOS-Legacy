@@ -36,49 +36,49 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EARNING ASSETS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPF-0J-zxk">
-                        <rect key="frame" x="200" y="33" width="111" height="17"/>
+                        <rect key="frame" x="192.33333333333334" y="33" width="118.66666666666666" height="17"/>
                         <fontDescription key="fontDescription" name="Karla-Medium" family="Karla" pointSize="14"/>
                         <color key="textColor" name="normalTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$127,954" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tn8-1O-63k">
-                        <rect key="frame" x="200" y="56" width="113" height="33"/>
+                        <rect key="frame" x="192.33333333333334" y="56" width="117.00000000000003" height="33"/>
                         <fontDescription key="fontDescription" name="Karla-Medium" family="Karla" pointSize="28"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2lv-xY-v7s">
-                        <rect key="frame" x="200" y="97" width="23.666666666666657" height="17"/>
+                        <rect key="frame" x="192.33333333333334" y="97" width="27.333333333333343" height="17"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" name="normalTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2.65%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZYT-AQ-kFd">
-                        <rect key="frame" x="226.66666666666666" y="95" width="47.333333333333343" height="21"/>
+                        <rect key="frame" x="222.66666666666666" y="95" width="53.333333333333343" height="21"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                         <color key="textColor" name="buttonBackgroundColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Annual Yield" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cv7-7y-CHE">
-                        <rect key="frame" x="200" y="125" width="79.666666666666686" height="17"/>
+                        <rect key="frame" x="192.33333333333334" y="125" width="77.666666666666657" height="17"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" name="normalTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$34.65" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1pB-Jp-Cee">
-                        <rect key="frame" x="285.66666666666669" y="123" width="56" height="21"/>
+                        <rect key="frame" x="276" y="123" width="56" height="21"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Earning" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ncn-kO-trE">
-                        <rect key="frame" x="200" y="153" width="84.666666666666686" height="17"/>
+                        <rect key="frame" x="192.33333333333334" y="153" width="82.333333333333343" height="17"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" name="normalTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$2.05" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GgX-zT-jpD">
-                        <rect key="frame" x="290.66666666666669" y="151" width="46" height="21"/>
+                        <rect key="frame" x="280.66666666666669" y="151" width="46" height="21"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
@@ -93,7 +93,7 @@
                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="kHI-l1-geH">
                         <rect key="frame" x="0.0" y="226" width="374" height="136"/>
                         <color key="backgroundColor" name="innerContainerBgColor"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="R0t-MJ-kb4">
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="0.0" id="R0t-MJ-kb4">
                             <size key="itemSize" width="128" height="128"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
