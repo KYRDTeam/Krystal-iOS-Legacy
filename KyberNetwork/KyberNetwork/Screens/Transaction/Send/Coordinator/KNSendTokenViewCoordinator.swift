@@ -200,29 +200,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
         self.navigationController.showTopBannerView(message: Strings.watchWalletNotSupportOperation)
         return
       }
-
-      controller.displayLoading()
-      self.sendGetPreScreeningWalletRequest { [weak self] (result) in
-        controller.hideLoading()
-        guard let `self` = self else { return }
-        var message: String?
-        if case .success(let resp) = result,
-          let json = try? resp.mapJSON() as? JSONDictionary ?? [:] {
-          if let status = json["eligible"] as? Bool {
-            if isDebug { print("eligible status : \(status)") }
-            if status == false { message = json["message"] as? String }
-          }
-        }
-        if let errorMessage = message {
-          self.navigationController.showErrorTopBannerMessage(
-            with: NSLocalizedString("error", value: "Error", comment: ""),
-            message: errorMessage,
-            time: 2.0
-          )
-        } else {
-          self.rootViewController?.coordinatorDidValidateTransferTransaction()
-        }
-      }
+      self.rootViewController?.coordinatorDidValidateTransferTransaction()
     case .validateSolana:
       self.rootViewController?.coordinatorDidValidateSolTransferTransaction()
     case .send(let transaction, let ens):
@@ -280,18 +258,6 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     case .openMultiSend:
       self.multiSendCoordinator.start()
       Tracker.track(event: .transferClickMultipleTransfer)
-    }
-  }
-
-  fileprivate func sendGetPreScreeningWalletRequest(completion: @escaping WrappedCompletion) {
-    let address = currentAddress.addressString
-    DispatchQueue.global(qos: .background).async {
-      let provider = MoyaProvider<UserInfoService>()
-      provider.requestWithFilter(.getPreScreeningWallet(address: address)) { result in
-        DispatchQueue.main.async {
-          completion(result)
-        }
-      }
     }
   }
 
