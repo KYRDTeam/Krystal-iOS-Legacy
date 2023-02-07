@@ -109,7 +109,7 @@ extension KNAppCoordinator: EarnCoordinatorDelegate {
 }
 
 extension KNAppCoordinator: OverviewCoordinatorDelegate {
-  
+
   func overviewCoordinatorOpenPromotion(code: String) {
     self.tabbarController.selectedIndex = 2
     self.investCoordinator?.openPromotion(withCode: code)
@@ -121,9 +121,14 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
   }
   
   func overviewCoordinatorDidImportWallet(wallet: KWallet, chainType: ChainType) {
-    switchWallet(wallet: wallet, chain: chainType)
+    self.onAddWallet(wallet: wallet, chain: chainType)
+    AppState.shared.updateAddress(address: AppState.shared.currentAddress, targetChain: AppState.shared.currentChain)
   }
-  
+    
+  func overviewCoordinatorDidAddWatchAddress(address: KAddress, chainType: ChainType) {
+    switchToWatchAddress(address: address, chain: chainType)
+  }
+    
   func overviewCoordinatorDidStart() {
   }
     
@@ -192,7 +197,8 @@ extension KNAppCoordinator: KrytalCoordinatorDelegate {
 extension KNAppCoordinator: InvestCoordinatorDelegate {
   
   func investCoordinator(didAdd wallet: KWallet, chain: ChainType) {
-    switchWallet(wallet: wallet, chain: chain)
+      self.onAddWallet(wallet: wallet, chain: chain)
+      AppState.shared.updateAddress(address: AppState.shared.currentAddress, targetChain: AppState.shared.currentChain)
   }
   
   func investCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {
