@@ -137,6 +137,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     var isExpanding: Observable<Bool> = .init(false)
     var state: Observable<SwapState> = .init(.emptyAmount)
     var settingsObservable: Observable<SwapTransactionSettings> = .init(SwapTransactionSettings.getDefaultSettings())
+    var onChangeSourceToken: (() -> ())?
     
     private let tokenService = TokenService()
     private let swapService = SwapService()
@@ -348,6 +349,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
             error.value = .sameSourceDestToken
             return
         }
+        self.onChangeSourceToken?()
         self.sourceBalance.value = nil
         self.sourceToken.value = token
         self.sourceAmount.value = nil
@@ -373,6 +375,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     func swapPair() {
         (sourceBalance.value, destBalance.value) = (destBalance.value, sourceBalance.value)
         (sourceToken.value, destToken.value) = (destToken.value, sourceToken.value)
+        self.onChangeSourceToken?()
         self.sourceAmount.value = nil
         self.selectedPlatformHint = nil
         self.loadSourceTokenPrice()
@@ -482,6 +485,7 @@ extension SwapV2ViewModel {
             settingsObservable.value = SwapTransactionSettings.getDefaultSettings()
             currentChain.value = AppState.shared.currentChain
             sourceToken.value = AppDependencies.tokenStorage.quoteToken(forChain: AppState.shared.currentChain)
+            onChangeSourceToken?()
             sourceTokenPrice.value = nil
             destTokenPrice.value = nil
             state.value = .emptyAmount
