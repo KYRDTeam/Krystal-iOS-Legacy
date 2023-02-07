@@ -646,8 +646,8 @@ extension KSendTokenViewController {
     self.updateUISwitchChain()
     self.viewModel.resetFromToken()
     self.updateGasFeeUI()
-    self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
     self.currentTokenButton.setTitle(self.viewModel.tokenButtonText, for: .normal)
+    self.viewModel.getNodeBalance()
   }
 
   func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
