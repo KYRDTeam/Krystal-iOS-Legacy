@@ -12,7 +12,7 @@ import Utilities
 import BigInt
 
 class ChartLegendTokenCell: UICollectionViewCell {
-    static let legendSize: CGSize = CGSize(width: 180, height: 44)
+    static let legendSize: CGSize = CGSize(width: 182, height: 44)
     
     @IBOutlet weak var legendColorView: UIView!
     @IBOutlet weak var tokenImageView: UIImageView!
@@ -46,7 +46,7 @@ class ChartLegendTokenCell: UICollectionViewCell {
         if let remainValue = remainValue {
             let remainPercent = remainValue / totalValue < 0.01 ? "< 0.01%" : StringFormatter.percentString(value: remainValue / totalValue)
             balanceLabel.text = Strings.other + " " +  remainPercent
-            detailLabel.text = remainValue < 0.01 ? "< $0.01" : StringFormatter.usdString(value: remainValue)
+            detailLabel.text = remainValue < 0.01 ? NumberFormatUtils.lessThanMinUsdAmountStringWithSpace() : StringFormatter.usdString(value: remainValue)
         } else {
             balanceLabel.text = Strings.other
             detailLabel.text = ""
