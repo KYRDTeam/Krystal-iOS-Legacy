@@ -193,7 +193,6 @@ class PendingTxViewController: BaseWalletOrientedViewController {
     
 }
 
-
 extension PendingTxViewController {
     func coordinatorUpdatePendingTransaction(
         pendingData: [String: [InternalHistoryTransaction]],

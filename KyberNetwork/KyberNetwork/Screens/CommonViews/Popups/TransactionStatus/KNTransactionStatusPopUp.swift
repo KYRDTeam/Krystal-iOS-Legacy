@@ -68,6 +68,7 @@ class KNTransactionStatusPopUp: KNBaseViewController {
 
   var withdrawAmount: String?
   var withdrawTokenSym: String?
+    var checkingTimer: Timer?
 
   init(transaction: InternalHistoryTransaction) {
     self.transaction = transaction
@@ -95,6 +96,12 @@ class KNTransactionStatusPopUp: KNBaseViewController {
           object: nil
         )
     }
+    
+    func setupTimer() {
+        // Handle case pending list cleared
+        checkingTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
+    }
+    
 
   deinit {
     let name = Notification.Name(rawValue: "viewDidBecomeActive")
@@ -113,11 +120,19 @@ class KNTransactionStatusPopUp: KNBaseViewController {
         updateView(with: transaction)
         
     }
+    
+    @objc func fireTimer() {
+        if EtherscanTransactionStorage.shared.getInternalHistoryTransaction(chain: AppState.shared.currentChain).isEmpty {
+            transaction.state = .done
+            updateView(with: transaction)
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.commontSetup()
         observeEvents()
+        setupTimer()
     }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -170,6 +185,8 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       }
       self.view.layoutSubviews()
     } else if self.transaction.state == .done {
+        checkingTimer?.invalidate()
+        checkingTimer = nil
       if transaction.type == .transferETH || transaction.type == .transferToken || transaction.type == .selfTransfer {
         MixPanelManager.track("transfer_done_pop_up_open", properties: ["screenid": "transfer_done_pop_up", "txn_hash": transaction.hash, "chain_id": AppState.shared.currentChain.getChainId()])
       } else if transaction.type == .multiSend {
