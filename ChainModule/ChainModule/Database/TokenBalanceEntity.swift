@@ -44,6 +44,7 @@ class TokenBalanceEntity: Object {
         self.chainID = chainID
         self.tokenAddress = tokenAddress
         self.walletAddress = walletAddress
+        self.balance = balance
         self.compoundKey = compoundKeyValue()
     }
 }

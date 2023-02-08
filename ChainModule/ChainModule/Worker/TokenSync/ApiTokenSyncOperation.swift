@@ -19,8 +19,8 @@ class ApiTokenSyncOperation: TokenSyncOperation {
         if let apiPath = ChainDB.shared.getConfig(chainID: chainID, key: kChainApiPath) {
             TokenService().getTokenList(chainPath: apiPath) { tokens in
                 TokenDB.shared.save(tokens: tokens.map { self.convertToTokenObject(chainID: self.chainID, token: $0) })
-                completion()
             }
+            completion()
         } else {
             completion()
         }

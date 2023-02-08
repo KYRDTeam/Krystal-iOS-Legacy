@@ -37,9 +37,9 @@ class NativeTokenBalanceSyncOperation: BalanceSyncOperation {
                                                     balance: balance.description)
                     )
                 }
-                
+                completion()
             case .failure:
-                () // Do nothing
+                completion()
             }
         }
     }

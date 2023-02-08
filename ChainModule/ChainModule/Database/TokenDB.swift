@@ -23,6 +23,19 @@ public class TokenDB {
         return realm.objects(TokenEntity.self).toArray().map(TokenEntityConverter.convert)
     }
     
+    func allBalances() -> [TokenBalance] {
+        let realm = try! Realm()
+        return realm.objects(TokenBalanceEntity.self).toArray().map(TokenBalanceEntityConverter.convert)
+    }
+    
+    func getToken(chainID: Int, address: String) -> Token? {
+        let realm = try! Realm()
+        return (
+            realm.object(ofType: TokenEntity.self, forPrimaryKey: "\(chainID)-\(address)-\(true)") ??
+            realm.object(ofType: TokenEntity.self, forPrimaryKey: "\(chainID)-\(address)-\(false)")
+        ).map(TokenEntityConverter.convert)
+    }
+    
     func save(tokens: [TokenEntity]) {
         let realm = try! Realm()
         try! realm.write {

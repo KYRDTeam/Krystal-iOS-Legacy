@@ -9,6 +9,7 @@ import Foundation
 
 let defaultNativeTokenAddress = "0x"
 let kChainApiPath = "CHAIN_API_PATH"
+let kChainRpcUrlType = "RPC_URL"
 let kChainBalanceSupported = "SUPPORT_BALANCE_API"
 let kTokenListApiSupported = "SUPPORT_TOKEN_LIST_API"
 let kChainAddressPrefix = "CHAIN_ADDRESS_PREFIX"

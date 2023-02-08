@@ -11,7 +11,7 @@
             },
             {
                 "name": "SUPPORT_BALANCE_API",
-                "value": "true"
+                "value": "false"
             },
             {
                 "name": "SUPPORT_TOKEN_LIST_API",
@@ -32,7 +32,7 @@
                 "type": "PROXY_ADDRESS"
             },
             {
-                "address": "0x70270C228c5B4279d1578799926873aa72446CcD",
+                "address": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441",
                 "type": "MULTI_CALL_ADDRESS"
             }
         ],

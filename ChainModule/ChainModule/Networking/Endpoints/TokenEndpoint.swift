@@ -40,8 +40,10 @@ extension TokenEndpoint: TargetType {
         switch self {
         case .getTokenList:
             return .requestPlain
-        case .getBalance:
-            return .requestPlain
+        case .getBalance(let chainIDs, let addresses):
+            let params: [String: Any] = ["chainIds": chainIDs.map(String.init).joined(separator: ","),
+                                         "addresses": addresses.joined(separator: ",")]
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
         }
     }
     

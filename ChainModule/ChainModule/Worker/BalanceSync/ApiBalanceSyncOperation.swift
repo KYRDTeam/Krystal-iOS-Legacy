@@ -11,6 +11,7 @@ import Services
 public class ApiBalanceSyncOperation: BalanceSyncOperation {
     
     let addresses: [Int: String]
+    let tokenService = TokenService()
     
     init(addresses: [Int: String]) {
         self.addresses = addresses
@@ -25,7 +26,7 @@ public class ApiBalanceSyncOperation: BalanceSyncOperation {
                 formattedAddresses.append(addresses[chainID] ?? "")
             }
         }
-        TokenService().getBalance(chainIDs: Array(addresses.keys), addresses: formattedAddresses) { chainBalanceModels in
+        tokenService.getBalance(chainIDs: Array(addresses.keys), addresses: formattedAddresses) { chainBalanceModels in
             let tokenBalances = chainBalanceModels.flatMap { chainBalanceModel in
                 return chainBalanceModel.balances.map {
                     return TokenBalanceEntity(chainID: chainBalanceModel.chainId, tokenAddress: $0.token.address, walletAddress: $0.userAddress, balance: $0.balance)

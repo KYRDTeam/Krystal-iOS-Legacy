@@ -67,6 +67,7 @@
 		A6B58529298BB61900B1FF9A /* BalanceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58528298BB61900B1FF9A /* BalanceRequest.swift */; };
 		A6B5852B298BB64E00B1FF9A /* CastError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5852A298BB64E00B1FF9A /* CastError.swift */; };
 		A6B5852D298BBCF000B1FF9A /* TokenEntityConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5852C298BBCF000B1FF9A /* TokenEntityConverter.swift */; };
+		A6D09FD129925A0B00E555D4 /* TokenBalanceEntityConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D09FD029925A0B00E555D4 /* TokenBalanceEntityConverter.swift */; };
 		B02686AA19E1F346612CC27D /* Pods_ChainModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EFAA67CC187B79B28D3E4DC /* Pods_ChainModule.framework */; };
 /* End PBXBuildFile section */
 
@@ -147,6 +148,7 @@
 		A6B58528298BB61900B1FF9A /* BalanceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceRequest.swift; sourceTree = "<group>"; };
 		A6B5852A298BB64E00B1FF9A /* CastError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastError.swift; sourceTree = "<group>"; };
 		A6B5852C298BBCF000B1FF9A /* TokenEntityConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenEntityConverter.swift; sourceTree = "<group>"; };
+		A6D09FD029925A0B00E555D4 /* TokenBalanceEntityConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenBalanceEntityConverter.swift; sourceTree = "<group>"; };
 		AFEAE5013D72EFB44726E57D /* Pods-ChainModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChainModule.debug.xcconfig"; path = "Target Support Files/Pods-ChainModule/Pods-ChainModule.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -269,6 +271,7 @@
 				A6B584A5298B8E4700B1FF9A /* ChainObjectConverter.swift */,
 				A6B584A6298B8E4700B1FF9A /* Converter.swift */,
 				A6B5852C298BBCF000B1FF9A /* TokenEntityConverter.swift */,
+				A6D09FD029925A0B00E555D4 /* TokenBalanceEntityConverter.swift */,
 			);
 			path = Converter;
 			sourceTree = "<group>";
@@ -550,6 +553,7 @@
 				A6B5851B298BB14000B1FF9A /* CallRequest.swift in Sources */,
 				A6B584E8298B8E4700B1FF9A /* ChainDB+Model.swift in Sources */,
 				A6B584D3298B8E4700B1FF9A /* BalanceSyncWorker.swift in Sources */,
+				A6D09FD129925A0B00E555D4 /* TokenBalanceEntityConverter.swift in Sources */,
 				A6B584F1298B8E4700B1FF9A /* TokenEndpoint.swift in Sources */,
 				A6B584EE298B8E4700B1FF9A /* TokenBalanceEntity.swift in Sources */,
 				A6B584DC298B8E4700B1FF9A /* RemoteConfigChainSyncOperation.swift in Sources */,

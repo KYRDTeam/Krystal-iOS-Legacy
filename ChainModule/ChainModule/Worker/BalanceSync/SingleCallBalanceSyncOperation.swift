@@ -31,8 +31,9 @@ class SingleCallBalanceSyncOperation: BalanceSyncOperation {
                                                 walletAddress: self.walletAddress,
                                                 balance: balance.description)
                 )
+                completion()
             case .failure:
-                () // Do nothing
+                completion()
             }
         }
     }
