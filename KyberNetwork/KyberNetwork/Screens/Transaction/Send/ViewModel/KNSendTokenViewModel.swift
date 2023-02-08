@@ -398,8 +398,25 @@ class KNSendTokenViewModel: NSObject {
   }
 
     func getNodeBalance() {
-        EthereumNodeService(chain: AppState.shared.currentChain).getBalance(address: currentAddress.addressString, tokenAddress: self.from.address) { [weak self] balance in
-            self?.sourceBalance = balance
+        if AppState.shared.currentChain == .solana {
+            if self.from.address == AppState.shared.currentChain.customRPC().quoteTokenAddress {
+                SolanaSerumService().getBalance(address: currentAddress.addressString) { [weak self] balance in
+                    if let balance = balance {
+                        self?.sourceBalance = balance
+                    }
+                }
+            } else {
+                SolanaSerumService().getTokenAccountsByOwner(ownerAddress: currentAddress.addressString, tokenAddress: self.from.address) { amount, recipientAccount in
+                    if let balance = amount?.bigInt {
+                        self.sourceBalance = balance
+                    }
+                    
+                }
+            }
+        } else {
+            EthereumNodeService(chain: AppState.shared.currentChain).getBalance(address: currentAddress.addressString, tokenAddress: self.from.address) { [weak self] balance in
+                self?.sourceBalance = balance
+            }
         }
     }
 
