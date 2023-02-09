@@ -233,7 +233,7 @@ public struct AllChains {
     type: "ERC20",
     name: "Arbitrum",
     symbol: "ETH",
-    endpoint: "https://rpc.ankr.com/arbitrum",
+    endpoint: "https://arb1.arbitrum.io/rpc",
     endpointKyber: "https://arb1.arbitrum.io/rpc",
     endpointAlchemy: "https://arb1.arbitrum.io/rpc",
     etherScanEndpoint: "https://arbiscan.io/",
