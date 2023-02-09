@@ -192,9 +192,6 @@ class KNLoadBalanceCoordinator {
             }
             self.otherTokensBalance[addr.lowercased()] = balance
             self.tokenStorage.updateBalance(for: tokens[id], balance: values[id])
-            if isDebug {
-              NSLog("---- Balance: Fetch token balance for contract \(addr) successfully: \(values[id].shortString(decimals: 0))")
-            }
           }
           if isBalanceChanged {
             KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
