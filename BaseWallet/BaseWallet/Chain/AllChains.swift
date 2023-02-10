@@ -234,7 +234,7 @@ public struct AllChains {
     name: "Arbitrum",
     symbol: "ETH",
     endpoint: "https://arb1.arbitrum.io/rpc",
-    endpointKyber: "https://arb1.arbitrum.io/rpc",
+    endpointKyber: "https://rpc.ankr.com/arbitrum",
     endpointAlchemy: "https://arb1.arbitrum.io/rpc",
     etherScanEndpoint: "https://arbiscan.io/",
     webScanName: "Arbiscan",
