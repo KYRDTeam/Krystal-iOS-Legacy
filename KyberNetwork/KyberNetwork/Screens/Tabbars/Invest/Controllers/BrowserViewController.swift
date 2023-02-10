@@ -302,7 +302,7 @@ extension BrowserViewController: WKScriptMessageHandler {
 extension BrowserViewController: WKNavigationDelegate {
   func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
     self.navTitleLabel.text = webView.title
-    if let unwrap = webView.url {
+      if let unwrap = webView.url, unwrap.absoluteString != "about:blank" {
       self.viewModel.url = unwrap
       self.saveBrowserIfNeeded()
     }
@@ -313,8 +313,10 @@ extension BrowserViewController: WKNavigationDelegate {
       return decisionHandler(.allow)
     }
     self.navTitleLabel.text = webView.title
-    self.viewModel.url = url
-
+      if url.absoluteString != "about:blank" {
+          self.viewModel.url = url
+      }
+    
     let app = UIApplication.shared
     if ["tel", "mailto"].contains(scheme), app.canOpenURL(url) {
       app.open(url)
