@@ -93,8 +93,7 @@ class StakingViewController: InAppBrowsingViewController {
         setupUI()
         bindingViewModel()
         viewModel.observeEvents()
-        viewModel.requestOptionDetail()
-        viewModel.getAllowance()
+        viewModel.reloadData()
         viewModel.getQuoteTokenPrice()
         viewModel.getStakingTokenDetail()
         updateUIProjection()
@@ -271,7 +270,9 @@ class StakingViewController: InAppBrowsingViewController {
         }
         
         viewModel.balance.observeAndFire(on: self) { [weak self] _ in
-            self?.stakeTokenLabel.text = self?.viewModel.displayStakeToken
+            DispatchQueue.main.async {
+                self?.stakeTokenLabel.text = self?.viewModel.displayStakeToken
+            }
         }
         
         viewModel.selectedEarningToken.observeAndFire(on: self) { _ in
