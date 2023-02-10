@@ -131,6 +131,7 @@ class KSendTokenViewController: InAppBrowsingViewController {
   }
     
     override func onAppSwitchChain() {
+        super.onAppSwitchChain()
         guard self.isViewLoaded else { return }
         self.setupAddressTextField()
         self.viewModel.resetAdvancedSettings()
