@@ -217,9 +217,7 @@ class InvestCoordinator: Coordinator {
   func appCoordinatorDidUpdateChain() {
     self.rootViewController.coordinatorDidUpdateChain()
     self.loadMarketAssets()
-    self.sendCoordinator?.appCoordinatorDidUpdateChain()
     self.dappCoordinator?.appCoordinatorDidUpdateChain()
-    self.multiSendCoordinator.appCoordinatorDidUpdateChain()
     self.bridgeCoordinator?.appCoordinatorDidUpdateChain()
   }
 }

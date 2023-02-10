@@ -129,6 +129,17 @@ class KSendTokenViewController: InAppBrowsingViewController {
     self.isViewDisappeared = true
     self.view.endEditing(true)
   }
+    
+    override func onAppSwitchChain() {
+        guard self.isViewLoaded else { return }
+        self.setupAddressTextField()
+        self.viewModel.resetAdvancedSettings()
+        self.updateUISwitchChain()
+        self.viewModel.resetFromToken()
+        self.updateGasFeeUI()
+        self.currentTokenButton.setTitle(self.viewModel.tokenButtonText, for: .normal)
+        self.viewModel.getNodeBalance()
+    }
   
   func setupDelegates() {
     scanAddressQRDelegate = KQRCodeReaderDelegate(onResult: { result in
@@ -637,17 +648,6 @@ extension KSendTokenViewController {
     let title = KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.transfer
     sendButton.setTitle(title, for: .normal)
     amountTextField.text = ""
-  }
-
-  func coordinatorDidUpdateChain() {
-    guard self.isViewLoaded else { return }
-    self.setupAddressTextField()
-    self.viewModel.resetAdvancedSettings()
-    self.updateUISwitchChain()
-    self.viewModel.resetFromToken()
-    self.updateGasFeeUI()
-    self.currentTokenButton.setTitle(self.viewModel.tokenButtonText, for: .normal)
-    self.viewModel.getNodeBalance()
   }
 
   func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
