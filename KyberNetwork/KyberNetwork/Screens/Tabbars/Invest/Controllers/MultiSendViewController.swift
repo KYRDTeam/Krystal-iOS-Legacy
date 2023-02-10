@@ -311,8 +311,8 @@ class MultiSendViewController: InAppBrowsingViewController {
   func coordinatorDidFinishApproveTokens() {
     self.delegate?.multiSendViewController(self, run: .confirm(items: self.viewModel.sendItems))
   }
-  
-  func coordinatorDidUpdateChain() {
+
+  override func onAppSwitchChain() {
     self.updateUISwitchChain()
   }
   

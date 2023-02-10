@@ -177,10 +177,6 @@ extension KNSendTokenViewCoordinator {
     self.multiSendCoordinator.appCoordinatorSwitchAddress()
   }
 
-  func appCoordinatorDidUpdateChain() {
-    self.rootViewController?.coordinatorDidUpdateChain()
-    self.multiSendCoordinator.appCoordinatorDidUpdateChain()
-  }
 }
 
 // MARK: Send Token View Controller Delegate

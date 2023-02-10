@@ -200,7 +200,6 @@ class OverviewCoordinator: NSObject, Coordinator {
       self.currentCurrencyType = KNGeneralProvider.shared.quoteCurrency
     }
     UserDefaults.standard.setValue(self.currentCurrencyType.rawValue, forKey: Constants.currentCurrencyMode)
-    self.sendCoordinator?.appCoordinatorDidUpdateChain()
   }
 
   func appCoordinatorReceiveWallectConnectURI(_ uri: String) {

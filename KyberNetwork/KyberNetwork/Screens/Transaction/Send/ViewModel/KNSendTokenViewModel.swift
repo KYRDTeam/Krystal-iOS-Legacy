@@ -399,6 +399,7 @@ class KNSendTokenViewModel: NSObject {
 
     func getNodeBalance() {
         if AppState.shared.currentChain == .solana {
+            self.sourceBalance = BigInt(0)
             if self.from.address == AppState.shared.currentChain.customRPC().quoteTokenAddress {
                 SolanaSerumService().getBalance(address: currentAddress.addressString) { [weak self] balance in
                     if let balance = balance {
@@ -410,7 +411,6 @@ class KNSendTokenViewModel: NSObject {
                     if let balance = amount?.bigInt {
                         self.sourceBalance = balance
                     }
-                    
                 }
             }
         } else {

@@ -241,7 +241,6 @@ extension KNAppCoordinator {
     self.loadBalanceCoordinator?.loadLendingBalances(completion: { _ in
     })
     self.earnCoordinator?.appCoordinatorDidUpdateChain()
-    self.settingsCoordinator?.appCoordinatorDidUpdateChain()
     self.session.externalProvider?.minTxCount = 0
   }
 
