@@ -236,10 +236,6 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   func appCoordinatorDidAddTokens(srcToken: TokenObject?, destToken: TokenObject?) {
     self.navigationController.popToRootViewController(animated: false)
   }
-
-  func appCoordinatorDidUpdateChain() {
-    self.sendTokenCoordinator?.appCoordinatorDidUpdateChain()
-  }
 }
 
 extension KNSettingsCoordinator: KNListContactViewControllerDelegate {

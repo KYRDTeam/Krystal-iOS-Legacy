@@ -83,11 +83,7 @@ class MultiSendCoordinator: NSObject, Coordinator {
     }
     return false
   }
-  
-  func appCoordinatorDidUpdateChain() {
-    self.rootViewController.coordinatorDidUpdateChain()
-  }
-  
+
   func appCoordinatorSwitchAddress() {
     self.rootViewController.coordinatorAppSwitchAddress()
   }
