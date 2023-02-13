@@ -20,7 +20,7 @@ enum SolanaService {
 
 extension SolanaService: TargetType {
   var baseURL: URL {
-    return URL(string: "https://rpc.ankr.com/solana")!
+    return URL(string: "https://api.mainnet-beta.solana.com")!
   }
   
   var path: String {
