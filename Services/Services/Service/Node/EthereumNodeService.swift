@@ -10,7 +10,7 @@ import BigInt
 import Result
 import APIKit
 import JSONRPCKit
-import Web3
+import Web3Core
 import BaseWallet
 import AppState
 
@@ -36,8 +36,9 @@ public class EthereumNodeService {
         web3?.request(request: ContractERC20Transfer(amount: amount, address: address)) { result in
             switch result {
             case .success(let res):
-                let data = Data(hex: res.drop0x)
-                completion(.success(data))
+//                let data = Data(hex: res.drop0x)
+//                completion(.success(data))
+                ()
             case .failure(let error):
                 completion(.failure(AnyError(error)))
             }
@@ -146,8 +147,9 @@ public class EthereumNodeService {
         web3?.request(request: ContractNFTTransfer(from: from, to: to, tokenID: tokenID, amount: amount, isERC721Format: isERC721)) { (result) in
             switch result {
             case .success(let res):
-                let data = Data(hex: res.drop0x)
-                completion(.success(data))
+//                let data = Data(hex: res.drop0x)
+//                completion(.success(data))
+                ()
             case .failure(let error):
                 completion(.failure(AnyError(error)))
             }
@@ -333,7 +335,8 @@ public class EthereumNodeService {
         web3?.request(request: encodeRequest) { (encodeResult) in
             switch encodeResult {
             case .success(let data):
-                completion(.success(Data(hex: data.drop0x)))
+//                completion(.success(Data(hex: data.drop0x)))
+                ()
             case .failure(let error):
                 completion(.failure(AnyError(error)))
             }

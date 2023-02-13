@@ -55,7 +55,7 @@ class SearchSwapTokenService: NSObject {
   var searchTokensProcess: Cancellable?
 
   func getCommonBaseTokens(completion: @escaping ([Token]?) -> Void) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     provider.request(.getCommonBaseToken) { result in
       switch result {
       case .success(let response):
@@ -78,7 +78,7 @@ class SearchSwapTokenService: NSObject {
     if let searchTokensProcess = self.searchTokensProcess {
       searchTokensProcess.cancel()
     }
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     self.searchTokensProcess = provider.request(.getSearchToken(address: address, query: query, orderBy: orderBy)) { result in
       switch result {
       case .success(let response):

@@ -72,7 +72,7 @@ public class TokenSelectPopup: UIViewController, UIGestureRecognizerDelegate {
         })
     }
 
-    private func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touch.view?.isDescendant(of: view) == true {
             return false
         }

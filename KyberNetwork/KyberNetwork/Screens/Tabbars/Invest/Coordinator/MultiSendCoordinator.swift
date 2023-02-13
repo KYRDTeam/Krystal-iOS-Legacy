@@ -178,7 +178,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   }
   
   fileprivate func requestBuildTx(items: [MultiSendItem], completion: @escaping (TxObject) -> Void) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     let address = currentAddress.addressString
     
     provider.requestWithFilter(.buildMultiSendTx(sender: address, items: items)) { result in

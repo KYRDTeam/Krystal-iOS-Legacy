@@ -10,7 +10,7 @@ import Moya
 
 class TokenService {
     
-    let provider = MoyaProvider<TokenEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<TokenEndpoint>(plugins: [NetworkLoggerPlugin()])
     
     public func getTokenList(chainPath: String, completion: @escaping ([TokenModel]) -> ()) {
         provider.request(.getTokenList(chainPath: chainPath)) { result in

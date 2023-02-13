@@ -3,7 +3,7 @@
 import UIKit
 import Foundation
 import BigInt
-import Web3
+import Web3Core
 
 struct KNGetAddressFromResolverRequest: Web3Request {
   typealias Response = String

@@ -60,7 +60,7 @@ extension SelectNetworkViewController: UITableViewDataSource {
     return self.viewModel.networks.count
   }
 
-  private func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return UIView()
   }
 

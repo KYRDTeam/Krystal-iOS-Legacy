@@ -97,7 +97,7 @@ class EarnCoordinator: NSObject, Coordinator {
   // MARK: Bussiness code
   func getLendingOverview() {
     DispatchQueue.global(qos: .background).async {
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
       provider.requestWithFilter(.getLendingOverview) { [weak self] (result) in
         guard let `self` = self else { return }
         if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["result"] as? [JSONDictionary] {
@@ -274,7 +274,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
       }
       self.navigationController.present(vc, animated: true, completion: nil)
     case .getGasLimit(let platform, let src, let dest, let amount, let minDestAmount, let gasPrice, let isSwap):
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
       provider.requestWithFilter(.buildSwapAndDepositTx(
                         lendingPlatform: platform,
                         userAddress: currentAddress.addressString,
@@ -479,7 +479,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
   }
   
   func buildTx(lendingPlatform: String, userAddress: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, nonce: Int, completion: @escaping (Result<TxObject, AnyError>) -> Void) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     provider.requestWithFilter(.buildSwapAndDepositTx(
                       lendingPlatform: lendingPlatform,
                       userAddress: currentAddress.addressString,
@@ -508,7 +508,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
   }
   
   func getAllRates(from: TokenData, to: TokenData, amount: BigInt, focusSrc: Bool) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     let src = from.address.lowercased()
     let dest = to.address.lowercased()
     let amt = amount.isZero ? from.placeholderValue.description : amount.description
@@ -533,7 +533,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
   }
   
   func getRefPrice(from: TokenData, to: TokenData) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     let src = from.address.lowercased()
     let dest = to.address.lowercased()
     provider.requestWithFilter(.getRefPrice(src: src, dst: dest)) { [weak self] result in

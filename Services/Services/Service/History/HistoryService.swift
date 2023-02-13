@@ -10,7 +10,7 @@ import Moya
 
 public class HistoryService: BaseService {
     
-    let provider = MoyaProvider<HistoryEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<HistoryEndpoint>(plugins: [NetworkLoggerPlugin()])
     
     public func getTxHistory(walletAddress: String, tokenAddress: String?, chainIds: [Int], limit: Int, endTime: Int?, completion: @escaping ([TxRecord]) -> ()) {
         provider.request(.getHistory(walletAddress: walletAddress, tokenAddress: tokenAddress, chainIds: chainIds, limit: limit, endTime: endTime)) { result in

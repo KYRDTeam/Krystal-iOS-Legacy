@@ -321,7 +321,7 @@ class KNLoadBalanceCoordinator {
   }
 
   func loadNFTBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     let address = AppState.shared.currentAddress.addressString
     var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
     
@@ -365,7 +365,7 @@ class KNLoadBalanceCoordinator {
       completion(false)
       return
     }
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
     
     if AppState.shared.isSelectedAllChain {
@@ -407,7 +407,7 @@ class KNLoadBalanceCoordinator {
   }
 
   func loadLendingDistributionBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
     
     if AppState.shared.isSelectedAllChain {
@@ -443,7 +443,7 @@ class KNLoadBalanceCoordinator {
   }
 
   func loadLiquidityPool(forceSync: Bool = false, completion:  @escaping (Bool) -> Void) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     let addressString:[String] = [AppState.shared.currentAddress.addressString]
     var quoteSymbols = ["btc","usd"]
     var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]

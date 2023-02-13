@@ -124,4 +124,11 @@ public class ChainDB {
         return getConfigs(chainID: chainID).first { $0.name == key }?.value
     }
     
+    public func removeAllChain() {
+        let realm = try! Realm()
+        try! realm.write {
+            realm.delete(realm.objects(ChainObject.self))
+        }
+    }
+    
 }

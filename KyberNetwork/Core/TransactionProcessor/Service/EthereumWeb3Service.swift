@@ -33,7 +33,7 @@ class EthereumWeb3Service {
     web3?.request(request: ContractERC20Transfer(amount: amount, address: address)) { result in
       switch result {
       case .success(let res):
-        let data = Data(hex: res.drop0x)
+        let data = Data(Array<UInt8>(hex: res.drop0x))
         completion(.success(data))
       case .failure(let error):
         completion(.failure(AnyError(error)))
@@ -145,7 +145,7 @@ class EthereumWeb3Service {
     web3?.request(request: ContractNFTTransfer(from: from, to: to, tokenID: tokenID, amount: amount, isERC721Format: isERC721)) { (result) in
       switch result {
       case .success(let res):
-        let data = Data(hex: res.drop0x)
+        let data = Data(Array<UInt8>(hex: res.drop0x))
         completion(.success(data))
       case .failure(let error):
         completion(.failure(AnyError(error)))
@@ -254,7 +254,7 @@ class EthereumWeb3Service {
     web3?.request(request: encodeRequest) { result in
       switch result {
       case .success(let res):
-        let data = Data(hex: res.drop0x)
+        let data = Data(Array<UInt8>(hex: res.drop0x))
         completion(.success(data))
       case .failure(let error):
         completion(.failure(AnyError(error)))
@@ -316,7 +316,7 @@ class EthereumWeb3Service {
     web3?.request(request: ContractERC20Transfer(amount: transaction.value, address: transaction.to ?? "")) { (result) in
       switch result {
       case .success(let res):
-        let data = Data(hex: res.drop0x)
+        let data = Data(Array<UInt8>(hex: res.drop0x))
         completion(.success(data))
       case .failure(let error):
         completion(.failure(AnyError(error)))

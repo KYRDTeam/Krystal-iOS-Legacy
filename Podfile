@@ -1,4 +1,4 @@
-platform :ios, '12.0'
+platform :ios, '13.0'
 inhibit_all_warnings!
 
 workspace 'KyberNetwork.xcworkspace'
@@ -7,6 +7,11 @@ source 'https://github.com/CocoaPods/Specs.git'
 # source 'https://cdn.cocoapods.org/'
 # tmp fix the CDN outage: https://github.com/CocoaPods/CocoaPods/issues/10078#issuecomment-696481185
 # https://github.com/CocoaPods/CocoaPods/issues/11355
+
+def web3
+  pod 'web3.swift', :path => '../web3.swift'
+  pod 'Web3Core', :path => '../Web3Core'
+end
 
 def firebasePods
   pod 'Firebase/Analytics'
@@ -35,13 +40,13 @@ def uiPods
 end
 
 def cryptoHelperPods
-  pod 'BigInt', '~> 4.0'
+  pod 'BigInt', '~> 5.0.0'
   pod 'CryptoSwift'
   pod 'TrustWalletCore', '~> 2.9'
   pod 'TrustKeystore', '~> 0.4.2'
   pod 'TrustCore', '~> 0.0.7'
   pod 'WalletConnectSwift'
-  pod 'Web3'
+#  pod 'Web3'
 #  pod 'WalletCore'
   # pod 'web3swift', :git=>'https://github.com/BANKEX/web3swift', :branch=>'master'
   pod 'TrustWeb3Provider', :git => 'https://github.com/KYRDTeam/krystal-web3-provider.git', :branch => 'develop'
@@ -54,7 +59,7 @@ def networkingPods
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
   pod 'Starscream', '~> 3.1'
   pod 'Kingfisher', '~> 7.0'
-  pod 'Moya', '~> 10.0.1'
+  pod 'Moya', '~> 15.0'
   pod 'Mixpanel-swift', '~> 3.1.7'
 end
 
@@ -99,7 +104,7 @@ def servicesDependencies
   pod 'BigInt'
   pod 'JSONRPCKit'
   pod 'APIKit'
-  pod 'Web3'
+  web3
   pod 'JavaScriptKit', '~> 1.0.0'
 end
 
@@ -213,7 +218,7 @@ target 'ChainModule' do
   pod 'APIKit', '~> 3.2.1'
   pod 'BigInt'
   pod 'JavaScriptKit', '~> 1.0.0'
-  pod 'JavaScriptKit', '~> 1.0.0'
+  web3
 end
 
 
@@ -275,7 +280,7 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
     end
     if ['TrustKeystore'].include? target.name
       target.build_configurations.each do |config|

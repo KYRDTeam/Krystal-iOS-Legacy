@@ -8,7 +8,7 @@
 import UIKit
 import WalletConnectSwift
 import KrystalWallets
-import Web3
+import Web3Core
 
 class WalletConnectViewController: UIViewController {
   @IBOutlet weak var titleLabel: UILabel!

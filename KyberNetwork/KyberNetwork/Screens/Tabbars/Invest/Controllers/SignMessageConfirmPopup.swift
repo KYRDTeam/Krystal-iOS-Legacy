@@ -19,7 +19,7 @@ struct SignMessageConfirmViewModel {
   }
   
   var displayMessage: String {
-    let data = Data(hex: self.message)
+    let data = Data(Array<UInt8>(hex: self.message))
     
     if let str = String(data: data, encoding: .utf8) {
       return str

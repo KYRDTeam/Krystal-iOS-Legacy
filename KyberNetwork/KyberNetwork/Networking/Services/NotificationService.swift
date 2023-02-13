@@ -10,7 +10,7 @@ import Moya
 
 class NotificationService {
 
-  let provider = MoyaProvider<NotificationEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
+  let provider = MoyaProvider<NotificationEndpoint>(plugins: [NetworkLoggerPlugin()])
   
   func getListNotification(type: NotificationType?, page: Int, limit: Int, status: NotificationStatus?, userAddress: String, completion: @escaping (NotificationResponseV2?) -> ()) {
     provider.requestWithFilter(.list(type: type, page: page, limit: limit, status: status, userAddress: userAddress)) { result in

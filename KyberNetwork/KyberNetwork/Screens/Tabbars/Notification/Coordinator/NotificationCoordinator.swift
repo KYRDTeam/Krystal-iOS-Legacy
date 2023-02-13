@@ -36,7 +36,7 @@ class NotificationCoordinator: Coordinator {
   }
 
   fileprivate func loadNotifications(batchId: String = "") {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     provider.requestWithFilter(.getNotification(batchId: batchId, limit: 10)) { (result) in
       switch result {
       case .success(let resp):

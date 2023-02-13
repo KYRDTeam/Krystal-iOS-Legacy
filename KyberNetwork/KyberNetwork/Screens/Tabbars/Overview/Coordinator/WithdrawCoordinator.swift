@@ -97,7 +97,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
   func withdrawViewController(_ controller: WithdrawViewController, run event: WithdrawViewEvent) {
     switch event {
     case .getWithdrawableAmount(platform: let platform, userAddress: let userAddress, tokenAddress: let tokenAddress):
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
       provider.requestWithFilter(.getWithdrawableAmount(platform: platform, userAddress: userAddress, token: tokenAddress)) { [weak self] (result) in
         guard let `self` = self else { return }
         if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let amount = json["amount"] as? String {
@@ -114,7 +114,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
       controller.displayLoading()
       self.getLatestNonce { [weak self] (nonce) in
         guard let `self` = self else { return }
-        let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+        let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
         provider.requestWithFilter(.buildWithdrawTx(platform: platform, userAddress: self.currentAddress.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: nonce, useGasToken: useGasToken)) { (result) in
           if case .success(let resp) = result {
             let decoder = JSONDecoder()
@@ -218,7 +218,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
         }
       }
     case .updateGasLimit(platform: let platform, token: let token, amount: let amount, gasPrice: let gasPrice, useGasToken: let useGasToken):
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
       provider.requestWithFilter(.buildWithdrawTx(platform: platform, userAddress: currentAddress.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: 1, useGasToken: useGasToken)) { [weak self] (result) in
         guard let `self` = self else { return }
         if case .success(let resp) = result,
@@ -722,7 +722,7 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
   }
   
    func buildClaimTx(address: String, nonce: Int, completion: @escaping (Result<TxObject, AnyError>) -> Void) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     provider.requestWithFilter(.buildClaimTx(address: address, nonce: nonce)) { (result) in
       switch result {
       case .success(let resp):

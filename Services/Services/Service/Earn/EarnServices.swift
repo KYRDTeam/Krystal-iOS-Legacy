@@ -11,7 +11,7 @@ import Utilities
 import Result
 
 public class EarnServices: BaseService {
-  let provider = MoyaProvider<EarnEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
+  let provider = MoyaProvider<EarnEndpoint>(plugins: [NetworkLoggerPlugin()])
   var currentProcess: Cancellable?
 
   public func getEarnListData(chainId: String?, completion: @escaping ([EarnPoolModel]) -> ()) {

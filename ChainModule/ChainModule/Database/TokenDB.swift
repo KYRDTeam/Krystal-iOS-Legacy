@@ -86,4 +86,11 @@ public class TokenDB {
         })
     }
     
+    public func removeAllTokens() {
+        let realm = try! Realm()
+        try! realm.write {
+            realm.delete(realm.objects(TokenEntity.self))
+        }
+    }
+    
 }

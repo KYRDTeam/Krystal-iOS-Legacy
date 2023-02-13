@@ -4,7 +4,7 @@ import UIKit
 import BigInt
 import QRCodeReaderViewController
 import Starscream
-import Web3
+import Web3Core
 import WalletConnectSwift
 import KrystalWallets
 
@@ -234,7 +234,7 @@ class BaseHandler: RequestHandler {
     {
       return nil
     }
-    let data = Data(hex: dict["data"]?.drop0x ?? "")
+    let data = Data(Array<UInt8>(hex: dict["data"]?.drop0x ?? ""))
     
     return SignTransaction(
       value: value,

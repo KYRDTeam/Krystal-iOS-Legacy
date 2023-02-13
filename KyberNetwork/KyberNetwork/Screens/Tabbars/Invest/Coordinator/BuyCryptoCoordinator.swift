@@ -150,7 +150,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   }
 
   func loadFiatPair() {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     self.rootViewController.showLoadingHUD()
     provider.requestWithFilter(.getCryptoFiatPair) { (result) in
       DispatchQueue.main.async {
@@ -172,7 +172,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   }
 
   func createBuyCryptoOrder(buyCryptoModel: BifinityOrder) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     self.rootViewController.showLoadingHUD()
     provider.requestWithFilter(.buyCrypto(buyCryptoModel: buyCryptoModel)) { (result) in
       DispatchQueue.main.async {
@@ -191,7 +191,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   }
 
   func getBifinityOrders(_ currentOrder: BifinityOrder? = nil) {
-    self.historyProvider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    self.historyProvider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     var presentViewController: UIViewController = self.ordersViewController
     if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
       presentViewController = rootViewController
@@ -269,7 +269,7 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
     case .scanQRCode:
       self.scanQRCode()
     case .close:
-      self.historyProvider?.manager.session.invalidateAndCancel()
+      self.historyProvider?.session.session.invalidateAndCancel()
       self.delegate?.buyCryptoCoordinatorDidClose()
     }
   }
@@ -352,7 +352,7 @@ extension BuyCryptoCoordinator: BifinityOrderDelegate {
   }
   
   func didCloseOrdersScreen() {
-    self.historyProvider?.manager.session.invalidateAndCancel()
+      self.historyProvider?.session.session.invalidateAndCancel()
   }
 }
 

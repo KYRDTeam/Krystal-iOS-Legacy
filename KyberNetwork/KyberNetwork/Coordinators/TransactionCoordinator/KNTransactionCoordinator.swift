@@ -95,7 +95,7 @@ extension KNTransactionCoordinator {
   }
 
   fileprivate func loadKrystalHistory(isInit: Bool = false) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     let lastBlock = EtherscanTransactionStorage.shared.getKrystalHistoryTransactionStartBlock()
 
     provider.requestWithFilter(.getTransactionsHistory(address: address.addressString, lastBlock: isInit ? "0" : lastBlock)) { result in

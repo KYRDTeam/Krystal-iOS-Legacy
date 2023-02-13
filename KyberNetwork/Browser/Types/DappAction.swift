@@ -84,7 +84,7 @@ extension DappAction {
             return BigInt(value)
         }
     }()
-    let data = Data(hex: object["data"]?.value ?? "0x")
+    let data = Data([UInt8](hex: object["data"]?.value ?? "0x"))
 
     return SignTransactionObject(
       value: value.description,

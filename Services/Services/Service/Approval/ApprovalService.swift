@@ -10,7 +10,7 @@ import Moya
 
 public class ApprovalService: BaseService {
     
-    let provider = MoyaProvider<ApprovalEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<ApprovalEndpoint>(plugins: [NetworkLoggerPlugin()])
     
     public func getListApproval(address: String, chainIds: [Int], completion: @escaping (ApprovalsResponse?) -> ()) -> Cancellable? {
         return provider.request(.list(address: address, chainIds: chainIds)) { result in

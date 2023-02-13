@@ -13,7 +13,7 @@ import Result
 
 public class SwapService: BaseService {
     
-    let provider = MoyaProvider<SwapEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<SwapEndpoint>(plugins: [NetworkLoggerPlugin()])
 
     public func getAllRates(chainPath: String, address: String, srcTokenContract: String, destTokenContract: String,
                             amount: BigInt, focusSrc: Bool, completion: @escaping ([Rate]) -> ()) {

@@ -17,7 +17,7 @@ class KNReachability: NSObject {
   func startNetworkReachabilityObserver() {
     if self.isListening { return }
     self.isListening = true
-    self.reachabilityManager?.listener = { status in
+    self.reachabilityManager?.startListening(onUpdatePerforming: { status in
       switch status {
       case .reachable(let type):
         if type == .ethernetOrWiFi {
@@ -49,8 +49,8 @@ class KNReachability: NSObject {
         NotificationCenter.default.post(name: notiName, object: nil)
       }
       self.previousStatus = status
-    }
-    self.reachabilityManager?.startListening()
+    })
+//    self.reachabilityManager?.startListening()
   }
 
   func stopNetworkReachabilityObserver() {

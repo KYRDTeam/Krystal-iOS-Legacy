@@ -14,13 +14,13 @@ import BaseWallet
 import AppState
 import CryptoSwift
 
-class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
+public class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
     
     var viewController: UIViewController?
     var webview: WKWebView!
     
     var wallet: KWallet?
-    var current: TrustWeb3Provider = TrustWeb3Provider(config: .init(ethereum: ethereumConfigs[0]))
+    public var current: TrustWeb3Provider = TrustWeb3Provider(config: .init(ethereum: ethereumConfigs[0]))
     var cosmosChains = ["osmosis-1", "cosmoshub", "cosmoshub-4", "kava_2222-10", "evmos_9001-2"]
     var currentCosmosChain = "osmosis-1"
     
@@ -55,7 +55,7 @@ class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
         )
     }
     
-    override init() {
+    public override init() {
         super.init()
         reloadWallet()
     }
@@ -64,7 +64,7 @@ class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
         wallet = WalletManager.shared.getWallet(id: AppState.shared.currentAddress.walletID)
     }
     
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         let json = message.json
         print(json)
         guard
@@ -275,9 +275,10 @@ class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
                 case .solana:
                     self.connectSolanaWallet(network: network, id: id)
                 default:
-                    guard let address = WalletManager.shared.address(wallet: wallet, forCoin: .ethereum) else {
-                        return
-                    }
+//                    guard let address = WalletManager.shared.address(wallet: wallet, forCoin: .ethereum) else {
+//                        return
+//                    }
+                    let address = "0xfF8A4E6A750aD3AEeE6EA3d46F4c905FCd6176EE"
                     webview?.tw.set(network: network.rawValue, address: address)
                     webview?.tw.send(network: network, results: [address], to: id)
                 }

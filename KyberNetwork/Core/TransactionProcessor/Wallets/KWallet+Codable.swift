@@ -23,9 +23,10 @@ extension KWallet: Codable {
   
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    self.id = try container.decode(String.self, forKey: .id)
-    self.importType = KImportType(rawValue: try container.decode(Int.self, forKey: .importType)) ?? .mnemonic
-    self.name = try container.decode(String.self, forKey: .name)
+    let id = try container.decode(String.self, forKey: .id)
+    let importType = KImportType(rawValue: try container.decode(Int.self, forKey: .importType)) ?? .mnemonic
+    let name = try container.decode(String.self, forKey: .name)
+    self.init(id: id, importType: importType, name: name)
   }
 
 }

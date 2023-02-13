@@ -120,7 +120,7 @@ extension SearchFiatCryptoViewController: UITableViewDataSource {
     return self.viewModel.numberOfRows()
   }
 
-  private func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return UIView()
   }
 

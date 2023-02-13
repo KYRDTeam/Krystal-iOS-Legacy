@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import web3
 
 class MulticallBalanceSyncOperation: BalanceSyncOperation {
     let chainID: Int
@@ -13,8 +14,12 @@ class MulticallBalanceSyncOperation: BalanceSyncOperation {
     let multicallAddress: String
     let tokens: [String]
     let walletAddress: String
+    var ethClient: EthereumHttpClient!
+    var multicall: Multicall!
     
     init(walletAddress: String, tokens: [String], chainID: Int, rpcUrl: String, multicallAddress: String) {
+        self.ethClient = EthereumHttpClient(url: URL(string: rpcUrl)!)
+        self.multicall = Multicall(client: self.ethClient)
         self.walletAddress = walletAddress
         self.chainID = chainID
         self.rpcUrl = rpcUrl
@@ -23,24 +28,20 @@ class MulticallBalanceSyncOperation: BalanceSyncOperation {
     }
     
     override func execute(completion: @escaping () -> ()) {
-        NodeBalanceService(rpcUrl: rpcUrl).getTokenBalances(walletAddress: walletAddress, tokenAddresses: tokens, smartContract: multicallAddress) { result in
-            switch result {
-            case .success(let balances):
-                if balances.count < self.tokens.count {
-                    completion()
-                    return
-                }
-                let balances = self.tokens.enumerated().map { index, token in
-                    return TokenBalanceEntity(chainID: self.chainID,
-                                              tokenAddress: token,
-                                              walletAddress: self.walletAddress,
-                                              balance: balances[index].description)
-                }
-                TokenDB.shared.save(balances: balances)
-                completion()
-            case .failure:
-                completion()
-            }
+        var aggregator = Multicall.Aggregator()
+        var balances: [TokenBalanceEntity] = []
+        tokens.forEach { tokenAddress in
+            try? aggregator.append(ERC20Functions.balanceOf(contract: EthereumAddress(tokenAddress), account: EthereumAddress(walletAddress)), handler: { output in
+                let balance = try? ERC20Responses.balanceResponse(data: output.get())?.value
+                balances.append(TokenBalanceEntity(chainID: self.chainID,
+                                                   tokenAddress: tokenAddress,
+                                                   walletAddress: self.walletAddress,
+                                                   balance: (balance ?? .zero).description))
+            })
+        }
+        multicall.aggregate(calls: aggregator.calls, contract: EthereumAddress(multicallAddress)) { result in
+            TokenDB.shared.save(balances: balances)
+            completion()
         }
     }
     

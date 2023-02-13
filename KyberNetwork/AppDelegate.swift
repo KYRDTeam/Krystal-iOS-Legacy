@@ -11,6 +11,7 @@ import IQKeyboardManager
 import Dependencies
 import BaseWallet
 import ChainModule
+import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -32,41 +33,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     migrateWalletData()
     window = UIWindow(frame: UIScreen.main.bounds)
       
-    setupFirebase()
-      
-      let worker = ChainSyncWorker(operations: [
-        DefaultChainSyncOperation(),
-        RemoteConfigChainSyncOperation()
-      ])
-      
-      
-      worker.asyncWaitAll {
-          print("SYNC COMPLETED")
-      }
-      
-      _ = TokenDB.shared
-      
-      window?.rootViewController = TokenListViewController.instantiateFromNib()
-      window?.makeKeyAndVisible()
-      
-//    setupImageProcessor()
-//    setupKeyboard()
-//    KNReachability.shared.startNetworkReachabilityObserver()
 //    setupFirebase()
-//    setupOneSignal(launchOptions)
-//    Tracker.track(event: .openApp)
-//    setupSentryIfNeeded()
-//    do {
-//      let keystore = try EtherKeystore()
-//      migrationManager = AppMigrationManager(keystore: keystore)
-//      if migrationManager.needMigrate {
-//        self.startMigration(keystore: keystore)
-//      } else {
-//        self.coordinatorFinishLaunching(keystore: keystore)
+//
+//      ChainDB.shared.removeAllChain()
+//      TokenDB.shared.removeAllTokens()
+//
+//      let worker = ChainSyncWorker(operations: [
+//        DefaultChainSyncOperation(),
+//        RemoteConfigChainSyncOperation()
+//      ])
+//
+//
+//      worker.asyncWaitAll {
+//          print("SYNC COMPLETED")
 //      }
-//    } catch {
-//      print("EtherKeystore init issue.")
-//    }
+//
+//      window?.rootViewController = TokenListViewController.instantiateFromNib()
+//      window?.makeKeyAndVisible()
+      
+    setupImageProcessor()
+    setupKeyboard()
+    KNReachability.shared.startNetworkReachabilityObserver()
+    setupFirebase()
+    setupOneSignal(launchOptions)
+    Tracker.track(event: .openApp)
+    setupSentryIfNeeded()
+    do {
+      let keystore = try EtherKeystore()
+      migrationManager = AppMigrationManager(keystore: keystore)
+      if migrationManager.needMigrate {
+        self.startMigration(keystore: keystore)
+      } else {
+        self.coordinatorFinishLaunching(keystore: keystore)
+      }
+    } catch {
+      print("EtherKeystore init issue.")
+    }
     
     return true
   }
