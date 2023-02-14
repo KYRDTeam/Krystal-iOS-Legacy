@@ -241,7 +241,14 @@ class EthereumWeb3Service {
           data: data,
           defaultGasLimit: defaultGasLimit,
           isSwap: false,
-          completion: completion
+          completion: { result in
+              switch result {
+              case .success(let gasLimit):
+                  completion(.success(gasLimit))
+              case .failure(let error):
+                  completion(.failure(error))
+              }
+          }
         )
       case .failure(let error):
         completion(.failure(error))
@@ -304,7 +311,14 @@ class EthereumWeb3Service {
           data: data,
           defaultGasLimit: defaultGasLimit,
           isSwap: true,
-          completion: completion
+          completion: { result in
+              switch result {
+              case .success(let gasLimit):
+                  completion(.success(gasLimit))
+              case .failure(let error):
+                  completion(.failure(error))
+              }
+          }
         )
       case .failure(let error):
         completion(.failure(error))

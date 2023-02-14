@@ -72,7 +72,7 @@ class KrytalCoordinator: NSObject, Coordinator {
       }
       return
     }
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     provider.requestWithFilter(.getReferralOverview(address: currentAddress.addressString, accessToken: loginToken.token)) { (result) in
       switch result {
       case .success(let resp):
@@ -97,7 +97,7 @@ class KrytalCoordinator: NSObject, Coordinator {
   }
   
   func loadReferralTiers() {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     provider.requestWithFilter(.getReferralTiers(address: currentAddress.addressString)) { (result) in
       switch result {
       case .success(let resp):
@@ -123,7 +123,7 @@ class KrytalCoordinator: NSObject, Coordinator {
 
   fileprivate func loadClaimHistory() {
     guard let loginToken = Storage.retrieve(currentAddress.addressString + Constants.loginTokenStoreFileName, as: LoginToken.self) else { return }
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     provider.requestWithFilter(.getClaimHistory(address: currentAddress.addressString, accessToken: loginToken.token)) { (result) in
       switch result {
       case .success(let resp):

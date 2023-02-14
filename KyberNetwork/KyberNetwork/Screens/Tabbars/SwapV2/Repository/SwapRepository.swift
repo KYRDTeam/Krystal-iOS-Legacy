@@ -15,7 +15,7 @@ import Services
 
 class SwapRepository {
 
-  let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+  let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
   
   func getAllRates(address: String, srcTokenContract: String, destTokenContract: String,
                    amount: BigInt, focusSrc: Bool, completion: @escaping ([Rate]) -> ()) {

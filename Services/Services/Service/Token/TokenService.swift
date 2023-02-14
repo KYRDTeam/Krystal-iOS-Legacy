@@ -12,7 +12,7 @@ import Utilities
 
 public class TokenService: BaseService {
   
-  let provider = MoyaProvider<TokenEndpoint>(plugins: [NetworkLoggerPlugin()])
+  let provider = MoyaProvider<TokenEndpoint>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
   var searchTokensProcess: Cancellable?
     var advancedSearchCancellable: Cancellable?
   

@@ -700,7 +700,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
 extension OverviewCoordinator {
 
   func loadMultichainAssetsData(completion: @escaping ([ChainBalanceModel]) -> Void) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     let allChainIds = ChainType.getAllChain().map {
       return "\($0.getChainId())"
     }
@@ -887,7 +887,7 @@ extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
         do {
           let signedData = try EthSigner().signMessageHash(address: currentAddress, data: sendData, addPrefix: false)
           print("[Send favorite nft] success")
-          let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+          let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
           provider.requestWithFilter(.registerNFTFavorite(address: currentAddress.addressString, collectibleAddress: category.collectibleAddress, tokenID: item.tokenID, favorite: status, signature: signedData.hexEncoded, chain: category.chainType ?? KNGeneralProvider.shared.currentChain)) { result in
             if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
               if let isSuccess = json["success"] as? Bool, isSuccess {

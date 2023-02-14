@@ -150,7 +150,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   }
 
   func loadFiatPair() {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     self.rootViewController.showLoadingHUD()
     provider.requestWithFilter(.getCryptoFiatPair) { (result) in
       DispatchQueue.main.async {
@@ -172,7 +172,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   }
 
   func createBuyCryptoOrder(buyCryptoModel: BifinityOrder) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     self.rootViewController.showLoadingHUD()
     provider.requestWithFilter(.buyCrypto(buyCryptoModel: buyCryptoModel)) { (result) in
       DispatchQueue.main.async {
@@ -191,7 +191,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   }
 
   func getBifinityOrders(_ currentOrder: BifinityOrder? = nil) {
-    self.historyProvider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    self.historyProvider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     var presentViewController: UIViewController = self.ordersViewController
     if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
       presentViewController = rootViewController
@@ -352,7 +352,7 @@ extension BuyCryptoCoordinator: BifinityOrderDelegate {
   }
   
   func didCloseOrdersScreen() {
-      self.historyProvider?.session.session.invalidateAndCancel()
+    self.historyProvider?.session.session.invalidateAndCancel()
   }
 }
 

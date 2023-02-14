@@ -110,7 +110,7 @@ class RewardCoordinator: Coordinator {
       self.handleUpdateLoginTokenForClaimReward()
       return
     }
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     let address = self.currentAddress.addressString
     
     provider.requestWithFilter(.getRewards(address: address, accessToken: loginToken.token)) { (result) in
@@ -175,7 +175,7 @@ class RewardCoordinator: Coordinator {
       self.handleUpdateLoginTokenForClaimRewardDetail()
       return
     }
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     let address = currentAddress.addressString
     
     provider.requestWithFilter(.getClaimRewards(address: address, accessToken: loginToken.token)) { (result) in
@@ -218,7 +218,7 @@ class RewardCoordinator: Coordinator {
   }
   
   func checkEligibleWallet(completion: @escaping (Bool) -> Void) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     let address = self.currentAddress.addressString
     provider.requestWithFilter(.checkEligibleWallet(address: address)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let isEligible = json["result"] as? Bool {

@@ -17,7 +17,7 @@ class AdvanceSearchTokenInteractor: AdvanceSearchTokenInteractorProtocol {
   var currentProcess: Cancellable?
   
   func getSearchData(keyword: String) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     
     if let currentProcess = currentProcess {
       currentProcess.cancel()

@@ -8,9 +8,13 @@ source 'https://github.com/CocoaPods/Specs.git'
 # tmp fix the CDN outage: https://github.com/CocoaPods/CocoaPods/issues/10078#issuecomment-696481185
 # https://github.com/CocoaPods/CocoaPods/issues/11355
 
+def trustKeystore
+  pod 'TrustKeystore', :git => 'https://github.com/tungnguyen20/trust-keystore.git', :branch => '0.4.4-swift-5'
+end
+
 def web3
-  pod 'web3.swift', :path => '../web3.swift'
-  pod 'Web3Core', :path => '../Web3Core'
+  pod 'web3.swift', :path => '../../web3.swift'
+  pod 'Web3Core', :path => '../../Web3Core'
 end
 
 def firebasePods
@@ -40,26 +44,26 @@ def uiPods
 end
 
 def cryptoHelperPods
-  pod 'BigInt', '~> 5.0.0'
+  pod 'BigInt', '~> 4.0'
   pod 'CryptoSwift'
   pod 'TrustWalletCore', '~> 2.9'
-  pod 'TrustKeystore', '~> 0.4.2'
+  trustKeystore
   pod 'TrustCore', '~> 0.0.7'
   pod 'WalletConnectSwift'
-#  pod 'Web3'
+  web3
 #  pod 'WalletCore'
   # pod 'web3swift', :git=>'https://github.com/BANKEX/web3swift', :branch=>'master'
   pod 'TrustWeb3Provider', :git => 'https://github.com/KYRDTeam/krystal-web3-provider.git', :branch => 'develop'
 end
 
 def networkingPods
-  pod 'APIKit', '~> 3.2.1'
-  pod 'JSONRPCKit', '~> 3.0.0' #:git=> 'https://github.com/bricklife/JSONRPCKit.git'
-  pod 'JavaScriptKit', '~> 1.0.0'
+  pod 'APIKit'
+  pod 'JSONRPCKit', :git => 'https://github.com/tungnguyen20/JSONRPCKit.git'
+  pod 'JavaScriptKit'
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
   pod 'Starscream', '~> 3.1'
   pod 'Kingfisher', '~> 7.0'
-  pod 'Moya', '~> 15.0'
+  pod 'Moya'
   pod 'Mixpanel-swift', '~> 3.1.7'
 end
 
@@ -81,7 +85,7 @@ end
 def swapDependencies
   pod 'BigInt'
   pod 'Moya'
-  pod 'JSONRPCKit'
+  pod 'JSONRPCKit', :git => 'https://github.com/tungnguyen20/JSONRPCKit.git'
   pod 'APIKit'
   pod 'lottie-ios'
   pod 'FittedSheets'
@@ -91,7 +95,7 @@ end
 def earnDependencies
   pod 'BigInt'
   pod 'Moya'
-  pod 'JSONRPCKit'
+  pod 'JSONRPCKit', :git => 'https://github.com/tungnguyen20/JSONRPCKit.git'
   pod 'APIKit'
   pod 'lottie-ios'
   pod 'FittedSheets'
@@ -102,10 +106,10 @@ end
 def servicesDependencies
   pod 'Moya'
   pod 'BigInt'
-  pod 'JSONRPCKit'
+  pod 'JSONRPCKit', :git => 'https://github.com/tungnguyen20/JSONRPCKit.git'
   pod 'APIKit'
   web3
-  pod 'JavaScriptKit', '~> 1.0.0'
+  pod 'JavaScriptKit'
 end
 
 def designSystemDependencies
@@ -124,7 +128,7 @@ def transactionModuleDependencies
   pod 'BigInt'
   pod 'TrustWalletCore'
   pod 'TrustCore'
-  pod 'JSONRPCKit'
+  pod 'JSONRPCKit', :git => 'https://github.com/tungnguyen20/JSONRPCKit.git'
   pod 'APIKit'
   pod 'CryptoSwift'
   pod 'loady'
@@ -214,10 +218,10 @@ target 'ChainModule' do
   pod 'RealmSwift', '~> 10.32'
   pod 'Moya'
   pod 'FirebaseRemoteConfig', '~> 10.0.0'
-  pod 'JSONRPCKit', '~> 3.0.0'
-  pod 'APIKit', '~> 3.2.1'
+  pod 'JSONRPCKit', :git => 'https://github.com/tungnguyen20/JSONRPCKit.git'
+  pod 'APIKit'
   pod 'BigInt'
-  pod 'JavaScriptKit', '~> 1.0.0'
+  pod 'JavaScriptKit', '~> 2.0'
   web3
 end
 

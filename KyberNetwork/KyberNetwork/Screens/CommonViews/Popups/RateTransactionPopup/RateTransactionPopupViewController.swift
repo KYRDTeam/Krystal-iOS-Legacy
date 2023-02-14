@@ -95,7 +95,7 @@ class RateTransactionPopupViewController: KNBaseViewController {
   }
 
   func sendRate() {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     provider.requestWithFilter(.sendRate(star: self.currentRate, detail: self.detailTextView.text, txHash: self.txHash)) { result in
       switch result {
       case .success(_):

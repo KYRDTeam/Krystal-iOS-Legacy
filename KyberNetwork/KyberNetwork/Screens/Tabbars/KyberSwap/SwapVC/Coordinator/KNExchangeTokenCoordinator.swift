@@ -714,7 +714,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   func getAllRates(from: TokenObject, to: TokenObject, amount: BigInt, focusSrc: Bool) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
     let amt = amount.isZero ? from.placeholderValue.description : amount.description
@@ -739,7 +739,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   func getExpectedRate(from: TokenObject, to: TokenObject, srcAmount: BigInt, hint: String) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
     let amt = srcAmount.isZero ? from.placeholderValue.description : srcAmount.description
@@ -756,7 +756,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   func getEncodedSwapTransaction(_ tx: RawSwapTransaction) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     self.navigationController.displayLoading()
     provider.requestWithFilter(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint, useGasToken: tx.useGasToken)) { [weak self] result in
       guard let `self` = self else { return }
@@ -776,7 +776,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   func getGasLimit(from: TokenObject, to: TokenObject, amount: BigInt, tx: RawSwapTransaction) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     provider.requestWithFilter(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: 1, hint: tx.hint, useGasToken: tx.useGasToken)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result {
@@ -803,7 +803,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   func getGasLimit(from: TokenObject, to: TokenObject, amount: BigInt, hint: String) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
     let amt = amount.isZero ? from.placeholderValue.description : amount.description
@@ -824,7 +824,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   func getRefPrice(from: TokenObject, to: TokenObject) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
     provider.requestWithFilter(.getRefPrice(src: src, dst: dest)) { [weak self] result in

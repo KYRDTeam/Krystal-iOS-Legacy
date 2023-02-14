@@ -10,7 +10,7 @@ import Moya
 
 public class TrackingService: BaseService {
     
-    let provider = MoyaProvider<TrackingEndpoint>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<TrackingEndpoint>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     
     public func sendRate(star: Int, detail: String, txHash: String) {
         provider.request(.sendRate(star: star, detail: detail, txHash: txHash)) { _ in }

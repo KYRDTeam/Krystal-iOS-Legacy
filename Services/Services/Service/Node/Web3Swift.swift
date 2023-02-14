@@ -35,7 +35,7 @@ class Web3Swift: NSObject {
         }
     }
     
-    func request<T: Web3Request>(request: T, completion: @escaping (Result<T.Response, AnyError>) -> Void) {
+    func request<T: Web3Request>(request: T, completion: @escaping (Swift.Result<T.Response, AnyError>) -> Void) {
         guard isLoaded else {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: 250)) {
                 self.request(request: request, completion: completion)
@@ -45,7 +45,7 @@ class Web3Swift: NSObject {
         
         switch request.type {
         case .function(let command):
-            JSFunction<T.Response>(command).evaluate(in: webView) { result in
+            webView.evaluate(expression: JSFunction<T.Response>(command)) { result in
                 switch result {
                 case .success(let result):
                     NSLog("request function result \(result)")
@@ -56,7 +56,7 @@ class Web3Swift: NSObject {
                 }
             }
         case .variable(let command):
-            JSVariable<T.Response>(command).evaluate(in: webView) { result in
+            webView.evaluate(expression: JSVariable<T.Response>(command)) { result in
                 switch result {
                 case .success(let result):
                     NSLog("variable \(result)")
@@ -67,7 +67,7 @@ class Web3Swift: NSObject {
                 }
             }
         case .script(let command):
-            JSScript<T.Response>(command).evaluate(in: webView) { result in
+            webView.evaluate(expression: JSScript<T.Response>(command)) { result in
                 switch result {
                 case .success(let result):
                     completion(.success(result))
@@ -85,6 +85,6 @@ extension Web3Swift: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         isLoaded = true
         
-        JSVariable<String>("web3.setProvider(new web3.providers.HttpProvider('\(url.absoluteString))").evaluate(in: webView) { result in }
+        webView.evaluate(expression: JSVariable<String>("web3.setProvider(new web3.providers.HttpProvider('\(url.absoluteString))"), completionHandler: nil)
     }
 }

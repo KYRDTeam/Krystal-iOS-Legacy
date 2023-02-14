@@ -44,7 +44,7 @@ class PromoCodeCoordinator: Coordinator {
 extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
   fileprivate func claimPromotionCode(_ code: String) {
     self.navigationController.displayLoading()
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     provider.requestWithFilter(.claimPromotion(code: code, address: address.addressString)) { result in
       switch result {
       case .success(let resp):
@@ -75,7 +75,7 @@ extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
         self.rootViewController.coordinatorDidUpdateSearchPromoCodeItems([], searchText: code)
         return
       }
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
       provider.requestWithFilter(.getPromotions(code: code, address: "")) { result in
         switch result {
         case .success(let resp):
@@ -91,7 +91,7 @@ extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
         }
       }
     case .loadUsedCode:
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
       provider.requestWithFilter(.getPromotions(code: "", address: address.addressString)) { result in
         switch result {
         case .success(let resp):

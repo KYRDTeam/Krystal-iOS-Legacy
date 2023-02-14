@@ -12,7 +12,7 @@ import Result
 
 class KrystalService {
   
-  let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+  let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
   
   func sendRefCode(address: KAddress, _ code: String, completion: @escaping (_ isSuccess: Bool, _ message: String) -> ()) {
     let data = Data(code.utf8)

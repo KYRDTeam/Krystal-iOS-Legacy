@@ -59,7 +59,7 @@ class CrosschainTransactionService {
   }
   
   func getTransactionStatus(txHash: String, chainId: String, completion: @escaping (InternalHistoryExtraData?) -> ()) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     provider.request(.checkTxStatus(txHash: txHash, chainId: chainId)) { result in
       switch result {
       case .success(let response):

@@ -113,7 +113,7 @@ extension PromoCodeDetailViewController: RedeemPopupViewControllerDelegate {
   }
   
   @objc func checkstatus() {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     guard let codePrefix = viewModel.item.code.split(separator: "-").first else { return }
     provider.requestWithFilter(.getPromotions(code: String(codePrefix), address: addressString)) { [weak self] result in
       switch result {
@@ -140,7 +140,7 @@ extension PromoCodeDetailViewController: RedeemPopupViewControllerDelegate {
   }
   
   func requestClaim() {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     provider.requestWithFilter(successCodes: 200...400, .claimPromotion(code: viewModel.item.code, address: addressString)) { [weak self] result in
       switch result {
       case .success(let resp):
