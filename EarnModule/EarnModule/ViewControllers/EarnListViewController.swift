@@ -50,6 +50,7 @@ class EarnListViewController: InAppBrowsingViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        hideLoading()
     }
     
     func resetFilter() {
@@ -190,9 +191,7 @@ class EarnListViewController: InAppBrowsingViewController {
             if let text = self.searchTextField.text, !text.isEmpty {
                 self.filterDataSource(text: text)
             }
-            if !isAutoReload {
-                self.hideLoading()
-            }
+            self.hideLoading()
             if self.isNeedReloadFilter {
                 self.isNeedReloadFilter = false
                 self.selectedPlatforms = self.getAllPlatform()
@@ -310,7 +309,9 @@ extension EarnListViewController: SkeletonTableViewDelegate, SkeletonTableViewDa
     }
     
     func hideLoading() {
-        view.hideSkeleton()
+        DispatchQueue.main.async {
+            self.view.hideSkeleton()
+        }
     }
     
     func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
