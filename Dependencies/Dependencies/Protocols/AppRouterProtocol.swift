@@ -21,7 +21,7 @@ public protocol AppRouterProtocol {
     func openExternalURL(url: String)
     func openSupportURL()
     func openTxHash(txHash: String, chainID: Int)
-    func openToken(navigationController: UINavigationController, address: String, chainID: Int)
+    func openToken(navigationController: UINavigationController, address: String, chainID: Int, tokenName: String?)
     func openTokenTransfer(navigationController: UINavigationController, token: Token)
     func openSwap(token: Token)
     func openSwap()
@@ -29,4 +29,12 @@ public protocol AppRouterProtocol {
     func openEarnPortfolio()
     func openEarnReward()
     func openSwap(from: Token, to: Token)
+}
+
+public extension AppRouterProtocol {
+    
+    func openToken(navigationController: UINavigationController, address: String, chainID: Int) {
+        openToken(navigationController: navigationController, address: address, chainID: chainID, tokenName: nil)
+    }
+    
 }

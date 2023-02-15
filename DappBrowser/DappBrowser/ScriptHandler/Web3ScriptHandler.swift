@@ -465,7 +465,6 @@ class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
         let switchToConfig = provider.config.ethereum
 
         if chainId == currentConfig.chainId {
-            print("No need to switch, already on chain \(chainId)")
             webview.tw.sendNull(network: .ethereum, id: id)
         } else {
             let alert = UIAlertController(

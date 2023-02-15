@@ -234,7 +234,6 @@ class EarnCoordinator: NSObject, Coordinator {
     self.navigationController.popToRootViewController(animated: false)
     self.loadCachedLendingTokens()
     self.getLendingOverview()
-    self.sendCoordinator?.appCoordinatorDidUpdateChain()
   }
   
   func appCoodinatorDidUpdateHideBalanceStatus(_ status: Bool) {

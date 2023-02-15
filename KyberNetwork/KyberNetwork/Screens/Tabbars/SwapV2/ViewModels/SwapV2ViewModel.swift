@@ -67,7 +67,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   }
 
   var addressString: String {
-    return currentAddress.value.addressString
+    return currentAddress.addressString
   }
   
   var numberOfRateRows: Int {
@@ -113,7 +113,9 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   let fetchingBalanceInterval: Double = 10.0
   var timer: Timer?
   
-  var currentAddress: Observable<KAddress> = .init(AppDelegate.session.address)
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
   var currentChain: Observable<ChainType> = .init(KNGeneralProvider.shared.currentChain)
   var sourceToken: Observable<Token?> = .init(KNGeneralProvider.shared.quoteTokenObject.toData())
   var destToken: Observable<Token?> = .init(nil)
@@ -159,8 +161,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   func loadSourceTokenPrice() {
     guard let sourceToken = sourceToken.value else { return }
     swapRepository.getTokenDetail(tokenAddress: sourceToken.address) { [weak self] token in
-      if token?.address == sourceToken.address { // Needed to handle case swap pair
-        self?.sourceTokenPrice.value = token?.markets["usd"]?.price
+      guard let token = token else { return }
+      if token.address.lowercased() == sourceToken.address.lowercased() { // Needed to handle case swap pair
+        self?.sourceTokenPrice.value = token.markets["usd"]?.price
+        self?.sourceToken.value = Token(name: token.name, symbol: token.symbol, address: token.address, decimals: token.decimals, logo: token.logo)
       } else {
         self?.sourceTokenPrice.value = nil
       }
@@ -170,8 +174,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   func loadDestTokenPrice() {
     guard let destToken = destToken.value else { return }
     swapRepository.getTokenDetail(tokenAddress: destToken.address) { [weak self] token in
-      if token?.address == destToken.address { // Needed to handle case swap pair
-        self?.destTokenPrice.value = token?.markets["usd"]?.price
+      guard let token = token else { return }
+      if token.address.lowercased() == destToken.address.lowercased() { // Needed to handle case swap pair
+        self?.destTokenPrice.value = token.markets["usd"]?.price
+        self?.destToken.value = Token(name: token.name, symbol: token.symbol, address: token.address, decimals: token.decimals, logo: token.logo)
       } else {
         self?.destTokenPrice.value = nil
       }
@@ -239,7 +245,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
     if platformRatesViewModels.value.isEmpty {
       self.state.value = .rateNotFound
-    } else if self.currentAddress.value.isWatchWallet {
+    } else if self.currentAddress.isWatchWallet {
       self.state.value = .notConnected
     } else if self.sourceAmount.value ?? .zero <= self.maxAvailableSourceTokenAmount {
       self.checkAllowance()
@@ -296,8 +302,9 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       sourceBalance.value = nil
       return
     }
-    swapRepository.getBalance(tokenAddress: sourceToken.address, address: addressString) { [weak self] (amount, tokenAddress) in
-      if tokenAddress == self?.sourceToken.value?.address, let amount = amount { // Needed to handle case swap pair
+    let tokenAddress = sourceToken.address
+    EthereumNodeService(chain: currentChain.value).getBalance(address: addressString, tokenAddress: tokenAddress) { [weak self] amount in
+      if tokenAddress.lowercased() == self?.sourceToken.value?.address.lowercased() { // Needed to handle case swap pair
         self?.sourceBalance.value = amount
       }
     }
@@ -308,8 +315,9 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
       destBalance.value = nil
       return
     }
-    swapRepository.getBalance(tokenAddress: destToken.address, address: addressString) { [weak self] (amount, tokenAddress) in
-      if tokenAddress == destToken.address, let amount = amount { // Needed to handle case swap pair
+    let tokenAddress = destToken.address
+    EthereumNodeService(chain: currentChain.value).getBalance(address: addressString, tokenAddress: tokenAddress) { [weak self] amount in
+      if tokenAddress.lowercased() == self?.destToken.value?.address.lowercased() { // Needed to handle case swap pair
         self?.destBalance.value = amount
       }
     }
@@ -317,7 +325,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
   
   func approve(tokenAddress: String, currentAllowance: BigInt, gasLimit: BigInt) {
     state.value = .approving
-    swapRepository.approve(address: currentAddress.value, tokenAddress: tokenAddress, currentAllowance: currentAllowance, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
+    swapRepository.approve(address: currentAddress, tokenAddress: tokenAddress, currentAllowance: currentAllowance, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
       switch result {
       case .success:
         return
@@ -472,6 +480,7 @@ extension SwapV2ViewModel {
       sourceToken.value = KNGeneralProvider.shared.quoteTokenObject.toData()
       sourceTokenPrice.value = nil
       destTokenPrice.value = nil
+      loadSourceTokenPrice()
       state.value = .emptyAmount
       sourceBalance.value = nil
       destBalance.value = nil
@@ -481,13 +490,12 @@ extension SwapV2ViewModel {
       timer = nil
       scheduleFetchingBalance()
       loadBaseToken()
-      reloadSourceBalance()
     }
+    reloadSourceBalance()
   }
   
   @objc func appDidSwitchAddress() {
     checkPendingTx()
-    currentAddress.value = AppDelegate.session.address
     state.value = .emptyAmount
     sourceAmount.value = nil
     sourceBalance.value = nil
@@ -618,7 +626,7 @@ extension SwapV2ViewModel {
     }
 
     func updateTxData(completion: @escaping (TxObject) -> Void) {
-        TransactionManager.txProcessor.getLatestNonce(address: currentAddress.value, chain: currentChain.value) { nonce in
+        TransactionManager.txProcessor.getLatestNonce(address: currentAddress, chain: currentChain.value) { nonce in
             guard let nonce = nonce else {
                 return
             }
@@ -646,7 +654,7 @@ extension SwapV2ViewModel {
       let toAmount = BigInt(rate.amount) ?? BigInt(0)
       let minDestQty = toAmount * BigInt(10000.0 - self.settings.slippage * 100.0) / BigInt(10000.0)
       return RawSwapTransaction(
-        userAddress: currentAddress.value.addressString,
+        userAddress: currentAddress.addressString,
         src: sourceToken.address ,
         dest: destToken.address,
         srcQty: sourceAmount.description,

@@ -12,7 +12,7 @@ class Images {
     static let searchIcon = UIImage(imageName: "search_icon")!
     static let verifyToken = UIImage(imageName: "blueTick_icon")!
     static let promotedToken = UIImage(imageName: "green-checked-tag-icon")!
-    static let unverifiedToken = UIImage(imageName: "warning-tag-icon")!
+    static let scamToken = UIImage(imageName: "warning-tag-icon")!
     static let defaultToken = UIImage(imageName: "default_token")!
 }
 

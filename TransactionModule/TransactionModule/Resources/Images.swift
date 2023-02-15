@@ -22,10 +22,13 @@ extension UIImage {
     static let txMultisend = UIImage(imageName: "tx_multisend")
     static let verifyToken = UIImage(imageName: "blueTick_icon")
     static let promotedToken = UIImage(imageName: "green-checked-tag-icon")
-    static let unverifiedToken = UIImage(imageName: "warning-tag-icon")
+    static let scamToken = UIImage(imageName: "warning-tag-icon")
     static let search = UIImage(imageName: "search")
     static let closeSearch = UIImage(imageName: "close_search")
     static let defaultToken = UIImage(imageName: "default_token")
+    static let totalTx = UIImage(imageName: "txIcon")
+    static let totalGas = UIImage(imageName: "txGas")
+    static let totalVolume = UIImage(imageName: "txVolumn")
 }
 
 

@@ -16,6 +16,7 @@ import Dependencies
 
 protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidImportWallet(wallet: KWallet, chainType: ChainType)
+  func overviewCoordinatorDidAddWatchAddress(address: KAddress, chainType: ChainType)
   func overviewCoordinatorOpenCreateChainWalletMenu(chainType: ChainType)
   func overviewCoordinatorDidSelectAddWallet()
   func overviewCoordinatorDidSelectManageWallet()
@@ -199,7 +200,6 @@ class OverviewCoordinator: NSObject, Coordinator {
       self.currentCurrencyType = KNGeneralProvider.shared.quoteCurrency
     }
     UserDefaults.standard.setValue(self.currentCurrencyType.rawValue, forKey: Constants.currentCurrencyMode)
-    self.sendCoordinator?.appCoordinatorDidUpdateChain()
   }
 
   func appCoordinatorReceiveWallectConnectURI(_ uri: String) {
@@ -680,6 +680,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     case .importWallet(let privateKey, let chain):
       let coordinator = KNImportWalletCoordinator(navigationController: navigationController)
       self.importWalletCoordinator = coordinator
+      self.importWalletCoordinator?.delegate = self
       coordinator.startImportFlow(privateKey: privateKey, chain: chain)
     case .openPromotion(let code):
       delegate?.overviewCoordinatorOpenPromotion(code: code)
@@ -902,4 +903,21 @@ extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
       }
     }
   }
+}
+
+extension OverviewCoordinator: KNImportWalletCoordinatorDelegate {
+  
+  func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
+    delegate?.overviewCoordinatorDidImportWallet(wallet: wallet, chainType: chain)
+    navigationController.popViewController(animated: true, completion: nil)
+  }
+  
+  func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType) {
+    delegate?.overviewCoordinatorDidAddWatchAddress(address: watchAddress, chainType: chain)
+  }
+  
+  func importWalletCoordinatorDidClose() {
+    importWalletCoordinator = nil
+  }
+
 }

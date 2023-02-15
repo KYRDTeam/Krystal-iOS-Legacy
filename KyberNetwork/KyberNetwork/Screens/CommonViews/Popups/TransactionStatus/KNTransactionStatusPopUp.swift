@@ -68,6 +68,7 @@ class KNTransactionStatusPopUp: KNBaseViewController {
 
   var withdrawAmount: String?
   var withdrawTokenSym: String?
+    var checkingTimer: Timer?
 
   init(transaction: InternalHistoryTransaction) {
     self.transaction = transaction
@@ -79,23 +80,60 @@ class KNTransactionStatusPopUp: KNBaseViewController {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+    
+    func observeEvents() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.txStatusUpdated(_:)),
+            name: .kTxStatusUpdated,
+            object: nil
+        )
+        let name = Notification.Name(rawValue: "viewDidBecomeActive")
+        NotificationCenter.default.addObserver(
+          self,
+          selector: #selector(self.viewDidBecomeActive(_:)),
+          name: name,
+          object: nil
+        )
+    }
+    
+    func setupTimer() {
+        // Handle case pending list cleared
+        checkingTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
+    }
+    
 
   deinit {
     let name = Notification.Name(rawValue: "viewDidBecomeActive")
     NotificationCenter.default.removeObserver(self, name: name, object: nil)
+      NotificationCenter.default.removeObserver(self, name: .kTxStatusUpdated, object: nil)
   }
+    
+    @objc func txStatusUpdated(_ notification: Notification) {
+        guard let hash = notification.userInfo?["hash"] as? String, let status = notification.userInfo?["status"] as? InternalTransactionState else {
+            return
+        }
+        guard hash == transaction.hash else {
+            return
+        }
+        transaction.state = status
+        updateView(with: transaction)
+        
+    }
+    
+    @objc func fireTimer() {
+        if EtherscanTransactionStorage.shared.getInternalHistoryTransaction(chain: AppState.shared.currentChain).isEmpty {
+            transaction.state = .done
+            updateView(with: transaction)
+        }
+    }
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    self.commontSetup()
-    let name = Notification.Name(rawValue: "viewDidBecomeActive")
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.viewDidBecomeActive(_:)),
-      name: name,
-      object: nil
-    )
-  }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.commontSetup()
+        observeEvents()
+        setupTimer()
+    }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -147,6 +185,8 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       }
       self.view.layoutSubviews()
     } else if self.transaction.state == .done {
+        checkingTimer?.invalidate()
+        checkingTimer = nil
       if transaction.type == .transferETH || transaction.type == .transferToken || transaction.type == .selfTransfer {
         MixPanelManager.track("transfer_done_pop_up_open", properties: ["screenid": "transfer_done_pop_up", "txn_hash": transaction.hash, "chain_id": AppState.shared.currentChain.getChainId()])
       } else if transaction.type == .multiSend {

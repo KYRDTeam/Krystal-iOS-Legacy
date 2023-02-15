@@ -72,8 +72,8 @@ class AppRouter: AppRouterProtocol, Coordinator {
             AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = .all
             AppDelegate.shared.coordinator.loadBalanceCoordinator?.resume()
             AppEventManager.shared.postSelectAllChain()
-          } else {
-            AppState.shared.updateChain(chain: selectedChain)
+          } else if let wallet = WalletManager.shared.getWallet(id: AppState.shared.currentAddress.walletID) {
+              AppDelegate.shared.coordinator.switchWallet(wallet: wallet, chain: selectedChain)
           }
           onSelectChain(selectedChain)
         }
@@ -115,10 +115,10 @@ class AppRouter: AppRouterProtocol, Coordinator {
     UIApplication.shared.topMostViewController()?.openSafari(with: url)
   }
   
-  func openToken(navigationController: UINavigationController, address: String, chainID: Int) {
+  func openToken(navigationController: UINavigationController, address: String, chainID: Int, tokenName: String?) {
     guard let chain = ChainType.make(chainID: chainID) else { return }
     let currencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .quote
-    guard let vc = TokenModule.createTokenDetailViewController(address: address, chain: chain, currencyMode: currencyMode) else { return }
+    guard let vc = TokenModule.createTokenDetailViewController(address: address, chain: chain, tokenName: tokenName, currencyMode: currencyMode) else { return }
     vc.hidesBottomBarWhenPushed = false
     navigationController.pushViewController(vc, animated: true, completion: nil)
   }

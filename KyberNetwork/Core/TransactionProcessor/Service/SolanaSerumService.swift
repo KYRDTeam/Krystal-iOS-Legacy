@@ -7,6 +7,7 @@
 
 import Foundation
 import Moya
+import BigInt
 
 class SolanaSerumService {
   
@@ -128,4 +129,24 @@ class SolanaSerumService {
     }
   }
   
+    func getBalance(address: String, completion: @escaping (BigInt?) -> Void) {
+      let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      provider.request(.getBalance(address: address)) { result in
+        switch result {
+        case .success(let data):
+          if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+            if let resultJson = json["result"] as? JSONDictionary {
+              if let value = resultJson["value"] as? Int {
+                completion(BigInt(value))
+                return
+              }
+            }
+          }
+          completion(nil)
+        case .failure(let error):
+          print("[Solana error] \(error.localizedDescription)")
+          completion(nil)
+        }
+      }
+    }
 }

@@ -33,7 +33,7 @@ class PieChartModel {
     }
     
     func usdDetailString() -> String {
-        return usd < 0.01 ? "< $0.01" : StringFormatter.usdString(value: usd)
+        return usd < 0.01 ? NumberFormatUtils.lessThanMinUsdAmountStringWithSpace() : StringFormatter.usdString(value: usd)
     }
 }
 
@@ -98,7 +98,7 @@ class PortfolioPieChartCellViewModel: BaseViewModel {
     
     var earningAssetsString: String {
         if earningAssets < 0.01 {
-            return "< $0.01"
+            return NumberFormatUtils.lessThanMinUsdAmountStringWithSpace()
         }
         return StringFormatter.usdString(value: earningAssets)
     }
@@ -123,14 +123,14 @@ class PortfolioPieChartCellViewModel: BaseViewModel {
     
     var annualYieldString: String {
         if earningAssets * apyDouble < 0.01 {
-            return "< $0.01"
+            return NumberFormatUtils.lessThanMinUsdAmountStringWithSpace()
         }
         return StringFormatter.usdString(value: earningAssets * apyDouble)
     }
     
     var dailyEarningString: String {
         if earningAssets * apyDouble / 365 < 0.01 {
-            return "< $0.01"
+            return NumberFormatUtils.lessThanMinUsdAmountStringWithSpace()
         }
         return StringFormatter.usdString(value: earningAssets * apyDouble / 365)
     }

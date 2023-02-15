@@ -147,4 +147,42 @@ public class ApproveTokenViewModel {
             }
         }
     }
+
+    func getApproveEncodeData(onCompleted: @escaping (Error?, Data?) -> Void) {
+        let service = EthereumNodeService(chain: chain)
+        let gasPrice = self.getGasPrice(chain: chain, setting: setting)
+        service.getSendApproveERC20TokenEncodeData(spender: toAddress, value: value) { result in
+            switch result {
+            case .success(let hex):
+                onCompleted(nil, hex)
+            case .failure(let error):
+                onCompleted(error, nil)
+            }
+        }
+    }
+
+    func getEstimateGasLimit(onCompleted: @escaping (Error?) -> Void) {
+        self.getApproveEncodeData { error, data in
+            if let data = data {
+                let web3Client = EthereumNodeService(chain: AppState.shared.currentChain)
+                let request = KNEstimateGasLimitRequest(
+                    from: AppState.shared.currentAddress.addressString,
+                    to: self.tokenAddress,
+                    value: BigInt(0),
+                    data: data,
+                    gasPrice: self.getGasPrice(chain: self.chain, setting: self.setting)
+                )
+                web3Client.getEstimateGasLimit(request: request, chain: AppState.shared.currentChain) { result in
+                    switch result {
+                    case .success(let value):
+                            self.gasLimit = value
+                            onCompleted(nil)
+                            
+                    case .failure(let error):
+                        onCompleted(error)
+                    }
+                }
+            }
+        }
+    }
 }

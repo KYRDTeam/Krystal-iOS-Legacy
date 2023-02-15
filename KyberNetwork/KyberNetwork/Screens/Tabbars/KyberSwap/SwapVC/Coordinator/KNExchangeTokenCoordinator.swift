@@ -342,8 +342,6 @@ extension KNExchangeTokenCoordinator {
 
   func appCoordinatorDidUpdateChain() {
     self.rootViewController.coordinatorDidUpdateChain()
-    self.sendTokenCoordinator?.appCoordinatorDidUpdateChain()
-
     if self.srcTokenAddress != nil || self.destTokenAddress != nil {
       let isFromDeepLink = self.rootViewController.viewModel.isFromDeepLink
       self.prepareTokensForSwap(srcTokenAddress: self.srcTokenAddress, destTokenAddress: self.destTokenAddress, chainId: KNGeneralProvider.shared.customRPC.chainID, isFromDeepLink: isFromDeepLink)

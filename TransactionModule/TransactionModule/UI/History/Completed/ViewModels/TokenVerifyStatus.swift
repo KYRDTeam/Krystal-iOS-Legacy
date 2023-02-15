@@ -37,9 +37,9 @@ enum TokenVerifyStatus {
         case .promoted:
             return .promotedToken
         case .unverified:
-            return .unverifiedToken
-        case .scam:
             return nil
+        case .scam:
+            return .scamToken
         case .other:
             return nil
         }
