@@ -44,7 +44,7 @@ def cryptoHelperPods
   pod 'Web3'
 #  pod 'WalletCore'
   # pod 'web3swift', :git=>'https://github.com/BANKEX/web3swift', :branch=>'master'
-  pod 'TrustWeb3Provider', :git => 'https://github.com/tungnguyen20/trust-web3-provider', :branch => 'develop'
+  pod 'TrustWeb3Provider', :git => 'https://github.com/KYRDTeam/krystal-web3-provider.git', :branch => 'develop'
 end
 
 def networkingPods
@@ -197,7 +197,7 @@ target 'DappBrowser' do
   project 'DappBrowser/DappBrowser.xcodeproj'
   use_frameworks!
   
-  pod 'TrustWeb3Provider', :git => 'https://github.com/tungnguyen20/trust-web3-provider', :branch => 'develop'
+  pod 'TrustWeb3Provider', :git => 'https://github.com/KYRDTeam/krystal-web3-provider.git', :branch => 'develop'
 #  pod 'WalletCore'
   pod 'TrustWalletCore'
   pod 'CryptoSwift'
