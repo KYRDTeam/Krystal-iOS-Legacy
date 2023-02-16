@@ -122,6 +122,14 @@ class ApprovalListViewController: BaseWalletOrientedViewController {
         viewModel.onUpdatePendingTx = { [weak self] hasPendingTx in
             self?.dotView.isHidden = !hasPendingTx
         }
+        
+        viewModel.isLoading.observe(on: self) { [weak self] isLoading in
+            if isLoading {
+                self?.showLoadingHUD()
+            } else {
+                self?.hideLoading(animated: true)
+            }
+        }
     }
     
     func setupViews() {
