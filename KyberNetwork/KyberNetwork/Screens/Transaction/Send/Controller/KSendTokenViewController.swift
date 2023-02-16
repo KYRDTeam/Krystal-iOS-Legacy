@@ -649,6 +649,7 @@ extension KSendTokenViewController {
     let title = KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.transfer
     sendButton.setTitle(title, for: .normal)
     amountTextField.text = ""
+    self.viewModel.getNodeBalance()
   }
 
   func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
