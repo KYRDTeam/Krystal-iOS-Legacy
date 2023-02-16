@@ -51,6 +51,7 @@ public class AppState {
     }
   
   public func updateChain(chain: ChainType) {
+      isSelectedAllChain = chain == .all
       if chain == .all {
           currentChain = Constants.defaultChain
           AppEventManager.shared.postSwitchChainEvent(chain: Constants.defaultChain)
@@ -59,7 +60,6 @@ public class AppState {
           currentChain = chain
           AppEventManager.shared.postSwitchChainEvent(chain: chain)
       }
-    
   }
   
   public func updateAddress(address: KAddress, targetChain: ChainType) {
