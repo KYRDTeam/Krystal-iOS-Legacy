@@ -70,11 +70,19 @@ extension DappAction {
 //    }()
     let gasLimit: BigInt? = {
       guard let value = object["gasLimit"]?.value ?? object["gas"]?.value else { return KNGasConfiguration.exchangeTokensGasLimitDefault }
-      return BigInt((value).drop0x, radix: 16)
+        if value.hasPrefix("0x") {
+            return BigInt(value.drop0x, radix: 16)
+        } else {
+            return BigInt(value)
+        }
     }()
     let gasPrice: BigInt? = {
       guard let value = object["gasPrice"]?.value else { return KNGasCoordinator.shared.fastKNGas }
-      return BigInt((value).drop0x, radix: 16)
+        if value.hasPrefix("0x") {
+            return BigInt(value.drop0x, radix: 16)
+        } else {
+            return BigInt(value)
+        }
     }()
     let data = Data(hex: object["data"]?.value ?? "0x")
 

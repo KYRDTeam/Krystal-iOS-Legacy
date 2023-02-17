@@ -174,8 +174,11 @@ class InvestCoordinator: Coordinator {
   }
   
     func openLoyalty() {
-        guard let url = URL(string: KNEnvironment.default.krystalWebUrl + "/loyalty" + "?preview=true") else { return }
-        DappBrowser.openURL(navigationController: navigationController, url: url)
+//        guard let url = URL(string: KNEnvironment.default.krystalWebUrl + "/loyalty" + "?preview=true") else { return }
+//        DappBrowser.openURL(navigationController: navigationController, url: url)
+        let coordinator = DappCoordinator(navigationController: navigationController)
+        self.dappCoordinator = coordinator
+        coordinator.openBrowserScreen(searchText: KNEnvironment.default.krystalWebUrl + "/loyalty?preview=true")
     }
     
   func openRewardHunting() {

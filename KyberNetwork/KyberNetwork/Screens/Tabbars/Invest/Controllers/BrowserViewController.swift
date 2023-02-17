@@ -10,6 +10,7 @@ import WebKit
 import TrustKeystore
 import MBProgressHUD
 import KrystalWallets
+import DappBrowser
 
 ///Reason for this class: https://stackoverflow.com/questions/26383031/wkwebview-causes-my-view-controller-to-leak
 final class ScriptMessageProxy: NSObject, WKScriptMessageHandler {
@@ -61,10 +62,15 @@ class BrowserViewController: KNBaseViewController {
   
   let viewModel: BrowserViewModel
   weak var delegate: BrowserViewControllerDelegate?
-  
+
+    lazy var krystalMessageHandler: KrystalScriptHandler = {
+       return KrystalScriptHandler()
+    }()
+    
   lazy var config: WKWebViewConfiguration = {
     let config = WKWebViewConfiguration.make(forType: .dappBrowser, address: self.viewModel.address.addressString, in: ScriptMessageProxy(delegate: self))
       config.websiteDataStore = WKWebsiteDataStore.default()
+      config.userContentController.add(krystalMessageHandler, name: "krystal")
       return config
   }()
 
@@ -110,6 +116,7 @@ class BrowserViewController: KNBaseViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+      
     self.navTitleLabel.text = self.viewModel.url.absoluteString
     self.updateUISwitchChain()
     webView.translatesAutoresizingMaskIntoConstraints = false
