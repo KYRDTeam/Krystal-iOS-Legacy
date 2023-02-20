@@ -10,11 +10,15 @@ import BaseModule
 import TransactionModule
 import DesignSystem
 import AppState
+import Dependencies
 
 class HistoryV3ViewController: BaseWalletOrientedViewController {
     
+    @IBOutlet weak var statsButton: UIButton!
     @IBOutlet weak var segmentControl: SegmentedControl!
     @IBOutlet weak var pageContainer: UIView!
+    @IBOutlet weak var segmentControlTrailingToStatsTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var segmentControlTrailingToStatsLeadingConstraint: NSLayoutConstraint!
     
     var selectedPageIndex = 0
     var viewControllers: [UIViewController] = []
@@ -44,6 +48,15 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.historyStats) {
+            segmentControlTrailingToStatsTrailingConstraint.isActive = false
+            segmentControlTrailingToStatsLeadingConstraint.isActive = true
+            statsButton.isHidden = false
+        } else {
+            segmentControlTrailingToStatsTrailingConstraint.isActive = true
+            segmentControlTrailingToStatsLeadingConstraint.isActive = false
+            statsButton.isHidden = true
+        }
         setupPageController()
         setupSegmentControl()
         
