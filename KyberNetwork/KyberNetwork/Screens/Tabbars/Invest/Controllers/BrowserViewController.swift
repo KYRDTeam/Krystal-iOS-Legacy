@@ -307,22 +307,25 @@ extension BrowserViewController: WKScriptMessageHandler {
 }
 
 extension BrowserViewController: WKNavigationDelegate {
-  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-    self.navTitleLabel.text = webView.title
-      if let unwrap = webView.url, unwrap.absoluteString != "about:blank" {
-      self.viewModel.url = unwrap
-      self.saveBrowserIfNeeded()
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        self.navTitleLabel.text = webView.title
+        //strange issue only see on kyberswap, fix by filter library url
+        if let unwrap = webView.url, unwrap.absoluteString != "about:blank", !unwrap.absoluteString.contains("library") {
+            self.viewModel.url = unwrap
+            self.saveBrowserIfNeeded()
+        }
     }
-  }
 
   func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+      
     guard let url = navigationAction.request.url, let scheme = url.scheme else {
       return decisionHandler(.allow)
     }
-    self.navTitleLabel.text = webView.title
-      if url.absoluteString != "about:blank" {
-          self.viewModel.url = url
+      guard url.absoluteString != "about:blank", !url.absoluteString.contains("library") else {
+          return decisionHandler(.allow)
       }
+    self.navTitleLabel.text = webView.title
+      self.viewModel.url = url
     
     let app = UIApplication.shared
     if ["tel", "mailto"].contains(scheme), app.canOpenURL(url) {
