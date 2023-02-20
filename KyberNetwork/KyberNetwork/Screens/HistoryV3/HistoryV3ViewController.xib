@@ -24,6 +24,9 @@
                 <outlet property="chainIcon" destination="hRR-y1-1Uc" id="8Sc-U7-jAg"/>
                 <outlet property="pageContainer" destination="NzV-Pn-Wec" id="c41-JX-6LO"/>
                 <outlet property="segmentControl" destination="9hb-V9-yxr" id="2oY-jb-2yf"/>
+                <outlet property="segmentControlTrailingToStatsLeadingConstraint" destination="bEV-Pl-er1" id="jlI-6X-iby"/>
+                <outlet property="segmentControlTrailingToStatsTrailingConstraint" destination="bEV-Pl-er1" id="etv-Mf-9jo"/>
+                <outlet property="statsButton" destination="L4j-Ht-Xtw" id="Cvs-Gn-kTt"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletButton" destination="rc7-5b-6X9" id="vIy-Pb-awB"/>
                 <outlet property="walletView" destination="1HK-Ip-Sh7" id="ycc-HS-jdf"/>
@@ -154,7 +157,7 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="9hb-V9-yxr" customClass="SegmentedControl" customModule="DesignSystem">
-                    <rect key="frame" x="16" y="133" width="342" height="32"/>
+                    <rect key="frame" x="16" y="133" width="382" height="32"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <segments>
                         <segment title="Completed" width="98"/>
@@ -166,7 +169,7 @@
                         <action selector="segmentedControlValueChanged:" destination="-1" eventType="valueChanged" id="laI-Zj-jfa"/>
                     </connections>
                 </segmentedControl>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4j-Ht-Xtw">
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4j-Ht-Xtw">
                     <rect key="frame" x="374" y="136.5" width="24" height="24"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="24" id="aqS-7A-SDN"/>
@@ -186,15 +189,21 @@
                 <constraint firstItem="Cjd-mu-fNR" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="3D0-8H-2dO"/>
                 <constraint firstItem="NzV-Pn-Wec" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="5oj-WZ-X72"/>
                 <constraint firstItem="9hb-V9-yxr" firstAttribute="top" secondItem="Cjd-mu-fNR" secondAttribute="bottom" id="IQ5-er-9le"/>
-                <constraint firstItem="L4j-Ht-Xtw" firstAttribute="leading" secondItem="9hb-V9-yxr" secondAttribute="trailing" constant="16" id="Uki-iO-6cz"/>
+                <constraint firstItem="L4j-Ht-Xtw" firstAttribute="leading" secondItem="9hb-V9-yxr" secondAttribute="trailing" constant="16" id="bEV-Pl-er1"/>
                 <constraint firstItem="NzV-Pn-Wec" firstAttribute="top" secondItem="9hb-V9-yxr" secondAttribute="bottom" constant="8" id="buc-Cz-OFf"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="L4j-Ht-Xtw" secondAttribute="trailing" constant="16" id="cVa-1g-OfG"/>
+                <constraint firstItem="9hb-V9-yxr" firstAttribute="trailing" secondItem="L4j-Ht-Xtw" secondAttribute="trailing" id="cmM-wz-to9"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="NzV-Pn-Wec" secondAttribute="trailing" id="fyp-Rp-nCG"/>
                 <constraint firstItem="L4j-Ht-Xtw" firstAttribute="centerY" secondItem="9hb-V9-yxr" secondAttribute="centerY" id="hbq-4h-tQN"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Cjd-mu-fNR" secondAttribute="trailing" id="lt0-mQ-hiS"/>
                 <constraint firstItem="9hb-V9-yxr" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="q98-oj-HpP"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="NzV-Pn-Wec" secondAttribute="bottom" id="xYt-hG-aee"/>
             </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="bEV-Pl-er1"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="137.68115942028987" y="85.714285714285708"/>
         </view>
     </objects>
