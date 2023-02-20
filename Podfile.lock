@@ -310,7 +310,7 @@ DEPENDENCIES:
   - TrustKeystore (~> 0.4.2)
   - TrustWalletCore
   - TrustWalletCore (~> 2.9)
-  - TrustWeb3Provider (from `https://github.com/tungnguyen20/trust-web3-provider`, branch `develop`)
+  - TrustWeb3Provider (from `https://github.com/KYRDTeam/krystal-web3-provider.git`, branch `develop`)
   - WalletConnectSwift
   - Web3
 
@@ -395,7 +395,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/Expensify/TagListView.git
   TrustWeb3Provider:
     :branch: develop
-    :git: https://github.com/tungnguyen20/trust-web3-provider
+    :git: https://github.com/KYRDTeam/krystal-web3-provider.git
 
 CHECKOUT OPTIONS:
   Sentry:
@@ -405,8 +405,8 @@ CHECKOUT OPTIONS:
     :commit: 964553283e872c59d8a3e8901172e27ce792fe25
     :git: https://github.com/Expensify/TagListView.git
   TrustWeb3Provider:
-    :commit: 3de0fcbfdcdfbde5029cfc273cb052acd531946f
-    :git: https://github.com/tungnguyen20/trust-web3-provider
+    :commit: 4994d8332544a8f1b58195c00bc0d66c5de07dff
+    :git: https://github.com/KYRDTeam/krystal-web3-provider.git
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
@@ -479,10 +479,10 @@ SPEC CHECKSUMS:
   TrustCore: 688df9a241008cf9cfa3842ec8ef28777a8b7534
   TrustKeystore: ba8a33ccd7b6a46dfe25f209253d6ba13da6655c
   TrustWalletCore: 53f09313edb1c010de78314d023c67d2d4654864
-  TrustWeb3Provider: 0ab27d940de173e209d25d0307885c3dc5149d09
+  TrustWeb3Provider: 081ad5a703906b789253ca94335cfd87e73510a6
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: f5b8270de62c65fa4ee3c89f8d7351c3d180afbd
+PODFILE CHECKSUM: d9a5c1a3b8485494b7e3ea5f600fffed50068b44
 
 COCOAPODS: 1.11.3

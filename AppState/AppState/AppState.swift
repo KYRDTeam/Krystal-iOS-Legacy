@@ -40,10 +40,18 @@ public class AppState {
     }
     
     private init() {
-        currentAddress = lastStorageAddress ?? lastUserDefaultAddress ?? WalletManager.shared.createEmptyAddress()
+        if let lastUsedAddress = lastStorageAddress ?? lastUserDefaultAddress {
+            currentAddress = lastUsedAddress
+        } else {
+            let allAddresses = WalletManager.shared.getAllAddresses()
+            currentAddress = allAddresses.first { !$0.isWatchWallet }
+                                ?? allAddresses.first { $0.isWatchWallet }
+                                ?? WalletManager.shared.createEmptyAddress()
+        }
     }
   
   public func updateChain(chain: ChainType) {
+      isSelectedAllChain = chain == .all
       if chain == .all {
           currentChain = Constants.defaultChain
           AppEventManager.shared.postSwitchChainEvent(chain: Constants.defaultChain)
@@ -52,7 +60,6 @@ public class AppState {
           currentChain = chain
           AppEventManager.shared.postSwitchChainEvent(chain: chain)
       }
-    
   }
   
   public func updateAddress(address: KAddress, targetChain: ChainType) {
