@@ -66,19 +66,26 @@ struct KConfirmSendViewModel {
   var totalAmountString: String {
     return "\(NumberFormatUtils.balanceFormat(value: self.transaction.value, decimals: self.token.decimals)) \(self.token.symbol)"
   }
+    
+    var displayValue: String {
+        guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.token.address) else { return "" }
+
+        let displayString: String = {
+          let usd = self.transaction.value * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.token.decimals)
+          return usd.string(
+            units: EthereumUnit.ether,
+            minFractionDigits: 0,
+            maxFractionDigits: 4
+          )
+        }()
+        return displayString
+    }
 
   var usdValueString: String {
-    guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.token.address) else { return "" }
+      let display = self.displayValue
+      guard !display.isEmpty else { return "" }
 
-    let displayString: String = {
-      let usd = self.transaction.value * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.token.decimals)
-      return usd.string(
-        units: EthereumUnit.ether,
-        minFractionDigits: 0,
-        maxFractionDigits: 4
-      )
-    }()
-    return "~ \(displayString) USD"
+    return "~ \(display) USD"
   }
 
   var transactionFeeText: String { return "\(Strings.transactionFee): " }

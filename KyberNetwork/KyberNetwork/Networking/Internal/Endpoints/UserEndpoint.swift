@@ -10,6 +10,7 @@ import Moya
 
 enum UserEndpoint {
   case connectEvm(address: String, signature: String)
+    case sumitTransaction(transaction: [String: Any])
 }
 
 extension UserEndpoint: TargetType {
@@ -19,7 +20,13 @@ extension UserEndpoint: TargetType {
   }
   
   var path: String {
-    return "/v1/users/connect/evm"
+      switch self {
+      case .connectEvm(let address, let signature):
+          return "/v1/users/connect/evm"
+      case .sumitTransaction(let transaction):
+          return "/v1/transactions"
+      }
+    
   }
   
   var method: Moya.Method {
@@ -39,6 +46,8 @@ extension UserEndpoint: TargetType {
         "timestamp": Int(Date().timeIntervalSince1970)
       ]
       return .requestParameters(parameters: params, encoding: JSONEncoding.default)
+    case .sumitTransaction(transaction: let transaction):
+        return .requestParameters(parameters: transaction, encoding: JSONEncoding.default)
     }
   }
   
