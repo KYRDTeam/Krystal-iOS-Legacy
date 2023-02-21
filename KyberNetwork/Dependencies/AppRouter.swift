@@ -74,6 +74,8 @@ class AppRouter: AppRouterProtocol, Coordinator {
             AppEventManager.shared.postSelectAllChain()
           } else if let wallet = WalletManager.shared.getWallet(id: AppState.shared.currentAddress.walletID) {
               AppDelegate.shared.coordinator.switchWallet(wallet: wallet, chain: selectedChain)
+          } else {
+              AppState.shared.updateChain(chain: selectedChain)
           }
           onSelectChain(selectedChain)
         }
