@@ -349,7 +349,7 @@ class Web3ScriptHandler: NSObject, WKScriptMessageHandler {
             self.webview?.tw.send(network: .ethereum, error: "Canceled", to: id)
         }
 
-        let controller = DappBrowerTransactionConfirmPopup(viewModel: vm)
+        let controller = TransactionConfirmPopup(viewModel: vm)
 //        let sheetVC = SheetViewController(controller: controller, sizes: [.intrinsic],
 //                                        options: .init(pullBarHeight: 0))
         

@@ -12,18 +12,17 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DappBrowerTransactionConfirmPopup" customModule="DappBrowser" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionConfirmPopup" customModule="DappBrowser" customModuleProvider="target">
             <connections>
                 <outlet property="approveMsgLabel" destination="89J-eZ-TKV" id="oCb-lZ-Es4"/>
                 <outlet property="cancelButton" destination="xph-em-93b" id="ltR-jI-SC6"/>
                 <outlet property="confirmButton" destination="SHw-ZC-zsT" id="Hdf-uF-DTp"/>
                 <outlet property="contentView" destination="UAy-yJ-FwL" id="azm-B9-ylm"/>
-                <outlet property="contentViewTopContraint" destination="3P2-0s-pMj" id="Hul-Pp-6OJ"/>
                 <outlet property="equivalentValueLabel" destination="XfV-jj-yna" id="ruh-c9-E4W"/>
                 <outlet property="feeETHLabel" destination="bIh-1I-v1e" id="lWK-sD-oim"/>
                 <outlet property="feeUSDLabel" destination="fZi-D6-NP5" id="SpY-xI-fEH"/>
@@ -150,13 +149,13 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~ 0.213 USD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZi-D6-NP5">
-                                    <rect key="frame" x="214" y="63" width="73" height="16.5"/>
+                                    <rect key="frame" x="214" y="63" width="73" height="16"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="normalTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="80 (Gas Price) *. 394,140 (Gas. Limit)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z2g-PY-QxT">
-                                    <rect key="frame" x="58.5" y="81.5" width="228.5" height="16.5"/>
+                                    <rect key="frame" x="58.5" y="81" width="228.5" height="17"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="normalTextColor"/>
                                     <nil key="highlightedColor"/>
@@ -242,6 +241,7 @@
                         <constraint firstItem="kc5-XB-QnY" firstAttribute="trailing" secondItem="PBq-bT-phV" secondAttribute="trailing" id="3rN-Ot-TX0"/>
                         <constraint firstItem="uT3-jx-15d" firstAttribute="leading" secondItem="n8n-K8-RET" secondAttribute="leading" id="53x-qZ-j5R"/>
                         <constraint firstItem="89J-eZ-TKV" firstAttribute="leading" secondItem="UAy-yJ-FwL" secondAttribute="leading" constant="37" id="5LN-u0-3Wi"/>
+                        <constraint firstAttribute="height" constant="600" id="5Md-DT-Scj"/>
                         <constraint firstAttribute="trailing" secondItem="dgs-cW-h4P" secondAttribute="trailing" constant="37" id="5kX-OZ-Q0r"/>
                         <constraint firstItem="kc5-XB-QnY" firstAttribute="centerY" secondItem="uT3-jx-15d" secondAttribute="centerY" id="72e-bK-20R"/>
                         <constraint firstItem="u0d-lt-KP4" firstAttribute="leading" secondItem="UAy-yJ-FwL" secondAttribute="leading" constant="37" id="9r6-9s-VWZ"/>
@@ -286,7 +286,6 @@
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="UAy-yJ-FwL" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="67" id="3P2-0s-pMj"/>
                 <constraint firstItem="UAy-yJ-FwL" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="Cdh-2m-LDO"/>
                 <constraint firstItem="UAy-yJ-FwL" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="VwQ-4H-EJS"/>
                 <constraint firstItem="UAy-yJ-FwL" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="uPh-lC-Goi"/>

@@ -160,7 +160,6 @@ class InvestCoordinator: Coordinator {
   func openDappBrowserScreen() {
     self.dappCoordinator = nil
     let coordinator = DappCoordinator(navigationController: self.navigationController)
-    coordinator.delegate = self
     coordinator.start()
     self.dappCoordinator = coordinator
   }
@@ -198,7 +197,6 @@ class InvestCoordinator: Coordinator {
     self.sendCoordinator?.coordinatorAppSwitchAddress()
     self.krytalCoordinator?.coordinatorAppSwitchAddress()
     self.rewardCoordinator?.appCoordinatorSwitchAddress()
-    self.dappCoordinator?.appCoordinatorSwitchAddress()
     self.buyCryptoCoordinator?.appCoordinatorSwitchAddress()
     self.multiSendCoordinator.appCoordinatorSwitchAddress()
     self.bridgeCoordinator?.appCoordinatorSwitchAddress()
@@ -217,7 +215,6 @@ class InvestCoordinator: Coordinator {
   func appCoordinatorDidUpdateChain() {
     self.rootViewController.coordinatorDidUpdateChain()
     self.loadMarketAssets()
-    self.dappCoordinator?.appCoordinatorDidUpdateChain()
     self.bridgeCoordinator?.appCoordinatorDidUpdateChain()
   }
 }
@@ -363,20 +360,6 @@ extension InvestCoordinator: BuyCryptoCoordinatorDelegate {
   
   func buyCryptoCoordinatorOpenHistory() {
     self.openHistoryScreen()
-  }
-}
-
-extension InvestCoordinator: DappCoordinatorDelegate {
-  func dAppCoordinatorDidSelectAddWallet() {
-    self.delegate?.investCoordinatorDidSelectAddWallet()
-  }
-  
-  func dAppCoordinatorDidSelectManageWallet() {
-    self.delegate?.investCoordinatorDidSelectManageWallet()
-  }
-  
-  func dAppCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
   }
 }
 

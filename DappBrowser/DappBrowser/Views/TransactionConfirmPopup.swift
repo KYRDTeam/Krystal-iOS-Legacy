@@ -13,7 +13,7 @@ import Services
 import AppState
 import TransactionModule
 
-class DappBrowerTransactionConfirmPopup: BaseWalletOrientedViewController {
+class TransactionConfirmPopup: BaseWalletOrientedViewController {
   @IBOutlet weak var siteIconImageView: UIImageView!
   @IBOutlet weak var siteURLLabel: UILabel!
   @IBOutlet weak var fromAddressLabel: UILabel!
@@ -24,16 +24,16 @@ class DappBrowerTransactionConfirmPopup: BaseWalletOrientedViewController {
   @IBOutlet weak var gasPriceTextLabel: UILabel!
   @IBOutlet weak var transactionFeeTextLabel: UILabel!
   @IBOutlet weak var contentView: UIView!
-  @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var confirmButton: UIButton!
   @IBOutlet weak var cancelButton: UIButton!
   @IBOutlet weak var approveMsgLabel: UILabel!
   @IBOutlet weak var valueTitleLabel: UILabel!
   
   private let viewModel: DappBrowerTransactionConfirmViewModel
+    
   init(viewModel: DappBrowerTransactionConfirmViewModel) {
     self.viewModel = viewModel
-    super.init(nibName: DappBrowerTransactionConfirmPopup.className, bundle: nil)
+    super.init(nibName: TransactionConfirmPopup.className, bundle: Bundle(for: TransactionConfirmPopup.self))
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -97,6 +97,7 @@ class DappBrowerTransactionConfirmPopup: BaseWalletOrientedViewController {
     self.updateGasFeeUI()
     self.siteURLLabel.text = self.viewModel.webPageInfo.url ?? ""
     self.siteIconImageView.loadImage(viewModel.imageIconURL)
+    self.contentView.rounded(radius: 16)
     self.confirmButton.rounded(radius: 16)
     self.cancelButton.rounded(radius: 16)
     let isApprove = self.viewModel.isApproveTx

@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		4AFBEF1132EDDE9E7897CD22 /* Pods_DappBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 608693D1FE4F76598383EE78 /* Pods_DappBrowser.framework */; };
 		7E239183299DD55800E0893F /* TransactionModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E239182299DD55800E0893F /* TransactionModule.framework */; };
-		7EB74661299B9C2800950F1B /* DappBrowerTransactionConfirmPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB7465F299B9C2700950F1B /* DappBrowerTransactionConfirmPopup.swift */; };
-		7EB74662299B9C2800950F1B /* DappBrowerTransactionConfirmPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB74660299B9C2700950F1B /* DappBrowerTransactionConfirmPopup.xib */; };
+		7EB74661299B9C2800950F1B /* TransactionConfirmPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB7465F299B9C2700950F1B /* TransactionConfirmPopup.swift */; };
+		7EB74662299B9C2800950F1B /* TransactionConfirmPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB74660299B9C2700950F1B /* TransactionConfirmPopup.xib */; };
 		7EB74665299B9C9300950F1B /* DappBrowerTransactionConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB74664299B9C9300950F1B /* DappBrowerTransactionConfirmViewModel.swift */; };
 		A61012A329501A20006C9173 /* BrowserOptionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A61012A129501A20006C9173 /* BrowserOptionsViewController.xib */; };
 		A61012A429501A20006C9173 /* BrowserOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61012A229501A20006C9173 /* BrowserOptionsViewController.swift */; };
@@ -41,8 +41,8 @@
 /* Begin PBXFileReference section */
 		608693D1FE4F76598383EE78 /* Pods_DappBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DappBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E239182299DD55800E0893F /* TransactionModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TransactionModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7EB7465F299B9C2700950F1B /* DappBrowerTransactionConfirmPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DappBrowerTransactionConfirmPopup.swift; sourceTree = "<group>"; };
-		7EB74660299B9C2700950F1B /* DappBrowerTransactionConfirmPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DappBrowerTransactionConfirmPopup.xib; sourceTree = "<group>"; };
+		7EB7465F299B9C2700950F1B /* TransactionConfirmPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionConfirmPopup.swift; sourceTree = "<group>"; };
+		7EB74660299B9C2700950F1B /* TransactionConfirmPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionConfirmPopup.xib; sourceTree = "<group>"; };
 		7EB74664299B9C9300950F1B /* DappBrowerTransactionConfirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DappBrowerTransactionConfirmViewModel.swift; path = DappBrowser/DappBrowerTransactionConfirmViewModel.swift; sourceTree = SOURCE_ROOT; };
 		A61012A129501A20006C9173 /* BrowserOptionsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BrowserOptionsViewController.xib; sourceTree = "<group>"; };
 		A61012A229501A20006C9173 /* BrowserOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserOptionsViewController.swift; sourceTree = "<group>"; };
@@ -156,8 +156,8 @@
 		A6CF70BD2946EC400061E552 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				7EB7465F299B9C2700950F1B /* DappBrowerTransactionConfirmPopup.swift */,
-				7EB74660299B9C2700950F1B /* DappBrowerTransactionConfirmPopup.xib */,
+				7EB7465F299B9C2700950F1B /* TransactionConfirmPopup.swift */,
+				7EB74660299B9C2700950F1B /* TransactionConfirmPopup.xib */,
 				A61012A229501A20006C9173 /* BrowserOptionsViewController.swift */,
 				A61012A129501A20006C9173 /* BrowserOptionsViewController.xib */,
 				A6CF70C12946EC400061E552 /* BrowserViewController.swift */,
@@ -294,7 +294,7 @@
 				A61012A329501A20006C9173 /* BrowserOptionsViewController.xib in Resources */,
 				A66395912949B08100A47F79 /* Assets.xcassets in Resources */,
 				A6420304294B082400179189 /* SignMessagePopup.xib in Resources */,
-				7EB74662299B9C2800950F1B /* DappBrowerTransactionConfirmPopup.xib in Resources */,
+				7EB74662299B9C2800950F1B /* TransactionConfirmPopup.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,7 +335,7 @@
 				7EB74665299B9C9300950F1B /* DappBrowerTransactionConfirmViewModel.swift in Sources */,
 				A6A00639294706A1002AF6E7 /* TrustWeb3Provider.swift in Sources */,
 				A6A0063D29470918002AF6E7 /* DAppMethod.swift in Sources */,
-				7EB74661299B9C2800950F1B /* DappBrowerTransactionConfirmPopup.swift in Sources */,
+				7EB74661299B9C2800950F1B /* TransactionConfirmPopup.swift in Sources */,
 				A61012A429501A20006C9173 /* BrowserOptionsViewController.swift in Sources */,
 				A6420303294B082400179189 /* SignMessagePopup.swift in Sources */,
 				A6CF70C52946EC400061E552 /* BrowserViewController.swift in Sources */,
