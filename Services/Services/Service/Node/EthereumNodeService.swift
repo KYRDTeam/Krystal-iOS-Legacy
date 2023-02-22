@@ -369,6 +369,58 @@ public class EthereumNodeService {
         }
     }
     
+    public func getSymbolEncodeData(completion: @escaping (Result<String, AnyError>) -> Void) {
+        let request = GetERC20SymbolEncode()
+        web3?.request(request: request) { result in
+          switch result {
+          case .success(let data):
+            completion(.success(data))
+          case .failure(let error):
+            completion(.failure(AnyError(error)))
+          }
+        }
+    }
+    
+    public func getTokenSymbolDecodeData(from symbol: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+        let request = GetERC20SymbolDecode(data: symbol)
+        web3?.request(request: request) { result in
+            switch result {
+            case .success(let res):
+                completion(.success(res))
+            case .failure(let error):
+                completion(.failure(AnyError(error)))
+            }
+        }
+    }
+
+    public func getTokenSymbol(address: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+        self.getSymbolEncodeData { [weak self] encodeResult in
+            guard let `self` = self else { return }
+            switch encodeResult {
+            case .success(let data):
+              let request = EtherServiceAlchemyRequest(
+                batch: BatchFactory().create(CallRequest(to: address, data: data)),
+                chain: self.chain
+              )
+              DispatchQueue.global().async {
+                Session.send(request) { [weak self] result in
+                  guard let `self` = self else { return }
+                  DispatchQueue.main.async {
+                    switch result {
+                    case .success(let symbol):
+                      self.getTokenSymbolDecodeData(from: symbol, completion: completion)
+                    case .failure(let error):
+                      completion(.failure(AnyError(error)))
+                    }
+                  }
+                }
+              }
+            case .failure(let error):
+              completion(.failure(error))
+            }
+        }
+    }
+    
     public func getOPL1FeeEncodeData(for data: String, completion: @escaping (Result<String, AnyError>) -> Void) {
         let request = GetOPL1FeeEncode(data: data)
         web3?.request(request: request) { result in

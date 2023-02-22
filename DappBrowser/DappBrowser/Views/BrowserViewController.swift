@@ -63,7 +63,9 @@ class BrowserViewController: BaseWalletOrientedViewController {
     }
     
     @objc func onChainChange() {
+        reloadChainUI()
         webView.reload()
+        web3ScriptHandler.reloadChain(chainId: AppState.shared.currentChain.getChainId())
     }
     
     func initScriptHandlers() {

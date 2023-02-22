@@ -25,4 +25,9 @@ struct Strings {
     static let totalTransaction = "total.transaction".toBeLocalised()
     static let totalGasFee = "total.gas.fee".toBeLocalised()
     static let totalVolume = "total.volume".toBeLocalised()
+    static let openX = "open.x".toBeLocalised()
+    static let broadcastingTransaction = "broadcasting.transaction".toBeLocalised()
+    static let success = "success".toBeLocalised()
+    static let transactionFailed = "transaction.failed".toBeLocalised()
+    static let support = "support".toBeLocalised()
 }

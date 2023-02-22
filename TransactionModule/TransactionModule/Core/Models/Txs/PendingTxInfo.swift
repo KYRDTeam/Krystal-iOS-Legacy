@@ -15,6 +15,7 @@ public enum TxType {
     case claimStakingReward
     case unstake
     case swap
+    case contractInteraction
 }
 
 open class PendingTxInfo {

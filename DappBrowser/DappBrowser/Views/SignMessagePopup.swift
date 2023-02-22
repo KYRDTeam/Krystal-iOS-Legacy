@@ -20,6 +20,7 @@ class SignMessagePopup: UIViewController {
     var pageInfo: WebPageInfo?
     var address: KAddress!
     var message: Data!
+    var addPrefix: Bool!
     var onCompleted: (Data) -> () = { _ in }
     var onCancelled: () -> () = {}
     
@@ -39,7 +40,7 @@ class SignMessagePopup: UIViewController {
     }
     
     @IBAction func confirmTapped(_ sender: Any) {
-        guard let signature = try? EthSigner().signMessageHash(address: address, data: message, addPrefix: true) else {
+        guard let signature = try? EthSigner().signMessageHash(address: address, data: message, addPrefix: self.addPrefix) else {
             return
         }
         dismiss(animated: true) {
@@ -47,10 +48,11 @@ class SignMessagePopup: UIViewController {
         }
     }
     
-    static func show(on viewController: UIViewController, address: KAddress, message: Data, pageInfo: WebPageInfo, completion: @escaping (Data) -> (), onCancelled: @escaping () -> ()) {
+    static func show(on viewController: UIViewController, address: KAddress, message: Data, pageInfo: WebPageInfo, addPrefix: Bool = true, completion: @escaping (Data) -> (), onCancelled: @escaping () -> ()) {
         let popup = SignMessagePopup.instantiateFromNib()
         popup.message = message
         popup.address = address
+        popup.addPrefix = addPrefix
         popup.onCompleted = completion
         popup.onCancelled = onCancelled
         popup.pageInfo = pageInfo

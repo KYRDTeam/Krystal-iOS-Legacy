@@ -18,6 +18,7 @@ import BigInt
 import WebKit
 import KrystalWallets
 import AppState
+import DappBrowser
 
 
 protocol DappCoordinatorDelegate: class {
@@ -72,12 +73,15 @@ class DappCoordinator: NSObject, Coordinator {
   func openBrowserScreen(searchText: String) {
     if address.isWatchWallet { return }
     guard let url = urlParser.url(from: searchText.trimmed) else { return }
-    let vm = BrowserViewModel(url: url, address: address)
-    let vc = BrowserViewController(viewModel: vm)
-    vc.delegate = self
-    vc.webView.uiDelegate = self
-    self.navigationController.pushViewController(vc, animated: true)
-    self.browserViewController = vc
+//    let vm = BrowserViewModel(url: url, address: address)
+//    let vc = BrowserViewController(viewModel: vm)
+//    vc.delegate = self
+//    vc.webView.uiDelegate = self
+//    self.navigationController.pushViewController(vc, animated: true)
+//    self.browserViewController = vc
+      
+      
+      DappBrowser.openURL(navigationController: navigationController, url: url)
   }
 
   func appCoordinatorDidUpdateChain(isSwitchChain: Bool = true) {

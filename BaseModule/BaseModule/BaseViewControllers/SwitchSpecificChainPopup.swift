@@ -45,12 +45,16 @@ public class SwitchSpecificChainPopup: UIViewController {
   public static func show(onViewController vc: UIViewController,
                           sourceChain: ChainType = AppState.shared.currentChain,
                           destChain: ChainType,
-                          onConfirm: @escaping () -> ()) {
+                          onConfirm: @escaping () -> (),
+                          onCancel: (() -> ())? = nil) {
     let popup = SwitchSpecificChainPopup.instantiateFromNib()
     popup.sourceChain = sourceChain
     popup.destChain = destChain
     popup.onConfirm = onConfirm
     let sheet = SheetViewController(controller: popup, sizes: [.intrinsic], options: .init(pullBarHeight: 0))
+    sheet.didDismiss = { _ in
+        onCancel?()
+    }
     vc.present(sheet, animated: true)
   }
   

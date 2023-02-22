@@ -29,6 +29,8 @@ extension UIImage {
     static let totalTx = UIImage(imageName: "txIcon")
     static let totalGas = UIImage(imageName: "txGas")
     static let totalVolume = UIImage(imageName: "txVolumn")
+    static let txStatusSuccess = UIImage(imageName: "tx_status_success")!
+    static let txStatusFailed = UIImage(imageName: "tx_status_fail")!
 }
 
 

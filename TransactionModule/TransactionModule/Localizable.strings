@@ -22,3 +22,8 @@
 "total.transaction" = "Total Transaction";
 "total.gas.fee" = "Total Gas Fee";
 "total.volume" = "Total Volume";
+"open.x" = "Open %@";
+"broadcasting.transaction" = "Broadcasting Transaction";
+"success" = "Success";
+"transaction.failed" = "Transaction failed";
+"support" = "Support";
