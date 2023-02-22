@@ -13,6 +13,7 @@ import BaseModule
 import MBProgressHUD
 import FittedSheets
 import Dependencies
+import Utilities
 
 class BrowserViewController: BaseWalletOrientedViewController {
     @IBOutlet weak var progressView: UIProgressView!
@@ -173,8 +174,8 @@ class BrowserViewController: BaseWalletOrientedViewController {
             canGoForward: webView.canGoForward
         )
         controller.delegate = self
-        controller.isNormalBrowser = true
-        let sheet = SheetViewController(controller: controller, sizes: [.fixed(350)], options: .init(pullBarHeight: 0, shouldExtendBackground: false, shrinkPresentingViewController: true))
+//        controller.isNormalBrowser = true
+        let sheet = SheetViewController(controller: controller, sizes: [.fixed(430)], options: .init(pullBarHeight: 0, shouldExtendBackground: false, shrinkPresentingViewController: true))
         sheet.allowPullingPastMaxHeight = false
         self.present(sheet, animated: true)
     }
@@ -221,6 +222,22 @@ extension BrowserViewController: BrowserOptionsViewControllerDelegate {
           hud.mode = .text
           hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
           hud.hide(animated: true, afterDelay: 1.5)
+        case .favourite:
+            guard let urlString = self.webView.url?.absoluteString else { return }
+            let webPageInfo = WebPageInfo(name: webView.title, url: urlString)
+            let item = BrowserItem(
+              title: self.webView.title ?? "",
+              url: urlString,
+              image: webPageInfo.icon,
+              time: Date().currentTimeMillis()
+            )
+            let isFaved = BrowserStorage.shared.isFaved(url: urlString)
+            if isFaved {
+              BrowserStorage.shared.deleteFavoriteItem(item)
+            } else {
+              BrowserStorage.shared.addNewFavorite(item: item)
+            }
+                
         default:
           return
         }

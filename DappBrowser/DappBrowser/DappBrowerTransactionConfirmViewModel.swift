@@ -94,7 +94,7 @@ class DappBrowerTransactionConfirmViewModel {
     }
 
     var isApproveTx: Bool {
-      return self.transaction.data.hexEncoded.prefix(10) == "0x095ea7b3" //Constants.methodIdApprove
+      return self.transaction.data.hexEncoded.prefix(10) == Constants.methodIdApprove
     }
 
     func getGasPrice(gasType: GasSpeed) -> BigInt {
