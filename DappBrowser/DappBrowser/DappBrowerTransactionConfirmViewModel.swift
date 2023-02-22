@@ -38,39 +38,48 @@ class DappBrowerTransactionConfirmViewModel {
 
     var displayValue: String {
       let prefix = self.valueBigInt.isZero ? "" : "-"
-      return prefix + "\(self.valueBigInt.fullString(decimals: 18)) \(AppState.shared.currentChain.quoteToken())"
+      return prefix + "\(self.valueBigInt.shortString(decimals: 18)) \(AppState.shared.currentChain.quoteToken())"
     }
 
     var displayValueUSD: String {
       let price = AppDependencies.priceStorage.getQuoteUsdRate(chain: AppState.shared.currentChain) ?? 0
       let usd = self.valueBigInt * BigInt(price * pow(10.0, 18.0)) / BigInt(10).power(18)
 
-      let valueString: String = usd.fullString(decimals: 18)
+      let valueString: String = usd.shortString(decimals: 18)
       return "≈ $\(valueString)"
+    }
+    
+    var transactionFee: BigInt {
+        if let basic = settingObject.basic {
+            return settingObject.gasLimit * self.getGasPrice(gasType: basic.gasType)
+        } else if let advance = settingObject.advanced {
+            return settingObject.gasLimit * advance.maxFee
+        }
+        return BigInt(0)
     }
 
     var transactionFeeETHString: String {
-      let gasPrice = AppDependencies.gasConfig.getStandardGasPrice(chain: ChainType.make(chainID: self.transaction.chainID) ?? AppState.shared.currentChain)
-      let fee: BigInt = {
-          return gasPrice * self.settingObject.gasLimit
-      }()
-      let feeString: String = fee.fullString(decimals: 18)
-      return "\(feeString) \(AppState.shared.currentChain.quoteToken)"
+        let feeString: String = NumberFormatUtils.gasFee(value: transactionFee)
+        return "\(feeString) \(AppState.shared.currentChain.quoteToken())"
     }
 
     var transactionFeeUSDString: String {
-      let gasPrice = AppDependencies.gasConfig.getStandardGasPrice(chain: ChainType.make(chainID: self.transaction.chainID) ?? AppState.shared.currentChain)
-      let fee: BigInt = {
-        return gasPrice * self.settingObject.gasLimit
-      }()
-      guard let price = AppDependencies.priceStorage.getQuoteUsdRate(chain: AppState.shared.currentChain) else { return "" }
-      let usd = fee * BigInt(price * pow(10.0, 18.0)) / BigInt(10).power(18)
-      let valueString: String = usd.fullString(decimals: 18)
-      return "~ \(valueString) USD"
+        guard let price = AppDependencies.priceStorage.getQuoteUsdRate(chain: AppState.shared.currentChain) else { return "" }
+        let usd = self.transactionFee * BigInt(price * pow(10, 18)) / BigInt(10).power(18)
+        let valueString = NumberFormatUtils.gasFee(value: usd)
+        return "~ \(valueString) USD"
     }
 
     var transactionGasPriceString: String {
-      let gasPrice = AppDependencies.gasConfig.getStandardGasPrice(chain: ChainType.make(chainID: self.transaction.chainID) ?? AppState.shared.currentChain)
+        var gasPrice: BigInt {
+            if let basic = settingObject.basic {
+                return self.getGasPrice(gasType: basic.gasType)
+            } else if let advance = settingObject.advanced {
+                return advance.maxFee
+            } else {
+                return self.getGasPrice(gasType: .regular)
+            }
+        }
       let gasPriceText = gasPrice.shortString(
         units: .gwei,
         maxFractionDigits: 5
@@ -87,10 +96,9 @@ class DappBrowerTransactionConfirmViewModel {
     var isApproveTx: Bool {
       return self.transaction.data.hexEncoded.prefix(10) == "0x095ea7b3" //Constants.methodIdApprove
     }
-    
-    var approveSym: String? {
-//      return KNSupportedTokenStorage.shared.getTokenWith(address: self.transaction.to ?? "")?.symbol
-        return "approve symbol"
+
+    func getGasPrice(gasType: GasSpeed) -> BigInt {
+        return GasPriceManager.shared.getGasPrice(gasType: gasType, chain: AppState.shared.currentChain)
     }
     
     func buildApproveMsg(_ sym: String) -> String {

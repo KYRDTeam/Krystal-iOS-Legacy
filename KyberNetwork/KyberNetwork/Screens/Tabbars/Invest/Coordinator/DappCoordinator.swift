@@ -81,7 +81,7 @@ class DappCoordinator: NSObject, Coordinator {
 //    self.browserViewController = vc
       
       
-      DappBrowser.openURL(navigationController: navigationController, url: url)
+    DappBrowser.openURL(navigationController: navigationController, url: url)
   }
 
   func appCoordinatorDidUpdateChain(isSwitchChain: Bool = true) {

@@ -394,8 +394,7 @@ public class EthereumNodeService {
     }
 
     public func getTokenSymbol(address: String, completion: @escaping (Result<String, AnyError>) -> Void) {
-        self.getSymbolEncodeData { [weak self] encodeResult in
-            guard let `self` = self else { return }
+        self.getSymbolEncodeData { encodeResult in
             switch encodeResult {
             case .success(let data):
               let request = EtherServiceAlchemyRequest(
@@ -403,8 +402,7 @@ public class EthereumNodeService {
                 chain: self.chain
               )
               DispatchQueue.global().async {
-                Session.send(request) { [weak self] result in
-                  guard let `self` = self else { return }
+                Session.send(request) { result in
                   DispatchQueue.main.async {
                     switch result {
                     case .success(let symbol):

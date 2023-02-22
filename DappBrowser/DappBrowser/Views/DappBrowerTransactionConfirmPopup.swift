@@ -11,6 +11,7 @@ import Utilities
 import BaseModule
 import Services
 import AppState
+import TransactionModule
 
 class DappBrowerTransactionConfirmPopup: BaseWalletOrientedViewController {
   @IBOutlet weak var siteIconImageView: UIImageView!
@@ -75,7 +76,12 @@ class DappBrowerTransactionConfirmPopup: BaseWalletOrientedViewController {
   }
   
   @IBAction func editSettingButtonTapped(_ sender: UIButton) {
-//    self.viewModel.onChangeGasFee(self.viewModel.gasLimit, self.viewModel.baseGasLimit, self.viewModel.selectedGasPriceType, self.viewModel.advancedGasLimit, self.viewModel.advancedMaxPriorityFee, self.viewModel.advancedMaxFee, self.viewModel.advancedNonce)
+      TransactionSettingPopup.show(on: self, chain: AppState.shared.currentChain, currentSetting: viewModel.settingObject, onConfirmed: { [weak self] settingObject in
+          self?.viewModel.settingObject = settingObject
+          self?.updateGasFeeUI()
+      }, onCancelled: {
+          return
+      })
   }
 
   fileprivate func updateGasFeeUI() {
@@ -98,25 +104,17 @@ class DappBrowerTransactionConfirmPopup: BaseWalletOrientedViewController {
     self.valueLabel.isHidden = isApprove
     self.equivalentValueLabel.isHidden = isApprove
     if isApprove {
-      if let symbol = self.viewModel.approveSym {
-        self.approveMsgLabel.text = self.viewModel.buildApproveMsg(symbol)
-        self.approveMsgLabel.isHidden = false
-      } else {
-          
         let service = EthereumNodeService(chain: AppState.shared.currentChain)
         service.getTokenSymbol(address: self.viewModel.transaction.to ?? "") { (result) in
           switch result {
           case .success(let symbol):
             self.approveMsgLabel.text = self.viewModel.buildApproveMsg(symbol)
             self.approveMsgLabel.isHidden = false
-          case .failure(let error):
+          case .failure(_):
             self.approveMsgLabel.text = self.viewModel.buildApproveMsg("Unknow")
             self.approveMsgLabel.isHidden = false
           }
         }
-          
-          
-      }
     }
   }
     
