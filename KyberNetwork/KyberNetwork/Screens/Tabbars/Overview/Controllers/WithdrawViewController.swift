@@ -185,6 +185,13 @@ class WithdrawViewModel {
     let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
     return labelText
   }
+    
+    func buildExtraInfo() -> [String: String] {
+        return [
+            "token": balance.symbol,
+            "tokenAmount": "\(balance.supplyBalance)"
+        ]
+    }
 }
 
 enum WithdrawViewEvent {
