@@ -115,6 +115,11 @@ class MultiSendViewModel {
       self.cellModels = models
     }
   }
+    
+    func buildExtraData() -> [[String: String]] {
+        let itemsDict = cellModels.map { $0.buildExtraData() }
+        return itemsDict
+    }
 }
 
 class MultiSendViewController: InAppBrowsingViewController {

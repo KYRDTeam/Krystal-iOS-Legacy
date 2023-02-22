@@ -28,6 +28,7 @@ class InternalHistoryTransaction: Codable {
   var chain: ChainType
   var extraData: InternalHistoryExtraData?
     var extraUserInfo: [String: String]?
+    var extraMultisendInfo: [[String: String]]?
 
   init(
     type: HistoryModelType,
