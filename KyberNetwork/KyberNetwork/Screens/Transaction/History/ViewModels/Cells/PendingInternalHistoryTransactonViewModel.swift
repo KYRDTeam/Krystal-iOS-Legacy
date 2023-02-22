@@ -32,6 +32,8 @@ class PendingInternalHistoryTransactonViewModel: TransactionHistoryItemViewModel
       let fromAmountString = from.amount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: 5)
       let toAmountString = to.amount.string(decimals: to.decimals, minFractionDigits: 0, maxFractionDigits: 5)
       return "\(fromAmountString) \(from.token) → \(toAmountString) \(to.token)"
+    case .allowance:
+        return internalTransaction.transactionObject?.to ?? "---"
     default:
       return self.internalTransaction.transactionDescription
     }

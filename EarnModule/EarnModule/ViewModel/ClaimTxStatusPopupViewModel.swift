@@ -56,7 +56,10 @@ class ClaimTxStatusViewModel {
     
     var tokenAmountString: String {
         let amount = BigInt(pendingTx.pendingUnstake.balance) ?? .zero
-        return NumberFormatUtils.amount(value: amount, decimals: pendingTx.pendingUnstake.decimals) + " " + pendingTx.pendingUnstake.symbol
+        let amountString = NumberFormatUtils.amount(value: amount, decimals: pendingTx.pendingUnstake.decimals)
+        let amountDisplay = amountString == "0" ? "~0" : amountString
+        
+        return amountDisplay + " " + pendingTx.pendingUnstake.symbol
     }
     
     var tokenIcon: String {
