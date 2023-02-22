@@ -17,8 +17,7 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
     @IBOutlet weak var statsButton: UIButton!
     @IBOutlet weak var segmentControl: SegmentedControl!
     @IBOutlet weak var pageContainer: UIView!
-    @IBOutlet weak var segmentControlTrailingToStatsTrailingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var segmentControlTrailingToStatsLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var segmentControlTrailingConstant: NSLayoutConstraint!
     
     var selectedPageIndex = 0
     var viewControllers: [UIViewController] = []
@@ -49,14 +48,13 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
         super.viewDidLoad()
         
         if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.historyStats) {
-            segmentControlTrailingToStatsTrailingConstraint.isActive = false
-            segmentControlTrailingToStatsLeadingConstraint.isActive = true
+            segmentControlTrailingConstant.constant = -56
             statsButton.isHidden = false
         } else {
-            segmentControlTrailingToStatsTrailingConstraint.isActive = true
-            segmentControlTrailingToStatsLeadingConstraint.isActive = false
+            segmentControlTrailingConstant.constant = -16
             statsButton.isHidden = true
         }
+        view.layoutIfNeeded()
         setupPageController()
         setupSegmentControl()
         
@@ -109,7 +107,7 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
     }
     
     func setupSegmentControl() {
-        let width = segmentControl.frame.size.width - 32
+        let width = segmentControl.frame.size.width
         segmentControl.backgroundColor = .clear
         segmentControl.tintColor = AppTheme.current.primaryColor
         segmentControl.frame = CGRect(x: self.segmentControl.frame.minX,
