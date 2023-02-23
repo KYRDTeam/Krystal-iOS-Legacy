@@ -139,7 +139,7 @@ class StakingConfirmClaimPopupViewModel: BaseViewModel, TxConfirmViewModelProtoc
             switch result {
             case .success(let txResult):
                 let pendingTx = PendingClaimTxInfo(pendingUnstake: self.pendingUnstake, legacyTx: txResult.legacyTx, eip1559Tx: txResult.eip1559Tx, chain: self.chain, date: Date(), hash: txResult.hash)
-                TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
+                TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx, extraInfo: nil)
                 self.onSuccess(pendingTx)
             case .failure(let error):
                 self.onError(error.message)

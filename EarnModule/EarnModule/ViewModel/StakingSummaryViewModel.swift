@@ -137,11 +137,18 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
                     hash: txResult.hash,
                     earningType: self.earningType
                 )
-                TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
+                TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx, extraInfo: nil)
                 self.onSuccess(pendingTx)
             case .failure(let error):
                 self.onError(error.message)
             }
         }
+    }
+    
+    func buildExtraInfo() -> [String: String] {
+        return [
+            "token": token.symbol,
+            "tokenAmount": displayInfo.amount
+        ]
     }
 }
