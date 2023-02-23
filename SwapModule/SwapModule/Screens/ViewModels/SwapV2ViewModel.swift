@@ -363,6 +363,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
             error.value = .sameSourceDestToken
             return
         }
+        self.destTokenPrice.value = nil
         self.destBalance.value = nil
         self.destToken.value = token
         self.sourceAmount.value = self.sourceAmount.value // Trigger reload
