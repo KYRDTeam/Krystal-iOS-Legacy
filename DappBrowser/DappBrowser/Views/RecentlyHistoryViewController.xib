@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Medium.ttf">
+            <string>Roboto-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RecentlyHistoryViewController" customModule="DappBrowser" customModuleProvider="target">
+            <connections>
+                <outlet property="historyTableView" destination="uVM-mP-Ea7" id="S19-HJ-2pn"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t3E-h4-NnW">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="History" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7mS-43-ZC3">
+                            <rect key="frame" x="158.5" y="68" width="58" height="21"/>
+                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="STy-ib-pNG">
+                            <rect key="frame" x="16" y="60.5" width="46" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="46" id="Ale-36-nmz"/>
+                                <constraint firstAttribute="height" constant="36" id="spy-El-llz"/>
+                            </constraints>
+                            <state key="normal" image="back_blue_icon"/>
+                            <connections>
+                                <action selector="backButtonTapped:" destination="-1" eventType="touchUpInside" id="EcB-AH-zl4"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BiB-cD-AXW">
+                            <rect key="frame" x="327" y="62.5" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="gAI-cx-zYC"/>
+                            </constraints>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="clear_navBar_icon"/>
+                            <connections>
+                                <action selector="clearButtonTapped:" destination="-1" eventType="touchUpInside" id="afm-pX-qJM"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="BiB-cD-AXW" secondAttribute="trailing" constant="16" id="2Ry-P9-85D"/>
+                        <constraint firstItem="7mS-43-ZC3" firstAttribute="top" secondItem="t3E-h4-NnW" secondAttribute="top" constant="68" id="4Dx-p1-GuI"/>
+                        <constraint firstItem="STy-ib-pNG" firstAttribute="leading" secondItem="t3E-h4-NnW" secondAttribute="leading" constant="16" id="6CV-mF-0ro"/>
+                        <constraint firstItem="STy-ib-pNG" firstAttribute="centerY" secondItem="7mS-43-ZC3" secondAttribute="centerY" id="Kfe-OO-k69"/>
+                        <constraint firstItem="BiB-cD-AXW" firstAttribute="centerY" secondItem="7mS-43-ZC3" secondAttribute="centerY" id="TfZ-8L-jIz"/>
+                        <constraint firstItem="7mS-43-ZC3" firstAttribute="centerX" secondItem="t3E-h4-NnW" secondAttribute="centerX" id="aN3-uS-8Zr"/>
+                        <constraint firstAttribute="height" constant="113" id="aec-iq-Sre"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="uVM-mP-Ea7">
+                    <rect key="frame" x="0.0" y="113" width="375" height="554"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="6UT-7i-kFY"/>
+                        <outlet property="delegate" destination="-1" id="qx2-sm-oyl"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="mainViewBgColor"/>
+            <constraints>
+                <constraint firstItem="t3E-h4-NnW" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="5SX-s6-H8G"/>
+                <constraint firstItem="t3E-h4-NnW" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="671-Ok-Tb8"/>
+                <constraint firstItem="uVM-mP-Ea7" firstAttribute="top" secondItem="t3E-h4-NnW" secondAttribute="bottom" id="EPc-Bd-KOc"/>
+                <constraint firstItem="uVM-mP-Ea7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="HnP-sU-ntv"/>
+                <constraint firstAttribute="bottom" secondItem="uVM-mP-Ea7" secondAttribute="bottom" id="Xsc-gt-TkU"/>
+                <constraint firstItem="t3E-h4-NnW" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="qOI-ae-YZu"/>
+                <constraint firstItem="uVM-mP-Ea7" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="ygk-lX-SuI"/>
+            </constraints>
+            <point key="canvasLocation" x="132" y="94.902548725637189"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="back_blue_icon" width="22" height="18"/>
+        <image name="clear_navBar_icon" width="32" height="32"/>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

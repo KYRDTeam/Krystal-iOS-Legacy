@@ -18,4 +18,9 @@ public class DappBrowser {
         navigationController.pushViewController(browser, animated: true)
     }
     
+    public static func openHome(navigationController: UINavigationController) {
+        let controller = HomeViewController.instantiateFromNib()
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
 }

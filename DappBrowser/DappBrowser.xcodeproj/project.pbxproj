@@ -12,6 +12,14 @@
 		7EB74661299B9C2800950F1B /* TransactionConfirmPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB7465F299B9C2700950F1B /* TransactionConfirmPopup.swift */; };
 		7EB74662299B9C2800950F1B /* TransactionConfirmPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB74660299B9C2700950F1B /* TransactionConfirmPopup.xib */; };
 		7EB74665299B9C9300950F1B /* DappBrowerTransactionConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB74664299B9C9300950F1B /* DappBrowerTransactionConfirmViewModel.swift */; };
+		7ECF7F5C29A71110005BF482 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECF7F5A29A71110005BF482 /* HomeViewController.swift */; };
+		7ECF7F5D29A71110005BF482 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ECF7F5B29A71110005BF482 /* HomeViewController.xib */; };
+		7ECF7F6029A723CC005BF482 /* BrowserURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECF7F5E29A723CC005BF482 /* BrowserURLParser.swift */; };
+		7ECF7F6129A723CC005BF482 /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECF7F5F29A723CC005BF482 /* SearchEngine.swift */; };
+		7ECF7F6429A73DFC005BF482 /* RecentlyHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECF7F6229A73DFC005BF482 /* RecentlyHistoryViewController.swift */; };
+		7ECF7F6529A73DFC005BF482 /* RecentlyHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ECF7F6329A73DFC005BF482 /* RecentlyHistoryViewController.xib */; };
+		7ECF7F6829A73EE2005BF482 /* BrowserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ECF7F6629A73EE1005BF482 /* BrowserCell.xib */; };
+		7ECF7F6929A73EE2005BF482 /* BrowserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECF7F6729A73EE2005BF482 /* BrowserCell.swift */; };
 		A61012A329501A20006C9173 /* BrowserOptionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A61012A129501A20006C9173 /* BrowserOptionsViewController.xib */; };
 		A61012A429501A20006C9173 /* BrowserOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61012A229501A20006C9173 /* BrowserOptionsViewController.swift */; };
 		A61012A729503B4E006C9173 /* BrowserStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61012A629503B4E006C9173 /* BrowserStorage.swift */; };
@@ -44,6 +52,14 @@
 		7EB7465F299B9C2700950F1B /* TransactionConfirmPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionConfirmPopup.swift; sourceTree = "<group>"; };
 		7EB74660299B9C2700950F1B /* TransactionConfirmPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionConfirmPopup.xib; sourceTree = "<group>"; };
 		7EB74664299B9C9300950F1B /* DappBrowerTransactionConfirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DappBrowerTransactionConfirmViewModel.swift; path = DappBrowser/DappBrowerTransactionConfirmViewModel.swift; sourceTree = SOURCE_ROOT; };
+		7ECF7F5A29A71110005BF482 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		7ECF7F5B29A71110005BF482 /* HomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
+		7ECF7F5E29A723CC005BF482 /* BrowserURLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserURLParser.swift; sourceTree = "<group>"; };
+		7ECF7F5F29A723CC005BF482 /* SearchEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEngine.swift; sourceTree = "<group>"; };
+		7ECF7F6229A73DFC005BF482 /* RecentlyHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentlyHistoryViewController.swift; sourceTree = "<group>"; };
+		7ECF7F6329A73DFC005BF482 /* RecentlyHistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentlyHistoryViewController.xib; sourceTree = "<group>"; };
+		7ECF7F6629A73EE1005BF482 /* BrowserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BrowserCell.xib; sourceTree = "<group>"; };
+		7ECF7F6729A73EE2005BF482 /* BrowserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserCell.swift; sourceTree = "<group>"; };
 		A61012A129501A20006C9173 /* BrowserOptionsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BrowserOptionsViewController.xib; sourceTree = "<group>"; };
 		A61012A229501A20006C9173 /* BrowserOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserOptionsViewController.swift; sourceTree = "<group>"; };
 		A61012A629503B4E006C9173 /* BrowserStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserStorage.swift; sourceTree = "<group>"; };
@@ -132,6 +148,8 @@
 			children = (
 				A66395902949B08100A47F79 /* Assets.xcassets */,
 				A61012A829503B6E006C9173 /* Constants.swift */,
+				7ECF7F5E29A723CC005BF482 /* BrowserURLParser.swift */,
+				7ECF7F5F29A723CC005BF482 /* SearchEngine.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -156,6 +174,12 @@
 		A6CF70BD2946EC400061E552 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7ECF7F6729A73EE2005BF482 /* BrowserCell.swift */,
+				7ECF7F6629A73EE1005BF482 /* BrowserCell.xib */,
+				7ECF7F6229A73DFC005BF482 /* RecentlyHistoryViewController.swift */,
+				7ECF7F6329A73DFC005BF482 /* RecentlyHistoryViewController.xib */,
+				7ECF7F5A29A71110005BF482 /* HomeViewController.swift */,
+				7ECF7F5B29A71110005BF482 /* HomeViewController.xib */,
 				7EB7465F299B9C2700950F1B /* TransactionConfirmPopup.swift */,
 				7EB74660299B9C2700950F1B /* TransactionConfirmPopup.xib */,
 				A61012A229501A20006C9173 /* BrowserOptionsViewController.swift */,
@@ -294,7 +318,10 @@
 				A61012A329501A20006C9173 /* BrowserOptionsViewController.xib in Resources */,
 				A66395912949B08100A47F79 /* Assets.xcassets in Resources */,
 				A6420304294B082400179189 /* SignMessagePopup.xib in Resources */,
+				7ECF7F6829A73EE2005BF482 /* BrowserCell.xib in Resources */,
 				7EB74662299B9C2800950F1B /* TransactionConfirmPopup.xib in Resources */,
+				7ECF7F5D29A71110005BF482 /* HomeViewController.xib in Resources */,
+				7ECF7F6529A73DFC005BF482 /* RecentlyHistoryViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,19 +357,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7ECF7F6929A73EE2005BF482 /* BrowserCell.swift in Sources */,
 				A6420306294B108400179189 /* WebPageInfo.swift in Sources */,
+				7ECF7F6029A723CC005BF482 /* BrowserURLParser.swift in Sources */,
 				A62A703B29481E1C00DA8B82 /* DappBrowser.swift in Sources */,
 				7EB74665299B9C9300950F1B /* DappBrowerTransactionConfirmViewModel.swift in Sources */,
 				A6A00639294706A1002AF6E7 /* TrustWeb3Provider.swift in Sources */,
 				A6A0063D29470918002AF6E7 /* DAppMethod.swift in Sources */,
 				7EB74661299B9C2800950F1B /* TransactionConfirmPopup.swift in Sources */,
 				A61012A429501A20006C9173 /* BrowserOptionsViewController.swift in Sources */,
+				7ECF7F5C29A71110005BF482 /* HomeViewController.swift in Sources */,
 				A6420303294B082400179189 /* SignMessagePopup.swift in Sources */,
 				A6CF70C52946EC400061E552 /* BrowserViewController.swift in Sources */,
 				A61012A929503B6E006C9173 /* Constants.swift in Sources */,
 				A6A006402947095B002AF6E7 /* KrystalMessage.swift in Sources */,
 				A61012A729503B4E006C9173 /* BrowserStorage.swift in Sources */,
 				A66395872949765700A47F79 /* KrystalScriptHandler.swift in Sources */,
+				7ECF7F6129A723CC005BF482 /* SearchEngine.swift in Sources */,
+				7ECF7F6429A73DFC005BF482 /* RecentlyHistoryViewController.swift in Sources */,
 				A66395852949764E00A47F79 /* Web3ScriptHandler.swift in Sources */,
 				A6A0063729470634002AF6E7 /* WKScriptMessage.swift in Sources */,
 			);

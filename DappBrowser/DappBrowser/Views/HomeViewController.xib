@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -14,7 +16,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController" customModule="Krystal" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DappBrowserHomeViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="favoriteTagsView" destination="hCH-ql-aJS" id="kP7-3h-QWG"/>
                 <outlet property="favoriteTitleLabel" destination="8ln-lM-Kho" id="Gk3-yf-4la"/>
@@ -43,7 +45,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DApp Browser" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P5u-ot-pYP">
-                            <rect key="frame" x="122.5" y="63.5" width="130.5" height="23.5"/>
+                            <rect key="frame" x="121.5" y="63.5" width="132" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
@@ -96,7 +98,7 @@
                                 <constraint firstAttribute="width" constant="24" id="N8S-eG-3co"/>
                             </constraints>
                             <color key="tintColor" name="textWhiteColor"/>
-                            <state key="normal" image="search_blue_icon"/>
+                            <state key="normal" image="search_icon"/>
                             <connections>
                                 <action selector="searchTextButtonTapped:" destination="-1" eventType="touchUpInside" id="nZC-aJ-uXc"/>
                             </connections>
@@ -129,7 +131,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ELj-wb-8FD">
-                            <rect key="frame" x="26" y="32.5" width="323" height="36"/>
+                            <rect key="frame" x="26" y="33" width="323" height="36"/>
                             <subviews>
                                 <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6cd-Wo-q2L" customClass="TagListView" customModule="TagListView">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
@@ -181,13 +183,13 @@
                             <viewLayoutGuide key="frameLayoutGuide" id="BWL-ur-QHh"/>
                         </scrollView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorite" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ln-lM-Kho">
-                            <rect key="frame" x="26" y="103.5" width="57.5" height="19"/>
+                            <rect key="frame" x="26" y="104" width="58.5" height="19"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view tag="2" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hCH-ql-aJS" customClass="TagListView" customModule="TagListView">
-                            <rect key="frame" x="26" y="132.5" width="323" height="0.0"/>
+                            <rect key="frame" x="26" y="133" width="323" height="0.0"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="color" keyPath="tagBackgroundColor">
@@ -220,7 +222,7 @@
                             </connections>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Suggestion" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7dD-IP-9MT">
-                            <rect key="frame" x="26" y="167.5" width="81" height="19"/>
+                            <rect key="frame" x="26" y="168" width="83.5" height="19"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
@@ -259,7 +261,7 @@
                             </connections>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TCY-WO-etf">
-                            <rect key="frame" x="302" y="-3.5" width="47" height="26"/>
+                            <rect key="frame" x="302" y="-4" width="47" height="27"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                             <state key="normal" title="Show All">
                                 <color key="titleColor" name="buttonBackgroundColor"/>
@@ -314,7 +316,7 @@
     </objects>
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
-        <image name="search_blue_icon" width="16" height="16"/>
+        <image name="search_icon" width="24" height="24"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

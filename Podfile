@@ -203,6 +203,9 @@ target 'DappBrowser' do
   pod 'CryptoSwift'
   pod 'FittedSheets'
   pod 'MBProgressHUD'
+  pod 'TagListView', :git => 'https://github.com/Expensify/TagListView.git'
+  pod 'SwipeCellKit'
+  networkingPods
 end
 
 target 'KyberNetwork' do

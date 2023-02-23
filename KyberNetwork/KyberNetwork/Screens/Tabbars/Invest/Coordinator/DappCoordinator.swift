@@ -27,13 +27,7 @@ class DappCoordinator: NSObject, Coordinator {
   init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
   }
-  
-  lazy var rootViewController: DappBrowserHomeViewController = {
-    let controller = DappBrowserHomeViewController()
-    controller.delegate = self
-    return controller
-  }()
-  
+
   private lazy var urlParser: BrowserURLParser = {
       return BrowserURLParser()
   }()
@@ -43,7 +37,7 @@ class DappCoordinator: NSObject, Coordinator {
   }
 
   func start() {
-    self.navigationController.pushViewController(self.rootViewController, animated: true)
+      DappBrowser.openHome(navigationController: self.navigationController)
   }
   
   func stop() {
