@@ -6,26 +6,26 @@
 //
 
 import Foundation
-import Services
+import web3
 
 class SingleCallBalanceSyncOperation: BalanceSyncOperation {
     let chainID: Int
-    let rpcUrl: String
     let walletAddress: String
     let tokenAddress: String
+    let ethWorker: EthereumWorker
     
-    init(chainID: Int, rpcUrl: String, walletAddress: String, tokenAddress: String) {
+    init(ethClients: [EthereumHttpClient], chainID: Int, walletAddress: String, tokenAddress: String) {
+        self.ethWorker = EthereumWorker(clients: ethClients)
         self.chainID = chainID
-        self.rpcUrl = rpcUrl
         self.walletAddress = walletAddress
         self.tokenAddress = tokenAddress
     }
     
     override func execute(completion: @escaping () -> ()) {
-        NodeBalanceService(rpcUrl: rpcUrl).getTokenBalance(tokenAddress: tokenAddress, walletAddress: walletAddress) { result in
+        ERC20(client: ethWorker).balanceOf(tokenContract: EthereumAddress(tokenAddress), address: EthereumAddress(walletAddress)) { result in
             switch result {
             case .success(let balance):
-                TokenDB.shared.save(
+                TokenBalanceDB.shared.save(
                     balance: TokenBalanceEntity(chainID: self.chainID,
                                                 tokenAddress: self.tokenAddress,
                                                 walletAddress: self.walletAddress,

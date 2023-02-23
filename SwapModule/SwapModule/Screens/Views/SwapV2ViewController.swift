@@ -576,13 +576,13 @@ class SwapV2ViewController: InAppBrowsingViewController {
     }
     
     @objc func openSourceTokenSearch() {
-        TokenModule.openSearchToken(on: self) { [weak self] selectedToken in
+        TokenModule.openSearchToken(walletAddress: AppState.shared.currentAddress.addressString, chainID: AppState.shared.currentChain.getChainId(), on: self) { [weak self] selectedToken in
             self?.viewModel.updateSourceToken(token: selectedToken.token)
         }
     }
     
     @objc func openDestTokenSearch() {
-        TokenModule.openSearchToken(on: self) { [weak self] selectedToken in
+        TokenModule.openSearchToken(walletAddress: AppState.shared.currentAddress.addressString, chainID: AppState.shared.currentChain.getChainId(), on: self) { [weak self] selectedToken in
             self?.viewModel.updateDestToken(token: selectedToken.token)
         }
     }

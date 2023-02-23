@@ -194,8 +194,11 @@ extension KNAppCoordinator {
     KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
     self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     
-    self.doLogin { _ in }
-    UserService().connect(address: address) {}
+    
+    DispatchQueue.global().async {
+      self.doLogin { _ in }
+      UserService().connect(address: address) {}
+    }
     
     NotificationCenter.default.post(
       name: Notification.Name(kAppDidUpdateNewSession),

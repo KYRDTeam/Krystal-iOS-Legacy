@@ -23,13 +23,18 @@ public class TokenModule {
     return vc
   }
   
-    public static func openSearchToken(on viewController: UIViewController, onSelectToken: ((SearchToken) -> Void)?) {
-        let viewModel = SearchTokenViewModel()
-        let vc = SearchTokenViewController.instantiateFromNib()
-        vc.viewModel = viewModel
-        vc.modalPresentationStyle = .fullScreen
-        vc.onSelectTokenCompletion = onSelectToken
+    public static func openSearchToken(walletAddress: String, chainID: Int, on viewController: UIViewController, onSelectToken: ((SearchToken) -> Void)?) {
+//        let viewModel = SearchTokenViewModel()
+//        let vc = SearchTokenViewController.instantiateFromNib()
+//        vc.viewModel = viewModel
+//        vc.modalPresentationStyle = .fullScreen
+//        vc.onSelectTokenCompletion = onSelectToken
+//        
+//        viewController.present(vc, animated: true, completion: nil)
         
+        let viewModel = TokenListViewModel(walletAddress: walletAddress, chainID: chainID)
+        let vc = TokenSearchViewController.instantiateFromNib()
+        vc.viewModel = viewModel
         viewController.present(vc, animated: true, completion: nil)
     }
 }

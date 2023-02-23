@@ -13,4 +13,6 @@ struct TokenModel: Decodable {
     var name: String
     var decimals: Int
     var logo: String
+    var tag: String
+    var chainId: Int
 }

@@ -225,6 +225,12 @@ target 'ChainModule' do
   web3
 end
 
+target 'Platform' do
+  project 'Platform/Platform.xcodeproj'
+  use_frameworks!
+  
+  pod 'RealmSwift', '~> 10.32'
+end
 
 target 'DappBrowser' do
   project 'DappBrowser/DappBrowser.xcodeproj'

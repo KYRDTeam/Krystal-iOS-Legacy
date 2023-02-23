@@ -41,7 +41,7 @@ public class TokenListViewController: UIViewController {
                 TokenDB.shared.getToken(chainID: balance.chainID, address: balance.tokenAddress).map {
                     return BalanceViewModel(token: $0, balance: balance)
                 }
-            } ?? []
+            }.sorted { lhs, rhs in lhs.token.symbol < rhs.token.symbol } ?? []
             self?.tableView.reloadData()
         })
     }

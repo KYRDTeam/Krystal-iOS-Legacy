@@ -14,6 +14,7 @@ import WalletCore
 import KrystalWallets
 import Dependencies
 import TokenModule
+import AppState
 
 protocol KNSendTokenViewCoordinatorDelegate: class {
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject)
@@ -300,7 +301,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   }
 
   fileprivate func openSearchToken(selectedToken: TokenObject) {
-      TokenModule.openSearchToken(on: navigationController) { [weak self] selectedToken in
+      TokenModule.openSearchToken(walletAddress: AppState.shared.currentAddress.addressString, chainID: AppState.shared.currentChain.getChainId(), on: navigationController) { [weak self] selectedToken in
           guard let self = self else { return }
           let balance = self.balances[selectedToken.token.address]
           self.rootViewController?.coordinatorDidUpdateSendToken(selectedToken.token.toObject(), balance: balance)

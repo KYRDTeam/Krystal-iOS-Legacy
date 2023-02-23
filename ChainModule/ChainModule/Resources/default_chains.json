@@ -1,9 +1,21 @@
 [
     {
-        "chainID": 1,
+        "id": 0,
+        "name": "All Networks",
+        "type": "NONE",
+        "logo": "https://github.com/hoanganhtuan95ptit/config/blob/main/chain/all.png?raw=true",
+        "isDefault": true
+    },
+    {
+        "id": 1,
         "name": "Ethereum",
-        "iconUrl": "https://d33wubrfki0l68.cloudfront.net/fcd4ecd90386aeb50a235ddc4f0063cfbb8a7b66/4295e/static/bfc04ac72981166c740b189463e1f74c/40129/eth-diamond-black-white.jpg",
+        "type": "EVM",
+        "logo": "https://d33wubrfki0l68.cloudfront.net/fcd4ecd90386aeb50a235ddc4f0063cfbb8a7b66/4295e/static/bfc04ac72981166c740b189463e1f74c/40129/eth-diamond-black-white.jpg",
         "isDefault": true,
+        "nativeToken": {
+            "name": "Ether",
+            "symbol": "ETH"
+        },
         "configs": [
             {
                 "name": "SUPPORT_EIP_1559",
@@ -11,14 +23,14 @@
             },
             {
                 "name": "SUPPORT_BALANCE_API",
-                "value": "false"
+                "value": "true"
             },
             {
                 "name": "SUPPORT_TOKEN_LIST_API",
                 "value": "true"
             },
             {
-                "name": "CHAIN_API_PATH",
+                "name": "API_PATH",
                 "value": "ethereum"
             },
             {
@@ -33,7 +45,11 @@
             },
             {
                 "address": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441",
-                "type": "SMART_CONTRACT_MULTI_CALL"
+                "type": "MULTI_CALL"
+            },
+            {
+                "address": "0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696",
+                "type": "MULTI_CALL_V2"
             }
         ],
         "urls": [
@@ -44,9 +60,302 @@
             },
             {
                 "url": "https://rpc.ankr.com/eth",
-                "type": "RPC_URL",
+                "type": "RPC",
                 "name": "RPC"
             }
         ]
+    },
+    {
+        "configs": [],
+        "id": 137,
+        "logo": "https://raw.githubusercontent.com/hoanganhtuan95ptit/config/main/chain/polygon.png",
+        "name": "Polygon",
+        "nativeToken": {
+            "decimals": 18,
+            "name": "MATIC",
+            "symbol": "MATIC"
+        },
+        "smartContracts": [
+        ],
+        "type": "EVM",
+        "urls": [
+            {
+                "name": "",
+                "priority": "2147483647",
+                "type": "RPC",
+                "url": "https://rpc-mainnet.matic.quiknode.pro"
+            },
+            {
+                "name": "",
+                "priority": "2147483646",
+                "type": "RPC",
+                "url": "https://rpc.ankr.com/polygon"
+            },
+            {
+                "name": "",
+                "priority": "2147483645",
+                "type": "RPC",
+                "url": "https://polygon-rpc.com"
+            },
+            {
+                "name": "",
+                "priority": "2147483644",
+                "type": "RPC",
+                "url": "https://endpoints.omniatech.io/v1/matic/mainnet/public"
+            },
+            {
+                "name": "",
+                "priority": "2147483643",
+                "type": "RPC",
+                "url": "https://rpc-mainnet.maticvigil.com"
+            },
+            {
+                "name": "",
+                "priority": "2147483642",
+                "type": "RPC",
+                "url": "https://polygon-mainnet.public.blastapi.io"
+            },
+            {
+                "name": "",
+                "priority": "2147483641",
+                "type": "RPC",
+                "url": "https://polygon.blockpi.network/v1/rpc/public"
+            },
+            {
+                "name": "",
+                "priority": "2147483640",
+                "type": "RPC",
+                "url": "https://polygon.llamarpc.com"
+            },
+            {
+                "name": "",
+                "priority": "2147483639",
+                "type": "RPC",
+                "url": "https://matic-mainnet-full-rpc.bwarelabs.com"
+            },
+            {
+                "name": "",
+                "priority": "2147483638",
+                "type": "RPC",
+                "url": "https://poly-rpc.gateway.pokt.network"
+            },
+            {
+                "name": "",
+                "priority": "2147483637",
+                "type": "RPC",
+                "url": "https://polygon-mainnet.rpcfast.com?api_key=eQhI7SkwYXeQJyOLWrKNvpRnW9fTNoqkX0CErPfEsZjBBtYmn2e2uLKZtQkHkZdT"
+            },
+            {
+                "name": "",
+                "priority": "2147483636",
+                "type": "RPC",
+                "url": "https://polygon-bor.publicnode.com"
+            },
+            {
+                "name": "",
+                "priority": "2147483635",
+                "type": "RPC",
+                "url": "https://1rpc.io/matic"
+            },
+            {
+                "name": "",
+                "priority": "2147483634",
+                "type": "RPC",
+                "url": "https://polygon-mainnet-public.unifra.io"
+            },
+            {
+                "name": "",
+                "priority": "2147483633",
+                "type": "RPC",
+                "url": "https://matic-mainnet-archive-rpc.bwarelabs.com"
+            },
+            {
+                "name": "",
+                "priority": "2147483632",
+                "type": "RPC",
+                "url": "https://matic-mainnet.chainstacklabs.com"
+            }
+        ]
+    },
+    {
+        "configs": [],
+        "id": 43114,
+        "logo": "https://raw.githubusercontent.com/hoanganhtuan95ptit/config/main/chain/avalanche.png",
+        "name": "Avalanche C-Chain",
+        "nativeToken": {
+            "decimals": 18,
+            "name": "Avalanche",
+            "symbol": "AVAX"
+        },
+        "smartContracts": [
+        ],
+        "type": "EVM",
+        "urls": [
+            {
+                "name": "",
+                "priority": "2147483647",
+                "type": "RPC",
+                "url": "https://avalanche.blockpi.network/v1/rpc/public"
+            },
+            {
+                "name": "",
+                "priority": "2147483646",
+                "type": "RPC",
+                "url": "https://rpc.ankr.com/avalanche"
+            },
+            {
+                "name": "",
+                "priority": "2147483645",
+                "type": "RPC",
+                "url": "https://ava-mainnet.public.blastapi.io/ext/bc/C/rpc"
+            },
+            {
+                "name": "",
+                "priority": "2147483644",
+                "type": "RPC",
+                "url": "https://api.avax.network/ext/bc/C/rpc"
+            },
+            {
+                "name": "",
+                "priority": "2147483643",
+                "type": "RPC",
+                "url": "https://avalanche-evm.publicnode.com"
+            },
+            {
+                "name": "",
+                "priority": "2147483642",
+                "type": "RPC",
+                "url": "https://1rpc.io/avax/c"
+            },
+            {
+                "name": "",
+                "priority": "2147483641",
+                "type": "RPC",
+                "url": "https://endpoints.omniatech.io/v1/avax/mainnet/public"
+            }
+        ]
+    },
+    {
+        "configs": [],
+        "id": 25,
+        "logo": "https://raw.githubusercontent.com/hoanganhtuan95ptit/config/main/chain/cronos.png",
+        "name": "Cronos  Beta",
+        "nativeToken": {
+            "decimals": 18,
+            "name": "Cronos",
+            "symbol": "CRO"
+        },
+        "smartContracts": [
+        ],
+        "type": "EVM",
+        "urls": [
+            {
+                "name": "",
+                "priority": "2147483647",
+                "type": "RPC",
+                "url": "https://evm.cronos.org"
+            },
+            {
+                "name": "",
+                "priority": "2147483646",
+                "type": "RPC",
+                "url": "https://node.croswap.com/rpc"
+            }
+        ]
+    },
+    {
+        "configs": [],
+        "id": 250,
+        "logo": "https://raw.githubusercontent.com/hoanganhtuan95ptit/config/main/chain/fantom.png",
+        "name": "Fantom Opera",
+        "nativeToken": {
+            "decimals": 18,
+            "name": "Fantom",
+            "symbol": "FTM"
+        },
+        "smartContracts": [
+        ],
+        "type": "EVM",
+        "urls": [
+            {
+                "name": "",
+                "priority": "2147483647",
+                "type": "RPC",
+                "url": "https://rpc.ankr.com/fantom"
+            },
+            {
+                "name": "",
+                "priority": "2147483646",
+                "type": "RPC",
+                "url": "https://fantom.blockpi.network/v1/rpc/public"
+            },
+            {
+                "name": "",
+                "priority": "2147483645",
+                "type": "RPC",
+                "url": "https://rpc3.fantom.network"
+            },
+            {
+                "name": "",
+                "priority": "2147483644",
+                "type": "RPC",
+                "url": "https://fantom-mainnet.public.blastapi.io"
+            },
+            {
+                "name": "",
+                "priority": "2147483643",
+                "type": "RPC",
+                "url": "https://rpc.ftm.tools"
+            },
+            {
+                "name": "",
+                "priority": "2147483642",
+                "type": "RPC",
+                "url": "https://rpc.fantom.network"
+            },
+            {
+                "name": "",
+                "priority": "2147483641",
+                "type": "RPC",
+                "url": "https://rpcapi.fantom.network"
+            },
+            {
+                "name": "",
+                "priority": "2147483640",
+                "type": "RPC",
+                "url": "https://endpoints.omniatech.io/v1/fantom/mainnet/public"
+            },
+            {
+                "name": "",
+                "priority": "2147483639",
+                "type": "RPC",
+                "url": "https://rpc2.fantom.network"
+            },
+            {
+                "name": "",
+                "priority": "2147483638",
+                "type": "RPC",
+                "url": "https://1rpc.io/ftm"
+            },
+            {
+                "name": "",
+                "priority": "2147483637",
+                "type": "RPC",
+                "url": "https://fantom-mainnet.gateway.pokt.network/v1/lb/62759259ea1b320039c9e7ac"
+            }
+        ]
+    },
+    {
+        "configs": [],
+        "id": 42161,
+        "logo": "https://raw.githubusercontent.com/hoanganhtuan95ptit/config/main/chain/arbitrum.png",
+        "name": "Arbitrum One",
+        "nativeToken": {
+            "name": "Ether",
+            "symbol": "ETH"
+        },
+        "smartContracts": [],
+        "type": "EVM",
+        "urls": []
     }
 ]

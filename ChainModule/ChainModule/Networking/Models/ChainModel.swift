@@ -8,13 +8,19 @@
 import Foundation
 
 struct ChainModel: Decodable {
-    var chainID: Int
+    var id: Int
     var name: String
-    var iconUrl: String
-    var isDefault: Bool
+    var logo: String
+    var isDefault: Bool?
+    var nativeToken: NativeToken?
     var configs: [ChainConfigModel]?
     var smartContracts: [ChainSmartContractModel]?
     var urls: [ChainUrlModel]?
+    
+    struct NativeToken: Decodable {
+        var symbol: String?
+        var name: String?
+    }
 }
 
 struct ChainConfigModel: Decodable {

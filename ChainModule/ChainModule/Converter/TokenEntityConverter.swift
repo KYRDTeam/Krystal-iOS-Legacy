@@ -3,7 +3,7 @@
 //  ChainModule
 //
 //  Created by Tung Nguyen on 02/02/2023.
-//
+////
 
 import Foundation
 
@@ -12,6 +12,6 @@ class TokenEntityConverter: Converter {
     typealias Output = Token
     
     static func convert(input: TokenEntity) -> Token {
-        return Token(chainID: input.chainID, address: input.address, iconUrl: input.iconUrl, decimal: input.decimal, symbol: input.symbol, name: input.name, isAddedByUser: input.isAddedByUser)
+        return Token(chainID: input.chainID, address: input.address, iconUrl: input.iconUrl, decimal: input.decimal, symbol: input.symbol, name: input.name, tag: input.tag, type: input.type, isAddedByUser: input.isAddedByUser)
     }
 }

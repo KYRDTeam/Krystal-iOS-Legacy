@@ -7,36 +7,29 @@
 
 import Foundation
 import RealmSwift
+import web3
 
 class NativeTokenBalanceSyncOperation: BalanceSyncOperation {
     let chainID: Int
-    let rpcUrl: String
     let walletAddress: String
+    let ethWorker: EthereumWorker
     
-    init(chainID: Int, rpcUrl: String, walletAddress: String) {
+    init(ethClients: [EthereumHttpClient], chainID: Int, walletAddress: String) {
+        self.ethWorker = EthereumWorker(clients: ethClients)
         self.chainID = chainID
-        self.rpcUrl = rpcUrl
         self.walletAddress = walletAddress
     }
     
     override func execute(completion: @escaping () -> ()) {
-        NodeBalanceService(rpcUrl: rpcUrl).getQuoteBalance(walletAddress: walletAddress) { result in
+        ethWorker.eth_getBalance(address: EthereumAddress(walletAddress), block: .Latest) { result in
             switch result {
             case .success(let balance):
-                TokenDB.shared.save(
+                TokenBalanceDB.shared.save(
                     balance: TokenBalanceEntity(chainID: self.chainID,
                                                 tokenAddress: defaultNativeTokenAddress,
                                                 walletAddress: self.walletAddress,
                                                 balance: balance.description)
                 )
-                if let nativeTokenAddress = ChainDB.shared.getConfig(chainID: self.chainID, key: kChainNativeTokenAddress) {
-                    TokenDB.shared.save(
-                        balance: TokenBalanceEntity(chainID: self.chainID,
-                                                    tokenAddress: nativeTokenAddress,
-                                                    walletAddress: self.walletAddress,
-                                                    balance: balance.description)
-                    )
-                }
                 completion()
             case .failure:
                 completion()

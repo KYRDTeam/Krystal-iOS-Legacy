@@ -7,57 +7,72 @@
 
 import Foundation
 
-public class Worker {
+public class Worker: BackgroundWorker {
     
     var operations: [Operation] = []
     var queue: OperationQueue = OperationQueue()
     
     public init(operations: [Operation]) {
         self.operations = operations
+        queue.maxConcurrentOperationCount = 10
     }
     
-    public func asyncWaitAll(completion: @escaping () -> ()) {
-        let group = DispatchGroup()
-        for op in operations {
-            group.enter()
-            op.completionBlock = { group.leave() }
+    open func prepare(completion: @escaping () -> ()) {
+        completion()
+    }
+    
+    public func asyncWaitAll(completion: (() -> ())? = nil) {
+        prepare {
+            let group = DispatchGroup()
+            for op in self.operations {
+                group.enter()
+                op.completionBlock = { group.leave() }
+            }
+            self.queue.addOperations(self.operations, waitUntilFinished: false)
+            group.notify(queue: .main) {
+                completion?()
+            }
         }
-        queue.addOperations(operations, waitUntilFinished: false)
     }
     
     public func asyncWaitFastest(completion: @escaping () -> ()) {
-        var isCompleted: Bool = false
-        for op in operations {
-            op.completionBlock = {
-                if !isCompleted {
-                    isCompleted = true
-                    completion()
+        prepare {
+            var isCompleted: Bool = false
+            for op in self.operations {
+                op.completionBlock = {
+                    if !isCompleted {
+                        isCompleted = true
+                        completion()
+                    }
                 }
             }
+            self.queue.addOperations(self.operations, waitUntilFinished: false)
         }
-        queue.addOperations(operations, waitUntilFinished: false)
     }
     
     public func asyncWaitHighestPriority(completion: @escaping () -> ()) {
-        let highestPriorityOp = operations.max { lhs, rhs in lhs.queuePriority.rawValue > rhs.queuePriority.rawValue }
-        highestPriorityOp?.completionBlock = { completion() }
-        queue.addOperations(operations, waitUntilFinished: false)
+        prepare {
+            let highestPriorityOp = self.operations.max { lhs, rhs in lhs.queuePriority.rawValue > rhs.queuePriority.rawValue }
+            highestPriorityOp?.completionBlock = { completion() }
+            self.queue.addOperations(self.operations, waitUntilFinished: false)
+        }
     }
     
     public func syncByPriority(completion: @escaping () -> ()) {
-        if operations.count < 2 {
-            asyncWaitAll(completion: completion)
-        } else {
-            let sortedOps = operations.sorted(by: { lhs, rhs in lhs.queuePriority.rawValue > rhs.queuePriority.rawValue })
+        prepare {
+            if self.operations.count < 2 {
+                self.asyncWaitAll(completion: completion)
+            } else {
+                let sortedOps = self.operations.sorted(by: { lhs, rhs in lhs.queuePriority.rawValue > rhs.queuePriority.rawValue })
 
-            for index in 1..<sortedOps.count {
-                sortedOps[index].addDependency(sortedOps[index - 1])
+                for index in 1..<sortedOps.count {
+                    sortedOps[index].addDependency(sortedOps[index - 1])
+                }
+                
+                sortedOps.last?.completionBlock = { completion() }
+                self.queue.addOperations(sortedOps, waitUntilFinished: false)
             }
-            
-            sortedOps.last?.completionBlock = { completion() }
-            queue.addOperations(sortedOps, waitUntilFinished: false)
         }
-        
     }
     
 }

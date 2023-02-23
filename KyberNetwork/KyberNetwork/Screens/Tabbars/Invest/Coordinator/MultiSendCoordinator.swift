@@ -17,6 +17,7 @@ import WalletConnectSwift
 import KrystalWallets
 import Dependencies
 import TokenModule
+import AppState
 
 class MultiSendCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
@@ -198,7 +199,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   }
   
   fileprivate func openSearchToken(selectedToken: TokenObject) {
-      TokenModule.openSearchToken(on: self.rootViewController) { selected in
+      TokenModule.openSearchToken(walletAddress: AppState.shared.currentAddress.addressString, chainID: AppState.shared.currentChain.getChainId(), on: self.rootViewController) { selected in
           self.rootViewController.coordinatorDidUpdateSendToken(selected.token)
       }
   }

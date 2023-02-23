@@ -13,17 +13,34 @@ public class RemoteConfigChainSyncOperation: ChainSyncOperation {
     let remoteConfig = RemoteConfig.remoteConfig()
     
     override func execute(completion: @escaping () -> ()) {
-        remoteConfig.fetch { _, error in
-            self.remoteConfig.activate()
-            ChainDB.shared.save(chainModels: self.getConfiguredChains())
-            self.finish()
-            completion()
+        remoteConfig.fetchAndActivate { _, error in
+            DispatchQueue.global().async {
+                let chainModels = self.getConfiguredChains()
+                let nativeTokens = chainModels.compactMap { chain -> TokenEntity? in
+                    if let symbol = chain.nativeToken?.symbol {
+                        return TokenEntity(chainID: chain.id,
+                                           address: defaultNativeTokenAddress,
+                                           iconUrl: "",
+                                           decimal: 18,
+                                           symbol: symbol,
+                                           name: "",
+                                           tag: "",
+                                           type: nativeTokenType)
+                    } else {
+                        return nil
+                    }
+                }
+                TokenDB.shared.save(tokens: nativeTokens)
+                ChainDB.shared.save(chainModels: chainModels)
+                self.finish()
+                completion()
+            }
         }
     }
     
     func getConfiguredChains() -> [ChainModel] {
         let data = remoteConfig.configValue(forKey: "chains").dataValue
-        let chains = try? JSONDecoder().decode([ChainModel].self, from: data)
+        let chains = try! JSONDecoder().decode([ChainModel].self, from: data)
         return chains ?? []
     }
     

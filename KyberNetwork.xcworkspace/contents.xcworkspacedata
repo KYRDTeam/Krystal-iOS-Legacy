@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Platform/Platform.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:ChainModule/ChainModule.xcodeproj">
    </FileRef>
    <FileRef
@@ -39,9 +42,6 @@
    </FileRef>
    <FileRef
       location = "group:BaseModule/BaseModule.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:AppState/AppState.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Utilities/Utilities.xcodeproj">

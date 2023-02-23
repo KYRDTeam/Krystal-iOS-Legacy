@@ -13,6 +13,8 @@ import KrystalWallets
 import AppState
 import TokenModule
 import DesignSystem
+import ChainModule
+import FittedSheets
 
 class AppRouter: AppRouterProtocol, Coordinator {
   
@@ -201,6 +203,22 @@ class AppRouter: AppRouterProtocol, Coordinator {
             self.removeCoordinator(coordinator)
         }
         coordinate(coordinator: coordinator)
+    }
+    
+    func openChainList(showAllNetworksOption: Bool) {
+        let vc = ChainListViewController.create(
+            address: AppState.shared.currentAddress,
+            showAllNetworksOption: showAllNetworksOption,
+            onSelectAllNetworks: {
+                AppState.shared.isSelectingAllNetworks = true
+            },
+            onSelectChainID: { chainID in
+                AppState.shared.selectedChainID = chainID
+            }
+        )
+        let nav = UINavigationController(rootViewController: vc)
+        let sheet = SheetViewController(controller: nav, sizes: [.marginFromTop(96)], options: .init(pullBarHeight: 0))
+        UIApplication.shared.topMostViewController()?.present(sheet, animated: true, completion: nil)
     }
   
 }

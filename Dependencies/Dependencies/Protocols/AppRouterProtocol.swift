@@ -29,6 +29,7 @@ public protocol AppRouterProtocol {
     func openEarnPortfolio()
     func openEarnReward()
     func openSwap(from: Token, to: Token)
+    func openChainList(showAllNetworksOption: Bool)
     func openTokenScanner(address: String, chainId: Int)
     func openBackupReminder(viewController: UIViewController, walletID: String)
     func openBackupWallet(walletID: String)

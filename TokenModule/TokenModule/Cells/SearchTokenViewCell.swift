@@ -8,6 +8,7 @@
 import UIKit
 import Services
 import Utilities
+import ChainModule
 
 class SearchTokenViewCell: UITableViewCell {
   @IBOutlet weak var iconImageView: UIImageView!
@@ -50,5 +51,13 @@ class SearchTokenViewCell: UITableViewCell {
     }
     
   }
+    
+    func configure(item: TokenItemCellViewModel) {
+        iconImageView.loadImage(item.iconUrl)
+        symbolLabel.text = item.name
+        balanceLabel.text = item.balanceString
+        valueLabel.text = item.balanceValueString
+    }
+    
     
 }

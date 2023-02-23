@@ -12,6 +12,8 @@ import Dependencies
 import BaseWallet
 import ChainModule
 import RealmSwift
+import KrystalWallets
+import AppState
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -33,24 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     migrateWalletData()
     window = UIWindow(frame: UIScreen.main.bounds)
       
-//    setupFirebase()
-//
-//      ChainDB.shared.removeAllChain()
-//      TokenDB.shared.removeAllTokens()
-//
-//      let worker = ChainSyncWorker(operations: [
-//        DefaultChainSyncOperation(),
-//        RemoteConfigChainSyncOperation()
-//      ])
-//
-//
-//      worker.asyncWaitAll {
-//          print("SYNC COMPLETED")
-//      }
-//
-//      window?.rootViewController = TokenListViewController.instantiateFromNib()
-//      window?.makeKeyAndVisible()
-      
     setupImageProcessor()
     setupKeyboard()
     KNReachability.shared.startNetworkReachabilityObserver()
@@ -64,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       if migrationManager.needMigrate {
         self.startMigration(keystore: keystore)
       } else {
-        self.coordinatorFinishLaunching(keystore: keystore)
+        self.syncChainsAndTokensIfNeeded(keystore: keystore)
       }
     } catch {
       print("EtherKeystore init issue.")
@@ -76,12 +60,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     func migrateWalletData() {
         WalletExtraDataManager.shared.migrateFromFile()
     }
+    
+    func syncChainsAndTokensIfNeeded(keystore: Keystore) {
+        _ = ChainDB.shared
+        _ = TokenDB.shared
+        _ = TokenBalanceDB.shared
+        _ = AppState.shared
+        
+        ChainDB.shared.allChains().forEach { chain in
+            TokenSyncWorker(chainID: chain.id).asyncWaitAll()
+        }
+        
+        let chainSyncWorker = ChainSyncWorker(operations: [DefaultChainSyncOperation(), RemoteConfigChainSyncOperation()])
+        
+        chainSyncWorker.asyncWaitFastest {
+            if AppState.shared.selectedChainID == 0, let chainID = ChainDB.shared.allChains().first(where: { $0.id != 0 })?.id {
+                AppState.shared.selectedChainID = chainID
+            }
+            DispatchQueue.main.async {
+                self.coordinatorFinishLaunching(keystore: keystore)
+            }
+            DispatchQueue(label: "queue.sync.balance", qos: .background, attributes: .concurrent, autoreleaseFrequency: .workItem, target: nil).async {
+                WalletManager.shared.getAllAddresses().forEach { address in
+                    BalanceSyncWorker(tokens: TokenDB.shared.allTokens(), address: address).asyncWaitAll()
+                }
+            }
+        }
+    }
   
   func startMigration(keystore: Keystore) {
     let vc = MigratingViewController.instantiateFromNib()
     vc.appMigrationManager = migrationManager
     vc.migrationCompleted = {
-      self.coordinatorFinishLaunching(keystore: keystore)
+      self.syncChainsAndTokensIfNeeded(keystore: keystore)
     }
     window?.rootViewController = vc
     window?.makeKeyAndVisible()

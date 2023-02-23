@@ -15,6 +15,8 @@ import BaseModule
 import DesignSystem
 import TransactionModule
 import Dependencies
+import ChainModule
+import RealmSwift
 
 protocol OverviewMainViewControllerDelegate: class {
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent)
@@ -45,6 +47,8 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   let refreshControl = UIRefreshControl()
   let viewModel: OverviewMainViewModel
   let calculatingQueue = DispatchQueue.global()
+    
+    var notificationToken: NotificationToken?
   
   override var supportAllChainOption: Bool {
     return true
@@ -108,6 +112,13 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
       }
     )
     updateUIBadgeNotification()
+      
+      let realm = try! Realm()
+      let tokens = realm.objects(TokenBalanceEntity.self)
+      notificationToken = tokens.observe({ [weak self] _ in
+          self?.viewModel.reloadNewAssets()
+          self?.tableView.reloadData()
+      })
   }
   
   func configHeaderTapped() {
@@ -417,7 +428,12 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
   }
   
   func coordinatorDidSelectMode(_ mode: ViewMode) {
-    self.viewModel.currentMode = mode
+      if case .asset(let rightMode) = mode {
+          self.viewModel.currentMode = .newAssets
+      } else {
+          self.viewModel.currentMode = mode
+      }
+    
     self.reloadUI()
     self.refreshControl.endRefreshing()
     self.configPullToRefresh()
@@ -505,7 +521,7 @@ extension OverviewMainViewController {
       for: indexPath
     ) as! OverviewEmptyTableViewCell
     switch self.viewModel.currentMode {
-    case .asset:
+    case .asset, .newAssets:
       cell.imageIcon.image = Images.emptyAsset
       cell.titleLabel.text = Strings.balanceIsEmpty
       cell.button1.setTitle(Strings.buyCrypto, for: .normal)
@@ -618,6 +634,12 @@ extension OverviewMainViewController {
         return isLastCell ? showOrHideSmallValueTokenCell() : multiChainTokenInfoCell(indexPath: indexPath)
       }
       return isLastCell ? showOrHideSmallValueTokenCell() : tokenInfoCell(indexPath: indexPath)
+    case .newAssets:
+        let isLastCell = indexPath.row == viewModel.assets.count - 1
+        if self.viewModel.currentChain == .all {
+          return isLastCell ? showOrHideSmallValueTokenCell() : multiChainTokenInfoCell(indexPath: indexPath)
+        }
+        return isLastCell ? showOrHideSmallValueTokenCell() : tokenInfoCell(indexPath: indexPath)
     case .market, .favourite:
       return tokenInfoCell(indexPath: indexPath)
     case .supply:

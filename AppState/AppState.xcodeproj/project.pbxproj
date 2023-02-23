@@ -15,6 +15,7 @@
 		A6B1FD0B28F69EF300894DCB /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B1FD0A28F69EF300894DCB /* Utilities.framework */; };
 		A6B1FD1128F69F3000894DCB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B1FD1028F69F3000894DCB /* Constants.swift */; };
 		A6B1FD1328F69FB600894DCB /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B1FD1228F69FB600894DCB /* BaseWallet.framework */; };
+		A6DA9FA629A71C9E001D6BF6 /* ChainModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6DA9FA529A71C9E001D6BF6 /* ChainModule.framework */; };
 		A6F6291E28FD3AE20085AE67 /* KAddress+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6291D28FD3AE20085AE67 /* KAddress+Codable.swift */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 		A6B1FD0A28F69EF300894DCB /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B1FD1028F69F3000894DCB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A6B1FD1228F69FB600894DCB /* BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6DA9FA529A71C9E001D6BF6 /* ChainModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ChainModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6F6291D28FD3AE20085AE67 /* KAddress+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KAddress+Codable.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -38,6 +40,7 @@
 			files = (
 				A6B1FD1328F69FB600894DCB /* BaseWallet.framework in Frameworks */,
 				A64C2E4628F7F818002FD64C /* KrystalWallets.framework in Frameworks */,
+				A6DA9FA629A71C9E001D6BF6 /* ChainModule.framework in Frameworks */,
 				A6B1FD0B28F69EF300894DCB /* Utilities.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,6 +89,7 @@
 		A6B1FD0928F69EF300894DCB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6DA9FA529A71C9E001D6BF6 /* ChainModule.framework */,
 				A64C2E4528F7F818002FD64C /* KrystalWallets.framework */,
 				A6B1FD1228F69FB600894DCB /* BaseWallet.framework */,
 				A6B1FD0A28F69EF300894DCB /* Utilities.framework */,

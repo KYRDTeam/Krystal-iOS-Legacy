@@ -164,6 +164,8 @@ public extension WalletManager {
         realm.add(wallet)
         realm.add(address)
       }
+      let event = WalletListEvent(insertions: [address.toAddress()], modifications: [], deletions: [])
+      NotificationCenter.default.post(name: .walletsUpdated, object: nil, userInfo: ["event": event])
       return wallet.toWallet()
     } catch {
       throw error
@@ -198,6 +200,8 @@ public extension WalletManager {
         realm.add(wallet)
         realm.add(addressObject)
       }
+      let event = WalletListEvent(insertions: [addressObject.toAddress()], modifications: [], deletions: [])
+      NotificationCenter.default.post(name: .walletsUpdated, object: nil, userInfo: ["event": event])
       return wallet.toWallet()
     } catch {
       throw error
@@ -231,6 +235,9 @@ public extension WalletManager {
         realm.add(walletObject)
         realm.add(addresses)
       }
+        
+      let event = WalletListEvent(insertions: addresses.map { $0.toAddress() }, modifications: [], deletions: [])
+      NotificationCenter.default.post(name: .walletsUpdated, object: nil, userInfo: ["event": event])
       return walletObject.toWallet()
     } catch {
       throw error
@@ -258,6 +265,8 @@ public extension WalletManager {
       try realm.write {
         realm.add(addressObject)
       }
+      let event = WalletListEvent(insertions: [addressObject.toAddress()], modifications: [], deletions: [])
+      NotificationCenter.default.post(name: .walletsUpdated, object: nil, userInfo: ["event": event])
       return addressObject.toAddress()
     } catch {
       throw error
@@ -339,10 +348,8 @@ public extension WalletManager {
   
   func remove(wallet: KWallet) throws {
     let realm = try! Realm()
-    let walletObjects = realm.objects(WalletObject.self)
-      .filter("%K = %@", "id", wallet.id)
-    let addressObjects = realm.objects(AddressObject.self)
-      .filter("%K = %@", "walletID", wallet.id)
+    let walletObjects = realm.objects(WalletObject.self).filter("%K = %@", "id", wallet.id)
+    let addressObjects = realm.objects(AddressObject.self).filter("%K = %@", "walletID", wallet.id)
     do {
       try realm.write {
         realm.delete(addressObjects)
@@ -355,6 +362,9 @@ public extension WalletManager {
         return
       }
       try keystore.delete(wallet: keystoreWallet, password: password)
+        
+      let event = WalletListEvent(insertions: [], modifications: [], deletions: addressObjects.map { $0.toAddress() })
+      NotificationCenter.default.post(name: .walletsUpdated, object: nil, userInfo: ["event": event])
     } catch {
       throw WalletManagerError.failedToRemoveWallet
     }

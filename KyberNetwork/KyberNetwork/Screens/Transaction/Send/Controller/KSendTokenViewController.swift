@@ -8,6 +8,9 @@ import Result
 import QRCodeReaderViewController
 import KrystalWallets
 import BaseModule
+import TokenModule
+import AppState
+import ChainModule
 
 enum KSendTokenViewEvent {
   case back
@@ -36,7 +39,7 @@ class KSendTokenViewController: InAppBrowsingViewController {
   @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var amountTextField: UITextField!
-  @IBOutlet weak var tokenBalanceLabel: UILabel!
+  @IBOutlet weak var tokenBalanceLabel: TokenBalanceLabel!
   @IBOutlet weak var scrollContainerView: UIScrollView!
   @IBOutlet weak var moreContactButton: UIButton!
   @IBOutlet weak var recentContactView: UIView!
@@ -60,7 +63,8 @@ class KSendTokenViewController: InAppBrowsingViewController {
   @IBOutlet weak var gasSettingButton: UIButton!
   @IBOutlet weak var multiSendButton: UIButton!
   @IBOutlet weak var recentContactViewTopConstraint: NSLayoutConstraint!
-  let keyboardUtil = KeyboardTypingUtil()
+    @IBOutlet weak var header: CommonHeader!
+    let keyboardUtil = KeyboardTypingUtil()
 
   fileprivate var isViewSetup: Bool = false
   fileprivate var isViewDisappeared: Bool = false
@@ -98,11 +102,38 @@ class KSendTokenViewController: InAppBrowsingViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+      
+      self.setupHeader()
     self.viewModel.getNodeBalance()
     self.addressTextField.setupCustomDeleteIcon()
     self.amountTextField.setupCustomDeleteIcon()
     self.setupDelegates()
+      
+      NotificationCenter.default.addObserver(self, selector: #selector(appSwitchedChain), name: .appSwitchedChain, object: nil)
+      
+      tokenBalanceLabel.observe(
+        tokenAddress: defaultNativeTokenAddress,
+        chainID: AppState.shared.selectedChainID,
+        walletAddress: AppState.shared.currentAddress.addressString
+      )
+      
+      
   }
+    
+    @objc func appSwitchedChain() {
+        tokenBalanceLabel.observe(
+          tokenAddress: defaultNativeTokenAddress,
+          chainID: AppState.shared.selectedChainID,
+          walletAddress: AppState.shared.currentAddress.addressString
+        )
+    }
+    
+    func setupHeader() {
+        header.supportAllNetworks = false
+        header.onBackTapped = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+    }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -119,7 +150,7 @@ class KSendTokenViewController: InAppBrowsingViewController {
     var title = Strings.transfer
     if KNGeneralProvider.shared.isBrowsingMode {
       title = Strings.connectWallet
-      self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
+//      self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
     }
     sendButton.setTitle(title, for: .normal)
   }
@@ -201,7 +232,7 @@ class KSendTokenViewController: InAppBrowsingViewController {
     self.amountTextField.adjustsFontSizeToFitWidth = true
     self.amountTextField.delegate = self
     self.currentTokenButton.setTitle(self.viewModel.tokenButtonText, for: .normal)
-    self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
+//    self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
     let tapBalanceGesture = UITapGestureRecognizer(target: self, action: #selector(self.tokenBalanceLabelTapped(_:)))
     self.tokenBalanceLabel.addGestureRecognizer(tapBalanceGesture)
   }
@@ -480,7 +511,7 @@ extension KSendTokenViewController {
   }
 
   func updateUIBalanceDidChange() {
-    self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
+//    self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
     if !self.amountTextField.isEditing {
       self.amountTextField.textColor = self.viewModel.amountTextColor
     }

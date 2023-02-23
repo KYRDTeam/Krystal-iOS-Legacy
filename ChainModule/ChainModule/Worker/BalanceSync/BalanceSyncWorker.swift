@@ -6,41 +6,68 @@
 //
 
 import Foundation
+import web3
+import KrystalWallets
 
-class BalanceSyncWorker: Worker {
-    
+public class BalanceSyncWorker: Worker {
     let tokens: [Token]
-    let address: String
+    let address: KAddress
     
-    init(tokens: [Token], address: String) {
+    public init(tokens: [Token], address: KAddress) {
         self.tokens = tokens
         self.address = address
         super.init(operations: [])
-        self.operations = createSyncOperations(tokens: tokens)
+    }
+    
+    override public func prepare(completion: @escaping () -> ()) {
+        start {
+            self.operations = self.createSyncOperations(tokens: self.tokens)
+            completion()
+        }
     }
     
     func createSyncOperations(tokens: [Token]) -> [BalanceSyncOperation] {
-        let group = Dictionary(grouping: tokens, by: \.chainID)
+        let group = Dictionary(grouping: tokens, by: { $0.chainID })
         var operations = [BalanceSyncOperation]()
+        var apiSupportedChainIDs: [Int] = []
+        
         group.keys.forEach { chainID in
-            let isBalanceApiEnabled = ChainDB.shared.isConfigEnabled(chainID: chainID, key: kChainBalanceSupported)
-            let multicallAddress = ChainDB.shared.getSmartContracts(chainID: chainID).first { $0.type == kSmartContractTypeMulticall }?.address
-            let rpcUrl = ChainDB.shared.getUrls(chainID: chainID).filter { $0.type == kChainRpcUrlType }.min { lhs, rhs in
-                return lhs.priority < rhs.priority
-            }?.url
-            if isBalanceApiEnabled {
-                operations.append(ApiBalanceSyncOperation(addresses: [chainID: address]))
-            } else if let rpcUrl = rpcUrl {
-                if let multicallAddress = multicallAddress {
-                    operations.append(
-                        MulticallBalanceSyncOperation(walletAddress: address, tokens: tokens.map(\.address), chainID: chainID, rpcUrl: rpcUrl, multicallAddress: multicallAddress)
-                    )
-                } else {
-                    operations.append(contentsOf: tokens.map {
-                        SingleCallBalanceSyncOperation(chainID: chainID, rpcUrl: rpcUrl, walletAddress: address, tokenAddress: $0.address)
-                    })
+            if address.addressType == ChainDB.shared.getChain(byID: chainID)?.addressType {
+                let isBalanceApiEnabled = ChainDB.shared.isConfigEnabled(chainID: chainID, key: kChainBalanceSupported)
+                let multicallAddress = ChainDB.shared.getSmartContracts(chainID: chainID, type: kSmartContractTypeMulticall).first?.address
+                let multicallV2Address = ChainDB.shared.getSmartContracts(chainID: chainID, type: kSmartContractTypeMulticallV2).first?.address
+                let rpcUrls = ChainDB.shared.getUrls(chainID: chainID, type: kChainRpcUrlType).sorted { lhs, rhs in
+                    return lhs.priority < rhs.priority
+                }.prefix(3).map(\.url)
+                let chainTokens = group[chainID]?.filter { !$0.isNativeToken } ?? []
+                let clients = rpcUrls.compactMap { EthereumClientFactory.shared.client(forUrl: $0) }
+                
+                if isBalanceApiEnabled {
+                    apiSupportedChainIDs.append(chainID)
+                } else if clients.count > 0 {
+                    if let multicallV2Address = multicallV2Address {
+                        operations.append(
+                            MulticallV2BalanceSyncOperation(ethClients: clients, walletAddress: address.addressString, tokens: chainTokens.map(\.address), chainID: chainID, multicallAddress: multicallV2Address)
+                        )
+                    } else if let multicallAddress = multicallAddress {
+                        operations.append(
+                            MulticallBalanceSyncOperation(ethClients: clients, walletAddress: address.addressString, tokens: chainTokens.map(\.address), chainID: chainID, multicallAddress: multicallAddress)
+                        )
+                    } else {
+                        operations.append(contentsOf: chainTokens.map {
+                            return SingleCallBalanceSyncOperation(ethClients: clients, chainID: chainID, walletAddress: address.addressString, tokenAddress: $0.address)
+                        })
+                    }
+                }
+                if clients.count > 0 {
+                    if group[chainID]?.contains(where: { $0.isNativeToken }) ?? false {
+                        operations.append(NativeTokenBalanceSyncOperation(ethClients: clients, chainID: chainID, walletAddress: address.addressString))
+                    }
                 }
             }
+        }
+        if !apiSupportedChainIDs.isEmpty {
+            operations.append(ApiBalanceSyncOperation(address: address.addressString, chainIDs: apiSupportedChainIDs))
         }
         return operations
     }

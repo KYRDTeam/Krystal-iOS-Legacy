@@ -6,6 +6,8 @@
 //
 import BigInt
 import UIKit
+import ChainModule
+import RealmSwift
 
 enum OverviewMainViewEvent {
   case send(recipientAddress: String?)
@@ -46,6 +48,7 @@ enum ViewMode: Equatable, Codable {
   case supply
   case favourite(rightMode: RightMode)
   case nft
+    case newAssets
   
   public static func == (lhs: ViewMode, rhs: ViewMode) -> Bool {
     switch (lhs, rhs) {
@@ -67,7 +70,7 @@ enum ViewMode: Equatable, Codable {
   }
   
   enum CodingKeys: CodingKey {
-    case market, asset, showLiquidityPool, supply, favourite, nft
+    case market, asset, showLiquidityPool, supply, favourite, nft, newAssets
   }
   
   func encode(to encoder: Encoder) throws {
@@ -85,6 +88,8 @@ enum ViewMode: Equatable, Codable {
       try container.encode(true, forKey: .nft)
     case .showLiquidityPool:
       try container.encode(true, forKey: .showLiquidityPool)
+    case .newAssets:
+        try container.encode(true, forKey: .newAssets)
     }
   }
   
@@ -102,6 +107,8 @@ enum ViewMode: Equatable, Codable {
       return "favourite"
     case .nft:
       return "nft"
+    case .newAssets:
+        return "assets"
     }
   }
   
@@ -199,7 +206,13 @@ class OverviewMainViewModel {
       Storage.store(self.currentMode, as: Constants.viewModeStoreFileName)
     }
   }
+    
+    
   var overviewMode: OverviewMode = .overview
+    var assets: [AssetItemViewModel] = []
+    
+    
+    
   var dataSource: ThreadProtectedObject<[String: [OverviewMainCellViewModel]]> = .init(storageValue: [:])
   var displayDataSource: ThreadProtectedObject<[String: [OverviewMainCellViewModel]]> = .init(storageValue: [:])
   var displayNFTDataSource: ThreadProtectedObject<[String: [OverviewNFTCellViewModel]]> = .init(storageValue: [:])
@@ -254,6 +267,7 @@ class OverviewMainViewModel {
         self.currentChain = .all
       }
     }
+      
   }
   
   func clearCache() {
@@ -271,6 +285,8 @@ class OverviewMainViewModel {
       return self.displayHeader.value.isEmpty
     case .nft:
       return self.displayNFTHeader.value.isEmpty
+    case .newAssets:
+        return self.dataSource.value[""]?.isEmpty ?? true
     }
   }
   
@@ -541,9 +557,20 @@ class OverviewMainViewModel {
     return (allProject, poolDict)
   }
   
+    func reloadNewAssets() {
+        assets = TokenDB.shared.allBalances().compactMap { balance in
+            TokenDB.shared.getToken(chainID: balance.chainID, address: balance.tokenAddress).map {
+                return AssetItemViewModel(token: $0, balance: balance)
+            }
+        }.sorted { lhs, rhs in lhs.symbol < rhs.symbol }
+    }
+    
   func reloadAllData() {
     reloadSummaryChainData()
     switch self.currentMode {
+    case .newAssets:
+        reloadNewAssets()
+        return
     case .market(let mode):
       let marketToken = KNSupportedTokenStorage.shared.marketTokens.sorted { (left, right) -> Bool in
         switch self.marketSortType {
@@ -741,6 +768,8 @@ class OverviewMainViewModel {
     case .showLiquidityPool:
       let key = self.displayHeader.value[section]
       return self.displayLPDataSource.value[key.key]?.count ?? 0
+    case .newAssets:
+        return assets.count
     default:
       return self.getViewModelsForSection(section).count
     }
@@ -762,6 +791,8 @@ class OverviewMainViewModel {
       return OverviewLiquidityPoolCell.kCellHeight
     case .nft:
       return OverviewNFTTableViewCell.kCellHeight
+    case .newAssets:
+        return OverviewMainViewCell.kCellHeight
     }
   }
   
@@ -975,6 +1006,8 @@ class OverviewMainViewModel {
       return "Favourite"
     case .nft:
       return "NFT"
+    case .newAssets:
+        return "Assets (Instance chain)"
     }
   }
   

@@ -33,16 +33,18 @@ public class GasPriceManager {
     }
     
     func fetchAllNetworkGasPrice() {
-        let group = DispatchGroup()
-        let chains = ChainType.getAllChain().filter { $0.isEVM }
-        chains.forEach { chain in
-            group.enter()
-            fetchGasPrice(chain: chain) {
-                group.leave()
+        DispatchQueue.global().async {
+            let group = DispatchGroup()
+            let chains = ChainType.getAllChain().filter { $0.isEVM }
+            chains.forEach { chain in
+                group.enter()
+                self.fetchGasPrice(chain: chain) {
+                    group.leave()
+                }
             }
-        }
-        group.notify(queue: .main) {
-            NotificationCenter.default.post(name: .kGasPriceUpdated, object: nil)
+            group.notify(queue: .main) {
+                NotificationCenter.default.post(name: .kGasPriceUpdated, object: nil)
+            }
         }
     }
     

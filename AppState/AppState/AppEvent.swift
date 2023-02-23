@@ -14,6 +14,8 @@ public extension Notification.Name {
   static let appChainChanged = Notification.Name("kChangeChainNotificationKey")
   static let appSelectAllChain = Notification.Name("kSelectAllChain")
   static let appWalletsListHasUpdate = Notification.Name("kWalletListHasUpdateKey")
+    static let appSwitchedChain = Notification.Name("appSwitchedChain")
+    static let appAllNetworksSelected = Notification.Name("appAllNetworksSelected")
 }
 
 public class AppEventManager {

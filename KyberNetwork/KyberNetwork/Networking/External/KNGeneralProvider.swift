@@ -38,7 +38,9 @@ class KNGeneralProvider {
     return self.currentChain.customRPC()
   }
 
-  var currentWeb3: Web3Swift = Web3Swift()
+    lazy var currentWeb3: Web3Swift = {
+        return Web3Swift()
+    }()
   
   var quoteToken: String {
     return self.currentChain.quoteToken()

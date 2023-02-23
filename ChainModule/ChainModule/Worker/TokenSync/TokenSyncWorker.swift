@@ -7,15 +7,14 @@
 
 import Foundation
 
-class TokenSyncWorker: Worker {
+public class TokenSyncWorker: Worker {
     
     let chainID: Int
-    let chainDB = ChainDB.shared
     
-    init(chainID: Int) {
+    public init(chainID: Int) {
         self.chainID = chainID
         super.init(operations: [])
-        if chainDB.isConfigEnabled(chainID: chainID, key: kTokenListApiSupported) {
+        if ChainDB.shared.isConfigEnabled(chainID: chainID, key: kTokenListApiSupported) {
             operations.append(ApiTokenSyncOperation(chainID: chainID))
         }
     }

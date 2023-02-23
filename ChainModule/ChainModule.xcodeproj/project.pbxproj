@@ -7,6 +7,51 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A620657129A7612F00DA7D10 /* EthereumWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620657029A7612F00DA7D10 /* EthereumWorker.swift */; };
+		A620657329A7672100DA7D10 /* TaskHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620657229A7672100DA7D10 /* TaskHandler.swift */; };
+		A620657629A76C2900DA7D10 /* EthGasPriceTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620657529A76C2900DA7D10 /* EthGasPriceTask.swift */; };
+		A620657A29A7703C00DA7D10 /* EthBalanceTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620657929A7703C00DA7D10 /* EthBalanceTask.swift */; };
+		A620657C29A7707300DA7D10 /* EthEstimateGasTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620657B29A7707300DA7D10 /* EthEstimateGasTask.swift */; };
+		A620657E29A7715F00DA7D10 /* EthSendRawTransactionTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620657D29A7715F00DA7D10 /* EthSendRawTransactionTask.swift */; };
+		A620658029A771A200DA7D10 /* EthGetTransactionCountTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620657F29A771A200DA7D10 /* EthGetTransactionCountTask.swift */; };
+		A620658229A7731100DA7D10 /* EthGetTransactionTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620658129A7731100DA7D10 /* EthGetTransactionTask.swift */; };
+		A620658429A773BD00DA7D10 /* EthGetTransactionReceiptTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620658329A773BD00DA7D10 /* EthGetTransactionReceiptTask.swift */; };
+		A620658629A7740500DA7D10 /* EthCallTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620658529A7740500DA7D10 /* EthCallTask.swift */; };
+		A620658829A7798F00DA7D10 /* EthBlockNumberTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620658729A7798F00DA7D10 /* EthBlockNumberTask.swift */; };
+		A620658A29A779AD00DA7D10 /* EthNetVersionTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620658929A779AD00DA7D10 /* EthNetVersionTask.swift */; };
+		A620658C29A779D600DA7D10 /* EthGetCodeTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620658B29A779D600DA7D10 /* EthGetCodeTask.swift */; };
+		A620658E29A779E100DA7D10 /* EthCallResolutionTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620658D29A779E100DA7D10 /* EthCallResolutionTask.swift */; };
+		A620659029A779EB00DA7D10 /* EthGetLogsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620658F29A779EB00DA7D10 /* EthGetLogsTask.swift */; };
+		A620659229A77A1200DA7D10 /* EthGetMultipleTopicLogsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620659129A77A1200DA7D10 /* EthGetMultipleTopicLogsTask.swift */; };
+		A620659429A77A2200DA7D10 /* EthGetBlockByNumberTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620659329A77A2200DA7D10 /* EthGetBlockByNumberTask.swift */; };
+		A620659629A77A4100DA7D10 /* EthGetSingleTopicLogsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620659529A77A4100DA7D10 /* EthGetSingleTopicLogsTask.swift */; };
+		A630D136299B40F20015B9CE /* MulticallV2BalanceSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A630D135299B40F20015B9CE /* MulticallV2BalanceSyncOperation.swift */; };
+		A65AFD9629A32B8A0062BE9F /* AddChainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65AFD9429A32B8A0062BE9F /* AddChainCell.swift */; };
+		A65AFD9729A32B8A0062BE9F /* AddChainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A65AFD9529A32B8A0062BE9F /* AddChainCell.xib */; };
+		A65AFD9A29A32CD60062BE9F /* AddChainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65AFD9829A32CD60062BE9F /* AddChainViewController.swift */; };
+		A65AFD9B29A32CD60062BE9F /* AddChainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A65AFD9929A32CD60062BE9F /* AddChainViewController.xib */; };
+		A65AFDA929A366610062BE9F /* Chain+AddressType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65AFDA829A366610062BE9F /* Chain+AddressType.swift */; };
+		A67A4F6729A5AD5B009D3339 /* BackgroundWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67A4F6629A5AD5B009D3339 /* BackgroundWorker.swift */; };
+		A67A4F6929A5ADF3009D3339 /* TokenObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67A4F6829A5ADF3009D3339 /* TokenObserver.swift */; };
+		A67A4F6B29A5ADFB009D3339 /* ChainObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67A4F6A29A5ADFB009D3339 /* ChainObserver.swift */; };
+		A67A4F6D29A5AE09009D3339 /* BalanceObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67A4F6C29A5AE09009D3339 /* BalanceObserver.swift */; };
+		A67A4F6F29A5F5A1009D3339 /* chains.json in Resources */ = {isa = PBXBuildFile; fileRef = A67A4F6E29A5F5A1009D3339 /* chains.json */; };
+		A6AA2FE3299E0CF3008D1B9B /* TokenDBEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AA2FE2299E0CF3008D1B9B /* TokenDBEvent.swift */; };
+		A6AA2FE7299E0F0C008D1B9B /* ChainDBEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AA2FE6299E0F0C008D1B9B /* ChainDBEvent.swift */; };
+		A6AA2FE9299E146F008D1B9B /* TokenBalanceDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AA2FE8299E146F008D1B9B /* TokenBalanceDB.swift */; };
+		A6AA2FFC299F3A05008D1B9B /* TokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AA2FFB299F3A05008D1B9B /* TokenPrice.swift */; };
+		A6AA2FFE299F3B86008D1B9B /* TokenPriceEntityConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AA2FFD299F3B86008D1B9B /* TokenPriceEntityConverter.swift */; };
+		A6AA3000299F3C4C008D1B9B /* TokenPriceDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AA2FFF299F3C4C008D1B9B /* TokenPriceDB.swift */; };
+		A6B401DD299CB756008423D8 /* ChainUrlObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B401DC299CB756008423D8 /* ChainUrlObject.swift */; };
+		A6B401DF299CB768008423D8 /* ChainConfigObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B401DE299CB768008423D8 /* ChainConfigObject.swift */; };
+		A6B401E1299CB78A008423D8 /* ChainSmartContractObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B401E0299CB78A008423D8 /* ChainSmartContractObject.swift */; };
+		A6B401E4299CB835008423D8 /* PriceSyncWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B401E3299CB835008423D8 /* PriceSyncWorker.swift */; };
+		A6B401EE299CB9C0008423D8 /* ChainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B401EC299CB9C0008423D8 /* ChainCell.swift */; };
+		A6B401EF299CB9C0008423D8 /* ChainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6B401ED299CB9C0008423D8 /* ChainCell.xib */; };
+		A6B40222299CCC6F008423D8 /* Platform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B40221299CCC6F008423D8 /* Platform.framework */; };
+		A6B40223299CCC6F008423D8 /* Platform.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B40221299CCC6F008423D8 /* Platform.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A6B40226299CD3A3008423D8 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B40225299CD3A3008423D8 /* DesignSystem.framework */; };
+		A6B40227299CD3A3008423D8 /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B40225299CD3A3008423D8 /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A6B5848B298B8E2000B1FF9A /* ChainModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A6B5848A298B8E2000B1FF9A /* ChainModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6B584D2298B8E4700B1FF9A /* MulticallBalanceSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58494298B8E4700B1FF9A /* MulticallBalanceSyncOperation.swift */; };
 		A6B584D3298B8E4700B1FF9A /* BalanceSyncWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58495298B8E4700B1FF9A /* BalanceSyncWorker.swift */; };
@@ -30,7 +75,7 @@
 		A6B584EA298B8E4700B1FF9A /* ChainObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584B2298B8E4700B1FF9A /* ChainObject.swift */; };
 		A6B584EB298B8E4700B1FF9A /* TokenDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584B3298B8E4700B1FF9A /* TokenDB.swift */; };
 		A6B584EC298B8E4700B1FF9A /* TokenEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584B4298B8E4700B1FF9A /* TokenEntity.swift */; };
-		A6B584ED298B8E4700B1FF9A /* TokenPriceObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584B5298B8E4700B1FF9A /* TokenPriceObject.swift */; };
+		A6B584ED298B8E4700B1FF9A /* TokenPriceEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584B5298B8E4700B1FF9A /* TokenPriceEntity.swift */; };
 		A6B584EE298B8E4700B1FF9A /* TokenBalanceEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584B6298B8E4700B1FF9A /* TokenBalanceEntity.swift */; };
 		A6B584F0298B8E4700B1FF9A /* RealmResults+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584B9298B8E4700B1FF9A /* RealmResults+.swift */; };
 		A6B584F1298B8E4700B1FF9A /* TokenEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584BC298B8E4700B1FF9A /* TokenEndpoint.swift */; };
@@ -41,16 +86,11 @@
 		A6B584F7298B8E4700B1FF9A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584C6298B8E4700B1FF9A /* Constants.swift */; };
 		A6B584F8298B8E4700B1FF9A /* default_chains.json in Resources */ = {isa = PBXBuildFile; fileRef = A6B584C7298B8E4700B1FF9A /* default_chains.json */; };
 		A6B584F9298B8E4700B1FF9A /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584C9298B8E4700B1FF9A /* AsyncOperation.swift */; };
-		A6B584FA298B8E4700B1FF9A /* ChainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6B584CC298B8E4700B1FF9A /* ChainCell.xib */; };
 		A6B584FB298B8E4700B1FF9A /* ChainListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6B584CD298B8E4700B1FF9A /* ChainListViewController.xib */; };
 		A6B584FC298B8E4700B1FF9A /* TokenListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584CE298B8E4700B1FF9A /* TokenListViewController.swift */; };
-		A6B584FD298B8E4700B1FF9A /* ChainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584CF298B8E4700B1FF9A /* ChainCell.swift */; };
 		A6B584FE298B8E4700B1FF9A /* TokenListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6B584D0298B8E4700B1FF9A /* TokenListViewController.xib */; };
 		A6B584FF298B8E4700B1FF9A /* ChainListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B584D1298B8E4700B1FF9A /* ChainListViewController.swift */; };
 		A6B58502298B8E7700B1FF9A /* Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B58501298B8E7700B1FF9A /* Utilities.framework */; };
-		A6B58503298B8E7700B1FF9A /* Utilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B58501298B8E7700B1FF9A /* Utilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A6B58506298B8E7C00B1FF9A /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B58505298B8E7C00B1FF9A /* Services.framework */; };
-		A6B58507298B8E7C00B1FF9A /* Services.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B58505298B8E7C00B1FF9A /* Services.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A6B5850E298B969C00B1FF9A /* ChainBalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5850D298B969C00B1FF9A /* ChainBalanceModel.swift */; };
 		A6B58510298B96BA00B1FF9A /* TokenBalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5850F298B96BA00B1FF9A /* TokenBalanceModel.swift */; };
 		A6B58512298B973900B1FF9A /* BalanceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58511298B973900B1FF9A /* BalanceResponse.swift */; };
@@ -67,19 +107,22 @@
 		A6B58529298BB61900B1FF9A /* BalanceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B58528298BB61900B1FF9A /* BalanceRequest.swift */; };
 		A6B5852B298BB64E00B1FF9A /* CastError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5852A298BB64E00B1FF9A /* CastError.swift */; };
 		A6B5852D298BBCF000B1FF9A /* TokenEntityConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B5852C298BBCF000B1FF9A /* TokenEntityConverter.swift */; };
+		A6BDB513299CDC04005CD08A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6BDB512299CDC04005CD08A /* Assets.xcassets */; };
 		A6D09FD129925A0B00E555D4 /* TokenBalanceEntityConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D09FD029925A0B00E555D4 /* TokenBalanceEntityConverter.swift */; };
+		A6DA9FAB29A721D7001D6BF6 /* EthereumClientFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DA9FAA29A721D7001D6BF6 /* EthereumClientFactory.swift */; };
+		A6DA9FAD29A724B5001D6BF6 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DA9FAC29A724B5001D6BF6 /* Logger.swift */; };
 		B02686AA19E1F346612CC27D /* Pods_ChainModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EFAA67CC187B79B28D3E4DC /* Pods_ChainModule.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		A6B58504298B8E7700B1FF9A /* Embed Frameworks */ = {
+		A6B40224299CCC70008423D8 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A6B58507298B8E7C00B1FF9A /* Services.framework in Embed Frameworks */,
-				A6B58503298B8E7700B1FF9A /* Utilities.framework in Embed Frameworks */,
+				A6B40223299CCC6F008423D8 /* Platform.framework in Embed Frameworks */,
+				A6B40227299CD3A3008423D8 /* DesignSystem.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -89,6 +132,50 @@
 /* Begin PBXFileReference section */
 		54590EA83EEB5A5B467F9AA8 /* Pods-ChainModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChainModule.release.xcconfig"; path = "Target Support Files/Pods-ChainModule/Pods-ChainModule.release.xcconfig"; sourceTree = "<group>"; };
 		7EFAA67CC187B79B28D3E4DC /* Pods_ChainModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChainModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A620657029A7612F00DA7D10 /* EthereumWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumWorker.swift; sourceTree = "<group>"; };
+		A620657229A7672100DA7D10 /* TaskHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskHandler.swift; sourceTree = "<group>"; };
+		A620657529A76C2900DA7D10 /* EthGasPriceTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthGasPriceTask.swift; sourceTree = "<group>"; };
+		A620657929A7703C00DA7D10 /* EthBalanceTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthBalanceTask.swift; sourceTree = "<group>"; };
+		A620657B29A7707300DA7D10 /* EthEstimateGasTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthEstimateGasTask.swift; sourceTree = "<group>"; };
+		A620657D29A7715F00DA7D10 /* EthSendRawTransactionTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthSendRawTransactionTask.swift; sourceTree = "<group>"; };
+		A620657F29A771A200DA7D10 /* EthGetTransactionCountTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthGetTransactionCountTask.swift; sourceTree = "<group>"; };
+		A620658129A7731100DA7D10 /* EthGetTransactionTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthGetTransactionTask.swift; sourceTree = "<group>"; };
+		A620658329A773BD00DA7D10 /* EthGetTransactionReceiptTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthGetTransactionReceiptTask.swift; sourceTree = "<group>"; };
+		A620658529A7740500DA7D10 /* EthCallTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthCallTask.swift; sourceTree = "<group>"; };
+		A620658729A7798F00DA7D10 /* EthBlockNumberTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthBlockNumberTask.swift; sourceTree = "<group>"; };
+		A620658929A779AD00DA7D10 /* EthNetVersionTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthNetVersionTask.swift; sourceTree = "<group>"; };
+		A620658B29A779D600DA7D10 /* EthGetCodeTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthGetCodeTask.swift; sourceTree = "<group>"; };
+		A620658D29A779E100DA7D10 /* EthCallResolutionTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthCallResolutionTask.swift; sourceTree = "<group>"; };
+		A620658F29A779EB00DA7D10 /* EthGetLogsTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthGetLogsTask.swift; sourceTree = "<group>"; };
+		A620659129A77A1200DA7D10 /* EthGetMultipleTopicLogsTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthGetMultipleTopicLogsTask.swift; sourceTree = "<group>"; };
+		A620659329A77A2200DA7D10 /* EthGetBlockByNumberTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthGetBlockByNumberTask.swift; sourceTree = "<group>"; };
+		A620659529A77A4100DA7D10 /* EthGetSingleTopicLogsTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthGetSingleTopicLogsTask.swift; sourceTree = "<group>"; };
+		A630D135299B40F20015B9CE /* MulticallV2BalanceSyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticallV2BalanceSyncOperation.swift; sourceTree = "<group>"; };
+		A65AFD9429A32B8A0062BE9F /* AddChainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChainCell.swift; sourceTree = "<group>"; };
+		A65AFD9529A32B8A0062BE9F /* AddChainCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddChainCell.xib; sourceTree = "<group>"; };
+		A65AFD9829A32CD60062BE9F /* AddChainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChainViewController.swift; sourceTree = "<group>"; };
+		A65AFD9929A32CD60062BE9F /* AddChainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddChainViewController.xib; sourceTree = "<group>"; };
+		A65AFDA829A366610062BE9F /* Chain+AddressType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Chain+AddressType.swift"; sourceTree = "<group>"; };
+		A67A4F6629A5AD5B009D3339 /* BackgroundWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundWorker.swift; sourceTree = "<group>"; };
+		A67A4F6829A5ADF3009D3339 /* TokenObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenObserver.swift; sourceTree = "<group>"; };
+		A67A4F6A29A5ADFB009D3339 /* ChainObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainObserver.swift; sourceTree = "<group>"; };
+		A67A4F6C29A5AE09009D3339 /* BalanceObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceObserver.swift; sourceTree = "<group>"; };
+		A67A4F6E29A5F5A1009D3339 /* chains.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = chains.json; sourceTree = "<group>"; };
+		A6AA2FE2299E0CF3008D1B9B /* TokenDBEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDBEvent.swift; sourceTree = "<group>"; };
+		A6AA2FE6299E0F0C008D1B9B /* ChainDBEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainDBEvent.swift; sourceTree = "<group>"; };
+		A6AA2FE8299E146F008D1B9B /* TokenBalanceDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenBalanceDB.swift; sourceTree = "<group>"; };
+		A6AA2FFB299F3A05008D1B9B /* TokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPrice.swift; sourceTree = "<group>"; };
+		A6AA2FFD299F3B86008D1B9B /* TokenPriceEntityConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPriceEntityConverter.swift; sourceTree = "<group>"; };
+		A6AA2FFF299F3C4C008D1B9B /* TokenPriceDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPriceDB.swift; sourceTree = "<group>"; };
+		A6B401DC299CB756008423D8 /* ChainUrlObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainUrlObject.swift; sourceTree = "<group>"; };
+		A6B401DE299CB768008423D8 /* ChainConfigObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainConfigObject.swift; sourceTree = "<group>"; };
+		A6B401E0299CB78A008423D8 /* ChainSmartContractObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainSmartContractObject.swift; sourceTree = "<group>"; };
+		A6B401E3299CB835008423D8 /* PriceSyncWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceSyncWorker.swift; sourceTree = "<group>"; };
+		A6B401EC299CB9C0008423D8 /* ChainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainCell.swift; sourceTree = "<group>"; };
+		A6B401ED299CB9C0008423D8 /* ChainCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChainCell.xib; sourceTree = "<group>"; };
+		A6B40208299CC92F008423D8 /* Platform.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Platform.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6B40221299CCC6F008423D8 /* Platform.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Platform.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6B40225299CD3A3008423D8 /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B58487298B8E2000B1FF9A /* ChainModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ChainModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B5848A298B8E2000B1FF9A /* ChainModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChainModule.h; sourceTree = "<group>"; };
 		A6B58494298B8E4700B1FF9A /* MulticallBalanceSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MulticallBalanceSyncOperation.swift; sourceTree = "<group>"; };
@@ -113,7 +200,7 @@
 		A6B584B2298B8E4700B1FF9A /* ChainObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainObject.swift; sourceTree = "<group>"; };
 		A6B584B3298B8E4700B1FF9A /* TokenDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenDB.swift; sourceTree = "<group>"; };
 		A6B584B4298B8E4700B1FF9A /* TokenEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenEntity.swift; sourceTree = "<group>"; };
-		A6B584B5298B8E4700B1FF9A /* TokenPriceObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenPriceObject.swift; sourceTree = "<group>"; };
+		A6B584B5298B8E4700B1FF9A /* TokenPriceEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenPriceEntity.swift; sourceTree = "<group>"; };
 		A6B584B6298B8E4700B1FF9A /* TokenBalanceEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenBalanceEntity.swift; sourceTree = "<group>"; };
 		A6B584B9298B8E4700B1FF9A /* RealmResults+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RealmResults+.swift"; sourceTree = "<group>"; };
 		A6B584BC298B8E4700B1FF9A /* TokenEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenEndpoint.swift; sourceTree = "<group>"; };
@@ -124,10 +211,8 @@
 		A6B584C6298B8E4700B1FF9A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A6B584C7298B8E4700B1FF9A /* default_chains.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = default_chains.json; sourceTree = "<group>"; };
 		A6B584C9298B8E4700B1FF9A /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
-		A6B584CC298B8E4700B1FF9A /* ChainCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChainCell.xib; sourceTree = "<group>"; };
 		A6B584CD298B8E4700B1FF9A /* ChainListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChainListViewController.xib; sourceTree = "<group>"; };
 		A6B584CE298B8E4700B1FF9A /* TokenListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenListViewController.swift; sourceTree = "<group>"; };
-		A6B584CF298B8E4700B1FF9A /* ChainCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainCell.swift; sourceTree = "<group>"; };
 		A6B584D0298B8E4700B1FF9A /* TokenListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokenListViewController.xib; sourceTree = "<group>"; };
 		A6B584D1298B8E4700B1FF9A /* ChainListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainListViewController.swift; sourceTree = "<group>"; };
 		A6B58501298B8E7700B1FF9A /* Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,7 +233,10 @@
 		A6B58528298BB61900B1FF9A /* BalanceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceRequest.swift; sourceTree = "<group>"; };
 		A6B5852A298BB64E00B1FF9A /* CastError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastError.swift; sourceTree = "<group>"; };
 		A6B5852C298BBCF000B1FF9A /* TokenEntityConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenEntityConverter.swift; sourceTree = "<group>"; };
+		A6BDB512299CDC04005CD08A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A6D09FD029925A0B00E555D4 /* TokenBalanceEntityConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenBalanceEntityConverter.swift; sourceTree = "<group>"; };
+		A6DA9FAA29A721D7001D6BF6 /* EthereumClientFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumClientFactory.swift; sourceTree = "<group>"; };
+		A6DA9FAC29A724B5001D6BF6 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		AFEAE5013D72EFB44726E57D /* Pods-ChainModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChainModule.debug.xcconfig"; path = "Target Support Files/Pods-ChainModule/Pods-ChainModule.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -157,9 +245,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A6B58506298B8E7C00B1FF9A /* Services.framework in Frameworks */,
 				A6B58502298B8E7700B1FF9A /* Utilities.framework in Frameworks */,
+				A6B40226299CD3A3008423D8 /* DesignSystem.framework in Frameworks */,
 				B02686AA19E1F346612CC27D /* Pods_ChainModule.framework in Frameworks */,
+				A6B40222299CCC6F008423D8 /* Platform.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,6 +263,80 @@
 			);
 			name = Pods;
 			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		A620657429A76C1500DA7D10 /* Task */ = {
+			isa = PBXGroup;
+			children = (
+				A620657529A76C2900DA7D10 /* EthGasPriceTask.swift */,
+				A620657929A7703C00DA7D10 /* EthBalanceTask.swift */,
+				A620657B29A7707300DA7D10 /* EthEstimateGasTask.swift */,
+				A620657D29A7715F00DA7D10 /* EthSendRawTransactionTask.swift */,
+				A620657F29A771A200DA7D10 /* EthGetTransactionCountTask.swift */,
+				A620658129A7731100DA7D10 /* EthGetTransactionTask.swift */,
+				A620658329A773BD00DA7D10 /* EthGetTransactionReceiptTask.swift */,
+				A620658529A7740500DA7D10 /* EthCallTask.swift */,
+				A620658729A7798F00DA7D10 /* EthBlockNumberTask.swift */,
+				A620658929A779AD00DA7D10 /* EthNetVersionTask.swift */,
+				A620658B29A779D600DA7D10 /* EthGetCodeTask.swift */,
+				A620658D29A779E100DA7D10 /* EthCallResolutionTask.swift */,
+				A620658F29A779EB00DA7D10 /* EthGetLogsTask.swift */,
+				A620659129A77A1200DA7D10 /* EthGetMultipleTopicLogsTask.swift */,
+				A620659329A77A2200DA7D10 /* EthGetBlockByNumberTask.swift */,
+				A620659529A77A4100DA7D10 /* EthGetSingleTopicLogsTask.swift */,
+			);
+			path = Task;
+			sourceTree = "<group>";
+		};
+		A6AA2FE4299E0E0D008D1B9B /* Chain */ = {
+			isa = PBXGroup;
+			children = (
+				A6B584B1298B8E4700B1FF9A /* ChainDB.swift */,
+				A6AA2FE6299E0F0C008D1B9B /* ChainDBEvent.swift */,
+				A6B584B0298B8E4700B1FF9A /* ChainDB+Model.swift */,
+				A6B584B2298B8E4700B1FF9A /* ChainObject.swift */,
+				A6B401DC299CB756008423D8 /* ChainUrlObject.swift */,
+				A6B401DE299CB768008423D8 /* ChainConfigObject.swift */,
+				A6B401E0299CB78A008423D8 /* ChainSmartContractObject.swift */,
+			);
+			path = Chain;
+			sourceTree = "<group>";
+		};
+		A6AA2FE5299E0E12008D1B9B /* Token */ = {
+			isa = PBXGroup;
+			children = (
+				A6B584B3298B8E4700B1FF9A /* TokenDB.swift */,
+				A6AA2FE8299E146F008D1B9B /* TokenBalanceDB.swift */,
+				A6B584B4298B8E4700B1FF9A /* TokenEntity.swift */,
+				A6B584B5298B8E4700B1FF9A /* TokenPriceEntity.swift */,
+				A6B584B6298B8E4700B1FF9A /* TokenBalanceEntity.swift */,
+				A6AA2FE2299E0CF3008D1B9B /* TokenDBEvent.swift */,
+				A6AA2FFF299F3C4C008D1B9B /* TokenPriceDB.swift */,
+			);
+			path = Token;
+			sourceTree = "<group>";
+		};
+		A6B401E2299CB82A008423D8 /* PriceSync */ = {
+			isa = PBXGroup;
+			children = (
+				A6B401E3299CB835008423D8 /* PriceSyncWorker.swift */,
+			);
+			path = PriceSync;
+			sourceTree = "<group>";
+		};
+		A6B401E7299CB966008423D8 /* ChainList */ = {
+			isa = PBXGroup;
+			children = (
+				A6B584CD298B8E4700B1FF9A /* ChainListViewController.xib */,
+				A6B584D1298B8E4700B1FF9A /* ChainListViewController.swift */,
+				A65AFD9929A32CD60062BE9F /* AddChainViewController.xib */,
+				A65AFD9829A32CD60062BE9F /* AddChainViewController.swift */,
+				A6B401EC299CB9C0008423D8 /* ChainCell.swift */,
+				A6B401ED299CB9C0008423D8 /* ChainCell.xib */,
+				A65AFD9429A32B8A0062BE9F /* AddChainCell.swift */,
+				A65AFD9529A32B8A0062BE9F /* AddChainCell.xib */,
+			);
+			path = ChainList;
 			sourceTree = "<group>";
 		};
 		A6B5847D298B8E2000B1FF9A = {
@@ -197,6 +360,7 @@
 		A6B58489298B8E2000B1FF9A /* ChainModule */ = {
 			isa = PBXGroup;
 			children = (
+				A6DA9FA929A721CC001D6BF6 /* EthClient */,
 				A6B584A4298B8E4700B1FF9A /* Converter */,
 				A6B584AF298B8E4700B1FF9A /* Database */,
 				A6B584B7298B8E4700B1FF9A /* Extensions */,
@@ -214,20 +378,17 @@
 		A6B58491298B8E4700B1FF9A /* Worker */ = {
 			isa = PBXGroup;
 			children = (
-				A6B58492298B8E4700B1FF9A /* PriceSync */,
+				A6B401E2299CB82A008423D8 /* PriceSync */,
 				A6B58493298B8E4700B1FF9A /* BalanceSync */,
 				A6B58499298B8E4700B1FF9A /* TokenSync */,
-				A6B5849D298B8E4700B1FF9A /* Worker.swift */,
 				A6B5849E298B8E4700B1FF9A /* ChainSync */,
+				A6B5849D298B8E4700B1FF9A /* Worker.swift */,
+				A67A4F6629A5AD5B009D3339 /* BackgroundWorker.swift */,
+				A67A4F6829A5ADF3009D3339 /* TokenObserver.swift */,
+				A67A4F6A29A5ADFB009D3339 /* ChainObserver.swift */,
+				A67A4F6C29A5AE09009D3339 /* BalanceObserver.swift */,
 			);
 			path = Worker;
-			sourceTree = "<group>";
-		};
-		A6B58492298B8E4700B1FF9A /* PriceSync */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = PriceSync;
 			sourceTree = "<group>";
 		};
 		A6B58493298B8E4700B1FF9A /* BalanceSync */ = {
@@ -238,6 +399,7 @@
 				A6B58496298B8E4700B1FF9A /* ApiBalanceSyncOperation.swift */,
 				A6B58497298B8E4700B1FF9A /* SingleCallBalanceSyncOperation.swift */,
 				A6B58494298B8E4700B1FF9A /* MulticallBalanceSyncOperation.swift */,
+				A630D135299B40F20015B9CE /* MulticallV2BalanceSyncOperation.swift */,
 				A6B58526298BB5B700B1FF9A /* NativeTokenBalanceSyncOperation.swift */,
 			);
 			path = BalanceSync;
@@ -272,6 +434,7 @@
 				A6B584A6298B8E4700B1FF9A /* Converter.swift */,
 				A6B5852C298BBCF000B1FF9A /* TokenEntityConverter.swift */,
 				A6D09FD029925A0B00E555D4 /* TokenBalanceEntityConverter.swift */,
+				A6AA2FFD299F3B86008D1B9B /* TokenPriceEntityConverter.swift */,
 			);
 			path = Converter;
 			sourceTree = "<group>";
@@ -282,6 +445,7 @@
 				A6B584AE298B8E4700B1FF9A /* Chain.swift */,
 				A6B58513298B998900B1FF9A /* TokenBalance.swift */,
 				A6B58515298B9C4400B1FF9A /* Token.swift */,
+				A6AA2FFB299F3A05008D1B9B /* TokenPrice.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -289,13 +453,8 @@
 		A6B584AF298B8E4700B1FF9A /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				A6B584B0298B8E4700B1FF9A /* ChainDB+Model.swift */,
-				A6B584B1298B8E4700B1FF9A /* ChainDB.swift */,
-				A6B584B2298B8E4700B1FF9A /* ChainObject.swift */,
-				A6B584B3298B8E4700B1FF9A /* TokenDB.swift */,
-				A6B584B4298B8E4700B1FF9A /* TokenEntity.swift */,
-				A6B584B5298B8E4700B1FF9A /* TokenPriceObject.swift */,
-				A6B584B6298B8E4700B1FF9A /* TokenBalanceEntity.swift */,
+				A6AA2FE5299E0E12008D1B9B /* Token */,
+				A6AA2FE4299E0E0D008D1B9B /* Chain */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -304,6 +463,7 @@
 			isa = PBXGroup;
 			children = (
 				A6B584B9298B8E4700B1FF9A /* RealmResults+.swift */,
+				A65AFDA829A366610062BE9F /* Chain+AddressType.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -356,6 +516,8 @@
 			children = (
 				A6B584C6298B8E4700B1FF9A /* Constants.swift */,
 				A6B584C7298B8E4700B1FF9A /* default_chains.json */,
+				A6BDB512299CDC04005CD08A /* Assets.xcassets */,
+				A67A4F6E29A5F5A1009D3339 /* chains.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -364,6 +526,7 @@
 			isa = PBXGroup;
 			children = (
 				A6B584C9298B8E4700B1FF9A /* AsyncOperation.swift */,
+				A6DA9FAC29A724B5001D6BF6 /* Logger.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -371,6 +534,7 @@
 		A6B584CA298B8E4700B1FF9A /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				A6B401E7299CB966008423D8 /* ChainList */,
 				A6B584CB298B8E4700B1FF9A /* Demo */,
 			);
 			path = Screen;
@@ -379,12 +543,8 @@
 		A6B584CB298B8E4700B1FF9A /* Demo */ = {
 			isa = PBXGroup;
 			children = (
-				A6B584CC298B8E4700B1FF9A /* ChainCell.xib */,
-				A6B584CD298B8E4700B1FF9A /* ChainListViewController.xib */,
 				A6B584CE298B8E4700B1FF9A /* TokenListViewController.swift */,
-				A6B584CF298B8E4700B1FF9A /* ChainCell.swift */,
 				A6B584D0298B8E4700B1FF9A /* TokenListViewController.xib */,
-				A6B584D1298B8E4700B1FF9A /* ChainListViewController.swift */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -392,6 +552,9 @@
 		A6B58500298B8E7700B1FF9A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6B40225299CD3A3008423D8 /* DesignSystem.framework */,
+				A6B40221299CCC6F008423D8 /* Platform.framework */,
+				A6B40208299CC92F008423D8 /* Platform.framework */,
 				A6B58505298B8E7C00B1FF9A /* Services.framework */,
 				A6B58501298B8E7700B1FF9A /* Utilities.framework */,
 				7EFAA67CC187B79B28D3E4DC /* Pods_ChainModule.framework */,
@@ -410,6 +573,17 @@
 				A6B5852A298BB64E00B1FF9A /* CastError.swift */,
 			);
 			path = Request;
+			sourceTree = "<group>";
+		};
+		A6DA9FA929A721CC001D6BF6 /* EthClient */ = {
+			isa = PBXGroup;
+			children = (
+				A620657429A76C1500DA7D10 /* Task */,
+				A6DA9FAA29A721D7001D6BF6 /* EthereumClientFactory.swift */,
+				A620657029A7612F00DA7D10 /* EthereumWorker.swift */,
+				A620657229A7672100DA7D10 /* TaskHandler.swift */,
+			);
+			path = EthClient;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -435,7 +609,7 @@
 				A6B58483298B8E2000B1FF9A /* Sources */,
 				A6B58484298B8E2000B1FF9A /* Frameworks */,
 				A6B58485298B8E2000B1FF9A /* Resources */,
-				A6B58504298B8E7700B1FF9A /* Embed Frameworks */,
+				A6B40224299CCC70008423D8 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -483,10 +657,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6B401EF299CB9C0008423D8 /* ChainCell.xib in Resources */,
+				A67A4F6F29A5F5A1009D3339 /* chains.json in Resources */,
 				A6B584FE298B8E4700B1FF9A /* TokenListViewController.xib in Resources */,
 				A6B584F8298B8E4700B1FF9A /* default_chains.json in Resources */,
+				A65AFD9729A32B8A0062BE9F /* AddChainCell.xib in Resources */,
 				A6B584FB298B8E4700B1FF9A /* ChainListViewController.xib in Resources */,
-				A6B584FA298B8E4700B1FF9A /* ChainCell.xib in Resources */,
+				A65AFD9B29A32CD60062BE9F /* AddChainViewController.xib in Resources */,
+				A6BDB513299CDC04005CD08A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,38 +701,70 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6B584F6298B8E4700B1FF9A /* TokenService.swift in Sources */,
+				A620658429A773BD00DA7D10 /* EthGetTransactionReceiptTask.swift in Sources */,
 				A6B584F9298B8E4700B1FF9A /* AsyncOperation.swift in Sources */,
 				A6B584F7298B8E4700B1FF9A /* Constants.swift in Sources */,
+				A67A4F6B29A5ADFB009D3339 /* ChainObserver.swift in Sources */,
 				A6B5852D298BBCF000B1FF9A /* TokenEntityConverter.swift in Sources */,
 				A6B584DE298B8E4700B1FF9A /* ChainSyncWorker.swift in Sources */,
 				A6B58514298B998900B1FF9A /* TokenBalance.swift in Sources */,
 				A6B584F0298B8E4700B1FF9A /* RealmResults+.swift in Sources */,
+				A620657A29A7703C00DA7D10 /* EthBalanceTask.swift in Sources */,
+				A67A4F6929A5ADF3009D3339 /* TokenObserver.swift in Sources */,
 				A6B584EC298B8E4700B1FF9A /* TokenEntity.swift in Sources */,
 				A6B584F2298B8E4700B1FF9A /* ChainModel.swift in Sources */,
+				A620657329A7672100DA7D10 /* TaskHandler.swift in Sources */,
+				A620658E29A779E100DA7D10 /* EthCallResolutionTask.swift in Sources */,
 				A6B58523298BB2F400B1FF9A /* Web3ClientFactory.swift in Sources */,
+				A620659229A77A1200DA7D10 /* EthGetMultipleTopicLogsTask.swift in Sources */,
 				A6B5850E298B969C00B1FF9A /* ChainBalanceModel.swift in Sources */,
+				A620657C29A7707300DA7D10 /* EthEstimateGasTask.swift in Sources */,
+				A65AFD9A29A32CD60062BE9F /* AddChainViewController.swift in Sources */,
+				A6B401EE299CB9C0008423D8 /* ChainCell.swift in Sources */,
+				A67A4F6729A5AD5B009D3339 /* BackgroundWorker.swift in Sources */,
 				A6B584D2298B8E4700B1FF9A /* MulticallBalanceSyncOperation.swift in Sources */,
 				A6B5851F298BB29A00B1FF9A /* Web3Client.swift in Sources */,
+				A620657629A76C2900DA7D10 /* EthGasPriceTask.swift in Sources */,
 				A6B584E1298B8E4700B1FF9A /* Converter.swift in Sources */,
-				A6B584ED298B8E4700B1FF9A /* TokenPriceObject.swift in Sources */,
+				A6B584ED298B8E4700B1FF9A /* TokenPriceEntity.swift in Sources */,
+				A6AA2FE9299E146F008D1B9B /* TokenBalanceDB.swift in Sources */,
 				A6B584E7298B8E4700B1FF9A /* Chain.swift in Sources */,
 				A6B58512298B973900B1FF9A /* BalanceResponse.swift in Sources */,
 				A6B58529298BB61900B1FF9A /* BalanceRequest.swift in Sources */,
+				A620659429A77A2200DA7D10 /* EthGetBlockByNumberTask.swift in Sources */,
 				A6B584DA298B8E4700B1FF9A /* Worker.swift in Sources */,
+				A6AA2FFC299F3A05008D1B9B /* TokenPrice.swift in Sources */,
+				A67A4F6D29A5AE09009D3339 /* BalanceObserver.swift in Sources */,
 				A6B584DB298B8E4700B1FF9A /* DefaultChainSyncOperation.swift in Sources */,
+				A6AA2FE3299E0CF3008D1B9B /* TokenDBEvent.swift in Sources */,
 				A6B584F3298B8E4700B1FF9A /* TokenListResponse.swift in Sources */,
+				A65AFD9629A32B8A0062BE9F /* AddChainCell.swift in Sources */,
+				A6DA9FAD29A724B5001D6BF6 /* Logger.swift in Sources */,
+				A620659029A779EB00DA7D10 /* EthGetLogsTask.swift in Sources */,
+				A620657E29A7715F00DA7D10 /* EthSendRawTransactionTask.swift in Sources */,
 				A6B584D5298B8E4700B1FF9A /* SingleCallBalanceSyncOperation.swift in Sources */,
+				A65AFDA929A366610062BE9F /* Chain+AddressType.swift in Sources */,
+				A620658629A7740500DA7D10 /* EthCallTask.swift in Sources */,
 				A6B5852B298BB64E00B1FF9A /* CastError.swift in Sources */,
 				A6B58521298BB2B700B1FF9A /* Web3Request.swift in Sources */,
+				A6B401E4299CB835008423D8 /* PriceSyncWorker.swift in Sources */,
+				A6B401DD299CB756008423D8 /* ChainUrlObject.swift in Sources */,
 				A6B584E9298B8E4700B1FF9A /* ChainDB.swift in Sources */,
+				A620658029A771A200DA7D10 /* EthGetTransactionCountTask.swift in Sources */,
 				A6B584E0298B8E4700B1FF9A /* ChainObjectConverter.swift in Sources */,
 				A6B58516298B9C4400B1FF9A /* Token.swift in Sources */,
+				A620658C29A779D600DA7D10 /* EthGetCodeTask.swift in Sources */,
 				A6B584FC298B8E4700B1FF9A /* TokenListViewController.swift in Sources */,
+				A620658229A7731100DA7D10 /* EthGetTransactionTask.swift in Sources */,
+				A620658A29A779AD00DA7D10 /* EthNetVersionTask.swift in Sources */,
+				A620658829A7798F00DA7D10 /* EthBlockNumberTask.swift in Sources */,
+				A630D136299B40F20015B9CE /* MulticallV2BalanceSyncOperation.swift in Sources */,
 				A6B5851B298BB14000B1FF9A /* CallRequest.swift in Sources */,
 				A6B584E8298B8E4700B1FF9A /* ChainDB+Model.swift in Sources */,
 				A6B584D3298B8E4700B1FF9A /* BalanceSyncWorker.swift in Sources */,
 				A6D09FD129925A0B00E555D4 /* TokenBalanceEntityConverter.swift in Sources */,
 				A6B584F1298B8E4700B1FF9A /* TokenEndpoint.swift in Sources */,
+				A6DA9FAB29A721D7001D6BF6 /* EthereumClientFactory.swift in Sources */,
 				A6B584EE298B8E4700B1FF9A /* TokenBalanceEntity.swift in Sources */,
 				A6B584DC298B8E4700B1FF9A /* RemoteConfigChainSyncOperation.swift in Sources */,
 				A6B584F4298B8E4700B1FF9A /* TokenModel.swift in Sources */,
@@ -567,11 +777,17 @@
 				A6B584EB298B8E4700B1FF9A /* TokenDB.swift in Sources */,
 				A6B584EA298B8E4700B1FF9A /* ChainObject.swift in Sources */,
 				A6B584FF298B8E4700B1FF9A /* ChainListViewController.swift in Sources */,
+				A6B401DF299CB768008423D8 /* ChainConfigObject.swift in Sources */,
+				A6B401E1299CB78A008423D8 /* ChainSmartContractObject.swift in Sources */,
 				A6B58510298B96BA00B1FF9A /* TokenBalanceModel.swift in Sources */,
 				A6B584D4298B8E4700B1FF9A /* ApiBalanceSyncOperation.swift in Sources */,
 				A6B58518298BB12600B1FF9A /* NodeService.swift in Sources */,
+				A620659629A77A4100DA7D10 /* EthGetSingleTopicLogsTask.swift in Sources */,
+				A6AA2FFE299F3B86008D1B9B /* TokenPriceEntityConverter.swift in Sources */,
+				A6AA3000299F3C4C008D1B9B /* TokenPriceDB.swift in Sources */,
 				A6B58527298BB5B700B1FF9A /* NativeTokenBalanceSyncOperation.swift in Sources */,
-				A6B584FD298B8E4700B1FF9A /* ChainCell.swift in Sources */,
+				A620657129A7612F00DA7D10 /* EthereumWorker.swift in Sources */,
+				A6AA2FE7299E0F0C008D1B9B /* ChainDBEvent.swift in Sources */,
 				A6B5851D298BB1B100B1FF9A /* EtherServiceRequest.swift in Sources */,
 				A6B584D9298B8E4700B1FF9A /* ApiTokenSyncOperation.swift in Sources */,
 			);

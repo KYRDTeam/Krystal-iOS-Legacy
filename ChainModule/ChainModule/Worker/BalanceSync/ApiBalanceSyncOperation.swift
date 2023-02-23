@@ -6,33 +6,33 @@
 //
 
 import Foundation
-import Services
 
 public class ApiBalanceSyncOperation: BalanceSyncOperation {
-    
-    let addresses: [Int: String]
+    let address: String
+    let chainIDs: [Int]
     let tokenService = TokenService()
     
-    init(addresses: [Int: String]) {
-        self.addresses = addresses
+    init(address: String, chainIDs: [Int]) {
+        self.address = address
+        self.chainIDs = chainIDs
     }
     
     override func execute(completion: @escaping () -> ()) {
         var formattedAddresses: [String] = []
-        addresses.keys.forEach { chainID in
+        chainIDs.forEach { chainID in
             if let addressPrefix = ChainDB.shared.getConfig(chainID: chainID, key: kChainAddressPrefix), !addressPrefix.isEmpty {
-                formattedAddresses.append(addressPrefix + ":" + (addresses[chainID] ?? ""))
+                formattedAddresses.append(addressPrefix + ":" + address)
             } else {
-                formattedAddresses.append(addresses[chainID] ?? "")
+                formattedAddresses.append(address)
             }
         }
-        tokenService.getBalance(chainIDs: Array(addresses.keys), addresses: formattedAddresses) { chainBalanceModels in
+        tokenService.getBalance(chainIDs: chainIDs, addresses: formattedAddresses) { chainBalanceModels in
             let tokenBalances = chainBalanceModels.flatMap { chainBalanceModel in
                 return chainBalanceModel.balances.map {
                     return TokenBalanceEntity(chainID: chainBalanceModel.chainId, tokenAddress: $0.token.address, walletAddress: $0.userAddress, balance: $0.balance)
                 }
             }
-            TokenDB.shared.save(balances: tokenBalances)
+            TokenBalanceDB.shared.save(balances: tokenBalances)
             completion()
         }
     }

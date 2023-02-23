@@ -13,6 +13,8 @@
 		A64C2DFF28F6D7E3002FD64C /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2DFE28F6D7E3002FD64C /* Coordinator.swift */; };
 		A64C2E6328F87973002FD64C /* InAppBrowsingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E6228F87973002FD64C /* InAppBrowsingViewController.swift */; };
 		A6512F2B28F6CDF800A84BC2 /* AppState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6512F2A28F6CDF800A84BC2 /* AppState.framework */; };
+		A65AFDA229A351CB0062BE9F /* CommonHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65AFDA129A351CB0062BE9F /* CommonHeader.swift */; };
+		A65AFDA429A351D60062BE9F /* CommonHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = A65AFDA329A351D60062BE9F /* CommonHeader.xib */; };
 		A673A68928FE949400270DA7 /* ChainType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A673A68828FE949400270DA7 /* ChainType+.swift */; };
 		A69E8EB6291E1452005B28CB /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EB5291E1452005B28CB /* BaseViewModel.swift */; };
 		A6B1FCF928F69CCE00894DCB /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B1FCF828F69CCE00894DCB /* BaseWallet.framework */; };
@@ -36,6 +38,8 @@
 		A64C2DFE28F6D7E3002FD64C /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		A64C2E6228F87973002FD64C /* InAppBrowsingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppBrowsingViewController.swift; sourceTree = "<group>"; };
 		A6512F2A28F6CDF800A84BC2 /* AppState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A65AFDA129A351CB0062BE9F /* CommonHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonHeader.swift; sourceTree = "<group>"; };
+		A65AFDA329A351D60062BE9F /* CommonHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommonHeader.xib; sourceTree = "<group>"; };
 		A673A68828FE949400270DA7 /* ChainType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChainType+.swift"; sourceTree = "<group>"; };
 		A69E8EB5291E1452005B28CB /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		A6B1FCF828F69CCE00894DCB /* BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,6 +125,8 @@
 				A69E8EB5291E1452005B28CB /* BaseViewModel.swift */,
 				A63E27FE292FAAA30024328D /* SwitchSpecificChainPopup.swift */,
 				A63E27FF292FAAA30024328D /* SwitchSpecificChainPopup.xib */,
+				A65AFDA129A351CB0062BE9F /* CommonHeader.swift */,
+				A65AFDA329A351D60062BE9F /* CommonHeader.xib */,
 			);
 			path = BaseViewControllers;
 			sourceTree = "<group>";
@@ -235,6 +241,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A65AFDA429A351D60062BE9F /* CommonHeader.xib in Resources */,
 				A63E2801292FAAA30024328D /* SwitchSpecificChainPopup.xib in Resources */,
 				A6F6291C28FD30480085AE67 /* Assets.xcassets in Resources */,
 			);
@@ -273,6 +280,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A673A68928FE949400270DA7 /* ChainType+.swift in Sources */,
+				A65AFDA229A351CB0062BE9F /* CommonHeader.swift in Sources */,
 				A64C2DFF28F6D7E3002FD64C /* Coordinator.swift in Sources */,
 				A63E2800292FAAA30024328D /* SwitchSpecificChainPopup.swift in Sources */,
 				A6B1FD0328F69D5700894DCB /* KNBaseViewController.swift in Sources */,

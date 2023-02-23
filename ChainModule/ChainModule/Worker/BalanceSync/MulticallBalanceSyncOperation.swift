@@ -10,19 +10,17 @@ import web3
 
 class MulticallBalanceSyncOperation: BalanceSyncOperation {
     let chainID: Int
-    let rpcUrl: String
     let multicallAddress: String
     let tokens: [String]
     let walletAddress: String
-    var ethClient: EthereumHttpClient!
+    var ethWorker: EthereumWorker
     var multicall: Multicall!
     
-    init(walletAddress: String, tokens: [String], chainID: Int, rpcUrl: String, multicallAddress: String) {
-        self.ethClient = EthereumHttpClient(url: URL(string: rpcUrl)!)
-        self.multicall = Multicall(client: self.ethClient)
+    init(ethClients: [EthereumHttpClient], walletAddress: String, tokens: [String], chainID: Int, multicallAddress: String) {
+        self.ethWorker = EthereumWorker(clients: ethClients)
+        self.multicall = Multicall(client: self.ethWorker)
         self.walletAddress = walletAddress
         self.chainID = chainID
-        self.rpcUrl = rpcUrl
         self.multicallAddress = multicallAddress
         self.tokens = tokens
     }
@@ -40,7 +38,7 @@ class MulticallBalanceSyncOperation: BalanceSyncOperation {
             })
         }
         multicall.aggregate(calls: aggregator.calls, contract: EthereumAddress(multicallAddress)) { result in
-            TokenDB.shared.save(balances: balances)
+            TokenBalanceDB.shared.save(balances: balances)
             completion()
         }
     }
