@@ -9,15 +9,15 @@ import Foundation
 import WebKit
 import Dependencies
 
-class KrystalScriptHandler: NSObject, WKScriptMessageHandler {
+public class KrystalScriptHandler: NSObject, WKScriptMessageHandler {
     
     var navigationController: UINavigationController!
     
-    func setNavigationController(navigationController: UINavigationController) {
+    public func setNavigationController(navigationController: UINavigationController = .init()) {
         self.navigationController = navigationController
     }
     
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         let json = message.json
         guard let method = json["methodName"] as? String else { return }
         switch method {
