@@ -113,8 +113,8 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
   
   func switchAddress(address: KAddress) {
-      AppState.shared.currentAddress = address
-      AppEventCenter.shared.switchAddress(address: address)
+      AppState.shared.updateAddress(address: address, targetChain: AppState.shared.currentChain)
+      
       KNAppTracker.updateAllTransactionLastBlockLoad(0, for: address.addressString)
       if self.tabbarController == nil {
           self.startNewSession(address: address)
