@@ -313,6 +313,7 @@ class MultiSendViewController: InAppBrowsingViewController {
   }
 
   override func onAppSwitchChain() {
+    super.onAppSwitchChain()
     self.updateUISwitchChain()
   }
   
