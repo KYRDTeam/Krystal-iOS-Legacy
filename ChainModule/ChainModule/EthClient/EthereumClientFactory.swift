@@ -8,14 +8,14 @@
 import Foundation
 import web3
 
-class EthereumClientFactory {
-    static let shared = EthereumClientFactory()
+public class EthereumClientFactory {
+    public static let shared = EthereumClientFactory()
     
     private init() {}
     
     var clients: [String: EthereumHttpClient] = [:]
     
-    func client(forUrl urlString: String) -> EthereumHttpClient? {
+    public func client(forUrl urlString: String) -> EthereumHttpClient? {
         if let instance = clients[urlString] {
             return instance
         }

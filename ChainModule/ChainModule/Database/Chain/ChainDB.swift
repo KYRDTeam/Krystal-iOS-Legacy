@@ -149,4 +149,10 @@ public class ChainDB {
         }
     }
     
+    public func getTopRpcUrls(chainID: Int) -> [String] {
+        return ChainDB.shared.getUrls(chainID: chainID, type: kChainRpcUrlType).sorted { lhs, rhs in
+            return lhs.priority < rhs.priority
+        }.prefix(3).map(\.url)
+    }
+    
 }

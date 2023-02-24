@@ -23,7 +23,7 @@ public class RemoteConfigChainSyncOperation: ChainSyncOperation {
                                            iconUrl: "",
                                            decimal: 18,
                                            symbol: symbol,
-                                           name: "",
+                                           name: symbol,
                                            tag: "",
                                            type: nativeTokenType)
                     } else {
@@ -40,7 +40,7 @@ public class RemoteConfigChainSyncOperation: ChainSyncOperation {
     
     func getConfiguredChains() -> [ChainModel] {
         let data = remoteConfig.configValue(forKey: "chains").dataValue
-        let chains = try! JSONDecoder().decode([ChainModel].self, from: data)
+        let chains = try? JSONDecoder().decode([ChainModel].self, from: data)
         return chains ?? []
     }
     

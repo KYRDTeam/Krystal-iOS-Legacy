@@ -8,7 +8,7 @@
 import Foundation
 import KrystalWallets
 
-extension Chain {
+public extension Chain {
     
     var addressType: KAddressType {
         switch type {

@@ -23,17 +23,22 @@ public class TokenDB {
         return realm.objects(TokenEntity.self).toArray().map(TokenEntityConverter.convert)
     }
     
+    public func getTokens(chainID: Int) -> [Token] {
+        let realm = try! Realm()
+        return realm.objects(TokenEntity.self).where { $0.chainID == chainID }.toArray().map(TokenEntityConverter.convert)
+    }
+    
     public func allBalances() -> [TokenBalance] {
         let realm = try! Realm()
         return realm.objects(TokenBalanceEntity.self).toArray().map(TokenBalanceEntityConverter.convert)
     }
     
-    public func search(query: String) -> [Token] {
+    public func search(chainID: Int, query: String) -> [Token] {
         let realm = try! Realm()
         let lowercasedQuery = query.lowercased()
         return realm.objects(TokenEntity.self)
-            .filter("name contains[cd] %@ OR address contains[cd] %@ OR symbol contains[cd] %@",
-                    lowercasedQuery, lowercasedQuery, lowercasedQuery)
+            .filter("chainID == %@ AND (name contains[cd] %@ OR address contains[cd] %@ OR symbol contains[cd] %@)",
+                    chainID, lowercasedQuery, lowercasedQuery, lowercasedQuery)
             .toArray()
             .map(TokenEntityConverter.convert)
     }
@@ -46,7 +51,15 @@ public class TokenDB {
         ).map(TokenEntityConverter.convert)
     }
     
-    func save(tokens: [TokenEntity]) {
+    public func save(token: Token) {
+        let realm = try! Realm()
+        let tokenEntity = TokenEntity(chainID: token.chainID, address: token.address, iconUrl: token.iconUrl, decimal: token.decimal, symbol: token.symbol, name: token.name, tag: token.tag, type: token.type, isAddedByUser: token.isAddedByUser, isActive: true)
+        try! realm.write {
+            realm.add(tokenEntity, update: .modified)
+        }
+    }
+    
+    public func save(tokens: [TokenEntity]) {
         let realm = try! Realm()
         try! realm.write {
             realm.add(tokens, update: .modified)

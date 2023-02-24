@@ -18,7 +18,7 @@ public class Token {
     public var type: String = "" // native / erc20
     public var isAddedByUser: Bool = false
     
-    init(chainID: Int, address: String, iconUrl: String, decimal: Int, symbol: String, name: String, tag: String, type: String, isAddedByUser: Bool) {
+    public init(chainID: Int, address: String, iconUrl: String, decimal: Int, symbol: String, name: String, tag: String, type: String, isAddedByUser: Bool) {
         self.chainID = chainID
         self.address = address
         self.iconUrl = iconUrl

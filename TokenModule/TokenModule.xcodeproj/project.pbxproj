@@ -47,11 +47,11 @@
 		A66CD6F52955684500FF2EC9 /* TokenSelectPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66CD6F32955684500FF2EC9 /* TokenSelectPopup.xib */; };
 		A66CD6F829556AE600FF2EC9 /* TokenSelectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66CD6F629556AE600FF2EC9 /* TokenSelectCell.swift */; };
 		A66CD6F929556AE600FF2EC9 /* TokenSelectCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66CD6F729556AE600FF2EC9 /* TokenSelectCell.xib */; };
-		A6AA2FED299E2CDB008D1B9B /* TokenSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AA2FEB299E2CDB008D1B9B /* TokenSearchViewController.swift */; };
-		A6AA2FEE299E2CDB008D1B9B /* TokenSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6AA2FEC299E2CDB008D1B9B /* TokenSearchViewController.xib */; };
+		A6AA2FED299E2CDB008D1B9B /* TokenSearchV2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AA2FEB299E2CDB008D1B9B /* TokenSearchV2ViewController.swift */; };
+		A6AA2FEE299E2CDB008D1B9B /* TokenSearchV2ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6AA2FEC299E2CDB008D1B9B /* TokenSearchV2ViewController.xib */; };
 		A6AA2FF0299E2D96008D1B9B /* ChainModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6AA2FEF299E2D96008D1B9B /* ChainModule.framework */; };
 		A6AA2FF1299E2D96008D1B9B /* ChainModule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6AA2FEF299E2D96008D1B9B /* ChainModule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A6AA2FF8299F26AA008D1B9B /* TokenSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AA2FF7299F26AA008D1B9B /* TokenSearchViewModel.swift */; };
+		A6AA2FF8299F26AA008D1B9B /* TokenSearchV2ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AA2FF7299F26AA008D1B9B /* TokenSearchV2ViewModel.swift */; };
 		A6AA2FFA299F355A008D1B9B /* TokenItemCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AA2FF9299F355A008D1B9B /* TokenItemCellViewModel.swift */; };
 		A6B4A6A9292E139900F6F0F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6B4A6A8292E139900F6F0F5 /* Assets.xcassets */; };
 		A6C37C082955833500B6F3C6 /* TokenVerifyStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C37C072955833500B6F3C6 /* TokenVerifyStatus.swift */; };
@@ -115,10 +115,10 @@
 		A66CD6F32955684500FF2EC9 /* TokenSelectPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TokenSelectPopup.xib; sourceTree = "<group>"; };
 		A66CD6F629556AE600FF2EC9 /* TokenSelectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSelectCell.swift; sourceTree = "<group>"; };
 		A66CD6F729556AE600FF2EC9 /* TokenSelectCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TokenSelectCell.xib; sourceTree = "<group>"; };
-		A6AA2FEB299E2CDB008D1B9B /* TokenSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenSearchViewController.swift; sourceTree = "<group>"; };
-		A6AA2FEC299E2CDB008D1B9B /* TokenSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokenSearchViewController.xib; sourceTree = "<group>"; };
+		A6AA2FEB299E2CDB008D1B9B /* TokenSearchV2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenSearchV2ViewController.swift; sourceTree = "<group>"; };
+		A6AA2FEC299E2CDB008D1B9B /* TokenSearchV2ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokenSearchV2ViewController.xib; sourceTree = "<group>"; };
 		A6AA2FEF299E2D96008D1B9B /* ChainModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ChainModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A6AA2FF7299F26AA008D1B9B /* TokenSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSearchViewModel.swift; sourceTree = "<group>"; };
+		A6AA2FF7299F26AA008D1B9B /* TokenSearchV2ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSearchV2ViewModel.swift; sourceTree = "<group>"; };
 		A6AA2FF9299F355A008D1B9B /* TokenItemCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenItemCellViewModel.swift; sourceTree = "<group>"; };
 		A6B4A6A8292E139900F6F0F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A6C37C072955833500B6F3C6 /* TokenVerifyStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenVerifyStatus.swift; sourceTree = "<group>"; };
@@ -171,7 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				7EB129AF2938AA6600CE6D1C /* SearchTokenViewModel.swift */,
-				A6AA2FF7299F26AA008D1B9B /* TokenSearchViewModel.swift */,
+				A6AA2FF7299F26AA008D1B9B /* TokenSearchV2ViewModel.swift */,
 				A6AA2FF9299F355A008D1B9B /* TokenItemCellViewModel.swift */,
 			);
 			path = ViewModels;
@@ -313,8 +313,8 @@
 		A6AA2FEA299E2CBF008D1B9B /* TokenSearch */ = {
 			isa = PBXGroup;
 			children = (
-				A6AA2FEB299E2CDB008D1B9B /* TokenSearchViewController.swift */,
-				A6AA2FEC299E2CDB008D1B9B /* TokenSearchViewController.xib */,
+				A6AA2FEB299E2CDB008D1B9B /* TokenSearchV2ViewController.swift */,
+				A6AA2FEC299E2CDB008D1B9B /* TokenSearchV2ViewController.xib */,
 			);
 			path = TokenSearch;
 			sourceTree = "<group>";
@@ -409,7 +409,7 @@
 			files = (
 				A668BFA0292CB8B9001A110D /* TokenDetailViewController.xib in Resources */,
 				7ECC45B72939A31900B37D30 /* Localizable.strings in Resources */,
-				A6AA2FEE299E2CDB008D1B9B /* TokenSearchViewController.xib in Resources */,
+				A6AA2FEE299E2CDB008D1B9B /* TokenSearchV2ViewController.xib in Resources */,
 				A6B4A6A9292E139900F6F0F5 /* Assets.xcassets in Resources */,
 				A66CD6F929556AE600FF2EC9 /* TokenSelectCell.xib in Resources */,
 				A63E27FD292FA1050024328D /* mobile-charting-library in Resources */,
@@ -464,14 +464,14 @@
 				7ECC45BE2939A5E600B37D30 /* SearchTokenViewCell.swift in Sources */,
 				A668BFCE292CBE92001A110D /* ChartLoadRequest.swift in Sources */,
 				A668BFCB292CBE92001A110D /* UIView+.swift in Sources */,
-				A6AA2FF8299F26AA008D1B9B /* TokenSearchViewModel.swift in Sources */,
+				A6AA2FF8299F26AA008D1B9B /* TokenSearchV2ViewModel.swift in Sources */,
 				A668BFE5292CD46B001A110D /* Constants.swift in Sources */,
 				A668BFA3292CB8F3001A110D /* TokenDetailViewModel.swift in Sources */,
 				A668BFDF292CCEAD001A110D /* String.swift in Sources */,
 				A66CD6F42955684500FF2EC9 /* TokenSelectPopup.swift in Sources */,
 				A668BFA9292CBD57001A110D /* ChartPeriodType.swift in Sources */,
 				7ECC45BD2939A5E600B37D30 /* CommonBaseTokenCell.swift in Sources */,
-				A6AA2FED299E2CDB008D1B9B /* TokenSearchViewController.swift in Sources */,
+				A6AA2FED299E2CDB008D1B9B /* TokenSearchV2ViewController.swift in Sources */,
 				A6AA2FFA299F355A008D1B9B /* TokenItemCellViewModel.swift in Sources */,
 				A668BFCA292CBE92001A110D /* Period.swift in Sources */,
 				A668BFCC292CBE92001A110D /* ChartType.swift in Sources */,

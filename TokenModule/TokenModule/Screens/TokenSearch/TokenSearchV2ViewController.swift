@@ -12,8 +12,9 @@ import Dependencies
 import Services
 import Utilities
 import DesignSystem
+import ChainModule
 
-public class TokenSearchViewController: KNBaseViewController {
+public class TokenSearchV2ViewController: KNBaseViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchField: UITextField!
     @IBOutlet weak var searchFieldActionButton: UIButton!
@@ -24,17 +25,20 @@ public class TokenSearchViewController: KNBaseViewController {
     @IBOutlet weak var topViewHeight: NSLayoutConstraint!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var emptyView: UIView!
+    @IBOutlet weak var tableViewTopConstraintToSearchView: NSLayoutConstraint!
+    @IBOutlet weak var separator: UIView!
     
-    public var onSelectTokenCompletion: ((Token) -> Void)?
+    public var onSelectToken: ((ChainModule.Token) -> Void)?
     let collectionViewLeftPadding = 21.0
     let collectionViewCellPadding = 12.0
     let collectionViewCellWidth = 86.0
     var defaultCommonTokensInOneRow: CGFloat {
         return UIScreen.main.bounds.size.width - collectionViewLeftPadding * 2 >= collectionViewCellWidth * 4 + collectionViewCellPadding * 3 ? 4 : 3
     }
-    var viewModel: TokenListViewModel!
+    var viewModel: TokenSearchV2ViewModel!
     var timer: Timer?
     var isSourceToken: Bool = true
+    
     var orderBy: String {
         return self.isSourceToken ? "usdValue" : "tag"
     }
@@ -44,9 +48,21 @@ public class TokenSearchViewController: KNBaseViewController {
         
         self.setupUI()
         AppDependencies.tracker.track("search_open", properties: ["screenid": "search"])
-        viewModel.fetchCommonBaseTokens {
-            self.collectionView.reloadData()
+        
+        if viewModel.isSearchApiSupported {
+            tableViewTopConstraintToSearchView.constant = 124
+            view.layoutIfNeeded()
+            viewModel.fetchCommonBaseTokens {
+                self.collectionView.reloadData()
+            }
+        } else {
+            tableViewTopConstraintToSearchView.constant = 11
+            view.layoutIfNeeded()
+            collectionView.isHidden = true
+            separator.isHidden = true
         }
+        
+        search(query: "")
     }
     
     func setupUI() {
@@ -98,9 +114,7 @@ public class TokenSearchViewController: KNBaseViewController {
     @IBAction func onSearchButtonTapped(_ sender: Any) {
         if self.topView.isHidden {
             searchField.text = ""
-            self.showLoading()
-            self.viewModel.search(query: "")
-            self.reloadUI()
+            search(query: "")
         } else {
             self.updateUIStartSearchingMode()
         }
@@ -109,9 +123,17 @@ public class TokenSearchViewController: KNBaseViewController {
     @IBAction func cancelButtonTapped(_ sender: Any) {
         self.updateUIEndSearchingMode()
     }
+    
+    func search(query: String) {
+        self.showLoading()
+        self.viewModel.search(query: query) {
+            self.hideLoading()
+            self.reloadUI()
+        }
+    }
 }
 
-extension TokenSearchViewController: UITextFieldDelegate {
+extension TokenSearchV2ViewController: UITextFieldDelegate {
     
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.updateUIStartSearchingMode()
@@ -124,13 +146,12 @@ extension TokenSearchViewController: UITextFieldDelegate {
     
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-        self.viewModel.search(query: text)
-        self.reloadUI()
+        search(query: text)
         return true
     }
 }
 
-extension TokenSearchViewController {
+extension TokenSearchV2ViewController {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.viewModel.items.count
@@ -139,17 +160,22 @@ extension TokenSearchViewController {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(SearchTokenViewCell.self, indexPath: indexPath)!
         cell.configure(item: viewModel.items[indexPath.row])
+        cell.selectionStyle = .none
         return cell
     }
 }
 
-extension TokenSearchViewController: UITableViewDelegate {
+extension TokenSearchV2ViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let token = viewModel.items[indexPath.row].token
+        TokenDB.shared.save(token: token)
+        dismiss(animated: true) {
+            self.onSelectToken?(token)
+        }
     }
 }
 
-extension TokenSearchViewController: UICollectionViewDataSource {
+extension TokenSearchV2ViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.commonBaseTokens.count
     }
@@ -162,18 +188,18 @@ extension TokenSearchViewController: UICollectionViewDataSource {
     }
 }
 
-extension TokenSearchViewController: UICollectionViewDelegate {
+extension TokenSearchV2ViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let onSelectTokenCompletion = self.onSelectTokenCompletion {
-//            let token = self.viewModel.commonBaseTokens[indexPath.row]
-//            let searchToken = SearchToken(token: token)
-//            onSelectTokenCompletion(searchToken)
-//            self.dismiss(animated: true)
+        let commonBaseToken = self.viewModel.commonBaseTokens[indexPath.row]
+        let token = ChainModule.Token(chainID: viewModel.chainID, address: commonBaseToken.address, iconUrl: commonBaseToken.logo, decimal: commonBaseToken.decimals, symbol: commonBaseToken.symbol, name: commonBaseToken.name, tag: commonBaseToken.tag ?? "", type: "erc20", isAddedByUser: false)
+        TokenDB.shared.save(token: token)
+        dismiss(animated: true) {
+            self.onSelectToken?(token)
         }
     }
 }
 
-extension TokenSearchViewController: UICollectionViewDelegateFlowLayout {
+extension TokenSearchV2ViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -204,7 +230,7 @@ extension TokenSearchViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension TokenSearchViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
+extension TokenSearchV2ViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
     
     func showLoading() {
         let gradient = SkeletonGradient(baseColor: AppTheme.current.sectionBackgroundColor)

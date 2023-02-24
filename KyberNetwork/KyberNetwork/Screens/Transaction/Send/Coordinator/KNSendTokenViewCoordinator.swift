@@ -301,7 +301,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   }
 
   fileprivate func openSearchToken(selectedToken: TokenObject) {
-      TokenModule.openSearchToken(walletAddress: AppState.shared.currentAddress.addressString, chainID: AppState.shared.currentChain.getChainId(), on: navigationController) { [weak self] selectedToken in
+      TokenModule.openSearchToken(walletAddress: AppState.shared.currentAddress.addressString, chainID: AppState.shared.selectedChainID, on: navigationController) { [weak self] selectedToken in
           guard let self = self else { return }
           let balance = self.balances[selectedToken.token.address]
           self.rootViewController?.coordinatorDidUpdateSendToken(selectedToken.token.toObject(), balance: balance)

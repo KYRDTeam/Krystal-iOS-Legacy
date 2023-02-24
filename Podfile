@@ -193,6 +193,7 @@ target 'TokenModule' do
   pod 'MBProgressHUD', '~> 1.1.0'
   pod 'Charts'
   pod 'SkeletonView'
+  web3
 end
 
 target 'BaseModule' do

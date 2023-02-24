@@ -53,7 +53,11 @@ class SearchTokenViewCell: UITableViewCell {
   }
     
     func configure(item: TokenItemCellViewModel) {
-        iconImageView.loadImage(item.iconUrl)
+        if item.iconUrl.isEmpty {
+            iconImageView.image = UIImage(named: "token", in: Bundle(for: SearchTokenViewCell.self), compatibleWith: nil)
+        } else {
+            iconImageView.loadImage(item.iconUrl)
+        }
         symbolLabel.text = item.name
         balanceLabel.text = item.balanceString
         valueLabel.text = item.balanceValueString

@@ -22,7 +22,7 @@ public class DefaultChainSyncOperation: ChainSyncOperation {
         let chainModels = try! decoder.decode([ChainModel].self, from: data)
         let nativeTokens = chainModels.compactMap { chain -> TokenEntity? in
             if let symbol = chain.nativeToken?.symbol {
-                return TokenEntity(chainID: chain.id, address: defaultNativeTokenAddress, iconUrl: "", decimal: 18, symbol: symbol, name: "", tag: "", type: nativeTokenType)
+                return TokenEntity(chainID: chain.id, address: defaultNativeTokenAddress, iconUrl: "", decimal: 18, symbol: symbol, name: symbol, tag: "", type: nativeTokenType)
             } else {
                 return nil
             }

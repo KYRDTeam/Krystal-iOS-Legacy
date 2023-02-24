@@ -36,6 +36,10 @@
             {
                 "name": "CHAIN_ADDRESS_PREFIX",
                 "value": "ethereum"
+            },
+            {
+                "name": "SUPPORT_TOKEN_SEARCH_API",
+                "value": "true"
             }
         ],
         "smartContracts": [

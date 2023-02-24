@@ -12,12 +12,12 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TokenSearchViewController" customModule="TokenModule" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TokenSearchV2ViewController" customModule="TokenModule" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="hHp-Y8-e7X" id="CpQ-aY-cVI"/>
                 <outlet property="collectionView" destination="96q-8h-wfj" id="z7A-d4-f3w"/>
@@ -26,7 +26,9 @@
                 <outlet property="searchField" destination="JdW-VG-kNz" id="oX9-lP-b01"/>
                 <outlet property="searchFieldActionButton" destination="9lH-9E-ucZ" id="eKm-N8-NDO"/>
                 <outlet property="searchViewRightConstraint" destination="D82-S2-TcH" id="eWN-Iq-RO0"/>
+                <outlet property="separator" destination="UWq-0X-v4W" id="9cy-tJ-7ly"/>
                 <outlet property="tableView" destination="ftT-qp-sxx" id="yJp-IS-NL9"/>
+                <outlet property="tableViewTopConstraintToSearchView" destination="XMr-Ma-ZAM" id="kQf-L8-hWI"/>
                 <outlet property="topView" destination="Eqr-th-ABs" id="m7C-jY-GI6"/>
                 <outlet property="topViewHeight" destination="jsV-70-SyG" id="9Es-A5-Nua"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -73,7 +75,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ARh-ze-PHc">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ARh-ze-PHc" userLabel="SearchView">
                     <rect key="frame" x="21" y="105" width="333" height="42"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JdW-VG-kNz">
@@ -133,18 +135,7 @@
                         <action selector="cancelButtonTapped:" destination="-1" eventType="touchUpInside" id="Lap-VA-jz0"/>
                     </connections>
                 </button>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ftT-qp-sxx">
-                    <rect key="frame" x="0.0" y="243" width="375" height="424"/>
-                    <color key="backgroundColor" name="mainViewBgColor"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <outlet property="dataSource" destination="-1" id="SnQ-vU-jX3"/>
-                        <outlet property="delegate" destination="-1" id="mEe-sC-HPO"/>
-                    </connections>
-                </tableView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UWq-0X-v4W">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UWq-0X-v4W" userLabel="Separator">
                     <rect key="frame" x="24" y="234" width="327" height="1"/>
                     <color key="backgroundColor" name="grayBackgroundColor"/>
                     <constraints>
@@ -168,8 +159,19 @@
                         <outlet property="delegate" destination="-1" id="oWX-Dw-jWG"/>
                     </connections>
                 </collectionView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ftT-qp-sxx">
+                    <rect key="frame" x="0.0" y="270" width="375" height="397"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="SnQ-vU-jX3"/>
+                        <outlet property="delegate" destination="-1" id="mEe-sC-HPO"/>
+                    </connections>
+                </tableView>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SFo-S2-YUY">
-                    <rect key="frame" x="0.0" y="243" width="375" height="424"/>
+                    <rect key="frame" x="0.0" y="270" width="375" height="397"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty-search-token" translatesAutoresizingMaskIntoConstraints="NO" id="dI7-Ei-hN5">
                             <rect key="frame" x="123.5" y="54" width="128" height="137"/>
@@ -207,7 +209,7 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="96q-8h-wfj" secondAttribute="trailing" id="MM8-t7-gb1"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ftT-qp-sxx" secondAttribute="trailing" id="QJ4-O7-BdJ"/>
                 <constraint firstItem="Eqr-th-ABs" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="QYO-sz-0VX"/>
-                <constraint firstItem="ftT-qp-sxx" firstAttribute="top" secondItem="UWq-0X-v4W" secondAttribute="bottom" constant="8" id="VGY-wO-NUw"/>
+                <constraint firstItem="ftT-qp-sxx" firstAttribute="top" secondItem="ARh-ze-PHc" secondAttribute="bottom" constant="123" id="XMr-Ma-ZAM"/>
                 <constraint firstItem="ftT-qp-sxx" firstAttribute="top" secondItem="SFo-S2-YUY" secondAttribute="top" id="Xla-Ht-Sif"/>
                 <constraint firstItem="UWq-0X-v4W" firstAttribute="top" secondItem="96q-8h-wfj" secondAttribute="bottom" constant="16" id="azG-76-S1M"/>
                 <constraint firstItem="hHp-Y8-e7X" firstAttribute="height" secondItem="ARh-ze-PHc" secondAttribute="height" id="ees-RX-HJ3"/>
