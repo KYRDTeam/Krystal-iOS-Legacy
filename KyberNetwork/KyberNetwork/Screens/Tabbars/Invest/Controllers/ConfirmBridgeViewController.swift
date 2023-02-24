@@ -164,15 +164,19 @@ class ConfirmBridgeViewController: InAppBrowsingViewController {
     self.dismiss(animated: true, completion: nil)
     if let unwrap = self.viewModel.signTransaction, let fromChain = viewModel.fromChain, let toChain = viewModel.toChain {
       let internalHistory = InternalHistoryTransaction(type: .bridge, state: .pending, fromSymbol: self.viewModel.token.symbol, toSymbol: self.viewModel.token.symbol, transactionDescription: "", transactionDetailDescription: "", transactionObj: unwrap.toSignTransactionObject(), eip1559Tx: nil)
+        let extra = [
+            "srcChainId": "\(self.viewModel.fromChain?.getChainId() ?? 0)",
+            "srcToken": self.viewModel.token.symbol,
+            "srcTokenAmount": self.viewModel.fromValue,
+            "destChainId": "\(self.viewModel.toChain?.getChainId() ?? 0)",
+            "destToken": self.viewModel.token.symbol,
+            "destTokenAmount": self.viewModel.toValue,
+            "bridgeFee": self.viewModel.feeString
+        ]
+        internalHistory.extraUserInfo = extra
       
       self.delegate?.didConfirm(self, signTransaction: unwrap, internalHistoryTransaction: internalHistory)
     }
-//    if let unwrap = self.viewModel.eip1559Transaction {
-//      let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.viewModel.transaction.from.symbol, toSymbol: self.viewModel.transaction.to.symbol, transactionDescription: "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)", transactionDetailDescription: self.viewModel.displayEstimatedRate, transactionObj: nil, eip1559Tx: unwrap)
-//      internalHistory.transactionSuccessDescription = "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)"
-//
-//      self.delegate?.didConfirm(self, confirm: self.viewModel.transaction, eip1559Tx: unwrap, internalHistoryTransaction: internalHistory)
-//    }
     
     MixPanelManager.track("kbridge_confirm", properties: ["screenid": "bridge_confirm_pop_up"])
   }

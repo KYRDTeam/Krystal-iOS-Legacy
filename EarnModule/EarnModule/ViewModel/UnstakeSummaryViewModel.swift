@@ -159,7 +159,7 @@ extension UnstakeSummaryViewModel {
                                                                  date: Date(),
                                                                  hash: hash,
                                                                  nonce: Int(eip1559Tx.nonce) ?? self.currentNonce)
-                            TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
+                            TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx, extraInfo: nil)
                             self.onSuccess(pendingTx)
                         case .failure(let error):
                             self.onError(TxErrorParser.parse(error: error).message)
@@ -209,7 +209,7 @@ extension UnstakeSummaryViewModel {
                                                                  date: Date(),
                                                                  hash: hash,
                                                                  nonce: legacyTx.nonce)
-                            TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
+                            TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx, extraInfo: nil)
                             self.onSuccess(pendingTx)
                         case .failure(let error):
                             self.onError(TxErrorParser.parse(error: error).message)

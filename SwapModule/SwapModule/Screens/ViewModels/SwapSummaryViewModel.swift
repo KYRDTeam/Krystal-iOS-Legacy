@@ -264,7 +264,7 @@ extension SwapSummaryViewModel {
                                                   date: Date(),
                                                   hash: tx.hash,
                                                   detailString: self.displayEstimatedRate)
-                TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
+                TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx, extraInfo: nil)
                 self.onTxSendSuccess?(pendingTx)
             case .failure(let error):
                 self.onTxFailed?(error.message)

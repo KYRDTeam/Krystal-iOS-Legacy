@@ -560,6 +560,8 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
           historyTx.hash = hash
           historyTx.time = Date()
           historyTx.nonce = Int(txData.1.nonce) ?? 0
+            
+            
           EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTx)
         case .failure(let error):
           unApproveItem.append(txData.0)
@@ -711,6 +713,10 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
             historyTransaction.hash = hash
             historyTransaction.time = Date()
             historyTransaction.nonce = Int(tx.nonce.drop0x, radix: 16) ?? 0
+              
+              let extra = self.rootViewController.viewModel.buildExtraData()
+              historyTransaction.extraMultisendInfo = extra
+              
             EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
             self.openTransactionStatusPopUp(transaction: historyTransaction)
           case .failure(let error):

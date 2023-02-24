@@ -140,6 +140,14 @@ class MultiSendCellModel {
     }
     return .success
   }
+    
+    func buildExtraData() -> [String: String] {
+        return [
+            "token": from.symbol,
+            "destAddress": addressString,
+            "amount": displayBalance
+        ]
+    }
 }
 
 class MultiSendCell: SwipeTableViewCell {
