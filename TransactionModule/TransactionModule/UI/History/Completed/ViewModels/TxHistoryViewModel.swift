@@ -48,7 +48,7 @@ class TxHistoryViewModel {
             }
             self.canLoadMore = txRecords.count >= 20
             self.txs.append(contentsOf: txRecords)
-            var originalDate = Date(timeIntervalSince1970: 0)
+            var originalDate = Date(timeIntervalSince1970: Double(endTime ?? 0))
             txRecords.forEach { record in
                 let recordDate = Date(timeIntervalSince1970: Double(record.blockTime))
                 if Calendar.current.startOfDay(for: recordDate) != Calendar.current.startOfDay(for: originalDate) {
