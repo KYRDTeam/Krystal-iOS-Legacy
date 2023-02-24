@@ -67,8 +67,8 @@ class UserService {
     }
   }
     
-    func sumitTransaction(transaction: [String: Any], completion:((Bool) -> Void)? = nil) {
-        provider.requestWithFilter(.sumitTransaction(transaction: transaction)) { result in
+    func submitTransaction(transaction: [String: Any], completion:((Bool) -> Void)? = nil) {
+        provider.requestWithFilter(.submitTransaction(transaction: transaction)) { result in
             switch result {
             case .success:
                 completion?(true)
@@ -78,7 +78,7 @@ class UserService {
         }
     }
     
-    func sumitTransaction(tx: InternalHistoryTransaction, completion:((Bool) -> Void)? = nil) {
+    func submitTransaction(tx: InternalHistoryTransaction, completion:((Bool) -> Void)? = nil) {
         let type = tx.type.getTransactionType()
         let chainType = tx.getChainType()
         let state = tx.getTxState()
@@ -96,7 +96,7 @@ class UserService {
             return [:]
         }()
         let param = UserService.buildTransactionParam(type: type, chainType: chainType, txHash: tx.hash, status: state, extra: extra)
-        sumitTransaction(transaction: param, completion: completion)
+        submitTransaction(transaction: param, completion: completion)
     }
   
     class func buildTransactionParam(type: TransactionType, chainType: ChainType, txHash: String, status: TransactionState, extra: [String: Any]) -> [String: Any] {
