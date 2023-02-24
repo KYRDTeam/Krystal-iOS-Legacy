@@ -74,6 +74,8 @@ class AppRouter: AppRouterProtocol, Coordinator {
             AppEventManager.shared.postSelectAllChain()
           } else if let wallet = WalletManager.shared.getWallet(id: AppState.shared.currentAddress.walletID) {
               AppDelegate.shared.coordinator.switchWallet(wallet: wallet, chain: selectedChain)
+          } else {
+              AppState.shared.updateChain(chain: selectedChain)
           }
           onSelectChain(selectedChain)
         }
@@ -114,6 +116,12 @@ class AppRouter: AppRouterProtocol, Coordinator {
     guard let url = URL(string: chain.customRPC().etherScanEndpoint + "tx/" + txHash) else { return }
     UIApplication.shared.topMostViewController()?.openSafari(with: url)
   }
+    
+    func openTokenScanner(address: String, chainId: Int) {
+        guard let chain = ChainType.make(chainID: chainId) else { return }
+        guard let url = URL(string: chain.customRPC().etherScanEndpoint + "token/" + address) else { return }
+        UIApplication.shared.topMostViewController()?.openSafari(with: url)
+    }
   
   func openToken(navigationController: UINavigationController, address: String, chainID: Int, tokenName: String?) {
     guard let chain = ChainType.make(chainID: chainID) else { return }

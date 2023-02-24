@@ -18,7 +18,7 @@ class ApprovalListViewModel {
     struct Actions {
         var onTapBack: () -> Void
         var onTapHistory: () -> Void
-        var onTapRevoke: (Approval) -> Void
+        var onTapRevoke: (Approval, TxSettingObject) -> Void
         var onOpenStatus: (String, ChainType) -> Void
         var onTapTokenSymbol: (Approval) -> Void
         var onTapSpenderAddress: (Approval) -> Void
@@ -57,6 +57,7 @@ class ApprovalListViewModel {
         }
     }
     
+    var isLoading: Observable<Bool> = .init(false)
     var approvals: [Approval] = []
     var filteredApprovals: [ApprovedTokenItemViewModel] = []
     let service = ApprovalService()
@@ -167,7 +168,49 @@ class ApprovalListViewModel {
     
     func onTapRevoke(index: Int) {
         if let approval = filteredApprovals[safe: index]?.approval {
-            actions.onTapRevoke(approval)
+            isLoading.value = true
+            estimateGasLimit(approval: approval) { [weak self] gasLimit in
+                self?.isLoading.value = false
+                let setting = TxSettingObject(basic: .init(gasLimit: gasLimit, gasType: .regular), advanced: nil)
+                self?.actions.onTapRevoke(approval, setting)
+            }
+        }
+    }
+    
+    func estimateGasLimit(approval: Approval, completion: @escaping (BigInt) -> ()) {
+        guard let chain = ChainType.make(chainID: approval.chainId) else {
+            return
+        }
+        guard let spender = approval.spenderAddress else {
+            return
+        }
+        guard let tokenAddress = approval.tokenAddress else {
+            return
+        }
+        let service = EthereumNodeService(chain: chain)
+        let gasPrice = self.getGasPrice(chain: chain, setting: .default)
+        service.getSendApproveERC20TokenEncodeData(spender: spender, value: .zero) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let hex):
+                let request = KNEstimateGasLimitRequest(
+                    from: self.address,
+                    to: tokenAddress,
+                    value: .zero,
+                    data: hex,
+                    gasPrice: gasPrice
+                )
+                KNGeneralProvider.shared.getEstimateGasLimit(request: request) { result in
+                    switch result {
+                    case .success(let gasLimit):
+                        completion(gasLimit)
+                    case .failure:
+                        completion(GasPriceManager.shared.defaultApproveGasLimit)
+                    }
+                }
+            case .failure:
+                completion(GasPriceManager.shared.defaultApproveGasLimit)
+            }
         }
     }
     

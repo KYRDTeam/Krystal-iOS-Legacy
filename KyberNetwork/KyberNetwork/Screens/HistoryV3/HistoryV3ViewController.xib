@@ -24,6 +24,8 @@
                 <outlet property="chainIcon" destination="hRR-y1-1Uc" id="8Sc-U7-jAg"/>
                 <outlet property="pageContainer" destination="NzV-Pn-Wec" id="c41-JX-6LO"/>
                 <outlet property="segmentControl" destination="9hb-V9-yxr" id="2oY-jb-2yf"/>
+                <outlet property="segmentControlTrailingConstant" destination="cmM-wz-to9" id="6NA-yy-nm3"/>
+                <outlet property="statsButton" destination="L4j-Ht-Xtw" id="Cvs-Gn-kTt"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletButton" destination="rc7-5b-6X9" id="vIy-Pb-awB"/>
                 <outlet property="walletView" destination="1HK-Ip-Sh7" id="ycc-HS-jdf"/>
@@ -166,7 +168,7 @@
                         <action selector="segmentedControlValueChanged:" destination="-1" eventType="valueChanged" id="laI-Zj-jfa"/>
                     </connections>
                 </segmentedControl>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4j-Ht-Xtw">
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4j-Ht-Xtw">
                     <rect key="frame" x="374" y="136.5" width="24" height="24"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="24" id="aqS-7A-SDN"/>
@@ -186,9 +188,9 @@
                 <constraint firstItem="Cjd-mu-fNR" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="3D0-8H-2dO"/>
                 <constraint firstItem="NzV-Pn-Wec" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="5oj-WZ-X72"/>
                 <constraint firstItem="9hb-V9-yxr" firstAttribute="top" secondItem="Cjd-mu-fNR" secondAttribute="bottom" id="IQ5-er-9le"/>
-                <constraint firstItem="L4j-Ht-Xtw" firstAttribute="leading" secondItem="9hb-V9-yxr" secondAttribute="trailing" constant="16" id="Uki-iO-6cz"/>
                 <constraint firstItem="NzV-Pn-Wec" firstAttribute="top" secondItem="9hb-V9-yxr" secondAttribute="bottom" constant="8" id="buc-Cz-OFf"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="L4j-Ht-Xtw" secondAttribute="trailing" constant="16" id="cVa-1g-OfG"/>
+                <constraint firstItem="9hb-V9-yxr" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" constant="-56" id="cmM-wz-to9"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="NzV-Pn-Wec" secondAttribute="trailing" id="fyp-Rp-nCG"/>
                 <constraint firstItem="L4j-Ht-Xtw" firstAttribute="centerY" secondItem="9hb-V9-yxr" secondAttribute="centerY" id="hbq-4h-tQN"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Cjd-mu-fNR" secondAttribute="trailing" id="lt0-mQ-hiS"/>

@@ -1447,7 +1447,8 @@ extension KrytalService: TargetType {
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
    case .getAllNftBalance(address: let address, chains: let chains):
       var json: JSONDictionary = [
-        "address": address
+        "address": address,
+        "withMetadata": true
       ]
       
       if chains.isEmpty {
