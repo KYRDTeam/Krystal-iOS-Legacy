@@ -365,7 +365,8 @@ class TokenDetailViewController: KNBaseViewController {
   }
   
   @IBAction func etherscanButtonTapped(_ sender: UIButton) {
-//    AppDependencies.router.openToken(address: viewModel.token.address, chainID: viewModel.chainID)
+      guard let address = viewModel.tokenDetail?.address else { return }
+      AppDependencies.router.openTokenScanner(address: address, chainId: self.viewModel.chain.getChainId())
   }
   
   @IBAction func websiteButtonTapped(_ sender: UIButton) {

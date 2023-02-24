@@ -29,6 +29,7 @@ public protocol AppRouterProtocol {
     func openEarnPortfolio()
     func openEarnReward()
     func openSwap(from: Token, to: Token)
+    func openTokenScanner(address: String, chainId: Int)
 }
 
 public extension AppRouterProtocol {
