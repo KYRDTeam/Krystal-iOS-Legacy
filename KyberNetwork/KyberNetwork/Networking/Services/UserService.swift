@@ -77,6 +77,27 @@ class UserService {
             }
         }
     }
+    
+    func sumitTransaction(tx: InternalHistoryTransaction, completion:((Bool) -> Void)? = nil) {
+        let type = tx.type.getTransactionType()
+        let chainType = tx.getChainType()
+        let state = tx.getTxState()
+        let extra: [String: Any] = {
+            switch type {
+            case .multisend:
+                if let extraData = tx.extraMultisendInfo {
+                    return ["data": extraData]
+                }
+            default:
+                if let extraData = tx.extraUserInfo {
+                    return extraData
+                }
+            }
+            return [:]
+        }()
+        let param = UserService.buildTransactionParam(type: type, chainType: chainType, txHash: tx.hash, status: state, extra: extra)
+        sumitTransaction(transaction: param, completion: completion)
+    }
   
     class func buildTransactionParam(type: TransactionType, chainType: ChainType, txHash: String, status: TransactionState, extra: [String: Any]) -> [String: Any] {
         let address = AppState.shared.currentAddress.addressString

@@ -338,6 +338,8 @@ class EtherscanTransactionStorage {
     if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
       Storage.store(self.internalHistoryTransactions, as: address.addressString + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
     }
+      
+      UserService.shared.sumitTransaction(tx: tx, completion: nil)
   }
 
   func isContainInsternalSendTransaction() -> Bool {

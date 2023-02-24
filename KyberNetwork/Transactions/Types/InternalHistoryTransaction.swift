@@ -165,6 +165,31 @@ class InternalHistoryTransaction: Codable {
         return UserService.buildTransactionParam(type: txType, chainType: chainType, txHash: hash, status: status, extra: extraUserInfo ?? [:])
     }
     
+    func getChainType() -> UserService.ChainType {
+        switch chain {
+        case .solana:
+            return .solana
+        default:
+            return .evm
+        }
+    }
+    
+    func getTxState() -> UserService.TransactionState {
+        switch state {
+        case .pending:
+            return .pending
+        case .speedup:
+            return .pending
+        case .cancel:
+            return .pending
+        case .done:
+            return .success
+        case .drop:
+            return .failed
+        case .error:
+            return .failed
+        }
+    }
 }
 
 struct InternalHistoryExtraData: Codable {
