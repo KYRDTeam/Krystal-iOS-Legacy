@@ -464,7 +464,6 @@ extension KNSendTokenViewCoordinator {
         EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
         self.openTransactionStatusPopUp(transaction: historyTransaction)
         self.rootViewController?.coordinatorSuccessSendTransaction()
-          UserService.shared.sumitTransaction(transaction: ["Test": ""])
       case .failure(let error):
         self.confirmVC?.resetActionButtons()
         KNNotificationUtil.postNotification(
