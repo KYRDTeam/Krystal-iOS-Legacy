@@ -501,6 +501,7 @@
 		7E8C9C8929ACC19800838427 /* RewardExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C9C8829ACC19800838427 /* RewardExtraData.swift */; };
 		7E8C9C8B29ACC2A700838427 /* WithdrawExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C9C8A29ACC2A700838427 /* WithdrawExtraData.swift */; };
 		7E8C9C8D29ACC39700838427 /* MultisendExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C9C8C29ACC39700838427 /* MultisendExtraData.swift */; };
+		7E8C9C9129ACC6CA00838427 /* TransferNFTExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C9C9029ACC6CA00838427 /* TransferNFTExtraData.swift */; };
 		7E8F02E927F2DD4200234E22 /* AllChains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8F02E827F2DD4200234E22 /* AllChains.swift */; };
 		7E913AF9273CF6DA00B6E67C /* intro_manage.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E913AF5273CF6D900B6E67C /* intro_manage.json */; };
 		7E913AFA273CF6DA00B6E67C /* intro_reward.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E913AF6273CF6DA00B6E67C /* intro_reward.json */; };
@@ -1797,6 +1798,7 @@
 		7E8C9C8829ACC19800838427 /* RewardExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardExtraData.swift; sourceTree = "<group>"; };
 		7E8C9C8A29ACC2A700838427 /* WithdrawExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawExtraData.swift; sourceTree = "<group>"; };
 		7E8C9C8C29ACC39700838427 /* MultisendExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisendExtraData.swift; sourceTree = "<group>"; };
+		7E8C9C9029ACC6CA00838427 /* TransferNFTExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferNFTExtraData.swift; sourceTree = "<group>"; };
 		7E8F02E827F2DD4200234E22 /* AllChains.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllChains.swift; sourceTree = "<group>"; };
 		7E913AF5273CF6D900B6E67C /* intro_manage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_manage.json; sourceTree = "<group>"; };
 		7E913AF6273CF6DA00B6E67C /* intro_reward.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_reward.json; sourceTree = "<group>"; };
@@ -4548,6 +4550,7 @@
 				A6E26FD928129B780054427E /* InternalHistoryTransaction.swift */,
 				7E8C9C8429ACBC5A00838427 /* BridgeTrackingExtraData.swift */,
 				7E8C9C8629ACBFA900838427 /* TransferExtraData.swift */,
+				7E8C9C9029ACC6CA00838427 /* TransferNFTExtraData.swift */,
 				7E8C9C8829ACC19800838427 /* RewardExtraData.swift */,
 				7E8C9C8A29ACC2A700838427 /* WithdrawExtraData.swift */,
 				7E8C9C8C29ACC39700838427 /* MultisendExtraData.swift */,
@@ -7957,6 +7960,7 @@
 				A65CC8F328698C11008620E2 /* ChartType.swift in Sources */,
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
 				7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */,
+				7E8C9C9129ACC6CA00838427 /* TransferNFTExtraData.swift in Sources */,
 				7EC892DB27DD10A9000C5980 /* FiatCryptoHistoryCell.swift in Sources */,
 				29FA00D0201CA66A002F7DC5 /* DAppError.swift in Sources */,
 				C337E15E27744D37001C8B03 /* RPCServers.swift in Sources */,

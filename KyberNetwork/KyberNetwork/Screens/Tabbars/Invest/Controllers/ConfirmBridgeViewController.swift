@@ -170,7 +170,8 @@ class ConfirmBridgeViewController: InAppBrowsingViewController {
                                 destChainId: "\(self.viewModel.toChain?.getChainId() ?? 0)",
                                 destToken: self.viewModel.token.symbol,
                                 destTokenAmount:  self.viewModel.toValue,
-                                bridgeFee: self.viewModel.feeString)
+                                bridgeFee: self.viewModel.feeString,
+                                router: "")
         internalHistory.trackingExtraData = extra
       
       self.delegate?.didConfirm(self, signTransaction: unwrap, internalHistoryTransaction: internalHistory)
