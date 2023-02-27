@@ -51,8 +51,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
             self.priceImpactState.value = self.selectedPlatformRate.value.map {
                 return self.getPriceImpactState(change: Double($0.priceImpact) / 100)
             } ?? .normal
-            
-            self.updateState()
         }
     }
     
@@ -174,7 +172,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     func loadSourceTokenPrice() {
         guard let sourceToken = sourceToken.value else { return }
         tokenService.getTokenDetail(address: sourceToken.address, chainPath: currentChain.value.apiChainPath()) { [weak self] token in
-            guard let token = token else { return }
+            guard let token = token else {
+                self?.sourceTokenPrice.value = nil
+                return
+            }
             if token.address.lowercased() == sourceToken.address.lowercased() { // Needed to handle case swap pair
                 self?.sourceTokenPrice.value = token.markets["usd"]?.price
                 self?.sourceToken.value = Token(name: token.name, symbol: token.symbol, address: token.address, decimals: token.decimals, logo: token.logo)
@@ -187,7 +188,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     func loadDestTokenPrice() {
         guard let destToken = destToken.value else { return }
         tokenService.getTokenDetail(address: destToken.address, chainPath: currentChain.value.apiChainPath()) { [weak self] token in
-            guard let token = token else { return }
+            guard let token = token else {
+                self?.destTokenPrice.value = nil
+                return                
+            }
             if token.address.lowercased() == destToken.address.lowercased() { // Needed to handle case swap pair
                 self?.destTokenPrice.value = token.markets["usd"]?.price
                 self?.destToken.value = Token(name: token.name, symbol: token.symbol, address: token.address, decimals: token.decimals, logo: token.logo)
@@ -210,8 +214,8 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
             guard let self = self else { return }
             self.souceAmountUsdString.value = self.getSourceAmountUsdString(amount: amount)
             if amount == nil || amount!.isZero {
-                self.selectedPlatformHint = nil
                 self.state.value = .emptyAmount
+                self.selectedPlatformHint = nil
             } else {
                 self.reloadRates(amount: amount!, isRefresh: false)
             }
@@ -280,6 +284,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             nodeService.getAllowance(address: self.currentAddress.value.addressString, networkAddress: self.currentChain.value.proxyAddress(), tokenAddress: self.sourceToken.value?.address ?? "") { [weak self] result in
                 guard let self = self else { return }
+                guard self.state.value.isActiveState else { return }
                 switch result {
                 case .success(let allowance):
                     if allowance < self.sourceAmount.value ?? .zero {
@@ -337,6 +342,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     func selectPlatform(hint: String) {
         self.selectedPlatformHint = hint
         self.reloadPlatformRatesViewModels()
+        self.updateState()
     }
     
     func reloadPlatformRatesViewModels() {
@@ -376,9 +382,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     func swapPair() {
         (sourceBalance.value, destBalance.value) = (destBalance.value, sourceBalance.value)
         (sourceToken.value, destToken.value) = (destToken.value, sourceToken.value)
+        (sourceTokenPrice.value, destTokenPrice.value) = (destTokenPrice.value, sourceTokenPrice.value)
         self.onChangeSourceToken?()
         self.sourceAmount.value = nil
-        self.selectedPlatformHint = nil
+        self.platformRates.value = []
         self.loadSourceTokenPrice()
         self.loadDestTokenPrice()
         self.reloadSourceBalance()

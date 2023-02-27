@@ -702,7 +702,16 @@ extension SwapV2ViewController {
         guard let sourceToken = viewModel.sourceToken.value, let sourceBalance = viewModel.sourceBalance.value else {
             return
         }
-        let amountToChange = BigInt(doubleValue * pow(10.0, Double(sourceToken.decimals)))
+        
+        // Use doubleValue directly will cause wrong value like 1.0 -> 0.9999999..
+        // let amountToChange = BigInt(doubleValue * pow(10.0, Double(sourceToken.decimals)))
+        var memory = sourceToken.decimals
+        var tempDoubleValue = doubleValue
+        while (tempDoubleValue != floor(tempDoubleValue)) {
+            tempDoubleValue *= 10
+            memory -= 1
+        }
+        let amountToChange = BigInt(tempDoubleValue) * BigInt(10).power(memory)
         
         if amountToChange > viewModel.maxAvailableSourceTokenAmount && amountToChange <= sourceBalance {
             showSuccessTopBannerMessage(
