@@ -362,8 +362,10 @@ class EtherscanTransactionStorage {
     }) else {
       return false
     }
+    let tx = self.internalHistoryTransactions[index]
+    UserService.shared.submitTransaction(tx: tx, completion: nil)
+      
     self.internalHistoryTransactions.remove(at: index)
-    
     if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
       Storage.store(self.internalHistoryTransactions, as: address.addressString + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
     }
@@ -374,6 +376,7 @@ class EtherscanTransactionStorage {
     self.internalHistoryTransactions.forEach { internalTransaction in
       if internalTransaction.hash == transaction.hash {
         internalTransaction.state = transaction.state
+        UserService.shared.submitTransaction(tx: internalTransaction, completion: nil)
       }
     }
     Storage.store(self.internalHistoryTransactions, as: address.addressString + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)

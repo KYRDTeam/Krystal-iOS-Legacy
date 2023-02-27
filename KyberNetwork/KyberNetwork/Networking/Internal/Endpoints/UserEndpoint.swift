@@ -52,7 +52,8 @@ extension UserEndpoint: TargetType {
   }
   
   var headers: [String: String]? {
-    return [:]
+      var json: [String: String] = ["x-krystal-platform": "ios"]
+      return json
   }
   
 }
