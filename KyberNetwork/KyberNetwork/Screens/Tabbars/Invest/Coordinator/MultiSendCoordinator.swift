@@ -714,8 +714,8 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
             historyTransaction.time = Date()
             historyTransaction.nonce = Int(tx.nonce.drop0x, radix: 16) ?? 0
               
-              let extra = self.rootViewController.viewModel.buildExtraData()
-              historyTransaction.extraMultisendInfo = extra
+            let extra = self.rootViewController.viewModel.buildExtraData()
+//            historyTransaction.trackingExtraData = ["data" : extra]
               
             EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
             self.openTransactionStatusPopUp(transaction: historyTransaction)
