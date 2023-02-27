@@ -59,7 +59,7 @@ class AppTxProcessor: TxProcessorProtocol {
             internalTx.nonce = txInfo.legacyTx?.nonce ?? 0
         }
         internalTx.time = txInfo.date
-        internalTx.extraUserInfo = extraInfo
+        internalTx.trackingExtraData = extraInfo
         EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalTx)
     }
     

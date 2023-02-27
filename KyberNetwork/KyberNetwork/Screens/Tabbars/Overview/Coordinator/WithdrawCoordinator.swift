@@ -610,7 +610,7 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
                               print(hash)
                               NonceCache.shared.increaseNonce(address: self.currentAddress.addressString, chain: self.currentChain)
                               let historyTransaction = InternalHistoryTransaction(type: .contractInteraction, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: "Claim", transactionDetailDescription: "", transactionObj: nil, eip1559Tx: transaction)
-                                historyTransaction.extraUserInfo = self.withdrawViewController?.viewModel.buildExtraInfo()
+                                historyTransaction.trackingExtraData = self.withdrawViewController?.viewModel.buildExtraInfo()
                               historyTransaction.hash = hash
                               historyTransaction.time = Date()
                               historyTransaction.nonce = nonce
@@ -660,7 +660,7 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
                             case .success(let hash):
                               NonceCache.shared.increaseNonce(address: self.currentAddress.addressString, chain: self.currentChain)
                               let historyTransaction = InternalHistoryTransaction(type: .contractInteraction, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: "Claim", transactionDetailDescription: "", transactionObj: transaction.toSignTransactionObject(), eip1559Tx: nil)
-                                historyTransaction.extraUserInfo = self.withdrawViewController?.viewModel.buildExtraInfo()
+                                historyTransaction.trackingExtraData = self.withdrawViewController?.viewModel.buildExtraInfo()
                               historyTransaction.hash = hash
                               historyTransaction.time = Date()
                               historyTransaction.nonce = transaction.nonce

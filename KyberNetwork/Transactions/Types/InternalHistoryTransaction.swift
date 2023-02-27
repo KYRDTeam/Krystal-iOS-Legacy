@@ -8,6 +8,7 @@
 import Foundation
 import BigInt
 import BaseWallet
+import TransactionModule
 
 class InternalHistoryTransaction: Codable {
   var hash: String = ""
@@ -27,8 +28,8 @@ class InternalHistoryTransaction: Codable {
   var eip1559Transaction: EIP1559Transaction?
   var chain: ChainType
   var extraData: InternalHistoryExtraData?
-    var extraUserInfo: [String: String]?
-    var extraMultisendInfo: [[String: String]]?
+  var trackingExtraData: TxTrackingExtraData?
+//    var extraMultisendInfo: [[String: String]]?
 
   init(
     type: HistoryModelType,
@@ -51,7 +52,7 @@ class InternalHistoryTransaction: Codable {
     self.transactionObject = transactionObj
     self.eip1559Transaction = eip1559Tx
     self.chain = chain
-      self.extraUserInfo = nil
+    self.trackingExtraData = nil
   }
   
   var gasFee: BigInt {
@@ -162,7 +163,7 @@ class InternalHistoryTransaction: Codable {
             status = .failed
         }
         
-        return UserService.buildTransactionParam(type: txType, chainType: chainType, txHash: hash, status: status, extra: extraUserInfo ?? [:])
+        return UserService.buildTransactionParam(type: txType, chainType: chainType, txHash: hash, status: status, extra: trackingExtraData)
     }
     
     func getChainType() -> UserService.ChainType {
