@@ -19,7 +19,8 @@ class UserService {
         case transfer
         case multisend
         case bridge
-        case earn
+        case stake
+        case unstake
         case claim
         case nft_transfer
         case undefine

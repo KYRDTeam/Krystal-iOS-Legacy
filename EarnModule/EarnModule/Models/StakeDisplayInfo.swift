@@ -6,15 +6,15 @@
 //
 
 import Foundation
+import Services
 
 struct StakeDisplayInfo {
-    var amount: String
+    var stakeAmount: String
     var apy: String
     var receiveAmount: String
     var rate: String
     var fee: String
     var platform: String
-    var stakeTokenIcon: String
-    var fromSym: String
+    var stakeToken: Token
     var toSym: String
 }

@@ -434,14 +434,13 @@ class StakingViewController: InAppBrowsingViewController {
     func openStakeSummary(txObject: TxObject) {
         let amountString = NumberFormatUtils.amount(value: viewModel.amount.value, decimals: viewModel.token.decimals)
         let displayInfo = StakeDisplayInfo(
-            amount: "\(amountString) \(viewModel.token.symbol)",
+            stakeAmount: "\(amountString)",
             apy: viewModel.displayAPY,
             receiveAmount: viewModel.displayAmountReceive,
             rate: viewModel.displayRate,
             fee: viewModel.displayFeeString,
             platform: viewModel.selectedPlatform.name,
-            stakeTokenIcon: viewModel.token.logo,
-            fromSym: viewModel.token.symbol,
+            stakeToken: viewModel.token,
             toSym: viewModel.selectedEarningToken.value?.symbol ?? ""
         )
         self.openStakeSummary(txObject: txObject, settings: viewModel.setting, displayInfo: displayInfo)
