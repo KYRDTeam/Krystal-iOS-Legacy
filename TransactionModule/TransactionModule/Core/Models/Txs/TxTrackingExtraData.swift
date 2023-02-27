@@ -8,5 +8,7 @@
 import Foundation
 
 open class TxTrackingExtraData: Codable {
-    
+    public init() {
+        
+    }
 }

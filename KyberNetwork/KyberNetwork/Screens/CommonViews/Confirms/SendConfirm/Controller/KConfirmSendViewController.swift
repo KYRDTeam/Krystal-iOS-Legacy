@@ -118,14 +118,12 @@ class KConfirmSendViewController: KNBaseViewController {
     
     let historyTransaction = InternalHistoryTransaction(type: type, state: .pending, fromSymbol: symbol, toSymbol: nil, transactionDescription: "-\(self.viewModel.totalAmountString)", transactionDetailDescription: "", transactionObj: SignTransactionObject(value: "", from: "", to: "", nonce: 0, data: Data(), gasPrice: "", gasLimit: "", chainID: 0, reservedGasLimit: ""), eip1559Tx: nil) //TODO: add case eip1559
     historyTransaction.transactionSuccessDescription = "-\(self.viewModel.totalAmountString) to \(self.viewModel.shortAddress.lowercased())"
-      let extra = [
-        "token": symbol,
-        "tokenAmount": (NumberFormatUtils.balanceFormat(value: self.viewModel.transaction.value, decimals: self.viewModel.token.decimals)),
-        "tokenAmountUsd": viewModel.displayValue,
-        "destAddress": viewModel.transaction.to ?? ""
-        
-      ]
-      historyTransaction.trackingExtraData = extra
+    let extra = TransferExtraData(token: symbol,
+                        tokenAmount: (NumberFormatUtils.balanceFormat(value: self.viewModel.transaction.value, decimals: self.viewModel.token.decimals)),
+                        tokenAmountUsd: viewModel.displayValue,
+                        destAddress: viewModel.transaction.to ?? "")
+      
+    historyTransaction.trackingExtraData = extra
     let event = KConfirmViewEvent.confirm(type: KNTransactionType.transfer(viewModel.transaction), historyTransaction: historyTransaction)
     self.delegate?.kConfirmSendViewController(self, run: event)
     MixPanelManager.track("transfer_confirm", properties: ["screenid": "transfer_confirm_pop_up"])
