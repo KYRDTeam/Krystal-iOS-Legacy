@@ -241,7 +241,7 @@ class RewardCoordinator: Coordinator {
         let description = self.rootViewController.viewModel.totalBalanceString()
         let detailDescription = tx.to
         let historyTransaction = InternalHistoryTransaction(type: .claimReward, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: description, transactionDetailDescription: detailDescription, transactionObj: transaction.toSignTransactionObject(), eip1559Tx: nil)
-          historyTransaction.trackingExtraData = self.rootViewController.viewModel.buildExtraData()
+        historyTransaction.trackingExtraData = self.rootViewController.viewModel.buildExtraData()
         historyTransaction.hash = hash
         historyTransaction.time = Date()
         historyTransaction.nonce = transaction.nonce

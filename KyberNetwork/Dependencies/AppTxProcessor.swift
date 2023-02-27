@@ -40,7 +40,7 @@ class AppTxProcessor: TxProcessorProtocol {
         TransactionManager.onPendingTxListUpdated()
     }
     
-    func savePendingTx(txInfo: PendingTxInfo, extraInfo: [String: String]?) {
+    func savePendingTx(txInfo: PendingTxInfo, extraInfo: TxTrackingExtraData?) {
         let internalTx = InternalHistoryTransaction(
             type: convertToInternalTxType(pendingTxType: txInfo.type),
             state: .pending,
