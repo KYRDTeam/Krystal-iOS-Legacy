@@ -496,6 +496,11 @@
 		7E7C074928A36887002E8068 /* SwapSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7C074828A36887002E8068 /* SwapSummaryViewModel.swift */; };
 		7E8C62D8271D319200A6C9DB /* ClaimRewardsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C62D6271D319200A6C9DB /* ClaimRewardsController.swift */; };
 		7E8C62D9271D319200A6C9DB /* ClaimRewardsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E8C62D7271D319200A6C9DB /* ClaimRewardsController.xib */; };
+		7E8C9C8529ACBC5A00838427 /* BridgeTrackingExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C9C8429ACBC5A00838427 /* BridgeTrackingExtraData.swift */; };
+		7E8C9C8729ACBFA900838427 /* TransferExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C9C8629ACBFA900838427 /* TransferExtraData.swift */; };
+		7E8C9C8929ACC19800838427 /* RewardExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C9C8829ACC19800838427 /* RewardExtraData.swift */; };
+		7E8C9C8B29ACC2A700838427 /* WithdrawExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C9C8A29ACC2A700838427 /* WithdrawExtraData.swift */; };
+		7E8C9C8D29ACC39700838427 /* MultisendExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C9C8C29ACC39700838427 /* MultisendExtraData.swift */; };
 		7E8F02E927F2DD4200234E22 /* AllChains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8F02E827F2DD4200234E22 /* AllChains.swift */; };
 		7E913AF9273CF6DA00B6E67C /* intro_manage.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E913AF5273CF6D900B6E67C /* intro_manage.json */; };
 		7E913AFA273CF6DA00B6E67C /* intro_reward.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E913AF6273CF6DA00B6E67C /* intro_reward.json */; };
@@ -1787,6 +1792,11 @@
 		7E7C074828A36887002E8068 /* SwapSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapSummaryViewModel.swift; sourceTree = "<group>"; };
 		7E8C62D6271D319200A6C9DB /* ClaimRewardsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimRewardsController.swift; sourceTree = "<group>"; };
 		7E8C62D7271D319200A6C9DB /* ClaimRewardsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClaimRewardsController.xib; sourceTree = "<group>"; };
+		7E8C9C8429ACBC5A00838427 /* BridgeTrackingExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeTrackingExtraData.swift; sourceTree = "<group>"; };
+		7E8C9C8629ACBFA900838427 /* TransferExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferExtraData.swift; sourceTree = "<group>"; };
+		7E8C9C8829ACC19800838427 /* RewardExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardExtraData.swift; sourceTree = "<group>"; };
+		7E8C9C8A29ACC2A700838427 /* WithdrawExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawExtraData.swift; sourceTree = "<group>"; };
+		7E8C9C8C29ACC39700838427 /* MultisendExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisendExtraData.swift; sourceTree = "<group>"; };
 		7E8F02E827F2DD4200234E22 /* AllChains.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllChains.swift; sourceTree = "<group>"; };
 		7E913AF5273CF6D900B6E67C /* intro_manage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_manage.json; sourceTree = "<group>"; };
 		7E913AF6273CF6DA00B6E67C /* intro_reward.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_reward.json; sourceTree = "<group>"; };
@@ -4536,6 +4546,11 @@
 				294DFBA21FE0E2EA004CEB56 /* TransactionValue.swift */,
 				C38E5D7825F63FC000E5FC48 /* TransactionHistory.swift */,
 				A6E26FD928129B780054427E /* InternalHistoryTransaction.swift */,
+				7E8C9C8429ACBC5A00838427 /* BridgeTrackingExtraData.swift */,
+				7E8C9C8629ACBFA900838427 /* TransferExtraData.swift */,
+				7E8C9C8829ACC19800838427 /* RewardExtraData.swift */,
+				7E8C9C8A29ACC2A700838427 /* WithdrawExtraData.swift */,
+				7E8C9C8C29ACC39700838427 /* MultisendExtraData.swift */,
 				A6E26FDB28129BA90054427E /* HistoryTransaction.swift */,
 				A6E26FDD28129BF20054427E /* TransactionFactory.swift */,
 				A6E26FDF28129C480054427E /* SignTransactionObject.swift */,
@@ -7755,6 +7770,7 @@
 				A6E26FDC28129BA90054427E /* HistoryTransaction.swift in Sources */,
 				A6E60708284F5D8E00387388 /* EthereumTransactionProcessor.swift in Sources */,
 				C31371EC26035182003D432B /* KrytalViewController.swift in Sources */,
+				7E8C9C8D29ACC39700838427 /* MultisendExtraData.swift in Sources */,
 				C3114370249B1C2300084CD8 /* KNMigrationTutorialViewController.swift in Sources */,
 				290B2B5F1F9177860053C83E /* UIImage.swift in Sources */,
 				A6B3CD622811D451005D0D66 /* KNTransactionHistoryCoordinator.swift in Sources */,
@@ -7792,6 +7808,7 @@
 				C347DA3825C02BE3000D6E81 /* EarnMenuViewController.swift in Sources */,
 				C37AF0BF25CA5639006FB880 /* EarnConfirmViewController.swift in Sources */,
 				A6B3CD7728124F96005D0D66 /* KrystalHistoryTransaction+TransactionHistoryItem.swift in Sources */,
+				7E8C9C8729ACBFA900838427 /* TransferExtraData.swift in Sources */,
 				259EC46920E2A4A20081B2FC /* KNHistoryTransactionCollectionViewCell.swift in Sources */,
 				C3012CC3269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.swift in Sources */,
 				7EE7A72A28446F7A00F4D8CF /* ConfirmBridgeViewController.swift in Sources */,
@@ -7935,6 +7952,7 @@
 				C39D3FE126FB33610021DF8A /* History.swift in Sources */,
 				C3319B0B28A36C6D00E5620A /* SettingAdvancedModeFormCell.swift in Sources */,
 				7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */,
+				7E8C9C8529ACBC5A00838427 /* BridgeTrackingExtraData.swift in Sources */,
 				A651944F28362E54008F4AEB /* TxInfoCell.swift in Sources */,
 				A65CC8F328698C11008620E2 /* ChartType.swift in Sources */,
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
@@ -8115,6 +8133,7 @@
 				7721A6C8202EF81B004DB16C /* CustomRPC.swift in Sources */,
 				253F50E721E5B5290068813D /* KNPromoCodeViewController.swift in Sources */,
 				A69C5BDC28D1BAEF000DE825 /* NotificationItemV2Cell.swift in Sources */,
+				7E8C9C8B29ACC2A700838427 /* WithdrawExtraData.swift in Sources */,
 				C308BC1526D897290030022B /* ConfirmSendNFTViewController.swift in Sources */,
 				A6BB3C2428605E470097EB75 /* EIP1559TransactionSigner.swift in Sources */,
 				A66EC312287D176200D15FE0 /* MultiSendSubTransactionCell.swift in Sources */,
@@ -8178,6 +8197,7 @@
 				C334A865283354C3006B3D55 /* KeyboardTypingUltil.swift in Sources */,
 				A6B3CD462811BC9B005D0D66 /* KNTransactionHistoryViewModel.swift in Sources */,
 				29A0E1851F706B8C00BAAAED /* String.swift in Sources */,
+				7E8C9C8929ACC19800838427 /* RewardExtraData.swift in Sources */,
 				7E16B8D32769DB3300F9A234 /* ReferralTiersCell.swift in Sources */,
 				A651944828361ABB008F4AEB /* TransactionDetailRowType.swift in Sources */,
 				252B174E20D4319C005B282D /* KNCustomSegmentedControl.swift in Sources */,

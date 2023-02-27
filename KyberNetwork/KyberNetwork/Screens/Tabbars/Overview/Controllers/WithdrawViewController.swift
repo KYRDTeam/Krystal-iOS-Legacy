@@ -186,11 +186,8 @@ class WithdrawViewModel {
     return labelText
   }
     
-    func buildExtraInfo() -> [String: String] {
-        return [
-            "token": balance.symbol,
-            "tokenAmount": "\(balance.supplyBalance)"
-        ]
+    func buildExtraInfo() -> WithdrawExtraData {
+        return WithdrawExtraData(token: balance.symbol, tokenAmount: "\(balance.supplyBalance)")
     }
 }
 

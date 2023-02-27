@@ -164,16 +164,14 @@ class ConfirmBridgeViewController: InAppBrowsingViewController {
     self.dismiss(animated: true, completion: nil)
     if let unwrap = self.viewModel.signTransaction, let fromChain = viewModel.fromChain, let toChain = viewModel.toChain {
       let internalHistory = InternalHistoryTransaction(type: .bridge, state: .pending, fromSymbol: self.viewModel.token.symbol, toSymbol: self.viewModel.token.symbol, transactionDescription: "", transactionDetailDescription: "", transactionObj: unwrap.toSignTransactionObject(), eip1559Tx: nil)
-        let extra = [
-            "srcChainId": "\(self.viewModel.fromChain?.getChainId() ?? 0)",
-            "srcToken": self.viewModel.token.symbol,
-            "srcTokenAmount": self.viewModel.fromValue,
-            "destChainId": "\(self.viewModel.toChain?.getChainId() ?? 0)",
-            "destToken": self.viewModel.token.symbol,
-            "destTokenAmount": self.viewModel.toValue,
-            "bridgeFee": self.viewModel.feeString
-        ]
-//        internalHistory.trackingExtraData = extra
+        let extra = BridgeTrackingExtraData(srcChainId:  "\(self.viewModel.fromChain?.getChainId() ?? 0)",
+                                srcToken: self.viewModel.token.symbol,
+                                srcTokenAmount: self.viewModel.fromValue,
+                                destChainId: "\(self.viewModel.toChain?.getChainId() ?? 0)",
+                                destToken: self.viewModel.token.symbol,
+                                destTokenAmount:  self.viewModel.toValue,
+                                bridgeFee: self.viewModel.feeString)
+        internalHistory.trackingExtraData = extra
       
       self.delegate?.didConfirm(self, signTransaction: unwrap, internalHistoryTransaction: internalHistory)
     }
