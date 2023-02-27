@@ -145,7 +145,7 @@ class MultiSendCellModel {
         return [
             "token": from.symbol,
             "destAddress": addressString,
-            "amount": displayBalance
+            "amount": amount
         ]
     }
 }
