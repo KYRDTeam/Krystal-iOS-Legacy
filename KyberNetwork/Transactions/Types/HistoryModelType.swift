@@ -260,7 +260,7 @@ extension HistoryModelType {
         case .swap:
             return .swap
         case .withdraw:
-            return .claim
+            return .unstake
         case .transferETH:
             return .transfer
         case .receiveETH:
@@ -272,7 +272,7 @@ extension HistoryModelType {
         case .allowance:
             return .undefine
         case .earn:
-            return .earn
+            return .stake
         case .contractInteraction:
             return .undefine
         case .selfTransfer:

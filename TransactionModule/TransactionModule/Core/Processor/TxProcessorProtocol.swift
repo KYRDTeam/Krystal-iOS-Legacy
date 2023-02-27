@@ -29,7 +29,7 @@ public protocol TxProcessorProtocol {
     func process(address: KAddress, chain: ChainType, txObject: TxObject, setting: TxSettingObject,
                  completion: @escaping (Result<TxProcessResult, TxError>) -> Void)
     func sendTx(data: Data, chain: ChainType, completion: @escaping (Result<String, AnyError>) -> Void)
-    func savePendingTx(txInfo: PendingTxInfo, extraInfo: TxTrackingExtraData?)
+    func savePendingTx(txInfo: PendingTxInfo)
 }
 
 public extension TxProcessorProtocol {

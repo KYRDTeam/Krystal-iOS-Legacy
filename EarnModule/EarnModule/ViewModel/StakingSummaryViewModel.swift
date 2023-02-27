@@ -76,7 +76,7 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
     }
     
     var tokenAmountString: String {
-        return displayInfo.amount
+        return displayInfo.stakeAmount + " " + displayInfo.stakeToken.symbol
     }
     
     var platformName: String {
@@ -124,31 +124,31 @@ class StakingSummaryViewModel: TxConfirmViewModelProtocol {
             guard let self = self else { return }
             switch result {
             case .success(let txResult):
+                let trackingExtraData = StakingTrackingExtraData(
+                    token: self.token.symbol,
+                    tokenAmount: self.displayInfo.stakeAmount.toDouble() ?? 0,
+                    stakeToken: self.earnToken.symbol,
+                    platform: self.platformName
+                )
                 let pendingTx = PendingStakingTxInfo(
                     token: self.token,
                     platform: self.platform,
                     selectedDestToken: self.earnToken,
-                    sourceAmount: self.displayInfo.amount,
+                    sourceAmount: self.displayInfo.stakeAmount + " " + self.displayInfo.stakeToken.symbol,
                     destAmount: self.displayInfo.receiveAmount,
                     legacyTx: txResult.legacyTx,
                     eip1559Tx: txResult.eip1559Tx,
                     chain: self.currentChain,
                     date: Date(),
                     hash: txResult.hash,
-                    earningType: self.earningType
+                    earningType: self.earningType,
+                    trackingExtraData: trackingExtraData
                 )
-//                TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx, extraInfo: self.buildExtraInfo())
+                TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
                 self.onSuccess(pendingTx)
             case .failure(let error):
                 self.onError(error.message)
             }
         }
-    }
-    
-    func buildExtraInfo() -> [String: String] {
-        return [
-            "token": token.symbol,
-            "tokenAmount": displayInfo.amount
-        ]
     }
 }

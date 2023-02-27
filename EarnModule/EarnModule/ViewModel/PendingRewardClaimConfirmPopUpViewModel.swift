@@ -98,8 +98,13 @@ class PendingRewardClaimConfirmPopUpViewModel: BaseViewModel, TxConfirmViewModel
             guard let self = self else { return }
             switch result {
             case .success(let txResult):
-                let pendingTx = PendingClaimTxInfo(pendingUnstake: self.pendingUnstake, legacyTx: txResult.legacyTx, eip1559Tx: txResult.eip1559Tx, chain: self.chain, date: Date(), hash: txResult.hash)
-                TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx, extraInfo: nil)
+                let trackingExtraData = ClaimTrackingExtraData(
+                    token: self.item.rewardToken.tokenInfo.symbol,
+                    amount: self.item.rewardToken.pendingReward.balance.toDouble() ?? 0,
+                    amountUsd: 0
+                )
+                let pendingTx = PendingClaimTxInfo(pendingUnstake: self.pendingUnstake, legacyTx: txResult.legacyTx, eip1559Tx: txResult.eip1559Tx, chain: self.chain, date: Date(), hash: txResult.hash, trackingExtraData: trackingExtraData)
+                TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
                 print(txResult)
                 self.onSuccess(pendingTx)
             case .failure(let error):
