@@ -110,7 +110,7 @@ class InternalHistoryTransaction: Codable {
         case .swap:
             txType = .swap
         case .withdraw:
-            txType = .claim
+            txType = .unstake
         case .transferETH:
             txType = .transfer
         case .receiveETH:
@@ -122,7 +122,7 @@ class InternalHistoryTransaction: Codable {
         case .allowance:
             txType = .undefine
         case .earn:
-            txType = .earn
+            txType = .stake
         case .contractInteraction:
             txType = .undefine
         case .selfTransfer:

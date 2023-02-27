@@ -16,9 +16,9 @@ class PendingClaimTxInfo: PendingTxInfo {
     
     let pendingUnstake: PendingUnstake
     
-    init(pendingUnstake: PendingUnstake, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: ChainType, date: Date, hash: String) {
+    init(pendingUnstake: PendingUnstake, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: ChainType, date: Date, hash: String, trackingExtraData: ClaimTrackingExtraData) {
         self.pendingUnstake = pendingUnstake
-        super.init(type: .claimStakingReward, legacyTx: legacyTx, eip1559Tx: eip1559Tx, chain: chain, date: date, hash: hash)
+        super.init(type: .claimStakingReward, legacyTx: legacyTx, eip1559Tx: eip1559Tx, chain: chain, date: date, hash: hash, trackingExtraData: trackingExtraData)
     }
     
     override var description: String {

@@ -117,7 +117,7 @@ public class ApproveTokenViewModel {
                                     walletAddress: AppState.shared.currentAddress.addressString,
                                     contractAddress: self.toAddress
                                 )
-                                TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx, extraInfo: nil)
+                                TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
                                 onCompleted(nil)
                             case .failure(let error):
                                 onCompleted(error)
