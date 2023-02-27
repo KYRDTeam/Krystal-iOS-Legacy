@@ -51,8 +51,6 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
             self.priceImpactState.value = self.selectedPlatformRate.value.map {
                 return self.getPriceImpactState(change: Double($0.priceImpact) / 100)
             } ?? .normal
-            
-            self.updateState()
         }
     }
     
@@ -210,8 +208,8 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
             guard let self = self else { return }
             self.souceAmountUsdString.value = self.getSourceAmountUsdString(amount: amount)
             if amount == nil || amount!.isZero {
-                self.selectedPlatformHint = nil
                 self.state.value = .emptyAmount
+                self.selectedPlatformHint = nil
             } else {
                 self.reloadRates(amount: amount!, isRefresh: false)
             }
@@ -280,6 +278,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             nodeService.getAllowance(address: self.currentAddress.value.addressString, networkAddress: self.currentChain.value.proxyAddress(), tokenAddress: self.sourceToken.value?.address ?? "") { [weak self] result in
                 guard let self = self else { return }
+                guard self.state.value.isActiveState else { return }
                 switch result {
                 case .success(let allowance):
                     if allowance < self.sourceAmount.value ?? .zero {
@@ -337,6 +336,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     func selectPlatform(hint: String) {
         self.selectedPlatformHint = hint
         self.reloadPlatformRatesViewModels()
+        self.updateState()
     }
     
     func reloadPlatformRatesViewModels() {
@@ -376,9 +376,10 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     func swapPair() {
         (sourceBalance.value, destBalance.value) = (destBalance.value, sourceBalance.value)
         (sourceToken.value, destToken.value) = (destToken.value, sourceToken.value)
+        (sourceTokenPrice.value, destTokenPrice.value) = (destTokenPrice.value, sourceTokenPrice.value)
         self.onChangeSourceToken?()
         self.sourceAmount.value = nil
-        self.selectedPlatformHint = nil
+        self.platformRates.value = []
         self.loadSourceTokenPrice()
         self.loadDestTokenPrice()
         self.reloadSourceBalance()
