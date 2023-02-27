@@ -297,7 +297,7 @@ extension SwapSummaryViewModel {
         internalHistoryTransaction.hash = hash
         internalHistoryTransaction.nonce = nonce
         internalHistoryTransaction.time = Date()
-          let extra = [
+        let extra = [
             "srcToken": self.swapObject.sourceToken.symbol,
             "srcTokenAmount": self.leftAmountValueString,
             "srcTokenAmountUsd": self.sourceAmountUsd,
@@ -307,7 +307,7 @@ extension SwapSummaryViewModel {
             "networkFee": self.getEstNetWorkFee(rate: self.swapObject.rate, l1Fee: self.l1Fee)
             
           ]
-          internalHistoryTransaction.extraUserInfo = extra
+//          internalHistoryTransaction.trackingExtraData = extra
 
         EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalHistoryTransaction)
         self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)

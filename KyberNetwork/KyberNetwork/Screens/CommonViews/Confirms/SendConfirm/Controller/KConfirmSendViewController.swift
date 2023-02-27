@@ -125,7 +125,7 @@ class KConfirmSendViewController: KNBaseViewController {
         "destAddress": viewModel.transaction.to ?? ""
         
       ]
-      historyTransaction.extraUserInfo = extra
+      historyTransaction.trackingExtraData = extra
     let event = KConfirmViewEvent.confirm(type: KNTransactionType.transfer(viewModel.transaction), historyTransaction: historyTransaction)
     self.delegate?.kConfirmSendViewController(self, run: event)
     MixPanelManager.track("transfer_confirm", properties: ["screenid": "transfer_confirm_pop_up"])

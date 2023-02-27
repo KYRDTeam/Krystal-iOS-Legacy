@@ -202,7 +202,7 @@ class ConfirmSendNFTViewController: KNBaseViewController {
             "nftType": self.viewModel.nftCategory.collectibleName,
             "collectibleAddress": self.viewModel.nftCategory.collectibleAddress
         ]
-        historyTransaction.extraUserInfo = extra
+//        historyTransaction.trackingExtraData = extra
       historyTransaction.transactionSuccessDescription = "Tranfer successfull \(self.viewModel.nftItem.externalData.name)"
 
       self.delegate?.kConfirmSendViewController(self, run: .confirmNFT(
