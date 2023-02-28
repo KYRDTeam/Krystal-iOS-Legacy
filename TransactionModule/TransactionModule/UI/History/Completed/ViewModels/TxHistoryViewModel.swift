@@ -17,7 +17,7 @@ class TxHistoryViewModel {
     var rows: [TxHistoryRowType] = []
     var txs: [TxRecord] = []
     
-    var currentChain: ChainType = .all
+    var currentChain: ChainType
     
     var chainIds: [Int] {
         return currentChain == .all ? ChainType.getAllChain().map { $0.getChainId() } : [currentChain.getChainId()]
@@ -34,6 +34,10 @@ class TxHistoryViewModel {
     
     private let historyService = HistoryService()
     var onRowsUpdated: (() -> ())?
+    
+    init(chain: ChainType) {
+        self.currentChain = chain
+    }
     
     func load(shouldReset: Bool) {
         isLoading = true

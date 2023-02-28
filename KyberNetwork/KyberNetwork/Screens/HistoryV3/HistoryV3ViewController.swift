@@ -50,11 +50,12 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
         return isHistoryStatsEnabled ? 56 : 16
     }
     
-    var selectedChain: ChainType = .all
+    var selectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : AppState.shared.currentChain
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        super.onAppSwitchChain()
         segmentControlTrailingConstant.constant = -segmentControlTrailingSpace
         statsButton.isHidden = !isHistoryStatsEnabled
         setupPageController()
@@ -82,7 +83,7 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
     }
     
     func setupPageController() {
-        let historyVC = HistoryCoordinator.createHistoryViewController()
+        let historyVC = HistoryCoordinator.createHistoryViewController(chain: selectedChain)
         
         let pendingViewModel = PendingTxViewModel()
         let pendingVC = PendingTxViewController.instantiateFromNib()

@@ -13,6 +13,7 @@ import TokenModule
 import BaseModule
 import AppState
 import Dependencies
+import BaseWallet
 
 class TxHistoryViewController: BaseWalletOrientedViewController {
 
