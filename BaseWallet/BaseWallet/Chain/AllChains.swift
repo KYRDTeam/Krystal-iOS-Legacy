@@ -273,7 +273,7 @@ public struct AllChains {
     type: "SPL",
     name: "Solana",
     symbol: "SOL",
-    endpoint: "",
+    endpoint: "https://api.mainnet-beta.solana.com",
     endpointKyber: "https://solana.knstats.com/v1/mainnet/geth?appId=\(NodeConfig.solanaAppID!)-krystal-ios",
     endpointAlchemy: "",
     etherScanEndpoint: "https://solscan.io/",
