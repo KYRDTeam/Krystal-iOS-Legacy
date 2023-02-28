@@ -178,7 +178,7 @@ class ConfirmSendNFTViewController: KNBaseViewController {
   @IBAction func confirmButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: {
       let historyTransaction = InternalHistoryTransaction(
-        type: .transferToken,
+        type: .transferNFT,
         state: .pending,
         fromSymbol: "NFT",
         toSymbol: nil,
