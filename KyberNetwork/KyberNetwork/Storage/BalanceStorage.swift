@@ -73,7 +73,7 @@ class BalanceStorage {
     Storage.store(balances, as: KNEnvironment.default.envPrefix + unwrapped.addressString + Constants.balanceStoreFileName)
   }
   
-  private func setCacheForChain(chain: ChainType, balances: [TokenBalance]) {
+  func setCacheForChain(chain: ChainType, balances: [TokenBalance]) {
     self.chainTokenBalances[chain] = balances
   }
   

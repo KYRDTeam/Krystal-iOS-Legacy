@@ -139,10 +139,12 @@ class StakingConfirmClaimPopupViewModel: BaseViewModel, TxConfirmViewModelProtoc
             guard let self = self else { return }
             switch result {
             case .success(let txResult):
+                let balance = BigInt(self.pendingUnstake.balance) ?? 0
+                let balanceDouble = NumberFormatUtils.balanceFormat(value: balance, decimals: self.pendingUnstake.decimals).toDouble() ?? 0
                 let trackingExtraData = ClaimTrackingExtraData(
                     token: self.pendingUnstake.symbol,
-                    amount: self.pendingUnstake.balance.toDouble() ?? 0,
-                    amountUsd: AppDependencies.priceStorage.getUsdPrice(address: self.pendingUnstake.address) ?? 0
+                    amount: balanceDouble,
+                    amountUsd: balanceDouble * (AppDependencies.priceStorage.getUsdPrice(address: self.pendingUnstake.address) ?? 0)
                 )
                 let pendingTx = PendingClaimTxInfo(pendingUnstake: self.pendingUnstake, legacyTx: txResult.legacyTx, eip1559Tx: txResult.eip1559Tx, chain: self.chain, date: Date(), hash: txResult.hash, trackingExtraData: trackingExtraData)
                 TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
