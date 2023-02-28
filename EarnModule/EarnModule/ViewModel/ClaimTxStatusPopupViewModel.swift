@@ -39,9 +39,9 @@ class ClaimTxStatusViewModel {
         case .processing:
             return nil
         case .success:
-            return UIImage(named: "tx_status_success")
+            return UIImage(imageName: "tx_status_success")
         case .failure:
-            return UIImage(named: "tx_status_fail")
+            return UIImage(imageName: "tx_status_fail")
         }
     }
     

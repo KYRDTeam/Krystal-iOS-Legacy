@@ -77,11 +77,6 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
         return "\(amountString.prefix(15)) \(swapObject.destToken.symbol)"
     }
     
-    var displayEstimatedRate: String {
-        let rateString = swapObject.rate.rate
-        return "1 \(swapObject.sourceToken.symbol) = \(rateString) \(swapObject.destToken.symbol)"
-    }
-    
     fileprivate var updateRateTimer: Timer?
     let swapService = SwapService()
     
@@ -278,7 +273,7 @@ extension SwapSummaryViewModel {
                                                   chain: chain,
                                                   date: Date(),
                                                   hash: tx.hash,
-                                                  detailString: self.displayEstimatedRate,
+                                                  detailString: self.getNormalRateString(sourceToken: self.swapObject.sourceToken, destToken: self.swapObject.destToken) ?? "",
                                                   trackingExtraData: trackingExtraData)
                 TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
                 self.onTxSendSuccess?(pendingTx)
