@@ -153,10 +153,6 @@ class InvestCoordinator: Coordinator {
     self.bridgeCoordinator = coordinator
   }
   
-  fileprivate func openStakeView() {
-      AppDependencies.router.openEarn()
-  }
-  
   func openHistoryScreen() {
       AppDependencies.router.openTransactionHistory()
   }
@@ -178,8 +174,11 @@ class InvestCoordinator: Coordinator {
   }
   
     func openLoyalty() {
-        guard let url = URL(string: "http://192.168.1.73:3000" + "/loyalty" + "?preview=true") else { return }
-        DappBrowser.openURL(navigationController: navigationController, url: url)
+//        guard let url = URL(string: KNEnvironment.default.krystalWebUrl + "/loyalty" + "?preview=true") else { return }
+//        DappBrowser.openURL(navigationController: navigationController, url: url)
+        let coordinator = DappCoordinator(navigationController: navigationController)
+        self.dappCoordinator = coordinator
+        coordinator.openBrowserScreen(searchText: KNEnvironment.default.krystalWebUrl + "/loyalty?preview=true")
     }
     
   func openRewardHunting() {
@@ -221,9 +220,7 @@ class InvestCoordinator: Coordinator {
   func appCoordinatorDidUpdateChain() {
     self.rootViewController.coordinatorDidUpdateChain()
     self.loadMarketAssets()
-    self.sendCoordinator?.appCoordinatorDidUpdateChain()
     self.dappCoordinator?.appCoordinatorDidUpdateChain()
-    self.multiSendCoordinator.appCoordinatorDidUpdateChain()
     self.bridgeCoordinator?.appCoordinatorDidUpdateChain()
   }
 }
@@ -300,8 +297,6 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         }
       }
       MixPanelManager.track("scanner_open", properties: ["screenid": "scanner"])
-    case .stake:
-      self.openStakeView()
     case .openApprovals:
         openApprovals()
     case .openLoyalty:

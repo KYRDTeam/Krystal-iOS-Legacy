@@ -26,9 +26,16 @@ struct TxHistoryFooterCellViewModel {
         
         isGasPositive = gasFee > 0
         gasAmount = NumberFormatUtils.amount(value: gasFee, decimals: 18) + " " + symbol
-        gasUsdValue = "$" + NumberFormatUtils.usdAmount(value: gasFee * BigInt(tx.historicalNativeTokenPrice * pow(10, 18)) / BigInt(10).power(18), decimals: 18)
         txHash = tx.txHash
         shortenedTxHash = tx.txHash.shortTypeAddress
+        
+        let gasUsdValueString = NumberFormatUtils.usdAmount(value: gasFee * BigInt(tx.historicalNativeTokenPrice * pow(10, 18)) / BigInt(10).power(18), decimals: 18)
+        if gasUsdValueString == "0" {
+            gasUsdValue = NumberFormatUtils.lessThanMinUsdAmountString()
+        } else {
+            gasUsdValue = "$" + gasUsdValueString
+        }
+        
     }
     
 }

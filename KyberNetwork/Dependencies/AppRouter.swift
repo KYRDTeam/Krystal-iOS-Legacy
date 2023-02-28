@@ -21,6 +21,10 @@ class AppRouter: AppRouterProtocol, Coordinator {
   func start() {
     fatalError("Do not use this function")
   }
+    
+    var selectedNavigationController: UINavigationController? {
+        return AppDelegate.shared.coordinator.tabbarController.selectedViewController as? UINavigationController
+    }
   
   func openAddWallet() {
     guard let parent = UIApplication.shared.topMostViewController() else { return }
@@ -43,32 +47,39 @@ class AppRouter: AppRouterProtocol, Coordinator {
   }
   
     func openChainList(_ selectedChain: ChainType, allowAllChainOption: Bool, showSolanaOption: Bool, onSelectChain: @escaping (ChainType) -> Void) {
-    MixPanelManager.track("import_select_chain_open", properties: ["screenid": "import_select_chain"])
-    let popup = SwitchChainViewController(selected: selectedChain)
-    var chains = WalletManager.shared.getAllAddresses(walletID: AppState.shared.currentAddress.walletID).flatMap { address in
-      return ChainType.getAllChain().filter { chain in
-        return chain != .all && chain.addressType == address.addressType
-      }
-    }
-    if allowAllChainOption {
-      chains = [.all] + chains
-    }
-    if !showSolanaOption {
-        chains.removeAll { $0 == .solana }
-    }
-    popup.dataSource = chains
-    popup.completionHandler = { selectedChain in
-      AppState.shared.isSelectedAllChain = (selectedChain == .all)
-      if allowAllChainOption && selectedChain == .all {
-        AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = .all
-        AppDelegate.shared.coordinator.loadBalanceCoordinator?.resume()
-        AppEventManager.shared.postSelectAllChain()
-      } else {
-        AppState.shared.updateChain(chain: selectedChain)
-      }
-      onSelectChain(selectedChain)
-    }
-    UIApplication.shared.topMostViewController()?.present(popup, animated: true, completion: nil)
+        MixPanelManager.track("import_select_chain_open", properties: ["screenid": "import_select_chain"])
+        let popup = SwitchChainViewController(includedAll: allowAllChainOption, selected: selectedChain)
+        
+        var chains: [ChainType] = []
+        
+        if !AppState.shared.isBrowsingMode {
+            chains = WalletManager.shared.getAllAddresses(walletID: AppState.shared.currentAddress.walletID).flatMap { address in
+                return ChainType.getAllChain().filter { chain in
+                    return chain != .all && chain.addressType == address.addressType
+                }
+            }
+            if allowAllChainOption {
+              chains = [.all] + chains
+            }
+            if !showSolanaOption {
+                chains.removeAll { $0 == .solana }
+            }
+        }
+        popup.dataSource = chains
+        popup.completionHandler = { selectedChain in
+          AppState.shared.isSelectedAllChain = (selectedChain == .all)
+          if allowAllChainOption && selectedChain == .all {
+            AppDelegate.shared.coordinator.overviewTabCoordinator?.rootViewController.viewModel.currentChain = .all
+            AppDelegate.shared.coordinator.loadBalanceCoordinator?.resume()
+            AppEventManager.shared.postSelectAllChain()
+          } else if let wallet = WalletManager.shared.getWallet(id: AppState.shared.currentAddress.walletID) {
+              AppDelegate.shared.coordinator.switchWallet(wallet: wallet, chain: selectedChain)
+          } else {
+              AppState.shared.updateChain(chain: selectedChain)
+          }
+          onSelectChain(selectedChain)
+        }
+        UIApplication.shared.topMostViewController()?.present(popup, animated: true, completion: nil)
   }
   
   func openTransactionHistory() {
@@ -105,11 +116,17 @@ class AppRouter: AppRouterProtocol, Coordinator {
     guard let url = URL(string: chain.customRPC().etherScanEndpoint + "tx/" + txHash) else { return }
     UIApplication.shared.topMostViewController()?.openSafari(with: url)
   }
+    
+    func openTokenScanner(address: String, chainId: Int) {
+        guard let chain = ChainType.make(chainID: chainId) else { return }
+        guard let url = URL(string: chain.customRPC().etherScanEndpoint + "token/" + address) else { return }
+        UIApplication.shared.topMostViewController()?.openSafari(with: url)
+    }
   
-  func openToken(navigationController: UINavigationController, address: String, chainID: Int) {
+  func openToken(navigationController: UINavigationController, address: String, chainID: Int, tokenName: String?) {
     guard let chain = ChainType.make(chainID: chainID) else { return }
     let currencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .quote
-    guard let vc = TokenModule.createTokenDetailViewController(address: address, chain: chain, currencyMode: currencyMode) else { return }
+    guard let vc = TokenModule.createTokenDetailViewController(address: address, chain: chain, tokenName: tokenName, currencyMode: currencyMode) else { return }
     vc.hidesBottomBarWhenPushed = false
     navigationController.pushViewController(vc, animated: true, completion: nil)
   }
@@ -127,30 +144,43 @@ class AppRouter: AppRouterProtocol, Coordinator {
     
     func openSwap() {
         AppDelegate.shared.coordinator.tabbarController.selectedIndex = 1
-        AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: true)
-        
+        selectedNavigationController?.popToRootViewController(animated: true)
     }
   
   func openSwap(token: Token) {
-      AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: false)
       AppDelegate.shared.coordinator.tabbarController.selectedIndex = 1
+      if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.swapModule) {
+          AppDelegate.shared.coordinator.swapModuleCoordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: false)
+      } else {
+          AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: false)
+      }
   }
     
     func openEarn() {
         AppDelegate.shared.coordinator.tabbarController.selectedIndex = 3
-        AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
-        AppDelegate.shared.coordinator.earnCoordinator?.openEarningOptions()
+        selectedNavigationController?.popToRootViewController(animated: false)
+        AppDelegate.shared.coordinator.earnModuleCoordinator?.openEarningOptions()
     }
     
     func openEarnPortfolio() {
         AppDelegate.shared.coordinator.tabbarController.selectedIndex = 3
-        AppDelegate.shared.coordinator.tabbarController.navigationController?.popToRootViewController(animated: false)
-        AppDelegate.shared.coordinator.earnCoordinator?.openPortfolio()
+        selectedNavigationController?.popToRootViewController(animated: false)
+        AppDelegate.shared.coordinator.earnModuleCoordinator?.openPortfolio()
+    }
+    
+    func openEarnReward() {
+        AppDelegate.shared.coordinator.tabbarController.selectedIndex = 3
+        selectedNavigationController?.popToRootViewController(animated: false)
+        AppDelegate.shared.coordinator.earnModuleCoordinator?.openEarnReward()
     }
 
 	func openSwap(from: Token, to: Token) {
-        AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorOpenSwap(from: from, to: to)
         AppDelegate.shared.coordinator.tabbarController.selectedIndex = 1
+        if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.swapModule) {
+            AppDelegate.shared.coordinator.swapModuleCoordinator?.appCoordinatorOpenSwap(from: from, to: to)
+        } else {
+            AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorOpenSwap(from: from, to: to)
+        }
     }
   
 }

@@ -8,7 +8,6 @@
 import UIKit
 import BigInt
 import Result
-import SwiftUI
 import AppState
 import BaseModule
 import Services
@@ -69,6 +68,7 @@ class TransactionSettingsViewController: KNBaseViewController {
             }
             let sheet = SheetViewController(controller: warningPopup, sizes: [.intrinsic], options: SheetOptions(pullBarHeight: 0))
             sheet.dismissOnPull = false
+            sheet.dismissOnOverlayTap = false
             self.present(sheet, animated: true, completion: nil)
         }
         

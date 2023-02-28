@@ -98,7 +98,7 @@ class KSendTokenViewController: InAppBrowsingViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+    self.viewModel.getNodeBalance()
     self.addressTextField.setupCustomDeleteIcon()
     self.amountTextField.setupCustomDeleteIcon()
     self.setupDelegates()
@@ -129,6 +129,18 @@ class KSendTokenViewController: InAppBrowsingViewController {
     self.isViewDisappeared = true
     self.view.endEditing(true)
   }
+    
+    override func onAppSwitchChain() {
+        super.onAppSwitchChain()
+        guard self.isViewLoaded else { return }
+        self.setupAddressTextField()
+        self.viewModel.resetAdvancedSettings()
+        self.updateUISwitchChain()
+        self.viewModel.resetFromToken()
+        self.updateGasFeeUI()
+        self.currentTokenButton.setTitle(self.viewModel.tokenButtonText, for: .normal)
+        self.viewModel.getNodeBalance()
+    }
   
   func setupDelegates() {
     scanAddressQRDelegate = KQRCodeReaderDelegate(onResult: { result in
@@ -144,6 +156,10 @@ class KSendTokenViewController: InAppBrowsingViewController {
       self.getEnsAddressFromName(address)
       self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     })
+      
+      viewModel.onGetBalanceFromNodeCompleted = {
+          self.updateUIBalanceDidChange()
+      }
   }
 
   override func handleWalletButtonTapped() {
@@ -527,7 +543,6 @@ extension KSendTokenViewController {
   }
 
   func coordinatorUpdateBalances(_ balances: [String: Balance]) {
-    self.viewModel.updateBalance(balances)
     self.updateUIBalanceDidChange()
   }
 
@@ -634,17 +649,7 @@ extension KSendTokenViewController {
     let title = KNGeneralProvider.shared.isBrowsingMode ? Strings.connectWallet : Strings.transfer
     sendButton.setTitle(title, for: .normal)
     amountTextField.text = ""
-  }
-
-  func coordinatorDidUpdateChain() {
-    guard self.isViewLoaded else { return }
-    self.setupAddressTextField()
-    self.viewModel.resetAdvancedSettings()
-    self.updateUISwitchChain()
-    self.viewModel.resetFromToken()
-    self.updateGasFeeUI()
-    self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
-    self.currentTokenButton.setTitle(self.viewModel.tokenButtonText, for: .normal)
+    self.viewModel.getNodeBalance()
   }
 
   func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {

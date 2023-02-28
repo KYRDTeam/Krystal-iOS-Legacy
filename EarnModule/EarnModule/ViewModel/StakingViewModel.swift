@@ -121,11 +121,11 @@ class StakingViewModel: BaseViewModel {
     }
     
     var displayAPY: String {
-      return NumberFormatUtils.percent(value: selectedPlatform.apy)
+        return NumberFormatUtils.percent(value: selectedPlatform.apy.roundedValue())
     }
     
     var displayRewardApy: String {
-        return NumberFormatUtils.percent(value: selectedPlatform.rewardApy)
+        return NumberFormatUtils.percent(value: selectedPlatform.rewardApy.roundedValue())
     }
     
     var transactionFee: BigInt {
@@ -241,7 +241,7 @@ class StakingViewModel: BaseViewModel {
     
     var displayAmountReceive: String {
         guard let detail = selectedEarningToken.value, amount.value > 0 else { return "---" }
-        let receiveAmt = BigInt(rate * pow(10.0, 18.0)) * amount.value / BigInt(10).power(18)
+        let receiveAmt = BigInt(rate * pow(10.0, Double(detail.decimals))) * amount.value / BigInt(10).power(18)
         return NumberFormatUtils.amount(value: receiveAmt, decimals: detail.decimals) + " " + detail.symbol
     }
     

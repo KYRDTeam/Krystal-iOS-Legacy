@@ -37,4 +37,8 @@ public class EarnModuleCoordinator: Coordinator {
         earnOverviewViewController.jumpToPage(index: 0)
     }
     
+    public func openEarnReward() {
+        earnOverviewViewController.jumpToPage(index: 2)
+    }
+    
 }

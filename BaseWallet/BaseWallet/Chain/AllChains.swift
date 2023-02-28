@@ -233,8 +233,8 @@ public struct AllChains {
     type: "ERC20",
     name: "Arbitrum",
     symbol: "ETH",
-    endpoint: "https://rpc.ankr.com/arbitrum",
-    endpointKyber: "https://arb1.arbitrum.io/rpc",
+    endpoint: "https://arb1.arbitrum.io/rpc",
+    endpointKyber: "https://rpc.ankr.com/arbitrum",
     endpointAlchemy: "https://arb1.arbitrum.io/rpc",
     etherScanEndpoint: "https://arbiscan.io/",
     webScanName: "Arbiscan",
@@ -273,7 +273,7 @@ public struct AllChains {
     type: "SPL",
     name: "Solana",
     symbol: "SOL",
-    endpoint: "",
+    endpoint: "https://api.mainnet-beta.solana.com",
     endpointKyber: "https://solana.knstats.com/v1/mainnet/geth?appId=\(NodeConfig.solanaAppID!)-krystal-ios",
     endpointAlchemy: "",
     etherScanEndpoint: "https://solscan.io/",
@@ -282,7 +282,7 @@ public struct AllChains {
     wrappedAddress: "",
     apiEtherscanEndpoint: "",
     proxyAddress: "0x864F01c5E46b0712643B956BcA607bF883e0dbC5", //NOTE: fix later , add to avoid crash
-    quoteTokenAddress: "So11111111111111111111111111111111111111112",
+    quoteTokenAddress: "So11111111111111111111111111111111111111111",
     chainIcon: "chain_solana_icon",
     quoteToken: "SOL",
     apiChainPath: "solana"

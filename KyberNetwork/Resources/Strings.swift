@@ -327,4 +327,5 @@ struct Strings {
     static let support = "support".toBeLocalised()
     static let approvalNoTokenFoundOnWallet = "approval.no.token.found.on.wallet".toBeLocalised()
     static let approvalNoTokenFoundOnNetwork = "approval.no.token.found.on.network".toBeLocalised()
+    static let notAnEligibleWallet = "not.an.eligible.wallet".toBeLocalised()
 }

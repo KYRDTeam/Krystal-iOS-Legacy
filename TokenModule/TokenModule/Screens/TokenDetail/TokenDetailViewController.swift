@@ -196,7 +196,8 @@ class TokenDetailViewController: KNBaseViewController {
   }
   
   @objc func copyTokenAddress() {
-    UIPasteboard.general.string = self.viewModel.tokenDetail?.address
+    guard let address = self.viewModel.tokenDetail?.address else { return }
+    UIPasteboard.general.string = address
     let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
     hud.mode = .text
     hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
@@ -235,6 +236,10 @@ class TokenDetailViewController: KNBaseViewController {
     viewModel.onTokenInfoLoadedFail = { [weak self] in
       self?.hideLoading()
       self?.errorView.isHidden = false
+      self?.chainIcon.image = self?.viewModel.chain.chainIcon()
+      self?.chainAddressLabel.text = self?.viewModel.address
+      self?.favButton.isHidden = true
+      self?.titleView.text = self?.viewModel.tokenName
     }
   }
   
@@ -360,7 +365,8 @@ class TokenDetailViewController: KNBaseViewController {
   }
   
   @IBAction func etherscanButtonTapped(_ sender: UIButton) {
-//    AppDependencies.router.openToken(address: viewModel.token.address, chainID: viewModel.chainID)
+      guard let address = viewModel.tokenDetail?.address else { return }
+      AppDependencies.router.openTokenScanner(address: address, chainId: self.viewModel.chain.getChainId())
   }
   
   @IBAction func websiteButtonTapped(_ sender: UIButton) {
@@ -434,7 +440,7 @@ class TokenDetailViewController: KNBaseViewController {
     self.tagView.isHidden = self.viewModel.tagImage == nil
     
     self.chainIcon.image = viewModel.chain.chainIcon()
-    self.chainAddressLabel.text = self.viewModel.tokenDetail?.address
+    self.chainAddressLabel.text = self.viewModel.address
   }
 
   fileprivate func updateUIPeriodSelectButtons() {

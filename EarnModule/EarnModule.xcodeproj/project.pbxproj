@@ -78,6 +78,10 @@
 		A66FC3FB28F4F52100E49E86 /* EarnModule.h in Headers */ = {isa = PBXBuildFile; fileRef = A66FC3FA28F4F52100E49E86 /* EarnModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A69E8EB1291DDEBB005B28CB /* PendingStakingTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EB0291DDEBB005B28CB /* PendingStakingTxInfo.swift */; };
 		A69E8EB4291DEF23005B28CB /* StakeDisplayInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E8EB3291DEF23005B28CB /* StakeDisplayInfo.swift */; };
+		A69ED82F29ACC3FD00D386E5 /* StakingTrackingExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69ED82E29ACC3FD00D386E5 /* StakingTrackingExtraData.swift */; };
+		A69ED83129ACC66E00D386E5 /* EarnTrackingExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69ED83029ACC66E00D386E5 /* EarnTrackingExtraData.swift */; };
+		A69ED83329ACC7A500D386E5 /* UnstakeTrackingExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69ED83229ACC7A500D386E5 /* UnstakeTrackingExtraData.swift */; };
+		A69ED83529ACCB9200D386E5 /* ClaimTrackingExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69ED83429ACCB9200D386E5 /* ClaimTrackingExtraData.swift */; };
 		A6D1F7F1291B847800ABA52B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F7F0291B847800ABA52B /* Constants.swift */; };
 		A6D1F808291BAF1E00ABA52B /* StakingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */; };
 		A6D1F80A291BB0F100ABA52B /* StakingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D1F809291BB0F100ABA52B /* StakingSummaryViewModel.swift */; };
@@ -183,6 +187,10 @@
 		A66FC3FA28F4F52100E49E86 /* EarnModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EarnModule.h; sourceTree = "<group>"; };
 		A69E8EB0291DDEBB005B28CB /* PendingStakingTxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingStakingTxInfo.swift; sourceTree = "<group>"; };
 		A69E8EB3291DEF23005B28CB /* StakeDisplayInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakeDisplayInfo.swift; sourceTree = "<group>"; };
+		A69ED82E29ACC3FD00D386E5 /* StakingTrackingExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingTrackingExtraData.swift; sourceTree = "<group>"; };
+		A69ED83029ACC66E00D386E5 /* EarnTrackingExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnTrackingExtraData.swift; sourceTree = "<group>"; };
+		A69ED83229ACC7A500D386E5 /* UnstakeTrackingExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnstakeTrackingExtraData.swift; sourceTree = "<group>"; };
+		A69ED83429ACCB9200D386E5 /* ClaimTrackingExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimTrackingExtraData.swift; sourceTree = "<group>"; };
 		A6D1F7F0291B847800ABA52B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A6D1F807291BAF1E00ABA52B /* StakingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingViewModel.swift; sourceTree = "<group>"; };
 		A6D1F809291BB0F100ABA52B /* StakingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingSummaryViewModel.swift; sourceTree = "<group>"; };
@@ -437,6 +445,10 @@
 				C36AD4B22924F8DC0031770E /* lido-matic.plist */,
 				7E181E6029237A5E00C661CD /* UnstakeDisplayInfo.swift */,
 				A6066935292B7E6C00718E90 /* EarningType.swift */,
+				A69ED82E29ACC3FD00D386E5 /* StakingTrackingExtraData.swift */,
+				A69ED83029ACC66E00D386E5 /* EarnTrackingExtraData.swift */,
+				A69ED83229ACC7A500D386E5 /* UnstakeTrackingExtraData.swift */,
+				A69ED83429ACCB9200D386E5 /* ClaimTrackingExtraData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -587,6 +599,7 @@
 				A69E8EB4291DEF23005B28CB /* StakeDisplayInfo.swift in Sources */,
 				7E6EBD6B2909280900069B33 /* EarnPoolPlatformCell.swift in Sources */,
 				A6D1F7F1291B847800ABA52B /* Constants.swift in Sources */,
+				A69ED82F29ACC3FD00D386E5 /* StakingTrackingExtraData.swift in Sources */,
 				A6FDE5912924BE34009BC64B /* ClaimTxStatusPopupViewModel.swift in Sources */,
 				7E6EBD6129091E0800069B33 /* EarnListViewController.swift in Sources */,
 				A61B297C292384E80064C3FE /* SpecifiedEarningPlatform.swift in Sources */,
@@ -594,8 +607,11 @@
 				7EB00DE72924F463001B2136 /* TrasactionProcessPopupViewModel.swift in Sources */,
 				C34E9C5E294610CD00ECC56B /* PendingRewardCell.swift in Sources */,
 				7ED78DD5293F2B8E000E736F /* PortfolioHeaderView.swift in Sources */,
+				A69ED83329ACC7A500D386E5 /* UnstakeTrackingExtraData.swift in Sources */,
 				7E6EBD6C2909280900069B33 /* EarnPoolViewCell.swift in Sources */,
 				7E6EBD86290931E900069B33 /* StakingPortfolioCell.swift in Sources */,
+				A69ED83529ACCB9200D386E5 /* ClaimTrackingExtraData.swift in Sources */,
+				A69ED83129ACC66E00D386E5 /* EarnTrackingExtraData.swift in Sources */,
 				7E71FA7A2921E9BD0021E67D /* UnstakeViewModel.swift in Sources */,
 				7E181E6129237A5E00C661CD /* UnstakeDisplayInfo.swift in Sources */,
 				C34E9C6129471A1300ECC56B /* PendingRewardViewModel.swift in Sources */,

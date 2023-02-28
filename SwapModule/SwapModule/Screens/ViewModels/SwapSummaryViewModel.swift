@@ -253,6 +253,21 @@ extension SwapSummaryViewModel {
             guard let self = self else { return }
             switch txResult {
             case .success(let tx):
+                let srcTokenAmount = NumberFormatUtils.amount(value: self.swapObject.sourceAmount, decimals: self.swapObject.sourceToken.decimals).toDouble() ?? 0
+                let srcTokenAmountInUsd = srcTokenAmount * self.swapObject.sourceTokenPrice
+                let destTokenAmount = NumberFormatUtils.amount(value: self.swapObject.rate.amount.bigInt ?? 0, decimals: self.swapObject.destToken.decimals).toDouble() ?? 0
+                let destTokenAmountInUsd = destTokenAmount * self.swapObject.destTokenPrice
+                let networkFeeUsd = self.getGasFeeUSD(estGas: BigInt(self.swapObject.rate.estGasConsumed ?? 0), gasPrice: self.gasPrice)
+                let networkFeeValue = NumberFormatUtils.gasFee(value: networkFeeUsd).toDouble() ?? 0
+                
+                let trackingExtraData = SwapTrackingExtraData(srcToken: self.swapObject.sourceToken.symbol,
+                                                              srcTokenAmount: srcTokenAmount,
+                                                              srcTokenAmountUsd: srcTokenAmountInUsd,
+                                                              destToken: self.swapObject.destToken.symbol,
+                                                              destTokenAmount: destTokenAmount,
+                                                              destTokenAmountUsd: destTokenAmountInUsd,
+                                                              networkFee: networkFeeValue,
+                                                              platform: self.swapObject.rate.platform)
                 let pendingTx = PendingSwapTxInfo(sourceToken: self.swapObject.sourceToken,
                                                   destToken: self.swapObject.destToken,
                                                   rate: self.swapObject.rate,
@@ -263,7 +278,8 @@ extension SwapSummaryViewModel {
                                                   chain: chain,
                                                   date: Date(),
                                                   hash: tx.hash,
-                                                  detailString: self.displayEstimatedRate)
+                                                  detailString: self.displayEstimatedRate,
+                                                  trackingExtraData: trackingExtraData)
                 TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
                 self.onTxSendSuccess?(pendingTx)
             case .failure(let error):

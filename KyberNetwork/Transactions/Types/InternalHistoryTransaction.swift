@@ -8,6 +8,7 @@
 import Foundation
 import BigInt
 import BaseWallet
+import TransactionModule
 
 class InternalHistoryTransaction: Codable {
   var hash: String = ""
@@ -27,6 +28,8 @@ class InternalHistoryTransaction: Codable {
   var eip1559Transaction: EIP1559Transaction?
   var chain: ChainType
   var extraData: InternalHistoryExtraData?
+  var trackingExtraData: TxTrackingExtraData?
+//    var extraMultisendInfo: [[String: String]]?
 
   init(
     type: HistoryModelType,
@@ -49,6 +52,7 @@ class InternalHistoryTransaction: Codable {
     self.transactionObject = transactionObj
     self.eip1559Transaction = eip1559Tx
     self.chain = chain
+    self.trackingExtraData = nil
   }
   
   var gasFee: BigInt {
@@ -96,6 +100,97 @@ class InternalHistoryTransaction: Codable {
     speedupGas += (speedupGas * 20 / 100) //Add 10%
     return speedupGas
   }
+    
+    var userData: [String: Any] {
+        let txType: UserService.TransactionType
+        let chainType: UserService.ChainType
+        let status: UserService.TransactionState
+        
+        switch type {
+        case .swap:
+            txType = .swap
+        case .withdraw:
+            txType = .unstake
+        case .transferETH:
+            txType = .transfer
+        case .receiveETH:
+            txType = .undefine
+        case .transferToken:
+            txType = .transfer
+        case .receiveToken:
+            txType = .undefine
+        case .allowance:
+            txType = .undefine
+        case .earn:
+            txType = .stake
+        case .contractInteraction:
+            txType = .undefine
+        case .selfTransfer:
+            txType = .transfer
+        case .createNFT:
+            txType = .undefine
+        case .transferNFT:
+            txType = .nft_transfer
+        case .receiveNFT:
+            txType = .undefine
+        case .claimReward:
+            txType = .claim
+        case .multiSend:
+            txType = .multisend
+        case .bridge:
+            txType = .bridge
+        }
+        
+        switch chain {
+        case .solana:
+            chainType = .solana
+        default:
+            chainType = .evm
+        }
+        
+        switch state {
+        case .pending:
+            status = .pending
+        case .speedup:
+            status = .pending
+        case .cancel:
+            status = .pending
+        case .done:
+            status = .success
+        case .drop:
+            status = .failed
+        case .error:
+            status = .failed
+        }
+        
+        return UserService.buildTransactionParam(type: txType, chainType: chainType, txHash: hash, status: status, extra: trackingExtraData)
+    }
+    
+    func getChainType() -> UserService.ChainType {
+        switch chain {
+        case .solana:
+            return .solana
+        default:
+            return .evm
+        }
+    }
+    
+    func getTxState() -> UserService.TransactionState {
+        switch state {
+        case .pending:
+            return .pending
+        case .speedup:
+            return .pending
+        case .cancel:
+            return .pending
+        case .done:
+            return .success
+        case .drop:
+            return .failed
+        case .error:
+            return .failed
+        }
+    }
 }
 
 struct InternalHistoryExtraData: Codable {

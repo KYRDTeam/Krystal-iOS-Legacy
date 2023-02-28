@@ -21,11 +21,21 @@ public protocol AppRouterProtocol {
     func openExternalURL(url: String)
     func openSupportURL()
     func openTxHash(txHash: String, chainID: Int)
-    func openToken(navigationController: UINavigationController, address: String, chainID: Int)
+    func openToken(navigationController: UINavigationController, address: String, chainID: Int, tokenName: String?)
     func openTokenTransfer(navigationController: UINavigationController, token: Token)
     func openSwap(token: Token)
     func openSwap()
     func openEarn()
     func openEarnPortfolio()
-	func openSwap(from: Token, to: Token)
+    func openEarnReward()
+    func openSwap(from: Token, to: Token)
+    func openTokenScanner(address: String, chainId: Int)
+}
+
+public extension AppRouterProtocol {
+    
+    func openToken(navigationController: UINavigationController, address: String, chainID: Int) {
+        openToken(navigationController: navigationController, address: address, chainID: chainID, tokenName: nil)
+    }
+    
 }

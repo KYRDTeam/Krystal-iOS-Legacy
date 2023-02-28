@@ -93,8 +93,7 @@ class StakingViewController: InAppBrowsingViewController {
         setupUI()
         bindingViewModel()
         viewModel.observeEvents()
-        viewModel.requestOptionDetail()
-        viewModel.getAllowance()
+        viewModel.reloadData()
         viewModel.getQuoteTokenPrice()
         viewModel.getStakingTokenDetail()
         updateUIProjection()
@@ -271,7 +270,9 @@ class StakingViewController: InAppBrowsingViewController {
         }
         
         viewModel.balance.observeAndFire(on: self) { [weak self] _ in
-            self?.stakeTokenLabel.text = self?.viewModel.displayStakeToken
+            DispatchQueue.main.async {
+                self?.stakeTokenLabel.text = self?.viewModel.displayStakeToken
+            }
         }
         
         viewModel.selectedEarningToken.observeAndFire(on: self) { _ in
@@ -433,14 +434,13 @@ class StakingViewController: InAppBrowsingViewController {
     func openStakeSummary(txObject: TxObject) {
         let amountString = NumberFormatUtils.amount(value: viewModel.amount.value, decimals: viewModel.token.decimals)
         let displayInfo = StakeDisplayInfo(
-            amount: "\(amountString) \(viewModel.token.symbol)",
+            stakeAmount: "\(amountString)",
             apy: viewModel.displayAPY,
             receiveAmount: viewModel.displayAmountReceive,
             rate: viewModel.displayRate,
             fee: viewModel.displayFeeString,
             platform: viewModel.selectedPlatform.name,
-            stakeTokenIcon: viewModel.token.logo,
-            fromSym: viewModel.token.symbol,
+            stakeToken: viewModel.token,
             toSym: viewModel.selectedEarningToken.value?.symbol ?? ""
         )
         self.openStakeSummary(txObject: txObject, settings: viewModel.setting, displayInfo: displayInfo)

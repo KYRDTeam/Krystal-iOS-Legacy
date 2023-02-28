@@ -64,6 +64,12 @@ class RewardsViewControllerViewModel {
       return rewardDetailDisplayDataSource[index]
     }
   }
+    
+    func buildExtraData() -> RewardExtraData {
+        return RewardExtraData(token: rewardDataSource.first?.symbol ?? "",
+                        amount: "\(rewardDataSource.first?.amount ?? 0)",
+                        amountUsd: "\(rewardDataSource.first?.value ?? 0)")
+    }
 }
 
 protocol RewardsViewControllerDelegate: class {

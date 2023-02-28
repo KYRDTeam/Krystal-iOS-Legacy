@@ -109,7 +109,7 @@ extension KNAppCoordinator: EarnCoordinatorDelegate {
 }
 
 extension KNAppCoordinator: OverviewCoordinatorDelegate {
-  
+
   func overviewCoordinatorOpenPromotion(code: String) {
     self.tabbarController.selectedIndex = 2
     self.investCoordinator?.openPromotion(withCode: code)
@@ -121,11 +121,20 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
   }
   
   func overviewCoordinatorDidImportWallet(wallet: KWallet, chainType: ChainType) {
-    switchWallet(wallet: wallet, chain: chainType)
+    self.onAddWallet(wallet: wallet, chain: chainType)
+    AppState.shared.updateAddress(address: AppState.shared.currentAddress, targetChain: AppState.shared.currentChain)
   }
-  
+    
+  func overviewCoordinatorDidAddWatchAddress(address: KAddress, chainType: ChainType) {
+    switchToWatchAddress(address: address, chain: chainType)
+  }
+    
   func overviewCoordinatorDidStart() {
   }
+    
+    func overviewCoordinatorDidChangeHideBalanceStatus(_ status: Bool) {
+      self.earnCoordinator?.appCoodinatorDidUpdateHideBalanceStatus(status)
+    }
 
   func overviewCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.tabbarController.selectedIndex = 4
@@ -133,12 +142,22 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
   }
 
   func overviewCoordinatorDidSelectDepositMore(tokenAddress: String) {
-      AppDependencies.router.openEarn()
+      if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.earnV2) {
+          AppDependencies.router.openEarn()
+      } else {
+          self.earnCoordinator?.navigationController.popToRootViewController(animated: false)
+          self.tabbarController.selectedIndex = 3
+          self.earnCoordinator?.appCoodinatorDidOpenEarnView(tokenAddress: tokenAddress)
+      }
   }
 
   func overviewCoordinatorDidSelectSwapToken(token: Token, isBuy: Bool) {
-      self.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: isBuy)
       self.tabbarController.selectedIndex = 1
+      if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.swapModule) {
+          self.swapModuleCoordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: isBuy)
+      } else {
+          self.swapV2Coordinator?.appCoordinatorShouldOpenExchangeForToken(token, isReceived: isBuy)
+      }
   }
   
   func overviewCoordinatorOpenCreateChainWalletMenu(chainType: ChainType) {
@@ -178,7 +197,8 @@ extension KNAppCoordinator: KrytalCoordinatorDelegate {
 extension KNAppCoordinator: InvestCoordinatorDelegate {
   
   func investCoordinator(didAdd wallet: KWallet, chain: ChainType) {
-    switchWallet(wallet: wallet, chain: chain)
+      self.onAddWallet(wallet: wallet, chain: chain)
+      AppState.shared.updateAddress(address: AppState.shared.currentAddress, targetChain: AppState.shared.currentChain)
   }
   
   func investCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {

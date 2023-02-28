@@ -178,7 +178,7 @@ class ConfirmSendNFTViewController: KNBaseViewController {
   @IBAction func confirmButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: {
       let historyTransaction = InternalHistoryTransaction(
-        type: .transferToken,
+        type: .transferNFT,
         state: .pending,
         fromSymbol: "NFT",
         toSymbol: nil,
@@ -197,6 +197,11 @@ class ConfirmSendNFTViewController: KNBaseViewController {
         ),
         eip1559Tx: nil
       )
+        let extra = TransferNFTExtraData(nftInfo: self.viewModel.nftItem.externalData.externalDataDescription,
+                                         nftType: self.viewModel.nftCategory.collectibleName,
+                                         collectibleAddress: self.viewModel.nftCategory.collectibleAddress,
+                                         destAddress: self.viewModel.address)
+      historyTransaction.trackingExtraData = extra
       historyTransaction.transactionSuccessDescription = "Tranfer successfull \(self.viewModel.nftItem.externalData.name)"
 
       self.delegate?.kConfirmSendViewController(self, run: .confirmNFT(

@@ -14,6 +14,7 @@ public enum TxType {
     case approval
     case claimStakingReward
     case unstake
+    case swap
 }
 
 open class PendingTxInfo {
@@ -23,14 +24,16 @@ open class PendingTxInfo {
     public var chain: ChainType
     public var date: Date
     public var hash: String
+    public var trackingExtraData: TxTrackingExtraData?
     
-    public init(type: TxType, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: ChainType, date: Date, hash: String) {
+    public init(type: TxType, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: ChainType, date: Date, hash: String, trackingExtraData: TxTrackingExtraData? = nil) {
         self.type = type
         self.legacyTx = legacyTx
         self.eip1559Tx = eip1559Tx
         self.chain = chain
         self.date = date
         self.hash = hash
+        self.trackingExtraData = trackingExtraData
     }
     
     open var description: String {

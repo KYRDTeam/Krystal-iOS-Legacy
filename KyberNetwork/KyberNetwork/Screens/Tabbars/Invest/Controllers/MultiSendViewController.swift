@@ -115,6 +115,11 @@ class MultiSendViewModel {
       self.cellModels = models
     }
   }
+    
+    func buildExtraData() -> [[String: String]] {
+        let itemsDict = cellModels.map { $0.buildExtraData() }
+        return itemsDict
+    }
 }
 
 class MultiSendViewController: InAppBrowsingViewController {
@@ -311,8 +316,9 @@ class MultiSendViewController: InAppBrowsingViewController {
   func coordinatorDidFinishApproveTokens() {
     self.delegate?.multiSendViewController(self, run: .confirm(items: self.viewModel.sendItems))
   }
-  
-  func coordinatorDidUpdateChain() {
+
+  override func onAppSwitchChain() {
+    super.onAppSwitchChain()
     self.updateUISwitchChain()
   }
   

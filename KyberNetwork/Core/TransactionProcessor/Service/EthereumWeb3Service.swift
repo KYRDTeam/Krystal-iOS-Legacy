@@ -313,10 +313,6 @@ class EthereumWeb3Service {
   }
   
   func requestDataForTokenTransfer(address: String, transaction: UnconfirmedTransaction, completion: @escaping (Result<Data, AnyError>) -> Void) {
-    if transaction.transferType.isETHTransfer() {
-      completion(.success(Data()))
-      return
-    }
     web3?.request(request: ContractERC20Transfer(amount: transaction.value, address: transaction.to ?? "")) { (result) in
       switch result {
       case .success(let res):

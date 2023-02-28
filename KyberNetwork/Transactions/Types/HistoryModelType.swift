@@ -255,4 +255,42 @@ extension HistoryModelType {
     }
   }
   
+    func getTransactionType() -> UserService.TransactionType {
+        switch self {
+        case .swap:
+            return .swap
+        case .withdraw:
+            return .unstake
+        case .transferETH:
+            return .transfer
+        case .receiveETH:
+            return .transfer
+        case .transferToken:
+            return .transfer
+        case .receiveToken:
+            return .transfer
+        case .allowance:
+            return .undefine
+        case .earn:
+            return .stake
+        case .contractInteraction:
+            return .undefine
+        case .selfTransfer:
+            return .transfer
+        case .createNFT:
+            return .undefine
+        case .transferNFT:
+            return .nft_transfer
+        case .receiveNFT:
+            return .undefine
+        case .claimReward:
+            return .claim
+        case .multiSend:
+            return .multisend
+        case .bridge:
+            return .bridge
+        }
+    }
+    
+    
 }

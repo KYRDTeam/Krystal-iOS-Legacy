@@ -37,7 +37,7 @@ class TxHistoryViewModel {
     
     func load(shouldReset: Bool) {
         isLoading = true
-        let endTime = shouldReset ? nil : txs.last?.blockTime
+        let endTime = shouldReset ? nil : ((txs.last?.blockTime ?? 0) - 1)
         let filterChainIds = selectedFilterToken == nil ? self.chainIds : [selectedFilterToken!.chainId]
         historyService.getTxHistory(walletAddress: walletAddress, tokenAddress: selectedFilterToken?.id, chainIds: filterChainIds, limit: 20, endTime: endTime) { [weak self] txRecords in
             guard let self = self else { return }
@@ -48,7 +48,7 @@ class TxHistoryViewModel {
             }
             self.canLoadMore = txRecords.count >= 20
             self.txs.append(contentsOf: txRecords)
-            var originalDate = Date(timeIntervalSince1970: 0)
+            var originalDate = Date(timeIntervalSince1970: Double(endTime ?? 0))
             txRecords.forEach { record in
                 let recordDate = Date(timeIntervalSince1970: Double(record.blockTime))
                 if Calendar.current.startOfDay(for: recordDate) != Calendar.current.startOfDay(for: originalDate) {

@@ -8,7 +8,6 @@
 import UIKit
 import BigInt
 import Result
-import SwiftUI
 import FittedSheets
 
 typealias BasicSettingsInfo = (type: KNSelectedGasPriceType, value: BigInt)

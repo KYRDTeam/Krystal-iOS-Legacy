@@ -9,10 +9,17 @@
 /* Begin PBXBuildFile section */
 		0E81F6026D12F409B8F03625 /* Pods_TransactionModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2D410ED02563A76864D651 /* Pods_TransactionModule.framework */; };
 		7E0BBE80291CA4F60030EE44 /* TransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0BBE7F291CA4F60030EE44 /* TransitionDelegate.swift */; };
+		7E8C9C8129ACB71200838427 /* TxTrackingExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C9C8029ACB71200838427 /* TxTrackingExtraData.swift */; };
 		7EAF475B291B602300BF5D00 /* TxStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF475A291B602300BF5D00 /* TxStatus.swift */; };
 		7EAF4789291BB59100BF5D00 /* ApproveTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF4787291BB59100BF5D00 /* ApproveTokenViewController.swift */; };
 		7EAF478A291BB59100BF5D00 /* ApproveTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EAF4788291BB59100BF5D00 /* ApproveTokenViewController.xib */; };
 		7ED1AF1C291E055600BA7C75 /* ApprovePendingTxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED1AF1B291E055600BA7C75 /* ApprovePendingTxInfo.swift */; };
+		A60C62B129655E95000A3565 /* HistoryStatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60C62AF29655E95000A3565 /* HistoryStatsViewController.swift */; };
+		A60C62B229655E96000A3565 /* HistoryStatsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A60C62B029655E95000A3565 /* HistoryStatsViewController.xib */; };
+		A60C62B829667D02000A3565 /* HistoryStatsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60C62B629667D02000A3565 /* HistoryStatsCell.swift */; };
+		A60C62B929667D02000A3565 /* HistoryStatsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A60C62B729667D02000A3565 /* HistoryStatsCell.xib */; };
+		A60C62BB296681BD000A3565 /* TxStatsCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60C62BA296681BD000A3565 /* TxStatsCellType.swift */; };
+		A60C62BD296682DE000A3565 /* HistoryStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60C62BC296682DE000A3565 /* HistoryStatsViewModel.swift */; };
 		A613BC8929124730006DD220 /* Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A613BC8829124730006DD220 /* Dependencies.framework */; };
 		A61715DF291E2AF3001778C7 /* BaseModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A61715DE291E2AF3001778C7 /* BaseModule.framework */; };
 		A622D6AA291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A622D6A9291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift */; };
@@ -92,10 +99,17 @@
 
 /* Begin PBXFileReference section */
 		7E0BBE7F291CA4F60030EE44 /* TransitionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionDelegate.swift; sourceTree = "<group>"; };
+		7E8C9C8029ACB71200838427 /* TxTrackingExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxTrackingExtraData.swift; sourceTree = "<group>"; };
 		7EAF475A291B602300BF5D00 /* TxStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxStatus.swift; sourceTree = "<group>"; };
 		7EAF4787291BB59100BF5D00 /* ApproveTokenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApproveTokenViewController.swift; sourceTree = "<group>"; };
 		7EAF4788291BB59100BF5D00 /* ApproveTokenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ApproveTokenViewController.xib; sourceTree = "<group>"; };
 		7ED1AF1B291E055600BA7C75 /* ApprovePendingTxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovePendingTxInfo.swift; sourceTree = "<group>"; };
+		A60C62AF29655E95000A3565 /* HistoryStatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStatsViewController.swift; sourceTree = "<group>"; };
+		A60C62B029655E95000A3565 /* HistoryStatsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HistoryStatsViewController.xib; sourceTree = "<group>"; };
+		A60C62B629667D02000A3565 /* HistoryStatsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStatsCell.swift; sourceTree = "<group>"; };
+		A60C62B729667D02000A3565 /* HistoryStatsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HistoryStatsCell.xib; sourceTree = "<group>"; };
+		A60C62BA296681BD000A3565 /* TxStatsCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxStatsCellType.swift; sourceTree = "<group>"; };
+		A60C62BC296682DE000A3565 /* HistoryStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStatsViewModel.swift; sourceTree = "<group>"; };
 		A613BC8829124730006DD220 /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A61715DE291E2AF3001778C7 /* BaseModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A622D6A9291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxConfirmViewModelProtocol.swift; sourceTree = "<group>"; };
@@ -235,9 +249,23 @@
 			path = ../Pods;
 			sourceTree = "<group>";
 		};
+		A60C62AE29655E87000A3565 /* HistoryStats */ = {
+			isa = PBXGroup;
+			children = (
+				A60C62AF29655E95000A3565 /* HistoryStatsViewController.swift */,
+				A60C62B029655E95000A3565 /* HistoryStatsViewController.xib */,
+				A60C62B629667D02000A3565 /* HistoryStatsCell.swift */,
+				A60C62B729667D02000A3565 /* HistoryStatsCell.xib */,
+				A60C62BA296681BD000A3565 /* TxStatsCellType.swift */,
+				A60C62BC296682DE000A3565 /* HistoryStatsViewModel.swift */,
+			);
+			path = HistoryStats;
+			sourceTree = "<group>";
+		};
 		A6486C9F29530CB90030CECB /* History */ = {
 			isa = PBXGroup;
 			children = (
+				A60C62AE29655E87000A3565 /* HistoryStats */,
 				A6486CA429530CEA0030CECB /* Completed */,
 			);
 			path = History;
@@ -419,6 +447,7 @@
 				A69E8EA8291CA47B005B28CB /* PendingTxInfo.swift */,
 				A69E8EAE291CEA1A005B28CB /* InternalTransactionState.swift */,
 				7ED1AF1B291E055600BA7C75 /* ApprovePendingTxInfo.swift */,
+				7E8C9C8029ACB71200838427 /* TxTrackingExtraData.swift */,
 			);
 			path = Txs;
 			sourceTree = "<group>";
@@ -543,11 +572,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A60C62B929667D02000A3565 /* HistoryStatsCell.xib in Resources */,
 				A64F1D76290BC06F000D4733 /* Localizable.strings in Resources */,
 				A66CD6F029546D2700FF2EC9 /* TxDateCell.xib in Resources */,
 				A63AAE4229594DE20098A138 /* TxNFTCell.xib in Resources */,
 				A69B5085291A072200D992D6 /* TxConfirmPopup.xib in Resources */,
 				A6486CAD2953103D0030CECB /* TxHeaderCell.xib in Resources */,
+				A60C62B229655E96000A3565 /* HistoryStatsViewController.xib in Resources */,
 				A64F1D59290B817C000D4733 /* TransactionSettingBasicTab.xib in Resources */,
 				A6C256D1293E021F00D4B2BE /* RateTxPopup.xib in Resources */,
 				A6486CB52953FFDA0030CECB /* TxFooterCell.xib in Resources */,
@@ -614,6 +645,7 @@
 				A69E8EAF291CEA1A005B28CB /* InternalTransactionState.swift in Sources */,
 				A622D6AD291A6155006BBDD9 /* TxInfoCell.swift in Sources */,
 				A64F1D82290BE3CB000D4733 /* BaseTransactionSettingTabViewModel.swift in Sources */,
+				A60C62B829667D02000A3565 /* HistoryStatsCell.swift in Sources */,
 				A6D1F7FA291B8DF800ABA52B /* EthereumTransactionSigner.swift in Sources */,
 				A64F1D58290B817C000D4733 /* TransactionSettingBasicTab.swift in Sources */,
 				A6D1F7F7291B8C3D00ABA52B /* TxErrorParser.swift in Sources */,
@@ -626,6 +658,7 @@
 				A6C256D2293E021F00D4B2BE /* RateTxPopup.swift in Sources */,
 				A6486CB42953FFDA0030CECB /* TxFooterCell.swift in Sources */,
 				A622D6AA291A51B4006BBDD9 /* TxConfirmViewModelProtocol.swift in Sources */,
+				A60C62BD296682DE000A3565 /* HistoryStatsViewModel.swift in Sources */,
 				A64F1D54290B8132000D4733 /* TransactionSettingPopup.swift in Sources */,
 				A6486C9B2950646C0030CECB /* ApprovePopup.swift in Sources */,
 				7E0BBE80291CA4F60030EE44 /* TransitionDelegate.swift in Sources */,
@@ -645,9 +678,12 @@
 				A6486CA229530CC70030CECB /* TxHistoryViewController.swift in Sources */,
 				A6486CC929541D590030CECB /* TokenVerifyStatus.swift in Sources */,
 				A6486CD129543F7A0030CECB /* TxHistoryFooterCellViewModel.swift in Sources */,
+				7E8C9C8129ACB71200838427 /* TxTrackingExtraData.swift in Sources */,
 				A6486CA629530D0E0030CECB /* TxHistoryViewModel.swift in Sources */,
+				A60C62BB296681BD000A3565 /* TxStatsCellType.swift in Sources */,
 				A6D1F7FC291B8EA400ABA52B /* EIP1559TransactionSigner.swift in Sources */,
 				A6C256D9293E04A000D4B2BE /* ModuleTransaction.swift in Sources */,
+				A60C62B129655E95000A3565 /* HistoryStatsViewController.swift in Sources */,
 				A69E8EA9291CA47B005B28CB /* PendingTxInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

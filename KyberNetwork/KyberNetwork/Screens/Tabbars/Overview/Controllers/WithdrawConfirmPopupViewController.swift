@@ -178,9 +178,16 @@ class WithdrawConfirmPopupViewController: KNBaseViewController {
   
   @IBAction func secondButtonTapped(_ sender: Any) {
       dismiss(animated: true) {
-          AppDependencies.router.openEarnPortfolio()
+          if self.viewModel.isWithdraw {
+              AppDependencies.router.openEarnPortfolio()
+          } else {
+              if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.extraReward) {
+                  AppDependencies.router.openEarnReward()
+              } else {
+                  self.delegate?.withdrawConfirmPopupViewControllerDidSelectSecondButton(self, balance: self.viewModel.lendingBalance)
+              }
+          }
       }
-//    self.delegate?.withdrawConfirmPopupViewControllerDidSelectSecondButton(self, balance: self.viewModel.lendingBalance)
   }
   
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {

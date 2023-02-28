@@ -123,6 +123,11 @@ extension SwapInfoViewModelProtocol {
     }
     return ""
   }
+    
+    func getEstNetWorkFee(rate: Rate, l1Fee: BigInt) -> String {
+        let feeInUSD = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed ?? 0), gasPrice: self.gasPrice) + self.getL1FeeUSD(l1Fee: l1Fee)
+        return NumberFormatUtils.gasFee(value: feeInUSD)
+    }
   
   func getGasFeeUSD(estGas: BigInt, gasPrice: BigInt) -> BigInt {
     let decimals = KNGeneralProvider.shared.quoteTokenObject.decimals

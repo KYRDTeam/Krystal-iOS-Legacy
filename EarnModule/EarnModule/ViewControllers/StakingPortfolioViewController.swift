@@ -47,6 +47,7 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     
     let viewModel: StakingPortfolioViewModel = StakingPortfolioViewModel()
     var timer: Timer?
+    var reloadingTimer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +72,10 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         }
         let currentChain = AppState.shared.currentChain
         viewModel.chainID = AppState.shared.isSelectedAllChain ? nil : currentChain.getChainId()
-        Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { [weak self] _ in
+        reloadingTimer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { [weak self] _ in
+            guard UIApplication.shared.applicationState == .active else {
+                return
+            }
             self?.viewModel.requestData(shouldShowLoading: false)
         }
     }
@@ -84,6 +88,11 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
         }
         portfolioTableView.reloadData()
 		AppDependencies.tracker.track("mob_earn_portfolio", properties: ["screenid": "earn_v2"])
+    }
+    
+    deinit {
+        reloadingTimer?.invalidate()
+        reloadingTimer = nil
     }
     
     private func registerCell() {
@@ -111,12 +120,16 @@ class StakingPortfolioViewController: InAppBrowsingViewController {
     }
     
     func showLoadingSkeleton() {
-        let gradient = SkeletonGradient(baseColor: AppTheme.current.sectionBackgroundColor)
-        view.showAnimatedGradientSkeleton(usingGradient: gradient)
+        DispatchQueue.main.async {
+            let gradient = SkeletonGradient(baseColor: AppTheme.current.sectionBackgroundColor)
+            self.view.showAnimatedGradientSkeleton(usingGradient: gradient)
+        }
     }
-    
+
     func hideLoadingSkeleton() {
-        view.hideSkeleton()
+        DispatchQueue.main.async {
+            self.view.hideSkeleton()
+        }
     }
     
     override func reloadWallet() {

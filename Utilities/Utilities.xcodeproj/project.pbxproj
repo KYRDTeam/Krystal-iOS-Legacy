@@ -9,12 +9,13 @@
 /* Begin PBXBuildFile section */
 		7AF0F9DD3CC978A37BF121EA /* Pods_Utilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A24B6E36190B9757D206062 /* Pods_Utilities.framework */; };
 		7E6EBD89290937BD00069B33 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6EBD88290937BD00069B33 /* UIFont+.swift */; };
+		7E8C9C8329ACB7EC00838427 /* Encodable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C9C8229ACB7EC00838427 /* Encodable+.swift */; };
 		7EAF476A291B695000BF5D00 /* UICollectionView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF4769291B695000BF5D00 /* UICollectionView+register.swift */; };
 		7EB129B42938B1AF00CE6D1C /* NSObject+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB129B32938B1AF00CE6D1C /* NSObject+.swift */; };
 		7ECC45C62939B07100B37D30 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECC45C52939B07100B37D30 /* Images.swift */; };
 		7ECC45C82939B47700B37D30 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ECC45C72939B47700B37D30 /* Assets.xcassets */; };
-		A62F0F0229370B3D00937677 /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62F0F0129370B3D00937677 /* UINavigationController+.swift */; };
 		7EF91081295ADF40001B9853 /* UIDevice+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF91080295ADF40001B9853 /* UIDevice+.swift */; };
+		A62F0F0229370B3D00937677 /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62F0F0129370B3D00937677 /* UINavigationController+.swift */; };
 		A64C2DE528F6D57A002FD64C /* BaseXibView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2DE428F6D57A002FD64C /* BaseXibView.swift */; };
 		A64C2DFA28F6D657002FD64C /* NumberFormatUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2DF928F6D657002FD64C /* NumberFormatUtils.swift */; };
 		A64C2E0128F6D833002FD64C /* UIViewController+nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E0028F6D833002FD64C /* UIViewController+nib.swift */; };
@@ -52,13 +53,14 @@
 		69F7F536D0AB43CE458A6802 /* Pods-Utilities.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Utilities.debug.xcconfig"; path = "Target Support Files/Pods-Utilities/Pods-Utilities.debug.xcconfig"; sourceTree = "<group>"; };
 		7A24B6E36190B9757D206062 /* Pods_Utilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Utilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E6EBD88290937BD00069B33 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
+		7E8C9C8229ACB7EC00838427 /* Encodable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+.swift"; sourceTree = "<group>"; };
 		7EAF4769291B695000BF5D00 /* UICollectionView+register.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+register.swift"; sourceTree = "<group>"; };
 		7EAF4770291B6C1000BF5D00 /* BaseModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EB129B32938B1AF00CE6D1C /* NSObject+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+.swift"; sourceTree = "<group>"; };
 		7ECC45C52939B07100B37D30 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		7ECC45C72939B47700B37D30 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A62F0F0129370B3D00937677 /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
 		7EF91080295ADF40001B9853 /* UIDevice+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+.swift"; sourceTree = "<group>"; };
+		A62F0F0129370B3D00937677 /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
 		A64C2DE428F6D57A002FD64C /* BaseXibView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseXibView.swift; sourceTree = "<group>"; };
 		A64C2DF928F6D657002FD64C /* NumberFormatUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatUtils.swift; sourceTree = "<group>"; };
 		A64C2E0028F6D833002FD64C /* UIViewController+nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+nib.swift"; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				A62F0F0129370B3D00937677 /* UINavigationController+.swift */,
 				A6B78C87294700CA00FBFCB5 /* UIControl+.swift */,
 				7EF91080295ADF40001B9853 /* UIDevice+.swift */,
+				7E8C9C8229ACB7EC00838427 /* Encodable+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -331,6 +334,7 @@
 				A64C2E7728F9113C002FD64C /* String+number.swift in Sources */,
 				A64C2E0528F6F159002FD64C /* Observable.swift in Sources */,
 				A62F0F0229370B3D00937677 /* UINavigationController+.swift in Sources */,
+				7E8C9C8329ACB7EC00838427 /* Encodable+.swift in Sources */,
 				A64C2E4228F7F3FE002FD64C /* UIView+.swift in Sources */,
 				A64C2E9128F9166C002FD64C /* StringFormatter.swift in Sources */,
 				A64C2DFA28F6D657002FD64C /* NumberFormatUtils.swift in Sources */,

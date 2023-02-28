@@ -146,6 +146,8 @@ extension UnstakeSummaryViewModel {
                     TransactionManager.txProcessor.sendTx(data: signedData, chain: self.currentChain) { result in
                         switch result {
                         case .success(let hash):
+                            let trackingExtraData = UnstakingTrackingExtraData(token: self.displayInfo.fromSym,
+                                                                               tokenAmount: self.displayInfo.amount.toDouble() ?? 0)
                             let pendingTx = PendingUnstakeTxInfo(platform: self.platform,
                                                                  stakingTokenAmount: self.displayInfo.amount,
                                                                  toTokenAmount: self.displayInfo.receiveAmount,
@@ -158,7 +160,8 @@ extension UnstakeSummaryViewModel {
                                                                  chain: self.currentChain,
                                                                  date: Date(),
                                                                  hash: hash,
-                                                                 nonce: Int(eip1559Tx.nonce) ?? self.currentNonce)
+                                                                 nonce: Int(eip1559Tx.nonce) ?? self.currentNonce,
+                                                                 trackingExtraData: trackingExtraData)
                             TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
                             self.onSuccess(pendingTx)
                         case .failure(let error):
@@ -196,6 +199,8 @@ extension UnstakeSummaryViewModel {
                     TransactionManager.txProcessor.sendTx(data: signedData, chain: self.currentChain) { result in
                         switch result {
                         case .success(let hash):
+                            let trackingExtraData = UnstakingTrackingExtraData(token: self.displayInfo.fromSym,
+                                                                               tokenAmount: self.displayInfo.amount.toDouble() ?? 0)
                             let pendingTx = PendingUnstakeTxInfo(platform: self.platform,
                                                                  stakingTokenAmount: self.displayInfo.amount,
                                                                  toTokenAmount: self.displayInfo.receiveAmount,
@@ -208,7 +213,8 @@ extension UnstakeSummaryViewModel {
                                                                  chain: self.currentChain,
                                                                  date: Date(),
                                                                  hash: hash,
-                                                                 nonce: legacyTx.nonce)
+                                                                 nonce: legacyTx.nonce,
+                                                                 trackingExtraData: trackingExtraData)
                             TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
                             self.onSuccess(pendingTx)
                         case .failure(let error):

@@ -15,6 +15,7 @@
 		7EAF4785291B930900BF5D00 /* AllowanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF4784291B930900BF5D00 /* AllowanceService.swift */; };
 		7EB129A92938A5DD00CE6D1C /* UnitValueModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB129A82938A5DD00CE6D1C /* UnitValueModel.swift */; };
 		7EB129B22938AD6400CE6D1C /* SearchToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB129B12938AD6400CE6D1C /* SearchToken.swift */; };
+		A60C62BF29668434000A3565 /* TxStatsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60C62BE29668434000A3565 /* TxStatsResponse.swift */; };
 		A63A75C2296437240048F0CE /* TrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63A75C1296437240048F0CE /* TrackingService.swift */; };
 		A6486CBC2954092C0030CECB /* HistoryEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CBB2954092C0030CECB /* HistoryEndpoint.swift */; };
 		A6486CBE29540CAD0030CECB /* TxRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6486CBD29540CAD0030CECB /* TxRecord.swift */; };
@@ -97,6 +98,7 @@
 		7EAF4784291B930900BF5D00 /* AllowanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowanceService.swift; sourceTree = "<group>"; };
 		7EB129A82938A5DD00CE6D1C /* UnitValueModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitValueModel.swift; sourceTree = "<group>"; };
 		7EB129B12938AD6400CE6D1C /* SearchToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchToken.swift; sourceTree = "<group>"; };
+		A60C62BE29668434000A3565 /* TxStatsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxStatsResponse.swift; sourceTree = "<group>"; };
 		A63A75C1296437240048F0CE /* TrackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingService.swift; sourceTree = "<group>"; };
 		A6486CBB2954092C0030CECB /* HistoryEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryEndpoint.swift; sourceTree = "<group>"; };
 		A6486CBD29540CAD0030CECB /* TxRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxRecord.swift; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 				C357A49D2941E391009030CF /* PendingReward.swift */,
 				A6486CBD29540CAD0030CECB /* TxRecord.swift */,
 				A6C37C032955813000B6F3C6 /* AdvancedSearchToken.swift */,
+				A60C62BE29668434000A3565 /* TxStatsResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -556,6 +559,7 @@
 				A64C2EBD28F91CDE002FD64C /* Web3Swift.swift in Sources */,
 				A6486CC029540F180030CECB /* HistoryService.swift in Sources */,
 				A6B6FA142907D56600109740 /* Approval.swift in Sources */,
+				A60C62BF29668434000A3565 /* TxStatsResponse.swift in Sources */,
 				A65FF4C62934B65700505333 /* EtherNodeRequest.swift in Sources */,
 				A64C2E9328F919F3002FD64C /* EthereumNodeService.swift in Sources */,
 				A6ED2D3C2911342600845EF2 /* GasPrice.swift in Sources */,

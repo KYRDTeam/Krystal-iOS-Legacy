@@ -193,7 +193,6 @@ class PendingTxViewController: BaseWalletOrientedViewController {
     
 }
 
-
 extension PendingTxViewController {
     func coordinatorUpdatePendingTransaction(
         pendingData: [String: [InternalHistoryTransaction]],
@@ -251,14 +250,14 @@ extension PendingTxViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(
-            width: collectionView.frame.width,
+            width: UIScreen.main.bounds.size.width,
             height: KNHistoryTransactionCollectionViewCell.height
         )
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(
-            width: collectionView.frame.width,
+            width: UIScreen.main.bounds.size.width,
             height: 24
         )
     }

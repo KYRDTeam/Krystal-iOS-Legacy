@@ -1021,3 +1021,4 @@
 "can.not.est.gas" = "Can not estimate gas limit for this transaction";
 "build.raw.tx.failed" = "Build raw Tx failed";
 "parse.tx.failed" = "Parse Tx data failed";
+"not.an.eligible.wallet" = "Not an eligible wallet";
