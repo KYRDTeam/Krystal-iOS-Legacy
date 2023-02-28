@@ -351,7 +351,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
           result = .success(signedData)
         }
       case .eip712v3And4(let data):
-        let signedData = try signer.signMessageHash(address: address, data: data.digest, addPrefix: false)
+        let signedData = try signer.signEip712Data(address: address, data: data.digest)
         result = .success(signedData)
       }
     } catch {
