@@ -9,6 +9,7 @@ on:
       - testflight-build
       - debug-action
       - feature/slack-notification
+      - chore/fix-active-support
 
 concurrency: 
   group: ios-build-dev-${{ github.ref }}
@@ -164,7 +165,9 @@ jobs:
           curl -sL https://firebase.tools | bash
 
       - name: Install Pod check
-        run: gem install cocoapods-check
+        run: |
+          gem install cocoapods-check
+          gem install activesupport -v 6.1.7.2
 
       - name: Install Fastlane
         run: gem install fastlane
