@@ -99,9 +99,11 @@ class PendingRewardClaimConfirmPopUpViewModel: BaseViewModel, TxConfirmViewModel
             guard let self = self else { return }
             switch result {
             case .success(let txResult):
+                let balance = BigInt(self.item.rewardToken.pendingReward.balance) ?? 0
+                let balanceString = NumberFormatUtils.balanceFormat(value: balance, decimals: self.item.rewardToken.tokenInfo.decimals)
                 let trackingExtraData = ClaimTrackingExtraData(
                     token: self.item.rewardToken.tokenInfo.symbol,
-                    amount: self.item.rewardToken.pendingReward.balance.toDouble() ?? 0,
+                    amount: balanceString.toDouble() ?? 0,
                     amountUsd: AppDependencies.priceStorage.getUsdPrice(address: self.item.rewardToken.tokenInfo.address) ?? 0
                 )
                 let pendingTx = PendingClaimTxInfo(pendingUnstake: self.pendingUnstake, legacyTx: txResult.legacyTx, eip1559Tx: txResult.eip1559Tx, chain: self.chain, date: Date(), hash: txResult.hash, trackingExtraData: trackingExtraData)
