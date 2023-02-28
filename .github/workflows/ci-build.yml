@@ -166,8 +166,8 @@ jobs:
 
       - name: Install Pod check
         run: |
-          gem install cocoapods-check
           gem install activesupport -v 6.1.7.2
+          gem install cocoapods-check
 
       - name: Install Fastlane
         run: gem install fastlane
