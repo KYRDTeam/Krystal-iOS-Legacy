@@ -25,10 +25,10 @@ open class SegmentedControl: UISegmentedControl {
         self.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: AppTheme.current.primaryTextColor, NSAttributedString.Key.font: UIFont.karlaReguler(ofSize: 16)], for: .selected)
     }
     
-    public func highlightSelectedSegment(width: CGFloat? = nil) {
+    public func highlightSelectedSegment(parentWidth: CGFloat? = nil, width: CGFloat? = nil) {
         guard !isSetupHighlight else { return }
         removeBorder()
-        let lineWidth: CGFloat = self.frame.size.width / CGFloat(self.numberOfSegments)
+        let lineWidth: CGFloat = (parentWidth ?? self.frame.size.width) / CGFloat(self.numberOfSegments)
         let lineHeight: CGFloat = 2.0
         let lineXPosition = CGFloat(selectedSegmentIndex * Int(lineWidth)) + (lineWidth - (width ?? lineWidth)) / 2
         let lineYPosition = self.bounds.size.height - 6.0
