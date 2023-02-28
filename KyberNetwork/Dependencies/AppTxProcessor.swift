@@ -70,7 +70,7 @@ class AppTxProcessor: TxProcessorProtocol {
         case .approval:
             return .allowance
         case .claimStakingReward:
-            return .contractInteraction
+            return .claimReward
         case .unstake:
             return .withdraw
         case .swap:
