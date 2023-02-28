@@ -180,7 +180,7 @@ class TokenDetailViewModel {
     guard !self.hideBalanceStatus else {
       return "********"
     }
-    guard let balance = AppDependencies.balancesStorage.getBalance(address: self.address) else { return "---" }
+    guard let balance = AppDependencies.balancesStorage.getBalance(address: self.address, chain: chain) else { return "---" }
     let balanceString = NumberFormatUtils.balanceFormat(value: balance, decimals: tokenDetail.decimals)
     return balanceString + " \(tokenDetail.symbol.uppercased())"
   }
@@ -189,7 +189,7 @@ class TokenDetailViewModel {
     guard let tokenDetail = tokenDetail else {
       return ""
     }
-    guard let balance = AppDependencies.balancesStorage.getBalance(address: self.address) else {
+    guard let balance = AppDependencies.balancesStorage.getBalance(address: self.address, chain: chain) else {
       return "---"
     }
     let price = getTokenLastPrice(self.currencyMode)
