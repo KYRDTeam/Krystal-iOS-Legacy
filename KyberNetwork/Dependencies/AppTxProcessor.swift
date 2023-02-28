@@ -40,7 +40,7 @@ class AppTxProcessor: TxProcessorProtocol {
         TransactionManager.onPendingTxListUpdated()
     }
     
-    func savePendingTx(txInfo: PendingTxInfo, extraInfo: [String: String]?) {
+    func savePendingTx(txInfo: PendingTxInfo) {
         let internalTx = InternalHistoryTransaction(
             type: convertToInternalTxType(pendingTxType: txInfo.type),
             state: .pending,
@@ -59,7 +59,7 @@ class AppTxProcessor: TxProcessorProtocol {
             internalTx.nonce = txInfo.legacyTx?.nonce ?? 0
         }
         internalTx.time = txInfo.date
-        internalTx.extraUserInfo = extraInfo
+        internalTx.trackingExtraData = txInfo.trackingExtraData
         EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalTx)
     }
     
@@ -70,7 +70,7 @@ class AppTxProcessor: TxProcessorProtocol {
         case .approval:
             return .allowance
         case .claimStakingReward:
-            return .contractInteraction
+            return .claimReward
         case .unstake:
             return .withdraw
         case .swap:

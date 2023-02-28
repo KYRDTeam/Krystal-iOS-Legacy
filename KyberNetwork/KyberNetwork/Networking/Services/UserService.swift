@@ -9,6 +9,9 @@ import Foundation
 import Moya
 import KrystalWallets
 import AppState
+import TransactionModule
+import Utilities
+import WalletCore
 
 class UserService {
     
@@ -17,7 +20,8 @@ class UserService {
         case transfer
         case multisend
         case bridge
-        case earn
+        case stake
+        case unstake
         case claim
         case nft_transfer
         case undefine
@@ -33,41 +37,49 @@ class UserService {
         case evm
         case solana
     }
-  
-  static let retryTimes = 3
-  
-  let provider = MoyaProvider<UserEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    
+    static let retryTimes = 3
+    
+    let provider = MoyaProvider<UserEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
     
     static let shared = UserService()
-  
-  func connectEVM(remainRetryTime: Int = UserService.retryTimes, address: KAddress, completion: @escaping () -> ()) {
-    let signer = SignerFactory().getSigner(address: address)
-    let message = "\(address.addressString)_\(Int(Date().timeIntervalSince1970))"
-    guard let signature = try? signer.signMessageHash(address: address, data: Data(message.utf8), addPrefix: true).hexEncoded else {
-      completion()
-      return
-    }
-    provider.requestWithFilter(.connectEvm(address: address.addressString, signature: signature)) { result in
-      switch result {
-      case .success(let response):
-        do {
-          let resp = try JSONDecoder().decode(ConnectEVMResponse.self, from: response.data)
-          UserDefaults.standard.saveAuthToken(address: address.addressString, token: resp.token)
-          completion()
-        } catch {
-          return
-        }
-      case .failure:
-        if remainRetryTime > 0 {
-          self.connectEVM(remainRetryTime: remainRetryTime - 1, address: address, completion: completion)
-        } else {
-          completion()
-        }
-      }
-    }
-  }
     
-    func submitTransaction(transaction: [String: Any], completion:((Bool) -> Void)? = nil) {
+    func connect(remainRetryTime: Int = UserService.retryTimes, address: KAddress, completion: @escaping () -> ()) {
+        let signer = SignerFactory().getSigner(address: address)
+        let message = "\(address.addressString)_\(Int(Date().timeIntervalSince1970))"
+        guard let signature = try? signer.signMessageHash(address: address, data: Data(message.utf8), addPrefix: true) else {
+            completion()
+            return
+        }
+        let request: UserEndpoint = {
+            switch address.addressType {
+            case .evm:
+                return UserEndpoint.connectEvm(address: address.addressString, signature: signature.hexEncoded)
+            case .solana:
+                return UserEndpoint.connectSolana(address: address.addressString, signature: Base58.encodeNoCheck(data: signature))
+            }
+        }()
+        provider.requestWithFilter(request) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let resp = try JSONDecoder().decode(ConnectEVMResponse.self, from: response.data)
+                    UserDefaults.standard.saveAuthToken(address: address.addressString, token: resp.token)
+                    completion()
+                } catch {
+                    return
+                }
+            case .failure:
+                if remainRetryTime > 0 {
+                    self.connect(remainRetryTime: remainRetryTime - 1, address: address, completion: completion)
+                } else {
+                    completion()
+                }
+            }
+        }
+    }
+    
+    func submitTransaction(transaction: [String: Any], completion: ((Bool) -> Void)? = nil) {
         provider.requestWithFilter(.submitTransaction(transaction: transaction)) { result in
             switch result {
             case .success:
@@ -82,24 +94,12 @@ class UserService {
         let type = tx.type.getTransactionType()
         let chainType = tx.getChainType()
         let state = tx.getTxState()
-        let extra: [String: Any] = {
-            switch type {
-            case .multisend:
-                if let extraData = tx.extraMultisendInfo {
-                    return ["data": extraData]
-                }
-            default:
-                if let extraData = tx.extraUserInfo {
-                    return extraData
-                }
-            }
-            return [:]
-        }()
-        let param = UserService.buildTransactionParam(type: type, chainType: chainType, txHash: tx.hash, status: state, extra: extra)
+        
+        let param = UserService.buildTransactionParam(type: type, chainType: chainType, txHash: tx.hash, status: state, extra: tx.trackingExtraData)
         submitTransaction(transaction: param, completion: completion)
     }
-  
-    class func buildTransactionParam(type: TransactionType, chainType: ChainType, txHash: String, status: TransactionState, extra: [String: Any]) -> [String: Any] {
+    
+    class func buildTransactionParam(type: TransactionType, chainType: ChainType, txHash: String, status: TransactionState, extra: TxTrackingExtraData? = nil) -> [String: Any] {
         let address = AppState.shared.currentAddress.addressString
         let chain = AppState.shared.currentChain.getChainId()
         
@@ -110,7 +110,7 @@ class UserService {
             "chainId": chain,
             "txHash": txHash,
             "status": status.rawValue,
-            "extra": extra
+            "extra": extra.asDictionary()
         ]
     }
 }

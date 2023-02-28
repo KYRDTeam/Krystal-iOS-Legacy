@@ -18,14 +18,14 @@ class PendingSwapTxInfo: PendingTxInfo {
     var destAmount: String
     var detailString: String
     
-    init(sourceToken: Token, destToken: Token, rate: Rate, sourceAmount: String, destAmount: String, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: ChainType, date: Date, hash: String, detailString: String) {
+    init(sourceToken: Token, destToken: Token, rate: Rate, sourceAmount: String, destAmount: String, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: ChainType, date: Date, hash: String, detailString: String, trackingExtraData: TxTrackingExtraData) {
         self.sourceToken = sourceToken
         self.destToken = destToken
         self.rate = rate
         self.sourceAmount = sourceAmount
         self.destAmount = destAmount
         self.detailString = detailString
-        super.init(type: .swap, legacyTx: legacyTx, eip1559Tx: eip1559Tx, chain: chain, date: date, hash: hash)
+        super.init(type: .swap, legacyTx: legacyTx, eip1559Tx: eip1559Tx, chain: chain, date: date, hash: hash, trackingExtraData: trackingExtraData)
     }
     
     override var destSymbol: String? {
