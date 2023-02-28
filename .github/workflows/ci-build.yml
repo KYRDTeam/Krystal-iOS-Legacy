@@ -5,10 +5,7 @@ on:
   push:
     branches:
       - main
-      - ci-test
       - testflight-build
-      - debug-action
-      - feature/slack-notification
 
 concurrency: 
   group: ios-build-dev-${{ github.ref }}
@@ -164,7 +161,9 @@ jobs:
           curl -sL https://firebase.tools | bash
 
       - name: Install Pod check
-        run: gem install cocoapods-check
+        run: |
+          gem install activesupport -v 6.1.7.2
+          gem install cocoapods-check
 
       - name: Install Fastlane
         run: gem install fastlane
