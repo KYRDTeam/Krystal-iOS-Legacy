@@ -457,9 +457,11 @@ class TokenDetailViewController: KNBaseViewController {
   func updatePoolTableHeight() {
     UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
       if self.viewModel.isExpandingPoolTable {
-        self.tableViewHeight.constant = CGFloat(self.viewModel.poolData.count * 92)
+          self.tableViewHeight.constant = CGFloat(self.viewModel.poolData.count * 92)
+          self.poolTableView.isScrollEnabled = true
       } else {
-        self.tableViewHeight.constant = CGFloat(460)
+          self.tableViewHeight.constant = CGFloat(460)
+          self.poolTableView.isScrollEnabled = false
       }
       self.view.layoutIfNeeded()
     }
