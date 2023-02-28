@@ -5,11 +5,8 @@ on:
   push:
     branches:
       - main
-      - ci-test
       - testflight-build
       - debug-action
-      - feature/slack-notification
-      - chore/fix-active-support
 
 concurrency: 
   group: ios-build-dev-${{ github.ref }}
