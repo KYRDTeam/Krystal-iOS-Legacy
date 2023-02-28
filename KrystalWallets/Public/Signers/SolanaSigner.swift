@@ -16,9 +16,21 @@ public class SolanaSigner: KSignerProtocol {
   public func signTransaction(address: KAddress, hash: Data) throws -> Data {
     throw SigningError.cannotSignMessage
   }
+    
+    public func signMessage(address: KAddress, message: String, addPrefix: Bool) throws -> Data {
+        let decoded = Base58.decodeNoCheck(string: message) ?? Data()
+        return try signMessageHash(address: address, data: decoded, addPrefix: addPrefix)
+    }
   
   public func signMessageHash(address: KAddress, data: Data, addPrefix: Bool) throws -> Data {
-    return Data()
+      guard let wallet = walletManager.wallet(forAddress: address) else {
+          throw SigningError.addressNotFound
+      }
+      let privateKey = try walletManager.getPrivateKey(wallet: wallet, forAddressType: .solana)
+      guard let signature = privateKey.sign(digest: data, curve: .ed25519) else {
+          return Data()
+      }
+      return signature
   }
   
   public func signTransferTransaction(address: KAddress, recipient: String, value: UInt64, recentBlockhash: String) throws -> String {
