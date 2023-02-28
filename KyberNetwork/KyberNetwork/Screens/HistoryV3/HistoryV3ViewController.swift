@@ -15,7 +15,7 @@ import Dependencies
 class HistoryV3ViewController: BaseWalletOrientedViewController {
     
     @IBOutlet weak var statsButton: UIButton!
-    @IBOutlet weak var segmentControl: SegmentedControl!
+    @IBOutlet weak var segmentControl: DesignSystem.SegmentedControl!
     @IBOutlet weak var pageContainer: UIView!
     @IBOutlet weak var segmentControlTrailingConstant: NSLayoutConstraint!
     
@@ -42,19 +42,21 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
         return TransactionManager.txProcessor.hasPendingTx()
     }
     
+    var isHistoryStatsEnabled: Bool {
+        return AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.historyStats)
+    }
+    
+    var segmentControlTrailingSpace: CGFloat {
+        return isHistoryStatsEnabled ? 56 : 16
+    }
+    
     var selectedChain: ChainType = .all
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.historyStats) {
-            segmentControlTrailingConstant.constant = -56
-            statsButton.isHidden = false
-        } else {
-            segmentControlTrailingConstant.constant = -16
-            statsButton.isHidden = true
-        }
-        view.layoutIfNeeded()
+        segmentControlTrailingConstant.constant = -segmentControlTrailingSpace
+        statsButton.isHidden = !isHistoryStatsEnabled
         setupPageController()
         setupSegmentControl()
         
@@ -107,7 +109,7 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
     }
     
     func setupSegmentControl() {
-        let width = segmentControl.frame.size.width
+        let width = UIScreen.main.bounds.width - segmentControlTrailingSpace - 16
         segmentControl.backgroundColor = .clear
         segmentControl.tintColor = AppTheme.current.primaryColor
         segmentControl.frame = CGRect(x: self.segmentControl.frame.minX,
@@ -117,7 +119,7 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
         segmentControl.setWidth(width / 2, forSegmentAt: 1)
         segmentControl.selectedSegmentIndex = 0
         segmentControl.setTitleTextAttributes([.font: UIFont.karlaReguler(ofSize: 16)], for: .normal)
-        segmentControl.highlightSelectedSegment(width: width / 2)
+        segmentControl.highlightSelectedSegment(parentWidth: width, width: width / 2)
     }
     
     @IBAction func backTapped(_ sender: Any) {

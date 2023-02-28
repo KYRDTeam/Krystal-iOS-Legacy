@@ -164,14 +164,21 @@ extension SwapInfoViewModelProtocol {
             return nil
         }
         if showRevertedRate {
-            let rate = BigInt(selectedPlatform.rate) ?? .zero
-            let revertedRate = rate.isZero ? 0 : (BigInt(10).power(36) / rate)
-            let rateString = NumberFormatUtils.rate(value: revertedRate, decimals: 18)
-            return "1 \(destToken.symbol) = \(rateString) \(sourceToken.symbol)"
+            return getNormalRateString(sourceToken: sourceToken, destToken: destToken)
         } else {
             let rateString = NumberFormatUtils.rate(value: BigInt(selectedPlatform.rate) ?? .zero, decimals: 18)
             return "1 \(sourceToken.symbol) = \(rateString) \(destToken.symbol)"
         }
+    }
+    
+    func getNormalRateString(sourceToken: Token, destToken: Token) -> String? {
+        guard let selectedPlatform = selectedRate else {
+            return nil
+        }
+        let rate = BigInt(selectedPlatform.rate) ?? .zero
+        let revertedRate = rate.isZero ? 0 : (BigInt(10).power(36) / rate)
+        let rateString = NumberFormatUtils.rate(value: revertedRate, decimals: 18)
+        return "1 \(destToken.symbol) = \(rateString) \(sourceToken.symbol)"
     }
     
     func diffInUSD(lhs: Rate, rhs: Rate, destToken: Token, destTokenPrice: Double) -> BigInt {

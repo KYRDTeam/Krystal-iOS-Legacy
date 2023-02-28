@@ -19,6 +19,16 @@ public class EthSigner: KSignerProtocol {
         return try signMessageHash(address: address, data: Data(message.utf8), addPrefix: addPrefix)
     }
     
+    public func signEip712Data(address: KAddress, data: Data) throws -> Data {
+        guard let wallet = walletManager.wallet(forAddress: address) else {
+          throw SigningError.addressNotFound
+        }
+        let privateKey = try walletManager.getPrivateKey(wallet: wallet, forAddressType: .evm)
+        var signed = privateKey.sign(digest: data, curve: .secp256k1)!
+        signed[64] += 27
+        return signed
+    }
+    
   public func signMessageHash(address: KAddress, data: Data, addPrefix: Bool) throws -> Data {
     guard let wallet = walletManager.wallet(forAddress: address) else {
       throw SigningError.addressNotFound
