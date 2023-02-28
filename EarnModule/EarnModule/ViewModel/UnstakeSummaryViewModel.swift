@@ -147,7 +147,7 @@ extension UnstakeSummaryViewModel {
                         switch result {
                         case .success(let hash):
                             let trackingExtraData = UnstakingTrackingExtraData(token: self.displayInfo.fromSym,
-                                                                               tokenAmount: self.displayInfo.receiveAmount.toDouble() ?? 0)
+                                                                               tokenAmount: self.displayInfo.amount.toDouble() ?? 0)
                             let pendingTx = PendingUnstakeTxInfo(platform: self.platform,
                                                                  stakingTokenAmount: self.displayInfo.amount,
                                                                  toTokenAmount: self.displayInfo.receiveAmount,
