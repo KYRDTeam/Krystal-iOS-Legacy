@@ -739,6 +739,8 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
                   historyTransaction.hash = hash
                   historyTransaction.time = Date()
                   historyTransaction.nonce = tx.nonce
+                  let data = self.rootViewController.viewModel.buildExtraData()
+                  historyTransaction.trackingExtraData = MultisendExtraData(data: data, amountUsd: "0")
                   EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
                   self.openTransactionStatusPopUp(transaction: historyTransaction)
                 case .failure(let error):
