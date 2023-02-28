@@ -196,8 +196,7 @@ class TokenDetailViewController: KNBaseViewController {
   }
   
   @objc func copyTokenAddress() {
-    guard let address = self.viewModel.tokenDetail?.address else { return }
-    UIPasteboard.general.string = address
+    UIPasteboard.general.string = viewModel.address
     let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
     hud.mode = .text
     hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
