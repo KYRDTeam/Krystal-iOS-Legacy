@@ -12,6 +12,7 @@ import Utilities
 import BigInt
 import AppState
 import BaseModule
+import Dependencies
 
 class StakingConfirmClaimPopupViewModel: BaseViewModel, TxConfirmViewModelProtocol {
     
@@ -141,7 +142,7 @@ class StakingConfirmClaimPopupViewModel: BaseViewModel, TxConfirmViewModelProtoc
                 let trackingExtraData = ClaimTrackingExtraData(
                     token: self.pendingUnstake.symbol,
                     amount: self.pendingUnstake.balance.toDouble() ?? 0,
-                    amountUsd: 0
+                    amountUsd: AppDependencies.priceStorage.getUsdPrice(address: self.pendingUnstake.address) ?? 0
                 )
                 let pendingTx = PendingClaimTxInfo(pendingUnstake: self.pendingUnstake, legacyTx: txResult.legacyTx, eip1559Tx: txResult.eip1559Tx, chain: self.chain, date: Date(), hash: txResult.hash, trackingExtraData: trackingExtraData)
                 TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
