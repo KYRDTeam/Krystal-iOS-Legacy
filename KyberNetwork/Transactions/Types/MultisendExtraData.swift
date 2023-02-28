@@ -10,13 +10,14 @@ import TransactionModule
 
 class MultisendExtraData: TxTrackingExtraData {
     let data: [[String: String]]
-    
+    let amountUsd: String
     enum CodingKeys: String, CodingKey {
-        case data
+        case data, amountUsd
     }
     
-    init(data: [[String: String]]) {
+    init(data: [[String: String]], amountUsd: String) {
         self.data = data
+        self.amountUsd = amountUsd
         super.init()
     }
     
@@ -28,5 +29,6 @@ class MultisendExtraData: TxTrackingExtraData {
         try super.encode(to: encoder)
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(data, forKey: .data)
+        try container.encode(amountUsd, forKey: .amountUsd)
     }
 }
