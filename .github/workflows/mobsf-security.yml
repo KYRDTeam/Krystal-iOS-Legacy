@@ -14,11 +14,23 @@ permissions:
   contents: read
 
 jobs:
-  mobile-security:
+  mobsfscan-job:
+    env:
+      GIT_STRATEGY: none
+      DD_TEST_NAME: "CI-Mobsfscan ${{ github.ref }} ${{ github.sha }}"
+      DD_TEST_TYPE_NAME: "Mobsfscan Scan"
+      DD_FILE_NAME: "mobsf-output.json"
+      DD_URL: https://dojo.krystal.team
+      DD_API_KEY: ${{ secrets.DD_API_KEY }}
+      DD_PRODUCT_NAME: "Krystal iOS"
+      DD_PRODUCT_TYPE_NAME: "Research and Development"
+      DD_ENGAGEMENT_NAME: "CI-Engagement"
+
     permissions:
       contents: read # for actions/checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+
     runs-on: ubuntu-latest
 
     steps:
@@ -29,12 +41,28 @@ jobs:
         with:
           python-version: 3.8
 
-      - name: Run mobsfscan
-        uses: MobSF/mobsfscan@main
-        with:
-          args: . --sarif --output results.sarif || true
+      - name: Install the prerequisite
+        shell: bash
+        # use latest version of mobsfscan only if https://github.com/DefectDojo/django-DefectDojo/pull/7667 is merged
+        run: |
+          pip3 install --upgrade urllib3
+          pip3 install mobsfscan==0.1.3
+          pip3 install dd-import
 
-      - name: Upload mobsfscan report
+      - name: Run the mobsf
+        shell: bash
+        run: |
+          echo "The test name is: " $DD_TEST_NAME
+          mobsfscan . --json -o $DD_FILE_NAME || true
+          mobsfscan . --sarif --output results.sarif || true
+
+      - name: Upload mobsfscan report to codeql
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: results.sarif
+
+      - name: Upload to Dojo
+        shell: bash
+        run: |
+          python -m dd_import.dd_reimport_findings
+
