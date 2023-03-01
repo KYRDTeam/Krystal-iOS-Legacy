@@ -136,7 +136,7 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
     
     func jumpToPage(index: Int) {
         segmentControl.selectedSegmentIndex = index
-        segmentControl.underlineCenterPosition()
+        segmentControl.underlineCenterPosition(parentWidth: UIScreen.main.bounds.width - segmentControlTrailingSpace - 16)
         if index != selectedPageIndex {
             selectPage(index: index)
         }
