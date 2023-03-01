@@ -39,6 +39,12 @@ jobs:
         with:
           python-version: 3.8
 
+      - name: Install the prerequisite
+        shell: bash
+        run: |
+          pip3 install --upgrade urllib3
+          pip3 install dd-import
+
       - name: Run mobsfscan (json output)
         uses: MobSF/mobsfscan@main
         with:
