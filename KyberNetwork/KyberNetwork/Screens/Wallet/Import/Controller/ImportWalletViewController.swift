@@ -81,6 +81,8 @@ class ImportWalletViewController: UIViewController {
         inputTextView.text = value
         inputTextView.textColor = AppTheme.current.primaryTextColor
         inputViewHeightConstraint.constant = inputTextView.contentSize.height + TEXT_VIEW_PADDING
+        updateContinueButton()
+        updateWordCount()
     }
     
     func wordCount() -> Int {
