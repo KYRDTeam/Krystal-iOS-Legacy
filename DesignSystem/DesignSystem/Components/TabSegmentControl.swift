@@ -48,9 +48,9 @@ open class SegmentedControl: UISegmentedControl {
         })
     }
     
-    public func underlineCenterPosition() {
+    public func underlineCenterPosition(parentWidth: CGFloat? = nil) {
         guard let underLine = self.viewWithTag(1) else { return }
-        let segmentWidth = self.frame.width / CGFloat(self.numberOfSegments)
+        let segmentWidth = (parentWidth ?? self.frame.width) / CGFloat(self.numberOfSegments)
         let xPosition = segmentWidth * CGFloat(selectedSegmentIndex) + (segmentWidth - underLine.frame.size.width) / 2
         
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: .curveEaseInOut, animations: {
