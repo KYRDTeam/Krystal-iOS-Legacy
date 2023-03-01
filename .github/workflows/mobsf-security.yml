@@ -4,11 +4,10 @@ on:
   push:
     branches:
       - main
+      - chore/mobsf-upload-dojo
   pull_request:
     branches:
       - main
-  schedule:
-    - cron: '33 01 * * 2'
 
 permissions:
   contents: read
