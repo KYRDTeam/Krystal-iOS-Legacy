@@ -40,20 +40,15 @@ jobs:
         with:
           python-version: 3.8
 
-      - name: Install the prerequisite
-        shell: bash
-        # use latest version of mobsfscan only if https://github.com/DefectDojo/django-DefectDojo/pull/7667 is merged
-        run: |
-          pip3 install --upgrade urllib3
-          pip3 install mobsfscan==0.1.3
-          pip3 install dd-import
+      - name: Run mobsfscan (json output)
+        uses: MobSF/mobsfscan@main
+        with:
+          args:  . --json -o $DD_FILE_NAME || true
 
-      - name: Run the mobsf
-        shell: bash
-        run: |
-          echo "The test name is: " $DD_TEST_NAME
-          mobsfscan . --json -o $DD_FILE_NAME || true
-          mobsfscan . --sarif --output results.sarif || true
+      - name: Run mobsfscan (sarif output)
+        uses: MobSF/mobsfscan@main
+        with:
+          args: . --sarif --output results.sarif || true
 
       - name: Upload mobsfscan report to codeql
         uses: github/codeql-action/upload-sarif@v2
