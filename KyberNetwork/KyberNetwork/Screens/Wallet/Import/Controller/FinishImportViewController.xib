@@ -12,11 +12,11 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
-        </array>
-        <array key="Karla-VariableFont_wght.ttf">
-            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -24,7 +24,7 @@
             <connections>
                 <outlet property="tableView" destination="lND-SC-azF" id="Dpb-ej-lbz"/>
                 <outlet property="tableViewHeightConstraint" destination="mdg-Mo-8Ta" id="nkq-Xx-SvH"/>
-                <outlet property="termOfUseLabel" destination="cli-XZ-lur" id="n54-7r-fMT"/>
+                <outlet property="termOfUseTextView" destination="mC3-Q9-c5m" id="wyI-OU-oIy"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletNameTextField" destination="Cs5-Rk-QgA" id="o4c-7h-m0O"/>
             </connections>
@@ -125,21 +125,6 @@
                         <action selector="finishButtonTapped:" destination="-1" eventType="touchUpInside" id="l5a-EV-Zq2"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cli-XZ-lur">
-                    <rect key="frame" x="20" y="718" width="353" height="36"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="36" id="DvX-OK-b5i"/>
-                    </constraints>
-                    <attributedString key="attributedText">
-                        <fragment content="By proceeding, you agree to Krystal's Terms and Use and Privacy Policy">
-                            <attributes>
-                                <color key="NSColor" name="normalTextColor"/>
-                                <font key="NSFont" metaFont="system" size="17"/>
-                            </attributes>
-                        </fragment>
-                    </attributedString>
-                    <nil key="highlightedColor"/>
-                </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="lND-SC-azF">
                     <rect key="frame" x="20" y="206" width="353" height="172"/>
                     <color key="backgroundColor" name="mainViewBgColor"/>
@@ -151,29 +136,39 @@
                         <outlet property="delegate" destination="-1" id="DCW-0i-Lqx"/>
                     </connections>
                 </tableView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="By proceeding, you agree to Krystal's Terms and Use and Privacy Policy" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="mC3-Q9-c5m">
+                    <rect key="frame" x="20" y="704" width="353" height="50"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="8pw-n9-vFD"/>
+                    </constraints>
+                    <color key="textColor" name="textWhiteColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="nDR-R3-9nE" secondAttribute="trailing" constant="20" id="1cu-lQ-2IO"/>
                 <constraint firstItem="nDR-R3-9nE" firstAttribute="top" secondItem="lND-SC-azF" secondAttribute="bottom" constant="16" id="DpA-Pe-KC4"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="cli-XZ-lur" secondAttribute="trailing" constant="20" id="GDr-5V-uMT"/>
                 <constraint firstItem="fcR-n0-8if" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="HnI-Pw-H4H"/>
                 <constraint firstItem="nDR-R3-9nE" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="I51-NP-EWr"/>
                 <constraint firstItem="qU5-ae-wur" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="MLj-ma-2d6"/>
                 <constraint firstItem="fcn-eM-3NH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="Mam-h0-xfS"/>
+                <constraint firstItem="Gtg-w3-zbl" firstAttribute="top" secondItem="mC3-Q9-c5m" secondAttribute="bottom" constant="16" id="OBd-dZ-25l"/>
                 <constraint firstItem="qU5-ae-wur" firstAttribute="top" secondItem="fcR-n0-8if" secondAttribute="bottom" constant="22" id="OtZ-2x-u5e"/>
-                <constraint firstItem="cli-XZ-lur" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="PTv-gF-Ztr"/>
                 <constraint firstItem="lND-SC-azF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="PUd-Yd-q81"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Gtg-w3-zbl" secondAttribute="bottom" id="RAU-4O-Mz9"/>
                 <constraint firstItem="whC-HZ-h80" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="SVi-bW-VK3"/>
                 <constraint firstItem="fcn-eM-3NH" firstAttribute="top" secondItem="nDR-R3-9nE" secondAttribute="bottom" constant="4" id="Tha-QH-1B2"/>
                 <constraint firstAttribute="trailing" secondItem="Gtg-w3-zbl" secondAttribute="trailing" constant="20" id="XTh-Kv-MRI"/>
+                <constraint firstItem="mC3-Q9-c5m" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="YuT-KB-AVa"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="mC3-Q9-c5m" secondAttribute="trailing" constant="20" id="a8m-ZC-8bQ"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="lND-SC-azF" secondAttribute="trailing" constant="20" id="fVW-N3-uXZ"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="whC-HZ-h80" secondAttribute="trailing" constant="20" id="ff6-JZ-3ci"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="fcn-eM-3NH" secondAttribute="trailing" constant="20" id="hBG-yx-FNw"/>
                 <constraint firstItem="whC-HZ-h80" firstAttribute="top" secondItem="qU5-ae-wur" secondAttribute="bottom" constant="12" id="stq-iM-Zkl"/>
-                <constraint firstItem="Gtg-w3-zbl" firstAttribute="top" secondItem="cli-XZ-lur" secondAttribute="bottom" constant="16" id="tFC-0y-ALb"/>
                 <constraint firstItem="Gtg-w3-zbl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="tcE-tF-eqn"/>
                 <constraint firstItem="lND-SC-azF" firstAttribute="top" secondItem="whC-HZ-h80" secondAttribute="bottom" constant="16" id="u7D-8m-QU1"/>
                 <constraint firstItem="fcR-n0-8if" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="52" id="yRZ-Td-rwm"/>

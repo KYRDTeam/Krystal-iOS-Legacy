@@ -15,6 +15,9 @@ class AddressCell: UITableViewCell {
     @IBOutlet weak var mainChainIcon: UIImageView!
     @IBOutlet var otherChainsView: [UIView]!
     @IBOutlet weak var dashView: UIView!
+    @IBOutlet weak var containView: UIView!
+    
+    
     var onCopyButtonTapped: ((String) -> ())?
     
     override func awakeFromNib() {
@@ -28,7 +31,7 @@ class AddressCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configUI(walletType: KAddressType, address: String) {
+    func configUI(walletType: KAddressType, address: String, roundCornerAll: Bool = true) {
         if walletType == .solana {
             otherChainsView.forEach { view in
                 view.isHidden = true
@@ -37,8 +40,18 @@ class AddressCell: UITableViewCell {
             mainChainIcon.image = Images.chainSolana
         }
         addressLabel.text = address
+        
+        DispatchQueue.main.async {
+            if roundCornerAll {
+                self.containView.kn_radius = 16
+            } else if walletType == .evm {
+                self.containView.roundWithCustomCorner(corners: [.topRight, .topLeft], radius: 16)
+            } else {
+                self.containView.roundWithCustomCorner(corners: [.bottomRight, .bottomLeft], radius: 16)
+            }
+        }
     }
-    
+
     @IBAction func copyButtonTapped(_ sender: Any) {
         if let text = addressLabel.text {
             onCopyButtonTapped?(text)
