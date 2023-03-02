@@ -33,7 +33,7 @@ struct RealWalletCellModel: WalletCellModel {
   }
   
   func isBackupedWallet() -> Bool {
-    return AppState.shared.isWalletBackedUp(walletID: wallet.id)
+      return WalletExtraDataManager.shared.isWalletBackedUp(walletID: wallet.id)
   }
   
   func isCurrentWallet() -> Bool {

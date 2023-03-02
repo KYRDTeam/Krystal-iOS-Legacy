@@ -61,7 +61,7 @@ class MigratingWalletOperation: AsyncOperation {
             DispatchQueue.main.async {
               if let wallet = try? self.walletManager.import(mnemonic: mnemonic, name: self.walletObject.name) {
                 if self.walletObject.isBackedUp {
-                    AppState.shared.markWalletBackedUp(walletID: wallet.id)
+                    WalletExtraDataManager.shared.markWalletBackedUp(walletID: wallet.id)
                 }
               }
               self.finish()
@@ -84,7 +84,7 @@ class MigratingWalletOperation: AsyncOperation {
                   case .success(let json):
                     if let wallet = try? self.walletManager.import(keystore: json, addressType: addressType, password: password, name: self.walletObject.name) {
                       if self.walletObject.isBackedUp {
-                          AppState.shared.markWalletBackedUp(walletID: wallet.id)
+                          WalletExtraDataManager.shared.markWalletBackedUp(walletID: wallet.id)
                       }
                     }
                   case .failure:
@@ -101,7 +101,7 @@ class MigratingWalletOperation: AsyncOperation {
             case .success(let key):
               if let wallet = try? self.walletManager.import(privateKey: key.toHexString(), addressType: addressType, name: self.walletObject.name) {
                 if self.walletObject.isBackedUp {
-                    AppState.shared.markWalletBackedUp(walletID: wallet.id)
+                    WalletExtraDataManager.shared.markWalletBackedUp(walletID: wallet.id)
                 }
               }
             case .failure:
@@ -119,7 +119,7 @@ class MigratingWalletOperation: AsyncOperation {
         self.finish()
         return
       }
-        AppState.shared.markWalletBackedUp(walletID: wallet.id)
+        WalletExtraDataManager.shared.markWalletBackedUp(walletID: wallet.id)
       self.finish()
     case .watch:
       let addressString = walletObject.address

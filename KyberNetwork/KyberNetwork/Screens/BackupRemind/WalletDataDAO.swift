@@ -15,13 +15,37 @@ class WalletDataDAO {
         return realm.object(ofType: WalletExtraData.self, forPrimaryKey: walletID)
     }
     
-    func markWalletAsBackedUp(walletID: String) {
-        guard let walletData = self.getWalletExtraData(walletID: walletID) else { return }
+    func updateLastBackupRemindTime(walletID: String) {
+        let walletData = WalletExtraData(walletID: walletID,
+                                         isBackedUp: false,
+                                         lastBackupRemindTime: Date(),
+                                         shouldRemindBackUp: true)
         let realm = try! Realm()
         try! realm.write {
-            walletData.isBackedUp = true
-            walletData.shouldRemindBackUp = false
+            realm.add(walletData, update: .modified)
         }
     }
     
+    func isWalletBackedUp(walletID: String) -> Bool {
+        return getWalletExtraData(walletID: walletID)?.isBackedUp ?? false
+    }
+    
+    func markWalletAsBackedUp(walletID: String) {
+        let walletData = WalletExtraData(walletID: walletID,
+                                         isBackedUp: true,
+                                         lastBackupRemindTime: Date(),
+                                         shouldRemindBackUp: false)
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(walletData, update: .modified)
+        }
+    }
+    
+    func stopRemind(walletID: String) {
+        guard let walletData = self.getWalletExtraData(walletID: walletID) else { return }
+        let realm = try! Realm()
+        try! realm.write {
+            walletData.shouldRemindBackUp = false
+        }
+    }
 }
