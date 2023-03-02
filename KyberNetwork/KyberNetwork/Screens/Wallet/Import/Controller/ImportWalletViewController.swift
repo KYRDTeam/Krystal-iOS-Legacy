@@ -8,6 +8,7 @@
 import UIKit
 import DesignSystem
 import KrystalWallets
+import AppState
 
 class ImportWalletViewController: UIViewController {
     @IBOutlet weak var wordCountLabel: UILabel!
@@ -69,12 +70,21 @@ class ImportWalletViewController: UIViewController {
     
     @IBAction func pasteButtonTapped(_ sender: Any) {
         if let string = UIPasteboard.general.string {
-            updateTextInput(value: string)
+            updateTextInput(value: "solid must business cannon flip mercy original near decrease trumpet annual sketch")
         }
     }
 
     @IBAction func continueButtonTapped(_ sender: Any) {
-        
+        let privateKey = inputTextView.text.trimmed
+        if privateKey.count == 64 {
+            self.importWallet(with: .privateKey(privateKey: privateKey), name: "name", importType: .evm, selectedChain: .bsc)
+        } else if SolanaUtils.isValidSolanaPrivateKey(text: privateKey) {
+            self.importWallet(with: .privateKey(privateKey: privateKey), name: "name", importType: .solana, selectedChain: .solana)
+        } else {
+            var seeds = inputTextView.text.trimmed.components(separatedBy: " ").map({ $0.trimmed })
+            seeds = seeds.filter({ return !$0.replacingOccurrences(of: " ", with: "").isEmpty })
+            self.importWallet(with: .mnemonic(words: seeds, password: ""), name: "", importType: .multiChain, selectedChain: .bsc)
+        }
     }
     
     func updateTextInput(value: String) {
@@ -126,7 +136,7 @@ extension ImportWalletViewController: UITextViewDelegate {
             textView.textColor = AppTheme.current.primaryTextColor
         }
     }
-
+    
     func textViewDidEndEditing(_ textView: UITextView) {
         clearTextBtn.isHidden = true
         if textView.text.isEmpty {
@@ -139,5 +149,80 @@ extension ImportWalletViewController: UITextViewDelegate {
         inputViewHeightConstraint.constant = textView.contentSize.height + TEXT_VIEW_PADDING
         updateWordCount()
         updateContinueButton()
+    }
+}
+
+extension ImportWalletViewController {
+    
+    private func onImportWalletSuccess(wallet: KWallet, chain: ChainType, importType: ImportWalletChainType) {
+        let solanaAddress = WalletManager.shared.address(walletID: wallet.id, addressType: .solana)?.addressString
+        let evmAddress = WalletManager.shared.address(walletID: wallet.id, addressType: .evm)?.addressString
+        try? WalletManager.shared.remove(wallet: wallet)
+        let viewModel = FinishImportViewModel(solanaAddress: solanaAddress, evmAddress: evmAddress, importType: importType, inputKeyWord: inputTextView.text.trimmed)
+        let finishVC = FinishImportViewController(viewModel: viewModel)
+        self.navigationController?.pushViewController(finishVC, animated: true)
+    }
+    
+    fileprivate func importWallet(with type: ImportType, name: String?, importType: ImportWalletChainType, selectedChain: ChainType) {
+      if name == nil || name?.isEmpty == true {
+        Tracker.track(event: .screenImportWallet, customAttributes: ["action": "name_empty"])
+      } else {
+        Tracker.track(event: .screenImportWallet, customAttributes: ["action": "name_not_empty"])
+      }
+      
+      let addressType: KAddressType = {
+        switch importType {
+        case .multiChain, .evm:
+          return .evm
+        case .solana:
+          return .solana
+        }
+      }()
+      
+      switch type {
+      case .privateKey(let privateKey):
+        do {
+          let wallet = try WalletManager.shared.import(privateKey: privateKey, addressType: addressType, name: name.whenNilOrEmpty("Imported"))
+          onImportWalletSuccess(wallet: wallet, chain: selectedChain, importType: importType)
+        } catch {
+          self.displayAlert(message: importErrorMessage(error: error))
+        }
+      case .mnemonic(let words, _):
+        do {
+          let wallet = try WalletManager.shared.import(mnemonic: words.joined(separator: " "), name: name.whenNilOrEmpty("Imported"))
+          onImportWalletSuccess(wallet: wallet, chain: selectedChain, importType: importType)
+        } catch {
+          self.displayAlert(message: importErrorMessage(error: error))
+        }
+      case .keystore(let key, let password):
+        do {
+          let wallet = try WalletManager.shared.import(keystore: key, addressType: addressType, password: password, name: name.whenNilOrEmpty("Imported"))
+          onImportWalletSuccess(wallet: wallet, chain: selectedChain, importType: importType)
+        } catch {
+          self.displayAlert(message: importErrorMessage(error: error))
+        }
+
+      case .watch(_, _):
+        return
+      }
+    }
+    
+    func importErrorMessage(error: Error) -> String {
+      if let error = error as? WalletManagerError {
+        switch error {
+        case .invalidJSON:
+          return Strings.failedToParseJSON
+        case .duplicatedWallet:
+          return Strings.alreadyAddedWalletAddress
+        case .cannotCreateWallet:
+          return Strings.failedToCreateWallet
+        case .cannotImportWallet:
+          return Strings.failedToImportWallet
+        default:
+          return Strings.failedToImportWallet
+        }
+      } else {
+        return Strings.failedToImportWallet
+      }
     }
 }

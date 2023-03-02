@@ -14,7 +14,7 @@ struct TipModel {
 
 class SecurityTipsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
-    var dataSource:[TipModel] = []
+    var dataSource: [TipModel] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeData()
