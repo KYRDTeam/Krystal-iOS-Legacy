@@ -64,6 +64,28 @@ class FinishImportViewController: UIViewController {
         }
         let wallets = WalletManager.shared.getAllWallets()
         walletNameTextField.text = "Wallet \(wallets.count + 1)"
+        
+        let attributedString = NSMutableAttributedString()
+        let linkAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.foregroundColor: AppTheme.current.positiveTextColor,
+          NSAttributedString.Key.font: UIFont.karlaReguler(ofSize: 14),
+          NSAttributedString.Key.kern: 0.0,
+        ]
+        let normalAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.foregroundColor: AppTheme.current.primaryTextColor,
+          NSAttributedString.Key.font: UIFont.karlaReguler(ofSize: 14),
+          NSAttributedString.Key.kern: 0.0,
+        ]
+        attributedString.append(NSAttributedString(string: "By proceeding, you agree to Krystal's ", attributes: normalAttributes))
+        attributedString.append(NSAttributedString(string: "Terms and Use", attributes: linkAttributes))
+        attributedString.append(NSAttributedString(string: " and ", attributes: normalAttributes))
+        attributedString.append(NSAttributedString(string: "Privacy Policy", attributes: linkAttributes))
+        
+        attributedString.addAttribute(.link, value: "https://files.krystal.app/terms.pdf", range: NSRange(location: "By proceeding, you agree to Krystal's ".count, length: "Terms and Use".count))
+        attributedString.addAttribute(.link, value: "https://files.krystal.app/privacy.pdf", range: NSRange(location: 25, length: 15))
+        
+        termOfUseLabel.attributedText = attributedString
+        termOfUseLabel.isUserInteractionEnabled = true
     }
 
     @IBAction func backButtonTapped(_ sender: Any) {

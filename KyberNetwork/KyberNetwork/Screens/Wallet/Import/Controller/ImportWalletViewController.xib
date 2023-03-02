@@ -28,6 +28,8 @@
                 <outlet property="clearTextBtn" destination="CuG-Dx-AyY" id="cBp-3G-OJZ"/>
                 <outlet property="continueButton" destination="hxC-Ha-2JY" id="6qG-Hw-252"/>
                 <outlet property="errorLabel" destination="Lem-JQ-B5g" id="9J7-xQ-Jbc"/>
+                <outlet property="infoLabel" destination="Yr9-1k-2u3" id="aBL-AQ-0Gh"/>
+                <outlet property="inputContainView" destination="TgV-0y-BBp" id="dQu-FN-dcU"/>
                 <outlet property="inputTextView" destination="vE6-8p-kZv" id="M3e-pF-vir"/>
                 <outlet property="inputViewHeightConstraint" destination="U9k-bm-6R2" id="1uq-25-eAs"/>
                 <outlet property="pasteButtonTopConstraint" destination="Y8Q-QH-0jM" id="DoJ-EK-LFu"/>
