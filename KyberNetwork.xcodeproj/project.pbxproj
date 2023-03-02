@@ -558,6 +558,8 @@
 		7ED5FA8227D1EF4000F0CB8E /* SelectNetworkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5FA8027D1EF4000F0CB8E /* SelectNetworkViewController.xib */; };
 		7ED5FA8527D214D000F0CB8E /* SelectNetworkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5FA8327D214D000F0CB8E /* SelectNetworkCell.swift */; };
 		7ED5FA8627D214D000F0CB8E /* SelectNetworkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5FA8427D214D000F0CB8E /* SelectNetworkCell.xib */; };
+		7ED81BC329AF51F000F92109 /* AddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED81BC129AF51EF00F92109 /* AddressCell.swift */; };
+		7ED81BC429AF51F000F92109 /* AddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED81BC229AF51F000F92109 /* AddressCell.xib */; };
 		7EDA64CF29AD201D009EEC21 /* SecurityTipsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDA64CD29AD201D009EEC21 /* SecurityTipsViewController.swift */; };
 		7EDA64D029AD201D009EEC21 /* SecurityTipsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EDA64CE29AD201D009EEC21 /* SecurityTipsViewController.xib */; };
 		7EDA64D429AD2230009EEC21 /* TipsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDA64D229AD2230009EEC21 /* TipsCell.swift */; };
@@ -1862,6 +1864,8 @@
 		7ED5FA8027D1EF4000F0CB8E /* SelectNetworkViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectNetworkViewController.xib; sourceTree = "<group>"; };
 		7ED5FA8327D214D000F0CB8E /* SelectNetworkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectNetworkCell.swift; sourceTree = "<group>"; };
 		7ED5FA8427D214D000F0CB8E /* SelectNetworkCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectNetworkCell.xib; sourceTree = "<group>"; };
+		7ED81BC129AF51EF00F92109 /* AddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressCell.swift; sourceTree = "<group>"; };
+		7ED81BC229AF51F000F92109 /* AddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressCell.xib; sourceTree = "<group>"; };
 		7EDA64CD29AD201D009EEC21 /* SecurityTipsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityTipsViewController.swift; sourceTree = "<group>"; };
 		7EDA64CE29AD201D009EEC21 /* SecurityTipsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SecurityTipsViewController.xib; sourceTree = "<group>"; };
 		7EDA64D229AD2230009EEC21 /* TipsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsCell.swift; sourceTree = "<group>"; };
@@ -4916,6 +4920,8 @@
 			children = (
 				7EDA64D229AD2230009EEC21 /* TipsCell.swift */,
 				7EDA64D329AD2230009EEC21 /* TipsCell.xib */,
+				7ED81BC129AF51EF00F92109 /* AddressCell.swift */,
+				7ED81BC229AF51F000F92109 /* AddressCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -7094,6 +7100,7 @@
 				C37AF0CE25CCFB47006FB880 /* EarnSwapConfirmViewController.xib in Resources */,
 				25696F6420BE8973002CC53F /* KNSetSlippageRateViewController.xib in Resources */,
 				C68AA277237A6BE900B9EC35 /* KNTransactionStatusPopUp.xib in Resources */,
+				7ED81BC429AF51F000F92109 /* AddressCell.xib in Resources */,
 				7E913AFB273CF6DA00B6E67C /* intro_earn.json in Resources */,
 				25C45AE720AEB4A700CDA1FF /* KNEnterWalletNameViewController.xib in Resources */,
 				25929C9420DA5CC10045CFA3 /* SFCompactText-MediumItalic.otf in Resources */,
@@ -8172,6 +8179,7 @@
 				A65CBF20286307BD008620E2 /* UserDefaults.swift in Sources */,
 				C33BF86A26D77E5C00D9F621 /* SendNFTViewController.swift in Sources */,
 				C320D80B27B39EBC0001DC71 /* MultiSendViewController.swift in Sources */,
+				7ED81BC329AF51F000F92109 /* AddressCell.swift in Sources */,
 				7721A6C8202EF81B004DB16C /* CustomRPC.swift in Sources */,
 				253F50E721E5B5290068813D /* KNPromoCodeViewController.swift in Sources */,
 				A69C5BDC28D1BAEF000DE825 /* NotificationItemV2Cell.swift in Sources */,
