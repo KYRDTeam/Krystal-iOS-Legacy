@@ -80,15 +80,16 @@ class FinishImportViewController: UIViewController {
     }
     
     func didFinishImport() {
+        let name = walletNameTextField.text?.trimmed
         switch self.viewModel.importType {
         case .solana:
-            self.importWallet(with: .privateKey(privateKey: self.viewModel.inputKeyWord), name: "name", importType: .solana, selectedChain: .solana)
+            self.importWallet(with: .privateKey(privateKey: self.viewModel.inputKeyWord), name: name, importType: .solana, selectedChain: .solana)
         case.evm:
-            self.importWallet(with: .privateKey(privateKey: self.viewModel.inputKeyWord), name: "name", importType: .evm, selectedChain: .bsc)
+            self.importWallet(with: .privateKey(privateKey: self.viewModel.inputKeyWord), name: name, importType: .evm, selectedChain: .bsc)
         case.multiChain:
             var seeds = self.viewModel.inputKeyWord.trimmed.components(separatedBy: " ").map({ $0.trimmed })
             seeds = seeds.filter({ return !$0.replacingOccurrences(of: " ", with: "").isEmpty })
-            self.importWallet(with: .mnemonic(words: seeds, password: ""), name: "", importType: .multiChain, selectedChain: .bsc)
+            self.importWallet(with: .mnemonic(words: seeds, password: ""), name: name, importType: .multiChain, selectedChain: .bsc)
         }
     }
 }
