@@ -7,8 +7,15 @@
 
 import Foundation
 import UIKit
+import AppState
+import Dependencies
+import Utilities
+import Moya
+import KrystalWallets
 
 class KNTabBarController: UITabBarController {
+    
+    let viewAppear = Once()
     
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     
@@ -20,6 +27,14 @@ class KNTabBarController: UITabBarController {
         super.viewDidLoad()
         
         UITabBar.appearance().unselectedItemTintColor = .white
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewAppear.run {
+            self.showBackUpWalletIfNeeded()
+        }
     }
     
     func setupTabbarConstraints() {
@@ -74,5 +89,33 @@ class KNTabBarController: UITabBarController {
         let itemCount = tabBar.items?.count ?? 0
         
         return itemCount == 0 ? 0 : tabBar.frame.width / CGFloat(itemCount * 2) * CGFloat(index * 2 + 1)
+    }
+    
+    func showBackUpWalletIfNeeded() {
+        let walletID = AppState.shared.currentAddress.walletID
+        guard !walletID.isEmpty, WalletExtraDataManager.shared.shouldShowBackup(forWallet: walletID) else { return }
+        let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+        let addresses = WalletManager.shared.getAllAddresses(walletID: walletID).map { address -> String in
+            switch address.addressType {
+            case .evm:
+                return "ethereum:\(address.addressString)"
+            case .solana:
+                return "solana:\(address.addressString)"
+            }
+        }
+        provider.requestWithFilter(.getMultichainBalance(address: addresses, chainIds: ChainType.getAllChain().map { "\($0.getChainId())" }, quoteSymbols: [])) { (result) in
+            switch result {
+            case .success(let resp):
+                guard let responseJson = try? resp.mapJSON() as? JSONDictionary ?? [:], let jsons = responseJson["data"] as? [JSONDictionary] else {
+                    return
+                }
+                if !jsons.map(ChainBalanceModel.init).flatMap(\.balances).isEmpty {
+                    AppDependencies.router.openBackupReminder(viewController: self, walletID: walletID)
+                }
+                return
+            case .failure:
+                return
+            }
+        }
     }
 }

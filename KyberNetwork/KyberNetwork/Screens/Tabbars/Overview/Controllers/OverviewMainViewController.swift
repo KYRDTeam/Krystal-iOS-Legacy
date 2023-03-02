@@ -221,12 +221,6 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     self.updateUIByFeatureFlags()
     self.delegate?.overviewMainViewController(self, run: .didAppear)
     self.getNotificationBadgeNumber()
-      
-      
-      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-          AppDependencies.router.openBackupReminder()
-      }
-    
   }
   
   func updateUIByFeatureFlags() {

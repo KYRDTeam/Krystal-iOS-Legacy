@@ -85,7 +85,7 @@ class ConfirmBackupViewController: KNBaseViewController {
   
   func showSuccessBackup() {
     if let walletId = walletId {
-        AppState.shared.markWalletBackedUp(walletID: walletId)
+        WalletExtraDataManager.shared.markWalletBackedUp(walletID: walletId)
     }
     let successBackupVC = BackupSuccessViewController()
     successBackupVC.delegate = self

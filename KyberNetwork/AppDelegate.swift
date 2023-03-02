@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     DependenciesRegister.register()
       
+    migrateWalletData()
     window = UIWindow(frame: UIScreen.main.bounds)
     setupImageProcessor()
     setupKeyboard()
@@ -49,6 +50,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     return true
   }
+    
+    func migrateWalletData() {
+        WalletExtraDataManager.shared.migrateFromFile()
+    }
   
   func startMigration(keystore: Keystore) {
     let vc = MigratingViewController.instantiateFromNib()

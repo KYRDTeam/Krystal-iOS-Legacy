@@ -30,7 +30,8 @@ public protocol AppRouterProtocol {
     func openEarnReward()
     func openSwap(from: Token, to: Token)
     func openTokenScanner(address: String, chainId: Int)
-    func openBackupReminder(walletID: String)
+    func openBackupReminder(viewController: UIViewController, walletID: String)
+    func openBackupWallet(walletID: String)
 }
 
 public extension AppRouterProtocol {

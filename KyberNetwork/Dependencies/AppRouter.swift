@@ -184,10 +184,20 @@ class AppRouter: AppRouterProtocol, Coordinator {
         }
     }
     
-    func openBackupReminder(walletID: String) {
+    func openBackupReminder(viewController: UIViewController, walletID: String) {
         let vc = BackupRemindViewController.instantiateFromNib()
+        vc.walletID = walletID
         let popup = PopupViewController(vc: vc, configuration: PopupConfiguration(height: .intrinsic))
-        UIApplication.shared.topMostViewController()?.present(popup, animated: true)
+        viewController.present(popup, animated: true)
+    }
+    
+    func openBackupWallet(walletID: String) {
+        guard let topMostVc = UIApplication.shared.topMostViewController() else { return }
+        let coordinator = BackUpWalletCoordinator(parentViewController: topMostVc, walletID: walletID)
+        coordinator.onBackupFinish = {
+            WalletExtraDataManager.shared.markWalletBackedUp(walletID: walletID)
+        }
+        coordinate(coordinator: coordinator)
     }
   
 }

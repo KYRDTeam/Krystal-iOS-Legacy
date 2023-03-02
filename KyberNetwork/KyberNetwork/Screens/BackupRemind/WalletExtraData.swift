@@ -19,9 +19,16 @@ class WalletExtraData: Object {
     }
     
     init(walletID: String, isBackedUp: Bool, lastBackupRemindTime: Date, shouldRemindBackUp: Bool) {
+        super.init()
         self.walletID = walletID
         self.isBackedUp = isBackedUp
         self.lastBackupRemindTime = lastBackupRemindTime
         self.shouldRemindBackUp = shouldRemindBackUp
     }
+    
+    override init() {
+        super.init()
+    }
+    
+    
 }
