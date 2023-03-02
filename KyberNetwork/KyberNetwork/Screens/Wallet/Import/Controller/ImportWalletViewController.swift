@@ -81,6 +81,7 @@ class ImportWalletViewController: UIViewController {
 
     @IBAction func clearTextButtonTapped(_ sender: Any) {
         inputTextView.text = nil
+        pasteInfoView.isHidden = true
         inputViewHeightConstraint.constant = 48
         updateWordCount()
     }
@@ -94,6 +95,7 @@ class ImportWalletViewController: UIViewController {
         if let string = UIPasteboard.general.string {
             updateTextInput(value: string)
             showErrorIfNeeded()
+            showPasteInfoView()
         }
     }
 
@@ -187,6 +189,17 @@ class ImportWalletViewController: UIViewController {
             errorLabel.isHidden = false
         }
     }
+    
+    func showPasteInfoView() {
+        self.view.layoutIfNeeded()
+        let oldY = self.pasteInfoView.frame.origin.y
+        self.pasteInfoView.frame = CGRect(x: self.pasteInfoView.frame.origin.x, y: 0, width: self.pasteInfoView.frame.size.width, height: self.pasteInfoView.frame.size.height)
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+            self.pasteInfoView.isHidden = false
+            self.pasteInfoView.frame = CGRect(x: self.pasteInfoView.frame.origin.x, y: oldY, width: self.pasteInfoView.frame.size.width, height: self.pasteInfoView.frame.size.height)
+            self.view.layoutIfNeeded()
+        }
+    }
 }
 
 extension ImportWalletViewController: UITextViewDelegate {
@@ -208,6 +221,7 @@ extension ImportWalletViewController: UITextViewDelegate {
     }
     
     func textViewDidChange(_ textView: UITextView) {
+        pasteInfoView.isHidden = true
         inputViewHeightConstraint.constant = textView.contentSize.height + TEXT_VIEW_PADDING
         updateWordCount()
         updateContinueButton()
