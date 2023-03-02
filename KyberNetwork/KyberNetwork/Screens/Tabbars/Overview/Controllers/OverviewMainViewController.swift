@@ -14,6 +14,7 @@ import SkeletonView
 import BaseModule
 import DesignSystem
 import TransactionModule
+import Dependencies
 
 protocol OverviewMainViewControllerDelegate: class {
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent)
@@ -220,6 +221,11 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     self.updateUIByFeatureFlags()
     self.delegate?.overviewMainViewController(self, run: .didAppear)
     self.getNotificationBadgeNumber()
+      
+      
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          AppDependencies.router.openBackupReminder()
+      }
     
   }
   

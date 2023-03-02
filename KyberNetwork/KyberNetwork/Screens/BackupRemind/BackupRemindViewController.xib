@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+        <array key="Karla-SemiBold.ttf">
+            <string>Karla-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BackupRemindViewController" customModule="Krystal" customModuleProvider="target">
+            <connections>
+                <outlet property="dontRemindCheckBox" destination="UlA-zW-Qxj" id="1HY-lk-iLa"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backup wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dwp-PY-9bj">
+                    <rect key="frame" x="120.5" y="28" width="134.5" height="23.5"/>
+                    <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                    <color key="textColor" red="0.95294117647058818" green="0.97254901960784312" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please backup to protect your wallet. It has balance in it." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gMZ-t6-idk">
+                    <rect key="frame" x="20" y="59.5" width="335" height="37.5"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                    <color key="textColor" red="0.95294117649999999" green="0.97254901959999995" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backup_illustration" translatesAutoresizingMaskIntoConstraints="NO" id="oxb-Si-lCe">
+                    <rect key="frame" x="48" y="129" width="279" height="223"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="oxb-Si-lCe" secondAttribute="height" multiplier="1:0.8" id="C2U-gO-Uvb"/>
+                    </constraints>
+                </imageView>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="WWn-OG-lM0">
+                    <rect key="frame" x="60" y="388" width="255.5" height="20"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UlA-zW-Qxj" customClass="CheckBox" customModule="DesignSystem">
+                            <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                            <color key="backgroundColor" name="buttonBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="rgG-yg-z0u"/>
+                                <constraint firstAttribute="height" constant="20" id="xtV-Z9-j2z"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Button"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="selectedBackgroundColor">
+                                    <color key="value" name="buttonBackgroundColor"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="dontRemindCheckBoxTapped:" destination="-1" eventType="touchUpInside" id="ed4-Hg-MYr"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don’t remind again (for this wallet)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eh7-qd-X2I">
+                            <rect key="frame" x="32" y="0.0" width="223.5" height="20"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                            <color key="textColor" red="0.95294117649999999" green="0.97254901959999995" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                </stackView>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="tPO-XR-GRP">
+                    <rect key="frame" x="20" y="426" width="335" height="48"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h3V-c1-6AL">
+                            <rect key="frame" x="0.0" y="0.0" width="159.5" height="48"/>
+                            <fontDescription key="fontDescription" name="Karla-SemiBold" family="Karla" pointSize="16"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Not now">
+                                <color key="titleColor" name="buttonBackgroundColor"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_borderWidth">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="kn_borderColor">
+                                    <color key="value" name="buttonBackgroundColor"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                    <real key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MkI-JV-8RG">
+                            <rect key="frame" x="175.5" y="0.0" width="159.5" height="48"/>
+                            <color key="backgroundColor" name="buttonBackgroundColor"/>
+                            <fontDescription key="fontDescription" name="Karla-SemiBold" family="Karla" pointSize="16"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Back up">
+                                <color key="titleColor" name="buttonTextColor"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_borderWidth">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="kn_borderColor">
+                                    <color key="value" name="buttonBackgroundColor"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                    <real key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="K0D-ao-nnh"/>
+                    </constraints>
+                </stackView>
+                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="km0-Fr-oQE">
+                    <rect key="frame" x="66" y="510" width="243" height="129"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="question" translatesAutoresizingMaskIntoConstraints="NO" id="4rJ-eg-9G6">
+                            <rect key="frame" x="0.0" y="56.5" width="16" height="16"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="16" id="3bC-ov-AeG"/>
+                                <constraint firstAttribute="height" constant="16" id="Rpu-2y-grA"/>
+                            </constraints>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UtC-6K-d3d">
+                            <rect key="frame" x="24" y="49.5" width="219" height="30"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Why should I backup my wallet?">
+                                <color key="titleColor" name="buttonBackgroundColor"/>
+                            </state>
+                        </button>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="popupBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="oxb-Si-lCe" firstAttribute="top" secondItem="gMZ-t6-idk" secondAttribute="bottom" constant="32" id="0iO-4j-L16"/>
+                <constraint firstItem="WWn-OG-lM0" firstAttribute="top" secondItem="oxb-Si-lCe" secondAttribute="bottom" constant="36" id="A3q-03-VXg"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="tPO-XR-GRP" secondAttribute="trailing" constant="20" id="EPU-4e-eOw"/>
+                <constraint firstItem="gMZ-t6-idk" firstAttribute="top" secondItem="Dwp-PY-9bj" secondAttribute="bottom" constant="8" id="KLm-YI-VbN"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="gMZ-t6-idk" secondAttribute="trailing" constant="20" id="SSK-oJ-y5v"/>
+                <constraint firstItem="gMZ-t6-idk" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="Sdk-Sq-kz4"/>
+                <constraint firstItem="tPO-XR-GRP" firstAttribute="top" secondItem="WWn-OG-lM0" secondAttribute="bottom" constant="18" id="Sqg-1L-qfs"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="km0-Fr-oQE" secondAttribute="bottom" constant="28" id="U8h-vN-Mrl"/>
+                <constraint firstItem="Dwp-PY-9bj" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="28" id="VhQ-ZA-rpd"/>
+                <constraint firstItem="Dwp-PY-9bj" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Z5z-ZV-JcD"/>
+                <constraint firstItem="km0-Fr-oQE" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="bmh-g2-Mer"/>
+                <constraint firstItem="oxb-Si-lCe" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="48" id="cAN-vy-eD8"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="oxb-Si-lCe" secondAttribute="trailing" constant="48" id="dI5-gc-0gs"/>
+                <constraint firstItem="WWn-OG-lM0" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="eAs-pY-cNx"/>
+                <constraint firstItem="km0-Fr-oQE" firstAttribute="top" secondItem="tPO-XR-GRP" secondAttribute="bottom" constant="36" id="guK-oi-9N9"/>
+                <constraint firstItem="tPO-XR-GRP" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="ovY-tr-0n4"/>
+            </constraints>
+            <point key="canvasLocation" x="137.68115942028987" y="108.48214285714285"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="UlA-zW-Qxj">
+            <size key="intrinsicContentSize" width="46" height="30"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="backup_illustration" width="242" height="196.5"/>
+        <image name="question" width="16" height="16.5"/>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="buttonTextColor">
+            <color red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="popupBackgroundColor">
+            <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

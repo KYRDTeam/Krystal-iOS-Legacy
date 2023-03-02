@@ -12,6 +12,7 @@ import UIKit
 import KrystalWallets
 import AppState
 import TokenModule
+import DesignSystem
 
 class AppRouter: AppRouterProtocol, Coordinator {
   
@@ -181,6 +182,12 @@ class AppRouter: AppRouterProtocol, Coordinator {
         } else {
             AppDelegate.shared.coordinator.swapV2Coordinator?.appCoordinatorOpenSwap(from: from, to: to)
         }
+    }
+    
+    func openBackupReminder(walletID: String) {
+        let vc = BackupRemindViewController.instantiateFromNib()
+        let popup = PopupViewController(vc: vc, configuration: PopupConfiguration(height: .intrinsic))
+        UIApplication.shared.topMostViewController()?.present(popup, animated: true)
     }
   
 }
