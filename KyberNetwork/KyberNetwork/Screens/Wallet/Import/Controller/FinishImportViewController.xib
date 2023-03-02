@@ -12,11 +12,11 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
-            <string>Karla-Regular</string>
-        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -125,13 +125,19 @@
                         <action selector="finishButtonTapped:" destination="-1" eventType="touchUpInside" id="l5a-EV-Zq2"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By proceeding, you agree to Krystal's Terms and Use and Privacy Policy" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cli-XZ-lur">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cli-XZ-lur">
                     <rect key="frame" x="20" y="718" width="353" height="36"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="36" id="DvX-OK-b5i"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
-                    <color key="textColor" name="normalTextColor"/>
+                    <attributedString key="attributedText">
+                        <fragment content="By proceeding, you agree to Krystal's Terms and Use and Privacy Policy">
+                            <attributes>
+                                <color key="NSColor" name="normalTextColor"/>
+                                <font key="NSFont" metaFont="system" size="17"/>
+                            </attributes>
+                        </fragment>
+                    </attributedString>
                     <nil key="highlightedColor"/>
                 </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="lND-SC-azF">
