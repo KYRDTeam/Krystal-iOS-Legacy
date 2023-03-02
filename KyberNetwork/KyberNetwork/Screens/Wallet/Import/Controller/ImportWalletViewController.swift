@@ -27,18 +27,18 @@ class ImportWalletViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        continueButton.isEnabled = false
-        continueButton.setBackgroundColor(AppTheme.current.primaryColor, forState: .normal)
-        continueButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .disabled)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         configUI()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        pasteView.isHidden = UIPasteboard.general.string == nil
     }
     
     func configUI() {
-        pasteView.isHidden = UIPasteboard.general.string == nil
+        continueButton.isEnabled = false
+        continueButton.setBackgroundColor(AppTheme.current.primaryColor, forState: .normal)
+        continueButton.setBackgroundColor(AppTheme.current.secondaryButtonBackgroundColor, forState: .disabled)
         inputTextView.delegate = self
         inputTextView.text = "Input here"
         inputTextView.textColor = .lightGray
@@ -70,7 +70,7 @@ class ImportWalletViewController: UIViewController {
     
     @IBAction func pasteButtonTapped(_ sender: Any) {
         if let string = UIPasteboard.general.string {
-            updateTextInput(value: "solid must business cannon flip mercy original near decrease trumpet annual sketch")
+            updateTextInput(value: string)
         }
     }
 
