@@ -66,7 +66,7 @@ jobs:
           python -m dd_import.dd_reimport_findings
 
   gitleak-scan-job:
-    runs-on: [arc-kyrd-runner, size-m]
+    runs-on: ubuntu-latest
 
     env:
       GIT_STRATEGY: none
@@ -78,6 +78,12 @@ jobs:
       DD_PRODUCT_NAME: "Krystal iOS"
       DD_PRODUCT_TYPE_NAME: "Research and Development"
       DD_ENGAGEMENT_NAME: "CI-Engagement"
+
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+
 
     steps:
       - name: Checkout
