@@ -31,10 +31,11 @@ class FinishImportViewModel {
 
 class FinishImportViewController: UIViewController {
     @IBOutlet weak var walletNameTextField: UITextField!
-    @IBOutlet weak var termOfUseLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var termOfUseTextView: UITextView!
     let viewModel: FinishImportViewModel
+
 
     lazy var passcodeCoordinator: KNPasscodeCoordinator = {
       let coordinator = KNPasscodeCoordinator(
@@ -65,7 +66,6 @@ class FinishImportViewController: UIViewController {
         let wallets = WalletManager.shared.getAllWallets()
         walletNameTextField.text = "Wallet \(wallets.count + 1)"
         
-        let attributedString = NSMutableAttributedString()
         let linkAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.foregroundColor: AppTheme.current.positiveTextColor,
           NSAttributedString.Key.font: UIFont.karlaReguler(ofSize: 14),
@@ -76,16 +76,13 @@ class FinishImportViewController: UIViewController {
           NSAttributedString.Key.font: UIFont.karlaReguler(ofSize: 14),
           NSAttributedString.Key.kern: 0.0,
         ]
-        attributedString.append(NSAttributedString(string: "By proceeding, you agree to Krystal's ", attributes: normalAttributes))
-        attributedString.append(NSAttributedString(string: "Terms and Use", attributes: linkAttributes))
-        attributedString.append(NSAttributedString(string: " and ", attributes: normalAttributes))
-        attributedString.append(NSAttributedString(string: "Privacy Policy", attributes: linkAttributes))
-        
+        let string = "By proceeding, you agree to Krystal's Terms and Use and Privacy Policy"
+        let attributedString = NSMutableAttributedString(string: string, attributes: normalAttributes)
         attributedString.addAttribute(.link, value: "https://files.krystal.app/terms.pdf", range: NSRange(location: "By proceeding, you agree to Krystal's ".count, length: "Terms and Use".count))
-        attributedString.addAttribute(.link, value: "https://files.krystal.app/privacy.pdf", range: NSRange(location: 25, length: 15))
+        attributedString.addAttribute(.link, value: "https://files.krystal.app/privacy.pdf", range: NSRange(location: string.count - "Privacy Policy".count, length: "Privacy Policy".count))
         
-        termOfUseLabel.attributedText = attributedString
-        termOfUseLabel.isUserInteractionEnabled = true
+        termOfUseTextView.linkTextAttributes = linkAttributes
+        termOfUseTextView.attributedText = attributedString
     }
 
     @IBAction func backButtonTapped(_ sender: Any) {
@@ -237,11 +234,11 @@ extension FinishImportViewController: UITableViewDataSource {
         } else {
             if indexPath.row == 0 {
                 let evmAddress = viewModel.evmAddress ?? ""
-                cell.configUI(walletType: .evm, address: evmAddress)
+                cell.configUI(walletType: .evm, address: evmAddress, roundCornerAll: false)
                 cell.dashView.dashLine(width: 1, color: AppTheme.current.secondaryTextColor)
             } else {
                 let solanaAddress = viewModel.solanaAddress ?? ""
-                cell.configUI(walletType: .solana, address: solanaAddress)
+                cell.configUI(walletType: .solana, address: solanaAddress, roundCornerAll: false)
             }
         }
 
