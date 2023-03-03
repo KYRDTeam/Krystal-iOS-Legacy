@@ -57,7 +57,7 @@ extension SecurityTipsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if let cell = self.tableView.cellForRow(at: indexPath) as? TipsCell {
-            return cell.isExpand ? 120 : 80
+            return cell.isExpand ? cell.contentHeight : 80
         }
         return 80
     }

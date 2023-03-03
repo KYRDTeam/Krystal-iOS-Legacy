@@ -11,17 +11,13 @@ class TipsCell: UITableViewCell {
     @IBOutlet weak var dropDownIcon: UIImageView!
     @IBOutlet weak var detailTipsLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var containerView: UIView!
     var isExpand: Bool = false
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        updateIcon()
-    }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    var contentHeight: CGFloat {
+        var fittingSize = UIView.layoutFittingCompressedSize
+        fittingSize.width = containerView.frame.width - 32
+        return systemLayoutSizeFitting(fittingSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .defaultLow).height
     }
     
     func updateUIExpanse() {
@@ -29,7 +25,7 @@ class TipsCell: UITableViewCell {
         detailTipsLabel.isHidden = !isExpand
         updateIcon()
         var rect = self.frame
-        rect.size.height = isExpand ? 120 : 80
+        rect.size.height = isExpand ? contentHeight : 80
         self.frame = rect
     }
     
