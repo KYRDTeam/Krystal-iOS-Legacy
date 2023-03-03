@@ -3317,6 +3317,7 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				7E9E0D9029B1A30700B3966D /* TipsView */,
 				A66CD6E6295463CE00FF2EC9 /* HistoryV3 */,
 				A63655522907A341003B66F0 /* Approvals */,
 				A610B2D828ED66D600456965 /* Protocols */,
@@ -3839,8 +3840,6 @@
 				7E19DE4229AC5F0200C8BA82 /* ImportWalletViewController.xib */,
 				7E19DE4529AC922300C8BA82 /* FinishImportViewController.swift */,
 				7E19DE4629AC922300C8BA82 /* FinishImportViewController.xib */,
-				7EDA64CD29AD201D009EEC21 /* SecurityTipsViewController.swift */,
-				7EDA64CE29AD201D009EEC21 /* SecurityTipsViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4877,6 +4876,15 @@
 				7E448D032808064E00C1617F /* SelectChainViewController.xib */,
 			);
 			path = SelectChain;
+			sourceTree = "<group>";
+		};
+		7E9E0D9029B1A30700B3966D /* TipsView */ = {
+			isa = PBXGroup;
+			children = (
+				7EDA64CD29AD201D009EEC21 /* SecurityTipsViewController.swift */,
+				7EDA64CE29AD201D009EEC21 /* SecurityTipsViewController.xib */,
+			);
+			path = TipsView;
 			sourceTree = "<group>";
 		};
 		7EB47FF627CCDD2B00FB28D9 /* Feature Flags */ = {
