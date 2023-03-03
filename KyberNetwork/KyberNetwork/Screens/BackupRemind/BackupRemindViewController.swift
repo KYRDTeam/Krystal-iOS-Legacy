@@ -12,6 +12,7 @@ import Dependencies
 class BackupRemindViewController: UIViewController {
     
     @IBOutlet weak var dontRemindCheckBox: CheckBox!
+    @IBOutlet weak var reasonStackView: UIStackView!
     
     var dontRemind: Bool = false
     var walletID: String = ""
@@ -19,10 +20,20 @@ class BackupRemindViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        navigationController?.setNavigationBarHidden(true, animated: true)
         manager.updateLastBackupRemindTime(walletID: walletID)
+        reasonStackView.isUserInteractionEnabled = true
+        reasonStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onReasonTapped)))
     }
 
+    @objc func onReasonTapped() {
+        let vc = TipsViewController.instantiateFromNib()
+        vc.dataSource = [TipModel(title: Strings.backupReasonTitle, detail: Strings.backupReasonContent)]
+        vc.title = Strings.backupWallet
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     @IBAction func dontRemindCheckBoxTapped(_ sender: Any) {
         dontRemindCheckBox.isChecked.toggle()
         dontRemind = dontRemindCheckBox.isChecked
@@ -41,4 +52,7 @@ class BackupRemindViewController: UIViewController {
         }
     }
 
+    @IBAction func reasonTitleTapped(_ sender: Any) {
+        onReasonTapped()
+    }
 }

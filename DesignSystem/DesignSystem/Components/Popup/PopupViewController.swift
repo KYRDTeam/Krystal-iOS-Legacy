@@ -40,7 +40,7 @@ public class PopupViewController: UIViewController {
     public init(vc: UIViewController, configuration: PopupConfiguration) {
         super.init(nibName: nil, bundle: nil)
         modalTransitionStyle = .crossDissolve
-        modalPresentationStyle = .custom
+        modalPresentationStyle = .fullScreen
         self.configuration = configuration
         self.contentViewController = vc
     }
@@ -51,6 +51,8 @@ public class PopupViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationController?.setNavigationBarHidden(true, animated: true)
         
         addChild(contentViewController)
         containerView.addSubview(contentViewController.view)
@@ -88,3 +90,5 @@ public class PopupViewController: UIViewController {
     }
     
 }
+
+

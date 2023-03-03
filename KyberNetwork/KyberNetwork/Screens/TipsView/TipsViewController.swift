@@ -1,5 +1,5 @@
 //
-//  SecurityTipsViewController.swift
+//  TipsViewController.swift
 //  KyberNetwork
 //
 //  Created by Com1 on 28/02/2023.
@@ -12,19 +12,18 @@ struct TipModel {
     let detail: String
 }
 
-class SecurityTipsViewController: UIViewController {
+class TipsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var titleLabel: UILabel!
+    
     var dataSource: [TipModel] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        initializeData()
+
+        self.titleLabel.text = title
+        self.navigationController?.setNavigationBarHidden(true, animated: true)        
         self.tableView.registerCellNib(TipsCell.self)
-    }
-    
-    func initializeData() {
-        let seedPhase = TipModel(title: Strings.seedPhaseTip, detail: Strings.seedPhaseTipDetail)
-        let privateKey = TipModel(title: Strings.privateKeyTip, detail: Strings.privateKeyTipDetail)
-        dataSource = [seedPhase, privateKey]
     }
 
     @IBAction func backButtonTapped(_ sender: Any) {
@@ -32,7 +31,7 @@ class SecurityTipsViewController: UIViewController {
     }
 }
 
-extension SecurityTipsViewController: UITableViewDataSource {
+extension TipsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.count
     }
@@ -46,7 +45,8 @@ extension SecurityTipsViewController: UITableViewDataSource {
     }
 }
 
-extension SecurityTipsViewController: UITableViewDelegate {
+extension TipsViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView.beginUpdates()
         if let cell = self.tableView.cellForRow(at: indexPath) as? TipsCell {

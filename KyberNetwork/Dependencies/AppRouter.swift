@@ -188,7 +188,9 @@ class AppRouter: AppRouterProtocol, Coordinator {
         let vc = BackupRemindViewController.instantiateFromNib()
         vc.walletID = walletID
         let popup = PopupViewController(vc: vc, configuration: PopupConfiguration(height: .intrinsic))
-        viewController.present(popup, animated: true)
+        let nav = UINavigationController(rootViewController: popup)
+        nav.modalPresentationStyle = .fullScreen
+        viewController.present(nav, animated: true)
     }
     
     func openBackupWallet(walletID: String) {
