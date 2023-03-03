@@ -34,6 +34,6 @@ class TipsCell: UITableViewCell {
     }
     
     func updateIcon() {
-        dropDownIcon.transform = isExpand ? CGAffineTransform.identity : CGAffineTransformMakeRotation(CGFloat(Double.pi))
+        dropDownIcon.transform = isExpand ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: CGFloat(Double.pi))
     }
 }
