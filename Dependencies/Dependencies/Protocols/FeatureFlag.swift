@@ -37,4 +37,5 @@ public struct FeatureFlagKeys {
     public static let historyV2 = "history-v2"
     public static let swapModule = "swap-module"
     public static let historyStats = "history-stats"
+    public static let importWalletV2 = "import-wallet-v2"
 }
