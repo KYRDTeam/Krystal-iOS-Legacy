@@ -560,8 +560,8 @@
 		7ED5FA8627D214D000F0CB8E /* SelectNetworkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5FA8427D214D000F0CB8E /* SelectNetworkCell.xib */; };
 		7ED81BC329AF51F000F92109 /* AddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED81BC129AF51EF00F92109 /* AddressCell.swift */; };
 		7ED81BC429AF51F000F92109 /* AddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED81BC229AF51F000F92109 /* AddressCell.xib */; };
-		7EDA64CF29AD201D009EEC21 /* SecurityTipsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDA64CD29AD201D009EEC21 /* SecurityTipsViewController.swift */; };
-		7EDA64D029AD201D009EEC21 /* SecurityTipsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EDA64CE29AD201D009EEC21 /* SecurityTipsViewController.xib */; };
+		7EDA64CF29AD201D009EEC21 /* TipsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDA64CD29AD201D009EEC21 /* TipsViewController.swift */; };
+		7EDA64D029AD201D009EEC21 /* TipsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EDA64CE29AD201D009EEC21 /* TipsViewController.xib */; };
 		7EDA64D429AD2230009EEC21 /* TipsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDA64D229AD2230009EEC21 /* TipsCell.swift */; };
 		7EDA64D529AD2230009EEC21 /* TipsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EDA64D329AD2230009EEC21 /* TipsCell.xib */; };
 		7EE3143C286036AF0012ADF9 /* TokenPoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE3143A286036AF0012ADF9 /* TokenPoolCell.swift */; };
@@ -1873,8 +1873,8 @@
 		7ED5FA8427D214D000F0CB8E /* SelectNetworkCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectNetworkCell.xib; sourceTree = "<group>"; };
 		7ED81BC129AF51EF00F92109 /* AddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressCell.swift; sourceTree = "<group>"; };
 		7ED81BC229AF51F000F92109 /* AddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressCell.xib; sourceTree = "<group>"; };
-		7EDA64CD29AD201D009EEC21 /* SecurityTipsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityTipsViewController.swift; sourceTree = "<group>"; };
-		7EDA64CE29AD201D009EEC21 /* SecurityTipsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SecurityTipsViewController.xib; sourceTree = "<group>"; };
+		7EDA64CD29AD201D009EEC21 /* TipsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsViewController.swift; sourceTree = "<group>"; };
+		7EDA64CE29AD201D009EEC21 /* TipsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TipsViewController.xib; sourceTree = "<group>"; };
 		7EDA64D229AD2230009EEC21 /* TipsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsCell.swift; sourceTree = "<group>"; };
 		7EDA64D329AD2230009EEC21 /* TipsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TipsCell.xib; sourceTree = "<group>"; };
 		7EE3143A286036AF0012ADF9 /* TokenPoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPoolCell.swift; sourceTree = "<group>"; };
@@ -4897,8 +4897,8 @@
 			isa = PBXGroup;
 			children = (
 				7E9E0D9129B1A58800B3966D /* Cells */,
-				7EDA64CD29AD201D009EEC21 /* SecurityTipsViewController.swift */,
-				7EDA64CE29AD201D009EEC21 /* SecurityTipsViewController.xib */,
+				7EDA64CD29AD201D009EEC21 /* TipsViewController.swift */,
+				7EDA64CE29AD201D009EEC21 /* TipsViewController.xib */,
 			);
 			path = TipsView;
 			sourceTree = "<group>";
@@ -7088,7 +7088,7 @@
 				A66EC31B287D258100D15FE0 /* TxListHeaderCell.xib in Resources */,
 				250EE8E32221A40800121138 /* KNShowBackUpDataViewController.xib in Resources */,
 				A646E87928E5AD87007591FC /* WalletConnectViewController.xib in Resources */,
-				7EDA64D029AD201D009EEC21 /* SecurityTipsViewController.xib in Resources */,
+				7EDA64D029AD201D009EEC21 /* TipsViewController.xib in Resources */,
 				A69813E528E1BC230054F3E5 /* NotificationDetailViewController.xib in Resources */,
 				C322EB0C25B1A3D8009746FB /* CreateWalletMenuViewController.xib in Resources */,
 				25073D1B211AF20D00833C92 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
@@ -7853,7 +7853,7 @@
 				C315AD5E240F845200620096 /* CustomAxisValueFormatter.swift in Sources */,
 				253F50E221E5B40E0068813D /* KNPromoCodeCoordinator.swift in Sources */,
 				29C80D511FB67A110037B1E0 /* ArrayResponse.swift in Sources */,
-				7EDA64CF29AD201D009EEC21 /* SecurityTipsViewController.swift in Sources */,
+				7EDA64CF29AD201D009EEC21 /* TipsViewController.swift in Sources */,
 				257A377E205B7BFA00E86794 /* UINavigationController+Kyber.swift in Sources */,
 				7E6F510427326122002DA0B2 /* OverviewTotalInfoCell.swift in Sources */,
 				C32BD4A3268DDC7E00ABAA59 /* UISegmentedControl+Kyber.swift in Sources */,

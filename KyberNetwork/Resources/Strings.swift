@@ -332,4 +332,8 @@ struct Strings {
     static let seedPhaseTipDetail = "seed.phase.tip.detail".toBeLocalised()
     static let privateKeyTip = "private.key.tip".toBeLocalised()
     static let privateKeyTipDetail = "private.key.tip.detail".toBeLocalised()
+    static let backupReasonTitle = "why.should.back.up.wallet".toBeLocalised()
+    static let backupReasonContent = "backup.wallet.description".toBeLocalised()
+    static let backupWallet = "backup.wallet".toBeLocalised()
+    static let securityTips = "security.tips".toBeLocalised()
 }

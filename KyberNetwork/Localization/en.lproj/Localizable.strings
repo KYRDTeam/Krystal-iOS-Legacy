@@ -1026,3 +1026,8 @@
 "seed.phase.tip.detail" = "This is a 12 or 24-word phrase you got when you created your wallet.";
 "private.key.tip" = "Private key";
 "private.key.tip.detail" = "A private key is an access key to one address (account).";
+"security.tips" = "Security tips";
+
+"why.should.back.up.wallet" = "Why should I backup my wallet?";
+"backup.wallet.description" = "On Krystal, you can backup your wallet by saving a 12-word phrase (a.k.a seed phrase). \nOnce you do so, you can use it to restore the wallet on another device in case the original is lost, stolen, or damaged. \nWhen you restore your wallet, Krystal will gather all of your balances and transaction history, so that you can pick up where you left off.";
+"backup.wallet" = "Backup wallet";

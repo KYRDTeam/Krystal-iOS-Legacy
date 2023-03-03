@@ -23,6 +23,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BackupRemindViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="dontRemindCheckBox" destination="UlA-zW-Qxj" id="1HY-lk-iLa"/>
+                <outlet property="reasonStackView" destination="km0-Fr-oQE" id="Fpj-pm-PBF"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -148,6 +149,9 @@
                             <state key="normal" title="Why should I backup my wallet?">
                                 <color key="titleColor" name="buttonBackgroundColor"/>
                             </state>
+                            <connections>
+                                <action selector="reasonTitleTapped:" destination="-1" eventType="touchUpInside" id="3bu-QR-gTa"/>
+                            </connections>
                         </button>
                     </subviews>
                 </stackView>
