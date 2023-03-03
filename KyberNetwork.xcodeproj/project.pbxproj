@@ -4881,10 +4881,20 @@
 		7E9E0D9029B1A30700B3966D /* TipsView */ = {
 			isa = PBXGroup;
 			children = (
+				7E9E0D9129B1A58800B3966D /* Cells */,
 				7EDA64CD29AD201D009EEC21 /* SecurityTipsViewController.swift */,
 				7EDA64CE29AD201D009EEC21 /* SecurityTipsViewController.xib */,
 			);
 			path = TipsView;
+			sourceTree = "<group>";
+		};
+		7E9E0D9129B1A58800B3966D /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7EDA64D229AD2230009EEC21 /* TipsCell.swift */,
+				7EDA64D329AD2230009EEC21 /* TipsCell.xib */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		7EB47FF627CCDD2B00FB28D9 /* Feature Flags */ = {
@@ -4926,8 +4936,6 @@
 		7EDA64D129AD21D9009EEC21 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				7EDA64D229AD2230009EEC21 /* TipsCell.swift */,
-				7EDA64D329AD2230009EEC21 /* TipsCell.xib */,
 				7ED81BC129AF51EF00F92109 /* AddressCell.swift */,
 				7ED81BC229AF51F000F92109 /* AddressCell.xib */,
 			);
