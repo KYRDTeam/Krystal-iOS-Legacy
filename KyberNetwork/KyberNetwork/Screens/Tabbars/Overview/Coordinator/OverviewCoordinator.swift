@@ -674,6 +674,9 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     case .scannedWalletConnect(let url):
       AppEventCenter.shared.didScanWalletConnect(address: currentAddress, url: url)
     case .selectAllChain:
+      self.currentCurrencyType = .usd
+      UserDefaults.standard.setValue(self.currentCurrencyType.rawValue, forKey: Constants.currentCurrencyMode)
+      self.rootViewController.coordinatorDidUpdateCurrencyMode(self.currentCurrencyType)
       self.delegate?.overviewCoordinatorDidSelectAllChain()
       self.loadMultichainAssetsData { chainBalanceModels in
         self.rootViewController.coordinatorDidUpdateAllTokenData(models: chainBalanceModels)
