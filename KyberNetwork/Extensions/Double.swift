@@ -11,6 +11,13 @@ extension Double {
   }
   
   func amountBigInt(decimals: Int) -> BigInt? {
-    return BigInt(self * pow(10.0, Double(decimals)))
+      var memory = decimals
+      var tempDoubleValue = self
+      
+      while (tempDoubleValue != floor(tempDoubleValue)) {
+          tempDoubleValue *= 10
+          memory -= 1
+      }
+      return BigInt(tempDoubleValue) * BigInt(10).power(memory)
   }
 }
