@@ -148,7 +148,7 @@
                             </connections>
                         </button>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="vE6-8p-kZv">
-                            <rect key="frame" x="16" y="10" width="289" height="28"/>
+                            <rect key="frame" x="16" y="6" width="289" height="32"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="tintColor" name="textWhiteColor"/>
                             <color key="textColor" name="textWhiteColor"/>
@@ -158,9 +158,9 @@
                     </subviews>
                     <color key="backgroundColor" name="buttonTextColor"/>
                     <constraints>
-                        <constraint firstItem="vE6-8p-kZv" firstAttribute="centerY" secondItem="TgV-0y-BBp" secondAttribute="centerY" id="075-gZ-b71"/>
+                        <constraint firstAttribute="bottom" secondItem="vE6-8p-kZv" secondAttribute="bottom" constant="10" id="3Jr-6b-Bfw"/>
                         <constraint firstAttribute="trailing" secondItem="CuG-Dx-AyY" secondAttribute="trailing" constant="16" id="4Mv-XQ-dro"/>
-                        <constraint firstItem="vE6-8p-kZv" firstAttribute="top" secondItem="TgV-0y-BBp" secondAttribute="top" constant="10" id="F4J-Lq-4VD"/>
+                        <constraint firstItem="vE6-8p-kZv" firstAttribute="top" secondItem="TgV-0y-BBp" secondAttribute="top" constant="6" id="F4J-Lq-4VD"/>
                         <constraint firstAttribute="height" constant="48" id="U9k-bm-6R2"/>
                         <constraint firstAttribute="trailing" secondItem="vE6-8p-kZv" secondAttribute="trailing" constant="48" id="kI1-g0-BK0"/>
                         <constraint firstItem="CuG-Dx-AyY" firstAttribute="centerY" secondItem="TgV-0y-BBp" secondAttribute="centerY" id="tO6-lQ-4Nn"/>
