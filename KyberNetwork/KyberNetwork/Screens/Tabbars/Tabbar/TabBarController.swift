@@ -92,6 +92,9 @@ class KNTabBarController: UITabBarController {
     }
     
     func showBackUpWalletIfNeeded() {
+        guard AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.backupRemind) else {
+            return
+        }
         let walletID = AppState.shared.currentAddress.walletID
         guard !walletID.isEmpty, WalletExtraDataManager.shared.shouldShowBackup(forWallet: walletID) else { return }
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
