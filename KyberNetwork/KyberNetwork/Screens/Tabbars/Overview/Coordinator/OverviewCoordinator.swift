@@ -450,7 +450,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     
     actionController.addAction(Action(ActionData(title: "Change Currency", image: UIImage(named: "currency_change_icon")!), style: .default, handler: { _ in
       let controller = OverviewChangeCurrencyViewController()
-      controller.shouldShowQuote == self.rootViewController.viewModel.currentChain != .all
+      controller.shouldShowQuote = self.rootViewController.viewModel.currentChain != .all
       controller.completeHandle = { mode in
         UserDefaults.standard.setValue(mode.rawValue, forKey: Constants.currentCurrencyMode)
         self.rootViewController.coordinatorDidUpdateCurrencyMode(mode)
