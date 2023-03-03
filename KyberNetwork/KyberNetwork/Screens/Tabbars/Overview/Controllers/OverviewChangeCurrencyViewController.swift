@@ -13,6 +13,7 @@ class OverviewChangeCurrencyViewController: KNBaseViewController {
   @IBOutlet weak var contentView: UIView!
   let transitor = TransitionDelegate()
   
+  @IBOutlet weak var quoteCurrencyView: UIView!
   @IBOutlet weak var usdButton: UIButton!
   @IBOutlet weak var ethButton: UIButton!
   @IBOutlet weak var btcButton: UIButton!
@@ -20,7 +21,8 @@ class OverviewChangeCurrencyViewController: KNBaseViewController {
   @IBOutlet weak var tapOutsideBackgroundView: UIView!
   var selected: CurrencyMode = .usd
   var completeHandle: ((CurrencyMode) -> Void)?
-  
+  var shouldShowQuote: Bool = true
+
   init() {
     if let savedCurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) {
       self.selected = savedCurrencyMode
@@ -48,7 +50,8 @@ class OverviewChangeCurrencyViewController: KNBaseViewController {
   fileprivate func updateUI() {
     let selectedWidth: CGFloat = 5.0
     let normalWidth: CGFloat = 1.0
-    
+      
+    self.quoteCurrencyView.isHidden = !self.shouldShowQuote
     self.usdButton.rounded(
       color: UIColor(named: "buttonBackgroundColor")!,
       width: self.selected == .usd ? selectedWidth : normalWidth,
