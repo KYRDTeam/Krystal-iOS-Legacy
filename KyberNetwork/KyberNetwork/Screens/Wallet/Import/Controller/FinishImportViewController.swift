@@ -91,7 +91,7 @@ class FinishImportViewController: UIViewController {
     
     @IBAction func finishButtonTapped(_ sender: Any) {
         if !KNGeneralProvider.shared.isCreatedPassCode {
-            AppState.shared.updateChain(chain: .bsc)
+            AppState.shared.updateChain(chain: KNGeneralProvider.shared.defaultChain)
             self.passcodeCoordinator.start()
         } else {
             didFinishImport()
@@ -104,11 +104,11 @@ class FinishImportViewController: UIViewController {
         case .solana:
             self.importWallet(with: .privateKey(privateKey: self.viewModel.inputKeyWord), name: name, importType: .solana, selectedChain: .solana)
         case.evm:
-            self.importWallet(with: .privateKey(privateKey: self.viewModel.inputKeyWord), name: name, importType: .evm, selectedChain: .bsc)
+            self.importWallet(with: .privateKey(privateKey: self.viewModel.inputKeyWord), name: name, importType: .evm, selectedChain: KNGeneralProvider.shared.defaultChain)
         case.multiChain:
             var seeds = self.viewModel.inputKeyWord.trimmed.components(separatedBy: " ").map({ $0.trimmed })
             seeds = seeds.filter({ return !$0.replacingOccurrences(of: " ", with: "").isEmpty })
-            self.importWallet(with: .mnemonic(words: seeds, password: ""), name: name, importType: .multiChain, selectedChain: .bsc)
+            self.importWallet(with: .mnemonic(words: seeds, password: ""), name: name, importType: .multiChain, selectedChain: KNGeneralProvider.shared.defaultChain)
         }
     }
 }
@@ -138,7 +138,7 @@ extension FinishImportViewController {
     private func onImportWalletSuccess(wallet: KWallet, chain: ChainType, importType: ImportWalletChainType) {
         self.showImportSuccessMessage()
         self.addToContacts(wallet: wallet)
-        let chain: ChainType = importType == .solana ? .solana : .bsc
+        let chain: ChainType = importType == .solana ? .solana : KNGeneralProvider.shared.defaultChain
         AppDelegate.shared.coordinator.onAddWallet(wallet: wallet, chain: chain)
         AppState.shared.updateAddress(address: AppState.shared.currentAddress, targetChain: AppState.shared.currentChain)
         self.navigationController?.dismiss(animated: true)

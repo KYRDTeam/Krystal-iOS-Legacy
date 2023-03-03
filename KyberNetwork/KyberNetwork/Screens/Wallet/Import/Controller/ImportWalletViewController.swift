@@ -19,7 +19,6 @@ class ImportWalletViewController: UIViewController {
     @IBOutlet weak var clearTextBtn: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var pasteButtonTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var pasteView: UIView!
     @IBOutlet weak var inputTextView: UITextView!
     @IBOutlet weak var inputViewHeightConstraint: NSLayoutConstraint!
@@ -109,7 +108,7 @@ class ImportWalletViewController: UIViewController {
         words = words.filter({ return !$0.replacingOccurrences(of: " ", with: "").isEmpty })
         
         if wordCount() == 1 {
-            if inputString.count == 64 {
+            if ScannerUtils.isValid(text: inputString, forType: .ethPrivateKey) {
                 if let data = Data(hexString: inputString), let privateKey = PrivateKey(data: data) {
                     evmAddress = CoinType.ethereum.deriveAddress(privateKey: privateKey).lowercased()
                     importType = .evm
@@ -139,7 +138,8 @@ class ImportWalletViewController: UIViewController {
     func updateTextInput(value: String) {
         inputTextView.text = value
         inputTextView.textColor = AppTheme.current.primaryTextColor
-        inputViewHeightConstraint.constant = inputTextView.contentSize.height + TEXT_VIEW_PADDING
+        let height = inputTextView.contentSize.height + TEXT_VIEW_PADDING
+        inputViewHeightConstraint.constant = min(height, UIScreen.main.bounds.size.height / 3)
         updateContinueButton()
         updateWordCount()
     }
@@ -162,7 +162,7 @@ class ImportWalletViewController: UIViewController {
     func isValidPrivateKey() -> Bool {
         guard wordCount() == 1 else { return false }
         let text = inputTextView.text.trimmed
-        return text.count == 64 || SolanaUtils.isValidSolanaPrivateKey(text: text)
+        return ScannerUtils.isValid(text: text, forType: .ethPrivateKey) || ScannerUtils.isValid(text: text, forType: .solPrivateKey)
     }
     
     func isValidInput() -> Bool {
@@ -222,7 +222,9 @@ extension ImportWalletViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         pasteInfoView.isHidden = true
-        inputViewHeightConstraint.constant = textView.contentSize.height + TEXT_VIEW_PADDING
+        
+        let height = inputTextView.contentSize.height + TEXT_VIEW_PADDING
+        inputViewHeightConstraint.constant = min(height, UIScreen.main.bounds.size.height / 3)
         updateWordCount()
         updateContinueButton()
     }
