@@ -324,11 +324,13 @@ class BridgeViewModel {
         let cell = tableView.dequeueReusableCell(BridgeReminderCell.self, indexPath: indexPath)!
           if let currentDestToken = self.currentDestToken, let currentSourceToken = self.currentSourceToken {
             let crossChainFee = currentDestToken.maximumSwapFee == currentDestToken.minimumSwapFee ? "0.0" : String(format: "%.1f", currentDestToken.swapFeeRatePerMillion)
-            let minFeeString = StringFormatter.amountString(value: currentDestToken.minimumSwapFee) + " \(currentSourceToken.symbol)"
-            let maxFeeString = StringFormatter.amountString(value: currentDestToken.maximumSwapFee) + " \(currentSourceToken.symbol)"
+
+            let fee = (currentDestToken.swapFeeRatePerMillion * sourceAmount) / 100
+            let minFee = max(fee, currentDestToken.minimumSwapFee)
+            let minFeeString = StringFormatter.amountString(value: minFee) + " \(currentSourceToken.symbol)"
             let miniAmount = StringFormatter.amountString(value: currentDestToken.minimumSwap) + " \(currentSourceToken.symbol)"
             let maxAmount = StringFormatter.amountString(value: currentDestToken.maximumSwap) + " \(currentSourceToken.symbol)"
-            cell.updateReminderText(crossChainFee: crossChainFee, miniAmount: miniAmount, maxAmount: maxAmount, minFeeString: minFeeString, maxFeeString: maxFeeString)
+            cell.updateReminderText(crossChainFee: crossChainFee, miniAmount: miniAmount, maxAmount: maxAmount, minFeeString: minFeeString)
           }
         return cell
       case .errorRow:
