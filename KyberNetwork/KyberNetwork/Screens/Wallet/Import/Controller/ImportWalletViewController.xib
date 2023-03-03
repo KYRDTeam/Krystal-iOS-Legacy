@@ -36,7 +36,6 @@
                 <outlet property="pasteImageView" destination="pEA-Gi-cla" id="mQ0-s7-zaM"/>
                 <outlet property="pasteInfoView" destination="ZQF-OM-FEm" id="6Yk-Mr-Hwx"/>
                 <outlet property="pasteView" destination="YE9-vV-Bjr" id="CMf-aD-FI8"/>
-                <outlet property="textViewHeightConstraint" destination="U9k-bm-6R2" id="6UR-zN-xwY"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="wordCountLabel" destination="ltQ-x8-xn7" id="MNx-VD-FS7"/>
             </connections>
