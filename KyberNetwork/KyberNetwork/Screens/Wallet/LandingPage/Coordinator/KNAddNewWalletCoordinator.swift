@@ -88,7 +88,9 @@ class KNAddNewWalletCoordinator: Coordinator {
   }
   
   fileprivate func importAWallet() {
-    self.importWalletCoordinator.start()
+//    self.importWalletCoordinator.start()
+      let importVC = ImportWalletViewController.instantiateFromNib()
+      self.navigationController.pushViewController(importVC, animated: true)
   }
   
   func didImportWallet(wallet: KWallet, chain: ChainType) {

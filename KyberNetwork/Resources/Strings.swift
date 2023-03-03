@@ -328,4 +328,8 @@ struct Strings {
     static let approvalNoTokenFoundOnWallet = "approval.no.token.found.on.wallet".toBeLocalised()
     static let approvalNoTokenFoundOnNetwork = "approval.no.token.found.on.network".toBeLocalised()
     static let notAnEligibleWallet = "not.an.eligible.wallet".toBeLocalised()
+    static let seedPhaseTip = "seed.phase.tip".toBeLocalised()
+    static let seedPhaseTipDetail = "seed.phase.tip.detail".toBeLocalised()
+    static let privateKeyTip = "private.key.tip".toBeLocalised()
+    static let privateKeyTipDetail = "private.key.tip.detail".toBeLocalised()
 }

@@ -1022,3 +1022,7 @@
 "build.raw.tx.failed" = "Build raw Tx failed";
 "parse.tx.failed" = "Parse Tx data failed";
 "not.an.eligible.wallet" = "Not an eligible wallet";
+"seed.phase.tip" = "Seed phrase (or recovery phrase)";
+"seed.phase.tip.detail" = "This is a 12 or 24-word phrase you got when you created your wallet.";
+"private.key.tip" = "Private key";
+"private.key.tip.detail" = "A private key is an access key to one address (account).";
