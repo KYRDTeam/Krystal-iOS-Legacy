@@ -560,8 +560,8 @@
 		7ED5FA8627D214D000F0CB8E /* SelectNetworkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5FA8427D214D000F0CB8E /* SelectNetworkCell.xib */; };
 		7ED81BC329AF51F000F92109 /* AddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED81BC129AF51EF00F92109 /* AddressCell.swift */; };
 		7ED81BC429AF51F000F92109 /* AddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED81BC229AF51F000F92109 /* AddressCell.xib */; };
-		7EDA64CF29AD201D009EEC21 /* SecurityTipsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDA64CD29AD201D009EEC21 /* SecurityTipsViewController.swift */; };
-		7EDA64D029AD201D009EEC21 /* SecurityTipsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EDA64CE29AD201D009EEC21 /* SecurityTipsViewController.xib */; };
+		7EDA64CF29AD201D009EEC21 /* TipsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDA64CD29AD201D009EEC21 /* TipsViewController.swift */; };
+		7EDA64D029AD201D009EEC21 /* TipsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EDA64CE29AD201D009EEC21 /* TipsViewController.xib */; };
 		7EDA64D429AD2230009EEC21 /* TipsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDA64D229AD2230009EEC21 /* TipsCell.swift */; };
 		7EDA64D529AD2230009EEC21 /* TipsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EDA64D329AD2230009EEC21 /* TipsCell.xib */; };
 		7EE3143C286036AF0012ADF9 /* TokenPoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE3143A286036AF0012ADF9 /* TokenPoolCell.swift */; };
@@ -700,6 +700,13 @@
 		A668BFDD292CCA99001A110D /* AppTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFDC292CCA99001A110D /* AppTokenStorage.swift */; };
 		A668BFEB292CD9CD001A110D /* AppFeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFEA292CD9CD001A110D /* AppFeatureFlag.swift */; };
 		A66B9C6C280818F6001B7A3D /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B9C6B280818F6001B7A3D /* ValidationResult.swift */; };
+		A66C3B7E29B07A49004A3DDB /* BackupRemindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66C3B7C29B07A49004A3DDB /* BackupRemindViewController.swift */; };
+		A66C3B7F29B07A49004A3DDB /* BackupRemindViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66C3B7D29B07A49004A3DDB /* BackupRemindViewController.xib */; };
+		A66C3B8329B08443004A3DDB /* WalletExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66C3B8229B08443004A3DDB /* WalletExtraData.swift */; };
+		A66C3B8529B084A8004A3DDB /* WalletDataDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66C3B8429B084A8004A3DDB /* WalletDataDAO.swift */; };
+		A66C3B8729B08599004A3DDB /* WalletExtraDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66C3B8629B08599004A3DDB /* WalletExtraDataManager.swift */; };
+		A66C3B8929B087B6004A3DDB /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66C3B8829B087B6004A3DDB /* AppSetting.swift */; };
+		A66C3B8D29B08DCD004A3DDB /* BackupWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66C3B8C29B08DCD004A3DDB /* BackupWalletCoordinator.swift */; };
 		A66CD6E9295463DF00FF2EC9 /* HistoryV3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66CD6E7295463DE00FF2EC9 /* HistoryV3ViewController.swift */; };
 		A66CD6EA295463DF00FF2EC9 /* HistoryV3ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66CD6E8295463DE00FF2EC9 /* HistoryV3ViewController.xib */; };
 		A66CD6EC295468EA00FF2EC9 /* HistoryV3Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66CD6EB295468EA00FF2EC9 /* HistoryV3Coordinator.swift */; };
@@ -1866,8 +1873,8 @@
 		7ED5FA8427D214D000F0CB8E /* SelectNetworkCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectNetworkCell.xib; sourceTree = "<group>"; };
 		7ED81BC129AF51EF00F92109 /* AddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressCell.swift; sourceTree = "<group>"; };
 		7ED81BC229AF51F000F92109 /* AddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressCell.xib; sourceTree = "<group>"; };
-		7EDA64CD29AD201D009EEC21 /* SecurityTipsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityTipsViewController.swift; sourceTree = "<group>"; };
-		7EDA64CE29AD201D009EEC21 /* SecurityTipsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SecurityTipsViewController.xib; sourceTree = "<group>"; };
+		7EDA64CD29AD201D009EEC21 /* TipsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsViewController.swift; sourceTree = "<group>"; };
+		7EDA64CE29AD201D009EEC21 /* TipsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TipsViewController.xib; sourceTree = "<group>"; };
 		7EDA64D229AD2230009EEC21 /* TipsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsCell.swift; sourceTree = "<group>"; };
 		7EDA64D329AD2230009EEC21 /* TipsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TipsCell.xib; sourceTree = "<group>"; };
 		7EE3143A286036AF0012ADF9 /* TokenPoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPoolCell.swift; sourceTree = "<group>"; };
@@ -1998,6 +2005,13 @@
 		A668BFDC292CCA99001A110D /* AppTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTokenStorage.swift; sourceTree = "<group>"; };
 		A668BFEA292CD9CD001A110D /* AppFeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeatureFlag.swift; sourceTree = "<group>"; };
 		A66B9C6B280818F6001B7A3D /* ValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationResult.swift; sourceTree = "<group>"; };
+		A66C3B7C29B07A49004A3DDB /* BackupRemindViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRemindViewController.swift; sourceTree = "<group>"; };
+		A66C3B7D29B07A49004A3DDB /* BackupRemindViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BackupRemindViewController.xib; sourceTree = "<group>"; };
+		A66C3B8229B08443004A3DDB /* WalletExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletExtraData.swift; sourceTree = "<group>"; };
+		A66C3B8429B084A8004A3DDB /* WalletDataDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDataDAO.swift; sourceTree = "<group>"; };
+		A66C3B8629B08599004A3DDB /* WalletExtraDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletExtraDataManager.swift; sourceTree = "<group>"; };
+		A66C3B8829B087B6004A3DDB /* AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
+		A66C3B8C29B08DCD004A3DDB /* BackupWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWalletCoordinator.swift; sourceTree = "<group>"; };
 		A66CD6E7295463DE00FF2EC9 /* HistoryV3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryV3ViewController.swift; sourceTree = "<group>"; };
 		A66CD6E8295463DE00FF2EC9 /* HistoryV3ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HistoryV3ViewController.xib; sourceTree = "<group>"; };
 		A66CD6EB295468EA00FF2EC9 /* HistoryV3Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryV3Coordinator.swift; sourceTree = "<group>"; };
@@ -3318,6 +3332,7 @@
 			isa = PBXGroup;
 			children = (
 				7E9E0D9029B1A30700B3966D /* TipsView */,
+				A66C3B7A29B07A32004A3DDB /* BackupRemind */,
 				A66CD6E6295463CE00FF2EC9 /* HistoryV3 */,
 				A63655522907A341003B66F0 /* Approvals */,
 				A610B2D828ED66D600456965 /* Protocols */,
@@ -4882,8 +4897,8 @@
 			isa = PBXGroup;
 			children = (
 				7E9E0D9129B1A58800B3966D /* Cells */,
-				7EDA64CD29AD201D009EEC21 /* SecurityTipsViewController.swift */,
-				7EDA64CE29AD201D009EEC21 /* SecurityTipsViewController.xib */,
+				7EDA64CD29AD201D009EEC21 /* TipsViewController.swift */,
+				7EDA64CE29AD201D009EEC21 /* TipsViewController.xib */,
 			);
 			path = TipsView;
 			sourceTree = "<group>";
@@ -5309,6 +5324,19 @@
 				A66B9C6B280818F6001B7A3D /* ValidationResult.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		A66C3B7A29B07A32004A3DDB /* BackupRemind */ = {
+			isa = PBXGroup;
+			children = (
+				A66C3B7C29B07A49004A3DDB /* BackupRemindViewController.swift */,
+				A66C3B7D29B07A49004A3DDB /* BackupRemindViewController.xib */,
+				A66C3B8229B08443004A3DDB /* WalletExtraData.swift */,
+				A66C3B8429B084A8004A3DDB /* WalletDataDAO.swift */,
+				A66C3B8629B08599004A3DDB /* WalletExtraDataManager.swift */,
+				A66C3B8C29B08DCD004A3DDB /* BackupWalletCoordinator.swift */,
+			);
+			path = BackupRemind;
 			sourceTree = "<group>";
 		};
 		A66CD6E6295463CE00FF2EC9 /* HistoryV3 */ = {
@@ -5930,6 +5958,7 @@
 			isa = PBXGroup;
 			children = (
 				A6E6C9DA281798E000EEB2E6 /* Observable.swift */,
+				A66C3B8829B087B6004A3DDB /* AppSetting.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -6945,6 +6974,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C311AAD5269D86AD0082A728 /* OverviewChangeCurrencyViewController.xib in Resources */,
+				A66C3B7F29B07A49004A3DDB /* BackupRemindViewController.xib in Resources */,
 				A69C5BE528D1C45A000DE825 /* NotificationFilterTagCell.xib in Resources */,
 				7ECCB899270AEE030080DC3B /* OverviewLiquidityPoolCell.xib in Resources */,
 				C6B4CA2A23CC50190049C843 /* KNTransferConsentViewController.xib in Resources */,
@@ -7058,7 +7088,7 @@
 				A66EC31B287D258100D15FE0 /* TxListHeaderCell.xib in Resources */,
 				250EE8E32221A40800121138 /* KNShowBackUpDataViewController.xib in Resources */,
 				A646E87928E5AD87007591FC /* WalletConnectViewController.xib in Resources */,
-				7EDA64D029AD201D009EEC21 /* SecurityTipsViewController.xib in Resources */,
+				7EDA64D029AD201D009EEC21 /* TipsViewController.xib in Resources */,
 				A69813E528E1BC230054F3E5 /* NotificationDetailViewController.xib in Resources */,
 				C322EB0C25B1A3D8009746FB /* CreateWalletMenuViewController.xib in Resources */,
 				25073D1B211AF20D00833C92 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
@@ -7823,7 +7853,7 @@
 				C315AD5E240F845200620096 /* CustomAxisValueFormatter.swift in Sources */,
 				253F50E221E5B40E0068813D /* KNPromoCodeCoordinator.swift in Sources */,
 				29C80D511FB67A110037B1E0 /* ArrayResponse.swift in Sources */,
-				7EDA64CF29AD201D009EEC21 /* SecurityTipsViewController.swift in Sources */,
+				7EDA64CF29AD201D009EEC21 /* TipsViewController.swift in Sources */,
 				257A377E205B7BFA00E86794 /* UINavigationController+Kyber.swift in Sources */,
 				7E6F510427326122002DA0B2 /* OverviewTotalInfoCell.swift in Sources */,
 				C32BD4A3268DDC7E00ABAA59 /* UISegmentedControl+Kyber.swift in Sources */,
@@ -8030,6 +8060,7 @@
 				C3FA3D972591AB3E00E17B47 /* ChooseRateViewController.swift in Sources */,
 				25EE4A6D20C54AD200E2282F /* KNAppCoordinator+InSession.swift in Sources */,
 				C33C33B725ECC70700F347E5 /* AddTokenViewController.swift in Sources */,
+				A66C3B7E29B07A49004A3DDB /* BackupRemindViewController.swift in Sources */,
 				2995739F1FA1F294006F17FD /* QRURLParser.swift in Sources */,
 				7E3FCF1228574DB9009DD914 /* AdvanceSearchTokenInteractor.swift in Sources */,
 				A6B3CD5C2811C3D0005D0D66 /* Assembler+.swift in Sources */,
@@ -8096,6 +8127,7 @@
 				2963A28A1FC402940095447D /* LocalizedOperationObject.swift in Sources */,
 				A6E754B428EECBB0008B6535 /* FinishWalletCoordinator.swift in Sources */,
 				257A379B205CDA8100E86794 /* KNTransactionCoordinator.swift in Sources */,
+				A66C3B8929B087B6004A3DDB /* AppSetting.swift in Sources */,
 				A6DA40E527F6DAB30078C58E /* Strings.swift in Sources */,
 				A6DA40E927F6E08F0078C58E /* Dynamic.swift in Sources */,
 				C3B79EC5285C70B8008547F5 /* TradingViewData.swift in Sources */,
@@ -8227,6 +8259,7 @@
 				7E19DE4329AC5F0200C8BA82 /* ImportWalletViewController.swift in Sources */,
 				7E1EBE3D2834D97D00793B6D /* SelectTokenCell.swift in Sources */,
 				7EFE44092715855D006CF502 /* ClaimButtonTableViewCell.swift in Sources */,
+				A66C3B8529B084A8004A3DDB /* WalletDataDAO.swift in Sources */,
 				25CC0AB220591A3D0009D0D5 /* KNRate.swift in Sources */,
 				A685D4912848766A0066E177 /* GasCalculator.swift in Sources */,
 				A6E26FDE28129BF20054427E /* TransactionFactory.swift in Sources */,
@@ -8335,6 +8368,7 @@
 				A65194382835F13D008F4AEB /* TransactionDetailContract.swift in Sources */,
 				A69C5BDF28D1BECA000DE825 /* NotificationItemViewModel.swift in Sources */,
 				25CC0ABD20591DFB0009D0D5 /* KNGasConfiguration.swift in Sources */,
+				A66C3B8329B08443004A3DDB /* WalletExtraData.swift in Sources */,
 				29AD8A0C1F93FBBF008E10E7 /* Subscribable.swift in Sources */,
 				25D3D3EA20F61C110071D599 /* KNTrackerRate.swift in Sources */,
 				A68727C12885DEB9001C6369 /* OCRUtilities.swift in Sources */,
@@ -8343,6 +8377,7 @@
 				C35E9DEC27DB2BE000E1E7CE /* PromoCodeCoordinator.swift in Sources */,
 				664D11A12007D59F0041A0B0 /* EstimateGasRequest.swift in Sources */,
 				A6D9BE6D28292B190009EEB4 /* CreateChainWalletMenuViewModel.swift in Sources */,
+				A66C3B8729B08599004A3DDB /* WalletExtraDataManager.swift in Sources */,
 				299B5E2B1FCA9A640051361C /* ApproveERC20.swift in Sources */,
 				C3299D652773258D00D1065A /* SearchEngine.swift in Sources */,
 				A6F5DCB02857367100FD02C9 /* TransferTransactionResultData.swift in Sources */,
@@ -8443,6 +8478,7 @@
 				C3714E6728A63C900027A89D /* ExpertModeWarningViewController.swift in Sources */,
 				C3299D5F27730B9D00D1065A /* BrowserViewController.swift in Sources */,
 				A668461B29093D17006BBE29 /* RevokeConfirmPopup.swift in Sources */,
+				A66C3B8D29B08DCD004A3DDB /* BackupWalletCoordinator.swift in Sources */,
 				A685D496284877EA0066E177 /* EthGasCalculator.swift in Sources */,
 				C35136E626CCE53D006A55F4 /* OverviewNFTTableViewCell.swift in Sources */,
 				A69813E428E1BC230054F3E5 /* NotificationDetailViewController.swift in Sources */,

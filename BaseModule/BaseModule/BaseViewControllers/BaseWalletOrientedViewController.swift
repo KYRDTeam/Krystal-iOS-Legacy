@@ -93,8 +93,8 @@ open class BaseWalletOrientedViewController: KNBaseViewController {
   }
   
   open func reloadWallet() {
-    walletButton?.setTitle(currentAddress.name, for: .normal)
-    backupIcon?.isHidden = currentAddress.walletID.isEmpty || AppState.shared.isWalletBackedUp(walletID: currentAddress.walletID)
+      walletButton?.setTitle(currentAddress.name, for: .normal)
+      backupIcon?.isHidden = currentAddress.walletID.isEmpty || AppDependencies.walletManager.isWalletBackedUp(walletID: currentAddress.walletID)
   }
   
   open func reloadChain() {

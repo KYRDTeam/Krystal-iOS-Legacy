@@ -203,7 +203,7 @@ extension WalletListV2ViewController: BackUpWalletViewControllerDelegate {
   func didFinishBackup(_ controller: BackUpWalletViewController) {
     self.navigationController?.dismiss(animated: true, completion: {
       if let currentWalletId = self.currentWalletId {
-        AppState.shared.markWalletBackedUp(walletID: currentWalletId)
+          WalletExtraDataManager.shared.markWalletBackedUp(walletID: currentWalletId)
       }
       self.viewModel.reloadData()
       self.walletsTableView.reloadData()

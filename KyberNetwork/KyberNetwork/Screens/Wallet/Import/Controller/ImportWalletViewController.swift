@@ -86,8 +86,13 @@ class ImportWalletViewController: UIViewController {
     }
 
     @IBAction func hintButtonTapped(_ sender: Any) {
-        let tipVC = SecurityTipsViewController.instantiateFromNib()
-        self.navigationController?.pushViewController(tipVC, animated: true)
+        let tipVC = TipsViewController.instantiateFromNib()
+        tipVC.dataSource = [
+            TipModel(title: Strings.seedPhaseTip, detail: Strings.seedPhaseTipDetail),
+            TipModel(title: Strings.privateKeyTip, detail: Strings.privateKeyTipDetail)
+        ]
+        tipVC.title = Strings.securityTips
+        navigationController?.pushViewController(tipVC, animated: true)
     }
     
     @IBAction func pasteButtonTapped(_ sender: Any) {

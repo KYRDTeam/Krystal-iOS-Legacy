@@ -24,6 +24,7 @@ class DependenciesRegister {
     AppDependencies.balancesStorage = AppBalanceStorage()
     AppDependencies.featureFlag = AppFeatureFlag()
     AppDependencies.tokenStorage = AppTokenStorage()
+    AppDependencies.walletManager = WalletExtraDataManager.shared
     
     TransactionManager.txProcessor = AppTxProcessor()
     

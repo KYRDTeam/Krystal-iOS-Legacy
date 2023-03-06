@@ -12,7 +12,6 @@ class TipsCell: UITableViewCell {
     @IBOutlet weak var detailTipsLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var containerView: UIView!
-    var isExpand: Bool = false
 
     var contentHeight: CGFloat {
         var fittingSize = UIView.layoutFittingCompressedSize
@@ -20,16 +19,15 @@ class TipsCell: UITableViewCell {
         return systemLayoutSizeFitting(fittingSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .defaultLow).height
     }
     
-    func updateUIExpanse() {
-        isExpand.toggle()
+    func updateUIExpanse(isExpand: Bool) {
         detailTipsLabel.isHidden = !isExpand
-        updateIcon()
+        updateIcon(isExpand: isExpand)
         var rect = self.frame
         rect.size.height = isExpand ? contentHeight : 80
         self.frame = rect
     }
     
-    func updateIcon() {
+    func updateIcon(isExpand: Bool) {
         dropDownIcon.transform = isExpand ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: CGFloat(Double.pi))
     }
 }
