@@ -194,10 +194,11 @@ class AppRouter: AppRouterProtocol, Coordinator {
     }
     
     func openBackupWallet(walletID: String) {
-        guard let topMostVc = UIApplication.shared.topMostViewController() else { return }
-        let coordinator = BackUpWalletCoordinator(parentViewController: topMostVc, walletID: walletID)
+        guard let topMostVc = UIApplication.shared.topMostNav() else { return }
+        let coordinator = BackUpWalletCoordinator(parentNav: topMostVc, walletID: walletID)
         coordinator.onBackupFinish = {
             WalletExtraDataManager.shared.markWalletBackedUp(walletID: walletID)
+            self.removeCoordinator(coordinator)
         }
         coordinate(coordinator: coordinator)
     }

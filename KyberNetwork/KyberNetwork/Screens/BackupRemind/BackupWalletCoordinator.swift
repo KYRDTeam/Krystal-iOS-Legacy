@@ -12,26 +12,38 @@ import KrystalWallets
 
 class BackUpWalletCoordinator: Coordinator {
     var coordinators: [Coordinator] = []
-    let parentViewController: UIViewController
+    let parentNav: UINavigationController
     let walletID: String
     var onBackupFinish: (() -> ())?
+    var navigationController: UINavigationController!
+    var passcodeCoordinator: KNPasscodeCoordinator?
     
-    init(parentViewController: UIViewController, walletID: String) {
-        self.parentViewController = parentViewController
+    init(parentNav: UINavigationController, walletID: String) {
+        self.parentNav = parentNav
         self.walletID = walletID
     }
     
     func start() {
+        showPasscode()
+    }
+    
+    func showPasscode() {
+        self.passcodeCoordinator = KNPasscodeCoordinator(navigationController: parentNav, type: .verifyPasscode)
+        self.passcodeCoordinator?.delegate = self
+        self.passcodeCoordinator?.start()
+    }
+    
+    func openBackupWallet() {
         do {
             let mnemonic = try WalletManager.shared.exportMnemonic(walletID: walletID)
             let seeds = mnemonic.split(separator: " ").map({ return String($0) })
             let viewModel = BackUpWalletViewModel(seeds: seeds, walletId: walletID)
             let backUpVC = BackUpWalletViewController(viewModel: viewModel)
             backUpVC.delegate = self
-            let navigation = UINavigationController(rootViewController: backUpVC)
-            navigation.modalPresentationStyle = .fullScreen
-            navigation.setNavigationBarHidden(true, animated: false)
-            parentViewController.present(navigation, animated: true)
+            navigationController = UINavigationController(rootViewController: backUpVC)
+            navigationController.modalPresentationStyle = .fullScreen
+            navigationController.setNavigationBarHidden(true, animated: false)
+            parentNav.present(navigationController, animated: true)
         } catch {
             print("Cannot export mnemonic")
         }
@@ -41,6 +53,24 @@ class BackUpWalletCoordinator: Coordinator {
 
 extension BackUpWalletCoordinator: BackUpWalletViewControllerDelegate {
     func didFinishBackup(_ controller: BackUpWalletViewController) {
-        onBackupFinish?()
+        navigationController.dismiss(animated: true) {
+            self.onBackupFinish?()
+        }
+    }
+}
+
+extension BackUpWalletCoordinator: KNPasscodeCoordinatorDelegate {
+    func passcodeCoordinatorDidCreatePasscode(coordinator: KNPasscodeCoordinator) {
+        self.passcodeCoordinator?.stop {}
+    }
+    
+    func passcodeCoordinatorDidEvaluatePIN(coordinator: KNPasscodeCoordinator) {
+        self.passcodeCoordinator?.stop {
+            self.openBackupWallet()
+        }
+    }
+    
+    func passcodeCoordinatorDidCancel(coordinator: KNPasscodeCoordinator) {
+        self.passcodeCoordinator?.stop {}
     }
 }
