@@ -97,7 +97,7 @@ class KNTabBarController: UITabBarController {
         }
         let walletID = AppState.shared.currentAddress.walletID
         guard !walletID.isEmpty, WalletExtraDataManager.shared.shouldShowBackup(forWallet: walletID) else { return }
-        let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+        let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
         let addresses = WalletManager.shared.getAllAddresses(walletID: walletID).map { address -> String in
             switch address.addressType {
             case .evm:

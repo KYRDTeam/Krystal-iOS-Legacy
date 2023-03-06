@@ -23,11 +23,11 @@ public class ChainListViewController: UIViewController {
     var onSelectChainID: ((Int) -> ())?
     
     var selectedChainID: Int {
-        return AppSettingManager.shared.int(forKey: kSelectedChainID) ?? -1
+        return AppSetting.shared.int(forKey: kSelectedChainID) ?? -1
     }
     
     var isSelectingAllNetwork: Bool {
-        return AppSettingManager.shared.bool(forKey: kIsSelectedAllNetworks)
+        return AppSetting.shared.bool(forKey: kIsSelectedAllNetworks)
     }
     
     public override func viewDidLoad() {

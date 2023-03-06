@@ -10,19 +10,22 @@ import RealmSwift
 
 public let kSelectedChainID = "KEY_SELECTED_CHAIN_ID"
 public let kIsSelectedAllNetworks = "KEY_IS_SELECTED_ALL_NETWORKS"
+public let migratedWalletBackupDataToRealm = "MIGRATED_BACKUP_DATA_TO_REALM"
 
 class AppSettingItem: Object {
     @Persisted var key: String = ""
     @Persisted var value: String = ""
     
-    public override static func primaryKey() -> String? {
+    override static func primaryKey() -> String? {
         return "key"
     }
 }
 
-public class AppSettingManager {
+public class AppSetting {
     
-    public static let shared = AppSettingManager()
+    public static let shared = AppSetting()
+    
+    private init() {}
     
     public func int(forKey key: String) -> Int? {
         let realm = try! Realm()

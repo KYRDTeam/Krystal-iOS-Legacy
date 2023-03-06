@@ -40,7 +40,7 @@ class UserService {
     
     static let retryTimes = 3
     
-    let provider = MoyaProvider<UserEndpoint>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<UserEndpoint>(plugins: [NetworkLoggerPlugin()])
     
     static let shared = UserService()
     

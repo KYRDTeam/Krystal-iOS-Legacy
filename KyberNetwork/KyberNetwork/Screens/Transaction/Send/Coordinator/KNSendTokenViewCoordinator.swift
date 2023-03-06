@@ -270,7 +270,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   }
     
   fileprivate  func checkEligibleWallet(completion: @escaping (Bool) -> Void) {
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
       let address = self.currentAddress.addressString
       provider.requestWithFilter(.checkEligibleWallet(address: address)) { (result) in
         if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let isEligible = json["result"] as? Bool {

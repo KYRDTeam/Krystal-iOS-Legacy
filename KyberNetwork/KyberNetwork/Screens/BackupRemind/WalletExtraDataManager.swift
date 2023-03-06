@@ -10,6 +10,7 @@ import KrystalWallets
 import AppState
 import RealmSwift
 import Dependencies
+import Platform
 
 class WalletExtraDataManager {
     

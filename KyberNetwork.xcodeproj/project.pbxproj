@@ -705,7 +705,6 @@
 		A66C3B8329B08443004A3DDB /* WalletExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66C3B8229B08443004A3DDB /* WalletExtraData.swift */; };
 		A66C3B8529B084A8004A3DDB /* WalletDataDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66C3B8429B084A8004A3DDB /* WalletDataDAO.swift */; };
 		A66C3B8729B08599004A3DDB /* WalletExtraDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66C3B8629B08599004A3DDB /* WalletExtraDataManager.swift */; };
-		A66C3B8929B087B6004A3DDB /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66C3B8829B087B6004A3DDB /* AppSetting.swift */; };
 		A66C3B8D29B08DCD004A3DDB /* BackupWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66C3B8C29B08DCD004A3DDB /* BackupWalletCoordinator.swift */; };
 		A66CD6E9295463DF00FF2EC9 /* HistoryV3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66CD6E7295463DE00FF2EC9 /* HistoryV3ViewController.swift */; };
 		A66CD6EA295463DF00FF2EC9 /* HistoryV3ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66CD6E8295463DE00FF2EC9 /* HistoryV3ViewController.xib */; };
@@ -1127,10 +1126,6 @@
 		C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */; };
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
 		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
-		C39D311428F5645800EC26ED /* StakingPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D311228F5645800EC26ED /* StakingPortfolioViewController.swift */; };
-		C39D311528F5645800EC26ED /* StakingPortfolioViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C39D311328F5645800EC26ED /* StakingPortfolioViewController.xib */; };
-		C39D311928F5679700EC26ED /* StakingPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D311728F5679700EC26ED /* StakingPortfolioCell.swift */; };
-		C39D311A28F5679700EC26ED /* StakingPortfolioCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C39D311828F5679700EC26ED /* StakingPortfolioCell.xib */; };
 		C39D3FE126FB33610021DF8A /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D3FE026FB33610021DF8A /* History.swift */; };
 		C39E5FBB27F1A23600DDBF59 /* GoogleService-Info-Dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = C39E5FBA27F1A23600DDBF59 /* GoogleService-Info-Dev.plist */; };
 		C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241992567AD610073703C /* WalletsListViewController.swift */; };
@@ -2022,7 +2017,6 @@
 		A66C3B8229B08443004A3DDB /* WalletExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletExtraData.swift; sourceTree = "<group>"; };
 		A66C3B8429B084A8004A3DDB /* WalletDataDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDataDAO.swift; sourceTree = "<group>"; };
 		A66C3B8629B08599004A3DDB /* WalletExtraDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletExtraDataManager.swift; sourceTree = "<group>"; };
-		A66C3B8829B087B6004A3DDB /* AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
 		A66C3B8C29B08DCD004A3DDB /* BackupWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWalletCoordinator.swift; sourceTree = "<group>"; };
 		A66CD6E7295463DE00FF2EC9 /* HistoryV3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryV3ViewController.swift; sourceTree = "<group>"; };
 		A66CD6E8295463DE00FF2EC9 /* HistoryV3ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HistoryV3ViewController.xib; sourceTree = "<group>"; };
@@ -5979,7 +5973,6 @@
 			isa = PBXGroup;
 			children = (
 				A6E6C9DA281798E000EEB2E6 /* Observable.swift */,
-				A66C3B8829B087B6004A3DDB /* AppSetting.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -7673,11 +7666,6 @@
 				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
 				"${BUILT_PRODUCTS_DIR}/TagListView/TagListView.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
-				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
-				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
-				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
-				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/TrustWeb3Provider/TrustWeb3Provider.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseABTesting/FirebaseABTesting.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework",
@@ -7696,11 +7684,11 @@
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/LDSwiftEventSource/LDSwiftEventSource.framework",
 				"${BUILT_PRODUCTS_DIR}/LaunchDarkly/LaunchDarkly.framework",
-				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
 				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SAMKeychain/SAMKeychain.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/Swinject/Swinject.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustKeystore/TrustKeystore.framework",
 				"${BUILT_PRODUCTS_DIR}/WalletConnectSwift/WalletConnectSwift.framework",
@@ -7747,11 +7735,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TagListView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mixpanel.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustWeb3Provider.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseABTesting.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreInternal.framework",
@@ -7770,11 +7753,11 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LDSwiftEventSource.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LaunchDarkly.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mixpanel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SAMKeychain.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Swinject.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKeystore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WalletConnectSwift.framework",
@@ -8167,7 +8150,6 @@
 				2963A28A1FC402940095447D /* LocalizedOperationObject.swift in Sources */,
 				A6E754B428EECBB0008B6535 /* FinishWalletCoordinator.swift in Sources */,
 				257A379B205CDA8100E86794 /* KNTransactionCoordinator.swift in Sources */,
-				A66C3B8929B087B6004A3DDB /* AppSetting.swift in Sources */,
 				A6DA40E527F6DAB30078C58E /* Strings.swift in Sources */,
 				A6DA40E927F6E08F0078C58E /* Dynamic.swift in Sources */,
 				C3B79EC5285C70B8008547F5 /* TradingViewData.swift in Sources */,

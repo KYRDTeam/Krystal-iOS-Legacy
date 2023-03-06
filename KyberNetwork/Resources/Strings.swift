@@ -336,6 +336,4 @@ struct Strings {
     static let backupReasonContent = "backup.wallet.description".toBeLocalised()
     static let backupWallet = "backup.wallet".toBeLocalised()
     static let securityTips = "security.tips".toBeLocalised()
-    
-    static let notAnEligibleWallet = "not.an.eligible.wallet".toBeLocalised()
 }

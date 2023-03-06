@@ -20,10 +20,10 @@ public class AppState {
     
     public var isSelectingAllNetworks: Bool {
         get {
-            return AppSettingManager.shared.bool(forKey: kIsSelectedAllNetworks)
+            return AppSetting.shared.bool(forKey: kIsSelectedAllNetworks)
         }
         set {
-            AppSettingManager.shared.set(value: newValue, forKey: kIsSelectedAllNetworks)
+            AppSetting.shared.set(value: newValue, forKey: kIsSelectedAllNetworks)
             if newValue {
                 NotificationCenter.default.post(name: .appAllNetworksSelected, object: nil)
             }
@@ -32,11 +32,11 @@ public class AppState {
     
     public var selectedChainID: Int {
         get {
-            return AppSettingManager.shared.int(forKey: kSelectedChainID) ?? 0
+            return AppSetting.shared.int(forKey: kSelectedChainID) ?? 0
         }
         set {
             if newValue != selectedChainID {
-                AppSettingManager.shared.set(value: newValue, forKey: kSelectedChainID)
+                AppSetting.shared.set(value: newValue, forKey: kSelectedChainID)
                 selectedChain = ChainDB.shared.getChain(byID: selectedChainID) ?? ChainDB.shared.allChains().first
                 NotificationCenter.default.post(name: .appSwitchedChain, object: nil)
             }

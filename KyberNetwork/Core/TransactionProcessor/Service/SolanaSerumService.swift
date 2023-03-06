@@ -130,7 +130,7 @@ class SolanaSerumService {
   }
   
     func getBalance(address: String, completion: @escaping (BigInt?) -> Void) {
-      let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin()])
       provider.request(.getBalance(address: address)) { result in
         switch result {
         case .success(let data):

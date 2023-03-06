@@ -17,9 +17,9 @@ public class TokenModule {
     static let bundle = Bundle(for: TokenModule.self)
     public static var apiURL: String!
     
-    public static func createTokenDetailViewController(address: String, chain: ChainType, currencyMode: CurrencyMode) -> UIViewController? {
+    public static func createTokenDetailViewController(address: String, chain: ChainType, tokenName: String? = nil, currencyMode: CurrencyMode) -> UIViewController? {
         let vc = TokenDetailViewController.instantiateFromNib()
-        let viewModel = TokenDetailViewModel(address: address, chain: chain, currencyMode: currencyMode)
+        let viewModel = TokenDetailViewModel(address: address, chain: chain, tokenName: tokenName, currencyMode: currencyMode)
         vc.viewModel = viewModel
         return vc
     }
