@@ -199,7 +199,7 @@ jobs:
       - name: Pods install
         run: pod check || pod install
 
-      - name: bundle exec xcversion installed
+      - name: List available xcode version to apply into Fastfile
         run: bundle exec xcversion installed
 
       - name: Build IPA
