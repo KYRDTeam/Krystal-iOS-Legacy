@@ -198,6 +198,9 @@ jobs:
       - name: Pods install
         run: pod check || pod install
 
+      - name: List available xcode versions to apply into Fastfile
+        run: bundle exec xcversion installed
+
       - name: Build IPA
         uses: maierj/fastlane-action@v2.0.1
         env:
