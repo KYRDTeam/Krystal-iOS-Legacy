@@ -16,6 +16,9 @@ class WalletDataDAO {
     }
     
     func updateLastBackupRemindTime(walletID: String) {
+        if isWalletBackedUp(walletID: walletID) {
+            return
+        }
         let walletData = WalletExtraData(walletID: walletID,
                                          isBackedUp: false,
                                          lastBackupRemindTime: Date(),
