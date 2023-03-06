@@ -101,7 +101,7 @@ lane :pre_release do
     duration: 1200,
     in_house: false
   )
-  xcversion(version: "13.4")
+  xcversion(version: "13.4.1")
   # build app
   @tid = bundle_id + ".KrystalNotificationServiceExtension" 
   build_app(
@@ -211,7 +211,7 @@ end
 # build build ipa and export by ad-hoc method
 # output path: base_repo/archives/KyberSwap.ipa
 lane :build do
-  xcversion(version: "13.4")
+  xcversion(version: "13.4.1")
   # build app
   @tid = bundle_id + ".KrystalNotificationServiceExtension" 
   build_app(
@@ -234,7 +234,7 @@ lane :build do
 end
 
 lane :build_debug do
-  xcversion(version: "13.4")
+  xcversion(version: "13.4.1")
   # build app
   @tid = bundle_id + ".KrystalNotificationServiceExtension" 
   build_app(
