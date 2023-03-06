@@ -1,4 +1,4 @@
-name: MobSF Security
+name: Code Security
 
 on:
   push:
