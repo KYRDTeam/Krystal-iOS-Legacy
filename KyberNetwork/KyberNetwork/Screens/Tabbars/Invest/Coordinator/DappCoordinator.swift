@@ -322,7 +322,10 @@ extension DappCoordinator: BrowserViewControllerDelegate {
   }
 
   private func executeTransaction(action: DappAction, callbackID: Int, tx: SignTransactionObject, url: String) {
-    self.askToAsyncSign(action: action, callbackID: callbackID, tx: tx, message: "Prepare to send your transaction", url: url) {
+    self.askToAsyncSign(action: action, callbackID: callbackID, tx: tx, message: "Prepare to send your transaction", url: url) { error in
+        if let error = error {
+            self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .failure(.nodeError(error)))
+        }
     }
   }
 
@@ -368,7 +371,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
     }
   }
   
-  func askToAsyncSign(action: DappAction, callbackID: Int, tx: SignTransactionObject, message: String, url: String, sign: @escaping () -> Void) {
+    func askToAsyncSign(action: DappAction, callbackID: Int, tx: SignTransactionObject, message: String, url: String, sign: @escaping (_ error: String?) -> Void) {
     if address.isWatchWallet {
       return
     }
@@ -409,7 +412,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
                     EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
                     self.openTransactionStatusPopUp(transaction: historyTransaction)
                   case .failure(let error):
-                    self.navigationController.displayError(error: error)
+                      sign(error.prettyError)
                   }
                   self.navigationController.hideLoading()
                 })
@@ -428,7 +431,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
               if errorMessage.lowercased().contains("Unknown(0x)".lowercased()) {
                 errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
               }
-              self.navigationController.showErrorTopBannerMessage(message: errorMessage)
+                sign(error.prettyError)
             }
           }
         } else {
@@ -463,11 +466,11 @@ extension DappCoordinator: BrowserViewControllerDelegate {
                     EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
                     self.openTransactionStatusPopUp(transaction: historyTransaction)
                   case .failure(let error):
-                    self.navigationController.displayError(error: error)
+                      sign(error.prettyError)
                   }
                 })
               case .failure(let error):
-                self.navigationController.displayError(error: error)
+                  sign(error.prettyError)
               }
             case .failure(let error):
               self.navigationController.hideLoading()
@@ -483,7 +486,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
               if errorMessage.lowercased().contains("Unknown(0x)".lowercased()) {
                 errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
               }
-              self.navigationController.showErrorTopBannerMessage(message: errorMessage)
+                sign(error.prettyError)
             }
           }
         }

@@ -236,7 +236,7 @@ public extension WalletManager {
       throw error
     }
   }
-  
+
   func isWatchAddressExisted(address: String) -> Bool {
     return watchAddresses().contains { $0.addressString == address }
   }

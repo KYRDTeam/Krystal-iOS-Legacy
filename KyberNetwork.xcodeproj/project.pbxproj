@@ -443,6 +443,10 @@
 		7E16B8D02769CF5F00F9A234 /* ReferralTiersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E16B8CE2769CF5F00F9A234 /* ReferralTiersViewController.xib */; };
 		7E16B8D32769DB3300F9A234 /* ReferralTiersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */; };
 		7E16B8D42769DB3300F9A234 /* ReferralTiersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E16B8D22769DB3300F9A234 /* ReferralTiersCell.xib */; };
+		7E19DE4329AC5F0200C8BA82 /* ImportWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E19DE4129AC5F0200C8BA82 /* ImportWalletViewController.swift */; };
+		7E19DE4429AC5F0200C8BA82 /* ImportWalletViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E19DE4229AC5F0200C8BA82 /* ImportWalletViewController.xib */; };
+		7E19DE4729AC922300C8BA82 /* FinishImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E19DE4529AC922300C8BA82 /* FinishImportViewController.swift */; };
+		7E19DE4829AC922300C8BA82 /* FinishImportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E19DE4629AC922300C8BA82 /* FinishImportViewController.xib */; };
 		7E1EBE322834C7E900793B6D /* BridgeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1EBE312834C7E900793B6D /* BridgeCoordinator.swift */; };
 		7E1EBE352834C9C900793B6D /* BridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1EBE332834C9C900793B6D /* BridgeViewController.swift */; };
 		7E1EBE362834C9C900793B6D /* BridgeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E1EBE342834C9C900793B6D /* BridgeViewController.xib */; };
@@ -554,6 +558,12 @@
 		7ED5FA8227D1EF4000F0CB8E /* SelectNetworkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5FA8027D1EF4000F0CB8E /* SelectNetworkViewController.xib */; };
 		7ED5FA8527D214D000F0CB8E /* SelectNetworkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5FA8327D214D000F0CB8E /* SelectNetworkCell.swift */; };
 		7ED5FA8627D214D000F0CB8E /* SelectNetworkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5FA8427D214D000F0CB8E /* SelectNetworkCell.xib */; };
+		7ED81BC329AF51F000F92109 /* AddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED81BC129AF51EF00F92109 /* AddressCell.swift */; };
+		7ED81BC429AF51F000F92109 /* AddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED81BC229AF51F000F92109 /* AddressCell.xib */; };
+		7EDA64CF29AD201D009EEC21 /* SecurityTipsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDA64CD29AD201D009EEC21 /* SecurityTipsViewController.swift */; };
+		7EDA64D029AD201D009EEC21 /* SecurityTipsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EDA64CE29AD201D009EEC21 /* SecurityTipsViewController.xib */; };
+		7EDA64D429AD2230009EEC21 /* TipsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDA64D229AD2230009EEC21 /* TipsCell.swift */; };
+		7EDA64D529AD2230009EEC21 /* TipsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EDA64D329AD2230009EEC21 /* TipsCell.xib */; };
 		7EE3143C286036AF0012ADF9 /* TokenPoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE3143A286036AF0012ADF9 /* TokenPoolCell.swift */; };
 		7EE3143D286036AF0012ADF9 /* TokenPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE3143B286036AF0012ADF9 /* TokenPoolCell.xib */; };
 		7EE7A72A28446F7A00F4D8CF /* ConfirmBridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE7A72828446F7A00F4D8CF /* ConfirmBridgeViewController.swift */; };
@@ -1740,6 +1750,10 @@
 		7E16B8CE2769CF5F00F9A234 /* ReferralTiersViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReferralTiersViewController.xib; sourceTree = "<group>"; };
 		7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralTiersCell.swift; sourceTree = "<group>"; };
 		7E16B8D22769DB3300F9A234 /* ReferralTiersCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReferralTiersCell.xib; sourceTree = "<group>"; };
+		7E19DE4129AC5F0200C8BA82 /* ImportWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWalletViewController.swift; sourceTree = "<group>"; };
+		7E19DE4229AC5F0200C8BA82 /* ImportWalletViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportWalletViewController.xib; sourceTree = "<group>"; };
+		7E19DE4529AC922300C8BA82 /* FinishImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishImportViewController.swift; sourceTree = "<group>"; };
+		7E19DE4629AC922300C8BA82 /* FinishImportViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FinishImportViewController.xib; sourceTree = "<group>"; };
 		7E1EBE312834C7E900793B6D /* BridgeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeCoordinator.swift; sourceTree = "<group>"; };
 		7E1EBE332834C9C900793B6D /* BridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeViewController.swift; sourceTree = "<group>"; };
 		7E1EBE342834C9C900793B6D /* BridgeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BridgeViewController.xib; sourceTree = "<group>"; };
@@ -1850,6 +1864,12 @@
 		7ED5FA8027D1EF4000F0CB8E /* SelectNetworkViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectNetworkViewController.xib; sourceTree = "<group>"; };
 		7ED5FA8327D214D000F0CB8E /* SelectNetworkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectNetworkCell.swift; sourceTree = "<group>"; };
 		7ED5FA8427D214D000F0CB8E /* SelectNetworkCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectNetworkCell.xib; sourceTree = "<group>"; };
+		7ED81BC129AF51EF00F92109 /* AddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressCell.swift; sourceTree = "<group>"; };
+		7ED81BC229AF51F000F92109 /* AddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressCell.xib; sourceTree = "<group>"; };
+		7EDA64CD29AD201D009EEC21 /* SecurityTipsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityTipsViewController.swift; sourceTree = "<group>"; };
+		7EDA64CE29AD201D009EEC21 /* SecurityTipsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SecurityTipsViewController.xib; sourceTree = "<group>"; };
+		7EDA64D229AD2230009EEC21 /* TipsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsCell.swift; sourceTree = "<group>"; };
+		7EDA64D329AD2230009EEC21 /* TipsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TipsCell.xib; sourceTree = "<group>"; };
 		7EE3143A286036AF0012ADF9 /* TokenPoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPoolCell.swift; sourceTree = "<group>"; };
 		7EE3143B286036AF0012ADF9 /* TokenPoolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TokenPoolCell.xib; sourceTree = "<group>"; };
 		7EE7A72828446F7A00F4D8CF /* ConfirmBridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBridgeViewController.swift; sourceTree = "<group>"; };
@@ -3297,6 +3317,7 @@
 		257740C2205793C6003323EB /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				7E9E0D9029B1A30700B3966D /* TipsView */,
 				A66CD6E6295463CE00FF2EC9 /* HistoryV3 */,
 				A63655522907A341003B66F0 /* Approvals */,
 				A610B2D828ED66D600456965 /* Protocols */,
@@ -3799,6 +3820,7 @@
 		25C45AC820AC470400CDA1FF /* Import */ = {
 			isa = PBXGroup;
 			children = (
+				7EDA64D129AD21D9009EEC21 /* Cells */,
 				25C45ACA20AC471500CDA1FF /* Coordinator */,
 				25C45AC920AC471000CDA1FF /* Controller */,
 			);
@@ -3814,6 +3836,10 @@
 				25C45AD720AD40C700CDA1FF /* ImpoprtPrivateKey */,
 				25C45AD020AD397700CDA1FF /* ImportJSON */,
 				25C45ACF20AD396900CDA1FF /* ImportContainerView */,
+				7E19DE4129AC5F0200C8BA82 /* ImportWalletViewController.swift */,
+				7E19DE4229AC5F0200C8BA82 /* ImportWalletViewController.xib */,
+				7E19DE4529AC922300C8BA82 /* FinishImportViewController.swift */,
+				7E19DE4629AC922300C8BA82 /* FinishImportViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4852,6 +4878,25 @@
 			path = SelectChain;
 			sourceTree = "<group>";
 		};
+		7E9E0D9029B1A30700B3966D /* TipsView */ = {
+			isa = PBXGroup;
+			children = (
+				7E9E0D9129B1A58800B3966D /* Cells */,
+				7EDA64CD29AD201D009EEC21 /* SecurityTipsViewController.swift */,
+				7EDA64CE29AD201D009EEC21 /* SecurityTipsViewController.xib */,
+			);
+			path = TipsView;
+			sourceTree = "<group>";
+		};
+		7E9E0D9129B1A58800B3966D /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7EDA64D229AD2230009EEC21 /* TipsCell.swift */,
+				7EDA64D329AD2230009EEC21 /* TipsCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		7EB47FF627CCDD2B00FB28D9 /* Feature Flags */ = {
 			isa = PBXGroup;
 			children = (
@@ -4886,6 +4931,15 @@
 				7E8C62D7271D319200A6C9DB /* ClaimRewardsController.xib */,
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		7EDA64D129AD21D9009EEC21 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7ED81BC129AF51EF00F92109 /* AddressCell.swift */,
+				7ED81BC229AF51F000F92109 /* AddressCell.xib */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		7EFE43FD2714449C006CF502 /* Rewards */ = {
@@ -6899,6 +6953,7 @@
 				25696F6920BE9EB6002CC53F /* KNSearchTokenViewController.xib in Resources */,
 				C31F74BC25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib in Resources */,
 				C320D81027B3A7F60001DC71 /* MultiSendCell.xib in Resources */,
+				7E19DE4829AC922300C8BA82 /* FinishImportViewController.xib in Resources */,
 				25929C5520DA5C760045CFA3 /* SF-Pro-Display-RegularItalic.otf in Resources */,
 				25929C9620DA5CC10045CFA3 /* SFCompactDisplay-Semibold.otf in Resources */,
 				A636555A2907B6BB003B66F0 /* ApprovedTokenCell.xib in Resources */,
@@ -7003,6 +7058,7 @@
 				A66EC31B287D258100D15FE0 /* TxListHeaderCell.xib in Resources */,
 				250EE8E32221A40800121138 /* KNShowBackUpDataViewController.xib in Resources */,
 				A646E87928E5AD87007591FC /* WalletConnectViewController.xib in Resources */,
+				7EDA64D029AD201D009EEC21 /* SecurityTipsViewController.xib in Resources */,
 				A69813E528E1BC230054F3E5 /* NotificationDetailViewController.xib in Resources */,
 				C322EB0C25B1A3D8009746FB /* CreateWalletMenuViewController.xib in Resources */,
 				25073D1B211AF20D00833C92 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
@@ -7018,6 +7074,7 @@
 				A6DA40F427F6E15D0078C58E /* ExploreMenuCell.xib in Resources */,
 				C3EE06BB267A15E50090B432 /* Karla-Italic.ttf in Resources */,
 				7EA95E8728BF137100DDF3CB /* AddWalletViewController.xib in Resources */,
+				7EDA64D529AD2230009EEC21 /* TipsCell.xib in Resources */,
 				7EFE440E27158594006CF502 /* ToggleTokenCell.xib in Resources */,
 				7E1EBE3A2834D65B00793B6D /* SelectChainCell.xib in Resources */,
 				C3114371249B1C2300084CD8 /* KNMigrationTutorialViewController.xib in Resources */,
@@ -7059,6 +7116,7 @@
 				C37AF0CE25CCFB47006FB880 /* EarnSwapConfirmViewController.xib in Resources */,
 				25696F6420BE8973002CC53F /* KNSetSlippageRateViewController.xib in Resources */,
 				C68AA277237A6BE900B9EC35 /* KNTransactionStatusPopUp.xib in Resources */,
+				7ED81BC429AF51F000F92109 /* AddressCell.xib in Resources */,
 				7E913AFB273CF6DA00B6E67C /* intro_earn.json in Resources */,
 				25C45AE720AEB4A700CDA1FF /* KNEnterWalletNameViewController.xib in Resources */,
 				25929C9420DA5CC10045CFA3 /* SFCompactText-MediumItalic.otf in Resources */,
@@ -7254,6 +7312,7 @@
 				7EE3143D286036AF0012ADF9 /* TokenPoolCell.xib in Resources */,
 				7EE92A10286307E10050DC8D /* ShowAllCell.xib in Resources */,
 				252EBD8121636D9A00609101 /* Localizable.stringsdict in Resources */,
+				7E19DE4429AC5F0200C8BA82 /* ImportWalletViewController.xib in Resources */,
 				C33BC64725E353F70075259B /* tokens_price.json in Resources */,
 				25073D29211AF20D00833C92 /* Montserrat-Medium.ttf in Resources */,
 				7EB47FFC27D077DF00FB28D9 /* SearchFiatCryptoViewController.xib in Resources */,
@@ -7557,6 +7616,8 @@
 				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
 				"${BUILT_PRODUCTS_DIR}/TagListView/TagListView.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustWeb3Provider/TrustWeb3Provider.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseABTesting/FirebaseABTesting.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
@@ -7572,14 +7633,12 @@
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/LDSwiftEventSource/LDSwiftEventSource.framework",
 				"${BUILT_PRODUCTS_DIR}/LaunchDarkly/LaunchDarkly.framework",
-				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
 				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SAMKeychain/SAMKeychain.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
-				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/Swinject/Swinject.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustKeystore/TrustKeystore.framework",
 				"${BUILT_PRODUCTS_DIR}/WalletConnectSwift/WalletConnectSwift.framework",
@@ -7623,6 +7682,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TagListView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mixpanel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustWeb3Provider.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseABTesting.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
@@ -7638,14 +7699,12 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LDSwiftEventSource.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LaunchDarkly.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mixpanel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SAMKeychain.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Swinject.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKeystore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WalletConnectSwift.framework",
@@ -7764,6 +7823,7 @@
 				C315AD5E240F845200620096 /* CustomAxisValueFormatter.swift in Sources */,
 				253F50E221E5B40E0068813D /* KNPromoCodeCoordinator.swift in Sources */,
 				29C80D511FB67A110037B1E0 /* ArrayResponse.swift in Sources */,
+				7EDA64CF29AD201D009EEC21 /* SecurityTipsViewController.swift in Sources */,
 				257A377E205B7BFA00E86794 /* UINavigationController+Kyber.swift in Sources */,
 				7E6F510427326122002DA0B2 /* OverviewTotalInfoCell.swift in Sources */,
 				C32BD4A3268DDC7E00ABAA59 /* UISegmentedControl+Kyber.swift in Sources */,
@@ -7880,6 +7940,7 @@
 				C37F04CB2639697800D62E43 /* GetDecimals.swift in Sources */,
 				25C45ABE20AC217500CDA1FF /* KNSupportedTokenCoordinator.swift in Sources */,
 				25485B042272F938004B7454 /* KNTransactionFilterTableViewCell.swift in Sources */,
+				7EDA64D429AD2230009EEC21 /* TipsCell.swift in Sources */,
 				A6156B5128856E1700276120 /* CustomSegmentView.swift in Sources */,
 				25CC0A962057DD4E0009D0D5 /* KNExternalProvider.swift in Sources */,
 				25CC0A9D2057E2A90009D0D5 /* KNDraftExchangeTransaction.swift in Sources */,
@@ -8134,6 +8195,7 @@
 				A65CBF20286307BD008620E2 /* UserDefaults.swift in Sources */,
 				C33BF86A26D77E5C00D9F621 /* SendNFTViewController.swift in Sources */,
 				C320D80B27B39EBC0001DC71 /* MultiSendViewController.swift in Sources */,
+				7ED81BC329AF51F000F92109 /* AddressCell.swift in Sources */,
 				7721A6C8202EF81B004DB16C /* CustomRPC.swift in Sources */,
 				253F50E721E5B5290068813D /* KNPromoCodeViewController.swift in Sources */,
 				A69C5BDC28D1BAEF000DE825 /* NotificationItemV2Cell.swift in Sources */,
@@ -8162,6 +8224,7 @@
 				255C40EE2092E09600475871 /* KNTokenTransaction.swift in Sources */,
 				29F1C863200375D2003780D8 /* Wallet.swift in Sources */,
 				A64E17B5281932C400ED6E6D /* PendingTransactionListViewController.swift in Sources */,
+				7E19DE4329AC5F0200C8BA82 /* ImportWalletViewController.swift in Sources */,
 				7E1EBE3D2834D97D00793B6D /* SelectTokenCell.swift in Sources */,
 				7EFE44092715855D006CF502 /* ClaimButtonTableViewCell.swift in Sources */,
 				25CC0AB220591A3D0009D0D5 /* KNRate.swift in Sources */,
@@ -8262,6 +8325,7 @@
 				A6BAD3D4287446F30016E127 /* TradingViewController.swift in Sources */,
 				C325984626D345A100F87D25 /* OverviewShareNFTViewController.swift in Sources */,
 				C37AF0C725CCFB29006FB880 /* EarnSwapViewController.swift in Sources */,
+				7E19DE4729AC922300C8BA82 /* FinishImportViewController.swift in Sources */,
 				7EFFAB8428AE4F5B007CFE7D /* SeedStringCell.swift in Sources */,
 				29E9CFD21FE737FE00017744 /* TrustRealmConfiguration.swift in Sources */,
 				C316809C25E785B700D0D887 /* TokenChartData.swift in Sources */,

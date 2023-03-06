@@ -399,6 +399,8 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
       case .promotionCode:
         guard let code = ScannerUtils.getPromotionCode(text: text) else { return }
         self.delegate?.overviewMainViewController(self, run: .openPromotion(code: code))
+      case .seed:
+          break
       }
     }
     MixPanelManager.track("home_qr", properties: ["screenid": "homepage"])

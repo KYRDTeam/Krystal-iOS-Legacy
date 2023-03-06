@@ -294,6 +294,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         case .promotionCode:
           guard let code = ScannerUtils.getPromotionCode(text: text) else { return }
           self.openPromotion(withCode: code)
+        case .seed:
+            break
         }
       }
       MixPanelManager.track("scanner_open", properties: ["screenid": "scanner"])
