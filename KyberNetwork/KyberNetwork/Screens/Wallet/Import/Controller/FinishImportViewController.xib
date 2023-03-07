@@ -81,7 +81,7 @@
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-edit" translatesAutoresizingMaskIntoConstraints="NO" id="yhK-dD-bpq">
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_close_circle" translatesAutoresizingMaskIntoConstraints="NO" id="yhK-dD-bpq">
                             <rect key="frame" x="313" y="12" width="24" height="24"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="24" id="Iey-fr-h8U"/>
@@ -178,7 +178,7 @@
     </objects>
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
-        <image name="icon-edit" width="24" height="24"/>
+        <image name="icon_close_circle" width="24" height="24"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

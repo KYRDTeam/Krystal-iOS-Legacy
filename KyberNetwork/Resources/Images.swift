@@ -8,6 +8,10 @@
 import UIKit
 
 struct Images {
+    
+  // Import screen
+  static let pasteIcon = UIImage(named: "icon-paste")!
+  static let pasteDisableIcon = UIImage(named: "icon-paste-disable")!
   
   // Explore screen
   static let exploreSwapIcon = UIImage(named: "swap_inverst_icon")!

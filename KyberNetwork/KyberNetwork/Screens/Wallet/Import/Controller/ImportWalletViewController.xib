@@ -32,10 +32,12 @@
                 <outlet property="inputContainView" destination="TgV-0y-BBp" id="dQu-FN-dcU"/>
                 <outlet property="inputTextView" destination="vE6-8p-kZv" id="M3e-pF-vir"/>
                 <outlet property="inputViewHeightConstraint" destination="U9k-bm-6R2" id="1uq-25-eAs"/>
+                <outlet property="pasteButton" destination="BxO-5I-SZO" id="dVW-nj-x5K"/>
                 <outlet property="pasteButtonTopConstraint" destination="Y8Q-QH-0jM" id="DoJ-EK-LFu"/>
+                <outlet property="pasteIcon" destination="pEA-Gi-cla" id="kjQ-qe-bpJ"/>
                 <outlet property="pasteImageView" destination="pEA-Gi-cla" id="mQ0-s7-zaM"/>
                 <outlet property="pasteInfoView" destination="ZQF-OM-FEm" id="6Yk-Mr-Hwx"/>
-                <outlet property="pasteView" destination="YE9-vV-Bjr" id="CMf-aD-FI8"/>
+                <outlet property="pasteLabel" destination="LHs-Nu-HfA" id="vmf-oY-e6u"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="wordCountLabel" destination="ltQ-x8-xn7" id="MNx-VD-FS7"/>
             </connections>
@@ -177,16 +179,16 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YE9-vV-Bjr">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YE9-vV-Bjr">
                     <rect key="frame" x="20" y="254" width="82.333333333333329" height="56"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paste" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LHs-Nu-HfA">
                             <rect key="frame" x="32" y="18.666666666666686" width="40.333333333333343" height="19"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                            <color key="textColor" name="buttonBackgroundColor"/>
+                            <color key="textColor" red="0.41568627450980389" green="0.43137254901960786" blue="0.396078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-paste" translatesAutoresizingMaskIntoConstraints="NO" id="pEA-Gi-cla">
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-paste-disable" translatesAutoresizingMaskIntoConstraints="NO" id="pEA-Gi-cla">
                             <rect key="frame" x="0.0" y="16" width="24" height="24"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="24" id="76x-i5-Dtq"/>
@@ -216,7 +218,7 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hxC-Ha-2JY">
-                    <rect key="frame" x="16" y="770" width="361" height="48"/>
+                    <rect key="frame" x="16" y="754" width="361" height="48"/>
                     <color key="backgroundColor" name="buttonBackgroundColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="YZc-Dh-uBL"/>
@@ -248,7 +250,7 @@
                 <constraint firstItem="5Fl-Wq-xlS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="0Mg-Bq-3Fi"/>
                 <constraint firstItem="tcs-DV-bCW" firstAttribute="top" secondItem="5Fl-Wq-xlS" secondAttribute="bottom" constant="22" id="4Lt-l6-vRg"/>
                 <constraint firstItem="Yr9-1k-2u3" firstAttribute="top" secondItem="tcs-DV-bCW" secondAttribute="bottom" constant="12" id="7KB-BL-YfY"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="hxC-Ha-2JY" secondAttribute="bottom" id="81y-8B-ra6"/>
+                <constraint firstAttribute="bottom" secondItem="hxC-Ha-2JY" secondAttribute="bottom" constant="50" id="81y-8B-ra6"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="5Fl-Wq-xlS" secondAttribute="trailing" id="DHh-Wh-bb0"/>
                 <constraint firstItem="Lem-JQ-B5g" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="E0x-mE-6hp"/>
                 <constraint firstItem="ltQ-x8-xn7" firstAttribute="trailing" secondItem="TgV-0y-BBp" secondAttribute="trailing" id="P40-k2-a0u"/>
@@ -273,7 +275,7 @@
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
         <image name="icon-hint" width="28" height="28"/>
-        <image name="icon-paste" width="24" height="24"/>
+        <image name="icon-paste-disable" width="24" height="24"/>
         <image name="icon_close_circle" width="24" height="24"/>
         <image name="scan" width="32" height="32"/>
         <namedColor name="buttonBackgroundColor">
