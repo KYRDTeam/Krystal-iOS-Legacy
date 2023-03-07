@@ -12,6 +12,7 @@ import Dependencies
 import Utilities
 import Moya
 import KrystalWallets
+import DesignSystem
 
 class KNTabBarController: UITabBarController {
     
@@ -136,6 +137,14 @@ class KNTabBarController: UITabBarController {
             case .failure:
                 return
             }
+        }
+    }
+    
+    func showUpdatePopupIfNeeded() {
+        if VersionManager.shared.getCurrentVersionStatus() == .canUpdate {
+            let vc = UpdateAvailableViewController.instantiateFromNib()
+            let popup = PopupViewController(vc: vc, configuration: .init(height: .intrinsic))
+            present(popup, animated: true)
         }
     }
 }
