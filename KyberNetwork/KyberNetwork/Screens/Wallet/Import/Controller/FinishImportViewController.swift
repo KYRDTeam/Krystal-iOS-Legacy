@@ -34,6 +34,7 @@ class FinishImportViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var termOfUseTextView: UITextView!
+    @IBOutlet weak var clearWalletNameButton: UIButton!
     let viewModel: FinishImportViewModel
 
 
@@ -65,6 +66,7 @@ class FinishImportViewController: UIViewController {
         }
         let wallets = WalletManager.shared.getAllWallets()
         walletNameTextField.text = "Wallet \(wallets.count + 1)"
+        walletNameTextField.delegate = self
         
         let linkAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.foregroundColor: AppTheme.current.positiveTextColor,
@@ -97,7 +99,11 @@ class FinishImportViewController: UIViewController {
             didFinishImport()
         }
     }
-    
+
+    @IBAction func clearWalletNameButtonTapped(_ sender: Any) {
+        walletNameTextField.text = ""
+    }
+
     func didFinishImport() {
         let name = walletNameTextField.text?.trimmed
         switch self.viewModel.importType {
@@ -110,6 +116,16 @@ class FinishImportViewController: UIViewController {
             seeds = seeds.filter({ return !$0.replacingOccurrences(of: " ", with: "").isEmpty })
             self.importWallet(with: .mnemonic(words: seeds, password: ""), name: name, importType: .multiChain, selectedChain: KNGeneralProvider.shared.defaultChain)
         }
+    }
+}
+
+extension FinishImportViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        clearWalletNameButton.isHidden = true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        clearWalletNameButton.isHidden = false
     }
 }
 

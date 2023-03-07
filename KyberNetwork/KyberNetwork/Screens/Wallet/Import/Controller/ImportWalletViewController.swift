@@ -19,7 +19,9 @@ class ImportWalletViewController: UIViewController {
     @IBOutlet weak var clearTextBtn: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var pasteButtonTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pasteView: UIView!
+    @IBOutlet weak var pasteButton: UIButton!
+    @IBOutlet weak var pasteIcon: UIImageView!
+    @IBOutlet weak var pasteLabel: UILabel!
     @IBOutlet weak var inputTextView: UITextView!
     @IBOutlet weak var inputViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var continueButton: UIButton!
@@ -33,7 +35,9 @@ class ImportWalletViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        pasteView.isHidden = UIPasteboard.general.string == nil
+        pasteButton.isEnabled = UIPasteboard.general.string != nil
+        pasteIcon.image = UIPasteboard.general.string != nil ? Images.pasteIcon : Images.pasteDisableIcon
+        pasteLabel.textColor = UIPasteboard.general.string != nil ? AppTheme.current.primaryColor : AppTheme.current.disableColor
     }
     
     func configUI() {
@@ -43,8 +47,7 @@ class ImportWalletViewController: UIViewController {
         inputTextView.delegate = self
         inputTextView.text = "Input here"
         inputTextView.textColor = .lightGray
-        
-        
+
         let attributedString = NSMutableAttributedString()
         let boldAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.foregroundColor: AppTheme.current.primaryTextColor,
@@ -170,8 +173,47 @@ class ImportWalletViewController: UIViewController {
         return ScannerUtils.isValid(text: text, forType: .ethPrivateKey) || ScannerUtils.isValid(text: text, forType: .solPrivateKey)
     }
     
+    func tempSolanaAddress() -> String {
+        var solanaAddress: String?
+        let inputString = inputTextView.text.trimmed
+        if wordCount() == 1 {
+            if SolanaUtils.isValidSolanaPrivateKey(text: inputString) {
+                if let data = Base58.decodeNoCheck(string: inputString), let key = PrivateKey(data: data[0...31]) {
+                    solanaAddress = AnyAddress(publicKey: key.getPublicKeyEd25519(), coin: .solana).description
+                }
+            }
+        } else {
+            var seeds = inputTextView.text.trimmed.components(separatedBy: " ").map({ $0.trimmed })
+            seeds = seeds.filter({ return !$0.replacingOccurrences(of: " ", with: "").isEmpty })
+            let hdWallet = HDWallet(mnemonic: seeds.joined(separator: " "), passphrase: "")
+            if let key = hdWallet?.getKey(coin: .solana, derivationPath: "m/44'/501'/0'/0'") {
+                solanaAddress = AnyAddress(publicKey: key.getPublicKeyEd25519(), coin: .solana).description
+            }
+        }
+        return solanaAddress ?? ""
+    }
+    
+    func tempEVMAddress() -> String {
+        var evmAddress: String?
+        let inputString = inputTextView.text.trimmed
+        if wordCount() == 1 {
+            if ScannerUtils.isValid(text: inputString, forType: .ethPrivateKey) {
+                if let data = Data(hexString: inputString), let privateKey = PrivateKey(data: data) {
+                    evmAddress = CoinType.ethereum.deriveAddress(privateKey: privateKey).lowercased()
+                }
+            }
+        } else {
+            var seeds = inputTextView.text.trimmed.components(separatedBy: " ").map({ $0.trimmed })
+            seeds = seeds.filter({ return !$0.replacingOccurrences(of: " ", with: "").isEmpty })
+            let hdWallet = HDWallet(mnemonic: seeds.joined(separator: " "), passphrase: "")
+            evmAddress = hdWallet?.getAddressForCoin(coin: .ethereum)
+        }
+        return evmAddress ?? ""
+    }
+    
+    
     func isValidInput() -> Bool {
-        return isValidWordCount() || isValidPrivateKey()
+        return (isValidWordCount() || isValidPrivateKey()) && (!tempEVMAddress().isEmpty || !tempSolanaAddress().isEmpty)
     }
     
     func updateWordCount() {
