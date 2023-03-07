@@ -83,6 +83,22 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
         let data = self.viewModel.welcomeData(at: index)
         self.landingTitle.text = data.title
         self.landingDescription.text = data.subtitle
+        let oldTitleY = self.landingTitle.frame.origin.y
+        let oldDescriptionY = self.landingDescription.frame.origin.y
+        
+        self.landingTitle.frame = CGRect(x: self.landingTitle.frame.origin.x, y: oldTitleY + 100, width: self.landingTitle.frame.size.width, height: self.landingTitle.frame.size.height)
+        self.landingTitle.layer.opacity = 0
+        self.landingDescription.frame = CGRect(x: self.landingDescription.frame.origin.x, y: oldDescriptionY + 100, width: self.landingDescription.frame.size.width, height: self.landingDescription.frame.size.height)
+        self.landingDescription.layer.opacity = 0
+        
+        UIView.animate(withDuration: 0.6) {
+            self.landingTitle.layer.opacity = 1
+            self.landingTitle.frame = CGRect(x: self.landingTitle.frame.origin.x, y: oldTitleY, width: self.landingTitle.frame.size.width, height: self.landingTitle.frame.size.height)
+        }
+        UIView.animate(withDuration: 0.7) {
+            self.landingDescription.layer.opacity = 1
+            self.landingDescription.frame = CGRect(x: self.landingDescription.frame.origin.x, y: oldDescriptionY, width: self.landingDescription.frame.size.width, height: self.landingDescription.frame.size.height)
+        }
     }
 
     func pause() {
