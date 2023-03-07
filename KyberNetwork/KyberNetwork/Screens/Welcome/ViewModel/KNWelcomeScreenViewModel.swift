@@ -16,10 +16,10 @@ struct KNWelcomeScreenViewModel {
   let dataList: [KNWelcomeData]
 
   init() {
-    let page1 = KNWelcomeData(jsonFileName: "intro_swap", title: "Swap", subtitle: "Swap any token to any token at the best rates", position: 1)
-    let page2 = KNWelcomeData(jsonFileName: "intro_earn", title: "Earn", subtitle: "Earn interest from idle assets in real time", position: 2)
-    let page3 = KNWelcomeData(jsonFileName: "intro_manage", title: "Manage Your Portfolio", subtitle: "Track and manage your digital assets ", position: 3)
-    let page4 = KNWelcomeData(jsonFileName: "intro_reward", title: "Get Rewards", subtitle: "Enjoy bonus rewards by participating in Krystal activities", position: 4)
+      let page1 = KNWelcomeData(jsonFileName: "intro_swap", title: Strings.simplestWallet, subtitle: Strings.easyToUse, position: 1)
+    let page2 = KNWelcomeData(jsonFileName: "intro_earn", title: Strings.comprehensiveDashboard, subtitle: Strings.trackAllAssets, position: 2)
+    let page3 = KNWelcomeData(jsonFileName: "intro_manage", title: Strings.seamlessTrading, subtitle: Strings.securelySwap, position: 3)
+    let page4 = KNWelcomeData(jsonFileName: "intro_reward", title: Strings.loyaltyRewards, subtitle: Strings.getRewardOnKrystal, position: 4)
     self.dataList = [page1, page2, page3, page4]
   }
 

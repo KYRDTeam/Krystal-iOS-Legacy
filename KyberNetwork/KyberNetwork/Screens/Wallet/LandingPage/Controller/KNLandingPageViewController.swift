@@ -19,32 +19,78 @@ class KNLandingPageViewController: KNBaseViewController {
   weak var delegate: KNLandingPageViewControllerDelegate?
   @IBOutlet weak var welcomeScreenCollectionView: KNWelcomeScreenCollectionView!
   @IBOutlet weak var createWalletButton: UIButton!
-  @IBOutlet weak var importWalletButton: UIButton!
-  @IBOutlet weak var termAndConditionButton: UIButton!
-  @IBOutlet weak var termOfUseTopConstraint: NSLayoutConstraint!
+  @IBOutlet weak var forwardView: UIView!
+  @IBOutlet weak var backwardView: UIView!
   var isBrowsingEnable: Bool = true
   override func viewDidLoad() {
     super.viewDidLoad()
-
-//    self.createWalletButton.setTitle(
-//      NSLocalizedString("create.wallet", value: "Create Wallet", comment: ""),
-//      for: .normal
-//    )
-    self.importWalletButton.setTitle(
-      NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
-      for: .normal
-    )
-    self.importWalletButton.addTextSpacing()
     self.createWalletButton.rounded(radius: 16)
-    self.importWalletButton.rounded(radius: 16)
-    self.welcomeScreenCollectionView.paggerViewLeadingConstraint.constant = (UIScreen.main.bounds.width - collectionViewLeadTrailPadding * 2 - KNWelcomeScreenCollectionView.paggerWidth) / 2
     self.updateUI()
     self.observeFeatureFlagChanged()
+    configGesture()
   }
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
   }
+    
+    func configGesture() {
+        let longGestureFoward = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
+        longGestureFoward.minimumPressDuration = 0.1
+        let longGestureBackward = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
+        longGestureBackward.minimumPressDuration = 0.1
+
+        let tapFowardGesture = UITapGestureRecognizer(target: self, action: #selector(tappedFoward))
+        let tappedBackwardGesture = UITapGestureRecognizer(target: self, action: #selector(tappedBackward))
+
+        let swipeRightGestureFoward = UISwipeGestureRecognizer(target: self, action: #selector(onSwipeRight))
+        swipeRightGestureFoward.direction = .right
+        
+        let swipeLeftGestureFoward = UISwipeGestureRecognizer(target: self, action: #selector(onSwipeLeft))
+        swipeLeftGestureFoward.direction = .left
+
+        let swipeRightGestureBackward = UISwipeGestureRecognizer(target: self, action: #selector(onSwipeRight))
+        swipeRightGestureBackward.direction = .right
+        
+        let swipeLeftGestureBackward = UISwipeGestureRecognizer(target: self, action: #selector(onSwipeLeft))
+        swipeLeftGestureBackward.direction = .left
+        
+        forwardView.addGestureRecognizer(longGestureFoward)
+        backwardView.addGestureRecognizer(longGestureBackward)
+        
+        forwardView.addGestureRecognizer(tapFowardGesture)
+        backwardView.addGestureRecognizer(tappedBackwardGesture)
+        
+        forwardView.addGestureRecognizer(swipeRightGestureFoward)
+        forwardView.addGestureRecognizer(swipeLeftGestureFoward)
+        
+        backwardView.addGestureRecognizer(swipeRightGestureBackward)
+        backwardView.addGestureRecognizer(swipeLeftGestureBackward)
+    }
+
+    @objc func longPressed(sender: UILongPressGestureRecognizer) {
+        if sender.state == .ended {
+            welcomeScreenCollectionView.resume()
+        } else if sender.state == .began {
+            welcomeScreenCollectionView.pause()
+        }
+    }
+    
+    @objc func tappedFoward(sender: UILongPressGestureRecognizer) {
+        welcomeScreenCollectionView.forward()
+    }
+    
+    @objc func tappedBackward(sender: UILongPressGestureRecognizer) {
+        welcomeScreenCollectionView.backward()
+    }
+    
+    @objc func onSwipeRight(sender: UISwipeGestureRecognizer) {
+        welcomeScreenCollectionView.backward()
+    }
+    
+    @objc func onSwipeLeft(sender: UISwipeGestureRecognizer) {
+        welcomeScreenCollectionView.forward()
+    }
   
   func observeFeatureFlagChanged() {
     NotificationCenter.default.addObserver(
@@ -62,13 +108,9 @@ class KNLandingPageViewController: KNBaseViewController {
   
   func updateUI() {
     if self.isBrowsingEnable {
-      self.createWalletButton.setTitle(Strings.getStarted, for: .normal)
-      self.importWalletButton.isHidden = true
-      self.termOfUseTopConstraint.constant = 15
+      self.createWalletButton.setTitle(Strings.letsGo, for: .normal)
     } else {
       self.createWalletButton.setTitle(Strings.createWallet, for: .normal)
-      self.importWalletButton.isHidden = false
-      self.termOfUseTopConstraint.constant = 65
     }
   }
 
