@@ -10,14 +10,4 @@ extension Double {
     return (self * divisor).rounded() / divisor
   }
   
-  func amountBigInt(decimals: Int) -> BigInt? {
-      var memory = decimals
-      var tempDoubleValue = self
-      
-      while (tempDoubleValue != floor(tempDoubleValue)) {
-          tempDoubleValue *= 10
-          memory -= 1
-      }
-      return BigInt(tempDoubleValue) * BigInt(10).power(memory)
-  }
 }
