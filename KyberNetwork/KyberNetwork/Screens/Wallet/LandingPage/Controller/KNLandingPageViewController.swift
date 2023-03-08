@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import DesignSystem
 
 enum KNLandingPageViewEvent {
   case openMigrationAlert
@@ -18,6 +19,7 @@ class KNLandingPageViewController: KNBaseViewController {
   @IBOutlet weak var createWalletButton: UIButton!
   @IBOutlet weak var forwardView: UIView!
   @IBOutlet weak var backwardView: UIView!
+  @IBOutlet weak var shadowView: UIView!
   var isBrowsingEnable: Bool = true
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -25,6 +27,10 @@ class KNLandingPageViewController: KNBaseViewController {
     self.updateUI()
     self.observeFeatureFlagChanged()
     configGesture()
+    shadowView.layer.shadowColor = AppTheme.current.primaryColor.cgColor
+    shadowView.layer.shadowOpacity = 1
+    shadowView.layer.shadowRadius = 70
+    shadowView.layer.shadowOffset = .zero
   }
 
   override func viewDidAppear(_ animated: Bool) {

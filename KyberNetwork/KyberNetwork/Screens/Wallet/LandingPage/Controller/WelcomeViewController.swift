@@ -17,10 +17,16 @@ protocol WelcomeViewControllerDelegate: class {
 class WelcomeViewController: UIViewController {
     @IBOutlet weak var importButton: UIButton!
     @IBOutlet weak var termOfUseTextView: UITextView!
+    @IBOutlet weak var shadowView: UIView!
+    
     weak var delegate: WelcomeViewControllerDelegate?
     override func viewDidLoad() {
         super.viewDidLoad()
         configUI()
+        shadowView.layer.shadowColor = AppTheme.current.primaryColor.cgColor
+        shadowView.layer.shadowOpacity = 1
+        shadowView.layer.shadowRadius = 70
+        shadowView.layer.shadowOffset = .zero
     }
     
     func configUI() {

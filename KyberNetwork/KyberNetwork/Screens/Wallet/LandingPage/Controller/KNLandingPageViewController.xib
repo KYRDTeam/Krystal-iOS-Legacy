@@ -19,6 +19,7 @@
                 <outlet property="backwardView" destination="rxB-EJ-cEi" id="Bhn-g6-IWP"/>
                 <outlet property="createWalletButton" destination="7nN-NM-xeF" id="IIN-sb-ImQ"/>
                 <outlet property="forwardView" destination="8Fk-Cx-9GD" id="hHc-Bd-sen"/>
+                <outlet property="shadowView" destination="53Y-65-TFi" id="jl3-h6-Opp"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="welcomeScreenCollectionView" destination="tFk-DS-wvQ" id="MN8-OV-dQw"/>
             </connections>
@@ -28,6 +29,13 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="53Y-65-TFi">
+                    <rect key="frame" x="0.0" y="-70" width="375" height="70"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="PWV-tN-bYD"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tFk-DS-wvQ" customClass="KNWelcomeScreenCollectionView" customModule="Krystal" customModuleProvider="target">
                     <rect key="frame" x="20" y="0.0" width="335" height="500"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -65,13 +73,16 @@
                 <constraint firstItem="8Fk-Cx-9GD" firstAttribute="leading" secondItem="rxB-EJ-cEi" secondAttribute="trailing" id="3Y2-qZ-Kb0"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="8Fk-Cx-9GD" secondAttribute="trailing" id="48O-R8-AHZ"/>
                 <constraint firstItem="8Fk-Cx-9GD" firstAttribute="width" secondItem="rxB-EJ-cEi" secondAttribute="width" id="E5R-71-OKP"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="53Y-65-TFi" secondAttribute="trailing" id="E6u-yh-P8x"/>
                 <constraint firstItem="rxB-EJ-cEi" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Iq9-dC-QU8"/>
                 <constraint firstItem="8Fk-Cx-9GD" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="JuR-Im-POU"/>
                 <constraint firstItem="tFk-DS-wvQ" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="ScQ-HW-IPj"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="rxB-EJ-cEi" secondAttribute="bottom" id="V5T-0Y-Qis"/>
                 <constraint firstItem="rxB-EJ-cEi" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="fhJ-Om-qFZ"/>
                 <constraint firstItem="tFk-DS-wvQ" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" constant="-20" id="luu-T1-JBr"/>
+                <constraint firstItem="53Y-65-TFi" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="-70" id="rmu-5k-Ucr"/>
                 <constraint firstItem="8Fk-Cx-9GD" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="uUr-kC-2ly"/>
+                <constraint firstItem="53Y-65-TFi" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="uYC-fv-Cjt"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="7nN-NM-xeF" secondAttribute="trailing" constant="37" id="vq6-hh-dIM"/>
                 <constraint firstItem="7nN-NM-xeF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="37" id="wIo-Vy-VEy"/>
                 <constraint firstAttribute="bottom" secondItem="7nN-NM-xeF" secondAttribute="bottom" constant="50" id="yC2-tu-8tC"/>

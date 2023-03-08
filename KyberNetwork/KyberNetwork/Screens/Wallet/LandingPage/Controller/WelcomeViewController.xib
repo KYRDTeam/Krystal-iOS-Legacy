@@ -23,6 +23,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WelcomeViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="importButton" destination="gEu-h8-tq3" id="gR2-xH-6dr"/>
+                <outlet property="shadowView" destination="1ie-fM-u3f" id="ap6-1p-DYN"/>
                 <outlet property="termOfUseTextView" destination="rUn-CQ-kLu" id="Wzk-rW-fCv"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -44,7 +45,7 @@
                         <constraint firstAttribute="height" constant="20" id="egw-42-f38"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                    <color key="textColor" name="normalTextColor"/>
+                    <color key="textColor" red="0.66274509803921566" green="0.68235294117647061" blue="0.67843137254901964" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="By proceeding, you agree to Krystal's Terms and Use and Privacy Policy" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="rUn-CQ-kLu">
@@ -124,6 +125,13 @@
                         <action selector="createWalletButtonTapped:" destination="-1" eventType="touchUpInside" id="55p-Kt-kqe"/>
                     </connections>
                 </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1ie-fM-u3f">
+                    <rect key="frame" x="0.0" y="-70" width="393" height="70"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="66r-nh-Z7m"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
@@ -135,14 +143,17 @@
                 <constraint firstItem="mGT-ge-UfF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="E3n-J0-3ei"/>
                 <constraint firstItem="rUn-CQ-kLu" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="H2M-Z0-m0Z"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="crc-uQ-dqG" secondAttribute="trailing" constant="20" id="KOu-SC-Kk2"/>
+                <constraint firstItem="1ie-fM-u3f" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="R8y-n8-kLw"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="4TZ-yd-2yJ" secondAttribute="trailing" constant="20" id="S90-Vs-LA7"/>
                 <constraint firstItem="CoE-XA-6Zg" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="Wj8-3G-OwT"/>
                 <constraint firstItem="4TZ-yd-2yJ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="YHw-2K-uZm"/>
+                <constraint firstItem="1ie-fM-u3f" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="-70" id="aLf-FX-tgp"/>
                 <constraint firstItem="crc-uQ-dqG" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="54" id="e6z-XK-1cE"/>
                 <constraint firstItem="CoE-XA-6Zg" firstAttribute="top" secondItem="4TZ-yd-2yJ" secondAttribute="bottom" constant="20" id="ggW-cp-vSg"/>
                 <constraint firstItem="crc-uQ-dqG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="kBD-ka-BY6"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="czQ-x3-WbL" secondAttribute="trailing" constant="20" id="l7i-ww-hqn"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="gEu-h8-tq3" secondAttribute="trailing" constant="20" id="lBy-tf-Ii1"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="1ie-fM-u3f" secondAttribute="trailing" id="nw5-tI-kl7"/>
                 <constraint firstItem="czQ-x3-WbL" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="oXF-eQ-30F"/>
                 <constraint firstItem="4TZ-yd-2yJ" firstAttribute="top" secondItem="crc-uQ-dqG" secondAttribute="bottom" constant="12" id="rGk-Ig-oBp"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="CoE-XA-6Zg" secondAttribute="trailing" constant="20" id="sCb-64-rME"/>
@@ -166,9 +177,6 @@
         </namedColor>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="normalTextColor">
-            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
