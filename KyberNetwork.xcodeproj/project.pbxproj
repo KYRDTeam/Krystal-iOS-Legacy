@@ -438,6 +438,8 @@
 		7E01EFEC2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E01EFEA2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.xib */; };
 		7E0AE5C427D86A2A0078D135 /* RateTransactionPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0AE5C227D86A2A0078D135 /* RateTransactionPopupViewController.swift */; };
 		7E0AE5C527D86A2A0078D135 /* RateTransactionPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E0AE5C327D86A2A0078D135 /* RateTransactionPopupViewController.xib */; };
+		7E0D784229B836F1007B092F /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0D784029B836F1007B092F /* WelcomeViewController.swift */; };
+		7E0D784329B836F1007B092F /* WelcomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E0D784129B836F1007B092F /* WelcomeViewController.xib */; };
 		7E12788B289CF92C00A2AE34 /* SearchSwapTokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12788A289CF92C00A2AE34 /* SearchSwapTokenService.swift */; };
 		7E16B8CF2769CF5F00F9A234 /* ReferralTiersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E16B8CD2769CF5F00F9A234 /* ReferralTiersViewController.swift */; };
 		7E16B8D02769CF5F00F9A234 /* ReferralTiersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E16B8CE2769CF5F00F9A234 /* ReferralTiersViewController.xib */; };
@@ -1752,6 +1754,8 @@
 		7E01EFEA2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewMultichainLiquidityPoolCell.xib; sourceTree = "<group>"; };
 		7E0AE5C227D86A2A0078D135 /* RateTransactionPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateTransactionPopupViewController.swift; sourceTree = "<group>"; };
 		7E0AE5C327D86A2A0078D135 /* RateTransactionPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RateTransactionPopupViewController.xib; sourceTree = "<group>"; };
+		7E0D784029B836F1007B092F /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		7E0D784129B836F1007B092F /* WelcomeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WelcomeViewController.xib; sourceTree = "<group>"; };
 		7E12788A289CF92C00A2AE34 /* SearchSwapTokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSwapTokenService.swift; sourceTree = "<group>"; };
 		7E16B8CD2769CF5F00F9A234 /* ReferralTiersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralTiersViewController.swift; sourceTree = "<group>"; };
 		7E16B8CE2769CF5F00F9A234 /* ReferralTiersViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReferralTiersViewController.xib; sourceTree = "<group>"; };
@@ -3817,6 +3821,8 @@
 				C311436F249B1C2300084CD8 /* KNMigrationTutorialViewController.xib */,
 				C3F08B552620AD9200DA6FCB /* TermsAndConditionsViewController.swift */,
 				C3F08B562620AD9200DA6FCB /* TermsAndConditionsViewController.xib */,
+				7E0D784029B836F1007B092F /* WelcomeViewController.swift */,
+				7E0D784129B836F1007B092F /* WelcomeViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -7066,6 +7072,7 @@
 				25968732211DEC1D0080A33F /* KConfirmSwapViewController.xib in Resources */,
 				C3EDDCC325C1829400A99CC8 /* EarnViewController.xib in Resources */,
 				C3285AAE277EC2A600D28BC6 /* RecentlyHistoryViewController.xib in Resources */,
+				7E0D784329B836F1007B092F /* WelcomeViewController.xib in Resources */,
 				25929C8D20DA5CC10045CFA3 /* SFCompactText-BoldItalic.otf in Resources */,
 				C3714E6828A63C900027A89D /* ExpertModeWarningViewController.xib in Resources */,
 				25BA01D020BFEBB500053863 /* KNTransactionStatusView.xib in Resources */,
@@ -8225,6 +8232,7 @@
 				2519E11020CFBB6A00D8AFC5 /* UIImageView+Kyber.swift in Sources */,
 				296AF9A51F736BA20058AF78 /* Config.swift in Sources */,
 				A65CBF20286307BD008620E2 /* UserDefaults.swift in Sources */,
+				7E0D784229B836F1007B092F /* WelcomeViewController.swift in Sources */,
 				C33BF86A26D77E5C00D9F621 /* SendNFTViewController.swift in Sources */,
 				C320D80B27B39EBC0001DC71 /* MultiSendViewController.swift in Sources */,
 				7ED81BC329AF51F000F92109 /* AddressCell.swift in Sources */,

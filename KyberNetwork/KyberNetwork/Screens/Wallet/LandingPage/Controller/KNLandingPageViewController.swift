@@ -3,9 +3,6 @@
 import UIKit
 
 enum KNLandingPageViewEvent {
-  case openCreateWallet
-  case openImportWallet
-  case openTermAndCondition
   case openMigrationAlert
   case getStarted
 }
@@ -115,18 +112,6 @@ class KNLandingPageViewController: KNBaseViewController {
   }
 
   @IBAction func createWalletButtonPressed(_ sender: Any) {
-    if self.isBrowsingEnable {
       self.delegate?.landinagePageViewController(self, run: .getStarted)
-    } else {
-      self.delegate?.landinagePageViewController(self, run: .openCreateWallet)
-    }
-  }
-
-  @IBAction func importWalletButtonPressed(_ sender: Any) {
-    self.delegate?.landinagePageViewController(self, run: .openImportWallet)
-  }
-
-  @IBAction func termAndConditionButtonPressed(_ sender: Any) {
-    self.delegate?.landinagePageViewController(self, run: .openTermAndCondition)
   }
 }

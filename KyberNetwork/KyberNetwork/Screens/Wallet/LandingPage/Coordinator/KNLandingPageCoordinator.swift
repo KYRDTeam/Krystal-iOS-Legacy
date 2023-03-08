@@ -127,45 +127,54 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
   
 }
 
+extension KNLandingPageCoordinator: WelcomeViewControllerDelegate {
+    func didTapCreate(controller: UIViewController) {
+        Tracker.track(event: .introCreateWallet)
+        if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
+          self.termViewController.nextAction = {
+            
+            self.createWalletCoordinator.updateNewWallet(nil, name: nil)
+            self.createWalletCoordinator.start()
+          }
+          self.navigationController.present(self.termViewController, animated: true, completion: nil)
+          return
+        }
+        self.createWalletCoordinator.updateNewWallet(nil, name: nil)
+        self.createWalletCoordinator.start()
+    }
+    
+    func didTapImport(controller: UIViewController) {
+        Tracker.track(event: .introImportWallet)
+        if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
+          self.termViewController.nextAction = {
+            self.importWalletCoordinator.start()
+          }
+          self.navigationController.present(self.termViewController, animated: true, completion: nil)
+          return
+        }
+        self.importWalletCoordinator.start()
+    }
+    
+    func didTapExplore(controller: UIViewController) {
+        if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
+          self.termViewController.nextAction = {
+            self.delegate?.landingPageCoordinatorStartedBrowsing()
+            AppStorage.shared.markAppAsOpenedBefore()
+          }
+          self.navigationController.present(self.termViewController, animated: true, completion: nil)
+          return
+        }
+        self.delegate?.landingPageCoordinatorStartedBrowsing()
+    }
+}
+
 extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
   func landinagePageViewController(_ controller: KNLandingPageViewController, run event: KNLandingPageViewEvent) {
     switch event {
     case .getStarted:
-      if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
-        self.termViewController.nextAction = {
-          self.delegate?.landingPageCoordinatorStartedBrowsing()
-          AppStorage.shared.markAppAsOpenedBefore()
-        }
-        self.navigationController.present(self.termViewController, animated: true, completion: nil)
-        return
-      }
-      self.delegate?.landingPageCoordinatorStartedBrowsing()
-    case .openCreateWallet:
-      Tracker.track(event: .introCreateWallet)
-      if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
-        self.termViewController.nextAction = {
-          
-          self.createWalletCoordinator.updateNewWallet(nil, name: nil)
-          self.createWalletCoordinator.start()
-        }
-        self.navigationController.present(self.termViewController, animated: true, completion: nil)
-        return
-      }
-      self.createWalletCoordinator.updateNewWallet(nil, name: nil)
-      self.createWalletCoordinator.start()
-    case .openImportWallet:
-      Tracker.track(event: .introImportWallet)
-      if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
-        self.termViewController.nextAction = {
-          self.importWalletCoordinator.start()
-        }
-        self.navigationController.present(self.termViewController, animated: true, completion: nil)
-        return
-      }
-      self.importWalletCoordinator.start()
-    case .openTermAndCondition:
-      let url: String = "https://files.krystal.app/terms.pdf"
-      self.navigationController.topViewController?.openSafari(with: url)
+        let vc = WelcomeViewController.instantiateFromNib()
+        vc.delegate = self
+        self.rootViewController.show(vc, sender: nil)
     case .openMigrationAlert:
       self.openMigrationAlert()
     }
