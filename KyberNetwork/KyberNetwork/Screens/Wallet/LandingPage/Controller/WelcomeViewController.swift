@@ -24,7 +24,7 @@ class WelcomeViewController: UIViewController {
         super.viewDidLoad()
         configUI()
         shadowView.layer.shadowColor = AppTheme.current.primaryColor.cgColor
-        shadowView.layer.shadowOpacity = 1
+        shadowView.layer.shadowOpacity = 0.3
         shadowView.layer.shadowRadius = 70
         shadowView.layer.shadowOffset = .zero
     }
