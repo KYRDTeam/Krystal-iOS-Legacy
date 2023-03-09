@@ -267,6 +267,7 @@ DEPENDENCIES:
   - Firebase/Analytics
   - Firebase/Crashlytics
   - FirebasePerformance
+  - FirebaseRemoteConfig
   - FittedSheets
   - FSPagerView
   - GoogleMLKit/TextRecognition (= 2.2.0)
@@ -483,6 +484,6 @@ SPEC CHECKSUMS:
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: d9a5c1a3b8485494b7e3ea5f600fffed50068b44
+PODFILE CHECKSUM: 1657d029637014b097f6edf202cbefc266ed2539
 
 COCOAPODS: 1.11.3
