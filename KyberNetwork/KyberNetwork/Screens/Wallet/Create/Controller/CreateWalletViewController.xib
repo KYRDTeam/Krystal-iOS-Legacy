@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -23,7 +23,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreateWalletViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="createButton" destination="CaH-2m-gdw" id="hK0-yO-gx7"/>
+                <outlet property="createButtonTopConstraint" destination="8u5-8r-T7t" id="aEB-X4-CkN"/>
                 <outlet property="refCodeTextField" destination="Od9-ha-kHP" id="nhV-aL-Xdd"/>
+                <outlet property="referralTitleLabel" destination="cBR-TH-Htu" id="tnx-gl-Q0i"/>
+                <outlet property="referralView" destination="YPG-mg-OyV" id="83J-JZ-0Wm"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletNameTextField" destination="EeD-6k-3lT" id="9td-rs-KdI"/>
             </connections>
@@ -34,7 +37,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="feF-N7-F9Y">
-                    <rect key="frame" x="0.0" y="44" width="375" height="90"/>
+                    <rect key="frame" x="0.0" y="47" width="375" height="90"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E6f-F6-rec">
                             <rect key="frame" x="124" y="40.666666666666671" width="127" height="23.333333333333329"/>
@@ -70,7 +73,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VP3-9T-GPw">
-                    <rect key="frame" x="0.0" y="134" width="375" height="644"/>
+                    <rect key="frame" x="0.0" y="137" width="375" height="641"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ooe-u9-vzK" customClass="DinoChatCustomView" customModule="Krystal" customModuleProvider="target">
                             <rect key="frame" x="38" y="38" width="299" height="180"/>
@@ -255,9 +258,9 @@
                         </view>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="CaH-2m-gdw" firstAttribute="top" secondItem="otJ-h4-Kpx" secondAttribute="bottom" constant="150" id="8u5-8r-T7t"/>
                         <constraint firstItem="otJ-h4-Kpx" firstAttribute="top" secondItem="Ldm-6x-4iL" secondAttribute="bottom" constant="12" id="E1B-lL-X5v"/>
                         <constraint firstItem="8NX-X6-ME5" firstAttribute="leading" secondItem="VP3-9T-GPw" secondAttribute="leading" constant="38" id="EPs-JB-oM2"/>
-                        <constraint firstItem="CaH-2m-gdw" firstAttribute="top" secondItem="YPG-mg-OyV" secondAttribute="bottom" constant="41" id="HYb-31-7e3"/>
                         <constraint firstItem="Ooe-u9-vzK" firstAttribute="top" secondItem="VP3-9T-GPw" secondAttribute="top" constant="38" id="JAf-58-jfo"/>
                         <constraint firstItem="Ooe-u9-vzK" firstAttribute="leading" secondItem="VP3-9T-GPw" secondAttribute="leading" constant="38" id="JuO-bX-O5A"/>
                         <constraint firstItem="CaH-2m-gdw" firstAttribute="leading" secondItem="Ooe-u9-vzK" secondAttribute="leading" id="PeS-wB-lS2"/>

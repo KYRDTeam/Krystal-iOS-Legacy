@@ -16,16 +16,46 @@ class FinishImportViewModel {
     let evmAddress: String?
     let importType: ImportWalletChainType
     let inputKeyWord: String
+    let wallet: KWallet?
 
     init(solanaAddress: String?, evmAddress: String?, importType: ImportWalletChainType, inputKeyWord: String) {
         self.solanaAddress = solanaAddress
         self.evmAddress = evmAddress
         self.importType = importType
         self.inputKeyWord = inputKeyWord
+        self.wallet = nil
+    }
+    
+    init(wallet: KWallet) {
+        self.wallet = wallet
+        self.solanaAddress = WalletManager.shared.getAllAddresses(walletID: wallet.id, addressType: .solana).first?.addressString
+        self.evmAddress = WalletManager.shared.getAllAddresses(walletID: wallet.id, addressType: .evm).first?.addressString
+        if self.evmAddress != nil {
+            self.importType = self.solanaAddress != nil ? .multiChain : .evm
+        } else {
+            self.importType = .solana
+        }
+        self.inputKeyWord = ""
     }
     
     func numberOfRows() -> Int {
         return importType == .multiChain ? 2 : 1
+    }
+    
+    func title() -> String {
+        return self.wallet != nil ? Strings.congratulation : Strings.confirm
+    }
+    
+    func subTitle() -> String {
+        return self.wallet != nil ? Strings.successCreated : Strings.confirmImport
+    }
+    
+    func finishButtonBottomConstraint() -> CGFloat {
+        return self.wallet != nil ? 88 : 40
+    }
+    
+    func finishButtonTitle() -> String {
+        return self.wallet != nil ? Strings.continue : Strings.finish
     }
 }
 
@@ -35,9 +65,18 @@ class FinishImportViewController: UIViewController {
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var termOfUseTextView: UITextView!
     @IBOutlet weak var clearWalletNameButton: UIButton!
+    
+    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var backupButton: UIButton!
+    @IBOutlet weak var finishButtonBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var finishButton: UIButton!
+    @IBOutlet weak var nameInputView: UIView!
+    @IBOutlet weak var nameTitleLabel: UILabel!
     let viewModel: FinishImportViewModel
-
-
+    
     lazy var passcodeCoordinator: KNPasscodeCoordinator = {
       let coordinator = KNPasscodeCoordinator(
         navigationController: self.navigationController!,
@@ -58,6 +97,10 @@ class FinishImportViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configUI()
+    }
+    
+    func configUI() {
         tableView.registerCellNib(AddressCell.self)
         if viewModel.numberOfRows() == 2 {
             tableViewHeightConstraint.constant = 272
@@ -85,6 +128,14 @@ class FinishImportViewController: UIViewController {
         
         termOfUseTextView.linkTextAttributes = linkAttributes
         termOfUseTextView.attributedText = attributedString
+        termOfUseTextView.isHidden = viewModel.wallet != nil
+        titleLabel.text = viewModel.title()
+        subtitleLabel.text = viewModel.subTitle()
+        finishButtonBottomConstraint.constant = viewModel.finishButtonBottomConstraint()
+        nameTitleLabel.isHidden = viewModel.wallet != nil
+        nameInputView.isHidden = viewModel.wallet != nil
+        finishButton.setTitle(viewModel.finishButtonTitle(), for: .normal)
+        backButton.isHidden = viewModel.wallet != nil
     }
 
     @IBAction func backButtonTapped(_ sender: Any) {
@@ -95,6 +146,8 @@ class FinishImportViewController: UIViewController {
         if !KNGeneralProvider.shared.isCreatedPassCode {
             AppState.shared.updateChain(chain: KNGeneralProvider.shared.defaultChain)
             self.passcodeCoordinator.start()
+        } else if let wallet = viewModel.wallet {
+            onImportWalletSuccess(wallet: wallet, chain: KNGeneralProvider.shared.defaultChain, importType: .multiChain, showSuccess: false)
         } else {
             didFinishImport()
         }
@@ -104,6 +157,20 @@ class FinishImportViewController: UIViewController {
         walletNameTextField.text = ""
     }
 
+    @IBAction func backupButtonTapped(_ sender: Any) {
+        guard let wallet = viewModel.wallet else { return }
+        do {
+            let mnemonic = try WalletManager.shared.exportMnemonic(walletID: wallet.id)
+            let seeds = mnemonic.split(separator: " ").map({ return String($0) })
+            let viewModel = BackUpWalletViewModel(seeds: seeds, walletId: wallet.id)
+            let backUpVC = BackUpWalletViewController(viewModel: viewModel)
+            backUpVC.delegate = self
+            self.navigationController?.pushViewController(backUpVC, animated: true)
+        } catch {
+            print("Cannot export mnemonic")
+        }
+    }
+    
     func didFinishImport() {
         let name = walletNameTextField.text?.trimmed
         switch self.viewModel.importType {
@@ -129,6 +196,13 @@ extension FinishImportViewController: UITextFieldDelegate {
     }
 }
 
+extension FinishImportViewController: BackUpWalletViewControllerDelegate {
+    func didFinishBackup(_ controller: BackUpWalletViewController) {
+        guard let wallet = viewModel.wallet else { return }
+        onImportWalletSuccess(wallet: wallet, chain: KNGeneralProvider.shared.defaultChain, importType: .multiChain, showSuccess: false)
+    }
+}
+
 extension FinishImportViewController {
     func addToContacts(wallet: KWallet) {
       let addresses = WalletManager.shared.getAllAddresses(walletID: wallet.id)
@@ -151,8 +225,10 @@ extension FinishImportViewController {
       MixPanelManager.track("import_done_pop_up_open", properties: ["screenid": "import_done_pop_up"])
     }
     
-    private func onImportWalletSuccess(wallet: KWallet, chain: ChainType, importType: ImportWalletChainType) {
-        self.showImportSuccessMessage()
+    private func onImportWalletSuccess(wallet: KWallet, chain: ChainType, importType: ImportWalletChainType, showSuccess: Bool = true) {
+        if showSuccess {
+            self.showImportSuccessMessage()
+        }
         self.addToContacts(wallet: wallet)
         let chain: ChainType = importType == .solana ? .solana : KNGeneralProvider.shared.defaultChain
         AppDelegate.shared.coordinator.onAddWallet(wallet: wallet, chain: chain)
@@ -289,6 +365,10 @@ extension FinishImportViewController: KNPasscodeCoordinatorDelegate {
     }
 
     func passcodeCoordinatorDidCreatePasscode(coordinator: KNPasscodeCoordinator) {
-        didFinishImport()
+        if let wallet = viewModel.wallet {
+            onImportWalletSuccess(wallet: wallet, chain: KNGeneralProvider.shared.defaultChain, importType: .multiChain, showSuccess: false)
+        } else {
+            didFinishImport()
+        }
     }
 }

@@ -7,7 +7,13 @@ import Dependencies
 
 // MARK: Landing Page Coordinator Delegate
 extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
-  
+    func landingPageCoordinatorShouldStartSession() {
+        let address = walletManager.createEmptyAddress()
+        AppState.shared.updateAddress(address: address, targetChain: AppState.shared.currentChain)
+        self.session = KNSession()
+        self.session.startSession()
+    }
+
   func landingPageCoordinatorDidSendRefCode(_ code: String) {
     self.sendRefCode(code.uppercased())
   }
