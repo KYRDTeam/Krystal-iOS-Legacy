@@ -36,6 +36,7 @@ class KNTabBarController: UITabBarController {
         
         viewAppear.run {
             self.showBackUpWalletIfNeeded(walletID: AppState.shared.currentAddress.walletID)
+            self.showUpdatePopupIfNeeded()
         }
     }
     
@@ -141,8 +142,9 @@ class KNTabBarController: UITabBarController {
     }
     
     func showUpdatePopupIfNeeded() {
-        if VersionManager.shared.getCurrentVersionStatus() == .canUpdate {
+        if VersionManager.shared.getCurrentVersionStatus() == .canUpdate, let latestVersion = VersionManager.shared.getLatestVersionConfig() {
             let vc = UpdateAvailableViewController.instantiateFromNib()
+            vc.versionConfig = latestVersion
             let popup = PopupViewController(vc: vc, configuration: .init(height: .intrinsic))
             present(popup, animated: true)
         }

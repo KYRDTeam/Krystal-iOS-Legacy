@@ -7,6 +7,7 @@
 
 import UIKit
 import DesignSystem
+import Dependencies
 
 class UpdateAvailableViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
@@ -38,7 +39,9 @@ class UpdateAvailableViewController: UIViewController {
     }
     
     @IBAction func updateTapped(_ sender: UIButton) {
-        
+        dismiss(animated: true) {
+            AppDependencies.router.openAppstore()
+        }
     }
     
     @IBAction func notNowTapped(_ sender: UIButton) {

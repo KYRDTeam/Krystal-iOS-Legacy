@@ -7,6 +7,7 @@
 
 import UIKit
 import DesignSystem
+import Dependencies
 
 class ForceUpdateViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
@@ -38,7 +39,7 @@ class ForceUpdateViewController: UIViewController {
     }
     
     @IBAction func updateTapped(_ sender: UIButton) {
-        
+        AppDependencies.router.openAppstore()
     }
     
 }
