@@ -58,13 +58,6 @@
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CoE-XA-6Zg" customClass="LottieAnimationView" customModule="Lottie">
-                    <rect key="frame" x="20" y="202.66666666666666" width="353" height="359.33333333333337"/>
-                    <color key="backgroundColor" name="mainViewBgColor"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="animationName" value="coffee"/>
-                    </userDefinedRuntimeAttributes>
-                </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gEu-h8-tq3">
                     <rect key="frame" x="20" y="708" width="353" height="48"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -132,43 +125,43 @@
                         <constraint firstAttribute="height" constant="70" id="66r-nh-Z7m"/>
                     </constraints>
                 </view>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome" translatesAutoresizingMaskIntoConstraints="NO" id="lII-Eu-BX4">
+                    <rect key="frame" x="20" y="202.66666666666663" width="353" height="349"/>
+                </imageView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="mGT-ge-UfF" secondAttribute="trailing" constant="20" id="28p-mL-bDu"/>
                 <constraint firstAttribute="bottom" secondItem="mGT-ge-UfF" secondAttribute="bottom" constant="40" id="2J1-3f-MlO"/>
+                <constraint firstItem="lII-Eu-BX4" firstAttribute="top" secondItem="4TZ-yd-2yJ" secondAttribute="bottom" constant="20" id="5sa-FK-qc9"/>
                 <constraint firstItem="gEu-h8-tq3" firstAttribute="top" secondItem="czQ-x3-WbL" secondAttribute="bottom" constant="16" id="9ss-lY-gUi"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="lII-Eu-BX4" secondAttribute="trailing" constant="20" id="B7C-cq-g7D"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="rUn-CQ-kLu" secondAttribute="trailing" constant="20" id="BSj-1D-rAk"/>
                 <constraint firstItem="mGT-ge-UfF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="E3n-J0-3ei"/>
                 <constraint firstItem="rUn-CQ-kLu" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="H2M-Z0-m0Z"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="crc-uQ-dqG" secondAttribute="trailing" constant="20" id="KOu-SC-Kk2"/>
                 <constraint firstItem="1ie-fM-u3f" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="R8y-n8-kLw"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="4TZ-yd-2yJ" secondAttribute="trailing" constant="20" id="S90-Vs-LA7"/>
-                <constraint firstItem="CoE-XA-6Zg" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="Wj8-3G-OwT"/>
                 <constraint firstItem="4TZ-yd-2yJ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="YHw-2K-uZm"/>
                 <constraint firstItem="1ie-fM-u3f" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="-70" id="aLf-FX-tgp"/>
                 <constraint firstItem="crc-uQ-dqG" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="54" id="e6z-XK-1cE"/>
-                <constraint firstItem="CoE-XA-6Zg" firstAttribute="top" secondItem="4TZ-yd-2yJ" secondAttribute="bottom" constant="20" id="ggW-cp-vSg"/>
+                <constraint firstItem="lII-Eu-BX4" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="f24-sO-XeE"/>
                 <constraint firstItem="crc-uQ-dqG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="kBD-ka-BY6"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="czQ-x3-WbL" secondAttribute="trailing" constant="20" id="l7i-ww-hqn"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="gEu-h8-tq3" secondAttribute="trailing" constant="20" id="lBy-tf-Ii1"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="1ie-fM-u3f" secondAttribute="trailing" id="nw5-tI-kl7"/>
                 <constraint firstItem="czQ-x3-WbL" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="oXF-eQ-30F"/>
                 <constraint firstItem="4TZ-yd-2yJ" firstAttribute="top" secondItem="crc-uQ-dqG" secondAttribute="bottom" constant="12" id="rGk-Ig-oBp"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="CoE-XA-6Zg" secondAttribute="trailing" constant="20" id="sCb-64-rME"/>
                 <constraint firstItem="czQ-x3-WbL" firstAttribute="top" secondItem="rUn-CQ-kLu" secondAttribute="bottom" constant="12" id="wDR-oV-MpL"/>
                 <constraint firstItem="gEu-h8-tq3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="was-pN-syy"/>
                 <constraint firstItem="mGT-ge-UfF" firstAttribute="top" secondItem="gEu-h8-tq3" secondAttribute="bottom" constant="8" id="ynO-83-pFK"/>
-                <constraint firstItem="rUn-CQ-kLu" firstAttribute="top" secondItem="CoE-XA-6Zg" secondAttribute="bottom" constant="20" id="z84-ia-Ta5"/>
             </constraints>
             <point key="canvasLocation" x="3.8167938931297707" y="19.718309859154932"/>
         </view>
     </objects>
-    <designables>
-        <designable name="CoE-XA-6Zg"/>
-    </designables>
     <resources>
+        <image name="welcome" width="375" height="349"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
