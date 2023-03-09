@@ -37,10 +37,10 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tFk-DS-wvQ" customClass="KNWelcomeScreenCollectionView" customModule="Krystal" customModuleProvider="target">
-                    <rect key="frame" x="20" y="0.0" width="335" height="500"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="510"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="500" id="DOl-rp-h6x"/>
+                        <constraint firstAttribute="height" constant="510" id="DOl-rp-h6x"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rxB-EJ-cEi">
@@ -69,7 +69,7 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
-                <constraint firstItem="tFk-DS-wvQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="23k-02-WgT"/>
+                <constraint firstItem="tFk-DS-wvQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="23k-02-WgT"/>
                 <constraint firstItem="8Fk-Cx-9GD" firstAttribute="leading" secondItem="rxB-EJ-cEi" secondAttribute="trailing" id="3Y2-qZ-Kb0"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="8Fk-Cx-9GD" secondAttribute="trailing" id="48O-R8-AHZ"/>
                 <constraint firstItem="8Fk-Cx-9GD" firstAttribute="width" secondItem="rxB-EJ-cEi" secondAttribute="width" id="E5R-71-OKP"/>
@@ -79,7 +79,7 @@
                 <constraint firstItem="tFk-DS-wvQ" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="ScQ-HW-IPj"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="rxB-EJ-cEi" secondAttribute="bottom" id="V5T-0Y-Qis"/>
                 <constraint firstItem="rxB-EJ-cEi" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="fhJ-Om-qFZ"/>
-                <constraint firstItem="tFk-DS-wvQ" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" constant="-20" id="luu-T1-JBr"/>
+                <constraint firstItem="tFk-DS-wvQ" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="luu-T1-JBr"/>
                 <constraint firstItem="53Y-65-TFi" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="-70" id="rmu-5k-Ucr"/>
                 <constraint firstItem="8Fk-Cx-9GD" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="uUr-kC-2ly"/>
                 <constraint firstItem="53Y-65-TFi" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="uYC-fv-Cjt"/>
