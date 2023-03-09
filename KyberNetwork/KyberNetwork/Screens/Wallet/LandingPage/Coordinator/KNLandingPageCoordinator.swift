@@ -115,14 +115,12 @@ extension KNLandingPageCoordinator: WelcomeViewControllerDelegate {
         if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
           self.termViewController.nextAction = {
             
-            self.createWalletCoordinator.updateNewWallet(nil, name: nil)
-            self.createWalletCoordinator.start()
+            self.createWallet()
           }
           self.navigationController.present(self.termViewController, animated: true, completion: nil)
           return
         }
-        self.createWalletCoordinator.updateNewWallet(nil, name: nil)
-        self.createWalletCoordinator.start()
+        self.createWallet()
     }
     
     func didTapImport(controller: UIViewController) {
@@ -148,6 +146,22 @@ extension KNLandingPageCoordinator: WelcomeViewControllerDelegate {
           return
         }
         self.delegate?.landingPageCoordinatorStartedBrowsing()
+    }
+    
+    fileprivate func createWallet() {
+        self.navigationController.displayLoading(text: Strings.creating, animated: true)
+        do {
+          let wallets = WalletManager.shared.getAllWallets()
+          let wallet = try self.walletManager.createWallet(name: "Wallet \(wallets.count + 1)")
+          DispatchQueue.main.async {
+              self.navigationController.hideLoading()
+              let viewModel = FinishImportViewModel(wallet: wallet)
+              let finishVC = FinishImportViewController(viewModel: viewModel)
+              self.navigationController.show(finishVC, sender: nil)
+          }
+        } catch {
+          return
+        }
     }
     
     fileprivate func importAWallet() {

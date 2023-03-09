@@ -1040,3 +1040,7 @@
 "securely.swap" = "Securely swap, send and earn on your assets";
 "loyalty.rewards" = "Loyalty Rewards";
 "get.reward.on.krystal" = "Get rewards for all your activities on Krystal";
+"congratulation" = "Congratulation";
+"success.created" = "Your wallet has been created successfully";
+"confirm.import" = "Confirm your wallet address and set a wallet name";
+"finish" = "Finish";

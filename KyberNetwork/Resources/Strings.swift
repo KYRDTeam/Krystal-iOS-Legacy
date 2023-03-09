@@ -15,10 +15,14 @@ struct Strings {
   static let approve = "approve".toBeLocalised()
   static let cancelled = "cancelled".toBeLocalised()
   static let confirm = "confirm".toBeLocalised()
+  static let congratulation = "congratulation".toBeLocalised()
+  static let successCreated = "success.created".toBeLocalised()
+  static let confirmImport = "confirm.import".toBeLocalised()
   static let cancel = "cancel".toBeLocalised()
   static let delete = "delete".toBeLocalised()
   static let next = "Next".toBeLocalised()
   static let `continue` = "continue".toBeLocalised()
+  static let finish = "finish".toBeLocalised()
   
   // Actions
   static let add = "add".toBeLocalised()

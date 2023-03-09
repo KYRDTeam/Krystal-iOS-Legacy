@@ -22,10 +22,18 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FinishImportViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
+                <outlet property="backButton" destination="fcR-n0-8if" id="Bhl-oA-IJQ"/>
+                <outlet property="backupButton" destination="Soh-Zk-tod" id="lW5-O9-LcT"/>
                 <outlet property="clearWalletNameButton" destination="CgF-qb-Z5k" id="VNW-Ez-7XF"/>
+                <outlet property="finishButton" destination="Gtg-w3-zbl" id="4iy-ty-0sD"/>
+                <outlet property="finishButtonBottomConstraint" destination="RAU-4O-Mz9" id="qdw-Mx-xuT"/>
+                <outlet property="nameInputView" destination="fcn-eM-3NH" id="vl0-eb-2EP"/>
+                <outlet property="nameTitleLabel" destination="nDR-R3-9nE" id="IYw-Ya-rbu"/>
+                <outlet property="subtitleLabel" destination="whC-HZ-h80" id="pSl-f9-teL"/>
                 <outlet property="tableView" destination="lND-SC-azF" id="Dpb-ej-lbz"/>
                 <outlet property="tableViewHeightConstraint" destination="mdg-Mo-8Ta" id="nkq-Xx-SvH"/>
                 <outlet property="termOfUseTextView" destination="mC3-Q9-c5m" id="wyI-OU-oIy"/>
+                <outlet property="titleLabel" destination="qU5-ae-wur" id="dob-JW-CJ1"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletNameTextField" destination="Cs5-Rk-QgA" id="o4c-7h-m0O"/>
             </connections>
@@ -50,7 +58,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qU5-ae-wur">
-                    <rect key="frame" x="20.000000000000007" y="110" width="92.666666666666686" height="28"/>
+                    <rect key="frame" x="20" y="110" width="353" height="28"/>
                     <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="24"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
@@ -112,7 +120,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gtg-w3-zbl">
-                    <rect key="frame" x="20" y="770" width="353" height="48"/>
+                    <rect key="frame" x="20" y="716" width="353" height="48"/>
                     <color key="backgroundColor" name="buttonBackgroundColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="yC1-tr-wEe"/>
@@ -143,7 +151,7 @@
                     </connections>
                 </tableView>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="By proceeding, you agree to Krystal's Terms and Use and Privacy Policy" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="mC3-Q9-c5m">
-                    <rect key="frame" x="20" y="704" width="353" height="50"/>
+                    <rect key="frame" x="20" y="650" width="353" height="50"/>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="8pw-n9-vFD"/>
@@ -152,6 +160,27 @@
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Soh-Zk-tod">
+                    <rect key="frame" x="20" y="764" width="353" height="48"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="9Te-Ig-hJe"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Karla-SemiBold" family="Karla" pointSize="16"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Backup wallet">
+                        <color key="titleColor" name="buttonBackgroundColor"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                            <real key="value" value="16"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="backupButtonTapped:" destination="-1" eventType="touchUpInside" id="1iH-71-euK"/>
+                        <action selector="finishButtonTapped:" destination="-1" eventType="touchUpInside" id="Pla-AY-qXD"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
@@ -165,18 +194,22 @@
                 <constraint firstItem="Gtg-w3-zbl" firstAttribute="top" secondItem="mC3-Q9-c5m" secondAttribute="bottom" constant="16" id="OBd-dZ-25l"/>
                 <constraint firstItem="qU5-ae-wur" firstAttribute="top" secondItem="fcR-n0-8if" secondAttribute="bottom" constant="22" id="OtZ-2x-u5e"/>
                 <constraint firstItem="lND-SC-azF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="PUd-Yd-q81"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Gtg-w3-zbl" secondAttribute="bottom" id="RAU-4O-Mz9"/>
+                <constraint firstAttribute="bottom" secondItem="Gtg-w3-zbl" secondAttribute="bottom" constant="88" id="RAU-4O-Mz9"/>
                 <constraint firstItem="whC-HZ-h80" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="SVi-bW-VK3"/>
                 <constraint firstItem="fcn-eM-3NH" firstAttribute="top" secondItem="nDR-R3-9nE" secondAttribute="bottom" constant="4" id="Tha-QH-1B2"/>
+                <constraint firstItem="Soh-Zk-tod" firstAttribute="top" secondItem="Gtg-w3-zbl" secondAttribute="bottom" id="VbF-6P-QjC"/>
+                <constraint firstItem="Soh-Zk-tod" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="XFx-Eg-yOm"/>
                 <constraint firstAttribute="trailing" secondItem="Gtg-w3-zbl" secondAttribute="trailing" constant="20" id="XTh-Kv-MRI"/>
                 <constraint firstItem="mC3-Q9-c5m" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="YuT-KB-AVa"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="mC3-Q9-c5m" secondAttribute="trailing" constant="20" id="a8m-ZC-8bQ"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="lND-SC-azF" secondAttribute="trailing" constant="20" id="fVW-N3-uXZ"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="whC-HZ-h80" secondAttribute="trailing" constant="20" id="ff6-JZ-3ci"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="fcn-eM-3NH" secondAttribute="trailing" constant="20" id="hBG-yx-FNw"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="qU5-ae-wur" secondAttribute="trailing" constant="20" id="lPX-1H-eyj"/>
                 <constraint firstItem="whC-HZ-h80" firstAttribute="top" secondItem="qU5-ae-wur" secondAttribute="bottom" constant="12" id="stq-iM-Zkl"/>
                 <constraint firstItem="Gtg-w3-zbl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="tcE-tF-eqn"/>
                 <constraint firstItem="lND-SC-azF" firstAttribute="top" secondItem="whC-HZ-h80" secondAttribute="bottom" constant="16" id="u7D-8m-QU1"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Soh-Zk-tod" secondAttribute="trailing" constant="20" id="vCg-wH-A14"/>
                 <constraint firstItem="fcR-n0-8if" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="52" id="yRZ-Td-rwm"/>
             </constraints>
             <point key="canvasLocation" x="87.786259541984734" y="19.718309859154932"/>
