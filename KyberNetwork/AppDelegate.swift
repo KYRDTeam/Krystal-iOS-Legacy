@@ -28,7 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         DependenciesRegister.register()
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        migrateWalletData()
         setupImageProcessor()
         setupKeyboard()
         KNReachability.shared.startNetworkReachabilityObserver()
@@ -97,6 +96,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
     
     func coordinatorFinishLaunching(keystore: Keystore) {
+        migrateWalletData()
         coordinator = KNAppCoordinator(window: window!, keystore: keystore)
         coordinator.start()
         coordinator.appDidFinishLaunch()
