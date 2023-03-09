@@ -40,7 +40,7 @@ public class PopupViewController: UIViewController {
     public init(vc: UIViewController, configuration: PopupConfiguration) {
         super.init(nibName: nil, bundle: nil)
         modalTransitionStyle = .crossDissolve
-        modalPresentationStyle = .fullScreen
+        modalPresentationStyle = .overCurrentContext
         self.configuration = configuration
         self.contentViewController = vc
     }
@@ -63,7 +63,7 @@ public class PopupViewController: UIViewController {
     }
     
     func setupViews() {
-        view.backgroundColor = UIColor(red: 15.0/255, green: 15.0/255, blue: 15.0/255, alpha: 0.9)
+        view.backgroundColor = UIColor(red: 15.0/255, green: 15.0/255, blue: 15.0/255, alpha: 0.8)
         view.addSubview(containerView)
         
         containerView.layer.cornerRadius = configuration.cornerRadius

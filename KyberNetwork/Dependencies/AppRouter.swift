@@ -189,7 +189,6 @@ class AppRouter: AppRouterProtocol, Coordinator {
         vc.walletID = walletID
         let popup = PopupViewController(vc: vc, configuration: PopupConfiguration(height: .intrinsic))
         let nav = UINavigationController(rootViewController: popup)
-        nav.modalPresentationStyle = .fullScreen
         viewController.present(nav, animated: true)
     }
     
