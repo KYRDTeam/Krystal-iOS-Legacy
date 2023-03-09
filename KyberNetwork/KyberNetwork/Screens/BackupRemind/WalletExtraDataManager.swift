@@ -32,6 +32,9 @@ class WalletExtraDataManager {
         guard let walletData = dao.getWalletExtraData(walletID: walletID) else {
             return true
         }
+        guard walletData.shouldRemindBackUp else {
+            return false
+        }
         let lastRemindTime = walletData.lastBackupRemindTime
         let startOfToDay = Calendar.current.startOfDay(for: Date()).timeIntervalSince1970
         let startOfRemindDay = Calendar.current.startOfDay(for: lastRemindTime).timeIntervalSince1970
