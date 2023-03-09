@@ -4,6 +4,7 @@ import UIKit
 import LocalAuthentication
 import KrystalWallets
 import BaseModule
+import Dependencies
 
 enum KNSettingsTabViewEvent {
   case manageWallet
@@ -38,6 +39,8 @@ class KNSettingsTabViewController: InAppBrowsingViewController {
   @IBOutlet weak var versionLabel: UILabel!
   @IBOutlet weak var fingerprintButton: UIButton!
   @IBOutlet weak var securityView: UIView!
+  @IBOutlet weak var updateButton: UIButton!
+    
   var error: NSError?
   let context = LAContext()
 
@@ -69,6 +72,9 @@ class KNSettingsTabViewController: InAppBrowsingViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    
+    updateButton.isHidden = VersionManager.shared.getCurrentVersionStatus() != .canUpdate
+      
     MixPanelManager.track("settings_open", properties: ["screenid": "settings"])
     updateUIForBrowsingModeIfNeed()
   }
@@ -86,6 +92,10 @@ class KNSettingsTabViewController: InAppBrowsingViewController {
 
   func coordinatorAppSwitchAddress() {
     updateUIForBrowsingModeIfNeed()
+  }
+    
+  @IBAction func updateTapped(_ sender: Any) {
+    AppDependencies.router.openAppstore()
   }
   
   @IBAction func fingerprintValueChanged(_ sender: UISwitch) {
