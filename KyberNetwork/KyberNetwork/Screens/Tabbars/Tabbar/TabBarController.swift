@@ -12,10 +12,12 @@ import Dependencies
 import Utilities
 import Moya
 import KrystalWallets
+import DesignSystem
 
 class KNTabBarController: UITabBarController {
     
     let viewAppear = Once()
+    let viewDidAppear = Once()
     
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     
@@ -27,14 +29,34 @@ class KNTabBarController: UITabBarController {
         super.viewDidLoad()
         
         UITabBar.appearance().unselectedItemTintColor = .white
+        self.observeNotification()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        viewAppear.run {
-            self.showBackUpWalletIfNeeded()
+        viewDidAppear.run {
+            self.showUpdatePopupIfNeeded(onDismissed: {
+                self.showBackUpWalletIfNeeded(walletID: AppState.shared.currentAddress.walletID)
+            })
         }
+    }
+    
+    func observeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(onSwitchAddress), name: .appAddressChanged, object: nil)
+    }
+    
+    @objc func onSwitchAddress(notification: Notification) {
+        guard let userInfo = notification.userInfo else {
+            return
+        }
+        guard let oldAddress = userInfo["old_address"] as? KAddress, let newAddress = userInfo["new_address"] as? KAddress else {
+            return
+        }
+        guard oldAddress.walletID != newAddress.walletID else {
+            return
+        }
+        showBackUpWalletIfNeeded(walletID: newAddress.walletID)
     }
     
     func setupTabbarConstraints() {
@@ -91,11 +113,10 @@ class KNTabBarController: UITabBarController {
         return itemCount == 0 ? 0 : tabBar.frame.width / CGFloat(itemCount * 2) * CGFloat(index * 2 + 1)
     }
     
-    func showBackUpWalletIfNeeded() {
+    func showBackUpWalletIfNeeded(walletID: String) {
         guard AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.backupRemind) else {
             return
         }
-        let walletID = AppState.shared.currentAddress.walletID
         guard !walletID.isEmpty, WalletExtraDataManager.shared.shouldShowBackup(forWallet: walletID) else { return }
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
         let addresses = WalletManager.shared.getAllAddresses(walletID: walletID).map { address -> String in
@@ -119,6 +140,19 @@ class KNTabBarController: UITabBarController {
             case .failure:
                 return
             }
+        }
+    }
+    
+    func showUpdatePopupIfNeeded(onDismissed: @escaping () -> Void) {
+        if VersionManager.shared.getCurrentVersionStatus() == .canUpdate, let latestVersion = VersionManager.shared.getLatestVersionConfig() {
+            let vc = UpdateAvailableViewController.instantiateFromNib()
+            vc.onDismissed = onDismissed
+            vc.versionConfig = latestVersion
+            let popup = PopupViewController(vc: vc, configuration: .init(height: .intrinsic))
+            popup.modalPresentationStyle = .overCurrentContext
+            present(popup, animated: true)
+        } else {
+            onDismissed()
         }
     }
 }

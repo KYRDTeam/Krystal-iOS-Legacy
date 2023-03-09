@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Medium.ttf">
+            <string>Karla-Medium</string>
+        </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+        <array key="Karla-SemiBold.ttf">
+            <string>Karla-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ForceUpdateViewController" customModule="Krystal" customModuleProvider="target">
+            <connections>
+                <outlet property="messageLabel" destination="M5R-1D-RBt" id="9in-I5-aVH"/>
+                <outlet property="releaseNoteLabel" destination="lR6-C3-WPb" id="YPP-qr-31w"/>
+                <outlet property="titleLabel" destination="CSV-m1-3gv" id="mOr-yW-dOj"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Update required" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSV-m1-3gv">
+                    <rect key="frame" x="139.5" y="60" width="135" height="21"/>
+                    <fontDescription key="fontDescription" name="Karla-Medium" family="Karla" pointSize="18"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To use Krystal, download the latest version: Version 1.2.30" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M5R-1D-RBt">
+                    <rect key="frame" x="20" y="105" width="374" height="37.5"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8t8-my-1wS">
+                    <rect key="frame" x="20" y="794" width="374" height="48"/>
+                    <color key="backgroundColor" name="buttonBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="g3U-0R-mRa"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Karla-SemiBold" family="Karla" pointSize="16"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Update now">
+                        <color key="titleColor" name="buttonTextColor"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                            <real key="value" value="16"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="updateTapped:" destination="-1" eventType="touchUpInside" id="2np-KP-6VZ"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lR6-C3-WPb">
+                    <rect key="frame" x="20" y="154.5" width="374" height="56.5"/>
+                    <string key="text">Release note
+Release note
+Release note</string>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="mainViewBgColor"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="M5R-1D-RBt" secondAttribute="trailing" constant="20" id="1KN-pR-OfQ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="8t8-my-1wS" secondAttribute="trailing" constant="20" id="4e3-ht-OMU"/>
+                <constraint firstItem="8t8-my-1wS" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="5qy-js-mW7"/>
+                <constraint firstItem="M5R-1D-RBt" firstAttribute="top" secondItem="CSV-m1-3gv" secondAttribute="bottom" constant="24" id="HqX-bb-DTJ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="8t8-my-1wS" secondAttribute="bottom" constant="20" id="LEv-Nk-Rmf"/>
+                <constraint firstItem="M5R-1D-RBt" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="MCq-r6-HpM"/>
+                <constraint firstItem="CSV-m1-3gv" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="dVp-6d-BW9"/>
+                <constraint firstItem="lR6-C3-WPb" firstAttribute="top" secondItem="M5R-1D-RBt" secondAttribute="bottom" constant="12" id="dju-yr-nkv"/>
+                <constraint firstItem="CSV-m1-3gv" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="ibF-2q-CDX"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="lR6-C3-WPb" secondAttribute="trailing" constant="20" id="uro-Hv-8dQ"/>
+                <constraint firstItem="8t8-my-1wS" firstAttribute="top" relation="greaterThanOrEqual" secondItem="lR6-C3-WPb" secondAttribute="bottom" constant="24" id="wRv-3j-Gib"/>
+                <constraint firstItem="lR6-C3-WPb" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="x3R-hg-kiJ"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="109"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="buttonTextColor">
+            <color red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

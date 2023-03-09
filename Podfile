@@ -12,7 +12,7 @@ def firebasePods
   pod 'Firebase/Analytics'
   pod 'Firebase/Crashlytics'
   pod 'FirebasePerformance'
-  #  pod 'FirebaseRemoteConfig', '~> 4.4'
+  pod 'FirebaseRemoteConfig'
 end
 
 def uiPods

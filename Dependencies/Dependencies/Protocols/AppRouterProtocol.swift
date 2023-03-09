@@ -32,6 +32,7 @@ public protocol AppRouterProtocol {
     func openTokenScanner(address: String, chainId: Int)
     func openBackupReminder(viewController: UIViewController, walletID: String)
     func openBackupWallet(walletID: String)
+    func openAppstore()
 }
 
 public extension AppRouterProtocol {
