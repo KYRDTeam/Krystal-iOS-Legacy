@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,17 +12,14 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
-            <string>Karla-Regular</string>
-        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNLandingPageViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
+                <outlet property="backwardView" destination="rxB-EJ-cEi" id="Bhn-g6-IWP"/>
                 <outlet property="createWalletButton" destination="7nN-NM-xeF" id="IIN-sb-ImQ"/>
-                <outlet property="importWalletButton" destination="hSF-ar-Svx" id="qW5-Nd-Q2c"/>
-                <outlet property="termAndConditionButton" destination="y2C-Xx-uQV" id="uZP-3S-nhg"/>
-                <outlet property="termOfUseTopConstraint" destination="c4D-m7-GNz" id="62S-yw-jUk"/>
+                <outlet property="forwardView" destination="8Fk-Cx-9GD" id="hHc-Bd-sen"/>
+                <outlet property="shadowView" destination="53Y-65-TFi" id="jl3-h6-Opp"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="welcomeScreenCollectionView" destination="tFk-DS-wvQ" id="MN8-OV-dQw"/>
             </connections>
@@ -32,68 +29,63 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hSF-ar-Svx">
-                    <rect key="frame" x="37" y="548" width="301" height="42"/>
-                    <color key="backgroundColor" name="buttonBackgroundColor"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="53Y-65-TFi">
+                    <rect key="frame" x="0.0" y="-70" width="375" height="70"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="42" id="tMk-ci-8be"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="15"/>
-                    <state key="normal" title="Import Wallet">
-                        <color key="titleColor" name="mainViewBgColor"/>
-                    </state>
-                    <connections>
-                        <action selector="importWalletButtonPressed:" destination="-1" eventType="touchUpInside" id="VSM-qD-bU9"/>
-                    </connections>
-                </button>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tFk-DS-wvQ" customClass="KNWelcomeScreenCollectionView" customModule="Krystal" customModuleProvider="target">
-                    <rect key="frame" x="20" y="0.0" width="335" height="470"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="470" id="DOl-rp-h6x"/>
+                        <constraint firstAttribute="height" constant="70" id="PWV-tN-bYD"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tFk-DS-wvQ" customClass="KNWelcomeScreenCollectionView" customModule="Krystal" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="510"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="510" id="DOl-rp-h6x"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rxB-EJ-cEi">
+                    <rect key="frame" x="0.0" y="0.0" width="187.5" height="667"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Fk-Cx-9GD">
+                    <rect key="frame" x="187.5" y="0.0" width="187.5" height="667"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7nN-NM-xeF">
-                    <rect key="frame" x="37" y="491" width="301" height="42"/>
+                    <rect key="frame" x="37" y="569" width="301" height="48"/>
                     <color key="backgroundColor" name="buttonBackgroundColor"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="42" id="caa-B8-7WU"/>
+                        <constraint firstAttribute="height" constant="48" id="caa-B8-7WU"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="15"/>
-                    <state key="normal" title="Get Started">
+                    <state key="normal" title="Let's go">
                         <color key="titleColor" name="mainViewBgColor"/>
                     </state>
                     <connections>
                         <action selector="createWalletButtonPressed:" destination="-1" eventType="touchUpInside" id="GeJ-aC-c1g"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="y2C-Xx-uQV">
-                    <rect key="frame" x="37" y="598" width="301" height="31"/>
-                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <state key="normal" title="Terms of Use">
-                        <color key="titleColor" name="buttonBackgroundColor"/>
-                    </state>
-                    <connections>
-                        <action selector="termAndConditionButtonPressed:" destination="-1" eventType="touchUpInside" id="bFH-li-6Cc"/>
-                    </connections>
-                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
-                <constraint firstItem="tFk-DS-wvQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="23k-02-WgT"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="hSF-ar-Svx" secondAttribute="trailing" constant="37" id="B1h-gb-bsM"/>
-                <constraint firstItem="y2C-Xx-uQV" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="37" id="LAd-d6-SlT"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="y2C-Xx-uQV" secondAttribute="trailing" constant="37" id="LUb-hE-Dk6"/>
-                <constraint firstItem="tFk-DS-wvQ" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="MTS-Px-o0V"/>
-                <constraint firstItem="y2C-Xx-uQV" firstAttribute="top" secondItem="7nN-NM-xeF" secondAttribute="bottom" constant="65" id="c4D-m7-GNz"/>
-                <constraint firstItem="hSF-ar-Svx" firstAttribute="top" secondItem="7nN-NM-xeF" secondAttribute="bottom" constant="15" id="fi1-vh-7zO"/>
-                <constraint firstItem="7nN-NM-xeF" firstAttribute="top" secondItem="tFk-DS-wvQ" secondAttribute="bottom" constant="21" id="h4O-Br-gIg"/>
-                <constraint firstItem="tFk-DS-wvQ" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" constant="-20" id="luu-T1-JBr"/>
+                <constraint firstItem="tFk-DS-wvQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="23k-02-WgT"/>
+                <constraint firstItem="8Fk-Cx-9GD" firstAttribute="leading" secondItem="rxB-EJ-cEi" secondAttribute="trailing" id="3Y2-qZ-Kb0"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="8Fk-Cx-9GD" secondAttribute="trailing" id="48O-R8-AHZ"/>
+                <constraint firstItem="8Fk-Cx-9GD" firstAttribute="width" secondItem="rxB-EJ-cEi" secondAttribute="width" id="E5R-71-OKP"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="53Y-65-TFi" secondAttribute="trailing" id="E6u-yh-P8x"/>
+                <constraint firstItem="rxB-EJ-cEi" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Iq9-dC-QU8"/>
+                <constraint firstItem="8Fk-Cx-9GD" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="JuR-Im-POU"/>
+                <constraint firstItem="tFk-DS-wvQ" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="ScQ-HW-IPj"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="rxB-EJ-cEi" secondAttribute="bottom" id="V5T-0Y-Qis"/>
+                <constraint firstItem="rxB-EJ-cEi" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="fhJ-Om-qFZ"/>
+                <constraint firstItem="tFk-DS-wvQ" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="luu-T1-JBr"/>
+                <constraint firstItem="53Y-65-TFi" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="-70" id="rmu-5k-Ucr"/>
+                <constraint firstItem="8Fk-Cx-9GD" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="uUr-kC-2ly"/>
+                <constraint firstItem="53Y-65-TFi" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="uYC-fv-Cjt"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="7nN-NM-xeF" secondAttribute="trailing" constant="37" id="vq6-hh-dIM"/>
                 <constraint firstItem="7nN-NM-xeF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="37" id="wIo-Vy-VEy"/>
-                <constraint firstItem="hSF-ar-Svx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="37" id="zn3-8y-aUK"/>
+                <constraint firstAttribute="bottom" secondItem="7nN-NM-xeF" secondAttribute="bottom" constant="50" id="yC2-tu-8tC"/>
             </constraints>
             <point key="canvasLocation" x="140" y="154.27286356821591"/>
         </view>

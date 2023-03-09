@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import DesignSystem
 
 class KNWelcomeScreenCollectionView: XibLoaderView {
 
@@ -10,10 +11,10 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
   @IBOutlet var pageViews: [UIView]!
   @IBOutlet weak var landingTitle: UILabel!
   @IBOutlet weak var landingDescription: UILabel!
-  @IBOutlet var pageViewWidth: [NSLayoutConstraint]!
-  @IBOutlet weak var paggerViewLeadingConstraint: NSLayoutConstraint!
   static let paggerWidth = CGFloat(52)
   fileprivate var didShowFirstCell = false
+  fileprivate var currentIndex: Int = 0
+    
   override func commonInit() {
     super.commonInit()
     self.backgroundColor = .clear
@@ -24,30 +25,112 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
     )
     self.collectionView.delegate = self
     self.collectionView.dataSource = self
-    self.pageViews.forEach { $0.rounded(radius: 3.0) }
-    self.updateSelectedPageView(index: 0)
+    self.pageViews.forEach { $0.rounded(radius: 1.0) }
+    self.updateSelectedPageView()
     self.collectionView.reloadData()
   }
 
-  fileprivate func updateSelectedPageView(index: Int) {
-    self.pageViews.forEach { view in
-      let isCurrentIndex = view.tag == index
-      view.backgroundColor = isCurrentIndex ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "warningBoxBgColor")
-    }
-
-    self.pageViewWidth.forEach { constraint in
-      guard let identifier = constraint.identifier else {
-        return
+  fileprivate func updateSelectedPageView() {
+      let normalWidth = 80.0
+      self.pageViews.forEach { view in
+          if view.tag != self.currentIndex {
+              view.layer.removeAllAnimations()
+          }
+          
+          view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y, width: normalWidth, height: 2)
+          view.backgroundColor = .clear
       }
-      constraint.constant = Int(identifier) == index ? 16 : 6
+
+    self.pageViews.forEach { view in
+        view.backgroundColor = view.tag < self.currentIndex ? AppTheme.current.lineColor : .clear
+        
+        if view.tag == self.currentIndex {
+            view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y, width: 0, height: 2)
+            view.backgroundColor = AppTheme.current.lineColor
+            UIView.animate(withDuration: 3) {
+                view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y, width: normalWidth, height: 2)
+            } completion: { complete in
+                if complete {
+                    self.forward()
+                }
+            }
+
+        }
     }
   }
+    
+    func forward() {
+        guard currentIndex < 3 else { return }
+        let cellSize = CGSize(width: self.collectionView.frame.width, height: KNWelcomeScreenCollectionViewCell.height)
+        let contentOffset = self.collectionView.contentOffset
+        self.collectionView.scrollRectToVisible(CGRect(x: contentOffset.x + cellSize.width, y: contentOffset.y, width: cellSize.width, height: cellSize.height), animated: true)
+        self.currentIndex += 1
+        self.updateSelectedPageView()
+        self.updateUIFor(index: currentIndex)
+    }
 
-  fileprivate func updateUIFor(index: Int) {
-    let data = self.viewModel.welcomeData(at: index)
-    self.landingTitle.text = data.title
-    self.landingDescription.text = data.subtitle
-  }
+    func backward() {
+        guard self.currentIndex > 0 else { return }
+        let cellSize = CGSize(width: self.collectionView.frame.width, height: KNWelcomeScreenCollectionViewCell.height)
+        let contentOffset = self.collectionView.contentOffset
+        self.collectionView.scrollRectToVisible(CGRect(x: contentOffset.x - cellSize.width, y: contentOffset.y, width: cellSize.width, height: cellSize.height), animated: true)
+        self.currentIndex -= 1
+        self.updateSelectedPageView()
+        self.updateUIFor(index: currentIndex)
+    }
+
+    fileprivate func updateUIFor(index: Int) {
+        let data = self.viewModel.welcomeData(at: index)
+        self.landingTitle.text = data.title
+        self.landingDescription.text = data.subtitle
+        let oldTitleY = self.landingTitle.frame.origin.y
+        let oldDescriptionY = self.landingDescription.frame.origin.y
+        
+        self.landingTitle.frame = CGRect(x: self.landingTitle.frame.origin.x, y: oldTitleY + 100, width: self.landingTitle.frame.size.width, height: self.landingTitle.frame.size.height)
+        self.landingTitle.layer.opacity = 0
+        self.landingDescription.frame = CGRect(x: self.landingDescription.frame.origin.x, y: oldDescriptionY + 100, width: self.landingDescription.frame.size.width, height: self.landingDescription.frame.size.height)
+        self.landingDescription.layer.opacity = 0
+        
+        UIView.animate(withDuration: 0.6) {
+            self.landingTitle.layer.opacity = 1
+            self.landingTitle.frame = CGRect(x: self.landingTitle.frame.origin.x, y: oldTitleY, width: self.landingTitle.frame.size.width, height: self.landingTitle.frame.size.height)
+        }
+        UIView.animate(withDuration: 0.7) {
+            self.landingDescription.layer.opacity = 1
+            self.landingDescription.frame = CGRect(x: self.landingDescription.frame.origin.x, y: oldDescriptionY, width: self.landingDescription.frame.size.width, height: self.landingDescription.frame.size.height)
+        }
+    }
+
+    func pause() {
+        self.pageViews.forEach { view in
+            if view.tag == self.currentIndex {
+                self.pauseLayer(layer: view.layer)
+            }
+        }
+    }
+    
+    func resume() {
+        self.pageViews.forEach { view in
+            if view.tag == self.currentIndex {
+                self.resumeLayer(layer: view.layer)
+            }
+        }
+    }
+    
+    func pauseLayer(layer: CALayer) {
+        let pausedTime: CFTimeInterval = layer.convertTime(CACurrentMediaTime(), from: nil)
+        layer.speed = 0.0
+        layer.timeOffset = pausedTime
+    }
+
+    func resumeLayer(layer: CALayer) {
+        let pausedTime: CFTimeInterval = layer.timeOffset
+        layer.speed = 1.0
+        layer.timeOffset = 0.0
+        layer.beginTime = 0.0
+        let timeSincePause: CFTimeInterval = layer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        layer.beginTime = timeSincePause
+    }
 }
 
 extension KNWelcomeScreenCollectionView: UICollectionViewDelegateFlowLayout {
@@ -71,7 +154,8 @@ extension KNWelcomeScreenCollectionView: UIScrollViewDelegate {
   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
     let offsetX = scrollView.contentOffset.x
     let currentPage = Int(round(offsetX / scrollView.frame.width))
-    self.updateSelectedPageView(index: currentPage)
+    self.currentIndex = currentPage
+    self.updateSelectedPageView()
     self.updateUIFor(index: currentPage)
   }
 }

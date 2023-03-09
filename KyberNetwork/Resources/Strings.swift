@@ -15,10 +15,14 @@ struct Strings {
   static let approve = "approve".toBeLocalised()
   static let cancelled = "cancelled".toBeLocalised()
   static let confirm = "confirm".toBeLocalised()
+  static let congratulation = "congratulation".toBeLocalised()
+  static let successCreated = "success.created".toBeLocalised()
+  static let confirmImport = "confirm.import".toBeLocalised()
   static let cancel = "cancel".toBeLocalised()
   static let delete = "delete".toBeLocalised()
   static let next = "Next".toBeLocalised()
   static let `continue` = "continue".toBeLocalised()
+  static let finish = "finish".toBeLocalised()
   
   // Actions
   static let add = "add".toBeLocalised()
@@ -169,6 +173,7 @@ struct Strings {
   static let createWallet = "create.wallet".toBeLocalised()
   static let importWallet = "import.wallet".toBeLocalised()
   static let getStarted = "get.started".toBeLocalised()
+  static let letsGo = "lets.go".toBeLocalised()
   static let addWatchWalletSuccess = "add.watched.wallet.success".toBeLocalised()
   static let editWatchWalletSuccess = "edit.watched.wallet.success".toBeLocalised()
   
@@ -257,7 +262,14 @@ struct Strings {
   static let recoveryPhase3 = "recovery.phrase.3".toBeLocalised()
   static let recoveryHightlightPhase3 = "recovery.hightlight.phrase.3".toBeLocalised()
   static let Watchlist = "Watchlist".toBeLocalised()
-  
+  static let simplestWallet = "simplest.wallet".toBeLocalised()
+  static let easyToUse = "easy.to.use".toBeLocalised()
+  static let comprehensiveDashboard = "comprehensive.dashboard".toBeLocalised()
+  static let trackAllAssets = "track.all.assets".toBeLocalised()
+  static let seamlessTrading = "seamless.trading".toBeLocalised()
+  static let securelySwap = "securely.swap".toBeLocalised()
+  static let loyaltyRewards = "loyalty.rewards".toBeLocalised()
+  static let getRewardOnKrystal = "get.reward.on.krystal".toBeLocalised()
   // Promotion
   static let invalidPromotionCode = "invalid.promotion.code".toBeLocalised()
   static let enterPromotionCode = "enter.promotion.code".toBeLocalised()
