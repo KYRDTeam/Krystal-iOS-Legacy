@@ -146,6 +146,8 @@ class FinishImportViewController: UIViewController {
         if !KNGeneralProvider.shared.isCreatedPassCode {
             AppState.shared.updateChain(chain: KNGeneralProvider.shared.defaultChain)
             self.passcodeCoordinator.start()
+        } else if let wallet = viewModel.wallet {
+            onImportWalletSuccess(wallet: wallet, chain: KNGeneralProvider.shared.defaultChain, importType: .multiChain, showSuccess: false)
         } else {
             didFinishImport()
         }
@@ -154,9 +156,19 @@ class FinishImportViewController: UIViewController {
     @IBAction func clearWalletNameButtonTapped(_ sender: Any) {
         walletNameTextField.text = ""
     }
-    
-    
+
     @IBAction func backupButtonTapped(_ sender: Any) {
+        guard let wallet = viewModel.wallet else { return }
+        do {
+            let mnemonic = try WalletManager.shared.exportMnemonic(walletID: wallet.id)
+            let seeds = mnemonic.split(separator: " ").map({ return String($0) })
+            let viewModel = BackUpWalletViewModel(seeds: seeds, walletId: wallet.id)
+            let backUpVC = BackUpWalletViewController(viewModel: viewModel)
+            backUpVC.delegate = self
+            self.navigationController?.pushViewController(backUpVC, animated: true)
+        } catch {
+            print("Cannot export mnemonic")
+        }
     }
     
     func didFinishImport() {
@@ -181,6 +193,13 @@ extension FinishImportViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         clearWalletNameButton.isHidden = false
+    }
+}
+
+extension FinishImportViewController: BackUpWalletViewControllerDelegate {
+    func didFinishBackup(_ controller: BackUpWalletViewController) {
+        guard let wallet = viewModel.wallet else { return }
+        onImportWalletSuccess(wallet: wallet, chain: KNGeneralProvider.shared.defaultChain, importType: .multiChain, showSuccess: false)
     }
 }
 

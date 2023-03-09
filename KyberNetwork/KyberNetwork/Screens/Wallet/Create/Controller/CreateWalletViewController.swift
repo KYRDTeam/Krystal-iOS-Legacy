@@ -23,11 +23,19 @@ class CreateWalletViewController: KNBaseViewController {
   @IBOutlet weak var refCodeTextField: UITextField!
   @IBOutlet weak var walletNameTextField: UITextField!
   @IBOutlet weak var createButton: UIButton!
+  @IBOutlet weak var createButtonTopConstraint: NSLayoutConstraint!
+  @IBOutlet weak var referralTitleLabel: UILabel!
+  @IBOutlet weak var referralView: UIView!
+    
   weak var delegate: CreateWalletViewControllerDelegate?
-  
   override func viewDidLoad() {
     super.viewDidLoad()
     self.updateWalletName()
+    if FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.refcode) {
+        createButtonTopConstraint.constant = 60
+        referralTitleLabel.isHidden = true
+        referralView.isHidden = true
+    }
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -54,12 +62,20 @@ class CreateWalletViewController: KNBaseViewController {
     if let text = self.refCodeTextField.text, !text.isEmpty {
       self.delegate?.createWalletViewController(self, run: .sendRefCode(code: text.uppercased()))
     }
-    
-    let wallets = WalletManager.shared.getAllWallets()
-    let name = self.walletNameTextField.text ?? "Wallet \(wallets.count + 1)"
-    self.delegate?.createWalletViewController(self, run: .next(name: name))
-    MixPanelManager.track("create_wallet", properties: ["screenid": "create_wallet"])
-
+    self.navigationController?.displayLoading(text: Strings.creating, animated: true)
+    do {
+        let wallets = WalletManager.shared.getAllWallets()
+        let wallet = try WalletManager.shared.createWallet(name: "Wallet \(wallets.count + 1)")
+        DispatchQueue.main.async {
+            self.navigationController?.hideLoading()
+            let viewModel = FinishImportViewModel(wallet: wallet)
+            let finishVC = FinishImportViewController(viewModel: viewModel)
+            self.navigationController?.show(finishVC, sender: nil)
+            MixPanelManager.track("create_wallet", properties: ["screenid": "create_wallet"])
+        }
+    } catch {
+        return
+    }
   }
   
   @IBAction func pasteButtonTapped(_ sender: Any) {

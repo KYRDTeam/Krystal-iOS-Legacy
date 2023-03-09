@@ -178,7 +178,6 @@
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="backupButtonTapped:" destination="-1" eventType="touchUpInside" id="1iH-71-euK"/>
-                        <action selector="finishButtonTapped:" destination="-1" eventType="touchUpInside" id="Pla-AY-qXD"/>
                     </connections>
                 </button>
             </subviews>
