@@ -17,6 +17,7 @@ import DesignSystem
 class KNTabBarController: UITabBarController {
     
     let viewAppear = Once()
+    let viewDidAppear = Once()
     
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     
@@ -31,12 +32,13 @@ class KNTabBarController: UITabBarController {
         self.observeNotification()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        viewAppear.run {
-            self.showBackUpWalletIfNeeded(walletID: AppState.shared.currentAddress.walletID)
-            self.showUpdatePopupIfNeeded()
+        viewDidAppear.run {
+            self.showUpdatePopupIfNeeded(onDismissed: {
+                self.showBackUpWalletIfNeeded(walletID: AppState.shared.currentAddress.walletID)
+            })
         }
     }
     
@@ -141,12 +143,16 @@ class KNTabBarController: UITabBarController {
         }
     }
     
-    func showUpdatePopupIfNeeded() {
+    func showUpdatePopupIfNeeded(onDismissed: @escaping () -> Void) {
         if VersionManager.shared.getCurrentVersionStatus() == .canUpdate, let latestVersion = VersionManager.shared.getLatestVersionConfig() {
             let vc = UpdateAvailableViewController.instantiateFromNib()
+            vc.onDismissed = onDismissed
             vc.versionConfig = latestVersion
             let popup = PopupViewController(vc: vc, configuration: .init(height: .intrinsic))
+            popup.modalPresentationStyle = .overCurrentContext
             present(popup, animated: true)
+        } else {
+            onDismissed()
         }
     }
 }

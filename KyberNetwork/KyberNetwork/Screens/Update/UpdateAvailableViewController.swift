@@ -15,6 +15,7 @@ class UpdateAvailableViewController: UIViewController {
     @IBOutlet weak var messageLabel: UILabel!
     
     var versionConfig: VersionConfig!
+    var onDismissed: (() -> ())?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,11 +42,16 @@ class UpdateAvailableViewController: UIViewController {
     @IBAction func updateTapped(_ sender: UIButton) {
         dismiss(animated: true) {
             AppDependencies.router.openAppstore()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.onDismissed?()
+            }
         }
     }
     
     @IBAction func notNowTapped(_ sender: UIButton) {
-        dismiss(animated: true)
+        dismiss(animated: true) {
+            self.onDismissed?()
+        }
     }
 
 }
