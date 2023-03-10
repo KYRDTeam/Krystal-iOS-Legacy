@@ -15,9 +15,6 @@ class VersionManager {
     
     private init() {
         remoteConfig = RemoteConfig.remoteConfig()
-        let settings = RemoteConfigSettings()
-        settings.minimumFetchInterval = 0
-        remoteConfig.configSettings = settings
     }
     
     func getCurrentVersionStatus() -> VersionStatus {
