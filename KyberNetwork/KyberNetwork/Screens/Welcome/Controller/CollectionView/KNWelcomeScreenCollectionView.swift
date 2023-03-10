@@ -62,8 +62,8 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
     func forward() {
         guard currentIndex < 3 else { return }
         let cellSize = CGSize(width: self.collectionView.frame.width, height: KNWelcomeScreenCollectionViewCell.height)
-        let contentOffset = self.collectionView.contentOffset
-        self.collectionView.scrollRectToVisible(CGRect(x: contentOffset.x + cellSize.width, y: contentOffset.y, width: cellSize.width, height: cellSize.height), animated: true)
+        let newX = cellSize.width * CGFloat(currentIndex + 1)
+        self.collectionView.scrollRectToVisible(CGRect(x: newX, y: self.collectionView.contentOffset.y, width: cellSize.width, height: cellSize.height), animated: true)
         self.currentIndex += 1
         self.updateSelectedPageView()
         self.updateUIFor(index: currentIndex)
@@ -72,8 +72,8 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
     func backward() {
         guard self.currentIndex > 0 else { return }
         let cellSize = CGSize(width: self.collectionView.frame.width, height: KNWelcomeScreenCollectionViewCell.height)
-        let contentOffset = self.collectionView.contentOffset
-        self.collectionView.scrollRectToVisible(CGRect(x: contentOffset.x - cellSize.width, y: contentOffset.y, width: cellSize.width, height: cellSize.height), animated: true)
+        let newX = cellSize.width * CGFloat(currentIndex - 1)
+        self.collectionView.scrollRectToVisible(CGRect(x: newX, y: self.collectionView.contentOffset.y, width: cellSize.width, height: cellSize.height), animated: true)
         self.currentIndex -= 1
         self.updateSelectedPageView()
         self.updateUIFor(index: currentIndex)
