@@ -51,7 +51,7 @@ class FinishImportViewModel {
     }
     
     func finishButtonBottomConstraint() -> CGFloat {
-        return self.wallet != nil ? 88 : 40
+        return self.wallet != nil ? 88 : 50
     }
     
     func finishButtonTitle() -> String {
@@ -128,7 +128,7 @@ class FinishImportViewController: UIViewController {
         
         termOfUseTextView.linkTextAttributes = linkAttributes
         termOfUseTextView.attributedText = attributedString
-        termOfUseTextView.isHidden = viewModel.wallet != nil
+        termOfUseTextView.isHidden = viewModel.wallet == nil
         titleLabel.text = viewModel.title()
         subtitleLabel.text = viewModel.subTitle()
         finishButtonBottomConstraint.constant = viewModel.finishButtonBottomConstraint()
@@ -136,6 +136,7 @@ class FinishImportViewController: UIViewController {
         nameInputView.isHidden = viewModel.wallet != nil
         finishButton.setTitle(viewModel.finishButtonTitle(), for: .normal)
         backButton.isHidden = viewModel.wallet != nil
+        backupButton.isHidden = viewModel.wallet == nil
     }
 
     @IBAction func backButtonTapped(_ sender: Any) {

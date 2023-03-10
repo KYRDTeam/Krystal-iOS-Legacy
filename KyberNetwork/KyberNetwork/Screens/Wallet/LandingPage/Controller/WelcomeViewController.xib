@@ -22,6 +22,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WelcomeViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
+                <outlet property="animationView" destination="UOV-Ul-eLe" id="eFc-L0-eq3"/>
                 <outlet property="importButton" destination="gEu-h8-tq3" id="gR2-xH-6dr"/>
                 <outlet property="shadowView" destination="1ie-fM-u3f" id="ap6-1p-DYN"/>
                 <outlet property="termOfUseTextView" destination="rUn-CQ-kLu" id="Wzk-rW-fCv"/>
@@ -125,28 +126,33 @@
                         <constraint firstAttribute="height" constant="70" id="66r-nh-Z7m"/>
                     </constraints>
                 </view>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome" translatesAutoresizingMaskIntoConstraints="NO" id="lII-Eu-BX4">
-                    <rect key="frame" x="20" y="202.66666666666663" width="353" height="349"/>
-                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UOV-Ul-eLe" customClass="LottieAnimationView" customModule="Lottie">
+                    <rect key="frame" x="0.0" y="182.66666666666666" width="393" height="399.33333333333337"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="animationName" value="welcome"/>
+                    </userDefinedRuntimeAttributes>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="mGT-ge-UfF" secondAttribute="trailing" constant="20" id="28p-mL-bDu"/>
                 <constraint firstAttribute="bottom" secondItem="mGT-ge-UfF" secondAttribute="bottom" constant="40" id="2J1-3f-MlO"/>
-                <constraint firstItem="lII-Eu-BX4" firstAttribute="top" secondItem="4TZ-yd-2yJ" secondAttribute="bottom" constant="20" id="5sa-FK-qc9"/>
                 <constraint firstItem="gEu-h8-tq3" firstAttribute="top" secondItem="czQ-x3-WbL" secondAttribute="bottom" constant="16" id="9ss-lY-gUi"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="lII-Eu-BX4" secondAttribute="trailing" constant="20" id="B7C-cq-g7D"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="rUn-CQ-kLu" secondAttribute="trailing" constant="20" id="BSj-1D-rAk"/>
                 <constraint firstItem="mGT-ge-UfF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="E3n-J0-3ei"/>
                 <constraint firstItem="rUn-CQ-kLu" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="H2M-Z0-m0Z"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="UOV-Ul-eLe" secondAttribute="trailing" id="KIr-AX-GZy"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="crc-uQ-dqG" secondAttribute="trailing" constant="20" id="KOu-SC-Kk2"/>
                 <constraint firstItem="1ie-fM-u3f" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="R8y-n8-kLw"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="4TZ-yd-2yJ" secondAttribute="trailing" constant="20" id="S90-Vs-LA7"/>
+                <constraint firstItem="UOV-Ul-eLe" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="WSn-Xt-TOn"/>
                 <constraint firstItem="4TZ-yd-2yJ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="YHw-2K-uZm"/>
+                <constraint firstItem="UOV-Ul-eLe" firstAttribute="top" secondItem="4TZ-yd-2yJ" secondAttribute="bottom" id="aKJ-eX-xkH"/>
                 <constraint firstItem="1ie-fM-u3f" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="-70" id="aLf-FX-tgp"/>
                 <constraint firstItem="crc-uQ-dqG" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="54" id="e6z-XK-1cE"/>
-                <constraint firstItem="lII-Eu-BX4" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="f24-sO-XeE"/>
+                <constraint firstItem="rUn-CQ-kLu" firstAttribute="top" secondItem="UOV-Ul-eLe" secondAttribute="bottom" id="jBt-lm-7mQ"/>
                 <constraint firstItem="crc-uQ-dqG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="kBD-ka-BY6"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="czQ-x3-WbL" secondAttribute="trailing" constant="20" id="l7i-ww-hqn"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="gEu-h8-tq3" secondAttribute="trailing" constant="20" id="lBy-tf-Ii1"/>
@@ -161,7 +167,6 @@
         </view>
     </objects>
     <resources>
-        <image name="welcome" width="375" height="349"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
