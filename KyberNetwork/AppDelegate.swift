@@ -60,6 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
     
     func fetchRemoteConfig() {
+        AppRemoteConfig.shared.setup()
         let remoteConfig = RemoteConfig.remoteConfig()
         remoteConfig.fetch(withExpirationDuration: 0, completionHandler: { status, _ in
             if status == .success {

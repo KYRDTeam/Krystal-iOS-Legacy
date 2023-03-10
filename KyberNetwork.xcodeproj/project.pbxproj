@@ -727,6 +727,7 @@
 		A66EC317287D20D400D15FE0 /* TxApplicationInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66EC315287D20D400D15FE0 /* TxApplicationInfoCell.xib */; };
 		A66EC31A287D258100D15FE0 /* TxListHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66EC318287D258100D15FE0 /* TxListHeaderCell.swift */; };
 		A66EC31B287D258100D15FE0 /* TxListHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66EC319287D258100D15FE0 /* TxListHeaderCell.xib */; };
+		A67040E029BAF0FB00CBF82F /* AppRemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67040DF29BAF0FB00CBF82F /* AppRemoteConfig.swift */; };
 		A673A68B28FEA6B600270DA7 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = A673A68A28FEA6B600270DA7 /* TypeAliases.swift */; };
 		A676489F292DDE2C00065569 /* CurrencyMode+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676489E292DDE2B00065569 /* CurrencyMode+.swift */; };
 		A6790C2D2844858D007CE0CD /* TransactionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6790C2C2844858D007CE0CD /* TransactionViewControllerTests.swift */; };
@@ -2043,6 +2044,7 @@
 		A66EC315287D20D400D15FE0 /* TxApplicationInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxApplicationInfoCell.xib; sourceTree = "<group>"; };
 		A66EC318287D258100D15FE0 /* TxListHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxListHeaderCell.swift; sourceTree = "<group>"; };
 		A66EC319287D258100D15FE0 /* TxListHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxListHeaderCell.xib; sourceTree = "<group>"; };
+		A67040DF29BAF0FB00CBF82F /* AppRemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRemoteConfig.swift; sourceTree = "<group>"; };
 		A673A68A28FEA6B600270DA7 /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
 		A676489E292DDE2B00065569 /* CurrencyMode+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CurrencyMode+.swift"; sourceTree = "<group>"; };
 		A6790C2C2844858D007CE0CD /* TransactionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewControllerTests.swift; sourceTree = "<group>"; };
@@ -2723,6 +2725,7 @@
 		251ABCA020578DA30069687F /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
+				A67040DE29BAF0F000CBF82F /* RemoteConfig */,
 				A634AF4D29B6E3E8004628F4 /* VersionManager */,
 				7E59E5802872E80C00DFD01C /* Settings.bundle */,
 				7E49B25F27FC195F0093A00E /* MixPanel */,
@@ -5401,6 +5404,14 @@
 			path = HistoryV3;
 			sourceTree = "<group>";
 		};
+		A67040DE29BAF0F000CBF82F /* RemoteConfig */ = {
+			isa = PBXGroup;
+			children = (
+				A67040DF29BAF0FB00CBF82F /* AppRemoteConfig.swift */,
+			);
+			path = RemoteConfig;
+			sourceTree = "<group>";
+		};
 		A6790C5628476E58007CE0CD /* Public */ = {
 			isa = PBXGroup;
 			children = (
@@ -7891,6 +7902,7 @@
 				255F6F2620BBC9C000EF808F /* UIImage+Kyber.swift in Sources */,
 				7E01EFEB2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.swift in Sources */,
 				A6B3CD592811C07C005D0D66 /* PendingInternalHistoryTransactonViewModel.swift in Sources */,
+				A67040E029BAF0FB00CBF82F /* AppRemoteConfig.swift in Sources */,
 				7ECCB1FA286170F700499FA0 /* Portfolio.swift in Sources */,
 				A63655552907A352003B66F0 /* ApprovalListViewController.swift in Sources */,
 				C344976328A258CE00028AFB /* SettingBasicModeCell.swift in Sources */,
