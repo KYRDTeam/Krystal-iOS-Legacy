@@ -515,6 +515,7 @@
 		7E98B4FA29B9E0CF003F01AC /* trading.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E98B4F629B9E0CE003F01AC /* trading.json */; };
 		7E98B4FB29B9E0CF003F01AC /* dashboard.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E98B4F729B9E0CE003F01AC /* dashboard.json */; };
 		7E98B4FC29B9E0CF003F01AC /* simplest_wallet.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E98B4F829B9E0CE003F01AC /* simplest_wallet.json */; };
+		7E98B4FE29BAEED7003F01AC /* welcome.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E98B4FD29BAEED6003F01AC /* welcome.json */; };
 		7EA34EB32886ACB7001D1DE6 /* OverviewAllChainTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA34EB12886ACB7001D1DE6 /* OverviewAllChainTokenCell.swift */; };
 		7EA34EB42886ACB7001D1DE6 /* OverviewAllChainTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA34EB22886ACB7001D1DE6 /* OverviewAllChainTokenCell.xib */; };
 		7EA381DB28C6068E000D8FBB /* OverviewBrowsingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA381D928C6068E000D8FBB /* OverviewBrowsingViewController.swift */; };
@@ -1841,6 +1842,7 @@
 		7E98B4F629B9E0CE003F01AC /* trading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = trading.json; sourceTree = "<group>"; };
 		7E98B4F729B9E0CE003F01AC /* dashboard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = dashboard.json; sourceTree = "<group>"; };
 		7E98B4F829B9E0CE003F01AC /* simplest_wallet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = simplest_wallet.json; sourceTree = "<group>"; };
+		7E98B4FD29BAEED6003F01AC /* welcome.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = welcome.json; sourceTree = "<group>"; };
 		7EA34EB12886ACB7001D1DE6 /* OverviewAllChainTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewAllChainTokenCell.swift; sourceTree = "<group>"; };
 		7EA34EB22886ACB7001D1DE6 /* OverviewAllChainTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewAllChainTokenCell.xib; sourceTree = "<group>"; };
 		7EA381D928C6068E000D8FBB /* OverviewBrowsingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewBrowsingViewController.swift; sourceTree = "<group>"; };
@@ -4905,6 +4907,7 @@
 		7E6F5115273A572B002DA0B2 /* LottieJSON */ = {
 			isa = PBXGroup;
 			children = (
+				7E98B4FD29BAEED6003F01AC /* welcome.json */,
 				7E98B4F729B9E0CE003F01AC /* dashboard.json */,
 				7E98B4F529B9E0CD003F01AC /* reward.json */,
 				7E98B4F829B9E0CE003F01AC /* simplest_wallet.json */,
@@ -7077,6 +7080,7 @@
 				C3A6911425638DE700F57756 /* Lato-Thin.ttf in Resources */,
 				A6799D9229598BC000ACE89D /* PendingTxViewController.xib in Resources */,
 				25929C6720DA5C760045CFA3 /* SF-Pro-Text-Medium.otf in Resources */,
+				7E98B4FE29BAEED7003F01AC /* welcome.json in Resources */,
 				C3012CC4269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.xib in Resources */,
 				C30DB3F32771D79D00F3E545 /* DappBrowserHomeViewController.xib in Resources */,
 				7EE7A72B28446F7A00F4D8CF /* ConfirmBridgeViewController.xib in Resources */,

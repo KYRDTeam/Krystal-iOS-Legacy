@@ -7,6 +7,7 @@
 
 import UIKit
 import DesignSystem
+import Lottie
 
 protocol WelcomeViewControllerDelegate: class {
     func didTapCreate(controller: UIViewController)
@@ -18,15 +19,12 @@ class WelcomeViewController: UIViewController {
     @IBOutlet weak var importButton: UIButton!
     @IBOutlet weak var termOfUseTextView: UITextView!
     @IBOutlet weak var shadowView: UIView!
+    @IBOutlet weak var animationView: LottieAnimationView!
     
     weak var delegate: WelcomeViewControllerDelegate?
     override func viewDidLoad() {
         super.viewDidLoad()
         configUI()
-        shadowView.layer.shadowColor = AppTheme.current.primaryColor.cgColor
-        shadowView.layer.shadowOpacity = 0.3
-        shadowView.layer.shadowRadius = 70
-        shadowView.layer.shadowOffset = .zero
     }
     
     func configUI() {
@@ -50,6 +48,16 @@ class WelcomeViewController: UIViewController {
         
         importButton.layer.borderColor = AppTheme.current.primaryColor.cgColor
         importButton.layer.borderWidth = 1.0
+        
+        animationView.animation = LottieAnimation.named("welcome")
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .loop
+        animationView.play()
+        
+        shadowView.layer.shadowColor = AppTheme.current.primaryColor.cgColor
+        shadowView.layer.shadowOpacity = 0.3
+        shadowView.layer.shadowRadius = 70
+        shadowView.layer.shadowOffset = .zero
     }
 
     @IBAction func createWalletButtonTapped(_ sender: Any) {

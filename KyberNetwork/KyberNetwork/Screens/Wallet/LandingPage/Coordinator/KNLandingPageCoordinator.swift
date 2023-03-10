@@ -112,40 +112,18 @@ extension KNLandingPageCoordinator: WelcomeViewControllerDelegate {
     func didTapCreate(controller: UIViewController) {
         self.delegate?.landingPageCoordinatorShouldStartSession()
         Tracker.track(event: .introCreateWallet)
-        if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
-          self.termViewController.nextAction = {
-            
-            self.createWallet()
-          }
-          self.navigationController.present(self.termViewController, animated: true, completion: nil)
-          return
-        }
         self.createWallet()
     }
     
     func didTapImport(controller: UIViewController) {
         self.delegate?.landingPageCoordinatorShouldStartSession()
         Tracker.track(event: .introImportWallet)
-        if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
-          self.termViewController.nextAction = {
-              self.importAWallet()
-          }
-          self.navigationController.present(self.termViewController, animated: true, completion: nil)
-          return
-        }
         importAWallet()
     }
     
     func didTapExplore(controller: UIViewController) {
-        if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
-          self.termViewController.nextAction = {
-            self.delegate?.landingPageCoordinatorStartedBrowsing()
-            AppStorage.shared.markAppAsOpenedBefore()
-          }
-          self.navigationController.present(self.termViewController, animated: true, completion: nil)
-          return
-        }
         self.delegate?.landingPageCoordinatorStartedBrowsing()
+        AppStorage.shared.markAppAsOpenedBefore()
     }
     
     fileprivate func createWallet() {
