@@ -409,7 +409,9 @@ public class EthereumNodeService {
         web3?.request(request: request) { result in
           switch result {
           case .success(let res):
-            completion(.success(BigInt(res) ?? BigInt()))
+            var l1Fee = BigInt(res) ?? BigInt(0)
+            l1Fee += (l1Fee * 20 / 100)
+            completion(.success(l1Fee))
           case .failure(let error):
             completion(.failure(AnyError(error)))
           }
