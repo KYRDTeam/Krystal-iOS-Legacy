@@ -115,6 +115,9 @@ class KNLandingPageViewController: KNBaseViewController {
     } else {
       self.createWalletButton.setTitle(Strings.createWallet, for: .normal)
     }
+    welcomeScreenCollectionView.onFinishLoading = {
+        self.delegate?.landinagePageViewController(self, run: .getStarted)
+    }
   }
 
   @IBAction func createWalletButtonPressed(_ sender: Any) {
