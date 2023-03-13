@@ -350,33 +350,46 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
     }
 
     func buildTx(nonce: Int) {
-        let group = DispatchGroup()
-        platformRates.value.forEach({ rate in
-            guard let request = buildTxRequest(latestNonce: nonce, platform: rate) else { return }
-            group.enter()
+        if AppState.shared.currentChain == .optimism {
+            let group = DispatchGroup()
+            platformRates.value.forEach({ rate in
+                guard let request = buildTxRequest(latestNonce: nonce, platform: rate) else { return }
+                group.enter()
+                swapService.buildTx(chainPath: AppState.shared.currentChain.apiChainPath(), request: request) { [weak self] result in
+                    
+                    switch result {
+                    case .success(let txObject):
+                        self?.swapService.getL1FeeForTxIfHave(object: txObject) { l1Fee, object in
+                            self?.updateL1FeeForRate(hint: rate.hint, l1fee: l1Fee)
+                            if self?.selectedRate?.hint == rate.hint {
+                                self?.l1Fee = l1Fee
+                            }
+                            group.leave()
+                        }
+                    case .failure(let error):
+                        group.leave()
+                        print(TxErrorParser.parse(error: error).message)
+                    }
+                    
+                }
+            })
+
+            group.notify(queue: .global()) {
+                self.reloadPlatformRatesViewModels()
+            }
+        } else {
+            guard let request = buildTxRequest(latestNonce: nonce, platform: selectedRate) else { return }
             swapService.buildTx(chainPath: AppState.shared.currentChain.apiChainPath(), request: request) { [weak self] result in
-                
                 switch result {
                 case .success(let txObject):
-                    self?.swapService.getL1FeeForTxIfHave(object: txObject) { l1Fee, object in
-                        self?.updateL1FeeForRate(hint: rate.hint, l1fee: l1Fee)
-                        if self?.selectedRate?.hint == rate.hint {
-                            self?.l1Fee = l1Fee
-                        }
-                        group.leave()
-                    }
+                    self?.reloadPlatformRatesViewModels()
                 case .failure(let error):
-                    group.leave()
                     print(TxErrorParser.parse(error: error).message)
                 }
                 
             }
-        })
-
-        group.notify(queue: .global()) {
-            //TODO: reload rate for platform here
-            self.reloadPlatformRatesViewModels()
         }
+        
     }
     
     func buildTxRequest(latestNonce: Int, platform: Rate?) -> SwapBuildTxRequest? {
