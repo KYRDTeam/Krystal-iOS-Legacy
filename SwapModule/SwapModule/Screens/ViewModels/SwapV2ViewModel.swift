@@ -63,10 +63,14 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
         }
     }
     
-    var l1Fee: BigInt = BigInt(0) {
-      didSet {
-          self.updateInfo()
-      }
+    var l1Fee: BigInt {
+        get {
+            return selectedRate?.l1Fee ?? BigInt(0)
+            
+        }
+        set {
+            updateInfo()
+        }
     }
 
     var isInputValid: Bool {
@@ -334,28 +338,51 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
             self.buildTx(nonce: nonce)
         }
     }
+    
+    func updateL1FeeForRate(hint: String, l1fee: BigInt) {
+        platformRates.value = platformRates.value.map({ rate in
+            var currentRate = rate
+            if currentRate.hint == hint {
+                currentRate.l1Fee = l1fee
+            }
+            return currentRate
+        })
+    }
 
     func buildTx(nonce: Int) {
-        guard let request = buildTxRequest(latestNonce: nonce) else { return }
-        swapService.buildTx(chainPath: AppState.shared.currentChain.apiChainPath(), request: request) { [weak self] result in
-            switch result {
-            case .success(let txObject):
-                self?.swapService.getL1FeeForTxIfHave(object: txObject) { l1Fee, object in
-                    self?.l1Fee = l1Fee
-                    
-                    //TODO: reload rate for platform here
-                    self?.reloadPlatformRatesViewModels()
+        let group = DispatchGroup()
+        platformRates.value.forEach({ rate in
+            guard let request = buildTxRequest(latestNonce: nonce, platform: rate) else { return }
+            group.enter()
+            swapService.buildTx(chainPath: AppState.shared.currentChain.apiChainPath(), request: request) { [weak self] result in
+                
+                switch result {
+                case .success(let txObject):
+                    self?.swapService.getL1FeeForTxIfHave(object: txObject) { l1Fee, object in
+                        self?.updateL1FeeForRate(hint: rate.hint, l1fee: l1Fee)
+                        if self?.selectedRate?.hint == rate.hint {
+                            self?.l1Fee = l1Fee
+                        }
+                        group.leave()
+                    }
+                case .failure(let error):
+                    group.leave()
+                    print(TxErrorParser.parse(error: error).message)
                 }
-            case .failure(let error):
-                print(TxErrorParser.parse(error: error).message)
+                
             }
+        })
+
+        group.notify(queue: .global()) {
+            //TODO: reload rate for platform here
+            self.reloadPlatformRatesViewModels()
         }
     }
     
-    func buildTxRequest(latestNonce: Int) -> SwapBuildTxRequest? {
+    func buildTxRequest(latestNonce: Int, platform: Rate?) -> SwapBuildTxRequest? {
         guard let sourceToken = sourceToken.value,
               let destToken = destToken.value,
-              let selectedRate = selectedPlatformRate.value,
+              let selectedRate = platform,
               let sourceAmount = sourceAmount.value
         else {
             return nil
@@ -485,7 +512,7 @@ class SwapV2ViewModel: SwapInfoViewModelProtocol {
             savedAmount = diffInUSD(lhs: sortedRates[0], rhs: sortedRates[1], destToken: destToken, destTokenPrice: destTokenPrice.value ?? 0)
         }
         return sortedRates.enumerated().map { index, rate in
-            let gasFeeUsd = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed ?? 0), gasPrice: self.gasPrice) + self.getL1FeeUSD(l1Fee: self.l1Fee)
+            let gasFeeUsd = self.getGasFeeUSD(estGas: BigInt(rate.estGasConsumed ?? 0), gasPrice: self.gasPrice) + self.getL1FeeUSD(l1Fee: rate.l1Fee ?? BigInt(0))
             return SwapPlatformItemViewModel(platformRate: rate,
                                              isSelected: rate.hint == selectedPlatformHint,
                                              quoteToken: AppDependencies.tokenStorage.quoteToken(forChain: currentChain.value),

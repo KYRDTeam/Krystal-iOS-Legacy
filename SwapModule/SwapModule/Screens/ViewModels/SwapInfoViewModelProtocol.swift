@@ -91,12 +91,10 @@ extension SwapInfoViewModelProtocol {
     }
     
     func getL1FeeUSD(l1Fee: BigInt) -> BigInt {
-//      let decimals = KNGeneralProvider.shared.quoteTokenObject.decimals
-//      let rateUSDDouble = KNGeneralProvider.shared.quoteTokenPrice?.usd ?? 0
-//      let rateBigInt = BigInt(rateUSDDouble * pow(10.0, Double(decimals)))
-//      let feeUSD = (l1Fee * rateBigInt) / BigInt(10).power(decimals)
-//      return feeUSD
-        return l1Fee
+        let decimals = quoteTokenDetail?.decimals ?? 18
+        let rateBigInt = BigInt(quoteTokenUsdPrice * pow(10.0, Double(decimals)))
+        let feeUSD = (l1Fee * rateBigInt) / BigInt(10).power(decimals)
+        return feeUSD
     }
     
     func getPriceImpactString(rate: Rate) -> String {

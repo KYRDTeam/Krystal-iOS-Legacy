@@ -95,6 +95,7 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
         self.swapObject = swapObject
         self.showRevertedRate = swapObject.showRevertedRate
         self.minRatePercent = swapObject.swapSetting.slippage
+        self.l1Fee = swapObject.rate.l1Fee ?? BigInt(0)
     }
     
     func updateData() {

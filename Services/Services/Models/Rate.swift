@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import BigInt
 
 struct RateResponse: Codable {
     let timestamp: Int
@@ -22,4 +23,5 @@ public struct Rate: Codable {
   public var estimatedGas: Int
   public let estGasConsumed: Int?
   public var priceImpact: Int
+  public var l1Fee: BigInt?
 }
