@@ -177,10 +177,6 @@ extension KNSendTokenViewCoordinator {
     self.multiSendCoordinator.appCoordinatorSwitchAddress()
   }
 
-  func appCoordinatorDidUpdateChain() {
-    self.rootViewController?.coordinatorDidUpdateChain()
-    self.multiSendCoordinator.appCoordinatorDidUpdateChain()
-  }
 }
 
 // MARK: Send Token View Controller Delegate
@@ -202,29 +198,18 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
         self.navigationController.showTopBannerView(message: Strings.watchWalletNotSupportOperation)
         return
       }
-
-      controller.displayLoading()
-      self.sendGetPreScreeningWalletRequest { [weak self] (result) in
-        controller.hideLoading()
-        guard let `self` = self else { return }
-        var message: String?
-        if case .success(let resp) = result,
-          let json = try? resp.mapJSON() as? JSONDictionary ?? [:] {
-          if let status = json["eligible"] as? Bool {
-            if isDebug { print("eligible status : \(status)") }
-            if status == false { message = json["message"] as? String }
+      self.checkEligibleWallet { isEligible in
+          if isEligible {
+              self.rootViewController?.coordinatorDidValidateTransferTransaction()
+          } else {
+              self.navigationController.showErrorTopBannerMessage(
+                          with: NSLocalizedString("error", value: "Error", comment: ""),
+                          message: Strings.notAnEligibleWallet,
+                          time: 2.0
+                        )
           }
-        }
-        if let errorMessage = message {
-          self.navigationController.showErrorTopBannerMessage(
-            with: NSLocalizedString("error", value: "Error", comment: ""),
-            message: errorMessage,
-            time: 2.0
-          )
-        } else {
-          self.rootViewController?.coordinatorDidValidateTransferTransaction()
-        }
       }
+      self.rootViewController?.coordinatorDidValidateTransferTransaction()
     case .validateSolana:
       self.rootViewController?.coordinatorDidValidateSolTransferTransaction()
     case .send(let transaction, let ens, let l1Fee):
@@ -284,18 +269,18 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       Tracker.track(event: .transferClickMultipleTransfer)
     }
   }
-
-  fileprivate func sendGetPreScreeningWalletRequest(completion: @escaping WrappedCompletion) {
-    let address = currentAddress.addressString
-    DispatchQueue.global(qos: .background).async {
-      let provider = MoyaProvider<UserInfoService>()
-      provider.requestWithFilter(.getPreScreeningWallet(address: address)) { result in
-        DispatchQueue.main.async {
-          completion(result)
+    
+  fileprivate  func checkEligibleWallet(completion: @escaping (Bool) -> Void) {
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      let address = self.currentAddress.addressString
+      provider.requestWithFilter(.checkEligibleWallet(address: address)) { (result) in
+        if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let isEligible = json["result"] as? Bool {
+          completion(isEligible)
+        } else {
+          completion(false)
         }
       }
     }
-  }
 
   fileprivate func estimateGasLimit(for transaction: UnconfirmedTransaction) {
     if currentAddress.isWatchWallet {

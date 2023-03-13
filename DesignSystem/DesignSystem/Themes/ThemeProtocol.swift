@@ -30,6 +30,8 @@ public protocol ThemeProtocol {
     var navigationButtonBackgroundColor: UIColor { get }
     var chartColors: [UIColor] { get }
     var positiveTextColor: UIColor { get }
+    var lineColor: UIColor { get }
+    var disableColor: UIColor { get }
 }
 
 

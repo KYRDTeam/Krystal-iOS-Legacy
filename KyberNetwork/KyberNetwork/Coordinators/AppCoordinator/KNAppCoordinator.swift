@@ -95,9 +95,9 @@ class KNAppCoordinator: NSObject, Coordinator {
   
   func switchWallet(wallet: KWallet, chain: ChainType) {
       if let address = getAddresses(wallet: wallet, chain: chain).first {
-        self.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain
-        switchAddress(address: address)
-        AppState.shared.updateChain(chain: chain)
+          self.overviewTabCoordinator?.rootViewController.viewModel.currentChain = chain          
+          AppState.shared.updateChain(chain: chain)
+          switchAddress(address: address)
       }
   }
   
@@ -113,7 +113,8 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
   
   func switchAddress(address: KAddress) {
-      AppState.shared.currentAddress = address
+      AppState.shared.updateAddress(address: address, targetChain: AppState.shared.currentChain)
+      
       KNAppTracker.updateAllTransactionLastBlockLoad(0, for: address.addressString)
       if self.tabbarController == nil {
           self.startNewSession(address: address)

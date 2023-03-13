@@ -152,7 +152,10 @@ jobs:
           bundler-cache: true
           
       - name: Install Pod check
-        run: gem install cocoapods-check
+        run: |
+          gem install activesupport -v 6.1.7.2
+          gem install cocoapods-check
+
         
       - name: Install Pod binary
         run: gem install cocoapods-binary

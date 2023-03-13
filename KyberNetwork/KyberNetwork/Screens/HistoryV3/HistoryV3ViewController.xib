@@ -24,6 +24,8 @@
                 <outlet property="chainIcon" destination="hRR-y1-1Uc" id="8Sc-U7-jAg"/>
                 <outlet property="pageContainer" destination="NzV-Pn-Wec" id="c41-JX-6LO"/>
                 <outlet property="segmentControl" destination="9hb-V9-yxr" id="2oY-jb-2yf"/>
+                <outlet property="segmentControlTrailingConstant" destination="cmM-wz-to9" id="6NA-yy-nm3"/>
+                <outlet property="statsButton" destination="L4j-Ht-Xtw" id="Cvs-Gn-kTt"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletButton" destination="rc7-5b-6X9" id="vIy-Pb-awB"/>
                 <outlet property="walletView" destination="1HK-Ip-Sh7" id="ycc-HS-jdf"/>
@@ -31,11 +33,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <rect key="frame" x="0.0" y="0.0" width="308" height="559"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cjd-mu-fNR">
-                    <rect key="frame" x="0.0" y="44" width="414" height="89"/>
+                    <rect key="frame" x="0.0" y="44" width="308" height="89"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="History" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OxE-Go-cMw">
                             <rect key="frame" x="51" y="24" width="62" height="21.5"/>
@@ -55,7 +57,7 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1HK-Ip-Sh7">
-                            <rect key="frame" x="306" y="28.5" width="92" height="32"/>
+                            <rect key="frame" x="200" y="28.5" width="92" height="32"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="M1l-Kn-xQa">
                                     <rect key="frame" x="12" y="0.0" width="74" height="32"/>
@@ -150,11 +152,11 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NzV-Pn-Wec">
-                    <rect key="frame" x="0.0" y="172" width="414" height="690"/>
+                    <rect key="frame" x="0.0" y="172" width="308" height="387"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="9hb-V9-yxr" customClass="SegmentedControl" customModule="DesignSystem">
-                    <rect key="frame" x="16" y="133" width="342" height="32"/>
+                    <rect key="frame" x="16" y="133" width="236" height="32"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <segments>
                         <segment title="Completed" width="98"/>
@@ -166,8 +168,8 @@
                         <action selector="segmentedControlValueChanged:" destination="-1" eventType="valueChanged" id="laI-Zj-jfa"/>
                     </connections>
                 </segmentedControl>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4j-Ht-Xtw">
-                    <rect key="frame" x="374" y="136.5" width="24" height="24"/>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4j-Ht-Xtw">
+                    <rect key="frame" x="268" y="136.5" width="24" height="24"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="24" id="aqS-7A-SDN"/>
                         <constraint firstAttribute="height" constant="24" id="vlP-T9-onD"/>
@@ -186,16 +188,17 @@
                 <constraint firstItem="Cjd-mu-fNR" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="3D0-8H-2dO"/>
                 <constraint firstItem="NzV-Pn-Wec" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="5oj-WZ-X72"/>
                 <constraint firstItem="9hb-V9-yxr" firstAttribute="top" secondItem="Cjd-mu-fNR" secondAttribute="bottom" id="IQ5-er-9le"/>
-                <constraint firstItem="L4j-Ht-Xtw" firstAttribute="leading" secondItem="9hb-V9-yxr" secondAttribute="trailing" constant="16" id="Uki-iO-6cz"/>
                 <constraint firstItem="NzV-Pn-Wec" firstAttribute="top" secondItem="9hb-V9-yxr" secondAttribute="bottom" constant="8" id="buc-Cz-OFf"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="L4j-Ht-Xtw" secondAttribute="trailing" constant="16" id="cVa-1g-OfG"/>
+                <constraint firstItem="9hb-V9-yxr" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" constant="-56" id="cmM-wz-to9"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="NzV-Pn-Wec" secondAttribute="trailing" id="fyp-Rp-nCG"/>
                 <constraint firstItem="L4j-Ht-Xtw" firstAttribute="centerY" secondItem="9hb-V9-yxr" secondAttribute="centerY" id="hbq-4h-tQN"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Cjd-mu-fNR" secondAttribute="trailing" id="lt0-mQ-hiS"/>
                 <constraint firstItem="9hb-V9-yxr" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="q98-oj-HpP"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="NzV-Pn-Wec" secondAttribute="bottom" id="xYt-hG-aee"/>
             </constraints>
-            <point key="canvasLocation" x="137.68115942028987" y="85.714285714285708"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="60.869565217391312" y="-27.120535714285712"/>
         </view>
     </objects>
     <designables>

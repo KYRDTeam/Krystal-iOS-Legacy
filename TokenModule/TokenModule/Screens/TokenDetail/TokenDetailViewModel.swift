@@ -29,6 +29,7 @@ class TokenDetailViewModel {
   let currencyMode: CurrencyMode
   
   var chain: ChainType
+  var tokenName: String?
   
   var hideBalanceStatus: Bool {
     get {
@@ -72,11 +73,12 @@ class TokenDetailViewModel {
   var address: String
   var tokenDetail: TokenDetailInfo?
 
-  init(address: String, chain: ChainType, currencyMode: CurrencyMode) {
+  init(address: String, chain: ChainType, tokenName: String? = nil, currencyMode: CurrencyMode) {
     self.address = address
     self.currencyMode = currencyMode
     self.chain = chain
     self.currency = currencyMode.toString(chain: chain)
+    self.tokenName = tokenName
   }
   
   func updateChartData(_ data: [[Double]]) {
@@ -178,7 +180,7 @@ class TokenDetailViewModel {
     guard !self.hideBalanceStatus else {
       return "********"
     }
-    guard let balance = AppDependencies.balancesStorage.getBalance(address: self.address) else { return "---" }
+    guard let balance = AppDependencies.balancesStorage.getBalance(address: self.address, chain: chain) else { return "---" }
     let balanceString = NumberFormatUtils.balanceFormat(value: balance, decimals: tokenDetail.decimals)
     return balanceString + " \(tokenDetail.symbol.uppercased())"
   }
@@ -187,7 +189,7 @@ class TokenDetailViewModel {
     guard let tokenDetail = tokenDetail else {
       return ""
     }
-    guard let balance = AppDependencies.balancesStorage.getBalance(address: self.address) else {
+    guard let balance = AppDependencies.balancesStorage.getBalance(address: self.address, chain: chain) else {
       return "---"
     }
     let price = getTokenLastPrice(self.currencyMode)

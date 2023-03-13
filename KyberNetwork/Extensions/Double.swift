@@ -10,7 +10,4 @@ extension Double {
     return (self * divisor).rounded() / divisor
   }
   
-  func amountBigInt(decimals: Int) -> BigInt? {
-    return BigInt(self * pow(10.0, Double(decimals)))
-  }
 }

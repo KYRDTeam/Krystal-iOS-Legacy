@@ -11,6 +11,7 @@ import TransactionModule
 import Services
 import BigInt
 import Utilities
+import Dependencies
 
 class PendingRewardClaimConfirmPopUpViewModel: BaseViewModel, TxConfirmViewModelProtocol {
     var title: String {
@@ -98,7 +99,14 @@ class PendingRewardClaimConfirmPopUpViewModel: BaseViewModel, TxConfirmViewModel
             guard let self = self else { return }
             switch result {
             case .success(let txResult):
-                let pendingTx = PendingClaimTxInfo(pendingUnstake: self.pendingUnstake, legacyTx: txResult.legacyTx, eip1559Tx: txResult.eip1559Tx, chain: self.chain, date: Date(), hash: txResult.hash)
+                let balance = BigInt(self.item.rewardToken.pendingReward.balance) ?? 0
+                let balanceDouble = NumberFormatUtils.balanceFormat(value: balance, decimals: self.item.rewardToken.tokenInfo.decimals).toDouble() ?? 0
+                let trackingExtraData = ClaimTrackingExtraData(
+                    token: self.item.rewardToken.tokenInfo.symbol,
+                    amount: balanceDouble,
+                    amountUsd: balanceDouble * (AppDependencies.priceStorage.getUsdPrice(address: self.item.rewardToken.tokenInfo.address) ?? 0)
+                )
+                let pendingTx = PendingClaimTxInfo(pendingUnstake: self.pendingUnstake, legacyTx: txResult.legacyTx, eip1559Tx: txResult.eip1559Tx, chain: self.chain, date: Date(), hash: txResult.hash, trackingExtraData: trackingExtraData)
                 TransactionManager.txProcessor.savePendingTx(txInfo: pendingTx)
                 print(txResult)
                 self.onSuccess(pendingTx)

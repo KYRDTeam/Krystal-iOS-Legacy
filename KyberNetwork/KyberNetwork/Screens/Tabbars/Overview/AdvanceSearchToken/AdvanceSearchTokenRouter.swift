@@ -34,7 +34,7 @@ class AdvanceSearchTokenRouter: AdvanceSearchTokenWireframeProtocol {
   
     func openChartTokenView(token: ResultToken, currencyMode: CurrencyMode) {
         guard let nav = viewController?.navigationController else { return }
-        AppDependencies.router.openToken(navigationController: nav, address: token.id, chainID: token.chainId)
+        AppDependencies.router.openToken(navigationController: nav, address: token.id, chainID: token.chainId, tokenName: token.name)
     }
   
   func handleSwitchChain(_ controller: ChartViewController, completion: @escaping () -> Void) {

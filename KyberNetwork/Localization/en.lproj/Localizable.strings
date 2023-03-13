@@ -1021,3 +1021,26 @@
 "can.not.est.gas" = "Can not estimate gas limit for this transaction";
 "build.raw.tx.failed" = "Build raw Tx failed";
 "parse.tx.failed" = "Parse Tx data failed";
+"not.an.eligible.wallet" = "Not an eligible wallet";
+"seed.phase.tip" = "Seed phrase (or recovery phrase)";
+"seed.phase.tip.detail" = "This is a 12 or 24-word phrase you got when you created your wallet.";
+"private.key.tip" = "Private key";
+"private.key.tip.detail" = "A private key is an access key to one address (account).";
+"security.tips" = "Security tips";
+
+"why.should.back.up.wallet" = "Why should I backup my wallet?";
+"backup.wallet.description" = "On Krystal, you can backup your wallet by saving a 12-word phrase (a.k.a seed phrase). \n\nOnce you do so, you can use it to restore the wallet on another device in case the original is lost, stolen, or damaged. \n\nWhen you restore your wallet, Krystal will gather all of your balances and transaction history, so that you can pick up where you left off.";
+"backup.wallet" = "Backup wallet";
+"lets.go" = "Let's go";
+"simplest.wallet" = "Simplest Wallet";
+"easy.to.use" = "Easy-to-use wallet for exploring Web3";
+"comprehensive.dashboard" = "Comprehensive Dashboard";
+"track.all.assets" = "Track all your digital assets at one place";
+"seamless.trading" = "Seamless Trading";
+"securely.swap" = "Securely swap, send and earn on your assets";
+"loyalty.rewards" = "Loyalty Rewards";
+"get.reward.on.krystal" = "Get rewards for all your activities on Krystal";
+"congratulation" = "Congratulation";
+"success.created" = "Your wallet has been created successfully";
+"confirm.import" = "Confirm your wallet address and set a wallet name";
+"finish" = "Finish";

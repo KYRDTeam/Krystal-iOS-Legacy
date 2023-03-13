@@ -267,7 +267,6 @@ class SwapV2ViewController: InAppBrowsingViewController {
         viewModel.sourceToken.observeAndFire(on: self) { [weak self] token in
             DispatchQueue.main.async {
                 self?.sourceTokenLabel.text = token?.symbol
-                self?.sourceTextField.text = nil
                 if let token = token {
                     self?.sourceTokenIcon.isHidden = false
                     self?.sourceTokenIcon.setImage(urlString: token.logo, symbol: token.symbol)
@@ -276,6 +275,10 @@ class SwapV2ViewController: InAppBrowsingViewController {
                     self?.sourceTokenLabel.text = Strings.selectToken
                 }
             }
+        }
+        
+        viewModel.onChangeSourceToken = { [weak self] in
+            self?.sourceTextField.text = nil
         }
         
         viewModel.destToken.observeAndFire(on: self) { [weak self] token in
@@ -499,16 +502,16 @@ class SwapV2ViewController: InAppBrowsingViewController {
                 self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact4.withLineSpacing()
                 self.piWarningLabel.textColor = AppTheme.current.errorTextColor
                 self.piWarningView.isHidden = false
-                self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
-                self.priceImpactInfoView.valueLabel.textColor = AppTheme.current.errorTextColor
+                self.priceImpactInfoView.setValue(value: "-", highlighted: false)
+                self.priceImpactInfoView.valueLabel.textColor = .white.withAlphaComponent(0.5)
             case .outOfPositiveRange:
                 self.piWarningView.backgroundColor = AppTheme.current.errorTextColor.withAlphaComponent(0.1)
                 self.piWarningIcon.image = .swapWarningRed
                 self.piWarningLabel.attributedText = Strings.swapWarnPriceImpact5.withLineSpacing()
                 self.piWarningLabel.textColor = AppTheme.current.errorTextColor
                 self.piWarningView.isHidden = false
-                self.priceImpactInfoView.setValue(value: self.viewModel.priceImpactString.value ?? "", highlighted: false)
-                self.priceImpactInfoView.valueLabel.textColor = AppTheme.current.errorTextColor
+                self.priceImpactInfoView.setValue(value: "-", highlighted: false)
+                self.priceImpactInfoView.valueLabel.textColor = .white.withAlphaComponent(0.5)
             }
         }
         
@@ -702,7 +705,8 @@ extension SwapV2ViewController {
         guard let sourceToken = viewModel.sourceToken.value, let sourceBalance = viewModel.sourceBalance.value else {
             return
         }
-        let amountToChange = BigInt(doubleValue * pow(10.0, Double(sourceToken.decimals)))
+        
+        let amountToChange = doubleValue.amountBigInt(decimals: sourceToken.decimals) ?? .zero
         
         if amountToChange > viewModel.maxAvailableSourceTokenAmount && amountToChange <= sourceBalance {
             showSuccessTopBannerMessage(

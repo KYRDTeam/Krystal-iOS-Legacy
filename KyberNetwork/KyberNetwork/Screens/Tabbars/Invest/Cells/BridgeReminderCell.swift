@@ -21,8 +21,8 @@ class BridgeReminderCell: UITableViewCell {
       // Configure the view for the selected state
   }
   
-  func updateReminderText(crossChainFee: String, miniAmount: String, maxAmount: String, minFeeString: String, maxFeeString: String) {
-    let reminder1 = minFeeString == maxFeeString ? "•  Bridge fee is \(minFeeString) & it is paid to nodes facilitating token transfer \n" : "•  Bridge fee is \(minFeeString) (max \(maxFeeString)) & it is paid to nodes facilitating token transfer \n"
+  func updateReminderText(crossChainFee: String, miniAmount: String, maxAmount: String, minFeeString: String) {
+    let reminder1 = "•  Bridge fee is \(minFeeString) & it is paid to nodes facilitating token transfer \n"
     let text = "\(reminder1)•  Minimum transfer amount is \(miniAmount) (Maximum \(maxAmount))\n•  Estimated time to transfer is 10 - 30 mins"
     let attributedString = NSMutableAttributedString(string: text)
     let paragraphStyle = NSMutableParagraphStyle()

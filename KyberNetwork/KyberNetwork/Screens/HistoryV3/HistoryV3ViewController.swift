@@ -10,11 +10,14 @@ import BaseModule
 import TransactionModule
 import DesignSystem
 import AppState
+import Dependencies
 
 class HistoryV3ViewController: BaseWalletOrientedViewController {
     
-    @IBOutlet weak var segmentControl: SegmentedControl!
+    @IBOutlet weak var statsButton: UIButton!
+    @IBOutlet weak var segmentControl: DesignSystem.SegmentedControl!
     @IBOutlet weak var pageContainer: UIView!
+    @IBOutlet weak var segmentControlTrailingConstant: NSLayoutConstraint!
     
     var selectedPageIndex = 0
     var viewControllers: [UIViewController] = []
@@ -39,11 +42,22 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
         return TransactionManager.txProcessor.hasPendingTx()
     }
     
-    var selectedChain: ChainType = .all
+    var isHistoryStatsEnabled: Bool {
+        return AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.historyStats)
+    }
+    
+    var segmentControlTrailingSpace: CGFloat {
+        return isHistoryStatsEnabled ? 56 : 16
+    }
+    
+    var selectedChain: ChainType = AppState.shared.isSelectedAllChain ? .all : AppState.shared.currentChain
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        super.onAppSwitchChain()
+        segmentControlTrailingConstant.constant = -segmentControlTrailingSpace
+        statsButton.isHidden = !isHistoryStatsEnabled
         setupPageController()
         setupSegmentControl()
         
@@ -69,7 +83,7 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
     }
     
     func setupPageController() {
-        let historyVC = HistoryCoordinator.createHistoryViewController()
+        let historyVC = HistoryCoordinator.createHistoryViewController(chain: selectedChain)
         
         let pendingViewModel = PendingTxViewModel()
         let pendingVC = PendingTxViewController.instantiateFromNib()
@@ -96,7 +110,7 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
     }
     
     func setupSegmentControl() {
-        let width = segmentControl.frame.size.width - 32
+        let width = UIScreen.main.bounds.width - segmentControlTrailingSpace - 16
         segmentControl.backgroundColor = .clear
         segmentControl.tintColor = AppTheme.current.primaryColor
         segmentControl.frame = CGRect(x: self.segmentControl.frame.minX,
@@ -106,7 +120,7 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
         segmentControl.setWidth(width / 2, forSegmentAt: 1)
         segmentControl.selectedSegmentIndex = 0
         segmentControl.setTitleTextAttributes([.font: UIFont.karlaReguler(ofSize: 16)], for: .normal)
-        segmentControl.highlightSelectedSegment(width: width / 2)
+        segmentControl.highlightSelectedSegment(parentWidth: width, width: width / 2)
     }
     
     @IBAction func backTapped(_ sender: Any) {
@@ -122,7 +136,7 @@ class HistoryV3ViewController: BaseWalletOrientedViewController {
     
     func jumpToPage(index: Int) {
         segmentControl.selectedSegmentIndex = index
-        segmentControl.underlineCenterPosition()
+        segmentControl.underlineCenterPosition(parentWidth: UIScreen.main.bounds.width - segmentControlTrailingSpace - 16)
         if index != selectedPageIndex {
             selectPage(index: index)
         }

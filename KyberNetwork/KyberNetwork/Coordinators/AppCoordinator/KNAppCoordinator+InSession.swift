@@ -170,7 +170,7 @@ extension KNAppCoordinator {
     KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
       
     self.doLogin { _ in }
-    UserService().connectEVM(address: address) {}
+    UserService().connect(address: address) {}
   }
   
   func stopAllSessions() {
@@ -195,7 +195,7 @@ extension KNAppCoordinator {
     self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     
     self.doLogin { _ in }
-    UserService().connectEVM(address: address) {}
+    UserService().connect(address: address) {}
     
     NotificationCenter.default.post(
       name: Notification.Name(kAppDidUpdateNewSession),

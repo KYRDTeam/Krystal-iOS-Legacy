@@ -23,7 +23,10 @@ extension Error {
                     switch JSONError {
                     case .responseError(_, let message, _):
                         return message
-                    default: return "Undefined error"
+                    case .responseNotFound(_, let object):
+                        return (((object as? [String: Any])?["error"] as? [String: Any])?["message"] as? String) ?? "Undefined error"
+                    default:
+                        return "Undefined error"
                     }
                 }
             default:

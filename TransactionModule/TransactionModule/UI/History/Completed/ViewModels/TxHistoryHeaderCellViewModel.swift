@@ -41,8 +41,8 @@ struct TxHistoryHeaderCellViewModel {
         
         switch type {
         case .transfer:
-            if tx.to.isEmpty {
-                contract = tx.tokenTransfers?.first?.otherAddress.shortTypeAddress ?? ""
+            if let address = tx.tokenTransfers?.first?.otherAddress {
+                contract = address.shortTypeAddress
             } else {
                 contract = tx.to.shortTypeAddress
             }

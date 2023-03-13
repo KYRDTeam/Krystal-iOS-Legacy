@@ -8,6 +8,7 @@
 import Foundation
 import BaseModule
 import UIKit
+import BaseWallet
 
 public class HistoryCoordinator: Coordinator {
     public var coordinators: [Coordinator] = []
@@ -18,15 +19,12 @@ public class HistoryCoordinator: Coordinator {
     }
     
     public func start() {
-        let vc = TxHistoryViewController.instantiateFromNib()
-        let viewModel = TxHistoryViewModel()
-        vc.viewModel = viewModel
-        navigationController.pushViewController(vc, animated: true)
+        
     }
     
-    public static func createHistoryViewController() -> UIViewController {
+    public static func createHistoryViewController(chain: ChainType) -> UIViewController {
         let vc = TxHistoryViewController.instantiateFromNib()
-        let viewModel = TxHistoryViewModel()
+        let viewModel = TxHistoryViewModel(chain: chain)
         vc.viewModel = viewModel
         return vc
     }

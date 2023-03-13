@@ -16,6 +16,7 @@ import Dependencies
 
 protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidImportWallet(wallet: KWallet, chainType: ChainType)
+  func overviewCoordinatorDidAddWatchAddress(address: KAddress, chainType: ChainType)
   func overviewCoordinatorOpenCreateChainWalletMenu(chainType: ChainType)
   func overviewCoordinatorDidSelectAddWallet()
   func overviewCoordinatorDidSelectManageWallet()
@@ -199,7 +200,6 @@ class OverviewCoordinator: NSObject, Coordinator {
       self.currentCurrencyType = KNGeneralProvider.shared.quoteCurrency
     }
     UserDefaults.standard.setValue(self.currentCurrencyType.rawValue, forKey: Constants.currentCurrencyMode)
-    self.sendCoordinator?.appCoordinatorDidUpdateChain()
   }
 
   func appCoordinatorReceiveWallectConnectURI(_ uri: String) {
@@ -450,6 +450,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     
     actionController.addAction(Action(ActionData(title: "Change Currency", image: UIImage(named: "currency_change_icon")!), style: .default, handler: { _ in
       let controller = OverviewChangeCurrencyViewController()
+      controller.shouldShowQuote = self.rootViewController.viewModel.currentChain != .all
       controller.completeHandle = { mode in
         UserDefaults.standard.setValue(mode.rawValue, forKey: Constants.currentCurrencyMode)
         self.rootViewController.coordinatorDidUpdateCurrencyMode(mode)
@@ -673,6 +674,9 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     case .scannedWalletConnect(let url):
       AppEventCenter.shared.didScanWalletConnect(address: currentAddress, url: url)
     case .selectAllChain:
+      self.currentCurrencyType = .usd
+      UserDefaults.standard.setValue(self.currentCurrencyType.rawValue, forKey: Constants.currentCurrencyMode)
+      self.rootViewController.coordinatorDidUpdateCurrencyMode(self.currentCurrencyType)
       self.delegate?.overviewCoordinatorDidSelectAllChain()
       self.loadMultichainAssetsData { chainBalanceModels in
         self.rootViewController.coordinatorDidUpdateAllTokenData(models: chainBalanceModels)
@@ -680,6 +684,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     case .importWallet(let privateKey, let chain):
       let coordinator = KNImportWalletCoordinator(navigationController: navigationController)
       self.importWalletCoordinator = coordinator
+      self.importWalletCoordinator?.delegate = self
       coordinator.startImportFlow(privateKey: privateKey, chain: chain)
     case .openPromotion(let code):
       delegate?.overviewCoordinatorOpenPromotion(code: code)
@@ -902,4 +907,21 @@ extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
       }
     }
   }
+}
+
+extension OverviewCoordinator: KNImportWalletCoordinatorDelegate {
+  
+  func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
+    delegate?.overviewCoordinatorDidImportWallet(wallet: wallet, chainType: chain)
+    navigationController.popViewController(animated: true, completion: nil)
+  }
+  
+  func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType) {
+    delegate?.overviewCoordinatorDidAddWatchAddress(address: watchAddress, chainType: chain)
+  }
+  
+  func importWalletCoordinatorDidClose() {
+    importWalletCoordinator = nil
+  }
+
 }

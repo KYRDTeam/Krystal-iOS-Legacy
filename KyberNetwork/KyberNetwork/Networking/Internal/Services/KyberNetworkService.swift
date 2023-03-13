@@ -177,7 +177,6 @@ enum UserInfoService {
   case sendTxHash(authToken: String, txHash: String)
   case getNotification(accessToken: String?, pageIndex: Int)
   case markAsRead(accessToken: String?, ids: [Int])
-  case getPreScreeningWallet(address: String)
   case deleteAllTriggerdAlerts(accessToken: String)
   case getListSubscriptionTokens(accessToken: String)
   case togglePriceNotification(accessToken: String, state: Bool)
@@ -222,8 +221,6 @@ extension UserInfoService: TargetType {
       return URL(string: "\(baseString)/api/notifications?page_index=\(pageIndex)&page_size=10")!
     case .markAsRead:
       return URL(string: "\(baseString)/api/notifications/mark_as_read")!
-    case .getPreScreeningWallet(let address):
-      return URL(string: "\(baseString)/api/wallet/screening?wallet=\(address)")!
     case .deleteAllTriggerdAlerts:
       return URL(string: "\(baseString)/api/alerts/delete_triggered")!
     case .getListSubscriptionTokens:
@@ -251,7 +248,7 @@ extension UserInfoService: TargetType {
 
   var method: Moya.Method {
     switch self {
-    case .getListAlerts, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getNotification, .getPreScreeningWallet, .getListSubscriptionTokens, .getListFavouriteMarket, .getPlatformFee, .getMobileBanner, .getSwapHint: return .get
+    case .getListAlerts, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getNotification, .getListSubscriptionTokens, .getListFavouriteMarket, .getPlatformFee, .getMobileBanner, .getSwapHint: return .get
     case .removeAnAlert, .deleteAllTriggerdAlerts: return .delete
     case .addPushToken, .updateAlert, .togglePriceNotification: return .patch
     case .markAsRead, .updateMarketFavouriteStatus: return .put
@@ -285,8 +282,6 @@ extension UserInfoService: TargetType {
       let data = try! JSONSerialization.data(withJSONObject: json, options: [])
       return .requestData(data)
     case .getListAlerts, .removeAnAlert, .getListAlertMethods, .getLeaderBoardData, .getLatestCampaignResult, .getNotification, .deleteAllTriggerdAlerts, .getListSubscriptionTokens, .getListFavouriteMarket, .getPlatformFee, .getMobileBanner:
-      return .requestPlain
-    case .getPreScreeningWallet:
       return .requestPlain
     case .sendTxHash(_, let txHash):
       let json: JSONDictionary = [
@@ -365,8 +360,6 @@ extension UserInfoService: TargetType {
       if let token = accessToken { json["Authorization"] = token }
     case .markAsRead(let accessToken, _):
       if let token = accessToken { json["Authorization"] = token }
-    case .getPreScreeningWallet:
-      break
     case .deleteAllTriggerdAlerts(let accessToken):
       json["Authorization"] = accessToken
     case .getListSubscriptionTokens(let accessToken):
@@ -873,7 +866,6 @@ enum KrytalService {
   case login(address: String, timestamp: Int, signature: String)
   case getClaimHistory(address: String, accessToken: String)
   case claimReward(address: String, amount: Double, accessToken: String)
-  case getBalances(address: String, forceSync: Bool)
   case getOverviewMarket(addresses: [String], quotes: [String])
   case getTokenDetail(chainPath: String, address: String)
   case getChartData(chainPath: String, address: String, quote: String, from: Int)
@@ -991,8 +983,6 @@ extension KrytalService: TargetType {
       return "/v1/account/claimHistory"
     case .claimReward:
       return "/v1/account/claimReward"
-    case .getBalances:
-      return "/v1/account/balances"
     case .getOverviewMarket:
       return "/v1/market/overview"
     case .getTokenDetail:
@@ -1256,12 +1246,6 @@ extension KrytalService: TargetType {
         "amount": amount
       ]
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
-    case .getBalances(address: let address, forceSync: let forceSync):
-      let json: JSONDictionary = [
-        "address": address,
-        "forceSync": forceSync
-      ]
-      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getOverviewMarket(addresses: let addresses, quotes: let quotes):
       var json: JSONDictionary = [
         "quoteCurrencies": quotes.joined(separator: ","),
@@ -1463,7 +1447,8 @@ extension KrytalService: TargetType {
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
    case .getAllNftBalance(address: let address, chains: let chains):
       var json: JSONDictionary = [
-        "address": address
+        "address": address,
+        "withMetadata": true
       ]
       
       if chains.isEmpty {

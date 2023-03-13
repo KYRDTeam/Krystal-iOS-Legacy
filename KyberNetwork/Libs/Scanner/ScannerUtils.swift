@@ -17,6 +17,7 @@ enum ScanResultType: CaseIterable {
   case solPublicKey
   case solPrivateKey
   case promotionCode
+  case seed
   
   var trackingOutputKey: String {
     switch self {
@@ -28,6 +29,9 @@ enum ScanResultType: CaseIterable {
       return "private_key"
     case .promotionCode:
       return "promotion_code"
+    case .seed:
+      return "seed"
+
     }
   }
 }
@@ -74,6 +78,12 @@ class ScannerUtils {
       return SolanaUtils.isValidSolanaPrivateKey(text: text)
     case .promotionCode:
       return getPromotionCode(text: text) != nil
+    case .seed:
+      return true
+//      var words = text.trimmed.components(separatedBy: " ").map({ $0.trimmed })
+//      words = words.filter({ return !$0.replacingOccurrences(of: " ", with: "").isEmpty })
+//      let validWordCount = [12, 15, 18, 21, 24]
+//      return validWordCount.contains(words.count)
     }
   }
   

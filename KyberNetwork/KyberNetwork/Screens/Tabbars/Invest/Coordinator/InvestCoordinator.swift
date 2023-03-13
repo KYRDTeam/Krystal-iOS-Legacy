@@ -174,8 +174,11 @@ class InvestCoordinator: Coordinator {
   }
   
     func openLoyalty() {
-        guard let url = URL(string: KNEnvironment.default.krystalWebUrl + "/loyalty" + "?preview=true") else { return }
-        DappBrowser.openURL(navigationController: navigationController, url: url)
+//        guard let url = URL(string: KNEnvironment.default.krystalWebUrl + "/loyalty" + "?preview=true") else { return }
+//        DappBrowser.openURL(navigationController: navigationController, url: url)
+        let coordinator = DappCoordinator(navigationController: navigationController)
+        self.dappCoordinator = coordinator
+        coordinator.openBrowserScreen(searchText: KNEnvironment.default.krystalWebUrl + "/loyalty?preview=true")
     }
     
   func openRewardHunting() {
@@ -217,9 +220,7 @@ class InvestCoordinator: Coordinator {
   func appCoordinatorDidUpdateChain() {
     self.rootViewController.coordinatorDidUpdateChain()
     self.loadMarketAssets()
-    self.sendCoordinator?.appCoordinatorDidUpdateChain()
     self.dappCoordinator?.appCoordinatorDidUpdateChain()
-    self.multiSendCoordinator.appCoordinatorDidUpdateChain()
     self.bridgeCoordinator?.appCoordinatorDidUpdateChain()
   }
 }
@@ -293,6 +294,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         case .promotionCode:
           guard let code = ScannerUtils.getPromotionCode(text: text) else { return }
           self.openPromotion(withCode: code)
+        case .seed:
+            break
         }
       }
       MixPanelManager.track("scanner_open", properties: ["screenid": "scanner"])

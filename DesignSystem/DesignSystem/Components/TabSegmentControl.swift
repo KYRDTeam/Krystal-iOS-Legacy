@@ -25,10 +25,10 @@ open class SegmentedControl: UISegmentedControl {
         self.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: AppTheme.current.primaryTextColor, NSAttributedString.Key.font: UIFont.karlaReguler(ofSize: 16)], for: .selected)
     }
     
-    public func highlightSelectedSegment(width: CGFloat? = nil) {
+    public func highlightSelectedSegment(parentWidth: CGFloat? = nil, width: CGFloat? = nil) {
         guard !isSetupHighlight else { return }
         removeBorder()
-        let lineWidth: CGFloat = self.frame.size.width / CGFloat(self.numberOfSegments)
+        let lineWidth: CGFloat = (parentWidth ?? self.frame.size.width) / CGFloat(self.numberOfSegments)
         let lineHeight: CGFloat = 2.0
         let lineXPosition = CGFloat(selectedSegmentIndex * Int(lineWidth)) + (lineWidth - (width ?? lineWidth)) / 2
         let lineYPosition = self.bounds.size.height - 6.0
@@ -48,9 +48,9 @@ open class SegmentedControl: UISegmentedControl {
         })
     }
     
-    public func underlineCenterPosition() {
+    public func underlineCenterPosition(parentWidth: CGFloat? = nil) {
         guard let underLine = self.viewWithTag(1) else { return }
-        let segmentWidth = self.frame.width / CGFloat(self.numberOfSegments)
+        let segmentWidth = (parentWidth ?? self.frame.width) / CGFloat(self.numberOfSegments)
         let xPosition = segmentWidth * CGFloat(selectedSegmentIndex) + (segmentWidth - underLine.frame.size.width) / 2
         
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: .curveEaseInOut, animations: {

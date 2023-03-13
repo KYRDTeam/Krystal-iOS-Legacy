@@ -23,7 +23,7 @@ class PendingUnstakeTxInfo: PendingTxInfo {
     var toTokenLogo: String
     
     
-    init(platform: Platform, stakingTokenAmount: String, toTokenAmount: String, stakingTokenSymbol: String, toTokenSymbol: String, stakingTokenLogo: String, toTokenLogo: String, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: BaseWallet.ChainType, date: Date, hash: String, nonce: Int) {
+    init(platform: Platform, stakingTokenAmount: String, toTokenAmount: String, stakingTokenSymbol: String, toTokenSymbol: String, stakingTokenLogo: String, toTokenLogo: String, legacyTx: LegacyTransaction? = nil, eip1559Tx: EIP1559Transaction? = nil, chain: BaseWallet.ChainType, date: Date, hash: String, nonce: Int, trackingExtraData: UnstakingTrackingExtraData) {
         self.platform = platform
         self.stakingTokenAmount = stakingTokenAmount
         self.toTokenAmount = toTokenAmount
@@ -31,7 +31,7 @@ class PendingUnstakeTxInfo: PendingTxInfo {
         self.toTokenSymbol = toTokenSymbol
         self.stakingTokenLogo = stakingTokenLogo
         self.toTokenLogo = toTokenLogo
-        super.init(type: .unstake, legacyTx: legacyTx, eip1559Tx: eip1559Tx, chain: chain, date: date, hash: hash)
+        super.init(type: .unstake, legacyTx: legacyTx, eip1559Tx: eip1559Tx, chain: chain, date: date, hash: hash, trackingExtraData: trackingExtraData)
     }
 
     override var destSymbol: String? {

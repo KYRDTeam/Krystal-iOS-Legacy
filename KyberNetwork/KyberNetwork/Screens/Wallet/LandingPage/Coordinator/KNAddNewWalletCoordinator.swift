@@ -5,6 +5,7 @@ import TrustKeystore
 import BigInt
 import KrystalWallets
 import AppState
+import Dependencies
 
 enum AddNewWalletType {
   case full
@@ -88,7 +89,12 @@ class KNAddNewWalletCoordinator: Coordinator {
   }
   
   fileprivate func importAWallet() {
-    self.importWalletCoordinator.start()
+      if AppDependencies.featureFlag.isFeatureEnabled(key: FeatureFlagKeys.importWalletV2) {
+          let importVC = ImportWalletViewController.instantiateFromNib()
+          self.navigationController.pushViewController(importVC, animated: true)
+      } else {
+          self.importWalletCoordinator.start()
+      }
   }
   
   func didImportWallet(wallet: KWallet, chain: ChainType) {

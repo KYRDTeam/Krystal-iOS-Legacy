@@ -85,11 +85,7 @@ class MultiSendCoordinator: NSObject, Coordinator {
     }
     return false
   }
-  
-  func appCoordinatorDidUpdateChain() {
-    self.rootViewController.coordinatorDidUpdateChain()
-  }
-  
+
   func appCoordinatorSwitchAddress() {
     self.rootViewController.coordinatorAppSwitchAddress()
   }
@@ -607,6 +603,8 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
           historyTx.hash = hash
           historyTx.time = Date()
           historyTx.nonce = Int(txData.1.nonce) ?? 0
+            
+            
           EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTx)
         case .failure(let error):
           unApproveItem.append(txData.0)
@@ -758,6 +756,10 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
             historyTransaction.hash = hash
             historyTransaction.time = Date()
             historyTransaction.nonce = Int(tx.nonce.drop0x, radix: 16) ?? 0
+              
+            let data = self.rootViewController.viewModel.buildExtraData()
+            historyTransaction.trackingExtraData = MultisendExtraData(data: data, amountUsd: "0")
+              
             EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
             self.openTransactionStatusPopUp(transaction: historyTransaction)
           case .failure(let error):
@@ -780,6 +782,8 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
                   historyTransaction.hash = hash
                   historyTransaction.time = Date()
                   historyTransaction.nonce = tx.nonce
+                  let data = self.rootViewController.viewModel.buildExtraData()
+                  historyTransaction.trackingExtraData = MultisendExtraData(data: data, amountUsd: "0")
                   EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
                   self.openTransactionStatusPopUp(transaction: historyTransaction)
                 case .failure(let error):

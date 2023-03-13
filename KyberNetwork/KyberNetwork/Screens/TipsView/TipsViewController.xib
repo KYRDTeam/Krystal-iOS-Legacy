@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TipsViewController" customModule="Krystal" customModuleProvider="target">
+            <connections>
+                <outlet property="tableView" destination="jn5-3f-a7g" id="vvh-pP-zU0"/>
+                <outlet property="titleLabel" destination="NDx-Hp-cBm" id="Cxj-9I-aFH"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DaR-5D-0Z8">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oXC-Vc-qb6">
+                            <rect key="frame" x="24" y="52" width="46" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="46" id="5UL-Qa-oy2"/>
+                                <constraint firstAttribute="height" constant="36" id="ieB-oS-S1U"/>
+                            </constraints>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" image="back_blue_icon">
+                                <color key="titleShadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="backButtonTapped:" destination="-1" eventType="touchUpInside" id="aDq-Xr-27G"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Security tips" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NDx-Hp-cBm">
+                            <rect key="frame" x="122" y="54" width="170" height="32"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="170" id="aeV-xp-QiB"/>
+                                <constraint firstAttribute="height" constant="32" id="raE-jO-jW7"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="oXC-Vc-qb6" secondAttribute="bottom" id="FEg-bQ-ASr"/>
+                        <constraint firstItem="NDx-Hp-cBm" firstAttribute="centerY" secondItem="oXC-Vc-qb6" secondAttribute="centerY" id="bhm-qN-dgF"/>
+                        <constraint firstItem="oXC-Vc-qb6" firstAttribute="leading" secondItem="DaR-5D-0Z8" secondAttribute="leading" constant="24" id="cDf-Dk-Fs2"/>
+                        <constraint firstAttribute="height" constant="88" id="fRR-7B-H7e"/>
+                        <constraint firstItem="NDx-Hp-cBm" firstAttribute="centerX" secondItem="DaR-5D-0Z8" secondAttribute="centerX" id="tmr-dq-ezK"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="jn5-3f-a7g">
+                    <rect key="frame" x="0.0" y="104" width="414" height="758"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="C1n-wy-5d9"/>
+                        <outlet property="delegate" destination="-1" id="oiy-vX-5tC"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="mainViewBgColor"/>
+            <constraints>
+                <constraint firstItem="DaR-5D-0Z8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Eu6-on-iZ9"/>
+                <constraint firstItem="jn5-3f-a7g" firstAttribute="top" secondItem="DaR-5D-0Z8" secondAttribute="bottom" constant="16" id="Kle-Ck-dZO"/>
+                <constraint firstItem="jn5-3f-a7g" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="W85-e2-wgE"/>
+                <constraint firstAttribute="trailing" secondItem="DaR-5D-0Z8" secondAttribute="trailing" id="cHS-51-t7e"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="jn5-3f-a7g" secondAttribute="trailing" id="dK3-de-kbC"/>
+                <constraint firstItem="DaR-5D-0Z8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ifz-0D-14O"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="jn5-3f-a7g" secondAttribute="bottom" id="m4R-JX-qve"/>
+            </constraints>
+            <point key="canvasLocation" x="132" y="-11"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="back_blue_icon" width="22" height="18"/>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0E81F6026D12F409B8F03625 /* Pods_TransactionModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2D410ED02563A76864D651 /* Pods_TransactionModule.framework */; };
 		7E0BBE80291CA4F60030EE44 /* TransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0BBE7F291CA4F60030EE44 /* TransitionDelegate.swift */; };
+		7E8C9C8129ACB71200838427 /* TxTrackingExtraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C9C8029ACB71200838427 /* TxTrackingExtraData.swift */; };
 		7EAF475B291B602300BF5D00 /* TxStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF475A291B602300BF5D00 /* TxStatus.swift */; };
 		7EAF4789291BB59100BF5D00 /* ApproveTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF4787291BB59100BF5D00 /* ApproveTokenViewController.swift */; };
 		7EAF478A291BB59100BF5D00 /* ApproveTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EAF4788291BB59100BF5D00 /* ApproveTokenViewController.xib */; };
@@ -98,6 +99,7 @@
 
 /* Begin PBXFileReference section */
 		7E0BBE7F291CA4F60030EE44 /* TransitionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionDelegate.swift; sourceTree = "<group>"; };
+		7E8C9C8029ACB71200838427 /* TxTrackingExtraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxTrackingExtraData.swift; sourceTree = "<group>"; };
 		7EAF475A291B602300BF5D00 /* TxStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxStatus.swift; sourceTree = "<group>"; };
 		7EAF4787291BB59100BF5D00 /* ApproveTokenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApproveTokenViewController.swift; sourceTree = "<group>"; };
 		7EAF4788291BB59100BF5D00 /* ApproveTokenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ApproveTokenViewController.xib; sourceTree = "<group>"; };
@@ -445,6 +447,7 @@
 				A69E8EA8291CA47B005B28CB /* PendingTxInfo.swift */,
 				A69E8EAE291CEA1A005B28CB /* InternalTransactionState.swift */,
 				7ED1AF1B291E055600BA7C75 /* ApprovePendingTxInfo.swift */,
+				7E8C9C8029ACB71200838427 /* TxTrackingExtraData.swift */,
 			);
 			path = Txs;
 			sourceTree = "<group>";
@@ -675,6 +678,7 @@
 				A6486CA229530CC70030CECB /* TxHistoryViewController.swift in Sources */,
 				A6486CC929541D590030CECB /* TokenVerifyStatus.swift in Sources */,
 				A6486CD129543F7A0030CECB /* TxHistoryFooterCellViewModel.swift in Sources */,
+				7E8C9C8129ACB71200838427 /* TxTrackingExtraData.swift in Sources */,
 				A6486CA629530D0E0030CECB /* TxHistoryViewModel.swift in Sources */,
 				A60C62BB296681BD000A3565 /* TxStatsCellType.swift in Sources */,
 				A6D1F7FC291B8EA400ABA52B /* EIP1559TransactionSigner.swift in Sources */,

@@ -14,6 +14,7 @@ import SkeletonView
 import BaseModule
 import DesignSystem
 import TransactionModule
+import Dependencies
 
 protocol OverviewMainViewControllerDelegate: class {
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent)
@@ -220,7 +221,6 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
     self.updateUIByFeatureFlags()
     self.delegate?.overviewMainViewController(self, run: .didAppear)
     self.getNotificationBadgeNumber()
-    
   }
   
   func updateUIByFeatureFlags() {
@@ -399,6 +399,8 @@ class OverviewMainViewController: BaseWalletOrientedViewController {
       case .promotionCode:
         guard let code = ScannerUtils.getPromotionCode(text: text) else { return }
         self.delegate?.overviewMainViewController(self, run: .openPromotion(code: code))
+      case .seed:
+          break
       }
     }
     MixPanelManager.track("home_qr", properties: ["screenid": "homepage"])

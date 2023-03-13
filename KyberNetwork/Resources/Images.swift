@@ -8,6 +8,10 @@
 import UIKit
 
 struct Images {
+    
+  // Import screen
+  static let pasteIcon = UIImage(named: "icon-paste")!
+  static let pasteDisableIcon = UIImage(named: "icon-paste-disable")!
   
   // Explore screen
   static let exploreSwapIcon = UIImage(named: "swap_inverst_icon")!
@@ -79,6 +83,7 @@ struct Images {
   static let chainArbitrumSquare = UIImage(named: "chain_arbitrum_square")!
   static let chainAuroraSquare = UIImage(named: "chain_aurora_square")!
   static let chainSolanaSquare = UIImage(named: "chain_solana_square")!
+  static let chainSolana = UIImage(named: "icon_solana")!
   static let chainKlaytnSquare = UIImage(named: "chain_klaytn_square")!
   static let chainOptimismSquare = UIImage(named: "chain_optimism_square")!
   // Wallet connect

@@ -11,6 +11,7 @@ import Dependencies
 import FittedSheets
 import Services
 import Result
+import TransactionModule
 
 class ApprovalsCoordinator: Coordinator {
     var coordinators: [Coordinator] = []
@@ -35,8 +36,8 @@ class ApprovalsCoordinator: Coordinator {
                 onTapHistory: { [weak self] in
                     self?.openHistory()
                 },
-                onTapRevoke: { [weak self] approval in
-                    self?.openRevokeConfirm(approval: approval)
+                onTapRevoke: { [weak self] approval, setting in
+                    self?.openRevokeConfirm(approval: approval, setting: setting)
                 },
                 onOpenStatus: onOpenTxStatusPopup,
                 onTapTokenSymbol: { [weak self] approval in
@@ -62,9 +63,9 @@ class ApprovalsCoordinator: Coordinator {
         AppDependencies.router.openTransactionHistory()
     }
     
-    func openRevokeConfirm(approval: Approval) {
+    func openRevokeConfirm(approval: Approval, setting: TxSettingObject) {
         self.viewModel?.getL1FeeIfNeeded(approval: approval, onCompleted: { l1Fee in
-            let viewModel = RevokeConfirmViewModel(approval: approval, l1Fee: l1Fee)
+            let viewModel = RevokeConfirmViewModel(approval: approval, setting: setting, l1Fee: l1Fee)
             let vc = RevokeConfirmPopup.instantiateFromNib()
             vc.viewModel = viewModel
             vc.onSelectRevoke = { [weak self] in

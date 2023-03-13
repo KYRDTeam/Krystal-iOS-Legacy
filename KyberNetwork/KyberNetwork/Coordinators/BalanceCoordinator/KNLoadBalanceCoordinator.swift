@@ -192,9 +192,6 @@ class KNLoadBalanceCoordinator {
             }
             self.otherTokensBalance[addr.lowercased()] = balance
             self.tokenStorage.updateBalance(for: tokens[id], balance: values[id])
-            if isDebug {
-              NSLog("---- Balance: Fetch token balance for contract \(addr) successfully: \(values[id].shortString(decimals: 0))")
-            }
           }
           if isBalanceChanged {
             KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
@@ -280,12 +277,12 @@ class KNLoadBalanceCoordinator {
           jsons.forEach { jsonData in
             let chainModel = ChainBalanceModel(json: jsonData)
             chainBalanceModels.append(chainModel)
+            let newTokenBalances = chainModel.balances.map { TokenBalance(address: $0.token.address, balance: $0.balance) }
             if chainModel.chainId == KNGeneralProvider.shared.currentChain.getChainId() {
-              chainModel.balances.forEach { balance in
-                allTokens.append(balance.token)
-                let tokenBalance = TokenBalance(address: balance.token.address, balance: balance.balance)
-                tokenBalances.append(tokenBalance)
-              }
+                allTokens.append(contentsOf: chainModel.balances.map(\.token))
+                tokenBalances.append(contentsOf: newTokenBalances)
+            } else if let chain = ChainType.make(chainID: chainModel.chainId) {
+                BalanceStorage.shared.setCacheForChain(chain: chain, balances: newTokenBalances)
             }
           }
           BalanceStorage.shared.setBalances(tokenBalances)
@@ -293,7 +290,7 @@ class KNLoadBalanceCoordinator {
           self.delegate?.loadBalanceCoordinatorDidGetBalance(chainBalances: chainBalanceModels)
         }
         completion(true)
-      case .failure(let error):
+      case .failure:
         completion(false)
       }
     }

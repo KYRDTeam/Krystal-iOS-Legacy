@@ -240,6 +240,9 @@ class KrystalScannerViewController: UIViewController {
     if acceptedResults.contains(.walletConnect) {
       acceptedResultTypeName.append("WalletConnect")
     }
+    if acceptedResults.contains(.seed) {
+      acceptedResultTypeName.append("seeds")
+    }
     if acceptedResults.contains(.ethPublicKey) || acceptedResults.contains(.solPublicKey) {
       acceptedResultTypeName.append("wallet address")
     }

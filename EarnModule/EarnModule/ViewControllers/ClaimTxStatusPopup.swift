@@ -20,6 +20,7 @@ class ClaimTxStatusPopup: UIViewController {
     @IBOutlet weak var primaryButton: UIButton!
     @IBOutlet weak var secondaryButton: UIButton!
     @IBOutlet weak var loadingView: CountdownTimer!
+    @IBOutlet weak var txHashView: UIView!
     
     var viewModel: ClaimTxStatusViewModel!
     var onOpenPortfolio: (() -> ())?
@@ -39,6 +40,8 @@ class ClaimTxStatusPopup: UIViewController {
         hashLabel.text = viewModel.hashString
         setupLoadingView()
         primaryButton.setTitle(viewModel.primaryButtonTitle, for: .normal)
+        txHashView.isUserInteractionEnabled = true
+        txHashView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openTxExplorer)))
     }
     
     func setupLoadingView() {
@@ -56,6 +59,7 @@ class ClaimTxStatusPopup: UIViewController {
             self?.titleLabel.text = self?.viewModel.statusString
             self?.loadingView.isHidden = self?.viewModel.isInProgress == false
             self?.statusIconImageView.isHidden = self?.viewModel.isInProgress == true
+            self?.statusIconImageView.image = self?.viewModel.statusIcon
             self?.primaryButton.setTitle(self?.viewModel.primaryButtonTitle, for: .normal)
         }
     }
@@ -104,9 +108,7 @@ class ClaimTxStatusPopup: UIViewController {
     @IBAction func primaryButtonTapped(sender: UIButton) {
         switch viewModel.status {
         case .processing:
-            dismiss(animated: true) {
-                AppDependencies.router.openTxHash(txHash: self.viewModel.hashString, chainID: self.viewModel.pendingTx.pendingUnstake.chainID)
-            }
+            self.openTxExplorer()
         case .success:
             dismiss(animated: true) { [weak self] in
                 self?.onOpenPortfolio?()
@@ -118,5 +120,10 @@ class ClaimTxStatusPopup: UIViewController {
         }
     }
     
+    @objc func openTxExplorer() {
+        dismiss(animated: true) {
+            AppDependencies.router.openTxHash(txHash: self.viewModel.hashString, chainID: self.viewModel.pendingTx.pendingUnstake.chainID)
+        }
+    }
 
 }

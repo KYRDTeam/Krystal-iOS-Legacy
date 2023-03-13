@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0DEA8C01D840AF55B630B4FD /* Pods_Dependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A564EBBC2D3B1EF3B4D97A /* Pods_Dependencies.framework */; };
-		433C7511292F6EE300B5A2CC /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433C7510292F6EE300B5A2CC /* FeatureFlag.swift */; };
 		7EAF4780291B804E00BF5D00 /* BalancesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF477F291B804E00BF5D00 /* BalancesStorage.swift */; };
 		A64C2E3728F7BA12002FD64C /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3628F7BA12002FD64C /* Tracker.swift */; };
 		A64C2E3928F7BAA1002FD64C /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2E3828F7BAA1002FD64C /* Dependencies.swift */; };
@@ -19,12 +18,12 @@
 		A64C2EF028F944BF002FD64C /* PriceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64C2EEF28F944BF002FD64C /* PriceStorage.swift */; };
 		A65D14D728FD058E00B12E84 /* BaseWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A65D14D628FD058E00B12E84 /* BaseWallet.framework */; };
 		A668BFE9292CD9B2001A110D /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = A668BFE8292CD9B2001A110D /* FeatureFlag.swift */; };
+		A66C3B8F29B0ABBA004A3DDB /* WalletManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66C3B8E29B0ABBA004A3DDB /* WalletManagerProtocol.swift */; };
 		A66FC40F28F4F55500E49E86 /* Dependencies.h in Headers */ = {isa = PBXBuildFile; fileRef = A66FC40E28F4F55500E49E86 /* Dependencies.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6F6292428FD45750085AE67 /* Services.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6F6292328FD45750085AE67 /* Services.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		433C7510292F6EE300B5A2CC /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
 		49F3A3EBEEF754D1B5309B6E /* Pods-Dependencies.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dependencies.debug.xcconfig"; path = "Target Support Files/Pods-Dependencies/Pods-Dependencies.debug.xcconfig"; sourceTree = "<group>"; };
 		7EAF477F291B804E00BF5D00 /* BalancesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesStorage.swift; sourceTree = "<group>"; };
 		85A564EBBC2D3B1EF3B4D97A /* Pods_Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,6 +38,7 @@
 		A64C2EEF28F944BF002FD64C /* PriceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceStorage.swift; sourceTree = "<group>"; };
 		A65D14D628FD058E00B12E84 /* BaseWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A668BFE8292CD9B2001A110D /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
+		A66C3B8E29B0ABBA004A3DDB /* WalletManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagerProtocol.swift; sourceTree = "<group>"; };
 		A66FC40B28F4F55500E49E86 /* Dependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Dependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A66FC40E28F4F55500E49E86 /* Dependencies.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dependencies.h; sourceTree = "<group>"; };
 		A6F6292328FD45750085AE67 /* Services.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Services.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +79,7 @@
 				A64C2EEF28F944BF002FD64C /* PriceStorage.swift */,
 				7EAF477F291B804E00BF5D00 /* BalancesStorage.swift */,
 				A668BFE8292CD9B2001A110D /* FeatureFlag.swift */,
+				A66C3B8E29B0ABBA004A3DDB /* WalletManagerProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -232,6 +233,7 @@
 				A64C2E8128F9131E002FD64C /* TokenStorage.swift in Sources */,
 				7EAF4780291B804E00BF5D00 /* BalancesStorage.swift in Sources */,
 				A64C2ED328F9220F002FD64C /* NonceStorage.swift in Sources */,
+				A66C3B8F29B0ABBA004A3DDB /* WalletManagerProtocol.swift in Sources */,
 				A668BFE9292CD9B2001A110D /* FeatureFlag.swift in Sources */,
 				A64C2E3728F7BA12002FD64C /* Tracker.swift in Sources */,
 				A64C2E6A28F880EA002FD64C /* GasConfig.swift in Sources */,

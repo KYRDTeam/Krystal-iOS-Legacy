@@ -5,27 +5,14 @@ import SafariServices
 import MessageUI
 import KrystalWallets
 import AppState
+import Dependencies
 
 protocol KNLandingPageCoordinatorDelegate: class {
   func landingPageCoordinator(import wallet: KWallet, chain: ChainType)
-  func landingPageCoordinator(add watchAddress: KAddress, chain: ChainType)
-  func landingPageCoordinatorDidSendRefCode(_ code: String)
   func landingPageCoordinatorStartedBrowsing()
+  func landingPageCoordinatorShouldStartSession()
 }
 
-/**
- Flow:
- 1. Create Wallet:
-  - Enter password
-  - Backup 12 words seed for new wallet
-  - Testing backup
-  - Enter wallet name
-  - Enter passcode (if it is the first wallet)
- 2. Import Wallet:
-  - JSON/Private Key/Seeds
-  - Enter wallet name
-  - Enter passcode (if it is the first wallet)
- */
 class KNLandingPageCoordinator: NSObject, Coordinator {
 
   weak var delegate: KNLandingPageCoordinatorDelegate?
@@ -50,12 +37,6 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
       newWallet: self.newWallet,
       name: nil
     )
-    coordinator.delegate = self
-    return coordinator
-  }()
-
-  lazy var importWalletCoordinator: KNImportWalletCoordinator = {
-    let coordinator = KNImportWalletCoordinator(navigationController: self.navigationController)
     coordinator.delegate = self
     return coordinator
   }()
@@ -127,45 +108,53 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
   
 }
 
+extension KNLandingPageCoordinator: WelcomeViewControllerDelegate {
+    func didTapCreate(controller: UIViewController) {
+        self.delegate?.landingPageCoordinatorShouldStartSession()
+        Tracker.track(event: .introCreateWallet)
+        self.createWallet()
+    }
+    
+    func didTapImport(controller: UIViewController) {
+        self.delegate?.landingPageCoordinatorShouldStartSession()
+        Tracker.track(event: .introImportWallet)
+        importAWallet()
+    }
+    
+    func didTapExplore(controller: UIViewController) {
+        self.delegate?.landingPageCoordinatorStartedBrowsing()
+        AppStorage.shared.markAppAsOpenedBefore()
+    }
+    
+    fileprivate func createWallet() {
+        self.navigationController.displayLoading(text: Strings.creating, animated: true)
+        do {
+          let wallets = WalletManager.shared.getAllWallets()
+          let wallet = try self.walletManager.createWallet(name: "Wallet \(wallets.count + 1)")
+          DispatchQueue.main.async {
+              self.navigationController.hideLoading()
+              let viewModel = FinishImportViewModel(wallet: wallet)
+              let finishVC = FinishImportViewController(viewModel: viewModel)
+              self.navigationController.show(finishVC, sender: nil)
+          }
+        } catch {
+          return
+        }
+    }
+    
+    fileprivate func importAWallet() {
+        let importVC = ImportWalletViewController.instantiateFromNib()
+        self.navigationController.pushViewController(importVC, animated: true)
+    }
+}
+
 extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
   func landinagePageViewController(_ controller: KNLandingPageViewController, run event: KNLandingPageViewEvent) {
     switch event {
     case .getStarted:
-      if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
-        self.termViewController.nextAction = {
-          self.delegate?.landingPageCoordinatorStartedBrowsing()
-          AppStorage.shared.markAppAsOpenedBefore()
-        }
-        self.navigationController.present(self.termViewController, animated: true, completion: nil)
-        return
-      }
-      self.delegate?.landingPageCoordinatorStartedBrowsing()
-    case .openCreateWallet:
-      Tracker.track(event: .introCreateWallet)
-      if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
-        self.termViewController.nextAction = {
-          
-          self.createWalletCoordinator.updateNewWallet(nil, name: nil)
-          self.createWalletCoordinator.start()
-        }
-        self.navigationController.present(self.termViewController, animated: true, completion: nil)
-        return
-      }
-      self.createWalletCoordinator.updateNewWallet(nil, name: nil)
-      self.createWalletCoordinator.start()
-    case .openImportWallet:
-      Tracker.track(event: .introImportWallet)
-      if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
-        self.termViewController.nextAction = {
-          self.importWalletCoordinator.start()
-        }
-        self.navigationController.present(self.termViewController, animated: true, completion: nil)
-        return
-      }
-      self.importWalletCoordinator.start()
-    case .openTermAndCondition:
-      let url: String = "https://files.krystal.app/terms.pdf"
-      self.navigationController.topViewController?.openSafari(with: url)
+        let vc = WelcomeViewController.instantiateFromNib()
+        vc.delegate = self
+        self.rootViewController.show(vc, sender: nil)
     case .openMigrationAlert:
       self.openMigrationAlert()
     }
@@ -194,20 +183,6 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
   func openCreateWallet() {
     let coordinator = KNCreateWalletCoordinator(navigationController: self.navigationController, newWallet: nil, name: nil)
     coordinate(coordinator: coordinator)
-  }
-}
-
-extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
-  
-  func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType) {
-    delegate?.landingPageCoordinator(add: watchAddress, chain: chain)
-  }
-  
-  func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
-    didImportWallet(wallet: wallet, chain: chain)
-  }
-
-  func importWalletCoordinatorDidClose() {
   }
 }
 

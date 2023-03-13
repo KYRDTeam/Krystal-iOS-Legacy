@@ -217,6 +217,9 @@ class BridgeCoordinator: NSObject, Coordinator {
   }
 
   func appCoordinatorDidUpdateChain() {
+    self.gasPrice = KNGasCoordinator.shared.standardKNGas
+    self.estimateGasLimit = KNGasConfiguration.exchangeTokensGasLimitDefault
+    self.selectedGasPriceType = .medium
     self.rootViewController.viewModel = BridgeViewModel()
     self.rootViewController.coordinatorDidUpdateChain()
     self.fetchData()

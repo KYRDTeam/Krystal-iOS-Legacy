@@ -30,8 +30,9 @@ class RevokeConfirmViewModel {
     let tokenService = TokenService()
     var onFetchedQuoteTokenPrice: (() -> ())?
     
-    init(approval: Approval, l1Fee: BigInt) {
+    init(approval: Approval, setting: TxSettingObject, l1Fee: BigInt) {
         self.approval = approval
+        self.setting = setting
         contract = approval.tokenAddress
         symbol = approval.symbol
         tokenIcon = approval.logo

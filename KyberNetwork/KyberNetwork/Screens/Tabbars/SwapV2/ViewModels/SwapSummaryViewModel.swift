@@ -75,16 +75,25 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
   var minDestQty: BigInt {
     return self.toAmount * BigInt(10000.0 - self.minRatePercent * 100.0) / BigInt(10000.0)
   }
+    
+    var leftAmountValueString: String {
+        let amountString = NumberFormatUtils.amount(value: swapObject.sourceAmount, decimals: swapObject.sourceToken.decimals)
+        return String(amountString.prefix(15))
+    }
 
   var leftAmountString: String {
-    let amountString = NumberFormatUtils.amount(value: swapObject.sourceAmount, decimals: swapObject.sourceToken.decimals)
-    return "\(amountString.prefix(15)) \(swapObject.sourceToken.symbol)"
+    return "\(leftAmountValueString) \(swapObject.sourceToken.symbol)"
   }
-
+    
+    var rightAmountValueString: String {
+        let receivedAmount = swapObject.rate.amount.bigInt ?? BigInt(0)
+        let amountString = NumberFormatUtils.amount(value: receivedAmount, decimals: swapObject.destToken.decimals)
+        return String(amountString.prefix(15))
+    }
+    
   var rightAmountString: String {
-    let receivedAmount = swapObject.rate.amount.bigInt ?? BigInt(0)
-    let amountString = NumberFormatUtils.amount(value: receivedAmount, decimals: swapObject.destToken.decimals)
-    return "\(amountString.prefix(15)) \(swapObject.destToken.symbol)"
+    
+    return "\(rightAmountValueString) \(swapObject.destToken.symbol)"
   }
   
   var displayEstimatedRate: String {
@@ -141,23 +150,32 @@ class SwapSummaryViewModel: SwapInfoViewModelProtocol {
     let minReceivingAmount = amount * BigInt(10000.0 - minRatePercent * 100.0) / BigInt(10000.0)
     return "\(NumberFormatUtils.balanceFormat(value: minReceivingAmount, decimals: self.swapObject.destToken.decimals)) \(self.swapObject.destToken.symbol)"
   }
+    
+    var sourceAmountUsd: String {
+        let amountUSD = swapObject.sourceAmount * BigInt(swapObject.sourceTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(swapObject.sourceToken.decimals)
+        let formattedAmountUSD = NumberFormatUtils.usdAmount(value: amountUSD, decimals: 18)
+        return formattedAmountUSD
+    }
 
   func getSourceAmountUsdString() -> String {
-    let amountUSD = swapObject.sourceAmount * BigInt(swapObject.sourceTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(swapObject.sourceToken.decimals)
-    let formattedAmountUSD = NumberFormatUtils.usdAmount(value: amountUSD, decimals: 18)
-    return "~$\(formattedAmountUSD)"
+    return "~$\(sourceAmountUsd)"
   }
   
   func getDestAmountString() -> String {
     let receivingAmount = BigInt(swapObject.rate.amount) ?? BigInt(0)
     return NumberFormatUtils.balanceFormat(value: receivingAmount, decimals: swapObject.destToken.decimals)
   }
-  
+    
+    
+    var destAmountUsd: String {
+        let receivingAmount = BigInt(swapObject.rate.amount) ?? BigInt(0)
+        let amountUSD = receivingAmount * BigInt(swapObject.destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(swapObject.destToken.decimals)
+        let formattedAmountUSD = NumberFormatUtils.usdAmount(value: amountUSD, decimals: 18)
+        return formattedAmountUSD
+    }
+    
   func getDestAmountUsdString() -> String {
-    let receivingAmount = BigInt(swapObject.rate.amount) ?? BigInt(0)
-    let amountUSD = receivingAmount * BigInt(swapObject.destTokenPrice * pow(10.0, 18.0)) / BigInt(10).power(swapObject.destToken.decimals)
-    let formattedAmountUSD = NumberFormatUtils.usdAmount(value: amountUSD, decimals: 18)
-    return "~$\(formattedAmountUSD)"
+    return "~$\(destAmountUsd)"
   }
   
   func startUpdateRate() {
