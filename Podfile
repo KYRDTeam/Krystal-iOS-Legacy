@@ -12,9 +12,13 @@ def trustKeystore
   pod 'TrustKeystore', :git => 'https://github.com/tungnguyen20/trust-keystore.git', :branch => '0.4.4-swift-5'
 end
 
+def web3swift
+  pod 'web3.swift', :git => 'https://github.com/tungnguyen20/web3.swift.git', :branch => 'develop'
+end
+
 def web3
-  pod 'web3.swift', :path => '../../web3.swift'
-  pod 'Web3Core', :path => '../../Web3Core'
+  web3swift
+  pod 'Web3Core', :git => 'https://github.com/tungnguyen20/Web3Core.git', :branch => 'krystal'
 end
 
 def firebasePods
@@ -204,7 +208,7 @@ target 'Transfer' do
   pod 'FittedSheets'
   pod 'SkeletonView'
   pod 'loady'
-  pod 'web3.swift', :path => '../../web3.swift'
+  web3swift
 end
 
 target 'BaseModule' do
@@ -234,7 +238,7 @@ target 'ChainModule' do
   pod 'APIKit'
   pod 'BigInt'
   pod 'JavaScriptKit', '~> 2.0'
-  web3
+  web3swift
 end
 
 target 'Platform' do

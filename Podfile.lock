@@ -314,8 +314,8 @@ DEPENDENCIES:
   - TrustWalletCore (~> 2.9)
   - TrustWeb3Provider (from `https://github.com/KYRDTeam/krystal-web3-provider.git`, branch `develop`)
   - WalletConnectSwift
-  - web3.swift (from `../../web3.swift`)
-  - Web3Core (from `../../Web3Core`)
+  - web3.swift (from `https://github.com/tungnguyen20/web3.swift.git`, branch `develop`)
+  - Web3Core (from `https://github.com/tungnguyen20/Web3Core.git`, branch `krystal`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -404,9 +404,11 @@ EXTERNAL SOURCES:
     :branch: develop
     :git: https://github.com/KYRDTeam/krystal-web3-provider.git
   web3.swift:
-    :path: "../../web3.swift"
+    :branch: develop
+    :git: https://github.com/tungnguyen20/web3.swift.git
   Web3Core:
-    :path: "../../Web3Core"
+    :branch: krystal
+    :git: https://github.com/tungnguyen20/Web3Core.git
 
 CHECKOUT OPTIONS:
   JSONRPCKit:
@@ -424,6 +426,12 @@ CHECKOUT OPTIONS:
   TrustWeb3Provider:
     :commit: 4994d8332544a8f1b58195c00bc0d66c5de07dff
     :git: https://github.com/KYRDTeam/krystal-web3-provider.git
+  web3.swift:
+    :commit: 1821ca802d95347342f580d3e5c26386bcf4f31c
+    :git: https://github.com/tungnguyen20/web3.swift.git
+  Web3Core:
+    :commit: f94f58b18dcee4ba6b2117e089b72ed6bf73ee9e
+    :git: https://github.com/tungnguyen20/Web3Core.git
 
 SPEC CHECKSUMS:
   Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
@@ -500,9 +508,9 @@ SPEC CHECKSUMS:
   TrustWalletCore: 53f09313edb1c010de78314d023c67d2d4654864
   TrustWeb3Provider: 081ad5a703906b789253ca94335cfd87e73510a6
   WalletConnectSwift: 6309bf3011b0b30e3e9d1e7449535302a9240f71
-  web3.swift: 7cbfe4eed7c748c2fdb77c75a6908562b1109ebf
+  web3.swift: 8f5320d9b2061bacce818c362c2b29d39f4d9708
   Web3Core: 3ef7a1e9fa9c35a631e1ddbffe6d683b10e558d4
 
-PODFILE CHECKSUM: 7f4b28280baff46ffea7202b3565eb7eacc95f93
+PODFILE CHECKSUM: 812ef215fe1364ac61fad0744b9d00080f8decfe
 
 COCOAPODS: 1.11.3
