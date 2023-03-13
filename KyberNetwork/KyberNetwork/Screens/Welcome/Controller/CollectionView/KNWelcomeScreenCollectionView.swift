@@ -14,6 +14,7 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
   static let paggerWidth = CGFloat(52)
   fileprivate var didShowFirstCell = false
   fileprivate var currentIndex: Int = 0
+  var onFinishLoading: (() -> Void)?
     
   override func commonInit() {
     super.commonInit()
@@ -51,7 +52,7 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
                 view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y, width: normalWidth, height: 2)
             } completion: { complete in
                 if complete {
-                    self.forward()
+                    self.forward(isAuto: true)
                 }
             }
 
@@ -59,8 +60,13 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
     }
   }
     
-    func forward() {
-        guard currentIndex < 3 else { return }
+    func forward(isAuto: Bool = false) {
+        guard currentIndex < 3 else {
+            if isAuto {
+                onFinishLoading?()
+            }
+            return
+        }
         let cellSize = CGSize(width: self.collectionView.frame.width, height: KNWelcomeScreenCollectionViewCell.height)
         let newX = cellSize.width * CGFloat(currentIndex + 1)
         self.collectionView.scrollRectToVisible(CGRect(x: newX, y: self.collectionView.contentOffset.y, width: cellSize.width, height: cellSize.height), animated: true)
