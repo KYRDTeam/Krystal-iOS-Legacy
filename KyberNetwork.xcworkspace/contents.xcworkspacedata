@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Transfer/Transfer.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Platform/Platform.xcodeproj">
    </FileRef>
    <FileRef

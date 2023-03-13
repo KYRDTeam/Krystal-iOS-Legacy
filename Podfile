@@ -196,6 +196,17 @@ target 'TokenModule' do
   web3
 end
 
+target 'Transfer' do
+  project 'Transfer/Transfer.xcodeproj'
+  use_frameworks!
+  
+  pod 'BigInt'
+  pod 'FittedSheets'
+  pod 'SkeletonView'
+  pod 'loady'
+  pod 'web3.swift', :path => '../../web3.swift'
+end
+
 target 'BaseModule' do
   project 'BaseModule/BaseModule.xcodeproj'
   use_frameworks!

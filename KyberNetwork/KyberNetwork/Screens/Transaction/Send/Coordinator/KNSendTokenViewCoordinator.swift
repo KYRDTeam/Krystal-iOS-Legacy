@@ -301,11 +301,14 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   }
 
   fileprivate func openSearchToken(selectedToken: TokenObject) {
-      TokenModule.openSearchToken(walletAddress: AppState.shared.currentAddress.addressString, chainID: AppState.shared.selectedChainID, on: navigationController) { [weak self] selectedToken in
+      TokenModule.openTokenSearchV2(on: navigationController, walletAddress: AppState.shared.currentAddress.addressString, chainID: AppState.shared.selectedChainID) { [weak self] token in
           guard let self = self else { return }
-          let balance = self.balances[selectedToken.token.address]
-          self.rootViewController?.coordinatorDidUpdateSendToken(selectedToken.token.toObject(), balance: balance)
       }
+//      TokenModule.openSearchToken(walletAddress: AppState.shared.currentAddress.addressString, chainID: AppState.shared.selectedChainID, on: navigationController) { [weak self] selectedToken in
+//          guard let self = self else { return }
+//          let balance = self.balances[selectedToken.token.address]
+//          self.rootViewController?.coordinatorDidUpdateSendToken(selectedToken.token.toObject(), balance: balance)
+//      }
   }
 
   fileprivate func openConfirmTransfer(transaction: UnconfirmedTransaction, ens: String?) {
