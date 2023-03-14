@@ -238,6 +238,7 @@ target 'ChainModule' do
   pod 'APIKit'
   pod 'BigInt'
   pod 'JavaScriptKit', '~> 2.0'
+  pod 'CryptoSwift'
   web3swift
 end
 

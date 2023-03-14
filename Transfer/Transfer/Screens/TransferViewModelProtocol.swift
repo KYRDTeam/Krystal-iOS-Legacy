@@ -8,13 +8,14 @@
 import Foundation
 import BigInt
 import TransactionModule
+import ChainModule
 
 protocol TransferViewModelProtocol {
-    var gasLimit: BigInt { get }
-    var gasPrice: BigInt { get }
-    var l1Fee: BigInt { get }
-    var minimumRentExemption: BigInt { get }
-    var settingObject: TxSettingObject { get set }
+    var token: Token { get }
+    var balance: BigInt { get }
+    var estimatedGasFee: BigInt { get }
+    var maxFee: BigInt { get }
     
     func resolveDomain(_ domain: String, completion: @escaping (String?) -> ())
+    func checkEligible(_ address: String, completion: @escaping (Bool) -> ())
 }

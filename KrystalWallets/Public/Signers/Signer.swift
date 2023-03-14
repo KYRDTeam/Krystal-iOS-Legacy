@@ -8,8 +8,9 @@
 import Foundation
 
 public enum SigningError: Error {
-  case addressNotFound
-  case cannotSignMessage
+    case addressNotFound
+    case cannotSignMessage
+    case cannotSignTx
 }
 
 

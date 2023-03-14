@@ -7,6 +7,6 @@
 
 import Foundation
 
-class SolanaTransferViewModel: TransferViewModelProtocol {
+class SolanaTransferViewModel {
     
 }

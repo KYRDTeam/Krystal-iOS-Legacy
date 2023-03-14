@@ -12,6 +12,7 @@
 		A62065AE29A8A3AA00DA7D10 /* TransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62065AC29A8A3AA00DA7D10 /* TransferViewController.swift */; };
 		A62065AF29A8A3AA00DA7D10 /* TransferViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A62065AD29A8A3AA00DA7D10 /* TransferViewController.xib */; };
 		A62065B129A8B42000DA7D10 /* EVMTransferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62065B029A8B42000DA7D10 /* EVMTransferViewModel.swift */; };
+		A626407429C049FC00062E2F /* TransferToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = A626407329C049FC00062E2F /* TransferToken.swift */; };
 		A634AF4329B5F161004628F4 /* TransferViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A634AF4229B5F161004628F4 /* TransferViewModelProtocol.swift */; };
 		A67040BB29B989E500CBF82F /* SolanaTransferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67040BA29B989E500CBF82F /* SolanaTransferViewModel.swift */; };
 		A67040BE29B98A0900CBF82F /* ChainModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67040BD29B98A0900CBF82F /* ChainModule.framework */; };
@@ -60,6 +61,7 @@
 		A62065AC29A8A3AA00DA7D10 /* TransferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferViewController.swift; sourceTree = "<group>"; };
 		A62065AD29A8A3AA00DA7D10 /* TransferViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransferViewController.xib; sourceTree = "<group>"; };
 		A62065B029A8B42000DA7D10 /* EVMTransferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EVMTransferViewModel.swift; sourceTree = "<group>"; };
+		A626407329C049FC00062E2F /* TransferToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferToken.swift; sourceTree = "<group>"; };
 		A634AF4229B5F161004628F4 /* TransferViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferViewModelProtocol.swift; sourceTree = "<group>"; };
 		A67040BA29B989E500CBF82F /* SolanaTransferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaTransferViewModel.swift; sourceTree = "<group>"; };
 		A67040BD29B98A0900CBF82F /* ChainModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ChainModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +127,7 @@
 		A62065A329A8A32C00DA7D10 /* Transfer */ = {
 			isa = PBXGroup;
 			children = (
+				A626407129C0499400062E2F /* EthClient */,
 				A62065AB29A8A39300DA7D10 /* Screens */,
 				A62065A429A8A32C00DA7D10 /* Transfer.h */,
 			);
@@ -141,6 +144,22 @@
 				A634AF4229B5F161004628F4 /* TransferViewModelProtocol.swift */,
 			);
 			path = Screens;
+			sourceTree = "<group>";
+		};
+		A626407129C0499400062E2F /* EthClient */ = {
+			isa = PBXGroup;
+			children = (
+				A626407229C0499A00062E2F /* ABI */,
+			);
+			path = EthClient;
+			sourceTree = "<group>";
+		};
+		A626407229C0499A00062E2F /* ABI */ = {
+			isa = PBXGroup;
+			children = (
+				A626407329C049FC00062E2F /* TransferToken.swift */,
+			);
+			path = ABI;
 			sourceTree = "<group>";
 		};
 		A67040BC29B98A0900CBF82F /* Frameworks */ = {
@@ -270,6 +289,7 @@
 				A62065AE29A8A3AA00DA7D10 /* TransferViewController.swift in Sources */,
 				A62065B129A8B42000DA7D10 /* EVMTransferViewModel.swift in Sources */,
 				A634AF4329B5F161004628F4 /* TransferViewModelProtocol.swift in Sources */,
+				A626407429C049FC00062E2F /* TransferToken.swift in Sources */,
 				A67040BB29B989E500CBF82F /* SolanaTransferViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -25,6 +25,7 @@
 		A620659229A77A1200DA7D10 /* EthGetMultipleTopicLogsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620659129A77A1200DA7D10 /* EthGetMultipleTopicLogsTask.swift */; };
 		A620659429A77A2200DA7D10 /* EthGetBlockByNumberTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620659329A77A2200DA7D10 /* EthGetBlockByNumberTask.swift */; };
 		A620659629A77A4100DA7D10 /* EthGetSingleTopicLogsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620659529A77A4100DA7D10 /* EthGetSingleTopicLogsTask.swift */; };
+		A626407029C01CC000062E2F /* KAddress+sign.swift in Sources */ = {isa = PBXBuildFile; fileRef = A626406F29C01CBF00062E2F /* KAddress+sign.swift */; };
 		A630D136299B40F20015B9CE /* MulticallV2BalanceSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A630D135299B40F20015B9CE /* MulticallV2BalanceSyncOperation.swift */; };
 		A65AFD9629A32B8A0062BE9F /* AddChainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65AFD9429A32B8A0062BE9F /* AddChainCell.swift */; };
 		A65AFD9729A32B8A0062BE9F /* AddChainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A65AFD9529A32B8A0062BE9F /* AddChainCell.xib */; };
@@ -150,6 +151,7 @@
 		A620659129A77A1200DA7D10 /* EthGetMultipleTopicLogsTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthGetMultipleTopicLogsTask.swift; sourceTree = "<group>"; };
 		A620659329A77A2200DA7D10 /* EthGetBlockByNumberTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthGetBlockByNumberTask.swift; sourceTree = "<group>"; };
 		A620659529A77A4100DA7D10 /* EthGetSingleTopicLogsTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthGetSingleTopicLogsTask.swift; sourceTree = "<group>"; };
+		A626406F29C01CBF00062E2F /* KAddress+sign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KAddress+sign.swift"; sourceTree = "<group>"; };
 		A630D135299B40F20015B9CE /* MulticallV2BalanceSyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticallV2BalanceSyncOperation.swift; sourceTree = "<group>"; };
 		A65AFD9429A32B8A0062BE9F /* AddChainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChainCell.swift; sourceTree = "<group>"; };
 		A65AFD9529A32B8A0062BE9F /* AddChainCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddChainCell.xib; sourceTree = "<group>"; };
@@ -464,6 +466,7 @@
 			children = (
 				A6B584B9298B8E4700B1FF9A /* RealmResults+.swift */,
 				A65AFDA829A366610062BE9F /* Chain+AddressType.swift */,
+				A626406F29C01CBF00062E2F /* KAddress+sign.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -727,6 +730,7 @@
 				A620657629A76C2900DA7D10 /* EthGasPriceTask.swift in Sources */,
 				A6B584E1298B8E4700B1FF9A /* Converter.swift in Sources */,
 				A6B584ED298B8E4700B1FF9A /* TokenPriceEntity.swift in Sources */,
+				A626407029C01CC000062E2F /* KAddress+sign.swift in Sources */,
 				A6AA2FE9299E146F008D1B9B /* TokenBalanceDB.swift in Sources */,
 				A6B584E7298B8E4700B1FF9A /* Chain.swift in Sources */,
 				A6B58512298B973900B1FF9A /* BalanceResponse.swift in Sources */,
