@@ -26,10 +26,6 @@ class EthereumWeb3Service {
   }
   
   func getTransferTokenData(transferQuoteToken: Bool, amount: BigInt, address: String, completion: @escaping (Result<Data, AnyError>) -> Void) {
-    if transferQuoteToken {
-      completion(.success(Data()))
-      return
-    }
     web3?.request(request: ContractERC20Transfer(amount: amount, address: address)) { result in
       switch result {
       case .success(let res):
