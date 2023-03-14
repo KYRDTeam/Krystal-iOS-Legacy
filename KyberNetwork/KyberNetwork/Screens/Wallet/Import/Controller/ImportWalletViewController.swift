@@ -78,6 +78,8 @@ class ImportWalletViewController: UIViewController {
         ScannerModule.start(previousScreen: ScreenName.importWallet, viewController: self, acceptedResultTypes: acceptedResultTypes, scanModes: scanModes) { [weak self] text, type in
             guard let self = self else { return }
             self.updateTextInput(value: text)
+            self.showErrorIfNeeded()
+            self.showPasteInfoView()
         }
     }
 
@@ -211,7 +213,7 @@ class ImportWalletViewController: UIViewController {
         return evmAddress ?? ""
     }
     
-    
+
     func isValidInput() -> Bool {
         return (isValidWordCount() || isValidPrivateKey()) && (!tempEVMAddress().isEmpty || !tempSolanaAddress().isEmpty)
     }
