@@ -1,0 +1,266 @@
+name: Krystal iOS CI Build Self-Hosted
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency: 
+  group: ios-build-dev-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  LANG: en_US.UTF-8
+  
+jobs:
+  prepare:
+    runs-on: ubuntu-18.04
+    outputs:
+      current_branch: ${{ steps.current_branch.outputs.value }}
+      commit_tag: ${{ steps.commit_tag.outputs.value }}
+      version_tag: ${{ steps.version_tag.outputs.value }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          token: '${{ secrets.KRYSTAL_BOT_GH_PAT }}'
+
+      - name: Extract branch
+        shell: bash
+        id: current_branch
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          if [[ "$GITHUB_REF" =~ refs/tags ]]; then
+            raw=$(git branch -r --contains ${{ github.ref }})
+            BRANCH=${raw/origin\/}
+          fi
+          echo "::set-output name=value::$BRANCH"
+
+      - name: Get Git Commit Tag
+        shell: bash
+        id: commit_tag
+        run: |
+          COMMIT_HASH="$(echo $GITHUB_SHA | head -c7)"
+          echo "::set-output name=value::$COMMIT_HASH"
+
+      - name: Get version tag
+        id: version_tag
+        run: |
+          [[ ! "$GITHUB_REF" =~ refs/tags ]] && exit
+          echo "::set-output name=value::${GITHUB_REF#refs/tags/}"
+
+      # This step will automatically run if any of the previous steps fail.
+      # DO NOT CHANGE IT
+      - name: Send notifications to a specify Telegram group
+        if: failure()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
+          RUN_ID: ${{ github.run_id }}
+        shell: bash
+        run: .github/failure
+
+  build-ios:
+    needs:
+      - prepare
+    strategy:
+      matrix: 
+        include:
+          - firebase_app_id: KRYSTAL_STG_FIREBASE_APP_ID
+            env: stg
+            bump_build: false
+            slack_webhook: SLACK_WEBHOOK_STG_IOS
+            
+    runs-on: self-hosted
+    env:
+      TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
+      # cetificate environment
+      DISTRIBUTE_CERT_PATH: /Users/runner/privates/certificates/distribution.p12
+      DISTRIBUTE_CERT_PASSWORD: ${{ secrets.DISTRIBUTE_CERT_PASSWORD }}
+      DEVELOPMENT_CERT_PATH: /Users/runner/privates/certificates/devops_development.p12
+      DEVELOPMENT_CERT_PASSWORD: ${{ secrets.DEVELOPMENT_CERT_PASSWORD }}
+      # xcode project environment
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      APPLE_BUNDLE_ID: ${{ secrets.APPLE_BUNDLE_ID }}
+      APPLE_CODE_SIGNING_ID_KRYSTAL: ${{ secrets.APPLE_CODE_SIGNING_ID_KRYSTAL }}
+      # profiles
+      DEV_PROFILE: ${{ secrets.DEV_PROFILE }}
+      KRYSTAL_DEV_PROFILE: ${{ secrets.KRYSTAL_DEV_PROFILE }}
+      AD_HOC_PROFILE: ${{ secrets.AD_HOC_PROFILE }}
+      EXT_AD_HOC_PROFILE: ${{ secrets.EXT_AD_HOC_PROFILE }}
+      KRYSTAL_PROD_PROFILE: ${{ secrets.KRYSTAL_PROD_PROFILE }}
+      KRYSTAL_PROD_EXT_PROFILE: ${{ secrets.KRYSTAL_PROD_EXT_PROFILE }}
+      # profile paths
+      DEV_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.DEV_PROFILE }}.mobileprovision"
+      KRYSTAL_DEV_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.KRYSTAL_DEV_PROFILE }}.mobileprovision"
+      AD_HOC_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.AD_HOC_PROFILE }}.mobileprovision"
+      EXT_AD_HOC_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.EXT_AD_HOC_PROFILE }}.mobileprovision"
+      KRYSTAL_PROD_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.KRYSTAL_PROD_PROFILE }}.mobileprovision"
+      KRYSTAL_PROD_EXT_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.KRYSTAL_PROD_EXT_PROFILE }}.mobileprovision"
+      # sentry environments
+      SENTRY_TOKEN: ${{ secrets.SENTRY_TOKEN }}
+      ORG_SLUG: ${{ secrets.ORG_SLUG }}
+      PROJECT_SLUG: ${{ secrets.PROJECT_SLUG }}
+      SENTRY_URL: ${{ secrets.SENTRY_URL }}
+      # default actor
+      GH_ACTOR: Krystal-CICD
+      # GCP 
+      PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      IOS_PASSPHRASE: ${{ secrets.IOS_PASSPHRASE }}
+      FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
+      FIREBASE_APP_ID: ${{ matrix.firebase_app_id }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          token: '${{ secrets.KRYSTAL_BOT_GH_PAT }}'
+
+      - name: Get configuration items
+        run: |
+          echo $SSH_PRIVATE_KEY | base64 --decode > private.key
+
+          chmod 600 private.key
+                    
+          rm -rf $HOME/krystal-mobile-enviroment
+
+          GIT_SSH_COMMAND='ssh -i private.key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no' git clone git@github.com:KYRDTeam/krystal-mobile-enviroment.git $HOME/krystal-mobile-enviroment
+          
+          ls -al $HOME/krystal-mobile-enviroment/
+          
+          
+          CONFIG_PATH=$HOME/krystal-mobile-enviroment/ios/
+          ls -al $CONFIG_PATH
+          
+          echo "Using gpg to decrypt the sensitive files now"
+
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/certificates/devops_development.p12.gpg > $CONFIG_PATH/certificates/devops_development.p12
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/certificates/distribution.p12.gpg > $CONFIG_PATH/certificates/distribution.p12
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision
+
+          ls -al $CONFIG_PATH
+
+          mkdir -p /Users/runner/privates        
+          cp -va $CONFIG_PATH/* /Users/runner/privates
+
+      ### Installed manually
+      # - name: Setup Ruby
+      #   uses: ruby/setup-ruby@v1
+      #   with:
+      #     ruby-version: 2.6
+      #     bundler-cache: true
+      # - name: Install firebase tool
+      #   run: |
+      #     curl -sL https://firebase.tools | bash
+      # - name: Install Pod
+      #   run: gem install cocoapods
+      # - name: Install Pod check
+      #   run: gem install cocoapods-check
+      # - name: Install Pod binary
+      #   run: gem install cocoapods-binary
+
+      - name: Install Fastlane
+        run: gem install fastlane
+
+      ### Installed it manually on self-hosted          
+      # - name: Setup Sentry CLI
+      #   shell: bash
+      #   run: curl -sL https://sentry.io/get-cli/ | bash
+
+      - name: Install fda fastlane plguin
+        shell: bash
+        run: bundle install && bundle exec fastlane add_plugin firebase_app_distribution
+
+      ### Disabled cache
+      # - name: Setup cache
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: Pods
+      #     key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pods-
+
+      - name: Setup environments
+        shell: bash
+        env:
+          ENV: ${{ matrix.env }}
+        run: |
+          cp /Users/runner/privates/environments/KNSecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
+          cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
+
+      - name: Pods install
+        run: pod check || pod install
+
+      - name: Build IPA
+        uses: maierj/fastlane-action@v2.0.1
+        env:
+          FIREBASE_APP_ID: ${{ secrets[matrix.firebase_app_id] }}
+        with:
+          lane: fda_self_hosted
+          bundle-install-path: "vendor/bundle"
+
+      - name: Prepare bump build number
+        run: |
+          git config user.name "$GH_ACTOR"
+          git config user.email "$GH_ACTOR@users.noreply.github.com"
+                    
+      - name: Bump Build number
+        if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main'
+        uses: maierj/fastlane-action@v2.0.1
+        with:
+          lane: bump_build_number
+          bundle-install-path: "vendor/bundle"
+
+      - name: Push commit 
+        if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main' 
+        shell: bash
+        run: | 
+          git push --repo="https://$GH_ACTOR:$KRYSTAL_BOT_GH_PAT@github.com/${GITHUB_REPOSITORY}.git"
+
+      # This step will automatically run if any of the previous steps fail.
+      # DO NOT CHANGE IT
+      - name: Send notifications to a specify Telegram group
+        if: failure()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
+          RUN_ID: ${{ github.run_id }}
+        shell: bash
+        run: .github/failure
+
+  notify:
+    needs:
+      - prepare
+      - build-ios
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack Notification on Success
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: release-krystal-ios-stg
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: ':rocket: Krystal-iOS | ${{ matrix.command }} | A new commit has been built on self-hosted runner | Download at https://console.firebase.google.com/u/0/project/stg-krystal-wallet/appdistribution/app/ios:com.kyrd.krystal.ios/releases'
+          SLACK_TITLE: ':rocket: Krystal-iOS | ${{ matrix.command }}'
+          SLACK_USERNAME: deployment-notifier
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_STG_IOS }}
+  
+      - name: Slack Notification on Failure
+        uses: rtCamp/action-slack-notify@v2
+        if: failure()
+        env:
+          SLACK_CHANNEL: release-krystal-ios-stg
+          SLACK_COLOR: 'fc5a03'
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: ':rocket: Krystal-iOS | ${{ matrix.command }} | The build/deployment failed on self-hosted runner'
+          SLACK_TITLE: ':rocket: Krystal-iOS | ${{ matrix.command }}'
+          SLACK_USERNAME: deployment-notifier
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_STG_IOS }}
+

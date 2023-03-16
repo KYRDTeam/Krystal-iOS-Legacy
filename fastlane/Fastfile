@@ -64,11 +64,21 @@ lane :debug_mode do
 #  sentry_upload
 end
 
+# Build and upload to FDA
 lane :fda do
   prepare_keychain
   install_profiles
   update_project
   build_debug
+  firebase_distribution
+end
+
+# Build and upload to FDA, using self-hosted macos runner
+lane :fda_self_hosted do
+  prepare_keychain
+  install_profiles
+  update_project
+  build_debug_self_hosted
   firebase_distribution
 end
 
@@ -206,6 +216,7 @@ lane :update_project do
     targets: "KrystalNotificationServiceExtension",
     profile_name: dev_profile
   )
+
 end
 
 # build build ipa and export by ad-hoc method
@@ -235,6 +246,29 @@ end
 
 lane :build_debug do
   xcversion(version: "13.4.1")
+  # build app
+  @tid = bundle_id + ".KrystalNotificationServiceExtension" 
+  build_app(
+    workspace: "KyberNetwork.xcworkspace",
+    configuration: "Debug",
+    scheme: "KyberNetwork",
+    clean: true,
+    output_directory: "archives",
+    output_name: "KyberSwap.ipa",
+    sdk: "iphoneos",
+    export_method: "development",
+    export_team_id: team_id,
+    export_options: {
+      provisioningProfiles: { 
+        bundle_id => ad_hoc_profile,
+        @tid => ext_ad_hoc_profile
+      }
+    }
+  )
+end
+
+lane :build_debug_self_hosted do
+  xcversion(version: "14.1")
   # build app
   @tid = bundle_id + ".KrystalNotificationServiceExtension" 
   build_app(
@@ -310,3 +344,4 @@ lane :ci_bump_build_number do
   @build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj") 
   git_commit(path: ["./*.plist", "KyberNetwork.xcodeproj/project.pbxproj"], message: "[no ci] increase build number " + @build_number + " (ver: " + @version + ")")
 end
+

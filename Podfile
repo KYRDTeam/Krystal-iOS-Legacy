@@ -259,4 +259,13 @@ post_install do |installer|
       end
     end
   end
+
+  installer.generated_projects.each do |project|
+    project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings["DEVELOPMENT_TEAM"] = "G9CRYMTLBL"
+         end
+    end
+  end
 end
+
